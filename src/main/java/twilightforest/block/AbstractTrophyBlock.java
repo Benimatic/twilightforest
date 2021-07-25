@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,8 +30,10 @@ import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.enums.BossVariant;
 import twilightforest.item.TFItems;
+import twilightforest.tileentity.TFTileEntities;
 import twilightforest.tileentity.TrophyTileEntity;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
@@ -70,10 +74,17 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 		return InteractionResult.SUCCESS;
 	}
 
+	@Nullable
 	@Override
-	public BlockEntity newBlockEntity(BlockGetter worldIn) {
-	      return new TrophyTileEntity();
-	   }
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TrophyTileEntity(pos, state);
+	}
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, TFTileEntities.TROPHY.get(), TrophyTileEntity::tick);
+	}
 
 	public BossVariant getVariant() {
 		return this.variant;

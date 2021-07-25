@@ -1,9 +1,9 @@
 package twilightforest.tileentity;
 
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,7 @@ import twilightforest.util.TFDamageSources;
 
 import java.util.Random;
 
-public class ActiveCarminiteReactorTileEntity extends BlockEntity implements TickableBlockEntity {
+public class ActiveCarminiteReactorTileEntity extends BlockEntity {
 
 	private int counter = 0;
 
@@ -26,8 +26,8 @@ public class ActiveCarminiteReactorTileEntity extends BlockEntity implements Tic
 	private int terX, terY, terZ;
 
 
-	public ActiveCarminiteReactorTileEntity() {
-		super(TFTileEntities.CARMINITE_REACTOR.get());
+	public ActiveCarminiteReactorTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.CARMINITE_REACTOR.get(), pos, state);
 		Random rand = new Random();
 
 		// determine the two smaller bursts
@@ -46,104 +46,103 @@ public class ActiveCarminiteReactorTileEntity extends BlockEntity implements Tic
 		}
 	}
 
-	@Override
-	public void tick() {
-		counter++;
+	public static void tick(Level level, BlockPos pos, BlockState state, ActiveCarminiteReactorTileEntity te) {
+		te.counter++;
 
 		if (!level.isClientSide) {
 
 			// every 2 seconds for 10 seconds, destroy a new radius
 			int offset = 10;
 
-			if (counter % 5 == 0) {
-				if (counter == 5) {
+			if (te.counter % 5 == 0) {
+				if (te.counter == 5) {
 					BlockState fakeGold = TFBlocks.fake_gold.get().defaultBlockState();
 					BlockState fakeDiamond = TFBlocks.fake_diamond.get().defaultBlockState();
 
 					// transformation!
-					createFakeBlock(worldPosition.offset(1, 1, 1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(1, 1, -1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(-1, 1, 1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(-1, 1, -1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(0, 1, 0), fakeDiamond);
+					te.createFakeBlock(pos.offset(1, 1, 1), fakeDiamond);
+					te.createFakeBlock(pos.offset(1, 1, -1), fakeDiamond);
+					te.createFakeBlock(pos.offset(-1, 1, 1), fakeDiamond);
+					te.createFakeBlock(pos.offset(-1, 1, -1), fakeDiamond);
+					te.createFakeBlock(pos.offset(0, 1, 0), fakeDiamond);
 
-					createFakeBlock(worldPosition.offset(0, 1, 1), fakeGold);
-					createFakeBlock(worldPosition.offset(0, 1, -1), fakeGold);
-					createFakeBlock(worldPosition.offset(1, 1, 0), fakeGold);
-					createFakeBlock(worldPosition.offset(-1, 1, 0), fakeGold);
+					te.createFakeBlock(pos.offset(0, 1, 1), fakeGold);
+					te.createFakeBlock(pos.offset(0, 1, -1), fakeGold);
+					te.createFakeBlock(pos.offset(1, 1, 0), fakeGold);
+					te.createFakeBlock(pos.offset(-1, 1, 0), fakeGold);
 
-					createFakeBlock(worldPosition.offset(1, 0, 1), fakeGold);
-					createFakeBlock(worldPosition.offset(1, 0, -1), fakeGold);
-					createFakeBlock(worldPosition.offset(-1, 0, 1), fakeGold);
-					createFakeBlock(worldPosition.offset(-1, 0, -1), fakeGold);
+					te.createFakeBlock(pos.offset(1, 0, 1), fakeGold);
+					te.createFakeBlock(pos.offset(1, 0, -1), fakeGold);
+					te.createFakeBlock(pos.offset(-1, 0, 1), fakeGold);
+					te.createFakeBlock(pos.offset(-1, 0, -1), fakeGold);
 
-					createFakeBlock(worldPosition.offset(0, 0, 1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(0, 0, -1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(1, 0, 0), fakeDiamond);
-					createFakeBlock(worldPosition.offset(-1, 0, 0), fakeDiamond);
-					createFakeBlock(worldPosition.offset(0, -1, 0), fakeDiamond);
+					te.createFakeBlock(pos.offset(0, 0, 1), fakeDiamond);
+					te.createFakeBlock(pos.offset(0, 0, -1), fakeDiamond);
+					te.createFakeBlock(pos.offset(1, 0, 0), fakeDiamond);
+					te.createFakeBlock(pos.offset(-1, 0, 0), fakeDiamond);
+					te.createFakeBlock(pos.offset(0, -1, 0), fakeDiamond);
 
-					createFakeBlock(worldPosition.offset(1, -1, 1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(1, -1, -1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(-1, -1, 1), fakeDiamond);
-					createFakeBlock(worldPosition.offset(-1, -1, -1), fakeDiamond);
+					te.createFakeBlock(pos.offset(1, -1, 1), fakeDiamond);
+					te.createFakeBlock(pos.offset(1, -1, -1), fakeDiamond);
+					te.createFakeBlock(pos.offset(-1, -1, 1), fakeDiamond);
+					te.createFakeBlock(pos.offset(-1, -1, -1), fakeDiamond);
 
-					createFakeBlock(worldPosition.offset(0, -1, 1), fakeGold);
-					createFakeBlock(worldPosition.offset(0, -1, -1), fakeGold);
-					createFakeBlock(worldPosition.offset(1, -1, 0), fakeGold);
-					createFakeBlock(worldPosition.offset(-1, -1, 0), fakeGold);
+					te.createFakeBlock(pos.offset(0, -1, 1), fakeGold);
+					te.createFakeBlock(pos.offset(0, -1, -1), fakeGold);
+					te.createFakeBlock(pos.offset(1, -1, 0), fakeGold);
+					te.createFakeBlock(pos.offset(-1, -1, 0), fakeGold);
 
 				}
 
 
 				// primary burst
-				int primary = counter - 80;
+				int primary = te.counter - 80;
 
 				if (primary >= offset && primary <= 249) {
-					drawBlob(this.worldPosition, (primary - offset) / 40, Blocks.AIR.defaultBlockState(), primary - offset, false);
+					te.drawBlob(pos, (primary - offset) / 40, Blocks.AIR.defaultBlockState(), primary - offset, false);
 				}
 				if (primary <= 200) {
-					drawBlob(this.worldPosition, primary / 40, TFBlocks.reactor_debris.get().defaultBlockState(), counter, false);
+					te.drawBlob(pos, primary / 40, TFBlocks.reactor_debris.get().defaultBlockState(), te.counter, false);
 				}
 
 				// secondary burst
-				int secondary = counter - 120;
+				int secondary = te.counter - 120;
 
 				if (secondary >= offset && secondary <= 129) {
-					drawBlob(this.worldPosition.offset(secX, secY, secZ), (secondary - offset) / 40, Blocks.AIR.defaultBlockState(), secondary - offset, false);
+					te.drawBlob(pos.offset(te.secX, te.secY, te.secZ), (secondary - offset) / 40, Blocks.AIR.defaultBlockState(), secondary - offset, false);
 				}
 				if (secondary >= 0 && secondary <= 160) {
-					drawBlob(this.worldPosition.offset(secX, secY, secZ), secondary / 40, Blocks.AIR.defaultBlockState(), secondary, true);
+					te.drawBlob(pos.offset(te.secX, te.secY, te.secZ), secondary / 40, Blocks.AIR.defaultBlockState(), secondary, true);
 				}
 
 				// tertiary burst
-				int tertiary = counter - 160;
+				int tertiary = te.counter - 160;
 
 				if (tertiary >= offset && tertiary <= 129) {
-					drawBlob(this.worldPosition.offset(terX, terY, terZ), (tertiary - offset) / 40, Blocks.AIR.defaultBlockState(), tertiary - offset, false);
+					te.drawBlob(pos.offset(te.terX, te.terY, te.terZ), (tertiary - offset) / 40, Blocks.AIR.defaultBlockState(), tertiary - offset, false);
 				}
 				if (tertiary >= 0 && tertiary <= 160) {
-					drawBlob(this.worldPosition.offset(terX, terY, terZ), tertiary / 40, Blocks.AIR.defaultBlockState(), tertiary, true);
+					te.drawBlob(pos.offset(te.terX, te.terY, te.terZ), tertiary / 40, Blocks.AIR.defaultBlockState(), tertiary, true);
 				}
 
 			}
 
 
-			if (counter >= 350) {
+			if (te.counter >= 350) {
 				// spawn mini ghasts near the secondary & tertiary points
 				for (int i = 0; i < 3; i++) {
-					spawnGhastNear(this.worldPosition.getX() + secX, this.worldPosition.getY() + secY, this.worldPosition.getZ() + secZ);
-					spawnGhastNear(this.worldPosition.getX() + terX, this.worldPosition.getY() + terY, this.worldPosition.getZ() + terZ);
+					te.spawnGhastNear(pos.getX() + te.secX, pos.getY() + te.secY, pos.getZ() + te.secZ);
+					te.spawnGhastNear(pos.getX() + te.terX, pos.getY() + te.terY, pos.getZ() + te.terZ);
 				}
 
 				// deactivate & explode
-				level.explode(null, TFDamageSources.REACTOR, (ExplosionDamageCalculator)null, this.worldPosition.getX(), this.worldPosition.getY(), this.worldPosition.getZ(), 2.0F, true, Explosion.BlockInteraction.BREAK);
-				level.removeBlock(worldPosition, false);
+				level.explode(null, TFDamageSources.REACTOR, (ExplosionDamageCalculator)null, pos.getX(), pos.getY(), pos.getZ(), 2.0F, true, Explosion.BlockInteraction.BREAK);
+				level.removeBlock(pos, false);
 			}
 
 		} else {
-			if (counter % 5 == 0 && counter <= 250) {
-				level.playLocalSound(this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 0.5D, this.worldPosition.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT, SoundSource.BLOCKS, counter / 100F, counter / 100F, false);
+			if (te.counter % 5 == 0 && te.counter <= 250) {
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT, SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
 			}
 		}
 	}
@@ -213,7 +212,7 @@ public class ActiveCarminiteReactorTileEntity extends BlockEntity implements Tic
 	private void transformBlock(BlockPos pos, BlockState state, int fuzz, boolean netherTransform) {
 		BlockState stateThere = level.getBlockState(pos);
 
-		if (stateThere.getBlock() != Blocks.AIR && (stateThere.getBlock().is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getDestroySpeed(level, pos) == -1)) {
+		if (stateThere.getBlock() != Blocks.AIR && (stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getDestroySpeed(level, pos) == -1)) {
 			// don't destroy unbreakable stuff
 			return;
 		}
@@ -237,7 +236,7 @@ public class ActiveCarminiteReactorTileEntity extends BlockEntity implements Tic
 	private void createFakeBlock(BlockPos pos, BlockState state) {
 		BlockState stateThere = level.getBlockState(pos);
 
-		if (stateThere.getBlock() != Blocks.AIR && (stateThere.getBlock().is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getDestroySpeed(level, pos) == -1)) {
+		if (stateThere.getBlock() != Blocks.AIR && (stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getDestroySpeed(level, pos) == -1)) {
 			// don't destroy unbreakable stuff
 			return;
 		} else {

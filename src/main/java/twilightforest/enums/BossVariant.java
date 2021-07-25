@@ -11,7 +11,7 @@ import twilightforest.tileentity.spawner.LichSpawnerTileEntity;
 import twilightforest.tileentity.spawner.MinoshroomSpawnerTileEntity;
 import twilightforest.tileentity.spawner.NagaSpawnerTileEntity;
 import twilightforest.tileentity.spawner.SnowQueenSpawnerTileEntity;
-import twilightforest.tileentity.spawner.TowerBossSpawnerTileEntity;
+import twilightforest.tileentity.spawner.UrGhastSpawnerTileEntity;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -22,7 +22,7 @@ public enum BossVariant implements StringRepresentable, SkullBlock.Type {
 	NAGA          (TrophyType.GOLD    , NagaSpawnerTileEntity::new),
 	LICH          (TrophyType.GOLD    , LichSpawnerTileEntity::new),
 	HYDRA         (TrophyType.GOLD    , HydraSpawnerTileEntity::new),
-	UR_GHAST      (TrophyType.GOLD    , TowerBossSpawnerTileEntity::new),
+	UR_GHAST      (TrophyType.GOLD    , UrGhastSpawnerTileEntity::new),
 	KNIGHT_PHANTOM(TrophyType.IRON    , KnightPhantomSpawnerTileEntity::new),
 	SNOW_QUEEN    (TrophyType.GOLD    , SnowQueenSpawnerTileEntity::new),
 	MINOSHROOM    (TrophyType.IRON    , MinoshroomSpawnerTileEntity::new),

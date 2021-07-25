@@ -1,8 +1,8 @@
 package twilightforest.tileentity;
 
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
@@ -12,7 +12,7 @@ import twilightforest.block.TranslucentBuiltBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.TowerDeviceVariant;
 
-public class CarminiteBuilderTileEntity extends BlockEntity implements TickableBlockEntity {
+public class CarminiteBuilderTileEntity extends BlockEntity {
 	private static final int RANGE = 16;
 
 	private int ticksRunning = 0;
@@ -29,8 +29,8 @@ public class CarminiteBuilderTileEntity extends BlockEntity implements TickableB
 
 	private BlockState blockBuiltState = TFBlocks.built_block.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
 
-	public CarminiteBuilderTileEntity() {
-		super(TFTileEntities.TOWER_BUILDER.get());
+	public CarminiteBuilderTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.TOWER_BUILDER.get(), pos, state);
 	}
 
 	/**
@@ -42,50 +42,49 @@ public class CarminiteBuilderTileEntity extends BlockEntity implements TickableB
 		this.lastBlockCoords = getBlockPos();
 	}
 
-	@Override
-	public void tick() {
-		if (!level.isClientSide && this.makingBlocks) {
+	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteBuilderTileEntity te) {
+		if (!level.isClientSide && te.makingBlocks) {
 			// if we are not tracking the nearest player, start tracking them
-			if (trackedPlayer == null) {
-				this.trackedPlayer = findClosestValidPlayer();
+			if (te.trackedPlayer == null) {
+				te.trackedPlayer = te.findClosestValidPlayer();
 			}
 
 			// find player facing
-            Direction nextFacing = findNextFacing();
+            Direction nextFacing = te.findNextFacing();
 
-			++this.ticksRunning;
+			++te.ticksRunning;
 
 			// if we are at the half second marker, make a block and advance the block cursor
-			if (this.ticksRunning % 10 == 0 && lastBlockCoords != null && nextFacing != null) {
-				BlockPos nextPos = lastBlockCoords.relative(nextFacing);
+			if (te.ticksRunning % 10 == 0 && te.lastBlockCoords != null && nextFacing != null) {
+				BlockPos nextPos = te.lastBlockCoords.relative(nextFacing);
 
 				// make a block
-				if (blocksMade <= RANGE && level.isEmptyBlock(nextPos)) {
-					level.setBlock(nextPos, blockBuiltState, 3);
+				if (te.blocksMade <= RANGE && level.isEmptyBlock(nextPos)) {
+					level.setBlock(nextPos, te.blockBuiltState, 3);
 
 					level.levelEvent(1001, nextPos, 0);
 
-					this.lastBlockCoords = nextPos;
+					te.lastBlockCoords = nextPos;
 
-					blockedCounter = 0;
-					blocksMade++;
+					te.blockedCounter = 0;
+					te.blocksMade++;
 				} else {
-					blockedCounter++;
+					te.blockedCounter++;
 				}
 			}
 
 			// if we're blocked for more than a second, shut down block making
-			if (blockedCounter > 0) {
-				this.makingBlocks = false;
-				this.trackedPlayer = null;
-				ticksStopped = 0;
+			if (te.blockedCounter > 0) {
+				te.makingBlocks = false;
+				te.trackedPlayer = null;
+				te.ticksStopped = 0;
 			}
-		} else if (!level.isClientSide && !this.makingBlocks) {
-			this.trackedPlayer = null;
-			if (++ticksStopped == 60) {
+		} else if (!level.isClientSide && !te.makingBlocks) {
+			te.trackedPlayer = null;
+			if (++te.ticksStopped == 60) {
 				// force the builder back into an inactive state
-				level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(BuilderBlock.STATE, TowerDeviceVariant.BUILDER_TIMEOUT));
-				level.getBlockTicks().scheduleTick(getBlockPos(), getBlockState().getBlock(), 4);
+				level.setBlockAndUpdate(pos, state.setValue(BuilderBlock.STATE, TowerDeviceVariant.BUILDER_TIMEOUT));
+				level.getBlockTicks().scheduleTick(pos, state.getBlock(), 4);
 			}
 		}
 	}
@@ -96,7 +95,7 @@ public class CarminiteBuilderTileEntity extends BlockEntity implements TickableB
 			int pitch = Mth.floor(trackedPlayer.xRot * 4.0F / 360.0F + 1.5D) & 3;
 
 			if (pitch == 0) {
-				return Direction.UP; // todo 1.9 recheck this and down
+				return Direction.UP;
 			} else if (pitch == 2) {
 				return Direction.DOWN;
 			} else {

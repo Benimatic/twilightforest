@@ -1,11 +1,11 @@
 package twilightforest.tileentity;
 
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
@@ -15,7 +15,7 @@ import twilightforest.tileentity.spawner.*;
 
 public class TFTileEntities {
 
-	public static final DeferredRegister<BlockEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, TwilightForestMod.ID);
+	public static final DeferredRegister<BlockEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, TwilightForestMod.ID);
 
 	public static final RegistryObject<BlockEntityType<AntibuilderTileEntity>> ANTIBUILDER               = TILE_ENTITIES.register("antibuilder", () ->
 			BlockEntityType.Builder.of(AntibuilderTileEntity::new, TFBlocks.antibuilder.get()).build(null));
@@ -53,8 +53,8 @@ public class TFTileEntities {
 			BlockEntityType.Builder.of(NagaSpawnerTileEntity::new, TFBlocks.boss_spawner_naga.get()).build(null));
 	public static final RegistryObject<BlockEntityType<SnowQueenSpawnerTileEntity>> SNOW_QUEEN_SPAWNER     = TILE_ENTITIES.register("snow_queen_spawner", () ->
 			BlockEntityType.Builder.of(SnowQueenSpawnerTileEntity::new, TFBlocks.boss_spawner_snow_queen.get()).build(null));
-	public static final RegistryObject<BlockEntityType<TowerBossSpawnerTileEntity>> TOWER_BOSS_SPAWNER     = TILE_ENTITIES.register("tower_boss_spawner", () ->
-			BlockEntityType.Builder.of(TowerBossSpawnerTileEntity::new, TFBlocks.boss_spawner_ur_ghast.get()).build(null));
+	public static final RegistryObject<BlockEntityType<UrGhastSpawnerTileEntity>> UR_GHAST_SPAWNER     = TILE_ENTITIES.register("tower_boss_spawner", () ->
+			BlockEntityType.Builder.of(UrGhastSpawnerTileEntity::new, TFBlocks.boss_spawner_ur_ghast.get()).build(null));
 
 	public static final RegistryObject<BlockEntityType<CicadaTileEntity>> CICADA     = TILE_ENTITIES.register("cicada", () ->
 			BlockEntityType.Builder.of(CicadaTileEntity::new, TFBlocks.cicada.get()).build(null));
@@ -80,11 +80,11 @@ public class TFTileEntities {
 	@OnlyIn(Dist.CLIENT)
 	public static void registerTileEntityRenders() {
 		// tile entities
-		ClientRegistry.bindTileEntityRenderer(FIREFLY.get(), FireflyTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(CICADA.get(), CicadaTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(MOONWORM.get(), MoonwormTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TrophyTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(TF_SIGN.get(), SignRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
+		BlockEntityRenderers.register(FIREFLY.get(), FireflyTileEntityRenderer::new);
+		BlockEntityRenderers.register(CICADA.get(), CicadaTileEntityRenderer::new);
+		BlockEntityRenderers.register(MOONWORM.get(), MoonwormTileEntityRenderer::new);
+		BlockEntityRenderers.register(TROPHY.get(), TrophyTileEntityRenderer::new);
+		BlockEntityRenderers.register(TF_SIGN.get(), SignRenderer::new);
+		BlockEntityRenderers.register(KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
 	}
 }

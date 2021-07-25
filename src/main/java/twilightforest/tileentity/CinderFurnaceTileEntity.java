@@ -1,5 +1,6 @@
 package twilightforest.tileentity;
 
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -28,26 +29,29 @@ import java.util.Random;
 public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 	private static final int SMELT_LOG_FACTOR = 10;
 
+	public CinderFurnaceTileEntity(BlockPos p_155545_, BlockState p_155546_) {
+		super(p_155545_, p_155546_);
+	}
+
 	// [VanillaCopy] of superclass, edits noted
-	@Override
-	public void tick() {
-		boolean flag = this.isBurning();
+	public static void tick(Level level, BlockPos pos, BlockState state, CinderFurnaceTileEntity te) {
+		boolean flag = te.isBurning();
 		boolean flag1 = false;
 
-		if (this.isBurning()) {
-			--this.litTime;
+		if (te.isBurning()) {
+			--te.litTime;
 		}
 
-		if (!this.level.isClientSide) {
-			ItemStack itemstack = this.items.get(1);
+		if (!level.isClientSide) {
+			ItemStack itemstack = te.items.get(1);
 
-			if (this.isBurning() || !itemstack.isEmpty() && !this.items.get(0).isEmpty()) {
-				Recipe<?> irecipe = this.level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, this, this.level).orElse(null);
-				if (!this.isBurning() && this.canBurn(irecipe)) {
-					this.litTime = getBurnDuration(itemstack);
-					this.litDuration = this.litTime;
+			if (te.isBurning() || !itemstack.isEmpty() && !te.items.get(0).isEmpty()) {
+				Recipe<?> irecipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, te, level).orElse(null);
+				if (!te.isBurning() && te.canBurn(irecipe)) {
+					te.litTime = te.getBurnDuration(itemstack);
+					te.litDuration = te.litTime;
 
-					if (this.isBurning()) {
+					if (te.isBurning()) {
 						flag1 = true;
 
 						if (!itemstack.isEmpty()) {
@@ -56,42 +60,42 @@ public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 
 							if (itemstack.isEmpty()) {
 								ItemStack item1 = item.getContainerItem(itemstack);
-								this.items.set(1, item1);
+								te.items.set(1, item1);
 							}
 						}
 					}
 				}
 
-				if (this.isBurning() && this.canBurn(irecipe)) {
+				if (te.isBurning() && te.canBurn(irecipe)) {
 					// TF - cook faster
-					this.cookingProgress += this.getCurrentSpeedMultiplier();
+					te.cookingProgress += te.getCurrentSpeedMultiplier();
 
-					if (this.cookingProgress >= this.cookingTotalTime) { // TF - change to geq since we can increment by >1
-						this.cookingProgress = 0;
-						this.cookingTotalTime = this.getRecipeBurnTime();
-						this.smeltItem(irecipe);
+					if (te.cookingProgress >= te.cookingTotalTime) { // TF - change to geq since we can increment by >1
+						te.cookingProgress = 0;
+						te.cookingTotalTime = te.getRecipeBurnTime();
+						te.smeltItem(irecipe);
 						flag1 = true;
 					}
 				} else {
-					this.cookingProgress = 0;
+					te.cookingProgress = 0;
 				}
-			} else if (!this.isBurning() && this.cookingProgress > 0) {
-				this.cookingProgress = Mth.clamp(this.cookingProgress - 2, 0, this.cookingTotalTime);
+			} else if (!te.isBurning() && te.cookingProgress > 0) {
+				te.cookingProgress = Mth.clamp(te.cookingProgress - 2, 0, te.cookingTotalTime);
 			}
 
-			if (flag != this.isBurning()) {
+			if (flag != te.isBurning()) {
 				flag1 = true;
-				this.level.setBlock(this.worldPosition, this.level.getBlockState(worldPosition).setValue(CinderFurnaceBlock.LIT, isBurning()), 3); // TF - use our furnace
+				level.setBlock(pos, level.getBlockState(pos).setValue(CinderFurnaceBlock.LIT, te.isBurning()), 3); // TF - use our furnace
 			}
 
 			// TF - occasionally cinderize nearby logs
-			if (this.isBurning() && this.litTime % 5 == 0) {
-				this.cinderizeNearbyLog();
+			if (te.isBurning() && te.litTime % 5 == 0) {
+				te.cinderizeNearbyLog();
 			}
 		}
 
 		if (flag1) {
-			this.setChanged();
+			te.setChanged();
 		}
 	}
 

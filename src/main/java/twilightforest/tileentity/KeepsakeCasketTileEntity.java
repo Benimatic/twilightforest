@@ -1,6 +1,8 @@
 package twilightforest.tileentity;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
@@ -11,7 +13,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundSource;
@@ -29,7 +30,7 @@ import java.util.UUID;
 
 //used a fair bit of chest logic in this for the lid
 @OnlyIn(value = Dist.CLIENT, _interface = LidBlockEntity.class)
-public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity implements LidBlockEntity, TickableBlockEntity {
+public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
     private static final int limit = 9 * 5;
     public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
     @Nullable
@@ -43,8 +44,8 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
     protected int numPlayersUsing;
     private int ticksSinceSync;
 
-    public KeepsakeCasketTileEntity() {
-        super(TFTileEntities.KEEPSAKE_CASKET.get());
+    public KeepsakeCasketTileEntity(BlockPos pos, BlockState state) {
+        super(TFTileEntities.KEEPSAKE_CASKET.get(), pos, state);
     }
 
     @Override
@@ -107,8 +108,8 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
     }
 
     @Override
-    public void load(BlockState state, CompoundTag nbt) {
-        super.load(state, nbt);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
         this.contents = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         if (!this.tryLoadLootTable(nbt)) {
             ContainerHelper.loadAllItems(nbt, this.contents);
@@ -118,27 +119,26 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
     }
 
     //[VanillaCopy] of EnderChestTileEntity, with some small adaptations
-    @Override
-    public void tick() {
-        if (++this.ticksSinceSync % 20 * 4 == 0) {
-            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+    public static void tick(Level level, BlockPos pos, BlockState state, KeepsakeCasketTileEntity te) {
+        if (++te.ticksSinceSync % 20 * 4 == 0) {
+            level.blockEvent(pos, TFBlocks.keepsake_casket.get(), 1, te.numPlayersUsing);
         }
-        this.prevLidAngle = this.lidAngle;
-        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
-            this.level.playSound(null, this.worldPosition, TFSounds.CASKET_OPEN, SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
+        te.prevLidAngle = te.lidAngle;
+        if (te.numPlayersUsing > 0 && te.lidAngle == 0.0F) {
+            level.playSound(null, pos, TFSounds.CASKET_OPEN, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
         }
-        if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
-            float f2 = this.lidAngle;
+        if (te.numPlayersUsing == 0 && te.lidAngle > 0.0F || te.numPlayersUsing > 0 && te.lidAngle < 1.0F) {
+            float f2 = te.lidAngle;
 
-            if (this.numPlayersUsing > 0) this.lidAngle += 0.025F;
-            else this.lidAngle -= 0.075F;
+            if (te.numPlayersUsing > 0) te.lidAngle += 0.025F;
+            else te.lidAngle -= 0.075F;
 
-            if (this.lidAngle > 1.0F) this.lidAngle = 1.0F;
+            if (te.lidAngle > 1.0F) te.lidAngle = 1.0F;
 
-            if (this.lidAngle < 0.4F && f2 >= 0.4F) {
-                this.level.playSound(null, this.worldPosition, TFSounds.CASKET_CLOSE, SoundSource.BLOCKS, 0.75F, this.level.random.nextFloat() * 0.1F + 0.9F);
+            if (te.lidAngle < 0.4F && f2 >= 0.4F) {
+                level.playSound(null, pos, TFSounds.CASKET_CLOSE, SoundSource.BLOCKS, 0.75F, level.random.nextFloat() * 0.1F + 0.9F);
             }
-            if (this.lidAngle < 0.0F) this.lidAngle = 0.0F;
+            if (te.lidAngle < 0.0F) te.lidAngle = 0.0F;
         }
 
     }
@@ -186,7 +186,7 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
     @Override
     public void setRemoved() {
         playeruuid = null;
-        this.clearCache();
+        this.invalidateCaps();
         super.setRemoved();
     }
 

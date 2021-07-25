@@ -1,14 +1,16 @@
 package twilightforest.tileentity.spawner;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.LichEntity;
 import twilightforest.tileentity.TFTileEntities;
 
 public class LichSpawnerTileEntity extends BossSpawnerTileEntity<LichEntity> {
 
-	public LichSpawnerTileEntity() {
-		super(TFTileEntities.LICH_SPAWNER.get(), TFEntities.lich);
+	public LichSpawnerTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.LICH_SPAWNER.get(), TFEntities.lich, pos, state);
 	}
 
 	@Override

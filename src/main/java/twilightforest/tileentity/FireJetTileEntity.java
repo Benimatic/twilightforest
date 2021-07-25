@@ -1,10 +1,12 @@
 package twilightforest.tileentity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.TFSounds;
 import twilightforest.block.FireJetBlock;
@@ -15,65 +17,64 @@ import twilightforest.util.TFDamageSources;
 
 import java.util.List;
 
-public class FireJetTileEntity extends BlockEntity implements TickableBlockEntity {
+public class FireJetTileEntity extends BlockEntity {
 
 	private int counter = 0;
 
-	public FireJetTileEntity() {
-		super(TFTileEntities.FLAME_JET.get());
+	public FireJetTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.FLAME_JET.get(), pos, state);
 	}
 
-	@Override
-	public void tick() {
-		if (getBlockState().getBlock() == TFBlocks.fire_jet.get() || getBlockState().getBlock() == TFBlocks.encased_fire_jet.get()) {
-			switch (getBlockState().getValue(FireJetBlock.STATE)) {
-			case POPPING: tickPopping(); break;
-			case FLAME: tickFlame(); break;
+	public static void tick(Level level, BlockPos pos, BlockState state, FireJetTileEntity te) {
+		if (state.getBlock() == TFBlocks.fire_jet.get() || state.getBlock() == TFBlocks.encased_fire_jet.get()) {
+			switch (state.getValue(FireJetBlock.STATE)) {
+			case POPPING: tickPopping(level, pos, state, te); break;
+			case FLAME: tickFlame(level, pos, state, te); break;
 			}
 		}
 	}
 
-	private void tickPopping() {
-		if (++counter >= 80) {
-			counter = 0;
+	private static void tickPopping(Level level, BlockPos pos, BlockState state, FireJetTileEntity te) {
+		if (++te.counter >= 80) {
+			te.counter = 0;
 			// turn to flame
 			if (!level.isClientSide) {
-				if (getBlockState().getBlock() == TFBlocks.fire_jet.get() || getBlockState().getBlock() == TFBlocks.encased_fire_jet.get()) {
-					level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FireJetBlock.STATE, FireJetVariant.FLAME));
+				if (state.getBlock() == TFBlocks.fire_jet.get() || state.getBlock() == TFBlocks.encased_fire_jet.get()) {
+					level.setBlockAndUpdate(pos, state.setValue(FireJetBlock.STATE, FireJetVariant.FLAME));
 				} else {
-					level.removeBlock(worldPosition, false);
+					level.removeBlock(pos, false);
 				}
 			}
 		} else {
-			if (counter % 20 == 0) {
+			if (te.counter % 20 == 0) {
 				for (int i = 0; i < 8; i++)
 				{
-					level.addParticle(ParticleTypes.LAVA, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 1.5, this.worldPosition.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
+					level.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
 				}
-				level.playSound(null, worldPosition, TFSounds.JET_POP, SoundSource.BLOCKS, 0.2F + level.random.nextFloat() * 0.2F, 0.9F + level.random.nextFloat() * 0.15F);
+				level.playSound(null, pos, TFSounds.JET_POP, SoundSource.BLOCKS, 0.2F + level.random.nextFloat() * 0.2F, 0.9F + level.random.nextFloat() * 0.15F);
 			}
 		}
 	}
 
-	private void tickFlame() {
-		double x = this.worldPosition.getX();
-		double y = this.worldPosition.getY();
-		double z = this.worldPosition.getZ();
+	private static void tickFlame(Level level, BlockPos pos, BlockState state, FireJetTileEntity te) {
+		double x = pos.getX();
+		double y = pos.getY();
+		double z = pos.getZ();
 
-		if (++counter > 60) {
-			counter = 0;
+		if (++te.counter > 60) {
+			te.counter = 0;
 			// idle again
 			if (!level.isClientSide) {
-				if (getBlockState().getBlock() == TFBlocks.fire_jet.get() || getBlockState().getBlock() == TFBlocks.encased_fire_jet.get()) {
-					level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FireJetBlock.STATE, FireJetVariant.IDLE));
+				if (state.getBlock() == TFBlocks.fire_jet.get() || state.getBlock() == TFBlocks.encased_fire_jet.get()) {
+					level.setBlockAndUpdate(pos, state.setValue(FireJetBlock.STATE, FireJetVariant.IDLE));
 				} else {
-					level.removeBlock(worldPosition, false);
+					level.removeBlock(pos, false);
 				}
 			}
 		}
 
 		if (level.isClientSide) {
-			if (counter % 2 == 0) {
+			if (te.counter % 2 == 0) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
 				level.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
 				level.addParticle(TFParticleType.LARGE_FLAME.get(), x - 0.5, y + 1.0, z + 0.5, 0.05D, 0.5D, 0.0D);
@@ -83,20 +84,20 @@ public class FireJetTileEntity extends BlockEntity implements TickableBlockEntit
 			}
 
 			// sounds
-			if (counter % 4 == 0) {
+			if (te.counter % 4 == 0) {
 				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_ACTIVE, SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
 
-			} else if (counter == 1) {
+			} else if (te.counter == 1) {
 				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_START, SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
 			}
 		}
 
 		// actual fire effects
 		if (!level.isClientSide) {
-			if (counter % 5 == 0) {
+			if (te.counter % 5 == 0) {
 				// find entities in the area of effect
 				List<Entity> entitiesInRange = level.getEntitiesOfClass(Entity.class,
-						new AABB(worldPosition.offset(-2, 0, -2), worldPosition.offset(2, 4, 2)));
+						new AABB(pos.offset(-2, 0, -2), pos.offset(2, 4, 2)));
 				// fire!
 				for (Entity entity : entitiesInRange) {
 					if (!entity.fireImmune()) {

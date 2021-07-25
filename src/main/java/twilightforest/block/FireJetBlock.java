@@ -1,30 +1,30 @@
 package twilightforest.block;
 
-import net.minecraft.block.*;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.data.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.tileentity.FireJetTileEntity;
+import twilightforest.tileentity.TFTileEntities;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-
-public class FireJetBlock extends Block {
+public class FireJetBlock extends BaseEntityBlock {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
@@ -78,18 +78,18 @@ public class FireJetBlock extends Block {
 
 	private boolean isLava(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		Block b = state.getBlock();
-		return b.is(BlockTagGenerator.FIRE_JET_FUEL) || b.getFluidState(state).is(FluidTagGenerator.FIRE_JET_FUEL);
-	}
-
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return state.getValue(STATE) == FireJetVariant.POPPING || state.getValue(STATE) == FireJetVariant.FLAME;
+		return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getBlock().getFluidState(state).is(FluidTagGenerator.FIRE_JET_FUEL);
 	}
 
 	@Nullable
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return hasTileEntity(state) ? new FireJetTileEntity() : null;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new FireJetTileEntity(pos, state);
+	}
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, TFTileEntities.FLAME_JET.get(), FireJetTileEntity::tick);
 	}
 }

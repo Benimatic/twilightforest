@@ -1,14 +1,16 @@
 package twilightforest.tileentity.spawner;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.MinoshroomEntity;
 import twilightforest.tileentity.TFTileEntities;
 
 public class MinoshroomSpawnerTileEntity extends BossSpawnerTileEntity<MinoshroomEntity> {
 
-	public MinoshroomSpawnerTileEntity() {
-		super(TFTileEntities.MINOSHROOM_SPAWNER.get(), TFEntities.minoshroom);
+	public MinoshroomSpawnerTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.MINOSHROOM_SPAWNER.get(), TFEntities.minoshroom, pos, state);
 	}
 
 	@Override

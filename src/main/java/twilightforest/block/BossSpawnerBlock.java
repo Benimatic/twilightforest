@@ -1,6 +1,10 @@
 package twilightforest.block;
 
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.state.EnumProperty;
@@ -13,8 +17,11 @@ import twilightforest.enums.BossVariant;
 import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import twilightforest.tileentity.TFTileEntities;
+import twilightforest.tileentity.TrophyTileEntity;
+import twilightforest.tileentity.spawner.BossSpawnerTileEntity;
 
-public class BossSpawnerBlock extends Block {
+public class BossSpawnerBlock extends BaseEntityBlock {
 
 	private final BossVariant boss;
 
@@ -23,15 +30,16 @@ public class BossSpawnerBlock extends Block {
 		boss = variant;
 	}
 
+	@Nullable
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return boss.hasSpawner();
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return boss.getSpawner();
 	}
 
-	@Override
 	@Nullable
-	public BlockEntity createTileEntity(BlockState state, BlockGetter reader) {
-		return boss.getSpawner();
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, boss.getSpawner().getType(), BossSpawnerTileEntity::tick);
 	}
 
 	@Override

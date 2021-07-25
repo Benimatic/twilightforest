@@ -10,7 +10,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class UrGhastSpawnerTileEntity extends BossSpawnerTileEntity<UrGhastEntity> {
 
 	public UrGhastSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.TOWER_BOSS_SPAWNER.get(), TFEntities.ur_ghast, pos, state);
+		super(TFTileEntities.UR_GHAST_SPAWNER.get(), TFEntities.ur_ghast, pos, state);
 	}
 
 	@Override

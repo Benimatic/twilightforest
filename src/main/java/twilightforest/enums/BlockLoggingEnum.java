@@ -1,6 +1,7 @@
 package twilightforest.enums;
 
-import net.minecraft.block.*;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.LevelAccessor;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Optional;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -69,14 +71,14 @@ public enum BlockLoggingEnum implements StringRepresentable {
 
     public interface IMultiLoggable extends BucketPickup, LiquidBlockContainer {
         @Override
-        default Fluid takeLiquid(LevelAccessor world, BlockPos pos, BlockState state) {
+        default ItemStack pickupBlock(LevelAccessor world, BlockPos pos, BlockState state) {
             Fluid stateFluid = state.getValue(MULTILOGGED).fluid;
 
             if (stateFluid != Fluids.EMPTY) {
                 world.setBlock(pos, state.setValue(MULTILOGGED, AIR), 3);
             }
 
-            return stateFluid;
+            return new ItemStack(stateFluid.getBucket());
         }
 
         @Override

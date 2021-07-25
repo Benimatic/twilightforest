@@ -1,9 +1,9 @@
 package twilightforest.tileentity;
 
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import twilightforest.block.TFBlocks;
@@ -11,7 +11,7 @@ import twilightforest.data.BlockTagGenerator;
 
 import java.util.Random;
 
-public class AntibuilderTileEntity extends BlockEntity implements TickableBlockEntity {
+public class AntibuilderTileEntity extends BlockEntity {
 	private static final int REVERT_CHANCE = 10;
 
 	private static final int RADIUS = 4;
@@ -26,52 +26,51 @@ public class AntibuilderTileEntity extends BlockEntity implements TickableBlockE
 
 	private BlockState[] blockData;
 
-	public AntibuilderTileEntity() {
-		super(TFTileEntities.ANTIBUILDER.get());
+	public AntibuilderTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.ANTIBUILDER.get(), pos, state);
 	}
 
-	@Override
-	public void tick() {
-		if (this.anyPlayerInRange()) {
-			this.tickCount++;
+	public static void tick(Level level, BlockPos pos, BlockState state, AntibuilderTileEntity te) {
+		if (te.anyPlayerInRange()) {
+			te.tickCount++;
 
-			if (this.level.isClientSide) {
-				double x = this.worldPosition.getX() + this.level.random.nextFloat();
-				double y = this.worldPosition.getY() + this.level.random.nextFloat();
-				double z = this.worldPosition.getZ() + this.level.random.nextFloat();
-				this.level.addParticle(DustParticleOptions.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
+			if (level.isClientSide) {
+				double x = pos.getX() + level.random.nextFloat();
+				double y = pos.getY() + level.random.nextFloat();
+				double z = pos.getZ() + level.random.nextFloat();
+				level.addParticle(DustParticleOptions.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
 
 				// occasionally make a little red dust line to outline our radius
-				if (this.rand.nextInt(10) == 0) {
-					makeRandomOutline();
-					makeRandomOutline();
-					makeRandomOutline();
+				if (te.rand.nextInt(10) == 0) {
+					te.makeRandomOutline();
+					te.makeRandomOutline();
+					te.makeRandomOutline();
 				}
 			} else {
 
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (blockData == null && level.isAreaLoaded(this.worldPosition, AntibuilderTileEntity.RADIUS)) {
-					captureBlockData();
-					this.slowScan = true;
+				if (te.blockData == null && level.isAreaLoaded(pos, AntibuilderTileEntity.RADIUS)) {
+					te.captureBlockData();
+					te.slowScan = true;
 				}
 
-				if (blockData != null && (!this.slowScan || this.tickCount % 20 == 0)) {
-					if (scanAndRevertChanges()) {
-						this.slowScan = false;
-						this.ticksSinceChange = 0;
+				if (te.blockData != null && (!te.slowScan || te.tickCount % 20 == 0)) {
+					if (te.scanAndRevertChanges()) {
+						te.slowScan = false;
+						te.ticksSinceChange = 0;
 					} else {
-						ticksSinceChange++;
+						te.ticksSinceChange++;
 
-						if (ticksSinceChange > 20) {
-							this.slowScan = true;
+						if (te.ticksSinceChange > 20) {
+							te.slowScan = true;
 						}
 					}
 				}
 			}
 		} else {
 			// remove data
-			this.blockData = null;
-			this.tickCount = 0;
+			te.blockData = null;
+			te.tickCount = 0;
 		}
 	}
 
@@ -222,7 +221,7 @@ public class AntibuilderTileEntity extends BlockEntity implements TickableBlockE
 	}
 
 	private boolean revertBlock(BlockPos pos, BlockState stateThere, BlockState replaceWith) {
-		if (stateThere.isAir(level, pos) && !replaceWith.getMaterial().blocksMotion()) {
+		if (stateThere.isAir() && !replaceWith.getMaterial().blocksMotion()) {
 			return false;
 		}
 		if (stateThere.getDestroySpeed(level, pos) < 0 || isUnrevertable(stateThere, replaceWith)) {

@@ -1,44 +1,45 @@
 package twilightforest.tileentity;
 
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class MoonwormTileEntity extends BlockEntity implements TickableBlockEntity {
+public class MoonwormTileEntity extends BlockEntity {
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
 
-	public MoonwormTileEntity() {
-		super(TFTileEntities.MOONWORM.get());
+	public MoonwormTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.MOONWORM.get(), pos, state);
 		currentYaw = -1;
 		yawDelay = 0;
 		desiredYaw = 0;
 	}
 
-	@Override
-	public void tick() {
+	public static void tick(Level level, BlockPos pos, BlockState state, MoonwormTileEntity te) {
 		if (level.isClientSide) {
-			if (currentYaw == -1) {
-				currentYaw = level.random.nextInt(4) * 90;
+			if (te.currentYaw == -1) {
+				te.currentYaw = level.random.nextInt(4) * 90;
 			}
 
-			if (yawDelay > 0) {
-				yawDelay--;
+			if (te.yawDelay > 0) {
+				te.yawDelay--;
 			} else {
-				if (desiredYaw == 0) {
+				if (te.desiredYaw == 0) {
 					// make it rotate!
-					yawDelay = 200 + level.random.nextInt(200);
-					desiredYaw = level.random.nextInt(4) * 90;
+					te.yawDelay = 200 + level.random.nextInt(200);
+					te.desiredYaw = level.random.nextInt(4) * 90;
 				}
 
-				currentYaw++;
+				te.currentYaw++;
 
-				if (currentYaw > 360) {
-					currentYaw = 0;
+				if (te.currentYaw > 360) {
+					te.currentYaw = 0;
 				}
 
-				if (currentYaw == desiredYaw) {
-					desiredYaw = 0;
+				if (te.currentYaw == te.desiredYaw) {
+					te.desiredYaw = 0;
 				}
 			}
 		}

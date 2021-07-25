@@ -1,13 +1,15 @@
 package twilightforest.tileentity.spawner;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.HydraEntity;
 import twilightforest.tileentity.TFTileEntities;
 
 public class HydraSpawnerTileEntity extends BossSpawnerTileEntity<HydraEntity> {
 
-	public HydraSpawnerTileEntity() {
-		super(TFTileEntities.HYDRA_SPAWNER.get(), TFEntities.hydra);
+	public HydraSpawnerTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.HYDRA_SPAWNER.get(), TFEntities.hydra, pos, state);
 	}
 
 	@Override

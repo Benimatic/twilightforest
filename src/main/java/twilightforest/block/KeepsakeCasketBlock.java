@@ -1,7 +1,10 @@
 package twilightforest.block;
 
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
-import net.minecraft.block.*;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -44,15 +47,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.item.TFItems;
+import twilightforest.tileentity.CicadaTileEntity;
 import twilightforest.tileentity.KeepsakeCasketTileEntity;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -60,6 +61,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.tileentity.TFTileEntities;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
 
@@ -108,8 +110,14 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 
 	@Nullable
 	@Override
-	public BlockEntity newBlockEntity(BlockGetter worldIn) {
-		return new KeepsakeCasketTileEntity();
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new KeepsakeCasketTileEntity(pos, state);
+	}
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, TFTileEntities.KEEPSAKE_CASKET.get(), KeepsakeCasketTileEntity::tick);
 	}
 
 	@Override
@@ -295,5 +303,11 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				return lid::getOpenNess;
 			}
 		};
+	}
+
+	//FIXME
+	@Override
+	public Optional<SoundEvent> getPickupSound() {
+		return Optional.empty();
 	}
 }

@@ -1,14 +1,16 @@
 package twilightforest.tileentity.spawner;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.AlphaYetiEntity;
 import twilightforest.tileentity.TFTileEntities;
 
 public class AlphaYetiSpawnerTileEntity extends BossSpawnerTileEntity<AlphaYetiEntity> {
 
-	public AlphaYetiSpawnerTileEntity() {
-		super(TFTileEntities.ALPHA_YETI_SPAWNER.get(), TFEntities.yeti_alpha);
+	public AlphaYetiSpawnerTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.ALPHA_YETI_SPAWNER.get(), TFEntities.yeti_alpha, pos, state);
 	}
 
 	@Override

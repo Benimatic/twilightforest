@@ -1,13 +1,15 @@
 package twilightforest.tileentity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.TFSounds;
 import twilightforest.block.GhastTrapBlock;
@@ -21,59 +23,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ActiveGhastTrapTileEntity extends BlockEntity implements TickableBlockEntity {
+public class ActiveGhastTrapTileEntity extends BlockEntity {
 
 	private int counter = 0;
 	private final List<CarminiteGhastlingEntity> dyingGhasts = new ArrayList<>();
 	private final Random rand = new Random();
 
-	public ActiveGhastTrapTileEntity() {
-		super(TFTileEntities.GHAST_TRAP.get());
+	public ActiveGhastTrapTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.GHAST_TRAP.get(), pos, state);
 	}
 
-	private void tickInactive() {
+	private static void tickInactive(Level level, BlockPos pos, BlockState state, ActiveGhastTrapTileEntity te) {
 		// check to see if there are any dying mini ghasts within our scan range
-		AABB aabb = new AABB(worldPosition).inflate(10D, 16D, 10D);
+		AABB aabb = new AABB(pos).inflate(10D, 16D, 10D);
 
 		List<CarminiteGhastlingEntity> nearbyGhasts = level.getEntitiesOfClass(CarminiteGhastlingEntity.class, aabb);
 
 		for (CarminiteGhastlingEntity ghast : nearbyGhasts) {
 			if (ghast.deathTime > 0) {
-				this.makeParticlesTo(ghast);
+				te.makeParticlesTo(ghast);
 
-				if (!dyingGhasts.contains(ghast)) {
-					dyingGhasts.add(ghast);
+				if (!te.dyingGhasts.contains(ghast)) {
+					te.dyingGhasts.add(ghast);
 				}
 			}
 		}
 
 		// display charge level, up to 3
-		int chargeLevel = Math.min(3, dyingGhasts.size());
+		int chargeLevel = Math.min(3, te.dyingGhasts.size());
 
-		counter++;
+		te.counter++;
 
-		if (this.level.isClientSide) {
+		if (level.isClientSide) {
 			// occasionally make a redstone line to a mini ghast
-			if (this.counter % 20 == 0 && nearbyGhasts.size() > 0) {
-				CarminiteGhastlingEntity highlight = nearbyGhasts.get(rand.nextInt(nearbyGhasts.size()));
-				this.makeParticlesTo(highlight);
+			if (te.counter % 20 == 0 && nearbyGhasts.size() > 0) {
+				CarminiteGhastlingEntity highlight = nearbyGhasts.get(te.rand.nextInt(nearbyGhasts.size()));
+				te.makeParticlesTo(highlight);
 			}
 
-			if (chargeLevel >= 1 && counter % 10 == 0) {
-				TFBlocks.ghast_trap.get().sparkle(level, this.worldPosition);
-				level.playLocalSound(this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 1.5D, this.worldPosition.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+			if (chargeLevel >= 1 && te.counter % 10 == 0) {
+				TFBlocks.ghast_trap.get().sparkle(level, pos);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			}
 			if (chargeLevel >= 2) {
-				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + 0.1 + rand.nextFloat() * 0.8, worldPosition.getY() + 1.05, worldPosition.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.00, (rand.nextFloat() - rand.nextFloat()) * 0.05);
-				if (counter % 10 == 0) {
-					level.playLocalSound(this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 1.5D, this.worldPosition.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.2F, 0.8F, false);
+				level.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.00, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
+				if (te.counter % 10 == 0) {
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.2F, 0.8F, false);
 				}
 			}
 			if (chargeLevel >= 3) {
-				level.addParticle(ParticleTypes.LARGE_SMOKE, this.worldPosition.getX() + 0.1 + rand.nextFloat() * 0.8, this.worldPosition.getY() + 1.05, this.worldPosition.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.05, (rand.nextFloat() - rand.nextFloat()) * 0.05);
-				TFBlocks.ghast_trap.get().sparkle(level, this.worldPosition);
-				if (counter % 5 == 0) {
-					level.playLocalSound(this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 1.5D, this.worldPosition.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.5F, 2F, false);
+				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.05, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
+				TFBlocks.ghast_trap.get().sparkle(level, pos);
+				if (te.counter % 5 == 0) {
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.5F, 2F, false);
 				}
 			}
 		}
@@ -81,9 +83,9 @@ public class ActiveGhastTrapTileEntity extends BlockEntity implements TickableBl
 
 	private void makeParticlesTo(Entity highlight) {
 
-		double sx = this.worldPosition.getX() + 0.5D;
-		double sy = this.worldPosition.getY() + 1.0D;
-		double sz = this.worldPosition.getZ() + 0.5D;
+		double sx = worldPosition.getX() + 0.5D;
+		double sy = worldPosition.getY() + 1.0D;
+		double sz = worldPosition.getZ() + 0.5D;
 
 		double dx = sx - highlight.getX();
 		double dy = sy - highlight.getY() - highlight.getEyeHeight();
@@ -98,12 +100,11 @@ public class ActiveGhastTrapTileEntity extends BlockEntity implements TickableBl
 		return dyingGhasts.size() >= 3;
 	}
 
-	@Override
-	public void tick() {
-		if (getBlockState().getValue(GhastTrapBlock.ACTIVE)) {
-			tickActive();
+	public static void tick(Level level, BlockPos pos, BlockState state, ActiveGhastTrapTileEntity te) {
+		if (state.getValue(GhastTrapBlock.ACTIVE)) {
+			tickActive(level, pos, state, te);
 		} else {
-			tickInactive();
+			tickInactive(level, pos, state, te);
 		}
 	}
 
@@ -121,23 +122,23 @@ public class ActiveGhastTrapTileEntity extends BlockEntity implements TickableBl
 		return false;
 	}
 
-	private void tickActive() {
-		++counter;
+	private static void tickActive(Level level, BlockPos pos, BlockState state, ActiveGhastTrapTileEntity te) {
+		++te.counter;
 
 		if (level.isClientSide) {
 			// smoke when done
-			if (counter > 100 && counter % 4 == 0) {
-				level.addParticle(TFParticleType.HUGE_SMOKE.get(), this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.95, this.worldPosition.getZ() + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
+			if (te.counter > 100 && te.counter % 4 == 0) {
+				level.addParticle(TFParticleType.HUGE_SMOKE.get(), pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5, Math.cos(te.counter / 10.0) * 0.05, 0.25D, Math.sin(te.counter / 10.0) * 0.05);
 
-			} else if (counter < 100) {
+			} else if (te.counter < 100) {
 
-				double x = this.worldPosition.getX() + 0.5D;
-				double y = this.worldPosition.getY() + 1.0D;
-				double z = this.worldPosition.getZ() + 0.5D;
+				double x = pos.getX() + 0.5D;
+				double y = pos.getY() + 1.0D;
+				double z = pos.getZ() + 0.5D;
 
-				double dx = Math.cos(counter / 10.0) * 2.5;
+				double dx = Math.cos(te.counter / 10.0) * 2.5;
 				double dy = 20D;
-				double dz = Math.sin(counter / 10.0) * 2.5;
+				double dz = Math.sin(te.counter / 10.0) * 2.5;
 
 				level.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, dx, dy, dz);
 				level.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, -dx, dy, -dz);
@@ -148,16 +149,16 @@ public class ActiveGhastTrapTileEntity extends BlockEntity implements TickableBl
 			}
 
 			// appropriate sound
-			if (counter < 30) {
-				level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D, TFSounds.URGHAST_TRAP_WARMUP, SoundSource.BLOCKS, 1.0F, 4.0F, false);
-			} else if (counter < 80) {
-				level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D, TFSounds.URGHAST_TRAP_ON, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+			if (te.counter < 30) {
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_WARMUP, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+			} else if (te.counter < 80) {
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_ON, SoundSource.BLOCKS, 1.0F, 4.0F, false);
 			} else {
-				level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 1.5D, worldPosition.getZ() + 0.5D, TFSounds.URGHAST_TRAP_SPINDOWN, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_SPINDOWN, SoundSource.BLOCKS, 1.0F, 4.0F, false);
 			}
 		} else {
 			// trap nearby ghasts
-			AABB aabb = new AABB(worldPosition.above(16), worldPosition.above(16).offset(1, 1, 1)).inflate(6D, 16D, 6D);
+			AABB aabb = new AABB(pos.above(16), pos.above(16).offset(1, 1, 1)).inflate(6D, 16D, 6D);
 
 			List<Ghast> nearbyGhasts = level.getEntitiesOfClass(Ghast.class, aabb);
 
@@ -168,24 +169,24 @@ public class ActiveGhastTrapTileEntity extends BlockEntity implements TickableBl
 					((UrGhastEntity) ghast).noPhysics = true; // turn this on so we can pull it in close
 
 					// move boss to this point
-					double mx = (ghast.getX() - this.worldPosition.getX() - 0.5) * -0.1;
-					double my = (ghast.getY() - this.worldPosition.getY() - 2.5) * -0.1;
-					double mz = (ghast.getZ() - this.worldPosition.getZ() - 0.5) * -0.1;
+					double mx = (ghast.getX() - pos.getX() - 0.5) * -0.1;
+					double my = (ghast.getY() - pos.getY() - 2.5) * -0.1;
+					double mz = (ghast.getZ() - pos.getZ() - 0.5) * -0.1;
 					ghast.setDeltaMovement(mx, my, mz);
 
-					if (rand.nextInt(10) == 0) {
+					if (te.rand.nextInt(10) == 0) {
 						ghast.hurt(DamageSource.GENERIC, 7);
 						((UrGhastEntity) ghast).resetDamageUntilNextPhase();
 					}
 
 				} else {
 					// move ghasts to this point
-					double mx = (ghast.getX() - this.worldPosition.getX() - 0.5) * -0.1;
-					double my = (ghast.getY() - this.worldPosition.getY() - 1.5) * -0.1;
-					double mz = (ghast.getZ() - this.worldPosition.getZ() - 0.5) * -0.1;
+					double mx = (ghast.getX() - pos.getX() - 0.5) * -0.1;
+					double my = (ghast.getY() - pos.getY() - 1.5) * -0.1;
+					double mz = (ghast.getZ() - pos.getZ() - 0.5) * -0.1;
 					ghast.setDeltaMovement(mx, my, mz);
 
-					if (rand.nextInt(10) == 0) {
+					if (te.rand.nextInt(10) == 0) {
 						ghast.hurt(DamageSource.GENERIC, 10);
 					}
 				}
@@ -196,9 +197,9 @@ public class ActiveGhastTrapTileEntity extends BlockEntity implements TickableBl
 
 			}
 
-			if (counter >= 120) {
-				level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(GhastTrapBlock.ACTIVE, false));
-				level.blockEvent(getBlockPos(), getBlockState().getBlock(), GhastTrapBlock.DEACTIVATE_EVENT, 0);
+			if (te.counter >= 120) {
+				level.setBlockAndUpdate(pos, state.setValue(GhastTrapBlock.ACTIVE, false));
+				level.blockEvent(pos, state.getBlock(), GhastTrapBlock.DEACTIVATE_EVENT, 0);
 			}
 		}
 	}

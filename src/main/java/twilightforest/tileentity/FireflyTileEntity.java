@@ -1,10 +1,12 @@
 package twilightforest.tileentity;
 
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.client.particle.TFParticleType;
 
-public class FireflyTileEntity extends BlockEntity implements TickableBlockEntity {
+public class FireflyTileEntity extends BlockEntity {
 
 	private int yawDelay;
 	public int currentYaw;
@@ -14,52 +16,51 @@ public class FireflyTileEntity extends BlockEntity implements TickableBlockEntit
 	private boolean glowing;
 	private int glowDelay;
 
-	public FireflyTileEntity() {
-		super(TFTileEntities.FIREFLY.get());
+	public FireflyTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.FIREFLY.get(), pos, state);
 	}
 
-	@Override
-	public void tick() {
+	public static void tick(Level level, BlockPos pos, BlockState state, FireflyTileEntity te) {
 		if (level.isClientSide) {
-			if (anyPlayerInRange() && level.random.nextInt(20) == 0) {
-				spawnParticles();
+			if (te.anyPlayerInRange() && level.random.nextInt(20) == 0) {
+				te.spawnParticles();
 			}
 
-			if (yawDelay > 0) {
-				yawDelay--;
+			if (te.yawDelay > 0) {
+				te.yawDelay--;
 			} else {
-				if (currentYaw == 0 && desiredYaw == 0) {
+				if (te.currentYaw == 0 && te.desiredYaw == 0) {
 					// make it rotate!
-					yawDelay = 200 + level.random.nextInt(200);
-					desiredYaw = level.random.nextInt(15) - level.random.nextInt(15);
+					te.yawDelay = 200 + level.random.nextInt(200);
+					te.desiredYaw = level.random.nextInt(15) - level.random.nextInt(15);
 				}
 
-				if (currentYaw < desiredYaw) {
-					currentYaw++;
+				if (te.currentYaw < te.desiredYaw) {
+					te.currentYaw++;
 				}
-				if (currentYaw > desiredYaw) {
-					currentYaw--;
+				if (te.currentYaw > te.desiredYaw) {
+					te.currentYaw--;
 				}
-				if (currentYaw == desiredYaw) {
-					desiredYaw = 0;
+				if (te.currentYaw == te.desiredYaw) {
+					te.desiredYaw = 0;
 				}
 			}
 
-			if (glowDelay > 0) {
-				glowDelay--;
+			if (te.glowDelay > 0) {
+				te.glowDelay--;
 			} else {
-				if (glowing && glowIntensity >= 1.0) {
-					glowing = false;
+				if (te.glowing && te.glowIntensity >= 1.0) {
+					te.glowing = false;
 				}
-				if (glowing && glowIntensity < 1.0) {
-					glowIntensity += 0.05;
+				if (te.glowing && te.glowIntensity < 1.0) {
+					te.glowIntensity += 0.05;
 				}
-				if (!glowing && glowIntensity > 0) {
-					glowIntensity -= 0.05;
+				if (!te.glowing && te.glowIntensity > 0) {
+					te.glowIntensity -= 0.05;
 				}
-				if (!glowing && glowIntensity <= 0) {
-					glowing = true;
-					glowDelay = level.random.nextInt(50);
+				if (!te.glowing && te.glowIntensity <= 0) {
+					te.glowing = true;
+					te.glowDelay = level.random.nextInt(50);
 				}
 			}
 		}

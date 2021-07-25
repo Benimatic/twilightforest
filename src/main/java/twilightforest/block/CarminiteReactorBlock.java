@@ -1,6 +1,9 @@
 package twilightforest.block;
 
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -19,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 import net.minecraft.core.Direction;
 
-public class CarminiteReactorBlock extends Block {
+public class CarminiteReactorBlock extends BaseEntityBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
@@ -53,14 +56,15 @@ public class CarminiteReactorBlock extends Block {
 				.allMatch(e -> world.getBlockState(pos.relative(e)).getBlock() == Blocks.REDSTONE_BLOCK);
 	}
 
+	@Nullable
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return state.getValue(ACTIVE);
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new ActiveCarminiteReactorTileEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return hasTileEntity(state) ? new ActiveCarminiteReactorTileEntity() : null;
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, TFTileEntities.CARMINITE_REACTOR.get(), ActiveCarminiteReactorTileEntity::tick);
 	}
 }

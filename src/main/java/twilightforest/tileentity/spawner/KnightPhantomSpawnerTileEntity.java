@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.KnightPhantomEntity;
 import twilightforest.item.TFItems;
@@ -18,8 +19,8 @@ public class KnightPhantomSpawnerTileEntity extends BossSpawnerTileEntity<Knight
 
 	private int spawned = 0;
 
-	public KnightPhantomSpawnerTileEntity() {
-		super(TFTileEntities.KNIGHT_PHANTOM_SPAWNER.get(), TFEntities.knight_phantom);
+	public KnightPhantomSpawnerTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.KNIGHT_PHANTOM_SPAWNER.get(), TFEntities.knight_phantom, pos, state);
 	}
 
 	@Override

@@ -1,6 +1,10 @@
 package twilightforest.block;
 
+import com.mojang.math.Vector3f;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -25,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 
-public class BuilderBlock extends Block {
+public class BuilderBlock extends BaseEntityBlock {
 
 	public static final EnumProperty<TowerDeviceVariant> STATE = EnumProperty.create("state", TowerDeviceVariant.class);
 
@@ -145,7 +149,7 @@ public class BuilderBlock extends Block {
 			float f2 = Math.max(0.0F, 1.0F * 1.0F * 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 1.0F * 1.0F * 0.6F - 0.7F);
 			if (d1 < pos.getX() || d1 > pos.getX() + 1 || d2 < 0.0D || d2 > pos.getY() + 1 || d3 < pos.getZ() || d3 > pos.getZ() + 1) {
-				worldIn.addParticle(new DustParticleOptions(f1, f2, f3, 1.0F), d1, d2, d3, 0.0D, 0.0D, 0.0D);
+				worldIn.addParticle(new DustParticleOptions(new Vector3f(f1, f2, f3), 1.0F), d1, d2, d3, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
@@ -167,14 +171,15 @@ public class BuilderBlock extends Block {
 	 * We need variable, metadata-based tick rates
 	 */
 
+	@Nullable
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new CarminiteBuilderTileEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-		return state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? new CarminiteBuilderTileEntity() : null;
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, TFTileEntities.TOWER_BUILDER.get(), CarminiteBuilderTileEntity::tick);
 	}
 }

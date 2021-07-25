@@ -1,13 +1,15 @@
 package twilightforest.tileentity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 
-public class CicadaTileEntity extends BlockEntity implements TickableBlockEntity {
+public class CicadaTileEntity extends BlockEntity {
 	private int yawDelay;
 	public int currentYaw;
 	private int desiredYaw;
@@ -16,50 +18,49 @@ public class CicadaTileEntity extends BlockEntity implements TickableBlockEntity
 	private boolean singing;
 	private int singDelay;
 
-	public CicadaTileEntity() {
-		super(TFTileEntities.CICADA.get());
+	public CicadaTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.CICADA.get(), pos, state);
 	}
 
-	@Override
-	public void tick() {
+	public static void tick(Level level, BlockPos pos, BlockState state, CicadaTileEntity te) {
 		if (level.isClientSide) {
-			if (yawDelay > 0) {
-				yawDelay--;
+			if (te.yawDelay > 0) {
+				te.yawDelay--;
 			} else {
-				if (currentYaw == 0 && desiredYaw == 0) {
+				if (te.currentYaw == 0 && te.desiredYaw == 0) {
 					// make it rotate!
-					yawDelay = 200 + level.random.nextInt(200);
-					desiredYaw = level.random.nextInt(15) - level.random.nextInt(15);
+					te.yawDelay = 200 + level.random.nextInt(200);
+					te.desiredYaw = level.random.nextInt(15) - level.random.nextInt(15);
 				}
 
-				if (currentYaw < desiredYaw) {
-					currentYaw++;
+				if (te.currentYaw < te.desiredYaw) {
+					te.currentYaw++;
 				}
-				if (currentYaw > desiredYaw) {
-					currentYaw--;
+				if (te.currentYaw > te.desiredYaw) {
+					te.currentYaw--;
 				}
-				if (currentYaw == desiredYaw) {
-					desiredYaw = 0;
+				if (te.currentYaw == te.desiredYaw) {
+					te.desiredYaw = 0;
 				}
 			}
 
-			if (singDelay > 0) {
-				singDelay--;
+			if (te.singDelay > 0) {
+				te.singDelay--;
 			} else {
-				if (singing && singDuration == 0) {
-					playSong();
+				if (te.singing && te.singDuration == 0) {
+					te.playSong();
 				}
-				if (singing && singDuration >= 100) {
-					singing = false;
-					singDuration = 0;
+				if (te.singing && te.singDuration >= 100) {
+					te.singing = false;
+					te.singDuration = 0;
 				}
-				if (singing && singDuration < 100) {
-					singDuration++;
-					doSingAnimation();
+				if (te.singing && te.singDuration < 100) {
+					te.singDuration++;
+					te.doSingAnimation();
 				}
-				if (!singing && singDuration <= 0) {
-					singing = true;
-					singDelay = 100 + level.random.nextInt(100);
+				if (!te.singing && te.singDuration <= 0) {
+					te.singing = true;
+					te.singDelay = 100 + level.random.nextInt(100);
 				}
 			}
 		}
