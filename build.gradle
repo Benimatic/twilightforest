@@ -30,7 +30,7 @@ apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remappe
 ///////////////////////////////////////////////////
 idea {
     project {
-        languageLevel = '1.8'
+        languageLevel = '1.16' // Not sure this is proper or even needed anymore, verify it
     }
 }
 
@@ -40,7 +40,7 @@ idea {
 version = (hasProperty("CIRevision") ? CIRevision : config.mod_version)
 group = config.group_name
 archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '16' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
