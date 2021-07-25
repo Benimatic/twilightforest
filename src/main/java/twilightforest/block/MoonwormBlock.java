@@ -1,18 +1,20 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.BlockGetter;
 import twilightforest.tileentity.TFTileEntities;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.world.level.block.state.BlockBehaviour;
+
 public class MoonwormBlock extends CritterBlock {
 
-	protected MoonwormBlock(Block.Properties props) {
+	protected MoonwormBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 
@@ -23,7 +25,7 @@ public class MoonwormBlock extends CritterBlock {
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return TFTileEntities.MOONWORM.get().create();
 	}
 

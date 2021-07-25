@@ -1,18 +1,18 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.WorldRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.util.Mth;
+import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
@@ -24,24 +24,24 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 	private final Model model = new SpikeBlockModel();
 	private final Model chainModel = new ChainModel();
 
-	public BlockChainRenderer(EntityRendererManager manager) {
+	public BlockChainRenderer(EntityRenderDispatcher manager) {
 		super(manager);
 	}
 
 	@Override
-	public void render(ChainBlockEntity chainBlock, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(ChainBlockEntity chainBlock, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		super.render(chainBlock, yaw, partialTicks, stack, buffer, light);
 
-		stack.push();
-		IVertexBuilder ivertexbuilder = buffer.getBuffer(this.model.getRenderType(textureLoc));
+		stack.pushPose();
+		VertexConsumer ivertexbuilder = buffer.getBuffer(this.model.renderType(textureLoc));
 
-		float pitch = chainBlock.prevRotationPitch + (chainBlock.rotationPitch - chainBlock.prevRotationPitch) * partialTicks;
-		stack.rotate(Vector3f.YP.rotationDegrees(180 - MathHelper.wrapDegrees(yaw)));
-		stack.rotate(Vector3f.XP.rotationDegrees(pitch));
+		float pitch = chainBlock.xRotO + (chainBlock.xRot - chainBlock.xRotO) * partialTicks;
+		stack.mulPose(Vector3f.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
+		stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		this.model.render(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.pop();
+		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		stack.popPose();
 
 		renderChain(chainBlock, chainBlock.chain1, yaw, partialTicks, stack, buffer, light, chainModel);
 		renderChain(chainBlock, chainBlock.chain2, yaw, partialTicks, stack, buffer, light, chainModel);
@@ -50,31 +50,31 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 		renderChain(chainBlock, chainBlock.chain5, yaw, partialTicks, stack, buffer, light, chainModel);
 	}
 
-	static void renderChain(Entity parent, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light, Model chainModel) {
-		double chainInX = (MathHelper.lerp(partialTicks, chain.lastTickPosX, chain.getPosX()) - MathHelper.lerp(partialTicks, parent.lastTickPosX, parent.getPosX()));
-		double chainInY = (MathHelper.lerp(partialTicks, chain.lastTickPosY, chain.getPosY()) - MathHelper.lerp(partialTicks, parent.lastTickPosY, parent.getPosY()));
-		double chainInZ = (MathHelper.lerp(partialTicks, chain.lastTickPosZ, chain.getPosZ()) - MathHelper.lerp(partialTicks, parent.lastTickPosZ, parent.getPosZ()));
+	static void renderChain(Entity parent, Entity chain, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
+		double chainInX = (Mth.lerp(partialTicks, chain.xOld, chain.getX()) - Mth.lerp(partialTicks, parent.xOld, parent.getX()));
+		double chainInY = (Mth.lerp(partialTicks, chain.yOld, chain.getY()) - Mth.lerp(partialTicks, parent.yOld, parent.getY()));
+		double chainInZ = (Mth.lerp(partialTicks, chain.zOld, chain.getZ()) - Mth.lerp(partialTicks, parent.zOld, parent.getZ()));
 
-		stack.push();
-		IVertexBuilder ivertexbuilder = buffer.getBuffer(chainModel.getRenderType(textureLoc));
+		stack.pushPose();
+		VertexConsumer ivertexbuilder = buffer.getBuffer(chainModel.renderType(textureLoc));
 
 		stack.translate(chainInX, chainInY, chainInZ);
-		float pitch = chain.prevRotationPitch + (chain.rotationPitch - chain.prevRotationPitch) * partialTicks;
-		stack.rotate(Vector3f.YP.rotationDegrees(180 - MathHelper.wrapDegrees(yaw)));
-		stack.rotate(Vector3f.XP.rotationDegrees(pitch));
+		float pitch = chain.xRotO + (chain.xRot - chain.xRotO) * partialTicks;
+		stack.mulPose(Vector3f.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
+		stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		chainModel.render(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.pop();
+		chainModel.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		stack.popPose();
 	}
 
-	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float red, float grean, float blue) {
-		AxisAlignedBB axisalignedbb = entity.getBoundingBox().offset(-entity.getPosX(), -entity.getPosY(), -entity.getPosZ());
-		WorldRenderer.drawBoundingBox(stack, builder, axisalignedbb, red, grean, blue, 1.0F);
+	private void renderMultiBoundingBox(PoseStack stack, VertexConsumer builder, Entity entity, float red, float grean, float blue) {
+		AABB axisalignedbb = entity.getBoundingBox().move(-entity.getX(), -entity.getY(), -entity.getZ());
+		LevelRenderer.renderLineBox(stack, builder, axisalignedbb, red, grean, blue, 1.0F);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(ChainBlockEntity entity) {
+	public ResourceLocation getTextureLocation(ChainBlockEntity entity) {
 		return textureLoc;
 	}
 }

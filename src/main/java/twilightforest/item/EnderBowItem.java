@@ -1,15 +1,17 @@
 package twilightforest.item;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.BowItem;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
+
+import net.minecraft.world.item.Item.Properties;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EnderBowItem extends BowItem {
@@ -21,32 +23,32 @@ public class EnderBowItem extends BowItem {
 
 	@SubscribeEvent
 	public static void onHit(ProjectileImpactEvent.Arrow evt) {
-		AbstractArrowEntity arrow = evt.getArrow();
-		if (arrow.getShooter() instanceof PlayerEntity
-						&& evt.getRayTraceResult() instanceof EntityRayTraceResult
-						&& ((EntityRayTraceResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity) {
-			PlayerEntity player = (PlayerEntity) arrow.getShooter();
-			LivingEntity living = (LivingEntity) ((EntityRayTraceResult) evt.getRayTraceResult()).getEntity();
+		AbstractArrow arrow = evt.getArrow();
+		if (arrow.getOwner() instanceof Player
+						&& evt.getRayTraceResult() instanceof EntityHitResult
+						&& ((EntityHitResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity) {
+			Player player = (Player) arrow.getOwner();
+			LivingEntity living = (LivingEntity) ((EntityHitResult) evt.getRayTraceResult()).getEntity();
 
-			if (arrow.getPersistentData().contains(KEY) && player.getRidingEntity() == null) {
-				double sourceX = player.getPosX(), sourceY = player.getPosY(), sourceZ = player.getPosZ();
-				float sourceYaw = player.rotationYaw, sourcePitch = player.rotationPitch;
+			if (arrow.getPersistentData().contains(KEY) && player.getVehicle() == null) {
+				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
+				float sourceYaw = player.yRot, sourcePitch = player.xRot;
 
-				player.rotationYaw = living.rotationYaw;
-				player.rotationPitch = living.rotationPitch;
-				player.setPositionAndUpdate(living.getPosX(), living.getPosY(), living.getPosZ());
-				player.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
+				player.yRot = living.yRot;
+				player.xRot = living.xRot;
+				player.teleportTo(living.getX(), living.getY(), living.getZ());
+				player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 
-				living.rotationYaw = sourceYaw;
-				living.rotationPitch = sourcePitch;
-				living.setPositionAndUpdate(sourceX, sourceY, sourceZ);
-				living.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
+				living.yRot = sourceYaw;
+				living.xRot = sourcePitch;
+				living.teleportTo(sourceX, sourceY, sourceZ);
+				living.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 			}
 		}
 	}
 
 	@Override
-	public AbstractArrowEntity customArrow(AbstractArrowEntity arrow) {
+	public AbstractArrow customArrow(AbstractArrow arrow) {
 		arrow.getPersistentData().putBoolean(KEY, true);
 		return arrow;
 	}

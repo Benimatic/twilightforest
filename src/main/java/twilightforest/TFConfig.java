@@ -1,9 +1,9 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -296,7 +296,7 @@ public class TFConfig {
 					if (!block.isPresent()) return false;
 
 					try {
-						TFGenCaveStalactite.addStalactite(tier, block.get().getDefaultState(),
+						TFGenCaveStalactite.addStalactite(tier, block.get().defaultBlockState(),
 								Float.parseFloat(split[1]),
 								Integer.parseInt(split[2]),
 								Integer.parseInt(split[3]),
@@ -428,7 +428,7 @@ public class TFConfig {
 								"twilightforest:sorting_sapling",
 								"twilightforest:rainboak_sapling",
 								"twilightforest:borer_essence"
-						), s -> s instanceof String && ResourceLocation.tryCreate((String) s) != null);
+						), s -> s instanceof String && ResourceLocation.tryParse((String) s) != null);
 			}
 			builder.pop();
 		}
@@ -504,7 +504,7 @@ public class TFConfig {
 	}*/
 
 	private static Optional<ItemStack> parseItemStack(String string) {
-		ResourceLocation id = ResourceLocation.tryCreate(string);
+		ResourceLocation id = ResourceLocation.tryParse(string);
 		if (id == null || !ForgeRegistries.ITEMS.containsKey(id)) {
 			return Optional.empty();
 		} else {
@@ -513,7 +513,7 @@ public class TFConfig {
 	}
 
 	private static Optional<Block> parseBlock(String string) {
-		ResourceLocation id = ResourceLocation.tryCreate(string);
+		ResourceLocation id = ResourceLocation.tryParse(string);
 		if (id == null || !ForgeRegistries.BLOCKS.containsKey(id)) {
 			return Optional.empty();
 		} else {

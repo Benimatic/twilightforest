@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ public class FlockToSameKindGoal extends Goal {
 	/**
 	 * The child that is following its parent.
 	 */
-	private MobEntity flockCreature;
-	private Vector3d flockPosition;
+	private Mob flockCreature;
+	private Vec3 flockPosition;
 	double speed;
 	private int moveTimer;
 
-	public FlockToSameKindGoal(MobEntity living, double speed) {
+	public FlockToSameKindGoal(Mob living, double speed) {
 		this.flockCreature = living;
 		this.speed = speed;
 	}
@@ -27,12 +27,12 @@ public class FlockToSameKindGoal extends Goal {
 	 * Returns whether the EntityAIBase should begin execution.
 	 */
 	@Override
-	public boolean shouldExecute() {
-		if (this.flockCreature.getRNG().nextInt(40) != 0) {
+	public boolean canUse() {
+		if (this.flockCreature.getRandom().nextInt(40) != 0) {
 			return false;
 		}
 
-		List<LivingEntity> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().grow(16.0D, 4.0D, 16.0D));
+		List<LivingEntity> flockList = this.flockCreature.level.getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(16.0D, 4.0D, 16.0D));
 
 		int flocknum = 0;
 		double flockX = 0;
@@ -41,9 +41,9 @@ public class FlockToSameKindGoal extends Goal {
 
 		for (LivingEntity flocker : flockList) {
 			flocknum++;
-			flockX += flocker.getPosX();
-			flockY += flocker.getPosY();
-			flockZ += flocker.getPosZ();
+			flockX += flocker.getX();
+			flockY += flocker.getY();
+			flockZ += flocker.getZ();
 		}
 
 		flockX /= flocknum;
@@ -51,10 +51,10 @@ public class FlockToSameKindGoal extends Goal {
 		flockZ /= flocknum;
 
 
-		if (flockCreature.getDistanceSq(flockX, flockY, flockZ) < MIN_DIST) {
+		if (flockCreature.distanceToSqr(flockX, flockY, flockZ) < MIN_DIST) {
 			return false;
 		} else {
-			this.flockPosition = new Vector3d(flockX, flockY, flockZ);
+			this.flockPosition = new Vec3(flockX, flockY, flockZ);
 			return true;
 		}
 	}
@@ -63,11 +63,11 @@ public class FlockToSameKindGoal extends Goal {
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		if (flockPosition == null) {
 			return false;
 		} else {
-			double distance = this.flockCreature.getDistanceSq(flockPosition.x, flockPosition.y, flockPosition.z);
+			double distance = this.flockCreature.distanceToSqr(flockPosition.x, flockPosition.y, flockPosition.z);
 			return distance >= MIN_DIST && distance <= MAX_DIST;
 		}
 	}
@@ -76,7 +76,7 @@ public class FlockToSameKindGoal extends Goal {
 	 * Execute a one shot task or start executing a continuous task
 	 */
 	@Override
-	public void startExecuting() {
+	public void start() {
 		this.moveTimer = 0;
 	}
 
@@ -84,7 +84,7 @@ public class FlockToSameKindGoal extends Goal {
 	 * Resets the task
 	 */
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.flockPosition = null;
 	}
 
@@ -95,7 +95,7 @@ public class FlockToSameKindGoal extends Goal {
 	public void tick() {
 		if (--this.moveTimer <= 0) {
 			this.moveTimer = 10;
-			this.flockCreature.getNavigator().tryMoveToXYZ(flockPosition.x, flockPosition.y, flockPosition.z, this.speed);
+			this.flockCreature.getNavigation().moveTo(flockPosition.x, flockPosition.y, flockPosition.z, this.speed);
 		}
 	}
 }

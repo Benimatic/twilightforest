@@ -1,27 +1,30 @@
 package twilightforest.client.renderer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.multiplayer.ClientLevel;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexBuffer;
+import net.minecraft.world.phys.Vec3;
+import com.mojang.math.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ISkyRenderHandler;
 
 import java.util.Random;
 
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+
 @OnlyIn(Dist.CLIENT)
 public class TFSkyRenderer implements ISkyRenderHandler {
 
 	private VertexBuffer starVBO;
-	private final VertexFormat vertexBufferFormat = DefaultVertexFormats.POSITION;
+	private final VertexFormat vertexBufferFormat = DefaultVertexFormat.POSITION;
 
 	public TFSkyRenderer() {
 		generateStars();
@@ -30,26 +33,26 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 	// [VanillaCopy] RenderGlobal.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void render(int ticks, float partialTicks, MatrixStack ms, ClientWorld world, Minecraft mc) {
-		WorldRenderer rg = mc.worldRenderer;
+	public void render(int ticks, float partialTicks, PoseStack ms, ClientLevel world, Minecraft mc) {
+		LevelRenderer rg = mc.levelRenderer;
 
 		RenderSystem.disableTexture();
-		Vector3d vec3d = world.getSkyColor(mc.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
+		Vec3 vec3d = world.getSkyColor(mc.gameRenderer.getMainCamera().getBlockPosition(), partialTicks);
 		float f = (float) vec3d.x;
 		float f1 = (float) vec3d.y;
 		float f2 = (float) vec3d.z;
 
-		FogRenderer.applyFog();
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		FogRenderer.levelFogColor();
+		Tesselator tessellator = Tesselator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuilder();
 		RenderSystem.depthMask(false);
 		RenderSystem.enableFog();
 		RenderSystem.color3f(f, f1, f2);
 
-		rg.skyVBO.bindBuffer();
+		rg.skyBuffer.bind();
 		this.vertexBufferFormat.setupBufferState(0L);
-		rg.skyVBO.draw(ms.getLast().getMatrix(), 7);
-		VertexBuffer.unbindBuffer();
+		rg.skyBuffer.draw(ms.last().pose(), 7);
+		VertexBuffer.unbind();
 		this.vertexBufferFormat.clearBufferState();
 
 		RenderSystem.disableFog();
@@ -63,9 +66,9 @@ public class TFSkyRenderer implements ISkyRenderHandler {
          */
 
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		ms.push();
-		ms.rotate(Vector3f.YP.rotationDegrees(-90.0F));
-		ms.rotate(Vector3f.XP.rotationDegrees(world.func_242415_f(partialTicks) * 360.0F));
+		ms.pushPose();
+		ms.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
+		ms.mulPose(Vector3f.XP.rotationDegrees(world.getTimeOfDay(partialTicks) * 360.0F));
         /* TF - snip out sun/moon
          * float f17 = 30.0F;
          * ...
@@ -76,10 +79,10 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		//if (f15 > 0.0F) { Always true
 		RenderSystem.color4f(f15, f15, f15, f15);
 
-		this.starVBO.bindBuffer();
+		this.starVBO.bind();
 		this.vertexBufferFormat.setupBufferState(0L);
-		this.starVBO.draw(ms.getLast().getMatrix(), 7);
-		VertexBuffer.unbindBuffer();
+		this.starVBO.draw(ms.last().pose(), 7);
+		VertexBuffer.unbind();
 		this.vertexBufferFormat.clearBufferState();
 		//}
 
@@ -87,50 +90,50 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.disableBlend();
 		RenderSystem.enableAlphaTest();
 		RenderSystem.enableFog();
-		ms.pop();
+		ms.popPose();
 		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
 		/** world.getWorldInfo().getVoidFogHeight() -> 27, because the sea level for TF is lower TODO: Keep an eye on Forge PR #7528*/
 		double d0 = mc.player.getEyePosition(partialTicks).y - 30;
 
 		if (d0 < 0.0D) {
-			ms.push();
+			ms.pushPose();
 			ms.translate(0.0F, 12.0F, 0.0F);
 
-			rg.sky2VBO.bindBuffer();
+			rg.darkBuffer.bind();
 			this.vertexBufferFormat.setupBufferState(0L);
-			rg.sky2VBO.draw(ms.getLast().getMatrix(), 7);
-			VertexBuffer.unbindBuffer();
+			rg.darkBuffer.draw(ms.last().pose(), 7);
+			VertexBuffer.unbind();
 			this.vertexBufferFormat.clearBufferState();
 
-			ms.pop();
+			ms.popPose();
 //			float f18 = 1.0F;
 			float f19 = -((float) (d0 + 65.0D));
 //			float f20 = -1.0F;
-			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-			bufferbuilder.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			tessellator.draw();
+			bufferbuilder.begin(7, DefaultVertexFormat.POSITION_COLOR);
+			bufferbuilder.vertex(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			tessellator.end();
 		}
 
-		if (world.getDimensionRenderInfo().func_239216_b_()) {
+		if (world.effects().hasGround()) {
 			RenderSystem.color3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
 		} else {
 			RenderSystem.color3f(f, f1, f2);
@@ -143,17 +146,17 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 
 	// [VanillaCopy] RenderGlobal.generateStars
 	private void generateStars() {
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		Tesselator tessellator = Tesselator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuilder();
 
 		if (this.starVBO != null) {
 			this.starVBO.close();
 		}
 
 		// TF - inlined RenderGlobal field that's only used once here
-		this.starVBO = new VertexBuffer(DefaultVertexFormats.POSITION);
+		this.starVBO = new VertexBuffer(DefaultVertexFormat.POSITION);
 		this.renderStars(bufferbuilder);
-		bufferbuilder.finishDrawing();
+		bufferbuilder.end();
 		this.starVBO.upload(bufferbuilder);
 	}
 
@@ -161,7 +164,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 	@SuppressWarnings("unused")
 	private void renderStars(BufferBuilder bufferBuilder) {
 		Random random = new Random(10842L);
-		bufferBuilder.begin(7, DefaultVertexFormats.POSITION);
+		bufferBuilder.begin(7, DefaultVertexFormat.POSITION);
 
 		// TF - 1500 -> 3000
 		for (int i = 0; i < 3000; ++i) {
@@ -200,7 +203,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 					double d24 = 0.0D * d12 - d21 * d13;
 					double d25 = d24 * d9 - d22 * d10;
 					double d26 = d22 * d9 + d24 * d10;
-					bufferBuilder.pos(d5 + d25, d6 + d23, d7 + d26).endVertex();
+					bufferBuilder.vertex(d5 + d25, d6 + d23, d7 + d26).endVertex();
 				}
 			}
 		}

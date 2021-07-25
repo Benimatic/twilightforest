@@ -6,72 +6,72 @@
 
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.tileentity.MoonwormTileEntity;
 
 import javax.annotation.Nullable;
 
 public class MoonwormModel extends Model {
-	ModelRenderer shape1;
-	ModelRenderer shape2;
-	ModelRenderer shape3;
-	ModelRenderer head;
+	ModelPart shape1;
+	ModelPart shape2;
+	ModelPart shape3;
+	ModelPart head;
 
 	public MoonwormModel() {
-		super(RenderType::getEntityCutoutNoCull);
-		textureWidth = 32;
-		textureHeight = 32;
+		super(RenderType::entityCutoutNoCull);
+		texWidth = 32;
+		texHeight = 32;
 
-		shape1 = new ModelRenderer(this, 0, 4);
+		shape1 = new ModelPart(this, 0, 4);
 		shape1.addBox(-1F, -1F, -1F, 4, 2, 2);
-		shape1.setRotationPoint(-1F, 7F, 3F);
+		shape1.setPos(-1F, 7F, 3F);
 
-		shape2 = new ModelRenderer(this, 0, 8);
+		shape2 = new ModelPart(this, 0, 8);
 		shape2.addBox(-1F, -1F, -1F, 2, 2, 4);
-		shape2.setRotationPoint(3F, 7F, 0F);
+		shape2.setPos(3F, 7F, 0F);
 
-		shape3 = new ModelRenderer(this, 0, 14);
+		shape3 = new ModelPart(this, 0, 14);
 		shape3.addBox(-1F, -1F, -1F, 2, 2, 2);
-		shape3.setRotationPoint(2F, 7F, -2F);
+		shape3.setPos(2F, 7F, -2F);
 
-		head = new ModelRenderer(this, 0, 0);
+		head = new ModelPart(this, 0, 0);
 		head.addBox(-1F, -1F, -1F, 2, 2, 2);
-		head.setRotationPoint(-3F, 7F, 2F);
+		head.setPos(-3F, 7F, 2F);
 	}
 
 	public void setRotationAngles(@Nullable MoonwormTileEntity moonworm, float partialTime) {
-		head.rotationPointY = 7F;
-		shape1.rotationPointY = 7F;
-		shape2.rotationPointY = 7F;
-		shape3.rotationPointY = 7F;
+		head.y = 7F;
+		shape1.y = 7F;
+		shape2.y = 7F;
+		shape3.y = 7F;
 
 		if (moonworm != null && moonworm.yawDelay == 0) {
 			float time = (moonworm.desiredYaw - moonworm.currentYaw) - partialTime;
 
 			// moving
-			head.rotationPointY += Math.min(0, MathHelper.sin(time / 2));
-			shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
-			shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
-			shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
+			head.y += Math.min(0, Mth.sin(time / 2));
+			shape1.y += Math.min(0, Mth.sin(time / 2 + 1));
+			shape2.y += Math.min(0, Mth.sin(time / 2 + 2));
+			shape3.y += Math.min(0, Mth.sin(time / 2 + 3));
 		} else if (moonworm == null && BugModelAnimationHelper.yawWriggleDelay == 0) {
 			float time = (BugModelAnimationHelper.desiredRotation - BugModelAnimationHelper.currentRotation) - partialTime;
 
 			// moving
-			head.rotationPointY += Math.min(0, MathHelper.sin(time / 2));
-			shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
-			shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
-			shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
+			head.y += Math.min(0, Mth.sin(time / 2));
+			shape1.y += Math.min(0, Mth.sin(time / 2 + 1));
+			shape2.y += Math.min(0, Mth.sin(time / 2 + 2));
+			shape3.y += Math.min(0, Mth.sin(time / 2 + 3));
 		}
 	}
 
 	@Override
-	public void render(MatrixStack ms, IVertexBuilder buffer, int light, int overlay, float r, float g, float b, float a) {
+	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
 		shape1.render(ms, buffer, light, overlay, r, g, b, a);
 		shape2.render(ms, buffer, light, overlay, r, g, b, a);
 		shape3.render(ms, buffer, light, overlay, r, g, b, a);

@@ -1,18 +1,18 @@
 package twilightforest.client;
 
-import net.minecraft.client.GameSettings;
+import net.minecraft.client.Options;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IWeatherRenderHandler;
@@ -67,7 +67,7 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void texStitch(TextureStitchEvent.Pre evt) {
-			AtlasTexture map = evt.getMap();
+			TextureAtlas map = evt.getMap();
 
 		//FIXME bring back if you can get GradientMappedTexture working
 		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
@@ -155,16 +155,16 @@ public class TFClientEvents {
 
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
-		GameSettings settings = Minecraft.getInstance().gameSettings;
-		if (settings.getPointOfView() != PointOfView.FIRST_PERSON || settings.hideGUI) return;
+		Options settings = Minecraft.getInstance().options;
+		if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;
 
-		Entity entity = Minecraft.getInstance().getRenderViewEntity();
+		Entity entity = Minecraft.getInstance().getCameraEntity();
 		if (entity instanceof LivingEntity) {
-			EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getRenderManager().getRenderer(entity);
-			if (renderer instanceof LivingRenderer<?,?>) {
+			EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+			if (renderer instanceof LivingEntityRenderer<?,?>) {
 				for (RenderEffect effect : RenderEffect.VALUES) {
 					if (effect.shouldRender((LivingEntity) entity, true)) {
-						effect.render((LivingEntity) entity, ((LivingRenderer<?,?>) renderer).getEntityModel(), 0.0, 0.0, 0.0, event.getPartialTicks(), true);
+						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTicks(), true);
 					}
 				}
 			}
@@ -180,16 +180,16 @@ public class TFClientEvents {
 			Minecraft minecraft = Minecraft.getInstance();
 
 			// only fire if we're in the twilight forest
-			if (minecraft.world != null && "twilightforest".equals(minecraft.world.getDimensionKey().getLocation().getNamespace())) {
+			if (minecraft.level != null && "twilightforest".equals(minecraft.level.dimension().location().getNamespace())) {
 				// vignette
-				if (minecraft.ingameGUI != null) {
-					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;
+				if (minecraft.gui != null) {
+					minecraft.gui.vignetteBrightness = 0.0F;
 				}
 			}//*/
 
 			if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
-				if (minecraft.ingameGUI != null) {
-					minecraft.ingameGUI.setOverlayMessage(StringTextComponent.EMPTY, false);
+				if (minecraft.gui != null) {
+					minecraft.gui.setOverlayMessage(TextComponent.EMPTY, false);
 				}
 			}
 		}
@@ -201,7 +201,7 @@ public class TFClientEvents {
 		time++;
 
 		Minecraft mc = Minecraft.getInstance();
-		float partial = mc.getRenderPartialTicks();
+		float partial = mc.getFrameTime();
 
 		rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
 		sineTickerI = (sineTickerI >= SINE_TICKER_BOUND ? 0 : sineTickerI + 1);
@@ -210,10 +210,10 @@ public class TFClientEvents {
 		sineTicker = sineTicker + partial;
 
 		BugModelAnimationHelper.animate();
-		DimensionRenderInfo info = DimensionRenderInfo.field_239208_a_.get(TwilightForestMod.prefix("renderer"));
+		DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 		// add weather box if needed
-		if (!mc.isGamePaused() && mc.world != null && info instanceof TwilightForestRenderInfo) {
+		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {
 			IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
 			if (weatherRenderer instanceof TFWeatherRenderer)
 				((TFWeatherRenderer) weatherRenderer).tick();

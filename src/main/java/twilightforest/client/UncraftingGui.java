@@ -1,31 +1,33 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.components.Button;
+import com.mojang.blaze3d.platform.Lighting;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.network.UncraftingGuiPacket;
 import twilightforest.network.TFPacketHandler;
 
-public class UncraftingGui extends ContainerScreen<UncraftingContainer> {
+import net.minecraft.client.gui.components.Button.OnPress;
+
+public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
 
-	public UncraftingGui(UncraftingContainer container, PlayerInventory player, ITextComponent name) {
+	public UncraftingGui(UncraftingContainer container, Inventory player, Component name) {
 		super(container, player, name);
 	}
 
@@ -33,144 +35,144 @@ public class UncraftingGui extends ContainerScreen<UncraftingContainer> {
 	protected void init() {
 		super.init();
 
-		this.addButton(new CycleButton(guiLeft + 40, guiTop + 22, true, button -> {
+		this.addButton(new CycleButton(leftPos + 40, topPos + 22, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
-			container.unrecipeInCycle++;
-			container.onCraftMatrixChanged(container.tinkerInput);
+			menu.unrecipeInCycle++;
+			menu.slotsChanged(menu.tinkerInput);
 		}));
-		this.addButton(new CycleButton(guiLeft + 40, guiTop + 55, false, button -> {
+		this.addButton(new CycleButton(leftPos + 40, topPos + 55, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
-			container.unrecipeInCycle--;
-			container.onCraftMatrixChanged(container.tinkerInput);
+			menu.unrecipeInCycle--;
+			menu.slotsChanged(menu.tinkerInput);
 		}));
 
 		//this.buttonList.add(new ModeButton(uiLeft + 7, guiTop + 57));
 
-		this.addButton(new CycleButtonMini(guiLeft + 27, guiTop + 56, true, button -> {
+		this.addButton(new CycleButtonMini(leftPos + 27, topPos + 56, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
-			container.ingredientsInCycle++;
-			container.onCraftMatrixChanged(container.tinkerInput);
+			menu.ingredientsInCycle++;
+			menu.slotsChanged(menu.tinkerInput);
 		}));
-		this.addButton(new CycleButtonMini(guiLeft + 27, guiTop + 63, false, button -> {
+		this.addButton(new CycleButtonMini(leftPos + 27, topPos + 63, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
-			container.ingredientsInCycle--;
-			container.onCraftMatrixChanged(container.tinkerInput);
+			menu.ingredientsInCycle--;
+			menu.slotsChanged(menu.tinkerInput);
 		}));
 
 		//this.buttonList.add(new RefreshButton(uiLeft + 26, guiTop + 57));
 
-		this.addButton(new CycleButton(guiLeft + 121, guiTop + 22, true, button -> {
+		this.addButton(new CycleButton(leftPos + 121, topPos + 22, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(4));
-			container.unrecipeInCycle++;
-			container.onCraftMatrixChanged(container.assemblyMatrix);
+			menu.unrecipeInCycle++;
+			menu.slotsChanged(menu.assemblyMatrix);
 		}));
-		this.addButton(new CycleButton(guiLeft + 121, guiTop + 55, false, button -> {
+		this.addButton(new CycleButton(leftPos + 121, topPos + 55, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(5));
-			container.unrecipeInCycle--;
-			container.onCraftMatrixChanged(container.assemblyMatrix);
+			menu.unrecipeInCycle--;
+			menu.slotsChanged(menu.assemblyMatrix);
 		}));
 	}
 
 	@Override
-	public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(ms);
 		super.render(ms, mouseX, mouseY, partialTicks);
-		renderHoveredTooltip(ms, mouseX, mouseY); //renderHoveredToolTip
+		renderTooltip(ms, mouseX, mouseY); //renderHoveredToolTip
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack ms, int mouseX, int mouseY) {
-		this.font.drawString(ms, I18n.format(TFBlocks.uncrafting_table.get().getTranslationKey()), 8, 6, 4210752);
-		this.font.drawString(ms, I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+	protected void renderLabels(PoseStack ms, int mouseX, int mouseY) {
+		this.font.draw(ms, I18n.get(TFBlocks.uncrafting_table.get().getDescriptionId()), 8, 6, 4210752);
+		this.font.draw(ms, I18n.get("container.inventory"), 8, this.imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1, 1, 1, 1);
-		this.minecraft.getTextureManager().bindTexture(textureLoc);
-		int frameX = (this.width - this.xSize) / 2;
-		int frameY = (this.height - this.ySize) / 2;
-		this.blit(ms, frameX, frameY, 0, 0, this.xSize, this.ySize);
+		this.minecraft.getTextureManager().bind(textureLoc);
+		int frameX = (this.width - this.imageWidth) / 2;
+		int frameY = (this.height - this.imageHeight) / 2;
+		this.blit(ms, frameX, frameY, 0, 0, this.imageWidth, this.imageHeight);
 
-		UncraftingContainer tfContainer = this.container;
+		UncraftingContainer tfContainer = this.menu;
 
 		// show uncrafting ingredients as background
-		ms.push();
-		ms.translate(guiLeft, guiTop, 0);
+		ms.pushPose();
+		ms.translate(leftPos, topPos, 0);
 
 		for (int i = 0; i < 9; i++) {
 			Slot uncrafting = tfContainer.getSlot(2 + i);
 			Slot assembly = tfContainer.getSlot(11 + i);
 
-			if (uncrafting.getHasStack()) {
+			if (uncrafting.hasItem()) {
 				drawSlotAsBackground(ms, uncrafting, assembly);
 			}
 		}
-		ms.pop();
+		ms.popPose();
 
 		// show the costs if there are any
-		FontRenderer fontRendererObj = this.minecraft.fontRenderer;
-		RenderHelper.disableStandardItemLighting();
+		Font fontRendererObj = this.minecraft.font;
+		Lighting.turnOff();
 
 		int costVal = tfContainer.getUncraftingCost();
 		if (costVal > 0) {
 			int color;
 			String cost = "" + costVal;
-			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.isCreativeMode) {
+			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.instabuild) {
 				color = 0xA00000;
 			} else {
 				color = 0x80FF20;
 			}
-			fontRendererObj.drawStringWithShadow(ms, cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+			fontRendererObj.drawShadow(ms, cost, frameX + 48 - fontRendererObj.width(cost), frameY + 38, color);
 		}
 
 		costVal = tfContainer.getRecraftingCost();
 		if (costVal > 0) {
 			int color;
 			String cost = "" + costVal;
-			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.isCreativeMode) {
+			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.instabuild) {
 				color = 0xA00000;
 			} else {
 				color = 0x80FF20;
 			}
-			fontRendererObj.drawStringWithShadow(ms, cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+			fontRendererObj.drawShadow(ms, cost, frameX + 130 - fontRendererObj.width(cost), frameY + 38, color);
 		}
 	}
 
-	private void drawSlotAsBackground(MatrixStack ms, Slot backgroundSlot, Slot appearSlot) {
+	private void drawSlotAsBackground(PoseStack ms, Slot backgroundSlot, Slot appearSlot) {
 
-		int screenX = appearSlot.xPos + guiLeft;
-		int screenY = appearSlot.yPos + guiTop;
-		ItemStack itemStackToRender = backgroundSlot.getStack();
-		itemRenderer.zLevel = 50.0F;
+		int screenX = appearSlot.x + leftPos;
+		int screenY = appearSlot.y + topPos;
+		ItemStack itemStackToRender = backgroundSlot.getItem();
+		itemRenderer.blitOffset = 50.0F;
 
-        itemRenderer.renderItemIntoGUI(itemStackToRender, screenX, screenY);
-        itemRenderer.renderItemOverlayIntoGUI(this.font, itemStackToRender, screenX, screenY, "");
+        itemRenderer.renderGuiItem(itemStackToRender, screenX, screenY);
+        itemRenderer.renderGuiItemDecorations(this.font, itemStackToRender, screenX, screenY, "");
 
 		boolean itemBroken = UncraftingContainer.isMarked(itemStackToRender);
 
 		// draw 50% gray rectangle over the item
 		RenderSystem.disableLighting();
 		RenderSystem.disableDepthTest();
-		AbstractGui.fill(ms, appearSlot.xPos, appearSlot.yPos, appearSlot.xPos + 16, appearSlot.yPos + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
+		GuiComponent.fill(ms, appearSlot.x, appearSlot.y, appearSlot.x + 16, appearSlot.y + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
 		RenderSystem.enableLighting();
 		RenderSystem.enableDepthTest();
 
-        itemRenderer.zLevel = 0.0F;
+        itemRenderer.blitOffset = 0.0F;
 	}
 
 	private static class CycleButton extends Button {
 		private final boolean up;
 
-		CycleButton(int x, int y, boolean up, IPressable onClick) {
-			super(x, y, 14, 9, StringTextComponent.EMPTY, onClick);
+		CycleButton(int x, int y, boolean up, OnPress onClick) {
+			super(x, y, 14, 9, TextComponent.EMPTY, onClick);
 			this.up = up;
 		}
 
 		@Override
-		public void renderWidget(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+		public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
-				Minecraft.getInstance().getTextureManager().bindTexture(UncraftingGui.textureLoc);
+				Minecraft.getInstance().getTextureManager().bind(UncraftingGui.textureLoc);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
@@ -211,15 +213,15 @@ public class UncraftingGui extends ContainerScreen<UncraftingContainer> {
 	private static class CycleButtonMini extends Button {
 		private final boolean up;
 
-		CycleButtonMini(int x, int y, boolean up, IPressable onClick) {
-			super(x, y, 8, 6, StringTextComponent.EMPTY, onClick);
+		CycleButtonMini(int x, int y, boolean up, OnPress onClick) {
+			super(x, y, 8, 6, TextComponent.EMPTY, onClick);
 			this.up = up;
 		}
 
 		@Override
-		public void renderWidget(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+		public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
-				Minecraft.getInstance().getTextureManager().bindTexture(UncraftingGui.textureLoc);
+				Minecraft.getInstance().getTextureManager().bind(UncraftingGui.textureLoc);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 

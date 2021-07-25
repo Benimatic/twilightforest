@@ -1,12 +1,12 @@
 package twilightforest.structures.mushroomtower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.TFStructureComponentOld;
@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
-	public MushroomTowerMainComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MushroomTowerMainComponent(StructureManager manager, CompoundTag nbt) {
 		super(MushroomTowerPieces.TFMTMai, nbt);
 	}
 
@@ -51,7 +51,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -65,7 +65,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 		Rotation mainDir = null;
 
 		// limit sprawl to a reasonable amount
-		if (this.getComponentType() < 3) {
+		if (this.getGenDepth() < 3) {
 			// make a special sub-tower that will lead back here 
 			// try 6 times
 			for (int i = 0; i < 6; i++) {
@@ -88,7 +88,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
 				int childHeight = (rand.nextInt(2) + rand.nextInt(2) + 2) * FLOOR_HEIGHT + 1;
 
-				makeBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], size - 4, childHeight, i);
+				makeBridge(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], size - 4, childHeight, i);
 			}
 		} else {
 			// add a roof?
@@ -104,13 +104,13 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 		Rotation mainDir = RotationUtil.ROTATIONS[rand.nextInt(4)];
 		int[] dest = getValidOpening(rand, mainDir);
 		int childHeight = (height - dest[1]) + ((rand.nextInt(2) + rand.nextInt(2) + 3) * FLOOR_HEIGHT) + 1;
-		boolean madeIt = makeBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], size - 4, childHeight, mainDir, true);
+		boolean madeIt = makeBridge(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], size - 4, childHeight, mainDir, true);
 
 		if (madeIt) {
 			TwilightForestMod.LOGGER.debug("Main tower made a bridge to another tower");
 			return mainDir;
 		} else {
-			TwilightForestMod.LOGGER.info("Main tower failed to branch off at index {}", this.componentType);
+			TwilightForestMod.LOGGER.info("Main tower failed to branch off at index {}", this.genDepth);
 			return null;
 		}
 	}
@@ -120,34 +120,34 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	 */
 	@Override
 	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
-		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getComponentType() + 1, this, 1.6F);
+		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F);
 		list.add(roof);
-		roof.buildComponent(this, list, rand);
+		roof.addChildren(this, list, rand);
 	}
 
 	/**
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
 	@Override
-	protected void makeDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeDoorOpening(WorldGenLevel world, int dx, int dy, int dz, BoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
 
 		// try to remove blocks inside this door
 		if (dx == 0) {
-			setBlockState(world, AIR, dx + 1, dy, dz, sbb);
-			setBlockState(world, AIR, dx + 1, dy + 1, dz, sbb);
+			placeBlock(world, AIR, dx + 1, dy, dz, sbb);
+			placeBlock(world, AIR, dx + 1, dy + 1, dz, sbb);
 		}
 		if (dx == size - 1) {
-			setBlockState(world, AIR, dx - 1, dy, dz, sbb);
-			setBlockState(world, AIR, dx - 1, dy + 1, dz, sbb);
+			placeBlock(world, AIR, dx - 1, dy, dz, sbb);
+			placeBlock(world, AIR, dx - 1, dy + 1, dz, sbb);
 		}
 		if (dz == 0) {
-			setBlockState(world, AIR, dx, dy, dz + 1, sbb);
-			setBlockState(world, AIR, dx, dy + 1, dz + 1, sbb);
+			placeBlock(world, AIR, dx, dy, dz + 1, sbb);
+			placeBlock(world, AIR, dx, dy + 1, dz + 1, sbb);
 		}
 		if (dz == size - 1) {
-			setBlockState(world, AIR, dx, dy, dz - 1, sbb);
-			setBlockState(world, AIR, dx, dy + 1, dz - 1, sbb);
+			placeBlock(world, AIR, dx, dy, dz - 1, sbb);
+			placeBlock(world, AIR, dx, dy + 1, dz - 1, sbb);
 		}
 	}
 }

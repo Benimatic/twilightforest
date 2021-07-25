@@ -3,18 +3,20 @@ package twilightforest.loot.conditions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.util.GsonHelper;
 import twilightforest.entity.CarminiteGhastlingEntity;
 import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nonnull;
 
-public class IsMinion implements ILootCondition {
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition.Builder;
+
+public class IsMinion implements LootItemCondition {
 
 	private final boolean inverse;
 
@@ -23,20 +25,20 @@ public class IsMinion implements ILootCondition {
 	}
 
 	@Override
-	public LootConditionType getConditionType() {
+	public LootItemConditionType getType() {
 		return TFTreasure.IS_MINION;
 	}
 
 	@Override
 	public boolean test(@Nonnull LootContext context) {
-		return context.get(LootParameters.THIS_ENTITY) instanceof CarminiteGhastlingEntity && ((CarminiteGhastlingEntity) context.get(LootParameters.THIS_ENTITY)).isMinion() == !inverse;
+		return context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof CarminiteGhastlingEntity && ((CarminiteGhastlingEntity) context.getParamOrNull(LootContextParams.THIS_ENTITY)).isMinion() == !inverse;
 	}
 
-	public static IBuilder builder(boolean inverse) {
+	public static Builder builder(boolean inverse) {
 		return () -> new IsMinion(inverse);
 	}
 
-	public static class Serializer implements ILootSerializer<IsMinion> {
+	public static class Serializer implements Serializer<IsMinion> {
 
 		@Override
 		public void serialize(JsonObject json, IsMinion value, JsonSerializationContext context) {
@@ -45,7 +47,7 @@ public class IsMinion implements ILootCondition {
 
 		@Override
 		public IsMinion deserialize(JsonObject json, JsonDeserializationContext context) {
-			return new IsMinion(JSONUtils.getBoolean(json, "inverse", false));
+			return new IsMinion(GsonHelper.getAsBoolean(json, "inverse", false));
 		}
 	}
 }

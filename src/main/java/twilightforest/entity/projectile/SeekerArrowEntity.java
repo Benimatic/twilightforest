@@ -1,79 +1,79 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class SeekerArrowEntity extends TFArrowEntity {
 
-	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(SeekerArrowEntity.class, DataSerializers.VARINT);
+	private static final EntityDataAccessor<Integer> TARGET = SynchedEntityData.defineId(SeekerArrowEntity.class, EntityDataSerializers.INT);
 
 	private static final double seekDistance = 5.0;
 	private static final double seekFactor = 0.8;
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
-	public SeekerArrowEntity(EntityType<? extends SeekerArrowEntity> type, World world) {
+	public SeekerArrowEntity(EntityType<? extends SeekerArrowEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public SeekerArrowEntity(EntityType<? extends SeekerArrowEntity> type, World world, LivingEntity shooter) {
+	public SeekerArrowEntity(EntityType<? extends SeekerArrowEntity> type, Level world, LivingEntity shooter) {
 		super(type, world, shooter);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(TARGET, -1);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(TARGET, -1);
 	}
 
 	@Override
 	public void tick() {
 		if (isThisArrowFlying()) {
-			if (!world.isRemote) {
+			if (!level.isClientSide) {
 				updateTarget();
 			}
 
-			if (world.isRemote && !inGround) {
+			if (level.isClientSide && !inGround) {
 				for (int i = 0; i < 4; ++i) {
-					this.world.addParticle(ParticleTypes.WITCH, this.getPosX() + this.getMotion().getX() * i / 4.0D, this.getPosY() + this.getMotion().getY() * i / 4.0D, this.getPosZ() + this.getMotion().getZ() * i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
+					this.level.addParticle(ParticleTypes.WITCH, this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
 				}
 			}
 
 			Entity target = getTarget();
 			if (target != null) {
 
-				Vector3d targetVec = getVectorToTarget(target).scale(seekFactor);
-				Vector3d courseVec = getMotionVec();
+				Vec3 targetVec = getVectorToTarget(target).scale(seekFactor);
+				Vec3 courseVec = getMotionVec();
 
 				// vector lengths
 				double courseLen = courseVec.length();
 				double targetLen = targetVec.length();
 				double totalLen = Math.sqrt(courseLen*courseLen + targetLen*targetLen);
 
-				double dotProduct = courseVec.dotProduct(targetVec) / (courseLen * targetLen); // cosine similarity
+				double dotProduct = courseVec.dot(targetVec) / (courseLen * targetLen); // cosine similarity
 
 				if (dotProduct > seekThreshold) {
 
 					// add vector to target, scale to match current velocity
-					Vector3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(courseLen / totalLen));
+					Vec3 newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(courseLen / totalLen));
 
-					this.setMotion(newMotion.add(0, 0.045F, 0));
+					this.setDeltaMovement(newMotion.add(0, 0.045F, 0));
 
-				} else if (!world.isRemote) {
+				} else if (!level.isClientSide) {
 					// too inaccurate for our intended target, give up on it
 					setTarget(null);
 				}
@@ -93,30 +93,30 @@ public class SeekerArrowEntity extends TFArrowEntity {
 		}
 
 		if (target == null) {
-			AxisAlignedBB positionBB = new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX(), getPosY(), getPosZ());
-			AxisAlignedBB targetBB = positionBB;
+			AABB positionBB = new AABB(getX(), getY(), getZ(), getX(), getY(), getZ());
+			AABB targetBB = positionBB;
 
 			// add two possible courses to our selection box
-			Vector3d courseVec = getMotionVec().scale(seekDistance).rotateYaw((float) seekAngle);
-			targetBB = targetBB.union(positionBB.offset(courseVec));
+			Vec3 courseVec = getMotionVec().scale(seekDistance).yRot((float) seekAngle);
+			targetBB = targetBB.minmax(positionBB.move(courseVec));
 
-			courseVec = getMotionVec().scale(seekDistance).rotateYaw((float) -seekAngle);
-			targetBB = targetBB.union(positionBB.offset(courseVec));
+			courseVec = getMotionVec().scale(seekDistance).yRot((float) -seekAngle);
+			targetBB = targetBB.minmax(positionBB.move(courseVec));
 
-			targetBB = targetBB.grow(0, seekDistance * 0.5, 0);
+			targetBB = targetBB.inflate(0, seekDistance * 0.5, 0);
 
 			double closestDot = -1.0;
 			Entity closestTarget = null;
 
-			List<MonsterEntity> monsters = this.world.getEntitiesWithinAABB(MonsterEntity.class, targetBB);
+			List<Monster> monsters = this.level.getEntitiesOfClass(Monster.class, targetBB);
 
-			for (LivingEntity living : this.world.getEntitiesWithinAABB(LivingEntity.class, targetBB)) {
+			for (LivingEntity living : this.level.getEntitiesOfClass(LivingEntity.class, targetBB)) {
 
 				if (!monsters.isEmpty()) {
-					for (MonsterEntity targets : monsters) {
-						Vector3d motionVec = getMotionVec().normalize();
-						Vector3d targetVec = getVectorToTarget(living).normalize();
-						double dot = motionVec.dotProduct(targetVec);
+					for (Monster targets : monsters) {
+						Vec3 motionVec = getMotionVec().normalize();
+						Vec3 targetVec = getVectorToTarget(living).normalize();
+						double dot = motionVec.dot(targetVec);
 						if (dot > Math.max(closestDot, seekThreshold)) {
 							closestDot = dot;
 							closestTarget = targets;
@@ -125,18 +125,18 @@ public class SeekerArrowEntity extends TFArrowEntity {
 					}
 				}
 
-				if (living instanceof PlayerEntity) {
+				if (living instanceof Player) {
 					continue;
 				}
 
-				if (getShooter() != null && living instanceof TameableEntity && ((TameableEntity) living).getOwner() == getShooter()) {
+				if (getOwner() != null && living instanceof TamableAnimal && ((TamableAnimal) living).getOwner() == getOwner()) {
 					continue;
 				}
 
-				Vector3d motionVec = getMotionVec().normalize();
-				Vector3d targetVec = getVectorToTarget(living).normalize();
+				Vec3 motionVec = getMotionVec().normalize();
+				Vec3 targetVec = getVectorToTarget(living).normalize();
 
-				double dot = motionVec.dotProduct(targetVec);
+				double dot = motionVec.dot(targetVec);
 
 				if (dot > Math.max(closestDot, seekThreshold)) {
 					closestDot = dot;
@@ -150,24 +150,24 @@ public class SeekerArrowEntity extends TFArrowEntity {
 		}
 	}
 
-	private Vector3d getMotionVec() {
-		return new Vector3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ());
+	private Vec3 getMotionVec() {
+		return new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z());
 	}
 
-	private Vector3d getVectorToTarget(Entity target) {
-		return new Vector3d(target.getPosX() - this.getPosX(), (target.getPosY() + target.getEyeHeight()) - this.getPosY(), target.getPosZ() - this.getPosZ());
+	private Vec3 getVectorToTarget(Entity target) {
+		return new Vec3(target.getX() - this.getX(), (target.getY() + target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());
 	}
 
 	@Nullable
 	private Entity getTarget() {
-		return world.getEntityByID(dataManager.get(TARGET));
+		return level.getEntity(entityData.get(TARGET));
 	}
 
 	private void setTarget(@Nullable Entity e) {
-		dataManager.set(TARGET, e == null ? -1 : e.getEntityId());
+		entityData.set(TARGET, e == null ? -1 : e.getId());
 	}
 
 	private boolean isThisArrowFlying() {
-		return !inGround && getMotion().lengthSquared() > 1.0;
+		return !inGround && getDeltaMovement().lengthSqr() > 1.0;
 	}
 }

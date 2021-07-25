@@ -1,16 +1,16 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent;
@@ -21,22 +21,26 @@ import twilightforest.util.TFDamageSources;
 
 import java.util.List;
 
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+
 public class IceBombEntity extends TFThrowableEntity {
 
 	private int zoneTimer = 80;
 	private boolean hasHit;
 
-	public IceBombEntity(EntityType<? extends IceBombEntity> type, World world) {
+	public IceBombEntity(EntityType<? extends IceBombEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public IceBombEntity(EntityType<? extends IceBombEntity> type, World world, LivingEntity thrower) {
+	public IceBombEntity(EntityType<? extends IceBombEntity> type, Level world, LivingEntity thrower) {
 		super(type, world, thrower);
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult ray) {
-		this.setMotion(0.0D, 0.0D, 0.0D);
+	protected void onHit(HitResult ray) {
+		this.setDeltaMovement(0.0D, 0.0D, 0.0D);
 		this.hasHit = true;
 
 		this.doTerrainEffects();
@@ -46,16 +50,16 @@ public class IceBombEntity extends TFThrowableEntity {
 
 		final int range = 3;
 
-		int ix = MathHelper.floor(this.lastTickPosX);
-		int iy = MathHelper.floor(this.lastTickPosY);
-		int iz = MathHelper.floor(this.lastTickPosZ);
+		int ix = Mth.floor(this.xOld);
+		int iy = Mth.floor(this.yOld);
+		int iz = Mth.floor(this.zOld);
 
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
 					BlockPos pos = new BlockPos(ix + x, iy + y, iz + z);
-					BlockSnapshot blocksnapshot = BlockSnapshot.create(world.getDimensionKey(), world, pos);
-					if (!world.isRemote && !MinecraftForge.EVENT_BUS.post(new BlockEvent.EntityPlaceEvent(blocksnapshot, world.getBlockState(pos), null))) {
+					BlockSnapshot blocksnapshot = BlockSnapshot.create(level.dimension(), level, pos);
+					if (!level.isClientSide && !MinecraftForge.EVENT_BUS.post(new BlockEvent.EntityPlaceEvent(blocksnapshot, level.getBlockState(pos), null))) {
 						this.doTerrainEffect(pos);
 					}
 				}
@@ -67,18 +71,18 @@ public class IceBombEntity extends TFThrowableEntity {
 	 * Freeze water, put snow on snowable surfaces
 	 */
 	private void doTerrainEffect(BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+		BlockState state = level.getBlockState(pos);
 		if (state.getMaterial() == Material.WATER) {
-			this.world.setBlockState(pos, Blocks.ICE.getDefaultState());
+			this.level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
 		}
-		if (state.getBlockState() == Blocks.LAVA.getDefaultState()) {
-			this.world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
+		if (state.getBlockState() == Blocks.LAVA.defaultBlockState()) {
+			this.level.setBlockAndUpdate(pos, Blocks.OBSIDIAN.defaultBlockState());
 		}
-		if (this.world.isAirBlock(pos) && Blocks.SNOW.getDefaultState().isValidPosition(this.world, pos)) {
-			this.world.setBlockState(pos, Blocks.SNOW.getDefaultState());
+		if (this.level.isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos)) {
+			this.level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
 		}
-		if(this.world.getBlockState(pos) == Blocks.GRASS.getDefaultState() || this.world.getBlockState(pos) == Blocks.TALL_GRASS.getDefaultState()) {
-			this.world.setBlockState(pos, Blocks.SNOW.getDefaultState(), 3);
+		if(this.level.getBlockState(pos) == Blocks.GRASS.defaultBlockState() || this.level.getBlockState(pos) == Blocks.TALL_GRASS.defaultBlockState()) {
+			this.level.setBlock(pos, Blocks.SNOW.defaultBlockState(), 3);
 		}
 	}
 
@@ -87,13 +91,13 @@ public class IceBombEntity extends TFThrowableEntity {
 		super.tick();
 
 		if (this.hasHit) {
-			this.getMotion().mul(0.1D, 0.1D, 0.1D);
+			this.getDeltaMovement().multiply(0.1D, 0.1D, 0.1D);
 
 			this.zoneTimer--;
 			makeIceZone();
 
-			if (!world.isRemote && this.zoneTimer <= 0) {
-				world.playEvent(2001, new BlockPos(this.getPosition()), Block.getStateId(Blocks.ICE.getDefaultState()));
+			if (!level.isClientSide && this.zoneTimer <= 0) {
+				level.levelEvent(2001, new BlockPos(this.blockPosition()), Block.getId(Blocks.ICE.defaultBlockState()));
 				remove();
 			}
 		} else {
@@ -102,26 +106,26 @@ public class IceBombEntity extends TFThrowableEntity {
 	}
 
 	public void makeTrail() {
-		BlockState stateId = Blocks.SNOW.getDefaultState();
+		BlockState stateId = Blocks.SNOW.defaultBlockState();
 		for (int i = 0; i < 5; i++) {
-			double dx = getPosX() + 1.5F * (rand.nextFloat() - 0.5F);
-			double dy = getPosY() + 1.5F * (rand.nextFloat() - 0.5F);
-			double dz = getPosZ() + 1.5F * (rand.nextFloat() - 0.5F);
+			double dx = getX() + 1.5F * (random.nextFloat() - 0.5F);
+			double dy = getY() + 1.5F * (random.nextFloat() - 0.5F);
+			double dz = getZ() + 1.5F * (random.nextFloat() - 0.5F);
 
-			world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, -getMotion().getX(), -getMotion().getY(), -getMotion().getZ());
+			level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, -getDeltaMovement().x(), -getDeltaMovement().y(), -getDeltaMovement().z());
 		}
 	}
 
 	private void makeIceZone() {
-		if (this.world.isRemote) {
+		if (this.level.isClientSide) {
 			// sparkles
-			BlockState stateId = Blocks.SNOW.getDefaultState();
+			BlockState stateId = Blocks.SNOW.defaultBlockState();
 			for (int i = 0; i < 15; i++) {
-				double dx = this.getPosX() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
-				double dy = this.getPosY() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
-				double dz = this.getPosZ() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
+				double dx = this.getX() + (random.nextFloat() - random.nextFloat()) * 3.0F;
+				double dy = this.getY() + (random.nextFloat() - random.nextFloat()) * 3.0F;
+				double dz = this.getZ() + (random.nextFloat() - random.nextFloat()) * 3.0F;
 
-				world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, 0, 0, 0);
+				level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
 			if (this.zoneTimer % 10 == 0) {
@@ -131,31 +135,31 @@ public class IceBombEntity extends TFThrowableEntity {
 	}
 
 	private void hitNearbyEntities() {
-		List<LivingEntity> nearby = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(3, 2, 3));
+		List<LivingEntity> nearby = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3, 2, 3));
 
 		for (LivingEntity entity : nearby) {
-			if (entity != this.getShooter()) {
+			if (entity != this.getOwner()) {
 				if (entity instanceof YetiEntity) {
 					// TODO: make "frozen yeti" entity?
-					BlockPos pos = new BlockPos(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
-					world.setBlockState(pos, Blocks.ICE.getDefaultState());
-					world.setBlockState(pos.up(), Blocks.ICE.getDefaultState());
+					BlockPos pos = new BlockPos(entity.xOld, entity.yOld, entity.zOld);
+					level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
+					level.setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 
 					entity.remove();
 				} else {
-					entity.attackEntityFrom(TFDamageSources.FROZEN(this, (LivingEntity)this.getShooter()), 1);
-					entity.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
+					entity.hurt(TFDamageSources.FROZEN(this, (LivingEntity)this.getOwner()), 1);
+					entity.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
 				}
 			}
 		}
 	}
 
 	public BlockState getBlockState() {
-		return Blocks.PACKED_ICE.getDefaultState();
+		return Blocks.PACKED_ICE.defaultBlockState();
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return this.hasHit ? 0F : 0.025F;
 	}
 }

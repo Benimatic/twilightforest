@@ -1,51 +1,54 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.TFPartEntity;
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 
 public abstract class HydraPartEntity extends TFPartEntity<HydraEntity> {
 
 	final float maxHealth = 1000F;
 	float health = maxHealth;
 
-	private EntitySize cacheSize;
+	private EntityDimensions cacheSize;
 
 	public HydraPartEntity(HydraEntity hydra) {
 		super(hydra);
 	}
 
 	@Override
-	protected void registerData() {
-		isImmuneToFire();
+	protected void defineSynchedData() {
+		fireImmune();
 	}
 
 	// [VanillaCopy] from MobEntity
 	public boolean canEntityBeSeen(Entity entityIn) {
-		Vector3d vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
-		Vector3d vector3d1 = new Vector3d(entityIn.getPosX(), entityIn.getPosYEye(), entityIn.getPosZ());
-		return this.world.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() == RayTraceResult.Type.MISS;
+		Vec3 vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
+		Vec3 vector3d1 = new Vec3(entityIn.getX(), entityIn.getEyeY(), entityIn.getZ());
+		return this.level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
 	}
 
 	public HydraPartEntity(HydraEntity parent, float width, float height) {
 		this(parent);
-		setSize(EntitySize.flexible(width, height));
-		this.recalculateSize();
+		setSize(EntityDimensions.scalable(width, height));
+		this.refreshDimensions();
 	}
 
 	@Override
-	protected void setSize(EntitySize size) {
+	protected void setSize(EntityDimensions size) {
 		super.setSize(size);
 		cacheSize = size;
 	}
 
 	@Override
 	public void tick() {
-		extinguish();
+		clearFire();
 		super.tick();
 
 		if(hurtTime > 0)
@@ -57,48 +60,48 @@ public abstract class HydraPartEntity extends TFPartEntity<HydraEntity> {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean hurt(DamageSource source, float amount) {
 		return getParent() != null && getParent().attackEntityFromPart(this, source, amount);
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundTag compound) {
 
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundTag compound) {
 
 	}
 
 	@Override
-	public boolean isEntityEqual(Entity entity) {
+	public boolean is(Entity entity) {
 		return this == entity || getParent() == entity;
 	}
 
 	@Override
-	protected void setRotation(float yaw, float pitch) {
-		this.rotationYaw = yaw % 360.0F;
-		this.rotationPitch = pitch % 360.0F;
+	protected void setRot(float yaw, float pitch) {
+		this.yRot = yaw % 360.0F;
+		this.xRot = pitch % 360.0F;
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public boolean canChangeDimension() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 
 	public void activate() {
-		size = cacheSize;
-		recalculateSize();
+		dimensions = cacheSize;
+		refreshDimensions();
 	}
 
 	public void deactivate() {
-		size = EntitySize.flexible(0, 0);
-		recalculateSize();
+		dimensions = EntityDimensions.scalable(0, 0);
+		refreshDimensions();
 	}
 }

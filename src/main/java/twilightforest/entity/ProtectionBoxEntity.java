@@ -1,12 +1,12 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -18,26 +18,26 @@ public class ProtectionBoxEntity extends Entity {
 	public final int sizeY;
 	public final int sizeZ;
 
-	private final MutableBoundingBox sbb;
+	private final BoundingBox sbb;
 
-	public ProtectionBoxEntity(EntityType<?> type, World world) {
+	public ProtectionBoxEntity(EntityType<?> type, Level world) {
 		super(type, world);
 		sizeX = sizeY = sizeZ = 0;
 		sbb = null;
 	}
 
-	public ProtectionBoxEntity(World world, MutableBoundingBox sbb) {
+	public ProtectionBoxEntity(Level world, BoundingBox sbb) {
 		super(TFEntities.protection_box, world);
 
-		this.sbb = new MutableBoundingBox(sbb);
+		this.sbb = new BoundingBox(sbb);
 
-		this.setLocationAndAngles(sbb.minX, sbb.minY, sbb.minZ, 0.0F, 0.0F);
+		this.moveTo(sbb.x0, sbb.y0, sbb.z0, 0.0F, 0.0F);
 
-		sizeX = sbb.getXSize();
-		sizeY = sbb.getYSize();
-		sizeZ = sbb.getZSize();
+		sizeX = sbb.getXSpan();
+		sizeY = sbb.getYSpan();
+		sizeZ = sbb.getZSpan();
 
-		this.size = EntitySize.fixed(Math.max(sizeX, sizeZ), sizeY);
+		this.dimensions = EntityDimensions.fixed(Math.max(sizeX, sizeZ), sizeY);
 
 		lifeTime = 60;
 	}
@@ -53,9 +53,9 @@ public class ProtectionBoxEntity extends Entity {
 		}
 	}
 
-	public boolean matches(MutableBoundingBox sbb) {
-		return this.sbb.minX == sbb.minX && this.sbb.minY == sbb.minY && this.sbb.minZ == sbb.minZ
-				&& this.sbb.maxX == sbb.maxX && this.sbb.maxY == sbb.maxY && this.sbb.maxZ == sbb.maxZ;
+	public boolean matches(BoundingBox sbb) {
+		return this.sbb.x0 == sbb.x0 && this.sbb.y0 == sbb.y0 && this.sbb.z0 == sbb.z0
+				&& this.sbb.x1 == sbb.x1 && this.sbb.y1 == sbb.y1 && this.sbb.z1 == sbb.z1;
 	}
 
 	public void resetLifetime() {
@@ -68,27 +68,27 @@ public class ProtectionBoxEntity extends Entity {
 	}
 
 	@Override
-	protected void registerData() {}
+	protected void defineSynchedData() {}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {}
+	protected void readAdditionalSaveData(CompoundTag compound) {}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {}
+	protected void addAdditionalSaveData(CompoundTag compound) {}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public boolean canRenderOnFire() {
+	public boolean displayFireAnimation() {
 		return false;
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		throw new IllegalStateException("should never be spawned on server");
 	}
 }

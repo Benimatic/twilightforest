@@ -1,11 +1,11 @@
 package twilightforest.client;
 
 import com.google.common.base.Joiner;
-import net.minecraft.resources.ResourcePack;
-import net.minecraft.resources.ResourcePackFileNotFoundException;
-import net.minecraft.resources.ResourcePackType;
-import net.minecraft.resources.data.IMetadataSectionSerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.packs.AbstractPackResources;
+import net.minecraft.server.packs.ResourcePackFileNotFoundException;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
@@ -24,7 +24,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
-public class TwilightLegacyPack extends ResourcePack {
+public class TwilightLegacyPack extends AbstractPackResources {
     private final ModFile modFile;
     private static final String subDir = "classic/";
 
@@ -35,9 +35,9 @@ public class TwilightLegacyPack extends ResourcePack {
 
     // Forgecopy ModFileResourcePack#getResourceNamespaces: added `subDir + `
     @Override
-    public Set<String> getResourceNamespaces(ResourcePackType type) {
+    public Set<String> getNamespaces(PackType type) {
         try {
-            Path root = modFile.getLocator().findPath(modFile, subDir + type.getDirectoryName()).toAbsolutePath();
+            Path root = modFile.getLocator().findPath(modFile, subDir + type.getDirectory()).toAbsolutePath();
 
             return Files.walk(root,1)
                     .map(path -> root.relativize(path.toAbsolutePath()))
@@ -55,7 +55,7 @@ public class TwilightLegacyPack extends ResourcePack {
 
     // Forgecopy ModFileResourcePack#getInputStream: added `subDir + `
     @Override
-    protected InputStream getInputStream(String location) throws IOException {
+    protected InputStream getResource(String location) throws IOException {
         final Path path = modFile.getLocator().findPath(modFile, subDir + location);
 
         if (!Files.exists(path)) {
@@ -68,15 +68,15 @@ public class TwilightLegacyPack extends ResourcePack {
 
     // Forgecopy ModFileResourcePack#resourceExists: added `subDir + `
     @Override
-    protected boolean resourceExists(String resourcePath) {
+    protected boolean hasResource(String resourcePath) {
         return Files.exists(modFile.getLocator().findPath(modFile, subDir + resourcePath));
     }
 
     // Forgecopy ModFileResourcePack#getAllResourceLocations: added `subDir + `
     @Override
-    public Collection<ResourceLocation> getAllResourceLocations(ResourcePackType type, String namespaceIn, String pathIn, int maxDepthIn, Predicate<String> filterIn) {
+    public Collection<ResourceLocation> getResources(PackType type, String namespaceIn, String pathIn, int maxDepthIn, Predicate<String> filterIn) {
         try {
-            Path root = modFile.getLocator().findPath(modFile, subDir + type.getDirectoryName()).toAbsolutePath();
+            Path root = modFile.getLocator().findPath(modFile, subDir + type.getDirectory()).toAbsolutePath();
             Path inputPath = root.getFileSystem().getPath(pathIn);
 
             return Files.walk(root).
@@ -108,15 +108,15 @@ public class TwilightLegacyPack extends ResourcePack {
     // VanillacopyL ResourcePack#getMetadata
     @Nullable
     @Override
-    public <T> T getMetadata(IMetadataSectionSerializer<T> serializer) throws IOException {
+    public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) throws IOException {
 
-        InputStream inputStream = getInputStream("pack.mcmeta");
+        InputStream inputStream = getResource("pack.mcmeta");
 
         Throwable throwable = null;
 
         T resourceMetaData;
         try {
-            resourceMetaData = getResourceMetadata(serializer, inputStream);
+            resourceMetaData = getMetadataFromStream(serializer, inputStream);
         } catch (Throwable t) {
             throwable = t;
             throw t;

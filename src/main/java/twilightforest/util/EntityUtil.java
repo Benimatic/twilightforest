@@ -1,26 +1,30 @@
 package twilightforest.util;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.function.DoubleUnaryOperator;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
+
 public class EntityUtil {
 
-	public static boolean canDestroyBlock(World world, BlockPos pos, Entity entity) {
+	public static boolean canDestroyBlock(Level world, BlockPos pos, Entity entity) {
 		return canDestroyBlock(world, pos, world.getBlockState(pos), entity);
 	}
 
-	public static boolean canDestroyBlock(World world, BlockPos pos, BlockState state, Entity entity) {
-		float hardness = state.getBlockHardness(world, pos);
+	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
+		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.getBlock().isAir(state, world, pos)
 				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
 				&& (/* rude type limit */!(entity instanceof LivingEntity)
@@ -30,18 +34,18 @@ public class EntityUtil {
 	/**
 	 * [VanillaCopy] Entity.pick
 	 */
-	public static BlockRayTraceResult rayTrace(Entity entity, double range) {
-		Vector3d position = entity.getEyePosition(1.0F);
-		Vector3d look = entity.getLook(1.0F);
-		Vector3d dest = position.add(look.x * range, look.y * range, look.z * range);
-		return entity.world.rayTraceBlocks(new RayTraceContext(position, dest, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
+	public static BlockHitResult rayTrace(Entity entity, double range) {
+		Vec3 position = entity.getEyePosition(1.0F);
+		Vec3 look = entity.getViewVector(1.0F);
+		Vec3 dest = position.add(look.x * range, look.y * range, look.z * range);
+		return entity.level.clip(new ClipContext(position, dest, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
 	}
 
-	public static BlockRayTraceResult rayTrace(PlayerEntity player) {
+	public static BlockHitResult rayTrace(Player player) {
 		return rayTrace(player, null);
 	}
 
-	public static BlockRayTraceResult rayTrace(PlayerEntity player, @Nullable DoubleUnaryOperator modifier) {
+	public static BlockHitResult rayTrace(Player player, @Nullable DoubleUnaryOperator modifier) {
 		double range = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}

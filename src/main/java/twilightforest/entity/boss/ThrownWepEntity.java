@@ -1,15 +1,15 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.projectile.TFThrowableEntity;
@@ -18,16 +18,16 @@ import twilightforest.util.TFDamageSources;
 
 public class ThrownWepEntity extends TFThrowableEntity {
 
-	private static final DataParameter<ItemStack> DATA_ITEMSTACK = EntityDataManager.createKey(ThrownWepEntity.class, DataSerializers.ITEMSTACK);
-	private static final DataParameter<Float> DATA_VELOCITY = EntityDataManager.createKey(ThrownWepEntity.class, DataSerializers.FLOAT);
+	private static final EntityDataAccessor<ItemStack> DATA_ITEMSTACK = SynchedEntityData.defineId(ThrownWepEntity.class, EntityDataSerializers.ITEM_STACK);
+	private static final EntityDataAccessor<Float> DATA_VELOCITY = SynchedEntityData.defineId(ThrownWepEntity.class, EntityDataSerializers.FLOAT);
 
 	private float projectileDamage = 6;
 
-	public ThrownWepEntity(EntityType<? extends ThrownWepEntity> type, World world, LivingEntity thrower) {
+	public ThrownWepEntity(EntityType<? extends ThrownWepEntity> type, Level world, LivingEntity thrower) {
 		super(type, world, thrower);
 	}
 
-	public ThrownWepEntity(EntityType<? extends ThrownWepEntity> type, World world) {
+	public ThrownWepEntity(EntityType<? extends ThrownWepEntity> type, Level world) {
 		super(type, world);
 	}
 
@@ -37,66 +37,66 @@ public class ThrownWepEntity extends TFThrowableEntity {
 	}
 
 	@Override
-	protected void registerData() {
-		dataManager.register(DATA_ITEMSTACK, ItemStack.EMPTY);
-		dataManager.register(DATA_VELOCITY, 0.001F);
+	protected void defineSynchedData() {
+		entityData.define(DATA_ITEMSTACK, ItemStack.EMPTY);
+		entityData.define(DATA_VELOCITY, 0.001F);
 	}
 
 	public ThrownWepEntity setItem(ItemStack stack) {
-		dataManager.set(DATA_ITEMSTACK, stack);
+		entityData.set(DATA_ITEMSTACK, stack);
 		return this;
 	}
 
 	public ItemStack getItem() {
-		return dataManager.get(DATA_ITEMSTACK);
+		return entityData.get(DATA_ITEMSTACK);
 	}
 
 	public ThrownWepEntity setVelocity(float velocity) {
-		dataManager.set(DATA_VELOCITY, velocity);
+		entityData.set(DATA_VELOCITY, velocity);
 		return this;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+				this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
-			super.handleStatusUpdate(id);
+			super.handleEntityEvent(id);
 		}
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		if (result instanceof EntityRayTraceResult) {
-			if (((EntityRayTraceResult)result).getEntity() instanceof KnightPhantomEntity || ((EntityRayTraceResult)result).getEntity() == this.getShooter()) {
+	protected void onHit(HitResult result) {
+		if (result instanceof EntityHitResult) {
+			if (((EntityHitResult)result).getEntity() instanceof KnightPhantomEntity || ((EntityHitResult)result).getEntity() == this.getOwner()) {
 				return;
 			}
 
-			if (!world.isRemote) {
-				if (((EntityRayTraceResult)result).getEntity() != null) {
-					((EntityRayTraceResult)result).getEntity().attackEntityFrom(this.getItem().getItem() == TFItems.knightmetal_pickaxe.get() ? TFDamageSources.THROWN_PICKAXE : TFDamageSources.THROWN_AXE, projectileDamage);
+			if (!level.isClientSide) {
+				if (((EntityHitResult)result).getEntity() != null) {
+					((EntityHitResult)result).getEntity().hurt(this.getItem().getItem() == TFItems.knightmetal_pickaxe.get() ? TFDamageSources.THROWN_PICKAXE : TFDamageSources.THROWN_AXE, projectileDamage);
 				}
-				world.setEntityState(this, (byte) 3);
+				level.broadcastEntityEvent(this, (byte) 3);
 				remove();
 			}
 		}
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return true;
 	}
 
 	@Override
-	public float getCollisionBorderSize() {
+	public float getPickRadius() {
 		return 1.0F;
 	}
 
 	@Override
-	protected float getGravityVelocity() {
-		return dataManager.get(DATA_VELOCITY);
+	protected float getGravity() {
+		return entityData.get(DATA_VELOCITY);
 	}
 }

@@ -2,12 +2,12 @@ package twilightforest.worldgen.treeplacers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
-import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.worldgen.TwilightFeatures;
 
 import java.util.List;
@@ -45,12 +45,12 @@ public class DangleFromTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<DangleFromTreeDecorator> getDecoratorType() {
+    protected TreeDecoratorType<DangleFromTreeDecorator> type() {
         return TwilightFeatures.DANGLING_DECORATOR;
     }
 
     @Override
-    public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, MutableBoundingBox mutableBoundingBox) {
+    public void place(WorldGenLevel world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, BoundingBox mutableBoundingBox) {
         if (leafBlocks.isEmpty())
             return;
 
@@ -71,7 +71,7 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 
             // Scan to make sure we have
             for (int ropeUnrolling = 1; ropeUnrolling <= cordLength; ropeUnrolling++) {
-                isAir = world.isAirBlock(pos.down(ropeUnrolling));
+                isAir = world.isEmptyBlock(pos.below(ropeUnrolling));
 
                 if (!clearedOfPossibleLeaves && isAir)
                     clearedOfPossibleLeaves = true;
@@ -85,14 +85,14 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 
             if (cordLength > minimumRequiredLength) { // We don't want no pathetic unroped baggage
                 for (int ropeUnrolling = 1; ropeUnrolling < cordLength; ropeUnrolling++) {
-                    pos = pos.down(1);
+                    pos = pos.below(1);
 
-                    func_227423_a_(world, pos, rope.getBlockState(random, pos), decorations, mutableBoundingBox);
+                    setBlock(world, pos, rope.getState(random, pos), decorations, mutableBoundingBox);
                 }
 
-                pos = pos.down(1);
+                pos = pos.below(1);
 
-                func_227423_a_(world, pos, baggage.getBlockState(random, pos), decorations, mutableBoundingBox);
+                setBlock(world, pos, baggage.getState(random, pos), decorations, mutableBoundingBox);
             }
         }
     }

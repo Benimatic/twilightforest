@@ -3,17 +3,17 @@ package twilightforest.compat.ie;
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
@@ -40,28 +40,28 @@ public class TFShaderGrabbagItem extends Item {
     }
 
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
-        return (new TranslationTextComponent("item.twilightforest.shader_bag", new TranslationTextComponent(Lib.DESC_INFO + "shader.rarity." + rarity.name().toLowerCase(Locale.US))));
+    public Component getName(ItemStack stack) {
+        return (new TranslatableComponent("item.twilightforest.shader_bag", new TranslatableComponent(Lib.DESC_INFO + "shader.rarity." + rarity.name().toLowerCase(Locale.US))));
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
 
-        if (!world.isRemote) {
+        if (!world.isClientSide) {
             if(rarity == TwilightForestMod.getRarity()) {
                 List<ShaderRegistry.ShaderRegistryEntry> list = IEShaderRegister.getAllNonbossShaders();
-                return randomShader(list.get(player.getRNG().nextInt(list.size())).name, stack, player);
+                return randomShader(list.get(player.getRandom().nextInt(list.size())).name, stack, player);
             } else {
-                return randomShader(ShaderRegistry.getRandomShader(player.getUniqueID(), player.getRNG(), rarity, true), stack, player);
+                return randomShader(ShaderRegistry.getRandomShader(player.getUUID(), player.getRandom(), rarity, true), stack, player);
             }
         }
-        return new ActionResult<>(ActionResultType.PASS, stack);
+        return new InteractionResultHolder<>(InteractionResult.PASS, stack);
     }
 
-    private static ActionResult<ItemStack> randomShader(@Nullable ResourceLocation shader, ItemStack stack, PlayerEntity playerIn) {
+    private static InteractionResultHolder<ItemStack> randomShader(@Nullable ResourceLocation shader, ItemStack stack, Player playerIn) {
         if ( shader == null || shader.getPath().isEmpty() )
-            return new ActionResult<>(ActionResultType.FAIL, stack);
+            return new InteractionResultHolder<>(InteractionResult.FAIL, stack);
 
         ItemStack shaderItem = new ItemStack(ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
         ItemNBTHelper.putString(shaderItem, TFShaderItem.TAG_SHADER, shader.toString());
@@ -69,11 +69,11 @@ public class TFShaderGrabbagItem extends Item {
         stack.shrink(1);
 
         if (stack.getCount() <= 0)
-            return new ActionResult<>(ActionResultType.SUCCESS, shaderItem);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, shaderItem);
 
-        if (!playerIn.inventory.addItemStackToInventory(shaderItem))
-            playerIn.dropItem(shaderItem, false, true);
+        if (!playerIn.inventory.add(shaderItem))
+            playerIn.drop(shaderItem, false, true);
 
-        return new ActionResult<>(ActionResultType.PASS, stack);
+        return new InteractionResultHolder<>(InteractionResult.PASS, stack);
     }
 }

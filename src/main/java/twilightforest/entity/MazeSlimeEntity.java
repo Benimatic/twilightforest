@@ -1,102 +1,102 @@
 package twilightforest.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.SlimeEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class MazeSlimeEntity extends SlimeEntity {
+public class MazeSlimeEntity extends Slime {
 
 	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.MULTIPLY_BASE);
 
-	public MazeSlimeEntity(EntityType<? extends MazeSlimeEntity> type, World world) {
+	public MazeSlimeEntity(EntityType<? extends MazeSlimeEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
-	public void setSlimeSize(int size, boolean resetHealth) {
-		super.setSlimeSize(size, resetHealth);
-		this.experienceValue += 3;
+	public void setSize(int size, boolean resetHealth) {
+		super.setSize(size, resetHealth);
+		this.xpReward += 3;
 	}
 
-	public static boolean getCanSpawnHere(EntityType<MazeSlimeEntity> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entity, world, reason, pos, random) && MonsterEntity.isValidLightLevel(world, pos, random);
+	public static boolean getCanSpawnHere(EntityType<MazeSlimeEntity> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entity, world, reason, pos, random) && Monster.isDarkEnoughToSpawn(world, pos, random);
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH);
 	}
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-		ModifiableAttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
-		health.applyPersistentModifier(DOUBLE_HEALTH);
-		return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+		AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
+		health.addPermanentModifier(DOUBLE_HEALTH);
+		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_HURT_SMALL : TFSounds.MAZE_SLIME_HURT;
+	      return this.isTiny() ? TFSounds.MAZE_SLIME_HURT_SMALL : TFSounds.MAZE_SLIME_HURT;
 	   }
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_DEATH_SMALL : TFSounds.MAZE_SLIME_DEATH;
+	      return this.isTiny() ? TFSounds.MAZE_SLIME_DEATH_SMALL : TFSounds.MAZE_SLIME_DEATH;
 	   }
 
 	@Override
 	protected SoundEvent getSquishSound() {
-	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_SQUISH_SMALL : TFSounds.MAZE_SLIME_SQUISH;
+	      return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL : TFSounds.MAZE_SLIME_SQUISH;
 	   }
 	
 	@Override
 	protected SoundEvent getJumpSound() {
-	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_SQUISH_SMALL : TFSounds.MAZE_SLIME_SQUISH;
+	      return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL : TFSounds.MAZE_SLIME_SQUISH;
 	   }
 
 	@Override
-	protected boolean canDamagePlayer() {
+	protected boolean isDealsDamage() {
 		return true;
 	}
 
 	@Override
 	protected boolean spawnCustomParticles() {
 		// [VanillaCopy] from super tick with own particles
-		int i = getSlimeSize();
+		int i = getSize();
 		for (int j = 0; j < i * 8; ++j) {
-			float f = this.rand.nextFloat() * ((float) Math.PI * 2F);
-			float f1 = this.rand.nextFloat() * 0.5F + 0.5F;
-			float f2 = MathHelper.sin(f) * i * 0.5F * f1;
-			float f3 = MathHelper.cos(f) * i * 0.5F * f1;
-			World world = this.world;
-			double d0 = this.getPosX() + f2;
-			double d1 = this.getPosZ() + f3;
-			BlockState state = TFBlocks.maze_stone_brick.get().getDefaultState();
-			world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
+			float f = this.random.nextFloat() * ((float) Math.PI * 2F);
+			float f1 = this.random.nextFloat() * 0.5F + 0.5F;
+			float f2 = Mth.sin(f) * i * 0.5F * f1;
+			float f3 = Mth.cos(f) * i * 0.5F * f1;
+			Level world = this.level;
+			double d0 = this.getX() + f2;
+			double d1 = this.getZ() + f3;
+			BlockState state = TFBlocks.maze_stone_brick.get().defaultBlockState();
+			world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
 		}
 		return true;
 	}
@@ -104,6 +104,6 @@ public class MazeSlimeEntity extends SlimeEntity {
 	@Override
 	protected float getSoundVolume() {
 		// OH MY GOD, SHUT UP
-		return 0.1F * this.getSlimeSize();
+		return 0.1F * this.getSize();
 	}
 }

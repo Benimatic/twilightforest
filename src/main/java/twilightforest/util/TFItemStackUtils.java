@@ -1,11 +1,11 @@
 package twilightforest.util;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import twilightforest.TwilightForestMod;
 
@@ -42,17 +42,17 @@ public class TFItemStackUtils {
 		}).orElse(false);
 	}
 
-	public static boolean consumeInventoryItem(final PlayerEntity player, final Item item) {
-		return consumeInventoryItem(player.inventory.armorInventory, item) || consumeInventoryItem(player.inventory.mainInventory, item) || consumeInventoryItem(player.inventory.offHandInventory, item);
+	public static boolean consumeInventoryItem(final Player player, final Item item) {
+		return consumeInventoryItem(player.inventory.armor, item) || consumeInventoryItem(player.inventory.items, item) || consumeInventoryItem(player.inventory.offhand, item);
 	}
 
 	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item) {
 		for (ItemStack stack : stacks) {
 			if (stack.getItem() == item) {
 				stack.shrink(1);
-				CompoundNBT nbt = stack.getOrCreateTag();
+				CompoundTag nbt = stack.getOrCreateTag();
 				if (nbt.contains("BlockStateTag")) {
-					CompoundNBT damageNbt = nbt.getCompound("BlockStateTag");
+					CompoundTag damageNbt = nbt.getCompound("BlockStateTag");
 					if (damageNbt.contains("damage")) {
 						damage = damageNbt.getInt("damage");
 					}
@@ -64,14 +64,14 @@ public class TFItemStackUtils {
 		return false;
 	}
 
-	public static NonNullList<ItemStack> sortArmorForCasket(PlayerEntity player) {
-		NonNullList<ItemStack> armor = player.inventory.armorInventory;
+	public static NonNullList<ItemStack> sortArmorForCasket(Player player) {
+		NonNullList<ItemStack> armor = player.inventory.armor;
 		Collections.reverse(armor);
 		return armor;
 	}
 
-	public static NonNullList<ItemStack> sortInvForCasket(PlayerEntity player) {
-		NonNullList<ItemStack> inv = player.inventory.mainInventory;
+	public static NonNullList<ItemStack> sortInvForCasket(Player player) {
+		NonNullList<ItemStack> inv = player.inventory.items;
 		NonNullList<ItemStack> sorted = NonNullList.create();
 		//hotbar at the bottom
 		sorted.addAll(inv.subList(9, 36));
@@ -113,7 +113,7 @@ public class TFItemStackUtils {
 //	}
 
 	public static void clearInfoTag(ItemStack stack, String key) {
-		CompoundNBT nbt = stack.getTag();
+		CompoundTag nbt = stack.getTag();
 		if (nbt != null) {
 			nbt.remove(key);
 			if (nbt.isEmpty()) {

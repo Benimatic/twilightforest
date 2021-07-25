@@ -1,14 +1,16 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 import twilightforest.enums.NagastoneVariant;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class NagastoneBlock extends Block {
 
@@ -16,28 +18,28 @@ public class NagastoneBlock extends Block {
 
 	public NagastoneBlock(Properties props) {
 		super(props);
-		this.setDefaultState(stateContainer.getBaseState().with(VARIANT, NagastoneVariant.SOLID));
+		this.registerDefaultState(stateDefinition.any().setValue(VARIANT, NagastoneVariant.SOLID));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction directionToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+	public BlockState updateShape(BlockState state, Direction directionToNeighbor, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
 		return getVariant(world, pos);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getVariant(ctx.getWorld(), ctx.getPos());
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		return getVariant(ctx.getLevel(), ctx.getClickedPos());
 	}
 
 	@SuppressWarnings("fallthrough")
-	private BlockState getVariant(IWorld world, BlockPos pos) {
+	private BlockState getVariant(LevelAccessor world, BlockPos pos) {
 		int connectionCount = 0;
 		BlockState stateOut;
 		Direction[] facings = new Direction[2];
 
 		for (Direction side : Direction.values()) {
-			BlockState neighborState = world.getBlockState(pos.offset(side));
-			if (neighborState.getBlock() == this || (neighborState.getBlock() == TFBlocks.naga_stone_head.get() && side == neighborState.get(TFHorizontalBlock.HORIZONTAL_FACING))) {
+			BlockState neighborState = world.getBlockState(pos.relative(side));
+			if (neighborState.getBlock() == this || (neighborState.getBlock() == TFBlocks.naga_stone_head.get() && side == neighborState.getValue(TFHorizontalBlock.FACING))) {
 				facings[connectionCount++] = side;
 				if (connectionCount >= 2) {
 					break;
@@ -53,18 +55,18 @@ public class NagastoneBlock extends Block {
 			case 1:
 				facings[1] = facings[0]; // No null, for next statement
 			case 2:
-				stateOut = getDefaultState().with(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0], facings[1]));
+				stateOut = defaultBlockState().setValue(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0], facings[1]));
 				break;
 			default:
-				stateOut = this.getDefaultState();
+				stateOut = this.defaultBlockState();
 				break;
 		}
 		return stateOut;
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(VARIANT);
 	}
 }

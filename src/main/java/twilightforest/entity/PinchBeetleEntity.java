@@ -1,48 +1,56 @@
 package twilightforest.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.ChargeAttackGoal;
 import twilightforest.util.TFDamageSources;
 
-public class PinchBeetleEntity extends MonsterEntity implements IHostileMount {
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-	public PinchBeetleEntity(EntityType<? extends PinchBeetleEntity> type, World world) {
+public class PinchBeetleEntity extends Monster implements IHostileMount {
+
+	public PinchBeetleEntity(EntityType<? extends PinchBeetleEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new ChargeAttackGoal(this, 1.5F, false));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
-		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D)
-				.createMutableAttribute(Attributes.ARMOR, 2.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, 40.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.23D)
+				.add(Attributes.ATTACK_DAMAGE, 4.0D)
+				.add(Attributes.ARMOR, 2.0D);
 	}
 
 	@Override
@@ -61,26 +69,26 @@ public class PinchBeetleEntity extends MonsterEntity implements IHostileMount {
 	}
 
 	@Override
-	public void livingTick() {
+	public void aiStep() {
 
-		super.livingTick();
+		super.aiStep();
 
 		if (!this.getPassengers().isEmpty()) {
-			this.getLookController().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
+			this.getLookControl().setLookAt(getPassengers().get(0), 100F, 100F);
 
 			// push out of user in wall
-			Vector3d riderPos = this.getRiderPosition();
-			this.pushOutOfBlocks(riderPos.x, riderPos.y, riderPos.z);
+			Vec3 riderPos = this.getRiderPosition();
+			this.moveTowardsClosestSpace(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entity) {
+	public boolean doHurtTarget(Entity entity) {
 		if (this.getPassengers().isEmpty() && !entity.isPassenger()) {
 			entity.startRiding(this);
 		}
-		entity.attackEntityFrom(TFDamageSources.CLAMPED(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return super.attackEntityAsMob(entity);
+		entity.hurt(TFDamageSources.CLAMPED(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		return super.doHurtTarget(entity);
 	}
 
 	@Override
@@ -89,29 +97,29 @@ public class PinchBeetleEntity extends MonsterEntity implements IHostileMount {
 	}
 
 	@Override
-	public void updatePassenger(Entity passenger) {
+	public void positionRider(Entity passenger) {
 		if (!this.getPassengers().isEmpty()) {
-			Vector3d riderPos = this.getRiderPosition();
+			Vec3 riderPos = this.getRiderPosition();
 
-			this.getPassengers().get(0).setPosition(riderPos.x, riderPos.y, riderPos.z);
+			this.getPassengers().get(0).setPos(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
 
 	@Override
-	public double getMountedYOffset() {
+	public double getPassengersRidingOffset() {
 		return 0.75D;
 	}
 
-	private Vector3d getRiderPosition() {
+	private Vec3 getRiderPosition() {
 		if (!this.getPassengers().isEmpty()) {
 			float distance = 0.9F;
 
-			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dx = Math.cos((this.yRot + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.yRot + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getPosZ() + dz);
+			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + this.getPassengers().get(0).getMyRidingOffset(), this.getZ() + dz);
 		} else {
-			return new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
+			return new Vec3(this.getX(), this.getY(), this.getZ());
 		}
 	}
 
@@ -121,12 +129,12 @@ public class PinchBeetleEntity extends MonsterEntity implements IHostileMount {
 	}
 
 	@Override
-	public EntitySize getSize(Pose pose) {
+	public EntityDimensions getDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {
-			return EntitySize.flexible(1.9F, 2.0F);
+			return EntityDimensions.scalable(1.9F, 2.0F);
 		} else {
-			return super.getSize(pose);
+			return super.getDimensions(pose);
 		}
 	}
 }

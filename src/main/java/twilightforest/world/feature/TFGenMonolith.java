@@ -1,13 +1,13 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.RavenEntity;
 import twilightforest.util.FeatureUtil;
@@ -19,14 +19,14 @@ import java.util.Random;
  *
  * @author Ben
  */
-public class TFGenMonolith extends Feature<NoFeatureConfig> {
+public class TFGenMonolith extends Feature<NoneFeatureConfiguration> {
 
-	public TFGenMonolith(Codec<NoFeatureConfig> configIn) {
+	public TFGenMonolith(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
 		int ht = rand.nextInt(10) + 10;
 		int dir = rand.nextInt(4);
 		int h0, h1, h2, h3;
@@ -64,32 +64,32 @@ public class TFGenMonolith extends Feature<NoFeatureConfig> {
 		}
 
 		for (int cy = 0; cy <= h0; cy++) {
-			world.setBlockState(pos.add(0, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState(), 3);
+			world.setBlock(pos.offset(0, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.defaultBlockState() : Blocks.OBSIDIAN.defaultBlockState(), 3);
 		}
 		for (int cy = 0; cy <= h1; cy++) {
-			world.setBlockState(pos.add(1, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState(), 3);
+			world.setBlock(pos.offset(1, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.defaultBlockState() : Blocks.OBSIDIAN.defaultBlockState(), 3);
 		}
 		for (int cy = 0; cy <= h2; cy++) {
-			world.setBlockState(pos.add(0, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState(), 3);
+			world.setBlock(pos.offset(0, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.defaultBlockState() : Blocks.OBSIDIAN.defaultBlockState(), 3);
 		}
 		for (int cy = 0; cy <= h3; cy++) {
-			world.setBlockState(pos.add(1, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState(), 3);
+			world.setBlock(pos.offset(1, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.defaultBlockState() : Blocks.OBSIDIAN.defaultBlockState(), 3);
 		}
 
 		// spawn a few ravens nearby
 		for (int i = 0; i < 2; i++) {
-			BlockPos dPos = pos.add(
+			BlockPos dPos = pos.offset(
 					rand.nextInt(8) - rand.nextInt(8),
 					0,
 					rand.nextInt(8) - rand.nextInt(8)
 			);
-			dPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, dPos);
+			dPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, dPos);
 
 			if (dPos.getY() > 0) {
-				RavenEntity raven = new RavenEntity(TFEntities.raven, world.getWorld());
-				raven.moveToBlockPosAndAngles(dPos, rand.nextFloat() * 360.0F, 0.0F);
+				RavenEntity raven = new RavenEntity(TFEntities.raven, world.getLevel());
+				raven.moveTo(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
-				world.addEntity(raven);
+				world.addFreshEntity(raven);
 			}
 		}
 

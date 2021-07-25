@@ -1,16 +1,16 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.StairsBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 
@@ -22,25 +22,25 @@ import java.util.Random;
  */
 public class FinalCastleEntranceStairsComponent extends TFStructureComponentOld {
 
-	public FinalCastleEntranceStairsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleEntranceStairsComponent(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCEnSt, nbt);
 	}
 
 	public FinalCastleEntranceStairsComponent(TFFeature feature, int index, int x, int y, int z, Direction direction) {
 		super(FinalCastlePieces.TFFCEnSt, feature, index);
-		this.setCoordBaseMode(direction);
+		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int size = 13;
 
 		for (int x = 1; x < size; x++) {
@@ -61,16 +61,16 @@ public class FinalCastleEntranceStairsComponent extends TFStructureComponentOld 
 			}
 		}
 
-		this.replaceAirAndLiquidDownwards(world, deco.blockState, 0, 0, 5, sbb);
+		this.fillColumnDown(world, deco.blockState, 0, 0, 5, sbb);
 
 		return true;
 	}
 
-	private void placeStairs(ISeedReader world, MutableBoundingBox sbb, int x, int y, int z, Direction facing) {
-		if (this.getBlockStateFromPos(world, x, y, z, sbb).getMaterial().isReplaceable()) { //TODO: Probably doesn't support replaceable blocks
+	private void placeStairs(WorldGenLevel world, BoundingBox sbb, int x, int y, int z, Direction facing) {
+		if (this.getBlock(world, x, y, z, sbb).getMaterial().isReplaceable()) { //TODO: Probably doesn't support replaceable blocks
 			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
-			this.setBlockState(world, deco.stairState.with(StairsBlock.FACING, facing), x, y, z, sbb);
-			this.replaceAirAndLiquidDownwards(world, deco.blockState, x, y - 1, z, sbb);
+			this.placeBlock(world, deco.stairState.setValue(StairBlock.FACING, facing), x, y, z, sbb);
+			this.fillColumnDown(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}
 }

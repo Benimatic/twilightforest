@@ -1,25 +1,25 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.item.TNTEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.item.PrimedTnt;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.ThrowSpikeBlockGoal;
@@ -28,14 +28,22 @@ import twilightforest.util.TFDamageSources;
 import java.util.List;
 import java.util.UUID;
 
-public class BlockChainGoblinEntity extends MonsterEntity {
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+
+public class BlockChainGoblinEntity extends Monster {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
 
 	private static final float CHAIN_SPEED = 16F;
-	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(BlockChainGoblinEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Byte> DATA_CHAINPOS = EntityDataManager.createKey(BlockChainGoblinEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Boolean> IS_THROWING = EntityDataManager.createKey(BlockChainGoblinEntity.class, DataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Byte> DATA_CHAINLENGTH = SynchedEntityData.defineId(BlockChainGoblinEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> DATA_CHAINPOS = SynchedEntityData.defineId(BlockChainGoblinEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Boolean> IS_THROWING = SynchedEntityData.defineId(BlockChainGoblinEntity.class, EntityDataSerializers.BOOLEAN);
 
 	private int recoilCounter;
 	private float chainAngle;
@@ -49,7 +57,7 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 
 	private MultipartGenericsAreDumb[] partsArray;
 
-	public BlockChainGoblinEntity(EntityType<? extends BlockChainGoblinEntity> type, World world) {
+	public BlockChainGoblinEntity(EntityType<? extends BlockChainGoblinEntity> type, Level world) {
 		super(type, world);
 
 		chain1 = new ChainEntity(this);
@@ -68,36 +76,36 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(1, new AvoidAnyEntityGoal<>(this, TNTEntity.class, 2.0F, 1.0F, 2.0F));
+		this.goalSelector.addGoal(0, new FloatGoal(this));
+		this.goalSelector.addGoal(1, new AvoidAnyEntityGoal<>(this, PrimedTnt.class, 2.0F, 1.0F, 2.0F));
 		this.goalSelector.addGoal(4, new ThrowSpikeBlockGoal(this, this.block));
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0F, false));
-		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(DATA_CHAINLENGTH, (byte) 0);
-		dataManager.register(DATA_CHAINPOS, (byte) 0);
-		dataManager.register(IS_THROWING, false);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_CHAINLENGTH, (byte) 0);
+		entityData.define(DATA_CHAINPOS, (byte) 0);
+		entityData.define(IS_THROWING, false);
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D)
-				.createMutableAttribute(Attributes.ARMOR, 11.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, 20.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.28D)
+				.add(Attributes.ATTACK_DAMAGE, 8.0D)
+				.add(Attributes.ARMOR, 11.0D);
 	}
 
     @Override
     public float getEyeHeight(Pose pose) {
-        return this.getHeight() * 0.78F;
+        return this.getBbHeight() * 0.78F;
     }
 
     @Override
@@ -125,28 +133,28 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 	/**
 	 * Get the block & chain position
 	 */
-	public Vector3d getChainPosition() {
+	public Vec3 getChainPosition() {
 		return this.getChainPosition(getChainAngle(), getChainLength());
 	}
 
 	/**
 	 * Get the block & chain position
 	 */
-	public Vector3d getChainPosition(float angle, float distance) {
+	public Vec3 getChainPosition(float angle, float distance) {
 		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getChainYOffset(), this.getPosZ() + dz);
+		return new Vec3(this.getX() + dx, this.getY() + this.getChainYOffset(), this.getZ() + dz);
 	}
 
 	public boolean isSwingingChain() {
-		return this.isSwingInProgress || (this.getAttackTarget() != null && this.recoilCounter == 0);
+		return this.swinging || (this.getTarget() != null && this.recoilCounter == 0);
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entity) {
-		swingArm(Hand.MAIN_HAND);
-		entity.attackEntityFrom(TFDamageSources.SPIKED(this.block, this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+	public boolean doHurtTarget(Entity entity) {
+		swing(InteractionHand.MAIN_HAND);
+		entity.hurt(TFDamageSources.SPIKED(this.block, this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return false;
 	}
 
@@ -165,9 +173,9 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 		chainAngle += CHAIN_SPEED;
 		chainAngle %= 360;
 
-		if (!this.world.isRemote) {
-			dataManager.set(DATA_CHAINLENGTH, (byte) Math.floor(getChainLength() * 127.0F));
-			dataManager.set(DATA_CHAINPOS, (byte) Math.floor(getChainAngle() / 360.0F * 255.0F));
+		if (!this.level.isClientSide) {
+			entityData.set(DATA_CHAINLENGTH, (byte) Math.floor(getChainLength() * 127.0F));
+			entityData.set(DATA_CHAINPOS, (byte) Math.floor(getChainAngle() / 360.0F * 255.0F));
 		} else {
 			// synch chain pos if it's wrong
 			if (Math.abs(this.chainAngle - this.getChainAngle()) > CHAIN_SPEED * 2) {
@@ -178,11 +186,11 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 
 		if (this.chainMoveLength > 0) {
 
-			Vector3d blockPos = this.getThrowPos();
+			Vec3 blockPos = this.getThrowPos();
 
-			double sx2 = this.getPosX();
-			double sy2 = this.getPosY() + this.getHeight() - 0.1;
-			double sz2 = this.getPosZ();
+			double sx2 = this.getX();
+			double sy2 = this.getY() + this.getBbHeight() - 0.1;
+			double sz2 = this.getZ();
 
 			double ox2 = sx2 - blockPos.x;
 			double oy2 = sy2 - blockPos.y - 0.25F;
@@ -193,49 +201,49 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 				this.setThrowing(false);
 			}
 
-			this.chain1.setPosition(sx2 - ox2 * 0.25, sy2 - oy2 * 0.25, sz2 - oz2 * 0.25);
-			this.chain2.setPosition(sx2 - ox2 * 0.5, sy2 - oy2 * 0.5, sz2 - oz2 * 0.5);
-			this.chain3.setPosition(sx2 - ox2 * 0.85, sy2 - oy2 * 0.85, sz2 - oz2 * 0.85);
+			this.chain1.setPos(sx2 - ox2 * 0.25, sy2 - oy2 * 0.25, sz2 - oz2 * 0.25);
+			this.chain2.setPos(sx2 - ox2 * 0.5, sy2 - oy2 * 0.5, sz2 - oz2 * 0.5);
+			this.chain3.setPos(sx2 - ox2 * 0.85, sy2 - oy2 * 0.85, sz2 - oz2 * 0.85);
 
-			this.block.setPosition(sx2 - ox2, sy2 - oy2, sz2 - oz2);
+			this.block.setPos(sx2 - ox2, sy2 - oy2, sz2 - oz2);
 		} else {
 
 			// set block position
-			Vector3d blockPos = this.getChainPosition();
-			this.block.setPosition(blockPos.x, blockPos.y, blockPos.z);
-			this.block.rotationYaw = getChainAngle();
+			Vec3 blockPos = this.getChainPosition();
+			this.block.setPos(blockPos.x, blockPos.y, blockPos.z);
+			this.block.yRot = getChainAngle();
 
 			// interpolate chain position
-			double sx = this.getPosX();
-			double sy = this.getPosY() + this.getHeight() - 0.1;
-			double sz = this.getPosZ();
+			double sx = this.getX();
+			double sy = this.getY() + this.getBbHeight() - 0.1;
+			double sz = this.getZ();
 
 			double ox = sx - blockPos.x;
-			double oy = sy - blockPos.y - (block.getHeight() / 3D);
+			double oy = sy - blockPos.y - (block.getBbHeight() / 3D);
 			double oz = sz - blockPos.z;
 
-			this.chain1.setPosition(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
-			this.chain2.setPosition(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
-			this.chain3.setPosition(sx - ox * 0.6, sy - oy * 0.6, sz - oz * 0.6);
+			this.chain1.setPos(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
+			this.chain2.setPos(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
+			this.chain3.setPos(sx - ox * 0.6, sy - oy * 0.6, sz - oz * 0.6);
 		}
 
 		// collide things with the block
-		if (!world.isRemote && (this.isThrowing() || this.isSwingingChain())) {
+		if (!level.isClientSide && (this.isThrowing() || this.isSwingingChain())) {
 			this.applyBlockCollisions(this.block);
 		}
 		this.chainMove();
 	}
 
-	private Vector3d getThrowPos() {
-		Vector3d vec3d = this.getLook(1.0F);
-		return new Vector3d(this.getPosX() + vec3d.x * this.chainMoveLength, this.getPosY() + this.getEyeHeight(), this.getPosZ() + vec3d.z * this.chainMoveLength);
+	private Vec3 getThrowPos() {
+		Vec3 vec3d = this.getViewVector(1.0F);
+		return new Vec3(this.getX() + vec3d.x * this.chainMoveLength, this.getY() + this.getEyeHeight(), this.getZ() + vec3d.z * this.chainMoveLength);
 	}
 
 	private void chainMove() {
 		if (this.isThrowing()) {
-			this.chainMoveLength = MathHelper.clamp(this.chainMoveLength + 0.5F, 0.0F, 6.0F);
+			this.chainMoveLength = Mth.clamp(this.chainMoveLength + 0.5F, 0.0F, 6.0F);
 		} else {
-			this.chainMoveLength = MathHelper.clamp(this.chainMoveLength - 1.5F, 0.0F, 6.0F);
+			this.chainMoveLength = Mth.clamp(this.chainMoveLength - 1.5F, 0.0F, 6.0F);
 		}
 	}
 
@@ -247,15 +255,15 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 	 * Check if the block is colliding with any nearby entities
 	 */
 	protected void applyBlockCollisions(Entity collider) {
-		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+		List<Entity> list = this.level.getEntities(collider, collider.getBoundingBox().inflate(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
 		for (Entity entity : list) {
-			if (entity.canBePushed()) {
+			if (entity.isPushable()) {
 				applyBlockCollision(collider, entity);
 			}
 		}
 
-		if (this.isThrowing() && collider.isEntityInsideOpaqueBlock()) {
+		if (this.isThrowing() && collider.isInWall()) {
 			this.setThrowing(false);
 			collider.playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.65F, 0.75F);
 		}
@@ -266,10 +274,10 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 	 */
 	protected void applyBlockCollision(Entity collider, Entity collided) {
 		if (collided != this) {
-			collided.applyEntityCollision(collider);
+			collided.push(collider);
 			if (collided instanceof LivingEntity) {
-				if (super.attackEntityAsMob(collided)) {
-					collided.addVelocity(0, 0.4, 0);
+				if (super.doHurtTarget(collided)) {
+					collided.push(0, 0.4, 0);
 					this.playSound(TFSounds.BLOCKCHAIN_HIT, 1.0F, 1.0F);
 					this.recoilCounter = 40;
 					if (this.isThrowing()) {
@@ -282,21 +290,21 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 	}
 
 	public boolean isThrowing() {
-		return this.dataManager.get(IS_THROWING);
+		return this.entityData.get(IS_THROWING);
 	}
 
 	public void setThrowing(boolean isThrowing) {
-		this.dataManager.set(IS_THROWING, isThrowing);
+		this.entityData.set(IS_THROWING, isThrowing);
 	}
 
 	/**
 	 * Angle between 0 and 360 to place the chain at
 	 */
 	private float getChainAngle() {
-		if (!this.world.isRemote) {
+		if (!this.level.isClientSide) {
 			return this.chainAngle;
 		} else {
-			return (dataManager.get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
+			return (entityData.get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
 		}
 	}
 
@@ -304,14 +312,14 @@ public class BlockChainGoblinEntity extends MonsterEntity {
 	 * Between 0.0F and 2.0F, how long is the chain right now?
 	 */
 	private float getChainLength() {
-		if (!this.world.isRemote) {
+		if (!this.level.isClientSide) {
 			if (isSwingingChain()) {
 				return 0.9F;
 			} else {
 				return 0.3F;
 			}
 		} else {
-			return (dataManager.get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
+			return (entityData.get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
 		}
 	}
 

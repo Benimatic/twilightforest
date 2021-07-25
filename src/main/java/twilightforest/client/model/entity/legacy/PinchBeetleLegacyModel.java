@@ -6,164 +6,164 @@
 package twilightforest.client.model.entity.legacy;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import twilightforest.entity.PinchBeetleEntity;
 
-public class PinchBeetleLegacyModel extends SegmentedModel<PinchBeetleEntity> {
+public class PinchBeetleLegacyModel extends ListModel<PinchBeetleEntity> {
 	//fields
-	ModelRenderer thorax;
-	ModelRenderer head;
-	ModelRenderer connector2;
-	ModelRenderer RearEnd;
-	ModelRenderer Leg6;
-	ModelRenderer Leg4;
-	ModelRenderer Leg2;
-	ModelRenderer Leg5;
-	ModelRenderer Leg3;
-	ModelRenderer Leg1;
-	ModelRenderer connector1;
-	ModelRenderer jaw1a;
-	ModelRenderer jaw1b;
-	ModelRenderer jaw2a;
-	ModelRenderer jaw2b;
-	ModelRenderer antenna1;
-	ModelRenderer antenna2;
-	ModelRenderer eye1;
-	ModelRenderer eye2;
-	ModelRenderer tooth1a;
-	ModelRenderer tooth1b;
-	ModelRenderer tooth1c;
-	ModelRenderer tooth2a;
-	ModelRenderer tooth2b;
-	ModelRenderer tooth2c;
+	ModelPart thorax;
+	ModelPart head;
+	ModelPart connector2;
+	ModelPart RearEnd;
+	ModelPart Leg6;
+	ModelPart Leg4;
+	ModelPart Leg2;
+	ModelPart Leg5;
+	ModelPart Leg3;
+	ModelPart Leg1;
+	ModelPart connector1;
+	ModelPart jaw1a;
+	ModelPart jaw1b;
+	ModelPart jaw2a;
+	ModelPart jaw2b;
+	ModelPart antenna1;
+	ModelPart antenna2;
+	ModelPart eye1;
+	ModelPart eye2;
+	ModelPart tooth1a;
+	ModelPart tooth1b;
+	ModelPart tooth1c;
+	ModelPart tooth2a;
+	ModelPart tooth2b;
+	ModelPart tooth2c;
 
 	public PinchBeetleLegacyModel() {
-		textureWidth = 64;
-		textureHeight = 32;
+		texWidth = 64;
+		texHeight = 32;
 
-		thorax = new ModelRenderer(this, 0, 22);
+		thorax = new ModelPart(this, 0, 22);
 		thorax.addBox(-4.5F, -4F, 0F, 9, 8, 2);
-		thorax.setRotationPoint(0F, 18F, -4.5F);
+		thorax.setPos(0F, 18F, -4.5F);
 
-		connector1 = new ModelRenderer(this, 0, 12);
+		connector1 = new ModelPart(this, 0, 12);
 		connector1.addBox(-3F, -3F, 0F, 6, 6, 1);
-		connector1.setRotationPoint(0F, 18F, -3F);
+		connector1.setPos(0F, 18F, -3F);
 
-		connector2 = new ModelRenderer(this, 0, 12);
+		connector2 = new ModelPart(this, 0, 12);
 		connector2.addBox(-3F, -3F, -1F, 6, 6, 1);
-		connector2.setRotationPoint(0F, 18F, -4F);
+		connector2.setPos(0F, 18F, -4F);
 
-		RearEnd = new ModelRenderer(this, 28, 14);
+		RearEnd = new ModelPart(this, 28, 14);
 		RearEnd.addBox(-5F, -9F, -4F, 10, 10, 8);
-		RearEnd.setRotationPoint(0F, 18F, 7F);
+		RearEnd.setPos(0F, 18F, 7F);
 		setRotation(RearEnd, 1.570796F, 0F, 0F);
 
-		Leg6 = new ModelRenderer(this, 40, 0);
+		Leg6 = new ModelPart(this, 40, 0);
 		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg6.setRotationPoint(4F, 21F, -4F);
+		Leg6.setPos(4F, 21F, -4F);
 		setRotation(Leg6, 0F, 0.2792527F, 0.3490659F);
 
-		Leg5 = new ModelRenderer(this, 40, 0);
+		Leg5 = new ModelPart(this, 40, 0);
 		Leg5.mirror = true;
 		Leg5.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg5.setRotationPoint(-4F, 21F, -4F);
+		Leg5.setPos(-4F, 21F, -4F);
 		setRotation(Leg5, 0F, -0.2792527F, -0.3490659F);
 
-		Leg4 = new ModelRenderer(this, 40, 0);
+		Leg4 = new ModelPart(this, 40, 0);
 		Leg4.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg4.setRotationPoint(4F, 21F, -1F);
+		Leg4.setPos(4F, 21F, -1F);
 		setRotation(Leg4, 0F, -0.2792527F, 0.3490659F);
 
-		Leg2 = new ModelRenderer(this, 40, 0);
+		Leg2 = new ModelPart(this, 40, 0);
 		Leg2.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg2.setRotationPoint(4F, 21F, 4F);
+		Leg2.setPos(4F, 21F, 4F);
 		setRotation(Leg2, 0F, -0.6981317F, 0.3490659F);
 
-		Leg3 = new ModelRenderer(this, 40, 0);
+		Leg3 = new ModelPart(this, 40, 0);
 		Leg3.mirror = true;
 		Leg3.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg3.setRotationPoint(-4F, 21F, -1F);
+		Leg3.setPos(-4F, 21F, -1F);
 		setRotation(Leg3, 0F, 0.2792527F, -0.3490659F);
 
-		Leg1 = new ModelRenderer(this, 40, 0);
+		Leg1 = new ModelPart(this, 40, 0);
 		Leg1.mirror = true;
 		Leg1.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg1.setRotationPoint(-4F, 21F, 4F);
-		Leg1.setTextureSize(64, 32);
+		Leg1.setPos(-4F, 21F, 4F);
+		Leg1.setTexSize(64, 32);
 		setRotation(Leg1, 0F, 0.6981317F, -0.3490659F);
 
-		head = new ModelRenderer(this, 0, 0);
+		head = new ModelPart(this, 0, 0);
 		head.addBox(-4F, -4F, -6F, 8, 6, 6);
-		head.setRotationPoint(0F, 19F, -5F);
+		head.setPos(0F, 19F, -5F);
 
-		jaw1a = new ModelRenderer(this, 40, 6);
+		jaw1a = new ModelPart(this, 40, 6);
 		jaw1a.addBox(-1F, -1F, -1.5F, 8, 2, 3);
-		jaw1a.setRotationPoint(-3F, 1F, -6F);
+		jaw1a.setPos(-3F, 1F, -6F);
 		setRotation(jaw1a, 0F, 2.6354471F, 0F);
 
-		jaw1b = new ModelRenderer(this, 40, 10);
+		jaw1b = new ModelPart(this, 40, 10);
 		jaw1b.addBox(-1F, -1F, -1F, 10, 2, 2);
-		jaw1b.setRotationPoint(7F, 0F, 0F);
+		jaw1b.setPos(7F, 0F, 0F);
 		setRotation(jaw1b, 0F, -1.047197F, 0F);
 
-		jaw2a = new ModelRenderer(this, 40, 6);
+		jaw2a = new ModelPart(this, 40, 6);
 		jaw2a.addBox(-1F, -1F, -1.5F, 8, 2, 3);
-		jaw2a.setRotationPoint(3F, 1F, -6F);
+		jaw2a.setPos(3F, 1F, -6F);
 		setRotation(jaw2a, 0F, 0.5410520F, 0F);
 
-		jaw2b = new ModelRenderer(this, 40, 10);
+		jaw2b = new ModelPart(this, 40, 10);
 		jaw2b.addBox(-1F, -1F, -1F, 10, 2, 2);
-		jaw2b.setRotationPoint(7F, 0F, 0F);
+		jaw2b.setPos(7F, 0F, 0F);
 		setRotation(jaw2b, 0F, 1.047197F, 0F);
 
-		antenna1 = new ModelRenderer(this, 42, 4);
+		antenna1 = new ModelPart(this, 42, 4);
 		antenna1.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
-		antenna1.setRotationPoint(1F, -3F, -5F);
+		antenna1.setPos(1F, -3F, -5F);
 		setRotation(antenna1, 0F, 1.047198F, -0.296706F);
 
-		antenna2 = new ModelRenderer(this, 42, 4);
+		antenna2 = new ModelPart(this, 42, 4);
 		antenna2.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
-		antenna2.setRotationPoint(-1F, -3F, -5F);
+		antenna2.setPos(-1F, -3F, -5F);
 		setRotation(antenna2, 0F, 2.094395F, 0.296706F);
 
-		eye1 = new ModelRenderer(this, 15, 12);
+		eye1 = new ModelPart(this, 15, 12);
 		eye1.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-		eye1.setRotationPoint(-3F, -2F, -5F);
+		eye1.setPos(-3F, -2F, -5F);
 
-		eye2 = new ModelRenderer(this, 15, 12);
+		eye2 = new ModelPart(this, 15, 12);
 		eye2.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-		eye2.setRotationPoint(3F, -2F, -5F);
+		eye2.setPos(3F, -2F, -5F);
 
-		tooth1a = new ModelRenderer(this, 0, 0);
+		tooth1a = new ModelPart(this, 0, 0);
 		tooth1a.addBox(0F, -0.5F, -0F, 2, 1, 1);
-		tooth1a.setRotationPoint(9F, 0F, 0F);
+		tooth1a.setPos(9F, 0F, 0F);
 		setRotation(tooth1a, 0F, -0.5235987F, 0);
 
-		tooth1b = new ModelRenderer(this, 0, 0);
+		tooth1b = new ModelPart(this, 0, 0);
 		tooth1b.addBox(-2.5F, -0.5F, -0F, 2, 1, 1);
-		tooth1b.setRotationPoint(6F, 0F, 0F);
+		tooth1b.setPos(6F, 0F, 0F);
 		setRotation(tooth1b, 0F, 1.5707963F, 0);
 
-		tooth1c = new ModelRenderer(this, 0, 0);
+		tooth1c = new ModelPart(this, 0, 0);
 		tooth1c.addBox(-2.5F, -0.5F, -0F, 2, 1, 1);
-		tooth1c.setRotationPoint(3F, 0F, 0F);
+		tooth1c.setPos(3F, 0F, 0F);
 		setRotation(tooth1c, 0F, 1.5707963F, 0);
 
-		tooth2a = new ModelRenderer(this, 0, 0);
+		tooth2a = new ModelPart(this, 0, 0);
 		tooth2a.addBox(0F, -0.5F, -1F, 2, 1, 1);
-		tooth2a.setRotationPoint(9F, 0F, 0F);
+		tooth2a.setPos(9F, 0F, 0F);
 		setRotation(tooth2a, 0F, 0.5235987F, 0);
 
-		tooth2b = new ModelRenderer(this, 0, 0);
+		tooth2b = new ModelPart(this, 0, 0);
 		tooth2b.addBox(-2.5F, -0.5F, -1F, 2, 1, 1);
-		tooth2b.setRotationPoint(6F, 0F, 0F);
+		tooth2b.setPos(6F, 0F, 0F);
 		setRotation(tooth2b, 0F, -1.5707963F, 0);
 
-		tooth2c = new ModelRenderer(this, 0, 0);
+		tooth2c = new ModelPart(this, 0, 0);
 		tooth2c.addBox(-2.5F, -0.5F, -1F, 2, 1, 1);
-		tooth2c.setRotationPoint(3F, 0F, 0F);
+		tooth2c.setPos(3F, 0F, 0F);
 		setRotation(tooth2c, 0F, -1.5707963F, 0);
 
 		head.addChild(jaw1a);
@@ -189,7 +189,7 @@ public class PinchBeetleLegacyModel extends SegmentedModel<PinchBeetleEntity> {
 //	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(
 				thorax,
 				head,
@@ -205,69 +205,69 @@ public class PinchBeetleLegacyModel extends SegmentedModel<PinchBeetleEntity> {
 		);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
+	private void setRotation(ModelPart model, float x, float y, float z) {
+		model.xRot = x;
+		model.yRot = y;
+		model.zRot = z;
 	}
 
 	@Override
-	public void setRotationAngles(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
-		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
+	public void setupAnim(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		this.head.xRot = headPitch / (180F / (float) Math.PI);
 
 		float legZ = ((float) Math.PI / 11F);
-		this.Leg1.rotateAngleZ = -legZ;
-		this.Leg2.rotateAngleZ = legZ;
-		this.Leg3.rotateAngleZ = -legZ * 0.74F;
-		this.Leg4.rotateAngleZ = legZ * 0.74F;
-		this.Leg5.rotateAngleZ = -legZ;
-		this.Leg6.rotateAngleZ = legZ;
+		this.Leg1.zRot = -legZ;
+		this.Leg2.zRot = legZ;
+		this.Leg3.zRot = -legZ * 0.74F;
+		this.Leg4.zRot = legZ * 0.74F;
+		this.Leg5.zRot = -legZ;
+		this.Leg6.zRot = legZ;
 
 		float var9 = -0.0F;
 		float var10 = 0.3926991F;
-		this.Leg1.rotateAngleY = var10 * 2.0F + var9;
-		this.Leg2.rotateAngleY = -var10 * 2.0F - var9;
-		this.Leg3.rotateAngleY = var10 + var9;
-		this.Leg4.rotateAngleY = -var10 - var9;
-		this.Leg5.rotateAngleY = -var10 * 2.0F + var9;
-		this.Leg6.rotateAngleY = var10 * 2.0F - var9;
+		this.Leg1.yRot = var10 * 2.0F + var9;
+		this.Leg2.yRot = -var10 * 2.0F - var9;
+		this.Leg3.yRot = var10 + var9;
+		this.Leg4.yRot = -var10 - var9;
+		this.Leg5.yRot = -var10 * 2.0F + var9;
+		this.Leg6.yRot = var10 * 2.0F - var9;
 
-		float var11 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
-		float var12 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
-		float var14 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
+		float var11 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
+		float var12 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
+		float var14 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 
-		float var15 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
-		float var16 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
-		float var18 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
+		float var15 = Math.abs(Mth.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
+		float var16 = Math.abs(Mth.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
+		float var18 = Math.abs(Mth.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 
-		this.Leg1.rotateAngleY += var11;
-		this.Leg2.rotateAngleY += -var11;
-		this.Leg3.rotateAngleY += var12;
-		this.Leg4.rotateAngleY += -var12;
-		this.Leg5.rotateAngleY += var14;
-		this.Leg6.rotateAngleY += -var14;
+		this.Leg1.yRot += var11;
+		this.Leg2.yRot += -var11;
+		this.Leg3.yRot += var12;
+		this.Leg4.yRot += -var12;
+		this.Leg5.yRot += var14;
+		this.Leg6.yRot += -var14;
 
-		this.Leg1.rotateAngleZ += var15;
-		this.Leg2.rotateAngleZ += -var15;
+		this.Leg1.zRot += var15;
+		this.Leg2.zRot += -var15;
 
-		this.Leg3.rotateAngleZ += var16;
-		this.Leg4.rotateAngleZ += -var16;
+		this.Leg3.zRot += var16;
+		this.Leg4.zRot += -var16;
 
-		this.Leg5.rotateAngleZ += var18;
-		this.Leg6.rotateAngleZ += -var18;
+		this.Leg5.zRot += var18;
+		this.Leg6.zRot += -var18;
 	}
 
 	@Override
-	public void setLivingAnimations(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		if (entity.isBeingRidden()) {
+	public void prepareMobModel(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		if (entity.isVehicle()) {
 			// open jaws
-			this.jaw1a.rotateAngleY = 2.96705972839036F;
-			this.jaw2a.rotateAngleY = 0.3490658503988659F;
+			this.jaw1a.yRot = 2.96705972839036F;
+			this.jaw2a.yRot = 0.3490658503988659F;
 		} else {
 			// close jaws
-			this.jaw1a.rotateAngleY = 2.356194490192345F;
-			this.jaw2a.rotateAngleY = 0.7853981633974483F;
+			this.jaw1a.yRot = 2.356194490192345F;
+			this.jaw2a.yRot = 0.7853981633974483F;
 		}
 	}
 }

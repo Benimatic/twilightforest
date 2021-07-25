@@ -1,27 +1,27 @@
 package twilightforest.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 
 import javax.annotation.Nullable;
 
-public class KingSpiderEntity extends SpiderEntity {
+public class KingSpiderEntity extends Spider {
 
-	public KingSpiderEntity(EntityType<? extends KingSpiderEntity> type, World world) {
+	public KingSpiderEntity(EntityType<? extends KingSpiderEntity> type, Level world) {
 		super(type, world);
 	}
 
@@ -31,11 +31,11 @@ public class KingSpiderEntity extends SpiderEntity {
 		//this.goalSelector.addGoal(1, new EntityAITFChargeAttack(this, 0.4F));
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return SpiderEntity.func_234305_eI_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Spider.createAttributes()
+				.add(Attributes.MAX_HEALTH, 30.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.35D)
+				.add(Attributes.ATTACK_DAMAGE, 6.0D);
 	}
 	
 	@Override
@@ -59,20 +59,20 @@ public class KingSpiderEntity extends SpiderEntity {
 	   }
 
 	@Override
-	public boolean isOnLadder() {
+	public boolean onClimbable() {
 		// let's not climb
 		return false;
 	}
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
-		livingData = super.onInitialSpawn(worldIn, difficulty, reason, livingData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
+		livingData = super.finalizeSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
 		// will always have a dryad riding the spider or whatever is riding the spider
-		SkeletonDruidEntity druid = TFEntities.skeleton_druid.create(world);
-		druid.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
-		druid.onInitialSpawn(worldIn, difficulty, SpawnReason.JOCKEY, null, null);
+		SkeletonDruidEntity druid = TFEntities.skeleton_druid.create(level);
+		druid.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
+		druid.finalizeSpawn(worldIn, difficulty, MobSpawnType.JOCKEY, null, null);
 		Entity lastRider = this;
 		while (!lastRider.getPassengers().isEmpty())
 			lastRider = lastRider.getPassengers().get(0);
@@ -82,7 +82,7 @@ public class KingSpiderEntity extends SpiderEntity {
 	}
 
 	@Override
-	public double getMountedYOffset() {
-		return this.getHeight() * 0.75D;
+	public double getPassengersRidingOffset() {
+		return this.getBbHeight() * 0.75D;
 	}
 }

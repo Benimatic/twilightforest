@@ -1,13 +1,13 @@
 package twilightforest.enums;
 
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 
 import java.util.Locale;
 
-public enum Diagonals implements IStringSerializable {
+public enum Diagonals implements StringRepresentable {
     TOP_RIGHT   ((x, rX) -> rX - x, (y, rY) -> y     , true , false),
     BOTTOM_RIGHT((x, rX) -> rX - x, (y, rY) -> rY - y, false, false),
     BOTTOM_LEFT ((x, rX) -> x     , (y, rY) -> rY - y, false, true ),
@@ -129,7 +129,7 @@ public enum Diagonals implements IStringSerializable {
     }
 
     @Override
-    public String getString() {
+    public String getSerializedName() {
 		return name().toLowerCase(Locale.ROOT);
     }
 

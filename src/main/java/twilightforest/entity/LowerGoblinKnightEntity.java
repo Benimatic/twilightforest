@@ -1,24 +1,24 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
@@ -26,12 +26,26 @@ import twilightforest.entity.ai.RiderSpearAttackGoal;
 
 import javax.annotation.Nullable;
 
-public class LowerGoblinKnightEntity extends MonsterEntity {
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-	private static final DataParameter<Boolean> ARMOR = EntityDataManager.createKey(LowerGoblinKnightEntity.class, DataSerializers.BOOLEAN);
+public class LowerGoblinKnightEntity extends Monster {
+
+	private static final EntityDataAccessor<Boolean> ARMOR = SynchedEntityData.defineId(LowerGoblinKnightEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, AttributeModifier.Operation.ADDITION);
 
-	public LowerGoblinKnightEntity(EntityType<? extends LowerGoblinKnightEntity> type, World world) {
+	public LowerGoblinKnightEntity(EntityType<? extends LowerGoblinKnightEntity> type, Level world) {
 		super(type, world);
 		this.setHasArmor(true);
 	}
@@ -39,39 +53,39 @@ public class LowerGoblinKnightEntity extends MonsterEntity {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new RiderSpearAttackGoal(this));
-		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
-		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, 20.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.28D)
+				.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(ARMOR, false);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(ARMOR, false);
 	}
 
 	public boolean hasArmor() {
-		return dataManager.get(ARMOR);
+		return entityData.get(ARMOR);
 	}
 
 	private void setHasArmor(boolean flag) {
-		dataManager.set(ARMOR, flag);
+		entityData.set(ARMOR, flag);
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			if (flag) {
 				if (!getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(Attributes.ARMOR).applyNonPersistentModifier(ARMOR_MODIFIER);
+					getAttribute(Attributes.ARMOR).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
 				getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);
@@ -80,53 +94,53 @@ public class LowerGoblinKnightEntity extends MonsterEntity {
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putBoolean("hasArmor", this.hasArmor());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		this.setHasArmor(compound.getBoolean("hasArmor"));
 	}
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
-		livingData = super.onInitialSpawn(worldIn, difficulty, reason, livingData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
+		livingData = super.finalizeSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
-		UpperGoblinKnightEntity upper = new UpperGoblinKnightEntity(TFEntities.goblin_knight_upper, this.world);
-		upper.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
-		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag);
+		UpperGoblinKnightEntity upper = new UpperGoblinKnightEntity(TFEntities.goblin_knight_upper, this.level);
+		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
+		upper.finalizeSpawn(worldIn, difficulty, MobSpawnType.NATURAL, livingData, dataTag);
 		upper.startRiding(this);
 
 		return livingData;
 	}
 
 	@Override
-	public double getMountedYOffset() {
+	public double getPassengersRidingOffset() {
 		return 1.0D;
 	}
 
 	@Override
-	public void updateAITasks() {
-		if (isBeingRidden() && getPassengers().get(0) instanceof LivingEntity && this.getAttackTarget() == null) {
-			this.setAttackTarget(((MobEntity) this.getPassengers().get(0)).getAttackTarget());
+	public void customServerAiStep() {
+		if (isVehicle() && getPassengers().get(0) instanceof LivingEntity && this.getTarget() == null) {
+			this.setTarget(((Mob) this.getPassengers().get(0)).getTarget());
 		}
-		if(getAttackTarget() instanceof PlayerEntity && ((PlayerEntity)getAttackTarget()).abilities.disableDamage) {
-			this.setAttackTarget(null);
+		if(getTarget() instanceof Player && ((Player)getTarget()).abilities.invulnerable) {
+			this.setTarget(null);
 		}
-		super.updateAITasks();
+		super.customServerAiStep();
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entity) {
+	public boolean doHurtTarget(Entity entity) {
 
-		if (isBeingRidden() && getPassengers().get(0) instanceof LivingEntity) {
-			return ((LivingEntity) this.getPassengers().get(0)).attackEntityAsMob(entity);
+		if (isVehicle() && getPassengers().get(0) instanceof LivingEntity) {
+			return ((LivingEntity) this.getPassengers().get(0)).doHurtTarget(entity);
 		} else {
-			return super.attackEntityAsMob(entity);
+			return super.doHurtTarget(entity);
 		}
 
 	}
@@ -134,44 +148,44 @@ public class LowerGoblinKnightEntity extends MonsterEntity {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT : TFSounds.GOBLIN_KNIGHT_AMBIENT;
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT : TFSounds.GOBLIN_KNIGHT_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH : TFSounds.GOBLIN_KNIGHT_DEATH;
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH : TFSounds.GOBLIN_KNIGHT_DEATH;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT : TFSounds.GOBLIN_KNIGHT_HURT;
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT : TFSounds.GOBLIN_KNIGHT_HURT;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean hurt(DamageSource source, float amount) {
 		// check the angle of attack, if applicable
 		Entity attacker = null;
-		if (source.getTrueSource() != null) {
-			attacker = source.getTrueSource();
+		if (source.getEntity() != null) {
+			attacker = source.getEntity();
 		}
 
-		if (source.getTrueSource() != null) {
-			attacker = source.getTrueSource();
+		if (source.getEntity() != null) {
+			attacker = source.getEntity();
 		}
 
 		if (attacker != null && !source.isCreativePlayer()) {
 			// determine angle
 
-			double dx = this.getPosX() - attacker.getPosX();
-			double dz = this.getPosZ() - attacker.getPosZ();
+			double dx = this.getX() - attacker.getX();
+			double dz = this.getZ() - attacker.getZ();
 			float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
-			float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);
+			float difference = Mth.abs((this.yBodyRot - angle) % 360);
 
 			// shield?
 			UpperGoblinKnightEntity upper = null;
 
-			if (isBeingRidden() && getPassengers().get(0) instanceof UpperGoblinKnightEntity) {
+			if (isVehicle() && getPassengers().get(0) instanceof UpperGoblinKnightEntity) {
 				upper = (UpperGoblinKnightEntity) this.getPassengers().get(0);
 			}
 
@@ -187,24 +201,24 @@ public class LowerGoblinKnightEntity extends MonsterEntity {
 			}
 		}
 
-		return super.attackEntityFrom(source, amount);
+		return super.hurt(source, amount);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == 5) {
 			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);
-			this.renderBrokenItemStack(broken);
-			this.renderBrokenItemStack(broken);
-			this.renderBrokenItemStack(broken);
+			this.breakItem(broken);
+			this.breakItem(broken);
+			this.breakItem(broken);
 		} else {
-			super.handleStatusUpdate(id);
+			super.handleEntityEvent(id);
 		}
 	}
 
 	private void breakArmor() {
-		world.setEntityState(this, (byte) 5);
+		level.broadcastEntityEvent(this, (byte) 5);
 		this.setHasArmor(false);
 	}
 }

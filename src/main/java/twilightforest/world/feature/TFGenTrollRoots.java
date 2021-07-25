@@ -1,33 +1,33 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TrollRootBlock;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-public class TFGenTrollRoots extends Feature<NoFeatureConfig> {
+public class TFGenTrollRoots extends Feature<NoneFeatureConfiguration> {
 
-	public TFGenTrollRoots(Codec<NoFeatureConfig> config) {
+	public TFGenTrollRoots(Codec<NoneFeatureConfiguration> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
 		int copyX = pos.getX();
 		int copyZ = pos.getZ();
 
-		for (; pos.getY() > 5; pos = pos.down()) {
-			if (world.isAirBlock(pos) && TrollRootBlock.canPlaceRootBelow(world, pos.up()) && random.nextInt(6) > 0) {
+		for (; pos.getY() > 5; pos = pos.below()) {
+			if (world.isEmptyBlock(pos) && TrollRootBlock.canPlaceRootBelow(world, pos.above()) && random.nextInt(6) > 0) {
 				if (random.nextInt(10) == 0) {
-					world.setBlockState(pos, TFBlocks.unripe_trollber.get().getDefaultState(), 16 | 2);
+					world.setBlock(pos, TFBlocks.unripe_trollber.get().defaultBlockState(), 16 | 2);
 				} else {
-					world.setBlockState(pos, TFBlocks.trollvidr.get().getDefaultState(), 16 | 2);
+					world.setBlock(pos, TFBlocks.trollvidr.get().defaultBlockState(), 16 | 2);
 				}
 			} else {
 				pos = new BlockPos(

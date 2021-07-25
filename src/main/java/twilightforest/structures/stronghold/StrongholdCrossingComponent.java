@@ -1,19 +1,19 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class StrongholdCrossingComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdCrossingComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdCrossingComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSCr, nbt);
 	}
 
@@ -30,13 +30,13 @@ public class StrongholdCrossingComponent extends StructureTFStrongholdComponent 
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 18, 7, 18, facing);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		this.addDoor(13, 1, 0);
 		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 18);
@@ -45,7 +45,7 @@ public class StrongholdCrossingComponent extends StructureTFStrongholdComponent 
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
 
 		// statues
@@ -73,18 +73,18 @@ public class StrongholdCrossingComponent extends StructureTFStrongholdComponent 
 		return true;
 	}
 
-	private void placeTableAndChairs(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
+	private void placeTableAndChairs(WorldGenLevel world, BoundingBox sbb, Rotation rotation) {
 		// table
-		BlockState oakStairs = Blocks.OAK_STAIRS.getDefaultState();
+		BlockState oakStairs = Blocks.OAK_STAIRS.defaultBlockState();
 
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.NONE.rotate(Direction.WEST), true), 5, 1, 3, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), true), 5, 1, 4, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_90.rotate(Direction.WEST), true), 6, 1, 3, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_180.rotate(Direction.WEST), true), 6, 1, 4, rotation, sbb);
 		// chairs
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST)), 5, 1, 2, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.NONE.rotate(Direction.WEST)), 7, 1, 3, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.CLOCKWISE_90.rotate(Direction.WEST)), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.CLOCKWISE_180.rotate(Direction.WEST)), 4, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST)), 5, 1, 2, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Rotation.NONE.rotate(Direction.WEST)), 7, 1, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Rotation.CLOCKWISE_90.rotate(Direction.WEST)), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Rotation.CLOCKWISE_180.rotate(Direction.WEST)), 4, 1, 4, rotation, sbb);
 	}
 }

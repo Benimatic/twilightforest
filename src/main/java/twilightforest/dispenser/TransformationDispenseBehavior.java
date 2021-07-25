@@ -1,16 +1,16 @@
 package twilightforest.dispenser;
 
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.BlockSource;
 import net.minecraft.entity.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
@@ -20,43 +20,49 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+
 public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior {
 
     boolean fired = false;
     private final Map<EntityType<?>, EntityType<?>> transformMap = new HashMap<>();
 
     @Override
-    protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+    protected ItemStack execute(BlockSource source, ItemStack stack) {
         this.initTransformations();
-        World world = source.getWorld();
+        Level world = source.getLevel();
         Random random = world.getRandom();
-        BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
-       if(!world.isRemote) {
-           for (LivingEntity livingentity : world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(blockpos), EntityPredicates.NOT_SPECTATING)) {
+        BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+       if(!world.isClientSide) {
+           for (LivingEntity livingentity : world.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos), EntitySelector.NO_SPECTATORS)) {
                if(transformMap.containsValue(livingentity.getType())) {
                    EntityType<?> type = transformMap.get(livingentity.getType());
                    Entity newEntity = type.create(world);
                    if(type != null && newEntity != null) {
-                       newEntity.setLocationAndAngles(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ(), livingentity.rotationYaw, livingentity.rotationPitch);
-                       if (newEntity instanceof MobEntity && livingentity.world instanceof IServerWorld) {
-                           IServerWorld sworld = (IServerWorld) livingentity.world;
-                           ((MobEntity) newEntity).onInitialSpawn(sworld, livingentity.world.getDifficultyForLocation(livingentity.getPosition()), SpawnReason.CONVERSION, null, null);
+                       newEntity.moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity.yRot, livingentity.xRot);
+                       if (newEntity instanceof Mob && livingentity.level instanceof ServerLevelAccessor) {
+                           ServerLevelAccessor sworld = (ServerLevelAccessor) livingentity.level;
+                           ((Mob) newEntity).finalizeSpawn(sworld, livingentity.level.getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
                        }
 
                        try {
-                           UUID uuid = newEntity.getUniqueID();
-                           newEntity.read(livingentity.writeWithoutTypeId(newEntity.writeWithoutTypeId(new CompoundNBT())));
-                           newEntity.setUniqueId(uuid);
+                           UUID uuid = newEntity.getUUID();
+                           newEntity.load(livingentity.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
+                           newEntity.setUUID(uuid);
                        } catch (Exception e) {
                            TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
                        }
 
-                       livingentity.world.addEntity(newEntity);
+                       livingentity.level.addFreshEntity(newEntity);
                        livingentity.remove();
 
-                       if (livingentity instanceof MobEntity) {
-                           ((MobEntity) livingentity).spawnExplosionParticle();
-                           ((MobEntity) livingentity).spawnExplosionParticle();
+                       if (livingentity instanceof Mob) {
+                           ((Mob) livingentity).spawnAnim();
+                           ((Mob) livingentity).spawnAnim();
                        }
                        livingentity.playSound(TFSounds.POWDER_USE, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
                        stack.shrink(1);
@@ -69,11 +75,11 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
     }
 
     @Override
-    protected void playDispenseSound(IBlockSource source) {
+    protected void playSound(BlockSource source) {
         if(fired) {
-            super.playDispenseSound(source);
+            super.playSound(source);
         } else {
-            source.getWorld().playEvent(1001, source.getBlockPos(), 0);
+            source.getLevel().levelEvent(1001, source.getPos(), 0);
         }
     }
 

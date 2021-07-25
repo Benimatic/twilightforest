@@ -1,29 +1,29 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
@@ -137,13 +137,13 @@ public enum TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+		protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.lichtower", 4);
 
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.valueOf("Notes on a Pointy Tower"));
+			book.addTagElement("pages", bookPages);
+			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+			book.addTagElement("title", StringTag.valueOf("Notes on a Pointy Tower"));
 		}
 
 		@Override
@@ -159,13 +159,13 @@ public enum TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+		protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.icetower", 3);
 
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.valueOf("Notes on Auroral Fortification"));
+			book.addTagElement("pages", bookPages);
+			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+			book.addTagElement("title", StringTag.valueOf("Notes on Auroral Fortification"));
 		}
 
 		@Override
@@ -193,13 +193,13 @@ public enum TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+		protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.hydralair", 4);
 
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.valueOf("Notes on the Fire Swamp"));
+			book.addTagElement("pages", bookPages);
+			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+			book.addTagElement("title", StringTag.valueOf("Notes on the Fire Swamp"));
 		}
 
 		@Override
@@ -222,13 +222,13 @@ public enum TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+		protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.labyrinth", 5);
 
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.valueOf("Notes on a Swampy Labyrinth"));
+			book.addTagElement("pages", bookPages);
+			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+			book.addTagElement("title", StringTag.valueOf("Notes on a Swampy Labyrinth"));
 		}
 
 		@Override
@@ -237,8 +237,8 @@ public enum TFFeature {
 		}
 
 		@Override
-		public GenerationStage.Decoration getDecorationStage() {
-			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
+		public GenerationStep.Decoration getDecorationStage() {
+			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	},
 	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
@@ -258,13 +258,13 @@ public enum TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+		protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.darktower", 3);
 
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.valueOf("Notes on a Wooden Tower"));
+			book.addTagElement("pages", bookPages);
+			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+			book.addTagElement("title", StringTag.valueOf("Notes on a Wooden Tower"));
 		}
 
 		@Override
@@ -287,13 +287,13 @@ public enum TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+		protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.tfstronghold", 5);
 
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.valueOf("Notes on a Stronghold"));
+			book.addTagElement("pages", bookPages);
+			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+			book.addTagElement("title", StringTag.valueOf("Notes on a Stronghold"));
 		}
 
 		@Override
@@ -302,8 +302,8 @@ public enum TFFeature {
 		}
 
 		@Override
-		public GenerationStage.Decoration getDecorationStage() {
-			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
+		public GenerationStep.Decoration getDecorationStage() {
+			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	},
 	WORLD_TREE ( 3, "world_tree", false ) { { this.disableStructure(); } },
@@ -315,13 +315,13 @@ public enum TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+		protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.yeticave", 3);
 
-			book.setTagInfo("pages" , bookPages);
-			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-			book.setTagInfo("title" , StringNBT.valueOf("Notes on an Icy Cave"));
+			book.addTagElement("pages" , bookPages);
+			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+			book.addTagElement("title" , StringTag.valueOf("Notes on an Icy Cave"));
 		}
 
 		@Override
@@ -344,18 +344,18 @@ public enum TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+		protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.trollcave", 3);
 
-			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.valueOf("Notes on the Highlands"));
+			book.addTagElement("pages", bookPages);
+			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+			book.addTagElement("title", StringTag.valueOf("Notes on the Highlands"));
 		}
 
 		@Override
-		public GenerationStage.Decoration getDecorationStage() {
-			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
+		public GenerationStep.Decoration getDecorationStage() {
+			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
 		}
 
 		@Override
@@ -395,25 +395,25 @@ public enum TFFeature {
 	};
 
 	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFFeature>()
-		.put(BiomeKeys.DARK_FOREST.getLocation(), KNIGHT_STRONGHOLD)
-		.put(BiomeKeys.DARK_FOREST_CENTER.getLocation(), DARK_TOWER)
-		.put(BiomeKeys.DENSE_MUSHROOM_FOREST.getLocation(), MUSHROOM_TOWER)
-		.put(BiomeKeys.ENCHANTED_FOREST.getLocation(), QUEST_GROVE)
-		.put(BiomeKeys.FINAL_PLATEAU.getLocation(), FINAL_CASTLE)
-		.put(BiomeKeys.FIRE_SWAMP.getLocation(), HYDRA_LAIR)
-		.put(BiomeKeys.GLACIER.getLocation(), ICE_TOWER)
-		.put(BiomeKeys.HIGHLANDS.getLocation(), TROLL_CAVE)
-		.put(BiomeKeys.SNOWY_FOREST.getLocation(), YETI_CAVE)
-		.put(BiomeKeys.SWAMP.getLocation(), LABYRINTH)
-		.put(BiomeKeys.LAKE.getLocation(), QUEST_ISLAND)
+		.put(BiomeKeys.DARK_FOREST.location(), KNIGHT_STRONGHOLD)
+		.put(BiomeKeys.DARK_FOREST_CENTER.location(), DARK_TOWER)
+		.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
+		.put(BiomeKeys.ENCHANTED_FOREST.location(), QUEST_GROVE)
+		.put(BiomeKeys.FINAL_PLATEAU.location(), FINAL_CASTLE)
+		.put(BiomeKeys.FIRE_SWAMP.location(), HYDRA_LAIR)
+		.put(BiomeKeys.GLACIER.location(), ICE_TOWER)
+		.put(BiomeKeys.HIGHLANDS.location(), TROLL_CAVE)
+		.put(BiomeKeys.SNOWY_FOREST.location(), YETI_CAVE)
+		.put(BiomeKeys.SWAMP.location(), LABYRINTH)
+		.put(BiomeKeys.LAKE.location(), QUEST_ISLAND)
 		.build();
 
 	//IStructurePieceTypes that can be referred to
-	public static final IStructurePieceType TFHill = registerPiece("TFHill", HollowHillComponent::new);
-	public static final IStructurePieceType TFHedge = registerPiece("TFHedge", HedgeMazeComponent::new);
-	public static final IStructurePieceType TFQuest1 = registerPiece("TFQuest1", QuestGroveComponent::new);
-	public static final IStructurePieceType TFHydra = registerPiece("TFHydra", HydraLairComponent::new);
-	public static final IStructurePieceType TFYeti = registerPiece("TFYeti", YetiCaveComponent::new);
+	public static final StructurePieceType TFHill = registerPiece("TFHill", HollowHillComponent::new);
+	public static final StructurePieceType TFHedge = registerPiece("TFHedge", HedgeMazeComponent::new);
+	public static final StructurePieceType TFQuest1 = registerPiece("TFQuest1", QuestGroveComponent::new);
+	public static final StructurePieceType TFHydra = registerPiece("TFHydra", HydraLairComponent::new);
+	public static final StructurePieceType TFYeti = registerPiece("TFYeti", YetiCaveComponent::new);
 
 	public final int size;
 	public final String name;
@@ -424,9 +424,9 @@ public enum TFFeature {
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 
-	private List<List<MobSpawnInfo.Spawners>> spawnableMonsterLists;
-	private List<MobSpawnInfo.Spawners> ambientCreatureList;
-	private List<MobSpawnInfo.Spawners> waterCreatureList;
+	private List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists;
+	private List<MobSpawnSettings.SpawnerData> ambientCreatureList;
+	private List<MobSpawnSettings.SpawnerData> waterCreatureList;
 
 	private long lastSpawnedHintMonsterTime;
 
@@ -451,7 +451,7 @@ public enum TFFeature {
 		 this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
 
-		if(!name.equals("hydra_lair")) ambientCreatureList.add(new MobSpawnInfo.Spawners(EntityType.BAT, 10, 8, 8));
+		if(!name.equals("hydra_lair")) ambientCreatureList.add(new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
 
 		this.requiredAdvancements = requiredAdvancements;
 
@@ -499,11 +499,11 @@ public enum TFFeature {
 		return id < VALUES.length ? VALUES[id] : NOTHING;
 	}
 
-	public static int getFeatureID(int mapX, int mapZ, ISeedReader world) {
+	public static int getFeatureID(int mapX, int mapZ, WorldGenLevel world) {
 		return getFeatureAt(mapX, mapZ, world).ordinal();
 	}
 
-	public static TFFeature getFeatureAt(int mapX, int mapZ, ISeedReader world) {
+	public static TFFeature getFeatureAt(int mapX, int mapZ, WorldGenLevel world) {
 		return generateFeature(mapX >> 4, mapZ >> 4, world);
 	}
 
@@ -556,7 +556,7 @@ public enum TFFeature {
 	 * Add a monster to a specific spawn list
 	 */
 	public TFFeature addMonster(int listIndex, EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
-		List<MobSpawnInfo.Spawners> monsterList;
+		List<MobSpawnSettings.SpawnerData> monsterList;
 		if (this.spawnableMonsterLists.size() > listIndex) {
 			monsterList = this.spawnableMonsterLists.get(listIndex);
 		} else {
@@ -564,7 +564,7 @@ public enum TFFeature {
 			this.spawnableMonsterLists.add(listIndex, monsterList);
 		}
 
-		monsterList.add(new MobSpawnInfo.Spawners(monsterClass, weight, minGroup, maxGroup));
+		monsterList.add(new MobSpawnSettings.SpawnerData(monsterClass, weight, minGroup, maxGroup));
 		return this;
 	}
 
@@ -572,14 +572,14 @@ public enum TFFeature {
 	 * Add a water creature
 	 */
 	public TFFeature addWaterCreature(EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
-		this.waterCreatureList.add(new MobSpawnInfo.Spawners(monsterClass, weight, minGroup, maxGroup));
+		this.waterCreatureList.add(new MobSpawnSettings.SpawnerData(monsterClass, weight, minGroup, maxGroup));
 		return this;
 	}
 
 	/**
 	 * @return The type of feature directly at the specified Chunk coordinates
 	 */
-	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, ISeedReader world) {
+	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, WorldGenLevel world) {
 		if (isInFeatureChunk(chunkX << 4, chunkZ << 4)) {
 			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 		}
@@ -590,7 +590,7 @@ public enum TFFeature {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
-	public static TFFeature generateFeature(int chunkX, int chunkZ, ISeedReader world) {
+	public static TFFeature generateFeature(int chunkX, int chunkZ, WorldGenLevel world) {
 		// set the chunkX and chunkZ to the center of the biome
 		chunkX = Math.round(chunkX / 16F) * 16;
 		chunkZ = Math.round(chunkZ / 16F) * 16;
@@ -660,7 +660,7 @@ public enum TFFeature {
 	/**
 	 * Returns the feature nearest to the specified chunk coordinates.
 	 */
-	public static TFFeature getNearestFeature(int cx, int cz, ISeedReader world) {
+	public static TFFeature getNearestFeature(int cx, int cz, WorldGenLevel world) {
 		return getNearestFeature(cx, cz, world, null);
 	}
 
@@ -671,7 +671,7 @@ public enum TFFeature {
 	 * it will be set to relative block coordinates indicating the center of
 	 * that feature relative to the current chunk block coordinate system.
 	 */
-	public static TFFeature getNearestFeature(int cx, int cz, ISeedReader world, @Nullable IntPair center) {
+	public static TFFeature getNearestFeature(int cx, int cz, WorldGenLevel world, @Nullable IntPair center) {
 
 		int diam = maxSize * 2 + 1;
 		TFFeature[] features = new TFFeature[diam * diam];
@@ -703,7 +703,7 @@ public enum TFFeature {
 	// [Vanilla Copy] from MapGenStructure#findNearestStructurePosBySpacing; changed 2nd param to be TFFeature instead of MapGenStructure
 	//TODO: Second parameter doesn't exist in Structure.findNearest
 	@Nullable
-	public static BlockPos findNearestFeaturePosBySpacing(ISeedReader worldIn, TFFeature feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
+	public static BlockPos findNearestFeaturePosBySpacing(WorldGenLevel worldIn, TFFeature feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
 		int i = blockPos.getX() >> 4;
 		int j = blockPos.getZ() >> 4;
 		int k = 0;
@@ -746,8 +746,8 @@ public enum TFFeature {
 						random.nextInt();
 
 						// Check changed for TFFeature
-						if (getFeatureAt(l1 << 4, i2 << 4, worldIn.getWorld()) == feature) {
-							if (!findUnexplored || !worldIn.chunkExists(l1, i2)) {
+						if (getFeatureAt(l1 << 4, i2 << 4, worldIn.getLevel()) == feature) {
+							if (!findUnexplored || !worldIn.hasChunk(l1, i2)) {
 								return new BlockPos((l1 << 4) + 8, 64, (i2 << 4) + 8);
 							}
 						} else if (k == 0) {
@@ -768,7 +768,7 @@ public enum TFFeature {
 	/**
 	 * @return The feature in the chunk "region"
 	 */
-	public static TFFeature getFeatureForRegion(int chunkX, int chunkZ, ISeedReader world) {
+	public static TFFeature getFeatureForRegion(int chunkX, int chunkZ, WorldGenLevel world) {
 		//just round to the nearest multiple of 16 chunks?
 		int featureX = Math.round(chunkX / 16F) * 16;
 		int featureZ = Math.round(chunkZ / 16F) * 16;
@@ -779,7 +779,7 @@ public enum TFFeature {
 	/**
 	 * @return The feature in the chunk "region"
 	 */
-	public static TFFeature getFeatureForRegionPos(int posX, int posZ, ISeedReader world) {
+	public static TFFeature getFeatureForRegionPos(int posX, int posZ, WorldGenLevel world) {
 		return getFeatureForRegion(posX >> 4, posZ >> 4, world);
 	}
 
@@ -825,8 +825,8 @@ public enum TFFeature {
 		return new BlockPos(ccx, 31, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ; FIXME (set sea level hard)
 	}
 
-	public List<MobSpawnInfo.Spawners> getCombinedMonsterSpawnableList() {
-		List<MobSpawnInfo.Spawners> list = new ArrayList<>();
+	public List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList() {
+		List<MobSpawnSettings.SpawnerData> list = new ArrayList<>();
 		spawnableMonsterLists.forEach(l -> {
 			if(l != null)
 				list.addAll(l);
@@ -834,8 +834,8 @@ public enum TFFeature {
 		return list;
 	}
 
-	public List<MobSpawnInfo.Spawners> getCombinedCreatureSpawnableList() {
-		List<MobSpawnInfo.Spawners> list = new ArrayList<>();
+	public List<MobSpawnSettings.SpawnerData> getCombinedCreatureSpawnableList() {
+		List<MobSpawnSettings.SpawnerData> list = new ArrayList<>();
 		list.addAll(ambientCreatureList);
 		list.addAll(waterCreatureList);
 		return list;
@@ -844,7 +844,7 @@ public enum TFFeature {
 	/**
 	 * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
 	 */
-	public List<MobSpawnInfo.Spawners> getSpawnableList(EntityClassification creatureType) {
+	public List<MobSpawnSettings.SpawnerData> getSpawnableList(MobCategory creatureType) {
 		switch (creatureType) {
 			case MONSTER:
 				return this.getSpawnableMonsterList(0);
@@ -860,28 +860,28 @@ public enum TFFeature {
 	/**
 	 * Returns a list of hostile monsters in the specified indexed category
 	 */
-	public List<MobSpawnInfo.Spawners> getSpawnableMonsterList(int index) {
+	public List<MobSpawnSettings.SpawnerData> getSpawnableMonsterList(int index) {
 		if (index >= 0 && index < this.spawnableMonsterLists.size()) {
 			return this.spawnableMonsterLists.get(index);
 		}
 		return new ArrayList<>();
 	}
 
-	public boolean doesPlayerHaveRequiredAdvancements(PlayerEntity player) {
+	public boolean doesPlayerHaveRequiredAdvancements(Player player) {
 		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
 	}
 
 	/**
 	 * Try to spawn a hint monster near the specified player
 	 */
-	public void trySpawnHintMonster(World world, PlayerEntity player) {
-		this.trySpawnHintMonster(world, player, player.getPosition());
+	public void trySpawnHintMonster(Level world, Player player) {
+		this.trySpawnHintMonster(world, player, player.blockPosition());
 	}
 
 	/**
 	 * Try several times to spawn a hint monster
 	 */
-	public void trySpawnHintMonster(World world, PlayerEntity player, BlockPos pos) {
+	public void trySpawnHintMonster(Level world, Player player, BlockPos pos) {
 		// check if the timer is valid
 		long currentTime = world.getGameTime();
 
@@ -906,27 +906,27 @@ public enum TFFeature {
 	 * <p>
 	 * We could change up the monster depending on what feature this is, but we currently are not doing that
 	 */
-	private boolean didSpawnHintMonster(World world, PlayerEntity player, BlockPos pos) {
+	private boolean didSpawnHintMonster(Level world, Player player, BlockPos pos) {
 		// find a target point
-		int dx = world.rand.nextInt(16) - world.rand.nextInt(16);
-		int dy = world.rand.nextInt( 4) - world.rand.nextInt( 4);
-		int dz = world.rand.nextInt(16) - world.rand.nextInt(16);
+		int dx = world.random.nextInt(16) - world.random.nextInt(16);
+		int dy = world.random.nextInt( 4) - world.random.nextInt( 4);
+		int dz = world.random.nextInt(16) - world.random.nextInt(16);
 
 		// make our hint monster
 		KoboldEntity hinty = new KoboldEntity(TFEntities.kobold, world);
-		hinty.moveToBlockPosAndAngles(pos.add(dx, dy, dz), 0f, 0f);
+		hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear
-		if (hinty.isNotColliding(world) && hinty.getEntitySenses().canSee(player)) {
+		if (hinty.checkSpawnObstruction(world) && hinty.getSensing().canSee(player)) {
 
 			// add items and hint book
 			ItemStack book = this.createHintBook();
 
-			hinty.setItemStackToSlot(EquipmentSlotType.MAINHAND, book);
-			hinty.setDropChance(EquipmentSlotType.MAINHAND, 1.0F);
+			hinty.setItemSlot(EquipmentSlot.MAINHAND, book);
+			hinty.setDropChance(EquipmentSlot.MAINHAND, 1.0F);
 			//hinty.setDropItemsWhenDead(true);
 
-			world.addEntity(hinty);
+			world.addFreshEntity(hinty);
 			return true;
 		}
 
@@ -938,17 +938,17 @@ public enum TFFeature {
 	 */
 	public ItemStack createHintBook() {
 		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-		this.addBookInformation(book, new ListNBT());
+		this.addBookInformation(book, new ListTag());
 		return book;
 	}
 
-	protected void addBookInformation(ItemStack book, ListNBT bookPages) {
+	protected void addBookInformation(ItemStack book, ListTag bookPages) {
 
 		addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.unknown", 2);
 
-		book.setTagInfo("pages", bookPages);
-		book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
-		book.setTagInfo("title", StringNBT.valueOf("Notes on the Unexplained"));
+		book.addTagElement("pages", bookPages);
+		book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
+		book.addTagElement("title", StringTag.valueOf("Notes on the Unexplained"));
 	}
 
 	@Nullable
@@ -956,21 +956,21 @@ public enum TFFeature {
 		return null;
 	}
 
-	public GenerationStage.Decoration getDecorationStage() {
-		return GenerationStage.Decoration.SURFACE_STRUCTURES;
+	public GenerationStep.Decoration getDecorationStage() {
+		return GenerationStep.Decoration.SURFACE_STRUCTURES;
 	}
 
-	private static void addTranslatedPages(ListNBT bookPages, String translationKey, int pageCount) {
+	private static void addTranslatedPages(ListTag bookPages, String translationKey, int pageCount) {
 		for (int i = 1; i <= pageCount; i++) {
-			bookPages.add(StringNBT.valueOf(ITextComponent.Serializer.toJson(new TranslationTextComponent(translationKey + "." + i))));
+			bookPages.add(StringTag.valueOf(Component.Serializer.toJson(new TranslatableComponent(translationKey + "." + i))));
 		}
 	}
 
-	public static IStructurePieceType registerPiece(String name, IStructurePieceType piece) {
+	public static StructurePieceType registerPiece(String name, StructurePieceType piece) {
 		return Registry.register(Registry.STRUCTURE_PIECE, TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)), piece);
 	}
 
-	public final MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable Direction dir) {
+	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable Direction dir) {
 		if(centerBounds) {
 			x += (maxX + minX) / 4;
 			y += (maxY + minY) / 4;
@@ -980,16 +980,16 @@ public enum TFFeature {
 
 			case SOUTH: // '\0'
 			default:
-				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+				return new BoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
 			case WEST: // '\001'
-				return new MutableBoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
+				return new BoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
 
 			case NORTH: // '\002'
-				return new MutableBoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
+				return new BoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
 
 			case EAST: // '\003'
-				return new MutableBoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
+				return new BoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
 		}
 	}
 }

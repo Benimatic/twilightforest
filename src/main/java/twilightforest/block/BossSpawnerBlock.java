@@ -1,22 +1,24 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import twilightforest.enums.BossVariant;
 
 import javax.annotation.Nullable;
+
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class BossSpawnerBlock extends Block {
 
 	private final BossVariant boss;
 
-	protected BossSpawnerBlock(Block.Properties props, BossVariant variant) {
+	protected BossSpawnerBlock(BlockBehaviour.Properties props, BossVariant variant) {
 		super(props);
 		boss = variant;
 	}
@@ -28,12 +30,12 @@ public class BossSpawnerBlock extends Block {
 
 	@Override
 	@Nullable
-	public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter reader) {
 		return boss.getSpawner();
 	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
-		return state.getBlockHardness(world, pos) >= 0f;
+	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
+		return state.getDestroySpeed(world, pos) >= 0f;
 	}
 }

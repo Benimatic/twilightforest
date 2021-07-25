@@ -1,15 +1,15 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -21,7 +21,7 @@ import java.util.Random;
 public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	@SuppressWarnings("unused")
-	public FinalCastleBossGazeboComponent(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleBossGazeboComponent(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCBoGaz, nbt);
 	}
 
@@ -29,28 +29,28 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		super(FinalCastlePieces.TFFCBoGaz, feature, i);
 		this.spawnListIndex = -1; // no monsters
 
-		this.setCoordBaseMode(keep.getCoordBaseMode());
-		this.boundingBox = new MutableBoundingBox(keep.getBoundingBox().minX + 14, keep.getBoundingBox().maxY + 2, keep.getBoundingBox().minZ + 14, keep.getBoundingBox().maxX - 14, keep.getBoundingBox().maxY + 13, keep.getBoundingBox().maxZ - 14);
+		this.setOrientation(keep.getOrientation());
+		this.boundingBox = new BoundingBox(keep.getBoundingBox().x0 + 14, keep.getBoundingBox().y1 + 2, keep.getBoundingBox().z0 + 14, keep.getBoundingBox().x1 - 14, keep.getBoundingBox().y1 + 13, keep.getBoundingBox().z1 - 14);
 
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.castle_rune_brick_blue.get().getDefaultState();
+		this.deco.blockState = TFBlocks.castle_rune_brick_blue.get().defaultBlockState();
 
-		this.deco.fenceState = TFBlocks.force_field_purple.get().getDefaultState();
+		this.deco.fenceState = TFBlocks.force_field_purple.get().defaultBlockState();
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// walls
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			this.fillBlocksRotated(world, sbb, 0, 0, 0, 0, 10, 20, deco.fenceState, rotation);
 		}
 
 		// roof
-		this.fillWithBlocks(world, sbb, 0, 11, 0, 20, 11, 20, deco.fenceState, deco.fenceState, false);
+		this.generateBox(world, sbb, 0, 11, 0, 20, 11, 20, deco.fenceState, deco.fenceState, false);
 
 		//this.placeSignAtCurrentPosition(world, 10, 0, 10, sbb, "Final Boss Here", "You win!", "discord.gg/6v3z26B");
 
@@ -60,7 +60,7 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "the latest updates on this castle and other content at:",true, 0.7f);
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "discord.experiment115.com", true, 0.4f);
 
-		setBlockState(world, TFBlocks.boss_spawner_final_boss.get().getDefaultState(), 10, 1, 10, sbb);
+		placeBlock(world, TFBlocks.boss_spawner_final_boss.get().defaultBlockState(), 10, 1, 10, sbb);
 
 		return true;
 	}

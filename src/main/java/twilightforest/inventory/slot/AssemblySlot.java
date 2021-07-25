@@ -1,11 +1,11 @@
 package twilightforest.inventory.slot;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
 
 public class AssemblySlot extends Slot {
 
-	public AssemblySlot(IInventory assemblyMatrix, int slotNum, int x, int y) {
+	public AssemblySlot(Container assemblyMatrix, int slotNum, int x, int y) {
 		super(assemblyMatrix, slotNum, x, y);
 	}
 }

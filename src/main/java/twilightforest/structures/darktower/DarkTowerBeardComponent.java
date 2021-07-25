@@ -1,14 +1,14 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -21,7 +21,7 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	protected int size;
 	protected int height;
 
-	public DarkTowerBeardComponent(TemplateManager manager, CompoundNBT nbt) {
+	public DarkTowerBeardComponent(StructureManager manager, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBea, nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
@@ -30,17 +30,17 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	public DarkTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing) {
 		super(DarkTowerPieces.TFDTBea, feature, i);
 
-		this.setCoordBaseMode(wing.getCoordBaseMode());
+		this.setOrientation(wing.getOrientation());
 		this.size = wing.size;
 		this.height = size / 2;
 
 		// just hang out at the very bottom of the tower
-		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0, wing.getBoundingBox().y0 - this.height, wing.getBoundingBox().z0, wing.getBoundingBox().x1, wing.getBoundingBox().y0, wing.getBoundingBox().z1);
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 
 		tagCompound.putInt("beardSize", this.size);
 		tagCompound.putInt("beardHeight", this.height);
@@ -50,14 +50,14 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	 * Makes a dark tower type beard
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		makeDarkBeard(world, sbb, 0, 0, size - 1, height - 1, size - 1);
 
 		return true;
 	}
 
-	protected void makeDarkBeard(ISeedReader world, MutableBoundingBox sbb, int minX, int minZ, int maxX, int maxY, int maxZ) {
-		BlockState frameState = TFBlocks.tower_wood_encased.get().getDefaultState();
+	protected void makeDarkBeard(WorldGenLevel world, BoundingBox sbb, int minX, int minZ, int maxX, int maxY, int maxZ) {
+		BlockState frameState = TFBlocks.tower_wood_encased.get().defaultBlockState();
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
@@ -74,7 +74,7 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 
 					for (int y = maxY; y >= height - length; y--) {
 						// wall
-						this.setBlockState(world, frameState, x, y, z, sbb);
+						this.placeBlock(world, frameState, x, y, z, sbb);
 					}
 				}
 			}

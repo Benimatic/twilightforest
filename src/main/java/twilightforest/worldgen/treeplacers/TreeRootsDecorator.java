@@ -2,12 +2,12 @@ package twilightforest.worldgen.treeplacers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
-import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.TFTreeGenerator;
 import twilightforest.worldgen.TwilightFeatures;
@@ -68,12 +68,12 @@ public class TreeRootsDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<TreeRootsDecorator> getDecoratorType() {
+    protected TreeDecoratorType<TreeRootsDecorator> type() {
         return TwilightFeatures.TREE_ROOTS;
     }
 
     @Override
-    public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, MutableBoundingBox mutableBoundingBox) {
+    public void place(WorldGenLevel world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, BoundingBox mutableBoundingBox) {
         if (trunkBlocks.isEmpty())
             return;
 
@@ -92,33 +92,33 @@ public class TreeRootsDecorator extends TreeDecorator {
         }
     }
 
-    protected void buildRootWithAir(ISeedReader world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, MutableBoundingBox mutableBoundingBox, BlockStateProvider airRoot, BlockStateProvider dirtRoot) {
-        BlockPos dest = FeatureUtil.translate(pos.down(iteration + 2), length, 0.3 * iteration + offset, 0.8);
+    protected void buildRootWithAir(WorldGenLevel world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, BoundingBox mutableBoundingBox, BlockStateProvider airRoot, BlockStateProvider dirtRoot) {
+        BlockPos dest = FeatureUtil.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
-        BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.down(), dest);
+        BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
         boolean stillAboveGround = true;
         for (BlockPos coord : lineArray) {
             if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {
-                func_227423_a_(world, coord, airRoot.getBlockState(random, coord), decorations, mutableBoundingBox);
+                setBlock(world, coord, airRoot.getState(random, coord), decorations, mutableBoundingBox);
             } else {
                 stillAboveGround = false;
                 if (TFTreeGenerator.canRootGrowIn(world, coord)) {
-                    func_227423_a_(world, coord, dirtRoot.getBlockState(random, coord), decorations, mutableBoundingBox);
+                    setBlock(world, coord, dirtRoot.getState(random, coord), decorations, mutableBoundingBox);
                 }
             }
         }
     }
 
     // Shortcircuited version of above function
-    protected void buildRoot(ISeedReader world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, MutableBoundingBox mutableBoundingBox, BlockStateProvider dirtRoot) {
-        BlockPos dest = FeatureUtil.translate(pos.down(iteration + 2), length, 0.3 * iteration + offset, 0.8);
+    protected void buildRoot(WorldGenLevel world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, BoundingBox mutableBoundingBox, BlockStateProvider dirtRoot) {
+        BlockPos dest = FeatureUtil.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
-        BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.down(), dest);
+        BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
         for (BlockPos coord : lineArray) {
             if (TFTreeGenerator.canRootGrowIn(world, coord)) {
-                func_227423_a_(world, coord, dirtRoot.getBlockState(random, coord), decorations, mutableBoundingBox);
+                setBlock(world, coord, dirtRoot.getState(random, coord), decorations, mutableBoundingBox);
             }
         }
     }

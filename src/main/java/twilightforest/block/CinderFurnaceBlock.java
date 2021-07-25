@@ -1,26 +1,26 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.FurnaceTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -30,24 +30,30 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+
 public class CinderFurnaceBlock extends Block {
 
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
-	private static final DirectionProperty FACING = TFHorizontalBlock.HORIZONTAL_FACING;
+	private static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 
 	CinderFurnaceBlock() {
-		super(Properties.create(Material.WOOD).harvestTool(ToolType.PICKAXE).setRequiresTool().hardnessAndResistance(7.0F).setLightLevel((state) -> 15));
-		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
+		super(Properties.of(Material.WOOD).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(7.0F).lightLevel((state) -> 15));
+		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
 	}
 
 	@Override
-	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		return state.get(LIT) ? 15 : 0;
+	public int getLightValue(BlockState state, BlockGetter world, BlockPos pos) {
+		return state.getValue(LIT) ? 15 : 0;
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(LIT, FACING);
 	}
 
@@ -58,60 +64,60 @@ public class CinderFurnaceBlock extends Block {
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new CinderFurnaceTileEntity();
 	}
 
 	@Override
 	@Deprecated
-	public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
-		super.eventReceived(state, worldIn, pos, id, param);
-		TileEntity tileentity = worldIn.getTileEntity(pos);
-		return tileentity != null && tileentity.receiveClientEvent(id, param);
+	public boolean triggerEvent(BlockState state, Level worldIn, BlockPos pos, int id, int param) {
+		super.triggerEvent(state, worldIn, pos, id, param);
+		BlockEntity tileentity = worldIn.getBlockEntity(pos);
+		return tileentity != null && tileentity.triggerEvent(id, param);
 	}
 
 	@Override
 	@Deprecated
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (!world.isRemote && world.getTileEntity(pos) instanceof CinderFurnaceTileEntity) {
-			player.openContainer((CinderFurnaceTileEntity) world.getTileEntity(pos));
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+		if (!world.isClientSide && world.getBlockEntity(pos) instanceof CinderFurnaceTileEntity) {
+			player.openMenu((CinderFurnaceTileEntity) world.getBlockEntity(pos));
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		if (stack.hasDisplayName()) {
-			((FurnaceTileEntity) world.getTileEntity(pos)).setCustomName(stack.getDisplayName());
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		if (stack.hasCustomHoverName()) {
+			((FurnaceBlockEntity) world.getBlockEntity(pos)).setCustomName(stack.getHoverName());
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-		if (state.get(LIT)) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+		if (state.getValue(LIT)) {
 			Blocks.FURNACE.animateTick(state, world, pos, random);
 		}
 	}
 
 	@Override
 	@Deprecated
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
+			BlockEntity tileentity = worldIn.getBlockEntity(pos);
 			if (tileentity instanceof CinderFurnaceTileEntity) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (CinderFurnaceTileEntity)tileentity);
-				worldIn.updateComparatorOutputLevel(pos, this);
+				Containers.dropContents(worldIn, pos, (CinderFurnaceTileEntity)tileentity);
+				worldIn.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			super.onReplaced(state, worldIn, pos, newState, isMoving);
+			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("twilightforest.misc.nyi"));
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 }

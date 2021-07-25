@@ -1,24 +1,24 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class WinterWolfRenderer extends WolfRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("winterwolf.png");
 
-	public WinterWolfRenderer(EntityRendererManager manager) {
+	public WinterWolfRenderer(EntityRenderDispatcher manager) {
 		super(manager);
-		this.shadowSize = 1.0F;
+		this.shadowRadius = 1.0F;
 	}
 
 	@Override
-	protected void preRenderCallback(WolfEntity entity, MatrixStack stack, float partialTicks) {
+	protected void scale(Wolf entity, PoseStack stack, float partialTicks) {
 		float wolfScale = 1.9F;
 		stack.scale(wolfScale, wolfScale, wolfScale);
 
@@ -38,7 +38,7 @@ public class WinterWolfRenderer extends WolfRenderer {
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(WolfEntity entity) {
+	public ResourceLocation getTextureLocation(Wolf entity) {
 		return textureLoc;
 	}
 }

@@ -1,10 +1,10 @@
 package twilightforest.enums;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
 import java.util.Locale;
 
-public enum MagicWoodVariant implements IStringSerializable {
+public enum MagicWoodVariant implements StringRepresentable {
 
 	TIME,
 	TRANS,
@@ -12,7 +12,7 @@ public enum MagicWoodVariant implements IStringSerializable {
 	SORT;
 
 	@Override
-	public String getString() {
+	public String getSerializedName() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 }

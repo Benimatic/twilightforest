@@ -1,24 +1,31 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.item.*;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
+
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.context.UseOnContext;
 
 public class LampOfCindersItem extends Item {
 	private static final int FIRING_TIME = 12;
@@ -29,21 +36,21 @@ public class LampOfCindersItem extends Item {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
-		player.setActiveHand(hand);
-		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
+		player.startUsingItem(hand);
+		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
 
 	@Nonnull
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		World world = context.getWorld();
-		BlockPos pos = context.getPos();
-		PlayerEntity player = context.getPlayer();
+	public InteractionResult useOn(UseOnContext context) {
+		Level world = context.getLevel();
+		BlockPos pos = context.getClickedPos();
+		Player player = context.getPlayer();
 
 		if (burnBlock(world, pos)) {
-			if (player instanceof ServerPlayerEntity)
-				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, player.getHeldItem(context.getHand()));
+			if (player instanceof ServerPlayer)
+				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, player.getItemInHand(context.getHand()));
 
 			player.playSound(TFSounds.LAMP_BURN, 0.5F, 1.5F);
 
@@ -56,16 +63,16 @@ public class LampOfCindersItem extends Item {
 				world.addParticle(ParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		} else {
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		}
 	}
 
-	private boolean burnBlock(World world, BlockPos pos) {
+	private boolean burnBlock(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock() == TFBlocks.brown_thorns.get() || state.getBlock() == TFBlocks.green_thorns.get()) {
-			world.setBlockState(pos, TFBlocks.burnt_thorns.get().getDefaultState().with(RotatedPillarBlock.AXIS, state.get(RotatedPillarBlock.AXIS)));
+			world.setBlockAndUpdate(pos, TFBlocks.burnt_thorns.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)));
 			return true;
 		} else {
 			return false;
@@ -73,59 +80,59 @@ public class LampOfCindersItem extends Item {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity living, int useRemaining) {
+	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (useTime > FIRING_TIME && (stack.getDamage() + 1) < this.getMaxDamage(stack)) {
+		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(stack)) {
 			doBurnEffect(world, living);
 		}
 	}
 
-	private void doBurnEffect(World world, LivingEntity living) {
+	private void doBurnEffect(Level world, LivingEntity living) {
 		BlockPos pos = new BlockPos(
-				MathHelper.floor(living.lastTickPosX),
-				MathHelper.floor(living.lastTickPosY + living.getEyeHeight()),
-				MathHelper.floor(living.lastTickPosZ)
+				Mth.floor(living.xOld),
+				Mth.floor(living.yOld + living.getEyeHeight()),
+				Mth.floor(living.zOld)
 		);
 
 		int range = 4;
 
-		if (!world.isRemote) {
-			world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.LAMP_BURN, living.getSoundCategory(), 1.5F, 0.8F);
+		if (!world.isClientSide) {
+			world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.LAMP_BURN, living.getSoundSource(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <= range; dx++) {
 				for (int dy = -range; dy <= range; dy++) {
 					for (int dz = -range; dz <= range; dz++) {
-						this.burnBlock(world, pos.add(dx, dy, dz));
+						this.burnBlock(world, pos.offset(dx, dy, dz));
 					}
 				}
 			}
 		}
 
-		if (living instanceof PlayerEntity) {
+		if (living instanceof Player) {
 			for (int i = 0; i < 6; i++) {
-				BlockPos rPos = pos.add(
+				BlockPos rPos = pos.offset(
 						random.nextInt(range) - random.nextInt(range),
 						random.nextInt(2),
 						random.nextInt(range) - random.nextInt(range)
 				);
 
-				world.playEvent((PlayerEntity) living, 2004, rPos, 0);
+				world.levelEvent((Player) living, 2004, rPos, 0);
 			}
 
 			//burn mobs!
-			for(LivingEntity targets : world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(new BlockPos(living.getPosX(), living.getPosYEye(), living.getPosZ())).grow(4.0D))) {
-				if(!(targets instanceof PlayerEntity)) {
-					targets.setFire(5);
+			for(LivingEntity targets : world.getEntitiesOfClass(LivingEntity.class, new AABB(new BlockPos(living.getX(), living.getEyeY(), living.getZ())).inflate(4.0D))) {
+				if(!(targets instanceof Player)) {
+					targets.setSecondsOnFire(5);
 				}
 			}
 		}
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BOW;
+	public UseAnim getUseAnimation(ItemStack stack) {
+		return UseAnim.BOW;
 	}
 
 	@Override

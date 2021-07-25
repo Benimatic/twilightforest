@@ -1,7 +1,7 @@
 package twilightforest.network;
 
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.client.IWeatherRenderHandler;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
@@ -14,14 +14,14 @@ public class StructureProtectionClearPacket {
 
 	public StructureProtectionClearPacket() {}
 
-	public StructureProtectionClearPacket(PacketBuffer unused) {}
+	public StructureProtectionClearPacket(FriendlyByteBuf unused) {}
 
-	public void encode(PacketBuffer unused) {}
+	public void encode(FriendlyByteBuf unused) {}
 
 	public static class Handler {
 		public static boolean onMessage(StructureProtectionClearPacket message, Supplier<NetworkEvent.Context> ctx) {
 			ctx.get().enqueueWork(() -> {
-				DimensionRenderInfo info = DimensionRenderInfo.field_239208_a_.get(TwilightForestMod.prefix("renderer"));
+				DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 				// add weather box if needed
 				if (info instanceof TwilightForestRenderInfo) {

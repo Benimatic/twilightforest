@@ -1,16 +1,18 @@
 package twilightforest.enchantment;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+
+import net.minecraft.world.item.enchantment.Enchantment.Rarity;
 
 public class FireReactEnchantment extends Enchantment {
 	// TODO implement
 	public FireReactEnchantment(Rarity rarity) {
-		super(rarity, EnchantmentType.ARMOR, new EquipmentSlotType[]{
-				EquipmentSlotType.HEAD, EquipmentSlotType.CHEST,
-				EquipmentSlotType.LEGS, EquipmentSlotType.FEET
+		super(rarity, EnchantmentCategory.ARMOR, new EquipmentSlot[]{
+				EquipmentSlot.HEAD, EquipmentSlot.CHEST,
+				EquipmentSlot.LEGS, EquipmentSlot.FEET
 		});
 	}
 
@@ -20,12 +22,12 @@ public class FireReactEnchantment extends Enchantment {
 	}
 	
 	@Override
-	public boolean canGenerateInLoot() {
+	public boolean isDiscoverable() {
 		return false;
 	}
 	
 	@Override
-	public boolean canVillagerTrade() {
+	public boolean isTradeable() {
 	      return false;
 	}
 }

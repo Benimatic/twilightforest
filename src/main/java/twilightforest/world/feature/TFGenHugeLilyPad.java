@@ -1,15 +1,15 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -26,39 +26,39 @@ import static twilightforest.enums.HugeLilypadPiece.SW;
  *
  * @author Ben
  */
-public class TFGenHugeLilyPad extends Feature<NoFeatureConfig> {
+public class TFGenHugeLilyPad extends Feature<NoneFeatureConfiguration> {
 
-	public TFGenHugeLilyPad(Codec<NoFeatureConfig> config) {
+	public TFGenHugeLilyPad(Codec<NoneFeatureConfiguration> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
 		for (int i = 0; i < 10; i++) {
-			BlockPos dPos = pos.add(
+			BlockPos dPos = pos.offset(
 					random.nextInt(8) - random.nextInt(8),
 					random.nextInt(4) - random.nextInt(4),
 					random.nextInt(8) - random.nextInt(8)
 			);
 
 			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
-				final Direction horizontal = Direction.byHorizontalIndex(random.nextInt(4));
-				final BlockState lilypad = TFBlocks.huge_lilypad.get().getDefaultState().with(FACING, horizontal);
+				final Direction horizontal = Direction.from2DDataValue(random.nextInt(4));
+				final BlockState lilypad = TFBlocks.huge_lilypad.get().defaultBlockState().setValue(FACING, horizontal);
 
-				world.setBlockState(dPos, lilypad.with(PIECE, NW), 16 | 2);
-				world.setBlockState(dPos.east(), lilypad.with(PIECE, NE), 16 | 2);
-				world.setBlockState(dPos.east().south(), lilypad.with(PIECE, SE), 16 | 2);
-				world.setBlockState(dPos.south(), lilypad.with(PIECE, SW), 16 | 2);
+				world.setBlock(dPos, lilypad.setValue(PIECE, NW), 16 | 2);
+				world.setBlock(dPos.east(), lilypad.setValue(PIECE, NE), 16 | 2);
+				world.setBlock(dPos.east().south(), lilypad.setValue(PIECE, SE), 16 | 2);
+				world.setBlock(dPos.south(), lilypad.setValue(PIECE, SW), 16 | 2);
 			}
 		}
 
 		return true;
 	}
 
-	private boolean shouldPlacePadAt(IWorld world, BlockPos pos) {
-		return world.isAirBlock(pos) && world.getBlockState(pos.down()).getMaterial() == Material.WATER
-				&& world.isAirBlock(pos.east()) && world.getBlockState(pos.east().down()).getMaterial() == Material.WATER
-				&& world.isAirBlock(pos.south()) && world.getBlockState(pos.south().down()).getMaterial() == Material.WATER
-				&& world.isAirBlock(pos.east().south()) && world.getBlockState(pos.east().south().down()).getMaterial() == Material.WATER;
+	private boolean shouldPlacePadAt(LevelAccessor world, BlockPos pos) {
+		return world.isEmptyBlock(pos) && world.getBlockState(pos.below()).getMaterial() == Material.WATER
+				&& world.isEmptyBlock(pos.east()) && world.getBlockState(pos.east().below()).getMaterial() == Material.WATER
+				&& world.isEmptyBlock(pos.south()) && world.getBlockState(pos.south().below()).getMaterial() == Material.WATER
+				&& world.isEmptyBlock(pos.east().south()) && world.getBlockState(pos.east().south().below()).getMaterial() == Material.WATER;
 	}
 }

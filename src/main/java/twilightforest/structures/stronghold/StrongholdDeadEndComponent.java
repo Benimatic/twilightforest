@@ -1,18 +1,18 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 
@@ -23,7 +23,7 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 
 	private boolean chestTrapped;
 
-	public StrongholdDeadEndComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdDeadEndComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSDE, nbt);
 		this.chestTrapped = nbt.getBoolean("chestTrapped");
 	}
@@ -33,19 +33,19 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 6, 9, facing);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		// entrance
 		this.addDoor(4, 1, 0);
@@ -54,7 +54,7 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 8, rand, deco.randomBlocks);
 
 		// statues
@@ -68,17 +68,17 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 		// treasure
 		this.manualTreaurePlacement(world, 4, 1, 3, Direction.SOUTH, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
 		if (this.chestTrapped) {
-			this.setBlockState(world, Blocks.TNT.getDefaultState(), 4, 0, 3, sbb);
+			this.placeBlock(world, Blocks.TNT.defaultBlockState(), 4, 0, 3, sbb);
 		}
 
 		for (int z = 2; z < 5; z++) {
-			this.setBlockState(world, deco.stairState.with(StairsBlock.FACING, Direction.WEST), 3, 1, z, sbb);
-			this.setBlockState(world, deco.stairState.with(StairsBlock.FACING, Direction.EAST), 5, 1, z, sbb);
+			this.placeBlock(world, deco.stairState.setValue(StairBlock.FACING, Direction.WEST), 3, 1, z, sbb);
+			this.placeBlock(world, deco.stairState.setValue(StairBlock.FACING, Direction.EAST), 5, 1, z, sbb);
 		}
 
-		this.setBlockState(world, deco.stairState.with(StairsBlock.FACING, Direction.NORTH), 4, 1, 2, sbb);
-		this.setBlockState(world, deco.stairState.with(StairsBlock.FACING, Direction.SOUTH), 4, 1, 4, sbb);
-		this.setBlockState(world, deco.stairState.with(StairsBlock.FACING, Direction.NORTH), 4, 2, 3, sbb);
+		this.placeBlock(world, deco.stairState.setValue(StairBlock.FACING, Direction.NORTH), 4, 1, 2, sbb);
+		this.placeBlock(world, deco.stairState.setValue(StairBlock.FACING, Direction.SOUTH), 4, 1, 4, sbb);
+		this.placeBlock(world, deco.stairState.setValue(StairBlock.FACING, Direction.NORTH), 4, 2, 3, sbb);
 
 		return true;
 	}

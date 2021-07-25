@@ -1,33 +1,33 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-public class TFGenThorns extends Feature<NoFeatureConfig> {
+public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
 
 	private static final int MAX_SPREAD = 7;
 	private static final int CHANCE_OF_BRANCH = 3;
 	private static final int CHANCE_OF_LEAF = 3;
 	private static final int CHANCE_LEAF_IS_ROSE = 50;
 
-	public TFGenThorns(Codec<NoFeatureConfig> config) {
+	public TFGenThorns(Codec<NoneFeatureConfiguration> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
 
 		// make a 3-5 long stack going up
 		int nextLength = 2 + rand.nextInt(4);
@@ -38,26 +38,26 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 		return true;
 	}
 
-	private void placeThorns(ISeedReader world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos) {
+	private void placeThorns(WorldGenLevel world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos) {
 		boolean complete = false;
 		for (int i = 0; i < length; i++) {
-			BlockPos dPos = pos.offset(dir, i);
+			BlockPos dPos = pos.relative(dir, i);
 
-			if (world.canBlockSeeSky(pos)) {
+			if (world.canSeeSkyFromBelowWater(pos)) {
 				if (Math.abs(dPos.getX() - oPos.getX()) < MAX_SPREAD && Math.abs(dPos.getZ() - oPos.getZ()) < MAX_SPREAD && canPlaceThorns(world, dPos)) {
-					world.setBlockState(dPos, TFBlocks.brown_thorns.get().getDefaultState().with(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
+					world.setBlock(dPos, TFBlocks.brown_thorns.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
 
 					// did we make it to the end?
 					if (i == length - 1) {
 						complete = true;
 						// maybe a leaf?  or a rose?
-						if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
+						if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isEmptyBlock(dPos.relative(dir))) {
 							if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 								// leaf
-								world.setBlockState(dPos.offset(dir), TFBlocks.thorn_leaves.get().getDefaultState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+								world.setBlock(dPos.relative(dir), TFBlocks.thorn_leaves.get().defaultBlockState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 							} else {
 								// rose
-								world.setBlockState(dPos.offset(dir), TFBlocks.thorn_rose.get().getDefaultState(), 3);
+								world.setBlock(dPos.relative(dir), TFBlocks.thorn_rose.get().defaultBlockState(), 3);
 							}
 						}
 					}
@@ -72,9 +72,9 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 		// add another off the end
 		if (complete && maxLength > 1) {
 
-			Direction nextDir = Direction.getRandomDirection(rand);
+			Direction nextDir = Direction.getRandom(rand);
 
-			BlockPos nextPos = pos.offset(dir, length - 1).offset(nextDir);
+			BlockPos nextPos = pos.relative(dir, length - 1).relative(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
 
 			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos);
@@ -85,9 +85,9 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 
 			int middle = rand.nextInt(length);
 
-			Direction nextDir = Direction.getRandomDirection(rand);
+			Direction nextDir = Direction.getRandom(rand);
 
-			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
+			BlockPos nextPos = pos.relative(dir, middle).relative(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
 
 			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos);
@@ -98,19 +98,19 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 
 			int middle = rand.nextInt(length);
 
-			Direction nextDir = Direction.getRandomDirection(rand);
+			Direction nextDir = Direction.getRandom(rand);
 
-			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
+			BlockPos nextPos = pos.relative(dir, middle).relative(nextDir);
 
-			if (world.isAirBlock(nextPos)) {
-				world.setBlockState(nextPos, TFBlocks.thorn_leaves.get().getDefaultState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+			if (world.isEmptyBlock(nextPos)) {
+				world.setBlock(nextPos, TFBlocks.thorn_leaves.get().defaultBlockState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 			}
 		}
 	}
 
-	private boolean canPlaceThorns(IWorld world, BlockPos pos) {
+	private boolean canPlaceThorns(LevelAccessor world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		return state.getBlock().isAir(state, world, pos)
-				|| state.getBlock().isIn(BlockTags.LEAVES);
+				|| state.getBlock().is(BlockTags.LEAVES);
 	}
 }

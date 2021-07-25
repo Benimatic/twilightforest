@@ -1,7 +1,7 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,29 +11,29 @@ import java.util.Random;
  */
 public class DestroyArea {
 
-	MutableBoundingBox destroyBox;
+	BoundingBox destroyBox;
 
-	public DestroyArea(MutableBoundingBox tower, Random rand, int y) {
+	public DestroyArea(BoundingBox tower, Random rand, int y) {
 		// make a 4x4 area that's entirely within the tower bounding box
 
-		int bx = tower.minX - 2 + rand.nextInt(tower.getXSize());
-		int bz = tower.minZ - 2 + rand.nextInt(tower.getZSize());
+		int bx = tower.x0 - 2 + rand.nextInt(tower.getXSpan());
+		int bz = tower.z0 - 2 + rand.nextInt(tower.getZSpan());
 
-		this.destroyBox = new MutableBoundingBox(bx, y - 10, bz, bx + 4, y, bz + 4);
+		this.destroyBox = new BoundingBox(bx, y - 10, bz, bx + 4, y, bz + 4);
 	}
 
 	public boolean isEntirelyAbove(int y) {
-		return this.destroyBox.minY > y;
+		return this.destroyBox.y0 > y;
 	}
 
 	public boolean isVecInside(BlockPos pos) {
-		return destroyBox.isVecInside(pos);
+		return destroyBox.isInside(pos);
 	}
 
 	/**
 	 * construct a new area that does not intersect any other areas in the list
 	 */
-	public static DestroyArea createNonIntersecting(MutableBoundingBox tower, Random rand, int y, ArrayList<DestroyArea> otherAreas) {
+	public static DestroyArea createNonIntersecting(BoundingBox tower, Random rand, int y, ArrayList<DestroyArea> otherAreas) {
 		int attempts = 100;
 
 		DestroyArea area = null;
@@ -57,6 +57,6 @@ public class DestroyArea {
 	 * We check if the box would intersect even if it was one block larger in the x and z directions
 	 */
 	private boolean intersectsWith(DestroyArea otherArea) {
-		return this.destroyBox.intersectsWith(otherArea.destroyBox.minX - 1, otherArea.destroyBox.minZ - 1, otherArea.destroyBox.maxX + 1, otherArea.destroyBox.maxX + 1);
+		return this.destroyBox.intersects(otherArea.destroyBox.x0 - 1, otherArea.destroyBox.z0 - 1, otherArea.destroyBox.x1 + 1, otherArea.destroyBox.x1 + 1);
 	}
 }

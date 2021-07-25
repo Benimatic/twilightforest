@@ -1,28 +1,28 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
 
-public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
+public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 
-	public TFGenFallenSmallLog(Codec<NoFeatureConfig> configIn) {
+	public TFGenFallenSmallLog(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
 		// determine direction
 		boolean goingX = rand.nextBoolean();
 
@@ -47,25 +47,25 @@ public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 		switch (rand.nextInt(7)) {
 			case 0:
 			default:
-				logState = TFBlocks.oak_log.get().getDefaultState();
+				logState = TFBlocks.oak_log.get().defaultBlockState();
 				break;
 			case 1:
-				logState = TFBlocks.canopy_log.get().getDefaultState();
+				logState = TFBlocks.canopy_log.get().defaultBlockState();
 				break;
 			case 2:
-				logState = TFBlocks.mangrove_log.get().getDefaultState();
+				logState = TFBlocks.mangrove_log.get().defaultBlockState();
 				break;
 			case 3:
-				logState = Blocks.OAK_LOG.getDefaultState();
+				logState = Blocks.OAK_LOG.defaultBlockState();
 				break;
 			case 4:
-				logState = Blocks.SPRUCE_LOG.getDefaultState();
+				logState = Blocks.SPRUCE_LOG.defaultBlockState();
 				break;
 			case 5:
-				logState = Blocks.BIRCH_LOG.getDefaultState();
+				logState = Blocks.BIRCH_LOG.defaultBlockState();
 				break;
 			case 6:
-				logState = Blocks.JUNGLE_LOG.getDefaultState();
+				logState = Blocks.JUNGLE_LOG.defaultBlockState();
 				break;
 		}
 
@@ -75,23 +75,23 @@ public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 
 		// make log
 		if (goingX) {
-			logState = logState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
-			branchState = logState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+			logState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+			branchState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 
 			for (int lx = 0; lx < length; lx++) {
-				world.setBlockState(pos.add(lx, 0, 1), logState, 3);
+				world.setBlock(pos.offset(lx, 0, 1), logState, 3);
 				if (rand.nextInt(3) > 0) {
-					world.setBlockState(pos.add(lx, 1, 1), TFBlocks.moss_patch.get().getDefaultState(), 3);
+					world.setBlock(pos.offset(lx, 1, 1), TFBlocks.moss_patch.get().defaultBlockState(), 3);
 				}
 			}
 		} else {
-			logState = logState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
-			branchState = logState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
+			logState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+			branchState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 			for (int lz = 0; lz < length; lz++) {
-				world.setBlockState(pos.add(1, 0, lz), logState, 3);
+				world.setBlock(pos.offset(1, 0, lz), logState, 3);
 				if (rand.nextInt(3) > 0) {
-					world.setBlockState(pos.add(1, 1, lz), TFBlocks.moss_patch.get().getDefaultState(), 3);
+					world.setBlock(pos.offset(1, 1, lz), TFBlocks.moss_patch.get().defaultBlockState(), 3);
 				}
 			}
 		}
@@ -102,17 +102,17 @@ public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 				int bx = rand.nextInt(length);
 				int bz = rand.nextBoolean() ? 2 : 0;
 
-				world.setBlockState(pos.add(bx, 0, bz), branchState, 3);
+				world.setBlock(pos.offset(bx, 0, bz), branchState, 3);
 				if (rand.nextBoolean()) {
-					world.setBlockState(pos.add(bx, 1, bz), TFBlocks.moss_patch.get().getDefaultState(), 3);
+					world.setBlock(pos.offset(bx, 1, bz), TFBlocks.moss_patch.get().defaultBlockState(), 3);
 				}
 			} else {
 				int bx = rand.nextBoolean() ? 2 : 0;
 				int bz = rand.nextInt(length);
 
-				world.setBlockState(pos.add(bx, 0, bz), branchState, 3);
+				world.setBlock(pos.offset(bx, 0, bz), branchState, 3);
 				if (rand.nextBoolean()) {
-					world.setBlockState(pos.add(bx, 1, bz), TFBlocks.moss_patch.get().getDefaultState(), 3);
+					world.setBlock(pos.offset(bx, 1, bz), TFBlocks.moss_patch.get().defaultBlockState(), 3);
 				}
 			}
 		}

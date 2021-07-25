@@ -1,21 +1,21 @@
 package twilightforest.dispenser;
 
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.BlockSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 
 import java.util.List;
@@ -24,21 +24,21 @@ import java.util.Random;
 public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
     boolean fired = false;
     @Override
-    protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-        World world = source.getWorld();
-        BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
-        int damage = stack.getMaxDamage() - stack.getDamage();
-        if(!world.isRemote) {
-            List<LivingEntity> thingsToPush = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(blockpos).grow(3), EntityPredicates.NOT_SPECTATING);
+    protected ItemStack execute(BlockSource source, ItemStack stack) {
+        Level world = source.getLevel();
+        BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+        int damage = stack.getMaxDamage() - stack.getDamageValue();
+        if(!world.isClientSide) {
+            List<LivingEntity> thingsToPush = world.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos).inflate(3), EntitySelector.NO_SPECTATORS);
             if (!(thingsToPush.size() >= damage)) {
                 for (Entity entity : thingsToPush) {
-                    Vector3i lookVec = world.getBlockState(source.getBlockPos()).get(DispenserBlock.FACING).getDirectionVec();
+                    Vec3i lookVec = world.getBlockState(source.getPos()).getValue(DispenserBlock.FACING).getNormal();
 
-                    if (entity.canBePushed() || entity instanceof ItemEntity) {
-                        entity.setMotion(lookVec.getX(), lookVec.getY(), lookVec.getZ());
+                    if (entity.isPushable() || entity instanceof ItemEntity) {
+                        entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());
                     }
 
-                    if (stack.attemptDamageItem(1, world.rand, (ServerPlayerEntity) null)) {
+                    if (stack.hurt(1, world.random, (ServerPlayer) null)) {
                         stack.setCount(0);
                     }
                 }
@@ -49,27 +49,27 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
     }
 
     @Override
-    protected void playDispenseSound(IBlockSource source) {
+    protected void playSound(BlockSource source) {
         if (fired) {
-            Random random = source.getWorld().getRandom();
-            source.getWorld().playSound(null, source.getBlockPos(), TFSounds.FAN_WOOSH, SoundCategory.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+            Random random = source.getLevel().getRandom();
+            source.getLevel().playSound(null, source.getPos(), TFSounds.FAN_WOOSH, SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
             fired = false;
         } else {
-            source.getWorld().playEvent(1001, source.getBlockPos(), 0);
+            source.getLevel().levelEvent(1001, source.getPos(), 0);
         }
     }
 
     //Particle woooosh
     //[VanillaCopy] of WorldRender.playEvent(case 2000), but with further range and a different particle
     @Override
-    protected void spawnDispenseParticles(IBlockSource source, Direction direction) {
-        BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
-        World world = source.getWorld();
+    protected void playAnimation(BlockSource source, Direction direction) {
+        BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+        Level world = source.getLevel();
         Random random = world.getRandom();
 
-        int j1 = direction.getXOffset();
-        int j2 = direction.getYOffset();
-        int k2 = direction.getZOffset();
+        int j1 = direction.getStepX();
+        int j2 = direction.getStepY();
+        int k2 = direction.getStepZ();
         double d18 = (double) blockpos.getX() + (double) j1 * 0.6D + 0.5D;
         double d24 = (double) blockpos.getY() + (double) j2 * 0.6D + 0.5D;
         double d28 = (double) blockpos.getZ() + (double) k2 * 0.6D + 0.5D;

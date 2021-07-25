@@ -5,9 +5,9 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.ModList;
 import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.ie.IEShaderRegister;
@@ -16,12 +16,12 @@ import twilightforest.compat.ie.IEShaderRegister;
 //However, if you run it, the game closes because ShaderManager isnt registering properly
 public class TFReloadCommand {
 
-    public static LiteralArgumentBuilder<CommandSource> register() {
+    public static LiteralArgumentBuilder<CommandSourceStack> register() {
         return Commands.literal("tfreload").executes(TFReloadCommand::reload);
     }
 
-    private static int reload(CommandContext<CommandSource> ctx) {
-        ctx.getSource().sendFeedback(new TranslationTextComponent("commands.tfreload.reload"), true);
+    private static int reload(CommandContext<CommandSourceStack> ctx) {
+        ctx.getSource().sendSuccess(new TranslatableComponent("commands.tfreload.reload"), true);
         ShaderManager.getShaderReloadListener().onResourceManagerReload(Minecraft.getInstance().getResourceManager());
         if (ModList.get().isLoaded("immersiveengineering"))
             IEShaderRegister.initShaders();

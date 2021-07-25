@@ -1,15 +1,15 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 
@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class IceTowerEntranceComponent extends IceTowerWingComponent {
 
-	public IceTowerEntranceComponent(TemplateManager manager, CompoundNBT nbt) {
+	public IceTowerEntranceComponent(StructureManager manager, CompoundTag nbt) {
 		super(IceTowerPieces.TFITEnt, nbt);
 	}
 
@@ -32,7 +32,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -41,9 +41,9 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 
 		// stairs
-		addStairs(list, rand, this.getComponentType() + 1, this.size - 1, 1, size / 2, Rotation.NONE);
-		addStairs(list, rand, this.getComponentType() + 1, this.size / 2, 1, 0, Rotation.COUNTERCLOCKWISE_90);
-		addStairs(list, rand, this.getComponentType() + 1, this.size / 2, 1, this.size - 1, Rotation.CLOCKWISE_90);
+		addStairs(list, rand, this.getGenDepth() + 1, this.size - 1, 1, size / 2, Rotation.NONE);
+		addStairs(list, rand, this.getGenDepth() + 1, this.size / 2, 1, 0, Rotation.COUNTERCLOCKWISE_90);
+		addStairs(list, rand, this.getGenDepth() + 1, this.size / 2, 1, this.size - 1, Rotation.CLOCKWISE_90);
 
 		// should we build a base
 		this.hasBase = this.shouldHaveBase(rand);
@@ -65,7 +65,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 		IceTowerStairsComponent entrance = new IceTowerStairsComponent(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), this.size, this.height, direction);
 
 		list.add(entrance);
-		entrance.buildComponent(list.get(0), list, rand);
+		entrance.addChildren(list.get(0), list, rand);
 		return true;
 	}
 
@@ -81,13 +81,13 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	 * No floors
 	 */
 	@Override
-	protected void makeFloorsForTower(ISeedReader world, Random rand, MutableBoundingBox sbb) {
+	protected void makeFloorsForTower(WorldGenLevel world, Random rand, BoundingBox sbb) {
 		decoratePillarsCornersHigh(world, 0, 11, Rotation.NONE, sbb);
 	}
 
-	protected void decoratePillarsCornersHigh(ISeedReader world, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
-		final BlockState pillarXAxis = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
-		final BlockState pillarZAxis = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	protected void decoratePillarsCornersHigh(WorldGenLevel world, int bottom, int top, Rotation rotation, BoundingBox sbb) {
+		final BlockState pillarXAxis = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+		final BlockState pillarZAxis = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarZAxis, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarZAxis, rotation);
 		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 3, 9, bottom + 5, 3, pillarXAxis, rotation);

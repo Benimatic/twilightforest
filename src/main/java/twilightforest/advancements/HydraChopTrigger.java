@@ -4,19 +4,21 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 import java.util.Map;
 import java.util.Set;
 
-public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Instance> {
+import net.minecraft.advancements.CriterionTrigger.Listener;
+
+public class HydraChopTrigger implements CriterionTrigger<HydraChopTrigger.Instance> {
 
     public static final ResourceLocation ID = TwilightForestMod.prefix("consume_hydra_chop_on_low_hunger");
     private final Map<PlayerAdvancements, HydraChopTrigger.Listeners> listeners = Maps.newHashMap();
@@ -27,13 +29,13 @@ public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Inst
     }
 
     @Override
-    public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<HydraChopTrigger.Instance> listener) {
+    public void addPlayerListener(PlayerAdvancements playerAdvancementsIn, Listener<HydraChopTrigger.Instance> listener) {
         HydraChopTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
         listeners.add(listener);
     }
 
     @Override
-    public void removeListener(PlayerAdvancements playerAdvancementsIn, Listener<HydraChopTrigger.Instance> listener) {
+    public void removePlayerListener(PlayerAdvancements playerAdvancementsIn, Listener<HydraChopTrigger.Instance> listener) {
         HydraChopTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
         if (listeners != null) {
             listeners.remove(listener);
@@ -44,25 +46,25 @@ public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Inst
     }
 
     @Override
-    public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
+    public void removePlayerListeners(PlayerAdvancements playerAdvancementsIn) {
         this.listeners.remove(playerAdvancementsIn);
     }
 
     @Override
-    public Instance deserialize(JsonObject json, ConditionArrayParser condition) {
-		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
+    public Instance createInstance(JsonObject json, DeserializationContext condition) {
+		EntityPredicate.Composite player = EntityPredicate.Composite.fromJson(json, "player", condition);
 		return new HydraChopTrigger.Instance(player);
     }
 
-    public void trigger(ServerPlayerEntity player) {
+    public void trigger(ServerPlayer player) {
         HydraChopTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
         if (listeners != null) {
             listeners.trigger();
         }
     }
 
-    public static class Instance extends CriterionInstance {
-        public Instance(EntityPredicate.AndPredicate player) {
+    public static class Instance extends AbstractCriterionTriggerInstance {
+        public Instance(EntityPredicate.Composite player) {
             super(HydraChopTrigger.ID, player);
         }
     }
@@ -89,7 +91,7 @@ public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Inst
 
         public void trigger() {
             for (Listener<HydraChopTrigger.Instance> listener : Lists.newArrayList(this.listeners)) {
-                listener.grantCriterion(this.playerAdvancements);
+                listener.run(this.playerAdvancements);
             }
         }
     }

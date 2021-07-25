@@ -1,12 +1,12 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelAccessor;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
@@ -22,44 +22,44 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(IWorld world, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected boolean generate(LevelAccessor world, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, BoundingBox mbb, TFTreeFeatureConfig config) {
 		if (pos.getY() >= TFGenerationSettings.MAXHEIGHT - 12) {
 			return false;
 		}
 
 		// check soil
-		BlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling(rand, pos))) {
+		BlockState state = world.getBlockState(pos.below());
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(rand, pos))) {
 			return false;
 		}
 
 		// 9 block high trunk
 		for (int dy = 0; dy <= 9; dy++) {
-			setLogBlockState(world, rand, pos.up(dy), trunk, mbb, config);
+			setLogBlockState(world, rand, pos.above(dy), trunk, mbb, config);
 		}
 
 		// branches with leaf blocks
-		putBranchWithLeaves(world, rand, pos.add(0, 9, 1), leaves, branch, true, mbb, config);
-		putBranchWithLeaves(world, rand, pos.add(0, 9, 2), leaves, branch, false, mbb, config);
-		putBranchWithLeaves(world, rand, pos.add(0, 8, 3), leaves, branch, false, mbb, config);
-		putBranchWithLeaves(world, rand, pos.add(0, 7, 4), leaves, branch, false, mbb, config);
-		putBranchWithLeaves(world, rand, pos.add(0, 6, 5), leaves, branch, false, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 9, 1), leaves, branch, true, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 9, 2), leaves, branch, false, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 8, 3), leaves, branch, false, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 7, 4), leaves, branch, false, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 6, 5), leaves, branch, false, mbb, config);
 
-		putBranchWithLeaves(world, rand, pos.add(0, 9, -1), leaves, branch, true, mbb, config);
-		putBranchWithLeaves(world, rand, pos.add(0, 9, -2), leaves, branch, false, mbb, config);
-		putBranchWithLeaves(world, rand, pos.add(0, 8, -3), leaves, branch, false, mbb, config);
-		putBranchWithLeaves(world, rand, pos.add(0, 7, -4), leaves, branch, false, mbb, config);
-		putBranchWithLeaves(world, rand, pos.add(0, 6, -5), leaves, branch, false, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 9, -1), leaves, branch, true, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 9, -2), leaves, branch, false, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 8, -3), leaves, branch, false, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 7, -4), leaves, branch, false, mbb, config);
+		putBranchWithLeaves(world, rand, pos.offset(0, 6, -5), leaves, branch, false, mbb, config);
 
 		// place minewood core
-		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
-		world.getPendingBlockTicks().scheduleTick(pos.up(), TFBlocks.mining_log_core.get(), 20);
+		world.setBlock(pos.above(), TFBlocks.mining_log_core.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+		world.getBlockTicks().scheduleTick(pos.above(), TFBlocks.mining_log_core.get(), 20);
 
 		// root bulb
-		if (FeatureUtil.hasAirAround(world, pos.down())) {
-			this.setLogBlockState(world, rand, pos.down(), trunk, mbb, config);
+		if (FeatureUtil.hasAirAround(world, pos.below())) {
+			this.setLogBlockState(world, rand, pos.below(), trunk, mbb, config);
 		} else {
-			this.setRootsBlockState(world, rand, pos.down(), root, mbb, config);
+			this.setRootsBlockState(world, rand, pos.below(), root, mbb, config);
 		}
 
 		// roots!
@@ -72,7 +72,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	protected void putBranchWithLeaves(IWorld world, Random rand, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, boolean bushy, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected void putBranchWithLeaves(LevelAccessor world, Random rand, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, boolean bushy, BoundingBox mbb, TFTreeFeatureConfig config) {
 		setBranchBlockState(world, rand, pos, branch, mbb, config);
 
 		for (int lx = -1; lx <= 1; lx++) {
@@ -81,7 +81,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 					if (!bushy && Math.abs(ly) > 0 && Math.abs(lx) > 0) {
 						continue;
 					}
-					FeatureUtil.putLeafBlock(world, pos.add(lx, ly, lz), config.leavesProvider.getBlockState(rand, pos.add(lx, ly, lz)), leaves);
+					FeatureUtil.putLeafBlock(world, pos.offset(lx, ly, lz), config.leavesProvider.getState(rand, pos.offset(lx, ly, lz)), leaves);
 				}
 			}
 		}

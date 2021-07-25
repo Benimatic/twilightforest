@@ -1,17 +1,17 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.StairsBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 
@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdTreasureCorridorComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdTreasureCorridorComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSTC, nbt);
 	}
 
@@ -29,13 +29,13 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 27, facing);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		// entrance
 		this.addDoor(4, 1, 0);
@@ -45,7 +45,7 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 26, rand, deco.randomBlocks);
 
 		// statues
@@ -54,10 +54,10 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 		this.placeWallStatue(world, 7, 1, 9, Rotation.COUNTERCLOCKWISE_90, sbb);
 		this.placeWallStatue(world, 7, 1, 17, Rotation.COUNTERCLOCKWISE_90, sbb);
 
-		Rotation rotation = (this.boundingBox.minX ^ this.boundingBox.minZ) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_180;
+		Rotation rotation = (this.boundingBox.x0 ^ this.boundingBox.z0) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_180;
 
 		// treasure!
-		this.placeTreasureRotated(world, 8, 2, 13, rotation == Rotation.NONE ? getCoordBaseMode().rotateY() : getCoordBaseMode().rotateYCCW(), rotation, TFTreasure.stronghold_cache, sbb);
+		this.placeTreasureRotated(world, 8, 2, 13, rotation == Rotation.NONE ? getOrientation().getClockWise() : getOrientation().getCounterClockWise(), rotation, TFTreasure.stronghold_cache, sbb);
 
 		// niche!
 
@@ -66,9 +66,9 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, true), 8, 3, 14, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 12, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 14, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.SOUTH), 7, 1, 12, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.WEST), 7, 1, 13, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.NORTH), 7, 1, 14, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.SOUTH), 7, 1, 12, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.WEST), 7, 1, 13, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.NORTH), 7, 1, 14, rotation, sbb);
 
 		// doors
 		placeDoors(world, sbb);

@@ -1,9 +1,9 @@
 package twilightforest.inventory.slot;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
@@ -12,12 +12,12 @@ import twilightforest.inventory.UncraftingInventory;
 
 public class UncraftingSlot extends Slot {
 
-	protected final PlayerEntity player;
-	protected final IInventory inputSlot;
+	protected final Player player;
+	protected final Container inputSlot;
 	protected final UncraftingInventory uncraftingMatrix;
-	protected final IInventory assemblyMatrix;
+	protected final Container assemblyMatrix;
 
-	public UncraftingSlot(PlayerEntity player, IInventory inputSlot, UncraftingInventory uncraftingMatrix, IInventory assemblyMatrix, int slotNum, int x, int y) {
+	public UncraftingSlot(Player player, Container inputSlot, UncraftingInventory uncraftingMatrix, Container assemblyMatrix, int slotNum, int x, int y) {
 		super(uncraftingMatrix, slotNum, x, y);
 		this.player = player;
 		this.inputSlot = inputSlot;
@@ -29,7 +29,7 @@ public class UncraftingSlot extends Slot {
 	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
 	 */
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		// don't put things in this matrix
 		return false;
 	}
@@ -38,14 +38,14 @@ public class UncraftingSlot extends Slot {
 	 * Return whether this slot's stack can be taken from this slot.
 	 */
 	@Override
-	public boolean canTakeStack(PlayerEntity player) {
+	public boolean mayPickup(Player player) {
 		// if there is anything in the assembly matrix, then you cannot have these items
 		if (!this.assemblyMatrix.isEmpty()) {
 			return false;
 		}
 
 		// can't take a marked stack
-		if (UncraftingContainer.isMarked(this.getStack())) {
+		if (UncraftingContainer.isMarked(this.getItem())) {
 			return false;
 		}
 
@@ -55,7 +55,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if you don't have enough XP, no
-		if (this.uncraftingMatrix.uncraftingCost > player.experienceLevel && !player.abilities.isCreativeMode) {
+		if (this.uncraftingMatrix.uncraftingCost > player.experienceLevel && !player.abilities.instabuild) {
 			return false;
 		}
 
@@ -66,26 +66,26 @@ public class UncraftingSlot extends Slot {
 	 * Called when the player picks up an item from an inventory slot
 	 */
 	@Override
-	public ItemStack onTake(PlayerEntity player, ItemStack stack) {
+	public ItemStack onTake(Player player, ItemStack stack) {
 		// charge the player for this
 		if (this.uncraftingMatrix.uncraftingCost > 0) {
-			this.player.addExperienceLevel(-this.uncraftingMatrix.uncraftingCost);
+			this.player.giveExperienceLevels(-this.uncraftingMatrix.uncraftingCost);
 		}
 
 		// move all remaining items from the uncrafting grid to the assembly grid
 		// the assembly grid should be empty for this to even happen, so just plop the items right in
 		for (int i = 0; i < 9; i++) {
-			ItemStack transferStack = this.uncraftingMatrix.getStackInSlot(i);
+			ItemStack transferStack = this.uncraftingMatrix.getItem(i);
 			if (!transferStack.isEmpty() && !UncraftingContainer.isMarked(transferStack)) {
-				this.assemblyMatrix.setInventorySlotContents(i, transferStack.copy());
+				this.assemblyMatrix.setItem(i, transferStack.copy());
 			}
 		}
 
 		// decrement the inputslot by 1
 		// do this second so that it doesn't change the contents of the uncrafting grid
-		ItemStack inputStack = this.inputSlot.getStackInSlot(0);
+		ItemStack inputStack = this.inputSlot.getItem(0);
 		if (!inputStack.isEmpty()) {
-			this.inputSlot.decrStackSize(0, uncraftingMatrix.numberOfInputItems);
+			this.inputSlot.removeItem(0, uncraftingMatrix.numberOfInputItems);
 		}
 
 		return super.onTake(player, stack);
@@ -93,7 +93,7 @@ public class UncraftingSlot extends Slot {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean isEnabled() {
+	public boolean isActive() {
 		return false;
 	}
 }

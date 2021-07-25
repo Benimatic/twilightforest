@@ -1,8 +1,8 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.world.entity.LivingEntity;
 import org.lwjgl.opengl.GL11;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.entity.boss.LichEntity;

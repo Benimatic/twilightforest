@@ -5,22 +5,22 @@ import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.state.properties.ChestType;
-import net.minecraft.state.properties.StructureMode;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.block.state.properties.StructureMode;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.*;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.gen.feature.template.*;
 
 import twilightforest.TwilightForestMod;
@@ -35,19 +35,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GenDruidHut extends Feature<NoFeatureConfig> {
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-	public GenDruidHut(Codec<NoFeatureConfig> config) {
+public class GenDruidHut extends Feature<NoneFeatureConfiguration> {
+
+	public GenDruidHut(Codec<NoneFeatureConfiguration> config) {
 		super(config);
 	}
 
 	@Override // Loosely based on WorldGenFossils FIXME See if we can move this over to purely-datadriven
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 
-		TemplateManager templatemanager = world.getWorld().getServer().getTemplateManager();
-		Template template = templatemanager.getTemplate(HutType.values()[random.nextInt(HutType.size)].RL);
+		StructureManager templatemanager = world.getLevel().getServer().getStructureManager();
+		StructureTemplate template = templatemanager.get(HutType.values()[random.nextInt(HutType.size)].RL);
 		if(template == null)
 			return false;
 
@@ -57,35 +70,35 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		Mirror[] mirrors = Mirror.values();
 		Mirror mirror = mirrors[random.nextInt(mirrors.length+1) % mirrors.length];
 
-		ChunkPos chunkpos = new ChunkPos(pos.add(-8, 0, -8));
-		MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
-		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
+		ChunkPos chunkpos = new ChunkPos(pos.offset(-8, 0, -8));
+		BoundingBox structureboundingbox = new BoundingBox(chunkpos.getMinBlockX() + 8, 0, chunkpos.getMinBlockZ() + 8, chunkpos.getMaxBlockX() + 8, 255, chunkpos.getMaxBlockZ() + 8);
+		StructurePlaceSettings placementsettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
-		BlockPos posSnap = chunkpos.asBlockPos().add(8, pos.getY() - 1, 8); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
+		BlockPos posSnap = chunkpos.getWorldPosition().offset(8, pos.getY() - 1, 8); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
 
-		BlockPos transformedSize = template.transformedSize(rotation);
+		BlockPos transformedSize = template.getSize(rotation);
 		int dx = random.nextInt(17 - transformedSize.getX());
 		int dz = random.nextInt(17 - transformedSize.getZ());
-		posSnap.add(dx, 0, dz);
+		posSnap.offset(dx, 0, dz);
 
-		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.getX(), posSnap.getY(), posSnap.getZ());
+		BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
 		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
 			return false;
 		}
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-		template.func_237146_a_(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, rand.nextInt(), rand.nextInt(), rand.nextInt())), random, 20);
-		List<Template.BlockInfo> data = new ArrayList<>(template.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
+		template.placeInWorld(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, rand.nextInt(), rand.nextInt(), rand.nextInt())), random, 20);
+		List<StructureTemplate.StructureBlockInfo> data = new ArrayList<>(template.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 
 		if (random.nextBoolean()) {
-			template = templatemanager.getTemplate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
+			template = templatemanager.get(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
 			if(template == null)
 				return false;
-			placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
+			placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-			template.func_237146_a_(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, rand.nextInt(14), rand.nextInt(14), rand.nextInt(14))), random, 20);
-			data.addAll(template.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
+			template.placeInWorld(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, rand.nextInt(14), rand.nextInt(14), rand.nextInt(14))), random, 20);
+			data.addAll(template.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 		}
 
 		data.forEach(info -> {
@@ -107,45 +120,45 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
    		         */
 			// removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
 				if ("spawner".equals(s)) {
-					if (world.removeBlock(blockPos, false) && world.setBlockState(blockPos, Blocks.SPAWNER.getDefaultState(), 16 | 2)) {
-						MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(blockPos);
+					if (world.removeBlock(blockPos, false) && world.setBlock(blockPos, Blocks.SPAWNER.defaultBlockState(), 16 | 2)) {
+						SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(blockPos);
 
 						if (ms != null) {
-							ms.getSpawnerBaseLogic().setEntityType(TFEntities.skeleton_druid);
+							ms.getSpawner().setEntityId(TFEntities.skeleton_druid);
 						}
 					}
 				} else if (s.startsWith("loot")) {
 					world.removeBlock(blockPos, false);
-					BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
+					BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.defaultBlockState() : Blocks.CHEST.defaultBlockState();
 
 					switch (s.substring(5, 6)) {
 						case "L":
-							chest = chest.with(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
+							chest = chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
 							break;
 						case "R":
-							chest = chest.with(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
+							chest = chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
 							break;
 						default:
-							chest = chest.with(ChestBlock.TYPE, ChestType.SINGLE);
+							chest = chest.setValue(ChestBlock.TYPE, ChestType.SINGLE);
 							break;
 					}
 
 					switch (s.substring(4, 5)) {
 						case "W":
-							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+							chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
 							break;
 						case "E":
-							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+							chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
 							break;
 						case "S":
-							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+							chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
 							break;
 						default:
-							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+							chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
 							break;
 					}
 
-					if (world.setBlockState(blockPos, chest, 16 | 2)) {
+					if (world.setBlock(blockPos, chest, 16 | 2)) {
 						TFTreasure.basement.generateChestContents(world, blockPos);
 					}
 				}
@@ -155,7 +168,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		return true;
 	}
 
-    private static boolean offsetToAverageGroundLevel(ISeedReader world, BlockPos.Mutable startPos, BlockPos size) {
+    private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, BlockPos size) {
         StatsAccumulator heights = new StatsAccumulator();
 
         for (int dx = 0; dx < size.getX(); dx++) {
@@ -164,7 +177,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
                 int x = startPos.getX() + dx;
                 int z = startPos.getZ() + dz;
 
-                int y = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, x, z);
+                int y = world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
 
                 while (y >= 0) {
                     BlockState state = world.getBlockState(new BlockPos(x, y, z));
@@ -188,11 +201,11 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 
         startPos.setY(baseY);
 
-        return isAreaClear(world, startPos.up(maxY - baseY + 1), startPos.add(size));
+        return isAreaClear(world, startPos.above(maxY - baseY + 1), startPos.offset(size));
     }
 
-    private static boolean isAreaClear(IWorld world, BlockPos min, BlockPos max) {
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
+    private static boolean isAreaClear(LevelAccessor world, BlockPos min, BlockPos max) {
+        for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
             if (!world.getBlockState(pos).getMaterial().isReplaceable()) {
                 return false;
             }
@@ -202,7 +215,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 
     private static boolean isBlockOk(BlockState state) {
         Material material = state.getMaterial();
-        return material == Material.ROCK || material == Material.EARTH || material == Material.ORGANIC || material == Material.SAND;
+        return material == Material.STONE || material == Material.DIRT || material == Material.GRASS || material == Material.SAND;
     }
 
     private static boolean isBlockNotOk(BlockState state) {
@@ -281,13 +294,13 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
         }
 
 		@Override
-		protected IStructureProcessorType<?> getType() {
+		protected StructureProcessorType<?> getType() {
 			return TFStructureProcessors.HUT;
 		}
 
 		@Nullable
 		@Override
-		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
+		public StructureTemplate.StructureBlockInfo process(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
 
 			Random random = settings.getRandom(pos);
 
@@ -297,24 +310,24 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 			Block block = state.getBlock();
 
 			if (block == Blocks.COBBLESTONE)
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
+				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), null);
 
 			if (block == Blocks.COBBLESTONE_WALL)
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE_WALL.getDefaultState(), null);
+				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE_WALL.defaultBlockState(), null);
 
 			if (block == Blocks.STONE_BRICKS) { // TODO: By default it's not chiseled stone as that's a different block
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(blockInfo.pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
+				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.defaultBlockState() : Blocks.MOSSY_STONE_BRICKS.defaultBlockState(), null);
 			}
 
 			StructureWoodVariant type = StructureWoodVariant.getVariantFromBlock(block);
 			if (type != null) {
 				switch (type) {
 					case OAK:
-						return new Template.BlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, OAK_SWIZZLE   ), null);
+						return new StructureTemplate.StructureBlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, OAK_SWIZZLE   ), null);
 					case SPRUCE:
-						return new Template.BlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, SPRUCE_SWIZZLE), null);
+						return new StructureTemplate.StructureBlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, SPRUCE_SWIZZLE), null);
 					case BIRCH:
-						return new Template.BlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, BIRCH_SWIZZLE ), null);
+						return new StructureTemplate.StructureBlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, BIRCH_SWIZZLE ), null);
 				}
 			}
 

@@ -1,25 +1,25 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -33,38 +33,38 @@ import java.util.List;
 public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnData {
 
 	private static final int WARMUP_TIME = 20;
-	private static final DataParameter<Direction> MOVE_DIRECTION = EntityDataManager.createKey(SlideBlockEntity.class, DataSerializers.DIRECTION);
+	private static final EntityDataAccessor<Direction> MOVE_DIRECTION = SynchedEntityData.defineId(SlideBlockEntity.class, EntityDataSerializers.DIRECTION);
 
 	private BlockState myState;
 	private int slideTime;
 
-	public SlideBlockEntity(EntityType<? extends SlideBlockEntity> type, World world) {
+	public SlideBlockEntity(EntityType<? extends SlideBlockEntity> type, Level world) {
 		super(type, world);
-		this.preventEntitySpawning = true;
-		this.entityCollisionReduction = 1F;
+		this.blocksBuilding = true;
+		this.pushthrough = 1F;
 	}
 
-	public SlideBlockEntity(EntityType<? extends SlideBlockEntity> type, World world, double x, double y, double z, BlockState state) {
+	public SlideBlockEntity(EntityType<? extends SlideBlockEntity> type, Level world, double x, double y, double z, BlockState state) {
 		super(type, world);
 
 		this.myState = state;
-		this.preventEntitySpawning = true;
-		this.entityCollisionReduction = 1F;
-		this.setPosition(x, y, z);
-		this.setMotion(new Vector3d(0, 0, 0));
-		this.prevPosX = x;
-		this.prevPosY = y;
-		this.prevPosZ = z;
+		this.blocksBuilding = true;
+		this.pushthrough = 1F;
+		this.setPos(x, y, z);
+		this.setDeltaMovement(new Vec3(0, 0, 0));
+		this.xo = x;
+		this.yo = y;
+		this.zo = z;
 
 		this.determineMoveDirection();
 	}
 
 	private void determineMoveDirection() {
-		BlockPos pos = new BlockPos(this.getPosition());
+		BlockPos pos = new BlockPos(this.blockPosition());
 
 		Direction[] toCheck;
 
-		switch (myState.get(RotatedPillarBlock.AXIS)) {
+		switch (myState.getValue(RotatedPillarBlock.AXIS)) {
 			case X: // horizontal blocks will go up or down if there is a block on one side and air on the other
 				toCheck = new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};
 				break;
@@ -78,24 +78,24 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 		}
 
 		for (Direction e : toCheck) {
-			if (world.isAirBlock(pos.offset(e)) && !world.isAirBlock(pos.offset(e.getOpposite()))) {
-				dataManager.set(MOVE_DIRECTION, e);
+			if (level.isEmptyBlock(pos.relative(e)) && !level.isEmptyBlock(pos.relative(e.getOpposite()))) {
+				entityData.set(MOVE_DIRECTION, e);
 				return;
 			}
 		}
 
 		// if no wall, travel towards open air
 		for (Direction e : toCheck) {
-			if (world.isAirBlock(pos.offset(e))) {
-				dataManager.set(MOVE_DIRECTION, e);
+			if (level.isEmptyBlock(pos.relative(e))) {
+				entityData.set(MOVE_DIRECTION, e);
 				return;
 			}
 		}
 	}
 
 	@Override
-	protected void registerData() {
-		dataManager.register(MOVE_DIRECTION, Direction.DOWN);
+	protected void defineSynchedData() {
+		entityData.define(MOVE_DIRECTION, Direction.DOWN);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return this.isAlive();
 	}
 
@@ -113,59 +113,59 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 		if (this.myState == null || this.myState.getMaterial() == Material.AIR) {
 			this.remove();
 		} else {
-			this.prevPosX = this.getPosX();
-			this.prevPosY = this.getPosY();
-			this.prevPosZ = this.getPosZ();
+			this.xo = this.getX();
+			this.yo = this.getY();
+			this.zo = this.getZ();
 			++this.slideTime;
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
 				final double moveAcceleration = 0.04;
-				Direction moveDirection = dataManager.get(MOVE_DIRECTION);
-				setMotion(this.getMotion().add(moveDirection.getXOffset() * moveAcceleration, moveDirection.getYOffset() * moveAcceleration, moveDirection.getZOffset() * moveAcceleration));
-				this.move(MoverType.SELF, new Vector3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()));
+				Direction moveDirection = entityData.get(MOVE_DIRECTION);
+				setDeltaMovement(this.getDeltaMovement().add(moveDirection.getStepX() * moveAcceleration, moveDirection.getStepY() * moveAcceleration, moveDirection.getStepZ() * moveAcceleration));
+				this.move(MoverType.SELF, new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z()));
 			}
-			this.getMotion().mul(0.98, 0.98, 0.98);
+			this.getDeltaMovement().multiply(0.98, 0.98, 0.98);
 
-			if (!this.world.isRemote) {
+			if (!this.level.isClientSide) {
 				if (this.slideTime % 5 == 0) {
-					playSound(TFSounds.SLIDER, 1.0F, 0.9F + (this.rand.nextFloat() * 0.4F));
+					playSound(TFSounds.SLIDER, 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
 
-				BlockPos pos = new BlockPos(this.getPosition());
+				BlockPos pos = new BlockPos(this.blockPosition());
 
 				if (this.slideTime == 1) {
-					if (this.world.getBlockState(pos) != this.myState) {
+					if (this.level.getBlockState(pos) != this.myState) {
 						this.remove();
 						return;
 					}
 
-					this.world.removeBlock(pos, false);
+					this.level.removeBlock(pos, false);
 				}
 
 				if (this.slideTime == WARMUP_TIME + 40) {
-					this.setMotion(new Vector3d(0, 0, 0));
+					this.setDeltaMovement(new Vec3(0, 0, 0));
 
-					dataManager.set(MOVE_DIRECTION, dataManager.get(MOVE_DIRECTION).getOpposite());
+					entityData.set(MOVE_DIRECTION, entityData.get(MOVE_DIRECTION).getOpposite());
 				}
 
-				if (this.collidedVertically || this.collidedHorizontally) {
-					this.setMotion(this.getMotion().mul(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
+				if (this.verticalCollision || this.horizontalCollision) {
+					this.setDeltaMovement(this.getDeltaMovement().multiply(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
 
 					this.remove();
 
-					if (this.world.placedBlockCollides(myState, pos, ISelectionContext.dummy())) {
-						world.setBlockState(pos, myState);
+					if (this.level.isUnobstructed(myState, pos, CollisionContext.empty())) {
+						level.setBlockAndUpdate(pos, myState);
 					} else {
 						// TODO: This and the below item might not be correctly reflecting the state
-						this.entityDropItem(new ItemStack(myState.getBlock()), 0.0F);
+						this.spawnAtLocation(new ItemStack(myState.getBlock()), 0.0F);
 					}
 				} else if (this.slideTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600) {
-					this.entityDropItem(new ItemStack(this.myState.getBlock()), 0.0F);
+					this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
 					this.remove();
 				}
 
 				// push things out and damage them
-				this.damageKnockbackEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox()));
+				this.damageKnockbackEntities(this.level.getEntities(this, this.getBoundingBox()));
 			}
 		}
 	}
@@ -173,61 +173,61 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 	private void damageKnockbackEntities(List<Entity> entities) {
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity) {
-				entity.attackEntityFrom(TFDamageSources.SLIDER, 5);
+				entity.hurt(TFDamageSources.SLIDER, 5);
 
-				double kx = (this.getPosX() - entity.getPosX()) * 2.0;
-				double kz = (this.getPosZ() - entity.getPosZ()) * 2.0;
+				double kx = (this.getX() - entity.getX()) * 2.0;
+				double kz = (this.getZ() - entity.getZ()) * 2.0;
 
-				((LivingEntity) entity).applyKnockback(2, kx, kz);
+				((LivingEntity) entity).knockback(2, kx, kz);
 			}
 		}
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean canRenderOnFire() {
+	public boolean displayFireAnimation() {
 		return false;
 	}
 
 	@Override
-	protected void readAdditional(@Nonnull CompoundNBT compound) {
+	protected void readAdditionalSaveData(@Nonnull CompoundTag compound) {
 		this.slideTime = compound.getInt("Time");
-		dataManager.set(MOVE_DIRECTION, Direction.byIndex(compound.getByte("Direction")));
+		entityData.set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByte("Direction")));
 	}
 
 	@Override
-	protected void writeAdditional(@Nonnull CompoundNBT compound) {
+	protected void addAdditionalSaveData(@Nonnull CompoundTag compound) {
 		compound.putInt("Time", this.slideTime);
-		compound.putByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
+		compound.putByte("Direction", (byte) entityData.get(MOVE_DIRECTION).get3DDataValue());
 	}
 
 	@Override
-	public void writeSpawnData(PacketBuffer buffer) {
-		buffer.writeInt(Block.getStateId(myState));
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		buffer.writeInt(Block.getId(myState));
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer additionalData) {
-		myState = Block.getStateById(additionalData.readInt());
+	public void readSpawnData(FriendlyByteBuf additionalData) {
+		myState = Block.stateById(additionalData.readInt());
 	}
 
 	@Override
-	public boolean canBePushed() {
+	public boolean isPushable() {
 		return false;
 	}
 
 	@Override
-	public boolean isPushedByWater() {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

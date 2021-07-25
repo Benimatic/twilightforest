@@ -1,37 +1,46 @@
 package twilightforest.entity;
 
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.util.TFDamageSources;
 
 import java.util.EnumSet;
 import java.util.Random;
 
-public class WraithEntity extends FlyingEntity implements IMob {
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
-	public WraithEntity(EntityType<? extends WraithEntity> type, World world) {
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.FlyingMob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+
+public class WraithEntity extends FlyingMob implements Enemy {
+
+	public WraithEntity(EntityType<? extends WraithEntity> type, Level world) {
 		super(type, world);
-		moveController = new NoClipMoveHelper(this);
-		noClip = true;
+		moveControl = new NoClipMoveHelper(this);
+		noPhysics = true;
 	}
 
 	@Override
@@ -40,7 +49,7 @@ public class WraithEntity extends FlyingEntity implements IMob {
 		this.goalSelector.addGoal(5, new AIFlyTowardsTarget(this));
 		this.goalSelector.addGoal(6, new AIRandomFly(this));
 		this.goalSelector.addGoal(7, new AILookAround(this));
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
 	}
 
 	static class AIFlyTowardsTarget extends Goal {
@@ -48,24 +57,24 @@ public class WraithEntity extends FlyingEntity implements IMob {
 
 		AIFlyTowardsTarget(WraithEntity wraith) {
 			this.taskOwner = wraith;
-			this.setMutexFlags(EnumSet.of(Flag.MOVE));
+			this.setFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			return taskOwner.getAttackTarget() != null;
+		public boolean canUse() {
+			return taskOwner.getTarget() != null;
 		}
 
 		@Override
-		public boolean shouldContinueExecuting() {
+		public boolean canContinueToUse() {
 			return false;
 		}
 
 		@Override
-		public void startExecuting() {
-			LivingEntity target = taskOwner.getAttackTarget();
+		public void start() {
+			LivingEntity target = taskOwner.getTarget();
 			if (target != null)
-				taskOwner.getMoveHelper().setMoveTo(target.getPosX(), target.getPosY(), target.getPosZ(), 0.5F);
+				taskOwner.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 0.5F);
 		}
 	}
 
@@ -79,13 +88,13 @@ public class WraithEntity extends FlyingEntity implements IMob {
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			LivingEntity target = taskOwner.getAttackTarget();
+		public boolean canUse() {
+			LivingEntity target = taskOwner.getTarget();
 
 			return target != null
 					&& target.getBoundingBox().maxY > taskOwner.getBoundingBox().minY
 					&& target.getBoundingBox().minY < taskOwner.getBoundingBox().maxY
-					&& taskOwner.getDistanceSq(target) <= 4.0D;
+					&& taskOwner.distanceToSqr(target) <= 4.0D;
 		}
 
 		@Override
@@ -96,14 +105,14 @@ public class WraithEntity extends FlyingEntity implements IMob {
 		}
 
 		@Override
-		public void resetTask() {
+		public void stop() {
 			attackTick = 20;
 		}
 
 		@Override
-		public void startExecuting() {
-			if (taskOwner.getAttackTarget() != null)
-				taskOwner.attackEntityAsMob(taskOwner.getAttackTarget());
+		public void start() {
+			if (taskOwner.getTarget() != null)
+				taskOwner.doHurtTarget(taskOwner.getTarget());
 			attackTick = 20;
 		}
 	}
@@ -114,33 +123,33 @@ public class WraithEntity extends FlyingEntity implements IMob {
 
 		public AIRandomFly(WraithEntity wraith) {
 			this.parentEntity = wraith;
-			this.setMutexFlags(EnumSet.of(Flag.MOVE));
+			this.setFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			if (parentEntity.getAttackTarget() != null)
+		public boolean canUse() {
+			if (parentEntity.getTarget() != null)
 				return false;
-			MovementController entitymovehelper = this.parentEntity.getMoveHelper();
-			double d0 = entitymovehelper.getX() - this.parentEntity.getPosX();
-			double d1 = entitymovehelper.getY() - this.parentEntity.getPosY();
-			double d2 = entitymovehelper.getZ() - this.parentEntity.getPosZ();
+			MoveControl entitymovehelper = this.parentEntity.getMoveControl();
+			double d0 = entitymovehelper.getWantedX() - this.parentEntity.getX();
+			double d1 = entitymovehelper.getWantedY() - this.parentEntity.getY();
+			double d2 = entitymovehelper.getWantedZ() - this.parentEntity.getZ();
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			return d3 < 1.0D || d3 > 3600.0D;
 		}
 
 		@Override
-		public boolean shouldContinueExecuting() {
+		public boolean canContinueToUse() {
 			return false;
 		}
 
 		@Override
-		public void startExecuting() {
-			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getPosX() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
-			double d1 = this.parentEntity.getPosY() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
-			double d2 = this.parentEntity.getPosZ() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
-			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.5D);
+		public void start() {
+			Random random = this.parentEntity.getRandom();
+			double d0 = this.parentEntity.getX() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
+			double d1 = this.parentEntity.getY() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
+			double d2 = this.parentEntity.getZ() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
+			this.parentEntity.getMoveControl().setWantedPosition(d0, d1, d2, 0.5D);
 		}
 	}
 
@@ -150,37 +159,37 @@ public class WraithEntity extends FlyingEntity implements IMob {
 
 		public AILookAround(WraithEntity wraith) {
 			this.parentEntity = wraith;
-			this.setMutexFlags(EnumSet.of(Flag.LOOK));
+			this.setFlags(EnumSet.of(Flag.LOOK));
 		}
 
 		@Override
-		public boolean shouldExecute() {
+		public boolean canUse() {
 			return true;
 		}
 
 		@Override
 		public void tick() {
-			if (this.parentEntity.getAttackTarget() == null) {
-				this.parentEntity.rotationYaw = -((float) MathHelper.atan2(this.parentEntity.getMotion().getX(), this.parentEntity.getMotion().getZ())) * (180F / (float) Math.PI);
-				this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
+			if (this.parentEntity.getTarget() == null) {
+				this.parentEntity.yRot = -((float) Mth.atan2(this.parentEntity.getDeltaMovement().x(), this.parentEntity.getDeltaMovement().z())) * (180F / (float) Math.PI);
+				this.parentEntity.yBodyRot = this.parentEntity.yRot;
 			} else {
-				LivingEntity entitylivingbase = this.parentEntity.getAttackTarget();
+				LivingEntity entitylivingbase = this.parentEntity.getTarget();
 
-				if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
-					double d1 = entitylivingbase.getPosX() - this.parentEntity.getPosX();
-					double d2 = entitylivingbase.getPosZ() - this.parentEntity.getPosZ();
-					this.parentEntity.rotationYaw = -((float) MathHelper.atan2(d1, d2)) * (180F / (float) Math.PI);
-					this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
+				if (entitylivingbase.distanceToSqr(this.parentEntity) < 4096.0D) {
+					double d1 = entitylivingbase.getX() - this.parentEntity.getX();
+					double d2 = entitylivingbase.getZ() - this.parentEntity.getZ();
+					this.parentEntity.yRot = -((float) Mth.atan2(d1, d2)) * (180F / (float) Math.PI);
+					this.parentEntity.yBodyRot = this.parentEntity.yRot;
 				}
 			}
 		}
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 20.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.5D)
+				.add(Attributes.ATTACK_DAMAGE, 5.0D);
 	}
 
 	@Override
@@ -190,70 +199,70 @@ public class WraithEntity extends FlyingEntity implements IMob {
 
 	// [VanillaCopy] EntityMob.attackEntityAsMob. This whole inheritance hierarchy makes me sad.
 	@Override
-	public boolean attackEntityAsMob(Entity entityIn) {
+	public boolean doHurtTarget(Entity entityIn) {
 		float f = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
 		int i = 0;
 
 		if (entityIn instanceof LivingEntity) {
-			f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((LivingEntity) entityIn).getCreatureAttribute());
-			i += EnchantmentHelper.getKnockbackModifier(this);
+			f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity) entityIn).getMobType());
+			i += EnchantmentHelper.getKnockbackBonus(this);
 		}
 
-		boolean flag = entityIn.attackEntityFrom(TFDamageSources.HAUNT(this), f);
+		boolean flag = entityIn.hurt(TFDamageSources.HAUNT(this), f);
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).applyKnockback(i * 0.5F, MathHelper.sin(this.rotationYaw * 0.017453292F), (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-				this.setMotion(getMotion().getX() * 0.6D, getMotion().getY(), getMotion().getZ() * 0.6D);
+				((LivingEntity) entityIn).knockback(i * 0.5F, Mth.sin(this.yRot * 0.017453292F), (-Mth.cos(this.yRot * 0.017453292F)));
+				this.setDeltaMovement(getDeltaMovement().x() * 0.6D, getDeltaMovement().y(), getDeltaMovement().z() * 0.6D);
 			}
 
-			int j = EnchantmentHelper.getFireAspectModifier(this);
+			int j = EnchantmentHelper.getFireAspect(this);
 
 			if (j > 0) {
-				entityIn.setFire(j * 4);
+				entityIn.setSecondsOnFire(j * 4);
 			}
 
-			if (entityIn instanceof PlayerEntity) {
-				PlayerEntity entityplayer = (PlayerEntity) entityIn;
-				ItemStack itemstack = this.getHeldItemMainhand();
-				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
+			if (entityIn instanceof Player) {
+				Player entityplayer = (Player) entityIn;
+				ItemStack itemstack = this.getMainHandItem();
+				ItemStack itemstack1 = entityplayer.isUsingItem() ? entityplayer.getUseItem() : ItemStack.EMPTY;
 
 				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof AxeItem && itemstack1.getItem() == Items.SHIELD) {
-					float f1 = 0.25F + EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+					float f1 = 0.25F + EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
 
-					if (this.rand.nextFloat() < f1) {
-						entityplayer.getCooldownTracker().setCooldown(Items.SHIELD, 100);
-						this.world.setEntityState(entityplayer, (byte) 30);
+					if (this.random.nextFloat() < f1) {
+						entityplayer.getCooldowns().addCooldown(Items.SHIELD, 100);
+						this.level.broadcastEntityEvent(entityplayer, (byte) 30);
 					}
 				}
 			}
 
-			this.applyEnchantments(this, entityIn);
+			this.doEnchantDamageEffects(this, entityIn);
 		}
 
 		return flag;
 	}
 
 	private void despawnIfPeaceful() {
-		if (!world.isRemote && world.getDifficulty() == Difficulty.PEACEFUL)
+		if (!level.isClientSide && level.getDifficulty() == Difficulty.PEACEFUL)
 			remove();
 	}
 
 	@Override
-	public void livingTick() {
-		super.livingTick();
+	public void aiStep() {
+		super.aiStep();
 		despawnIfPeaceful();
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (super.attackEntityFrom(source, amount)) {
-			Entity entity = source.getTrueSource();
-			if (getRidingEntity() == entity || getPassengers().contains(entity)) {
+	public boolean hurt(DamageSource source, float amount) {
+		if (super.hurt(source, amount)) {
+			Entity entity = source.getEntity();
+			if (getVehicle() == entity || getPassengers().contains(entity)) {
 				return true;
 			}
 			if (entity != this && entity instanceof LivingEntity && !source.isCreativePlayer()) {
-				setAttackTarget((LivingEntity) entity);
+				setTarget((LivingEntity) entity);
 			}
 			return true;
 		} else {
@@ -262,7 +271,7 @@ public class WraithEntity extends FlyingEntity implements IMob {
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
@@ -281,7 +290,7 @@ public class WraithEntity extends FlyingEntity implements IMob {
 		return TFSounds.WRAITH_DEATH;
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends WraithEntity> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
+	public static boolean getCanSpawnHere(EntityType<? extends WraithEntity> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 }

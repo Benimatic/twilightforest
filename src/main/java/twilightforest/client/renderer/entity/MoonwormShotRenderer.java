@@ -1,14 +1,14 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.MoonwormModel;
 import twilightforest.entity.projectile.MoonwormShotEntity;
@@ -18,28 +18,28 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel wormModel = new MoonwormModel();
 
-	public MoonwormShotRenderer(EntityRendererManager manager) {
+	public MoonwormShotRenderer(EntityRenderDispatcher manager) {
 		super(manager);
-		this.shadowSize = 0.25F;
+		this.shadowRadius = 0.25F;
 	}
 
 	@Override
-	public void render(MoonwormShotEntity entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
-		stack.push();
+	public void render(MoonwormShotEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+		stack.pushPose();
 		stack.translate(0.0, 0.5, 0.0);
 		stack.scale(-1f, -1f, -1f);
 
-		stack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 180.0F));
-		stack.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
+		stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.yRot) - 180.0F));
+		stack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.xRot)));
 
-		IVertexBuilder builder = buffer.getBuffer(wormModel.getRenderType(textureLoc));
-		wormModel.render(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		VertexConsumer builder = buffer.getBuffer(wormModel.renderType(textureLoc));
+		wormModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
-		stack.pop();
+		stack.popPose();
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(MoonwormShotEntity entity) {
+	public ResourceLocation getTextureLocation(MoonwormShotEntity entity) {
 		return textureLoc;
 	}
 }

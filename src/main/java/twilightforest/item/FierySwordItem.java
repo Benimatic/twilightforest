@@ -1,36 +1,42 @@
 package twilightforest.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.item.*;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+
 public class FierySwordItem extends SwordItem {
 
-	public FierySwordItem(IItemTier toolMaterial, Properties props) {
+	public FierySwordItem(Tier toolMaterial, Properties props) {
 		super(toolMaterial, 3, -2.4F, props);
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		boolean result = super.hitEntity(stack, target, attacker);
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		boolean result = super.hurtEnemy(stack, target, attacker);
 
-		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
-			target.setFire(15);
+		if (result && !target.level.isClientSide && !target.fireImmune()) {
+			target.setSecondsOnFire(15);
 		} else {
 			for (int var1 = 0; var1 < 20; ++var1) {
-				double px = target.getPosX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
-				double py = target.getPosY() + random.nextFloat() * target.getHeight();
-				double pz = target.getPosZ() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
-				target.world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.02, 0.02, 0.02);
+				double px = target.getX() + random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+				double py = target.getY() + random.nextFloat() * target.getBbHeight();
+				double pz = target.getZ() + random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+				target.level.addParticle(ParticleTypes.FLAME, px, py, pz, 0.02, 0.02, 0.02);
 			}
 		}
 
@@ -39,8 +45,8 @@ public class FierySwordItem extends SwordItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
-		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, world, tooltip, flags);
+		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
 	}
 }

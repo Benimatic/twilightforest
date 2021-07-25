@@ -1,10 +1,10 @@
 package twilightforest.tileentity;
 
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import twilightforest.client.particle.TFParticleType;
 
-public class TFSmokerTileEntity extends TileEntity implements ITickableTileEntity {
+public class TFSmokerTileEntity extends BlockEntity implements TickableBlockEntity {
 
 	private long counter = 0;
 
@@ -14,8 +14,8 @@ public class TFSmokerTileEntity extends TileEntity implements ITickableTileEntit
 
 	@Override
 	public void tick() {
-		if (world.isRemote && ++counter % 4 == 0) {
-			world.addParticle(TFParticleType.HUGE_SMOKE.get(), pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5,
+		if (level.isClientSide && ++counter % 4 == 0) {
+			level.addParticle(TFParticleType.HUGE_SMOKE.get(), worldPosition.getX() + 0.5, worldPosition.getY() + 0.95, worldPosition.getZ() + 0.5,
 					Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05
 			);
 		}

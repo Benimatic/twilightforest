@@ -1,16 +1,16 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentOld {
 
-	public FinalCastleRoof48CrenellatedComponent(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleRoof48CrenellatedComponent(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCRo48Cr, nbt);
 	}
 
@@ -31,23 +31,23 @@ public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentO
 
 		int height = 5;
 
-		this.setCoordBaseMode(keep.getCoordBaseMode());
-		this.boundingBox = new MutableBoundingBox(keep.getBoundingBox().minX - 2, keep.getBoundingBox().maxY - 1, keep.getBoundingBox().minZ - 2, keep.getBoundingBox().maxX + 2, keep.getBoundingBox().maxY + height - 1, keep.getBoundingBox().maxZ + 2);
+		this.setOrientation(keep.getOrientation());
+		this.boundingBox = new BoundingBox(keep.getBoundingBox().x0 - 2, keep.getBoundingBox().y1 - 1, keep.getBoundingBox().z0 - 2, keep.getBoundingBox().x1 + 2, keep.getBoundingBox().y1 + height - 1, keep.getBoundingBox().z1 + 2);
 
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// add second layer of floor
-		final BlockState castleMagic = TFBlocks.castle_rune_brick_purple.get().getDefaultState();
-		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
+		final BlockState castleMagic = TFBlocks.castle_rune_brick_purple.get().defaultBlockState();
+		this.generateBox(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
 
 		// crenellations
 		for (Rotation rotation : RotationUtil.ROTATIONS) {

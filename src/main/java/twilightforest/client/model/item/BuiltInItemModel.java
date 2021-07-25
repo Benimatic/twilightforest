@@ -1,28 +1,28 @@
 package twilightforest.client.model.item;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.block.BlockState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public abstract class BuiltInItemModel implements IBakedModel {
+public abstract class BuiltInItemModel implements BakedModel {
 
-	private class Overrides extends ItemOverrideList {
+	private class Overrides extends ItemOverrides {
 
 		Overrides() {
 			super(/*Collections.emptyList()*/);
@@ -30,17 +30,17 @@ public abstract class BuiltInItemModel implements IBakedModel {
 
 		@Nullable
 		@Override
-		public IBakedModel getOverrideModel(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
+		public BakedModel resolve(BakedModel originalModel, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity) {
 			setItemStack(stack);
 			return BuiltInItemModel.this;
 		}
 	}
 
 	private final TextureAtlasSprite particleTexture;
-	private final ItemOverrideList overrides = new Overrides();
+	private final ItemOverrides overrides = new Overrides();
 
 	protected BuiltInItemModel(String particleTextureName) {
-		this.particleTexture = Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(particleTextureName));
+		this.particleTexture = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(new ResourceLocation(particleTextureName));
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public abstract class BuiltInItemModel implements IBakedModel {
 	}
 
 	@Override
-	public boolean isAmbientOcclusion() {
+	public boolean useAmbientOcclusion() {
 		return true;
 	}
 
@@ -59,32 +59,32 @@ public abstract class BuiltInItemModel implements IBakedModel {
 	}
 
 	@Override
-	public boolean isBuiltInRenderer() {
+	public boolean isCustomRenderer() {
 		return true;
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture() {
+	public TextureAtlasSprite getParticleIcon() {
 		return particleTexture;
 	}
 
 	@Override
-	public boolean isSideLit() {
+	public boolean usesBlockLight() {
 		return true; //FIXME
 	}
 
 	@Override
-	public ItemOverrideList getOverrides() {
+	public ItemOverrides getOverrides() {
 		return overrides;
 	}
 
 	@Override
-	public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
+	public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
 		setTransform(cameraTransformType);
 		return this;
 	}
 
 	protected abstract void setItemStack(ItemStack stack);
 
-	protected abstract void setTransform(ItemCameraTransforms.TransformType transform);
+	protected abstract void setTransform(ItemTransforms.TransformType transform);
 }

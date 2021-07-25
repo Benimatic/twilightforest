@@ -1,16 +1,16 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -21,13 +21,13 @@ import java.util.Random;
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
-	public FinalCastleLargeTowerComponent(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleLargeTowerComponent(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCLaTo, nbt);
 	}
 
 	public FinalCastleLargeTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
 		super(FinalCastlePieces.TFFCLaTo, feature, i);
-		this.setCoordBaseMode(rotation);
+		this.setOrientation(rotation);
 		this.size = 13;
 		this.height = 61;
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, Direction.SOUTH);
@@ -35,21 +35,21 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 		// add crown
 		FinalCastleRoof9CrenellatedComponent roof = new FinalCastleRoof9CrenellatedComponent(getFeatureType(), rand, 4, this);
 		list.add(roof);
-		roof.buildComponent(this, list, rand);
+		roof.addChildren(this, list, rand);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
 
-		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, 12, 59, 12, false, rand, deco.randomBlocks);
+		generateBox(world, sbb, 0, 0, 0, 12, 59, 12, false, rand, deco.randomBlocks);
 
 		// add branching runes
 		int numBranches = 6 + decoRNG.nextInt(4);
@@ -59,13 +59,13 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
 		// beard
 		for (int i = 1; i < 4; i++) {
-			fillWithRandomizedBlocks(world, sbb, i, -(i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
+			generateBox(world, sbb, i, -(i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
 		}
-		this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
+		this.placeBlock(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final BlockState castleDoor = TFBlocks.castle_door_pink.get().getDefaultState(); //this.getGlyphMeta()?
-		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
+		final BlockState castleDoor = TFBlocks.castle_door_pink.get().defaultBlockState(); //this.getGlyphMeta()?
+		this.generateBox(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
 		this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
 
@@ -73,6 +73,6 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 	}
 
 	public BlockState getGlyphMeta() {
-		return TFBlocks.castle_rune_brick_pink.get().getDefaultState();
+		return TFBlocks.castle_rune_brick_pink.get().defaultBlockState();
 	}
 }

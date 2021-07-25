@@ -1,12 +1,12 @@
 package twilightforest.inventory;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 import twilightforest.TFConfig;
 
-public class UncraftingInventory implements IInventory {
+public class UncraftingInventory implements Container {
 
 	private final NonNullList<ItemStack> contents = NonNullList.withSize(9, ItemStack.EMPTY);
 
@@ -15,7 +15,7 @@ public class UncraftingInventory implements IInventory {
 	public int recraftingCost;
 
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		return 9;
 	}
 
@@ -30,12 +30,12 @@ public class UncraftingInventory implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) {
+	public ItemStack getItem(int index) {
 		return contents.get(index);
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int amount) {
+	public ItemStack removeItem(int index, int amount) {
 		ItemStack stack = this.contents.get(index);
 		if (stack.isEmpty()) return ItemStack.EMPTY;
 		if (stack.getCount() <= amount) {
@@ -47,7 +47,7 @@ public class UncraftingInventory implements IInventory {
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int index) {
+	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = this.contents.get(index);
 		if (stack.isEmpty()) return ItemStack.EMPTY;
 		this.contents.set(index, ItemStack.EMPTY);
@@ -55,45 +55,45 @@ public class UncraftingInventory implements IInventory {
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
+	public void setItem(int index, ItemStack stack) {
 		this.contents.set(index, stack);
 
-		if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit()) {
-			stack.setCount(this.getInventoryStackLimit());
+		if (!stack.isEmpty() && stack.getCount() > this.getMaxStackSize()) {
+			stack.setCount(this.getMaxStackSize());
 		}
 
-		this.markDirty();
+		this.setChanged();
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
+	public int getMaxStackSize() {
 		return 64;
 	}
 
 	@Override
-	public void markDirty() {
+	public void setChanged() {
 	}
 
 	@Override
-	public boolean isUsableByPlayer(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return !TFConfig.COMMON_CONFIG.disableUncrafting.get();
 	}
 
 	@Override
-	public void openInventory(PlayerEntity player) {
+	public void startOpen(Player player) {
 	}
 
 	@Override
-	public void closeInventory(PlayerEntity player) {
+	public void stopOpen(Player player) {
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
+	public boolean canPlaceItem(int index, ItemStack stack) {
 		return false;
 	}
 
 	@Override
-	public void clear() {
+	public void clearContent() {
 		contents.clear();
 	}
 }

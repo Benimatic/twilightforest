@@ -1,28 +1,28 @@
 package twilightforest.util;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Vec3i;
 
 import javax.annotation.Nullable;
 
 public class StructureBoundingBoxUtils {
-	public static Vector3i getCenter(MutableBoundingBox sbb) {
-		return new BlockPos(sbb.minX + (sbb.maxX - sbb.minX + 1) / 2, sbb.minY + (sbb.maxY - sbb.minY + 1) / 2, sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2);
+	public static Vec3i getCenter(BoundingBox sbb) {
+		return new BlockPos(sbb.x0 + (sbb.x1 - sbb.x0 + 1) / 2, sbb.y0 + (sbb.y1 - sbb.y0 + 1) / 2, sbb.z0 + (sbb.z1 - sbb.z0 + 1) / 2);
 	}
 
 	@SuppressWarnings("unused")
 	@Nullable
-	public static MutableBoundingBox getUnionOfSBBs(MutableBoundingBox sbbIn, MutableBoundingBox sbbMask) {
-		if (!sbbIn.intersectsWith(sbbMask))
+	public static BoundingBox getUnionOfSBBs(BoundingBox sbbIn, BoundingBox sbbMask) {
+		if (!sbbIn.intersects(sbbMask))
 			return null;
 
-		return new MutableBoundingBox(
-						Math.max(sbbIn.minX, sbbMask.minX),
-						Math.max(sbbIn.minY, sbbMask.minY),
-						Math.max(sbbIn.minZ, sbbMask.minZ),
-						Math.min(sbbIn.maxX, sbbMask.maxX),
-						Math.min(sbbIn.maxY, sbbMask.maxY),
-						Math.min(sbbIn.maxZ, sbbMask.maxZ));
+		return new BoundingBox(
+						Math.max(sbbIn.x0, sbbMask.x0),
+						Math.max(sbbIn.y0, sbbMask.y0),
+						Math.max(sbbIn.z0, sbbMask.z0),
+						Math.min(sbbIn.x1, sbbMask.x1),
+						Math.min(sbbIn.y1, sbbMask.y1),
+						Math.min(sbbIn.z1, sbbMask.z1));
 	}
 }

@@ -1,7 +1,7 @@
 package twilightforest.enums;
 
-import net.minecraft.block.SkullBlock;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.util.StringRepresentable;
 import twilightforest.tileentity.spawner.AlphaYetiSpawnerTileEntity;
 import twilightforest.tileentity.spawner.BossSpawnerTileEntity;
 import twilightforest.tileentity.spawner.FinalBossSpawnerTileEntity;
@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public enum BossVariant implements IStringSerializable, SkullBlock.ISkullType {
+public enum BossVariant implements StringRepresentable, SkullBlock.Type {
 
 	NAGA          (TrophyType.GOLD    , NagaSpawnerTileEntity::new),
 	LICH          (TrophyType.GOLD    , LichSpawnerTileEntity::new),
@@ -41,7 +41,7 @@ public enum BossVariant implements IStringSerializable, SkullBlock.ISkullType {
 	}
 
 	@Override
-	public String getString() {
+	public String getSerializedName() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 

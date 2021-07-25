@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.KnightPhantomEntity;
 import twilightforest.item.TFItems;
 
@@ -21,24 +21,24 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		return true;
 	}
 
 	@Override
 	public void tick() {
-		boss.noClip = boss.getTicksProgress() % 20 != 0;
+		boss.noPhysics = boss.getTicksProgress() % 20 != 0;
 		boss.setTicksProgress(boss.getTicksProgress() + 1);
 		if (boss.getTicksProgress() >= boss.getMaxTicksForFormation())
 			switchToNextFormation();
-		Vector3d dest = getDestination();
-		boss.getMoveHelper().setMoveTo(dest.x, dest.y, dest.z, boss.isChargingAtPlayer() ? 2 : 1);
+		Vec3 dest = getDestination();
+		boss.getMoveControl().setWantedPosition(dest.x, dest.y, dest.z, boss.isChargingAtPlayer() ? 2 : 1);
 	}
 
-	public Vector3d getDestination() {
+	public Vec3 getDestination() {
 
 		if (!boss.hasHome())
-			boss.setHomePosAndDistance(boss.getPosition(), 20);
+			boss.restrictTo(boss.blockPosition(), 20);
 
 		switch (boss.getCurrentFormation()) {
 			case LARGE_CLOCKWISE:
@@ -83,15 +83,15 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 				boss.switchToFormation(KnightPhantomEntity.Formation.WAITING_FOR_LEADER);
 			} else {
 				// random weapon switch!
-				switch (boss.getRNG().nextInt(3)) {
+				switch (boss.getRandom().nextInt(3)) {
 					case 0:
-						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_sword.get()));
+						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword.get()));
 						break;
 					case 1:
-						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_axe.get()));
+						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_axe.get()));
 						break;
 					case 2:
-						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe.get()));
+						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe.get()));
 						break;
 				}
 
@@ -143,7 +143,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	 * Pick a random formation.  Called by the leader when his current formation duration ends
 	 */
 	private void pickRandomFormation() {
-		switch (boss.getRNG().nextInt(8)) {
+		switch (boss.getRandom().nextInt(8)) {
 			case 0:
 			case 7:
 				boss.switchToFormation(KnightPhantomEntity.Formation.SMALL_CLOCKWISE);
@@ -171,7 +171,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	 * Tell a random knight from the list to charge
 	 */
 	private void makeARandomKnightCharge(List<KnightPhantomEntity> nearbyKnights) {
-		int randomNum = boss.getRNG().nextInt(nearbyKnights.size());
+		int randomNum = boss.getRandom().nextInt(nearbyKnights.size());
 		nearbyKnights.get(randomNum).switchToFormation(KnightPhantomEntity.Formation.ATTACK_PLAYER_START);
 	}
 
@@ -196,7 +196,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 		return noCharge;
 	}
 
-	private Vector3d getMoveAcrossPosition(boolean plus, boolean alongX) {
+	private Vec3 getMoveAcrossPosition(boolean plus, boolean alongX) {
 		float offset0 = (boss.getNumber() * 3F) - 7.5F;
 		float offset1;
 
@@ -210,13 +210,13 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 			offset1 *= -1;
 		}
 
-		double dx = boss.getHomePosition().getX() + (alongX ? offset0 : offset1);
-		double dy = boss.getHomePosition().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
-		double dz = boss.getHomePosition().getZ() + (alongX ? offset1 : offset0);
-		return new Vector3d(dx, dy, dz);
+		double dx = boss.getRestrictCenter().getX() + (alongX ? offset0 : offset1);
+		double dy = boss.getRestrictCenter().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
+		double dz = boss.getRestrictCenter().getZ() + (alongX ? offset1 : offset0);
+		return new Vec3(dx, dy, dz);
 	}
 
-	private Vector3d getCirclePosition(float distance, boolean clockwise) {
+	private Vec3 getCirclePosition(float distance, boolean clockwise) {
 		float angle = (boss.getTicksProgress() * 2.0F);
 
 		if (!clockwise) {
@@ -225,44 +225,44 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 
 		angle += (60F * boss.getNumber());
 
-		double dx = boss.getHomePosition().getX() + Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double dy = boss.getHomePosition().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
-		double dz = boss.getHomePosition().getZ() + Math.sin((angle) * Math.PI / 180.0D) * distance;
-		return new Vector3d(dx, dy, dz);
+		double dx = boss.getRestrictCenter().getX() + Math.cos((angle) * Math.PI / 180.0D) * distance;
+		double dy = boss.getRestrictCenter().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
+		double dz = boss.getRestrictCenter().getZ() + Math.sin((angle) * Math.PI / 180.0D) * distance;
+		return new Vec3(dx, dy, dz);
 	}
 
-	private Vector3d getHoverPosition(float distance) {
+	private Vec3 getHoverPosition(float distance) {
 		// bound this by distance so we don't hover in walls if we get knocked into them
 
-		double dx = boss.lastTickPosX;
-		double dy = boss.getHomePosition().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
-		double dz = boss.lastTickPosZ;
+		double dx = boss.xOld;
+		double dy = boss.getRestrictCenter().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
+		double dz = boss.zOld;
 
 		// let's just bound this by 2D distance
-		double ox = (boss.getHomePosition().getX() - dx);
-		double oz = (boss.getHomePosition().getZ() - dz);
+		double ox = (boss.getRestrictCenter().getX() - dx);
+		double oz = (boss.getRestrictCenter().getZ() - dz);
 		double dDist = Math.sqrt(ox * ox + oz * oz);
 
 		if (dDist > distance) {
 			// normalize back to boundaries
 
-			dx = boss.getHomePosition().getX() + (ox / dDist * distance);
-			dz = boss.getHomePosition().getZ() + (oz / dDist * distance);
+			dx = boss.getRestrictCenter().getX() + (ox / dDist * distance);
+			dz = boss.getRestrictCenter().getZ() + (oz / dDist * distance);
 		}
 
-		return new Vector3d(dx, dy, dz);
+		return new Vec3(dx, dy, dz);
 	}
 
-	private Vector3d getLoiterPosition() {
-		double dx = boss.getHomePosition().getX();
-		double dy = boss.getHomePosition().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
-		double dz = boss.getHomePosition().getZ();
-		return new Vector3d(dx, dy, dz);
+	private Vec3 getLoiterPosition() {
+		double dx = boss.getRestrictCenter().getX();
+		double dy = boss.getRestrictCenter().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
+		double dz = boss.getRestrictCenter().getZ();
+		return new Vec3(dx, dy, dz);
 	}
 
-	private Vector3d getAttackPlayerPosition() {
+	private Vec3 getAttackPlayerPosition() {
 		if (boss.isSwordKnight()) {
-			return Vector3d.copy(boss.getChargePos());
+			return Vec3.atLowerCornerOf(boss.getChargePos());
 		} else {
 			return getHoverPosition(CIRCLE_LARGE_RADIUS);
 		}

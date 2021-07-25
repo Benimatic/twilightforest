@@ -3,8 +3,8 @@ package twilightforest.client;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.DialogTexts;
-import net.minecraft.client.gui.IBidiRenderer;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.components.MultiLineLabel;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
@@ -15,7 +15,7 @@ public class OptifineWarningScreen extends Screen {
 
 	private final Screen lastScreen;
 	private int ticksUntilEnable = 20 * 3;
-	private IBidiRenderer field_243276_q = IBidiRenderer.field_243257_a;
+	private MultiLineLabel message = MultiLineLabel.EMPTY;
 	private static final ITextComponent message = new TranslationTextComponent(TwilightForestMod.ID + ".gui.optifine.message");
 
 	protected OptifineWarningScreen(Screen screen) {
@@ -29,14 +29,14 @@ public class OptifineWarningScreen extends Screen {
 
 	protected void init() {
 		super.init();
-		this.addButton(new Button(this.width / 2 - 75, this.height * 3 / 4, 150, 20, DialogTexts.GUI_PROCEED, (p_213002_1_) -> Minecraft.getInstance().displayGuiScreen(lastScreen)));
-		this.field_243276_q = IBidiRenderer.func_243258_a(this.font, message, this.width - 50);
+		this.addButton(new Button(this.width / 2 - 75, this.height * 3 / 4, 150, 20, DialogTexts.GUI_PROCEED, (p_213002_1_) -> Minecraft.getInstance().setScreen(lastScreen)));
+		this.message = IBidiRenderer.create(this.font, message, this.width - 50);
 	}
 
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
 		drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 30, 16777215);
-		this.field_243276_q.func_241863_a(matrixStack, this.width / 2, 70);
+		this.message.renderCentered(matrixStack, this.width / 2, 70);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 

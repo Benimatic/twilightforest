@@ -1,42 +1,44 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 public class StayNearHomeGoal extends Goal {
-	private final CreatureEntity entity;
+	private final PathfinderMob entity;
 	private final float speed;
 
-	public StayNearHomeGoal(CreatureEntity entityTFYetiAlpha, float sp) {
+	public StayNearHomeGoal(PathfinderMob entityTFYetiAlpha, float sp) {
 		this.entity = entityTFYetiAlpha;
 		this.speed = sp;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE));
+		this.setFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return !this.entity.isWithinHomeDistanceCurrentPosition();
+	public boolean canUse() {
+		return !this.entity.isWithinRestriction();
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return !this.entity.getNavigator().noPath();
+	public boolean canContinueToUse() {
+		return !this.entity.getNavigation().isDone();
 	}
 
 	@Override
-	public void startExecuting() {
-		if (this.entity.getDistanceSq(Vector3d.copy(this.entity.getHomePosition())) > 256.0D) {
-			Vector3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vector3d(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D));
+	public void start() {
+		if (this.entity.distanceToSqr(Vec3.atLowerCornerOf(this.entity.getRestrictCenter())) > 256.0D) {
+			Vec3 vec3 = RandomPos.getPosTowards(this.entity, 14, 3, new Vec3(this.entity.getRestrictCenter().getX() + 0.5D, this.entity.getRestrictCenter().getY(), this.entity.getRestrictCenter().getZ() + 0.5D));
 
 			if (vec3 != null) {
-				this.entity.getNavigator().tryMoveToXYZ(vec3.x, vec3.y, vec3.z, speed);
+				this.entity.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, speed);
 			}
 		} else {
-			this.entity.getNavigator().tryMoveToXYZ(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D, speed);
+			this.entity.getNavigation().moveTo(this.entity.getRestrictCenter().getX() + 0.5D, this.entity.getRestrictCenter().getY(), this.entity.getRestrictCenter().getZ() + 0.5D, speed);
 		}
 	}
 }

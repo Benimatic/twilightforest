@@ -1,63 +1,63 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.Pose;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.damagesource.DamageSource;
 
 public class SpikeBlockEntity extends BlockChainGoblinEntity.MultipartGenericsAreDumb {
 
 	@Override
-	public EntitySize getSize(Pose pos) {
-		return EntitySize.flexible(0.75F, 0.75F);
+	public EntityDimensions getDimensions(Pose pos) {
+		return EntityDimensions.scalable(0.75F, 0.75F);
 	}
 
 	public SpikeBlockEntity(Entity goblin) {
 		super(goblin);
-		realSize = EntitySize.flexible(0.75F, 0.75F);
+		realSize = EntityDimensions.scalable(0.75F, 0.75F);
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return false;
 	}
 
 	@Override
-	public boolean canBePushed() {
+	public boolean isPushable() {
 		return false;
 	}
 
 	@Override
-	public boolean isEntityEqual(Entity entity) {
+	public boolean is(Entity entity) {
 		return this == entity || getParent() == entity;
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundTag compound) {
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundTag compound) {
 	}
 }

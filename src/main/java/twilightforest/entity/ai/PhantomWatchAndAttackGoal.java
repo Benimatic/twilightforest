@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.InteractionHand;
 import twilightforest.entity.boss.KnightPhantomEntity;
 
 public class PhantomWatchAndAttackGoal extends Goal {
@@ -18,30 +18,30 @@ public class PhantomWatchAndAttackGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return boss.getAttackTarget() != null;
+	public boolean canUse() {
+		return boss.getTarget() != null;
 	}
 
 	@Override
 	public void tick() {
-		LivingEntity target = boss.getAttackTarget();
+		LivingEntity target = boss.getTarget();
 		if (target != null) {
-			boss.faceEntity(target, 10.0F, 500.0F);
+			boss.lookAt(target, 10.0F, 500.0F);
 
 			if (target.isAlive()) {
-				float f1 = target.getDistance(boss);
+				float f1 = target.distanceTo(boss);
 
-				if (boss.getEntitySenses().canSee(target)) {
-					if (attackTime-- <= 0 && f1 < 2.0F && target.getBoundingBox().maxY > boss.getBoundingBox().minY && boss.getAttackTarget().getBoundingBox().minY < boss.getBoundingBox().maxY) {
+				if (boss.getSensing().canSee(target)) {
+					if (attackTime-- <= 0 && f1 < 2.0F && target.getBoundingBox().maxY > boss.getBoundingBox().minY && boss.getTarget().getBoundingBox().minY < boss.getBoundingBox().maxY) {
 						attackTime = 20;
-						boss.attackEntityAsMob(target);
+						boss.doHurtTarget(target);
 					}
 				}
 
-				if (this.boss.getHeldItemOffhand().getItem() instanceof ShieldItem && boss.getCurrentFormation() != KnightPhantomEntity.Formation.ATTACK_PLAYER_ATTACK && this.isGuard) {
-					this.boss.setActiveHand(Hand.OFF_HAND);
+				if (this.boss.getOffhandItem().getItem() instanceof ShieldItem && boss.getCurrentFormation() != KnightPhantomEntity.Formation.ATTACK_PLAYER_ATTACK && this.isGuard) {
+					this.boss.startUsingItem(InteractionHand.OFF_HAND);
 				} else {
-					this.boss.resetActiveHand();
+					this.boss.stopUsingItem();
 				}
 
 				if(this.isGuard){

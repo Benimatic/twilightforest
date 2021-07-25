@@ -1,10 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.EntitySelector;
 import twilightforest.entity.UpperGoblinKnightEntity;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class HeavySpearAttackGoal extends Goal {
 
@@ -12,7 +14,7 @@ public class HeavySpearAttackGoal extends Goal {
 
 	public HeavySpearAttackGoal(UpperGoblinKnightEntity upperKnight) {
 		this.entity = upperKnight;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override
@@ -23,7 +25,7 @@ public class HeavySpearAttackGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < UpperGoblinKnightEntity.HEAVY_SPEAR_TIMER_START && EntityPredicates.CAN_HOSTILE_AI_TARGET.test(entity.getAttackTarget());
+	public boolean canUse() {
+		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < UpperGoblinKnightEntity.HEAVY_SPEAR_TIMER_START && EntitySelector.ATTACK_ALLOWED.test(entity.getTarget());
 	}
 }

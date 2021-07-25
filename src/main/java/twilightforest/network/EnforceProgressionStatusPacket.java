@@ -1,7 +1,7 @@
 package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 
@@ -11,7 +11,7 @@ public class EnforceProgressionStatusPacket {
 
 	private final boolean enforce;
 
-	public EnforceProgressionStatusPacket(PacketBuffer buf) {
+	public EnforceProgressionStatusPacket(FriendlyByteBuf buf) {
 		this.enforce = buf.readBoolean();
 	}
 
@@ -19,7 +19,7 @@ public class EnforceProgressionStatusPacket {
 		this.enforce = enforce;
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeBoolean(enforce);
 	}
 
@@ -29,7 +29,7 @@ public class EnforceProgressionStatusPacket {
 			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					Minecraft.getInstance().world.getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null);
+					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null);
 				}
 			});
 			return true;

@@ -1,19 +1,25 @@
 package twilightforest.enums;
 
 import net.minecraft.block.*;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 
 import java.util.HashMap;
 import java.util.Locale;
 
-public enum BlockLoggingEnum implements IStringSerializable {
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.state.BlockState;
+
+public enum BlockLoggingEnum implements StringRepresentable {
     AIR      (Blocks.AIR,      Fluids.EMPTY),
     WATER    (Blocks.WATER,    Fluids.WATER),
     LAVA     (Blocks.LAVA,     Fluids.LAVA),
@@ -49,7 +55,7 @@ public enum BlockLoggingEnum implements IStringSerializable {
     }
 
     @Override
-    public String getString() {
+    public String getSerializedName() {
         return name;
     }
 
@@ -61,34 +67,34 @@ public enum BlockLoggingEnum implements IStringSerializable {
         return block;
     }
 
-    public interface IMultiLoggable extends IBucketPickupHandler, ILiquidContainer {
+    public interface IMultiLoggable extends BucketPickup, LiquidBlockContainer {
         @Override
-        default Fluid pickupFluid(IWorld world, BlockPos pos, BlockState state) {
-            Fluid stateFluid = state.get(MULTILOGGED).fluid;
+        default Fluid takeLiquid(LevelAccessor world, BlockPos pos, BlockState state) {
+            Fluid stateFluid = state.getValue(MULTILOGGED).fluid;
 
             if (stateFluid != Fluids.EMPTY) {
-                world.setBlockState(pos, state.with(MULTILOGGED, AIR), 3);
+                world.setBlock(pos, state.setValue(MULTILOGGED, AIR), 3);
             }
 
             return stateFluid;
         }
 
         @Override
-        default boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid) {
-            return state.hasProperty(MULTILOGGED) && Ref.FLUIDS.containsKey(fluid) && !fluid.equals(state.get(MULTILOGGED).fluid);
+        default boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+            return state.hasProperty(MULTILOGGED) && Ref.FLUIDS.containsKey(fluid) && !fluid.equals(state.getValue(MULTILOGGED).fluid);
         }
 
         @Override
-        default boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, FluidState fluidState) {
-            Fluid stateFluid = state.get(MULTILOGGED).fluid;
+        default boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluidState) {
+            Fluid stateFluid = state.getValue(MULTILOGGED).fluid;
 
-            if (stateFluid != fluidState.getFluid() && Ref.FLUIDS.containsKey(fluidState.getFluid())) {
-                if (!world.isRemote()) {
+            if (stateFluid != fluidState.getType() && Ref.FLUIDS.containsKey(fluidState.getType())) {
+                if (!world.isClientSide()) {
                     if (stateFluid != Fluids.EMPTY) { // TODO Fix this... if Mojang ever adds a third Liquid
                         //world.setBlockState(pos, state.with(MULTILOGGED, OBSIDIAN), 3);
                     } else {
-                        world.setBlockState(pos, state.with(MULTILOGGED, Ref.FLUIDS.get(fluidState.getFluid())), 3);
-                        world.getPendingFluidTicks().scheduleTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
+                        world.setBlock(pos, state.setValue(MULTILOGGED, Ref.FLUIDS.get(fluidState.getType())), 3);
+                        world.getLiquidTicks().scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(world));
                     }
                 }
 

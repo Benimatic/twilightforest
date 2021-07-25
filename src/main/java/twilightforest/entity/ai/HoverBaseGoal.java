@@ -1,16 +1,16 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 
-public abstract class HoverBaseGoal<T extends MobEntity> extends Goal {
+public abstract class HoverBaseGoal<T extends Mob> extends Goal {
 
 	protected final T attacker;
 
@@ -28,8 +28,8 @@ public abstract class HoverBaseGoal<T extends MobEntity> extends Goal {
 	}
 
 	@Override
-	public void startExecuting() {
-		LivingEntity target = this.attacker.getAttackTarget();
+	public void start() {
+		LivingEntity target = this.attacker.getTarget();
 		if (target != null) {
 			// find a spot above the player
 			makeNewHoverSpot(target);
@@ -45,9 +45,9 @@ public abstract class HoverBaseGoal<T extends MobEntity> extends Goal {
 		boolean found = false;
 
 		for (int i = 0; i < 100; i++) {
-			hx = target.getPosX() + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
-			hy = target.getPosY() + hoverHeight;
-			hz = target.getPosZ() + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
+			hx = target.getX() + (this.attacker.getRandom().nextFloat() - this.attacker.getRandom().nextFloat()) * hoverRadius;
+			hy = target.getY() + hoverHeight;
+			hz = target.getZ() + (this.attacker.getRandom().nextFloat() - this.attacker.getRandom().nextFloat()) * hoverRadius;
 
 			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
 				found = true;
@@ -65,15 +65,15 @@ public abstract class HoverBaseGoal<T extends MobEntity> extends Goal {
 	}
 
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
-		float radius = this.attacker.getWidth() / 2F;
-		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getHeight(), hz + radius);
-		return !this.attacker.world.checkNoEntityCollision(attacker, VoxelShapes.create(aabb)) || !this.attacker.world.hasNoCollisions(attacker, aabb);
+		float radius = this.attacker.getBbWidth() / 2F;
+		AABB aabb = new AABB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getBbHeight(), hz + radius);
+		return !this.attacker.level.isUnobstructed(attacker, Shapes.create(aabb)) || !this.attacker.level.noCollision(attacker, aabb);
 	}
 
 	/**
 	 * Can the specified entity see the specified location?
 	 */
 	protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-		return entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), new Vector3d(dx, dy, dz), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)) == null;
+		return entity.level.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), new Vec3(dx, dy, dz), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)) == null;
 	}
 }

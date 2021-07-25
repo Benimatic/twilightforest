@@ -1,30 +1,30 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
 
-public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
+public class TFGenWoodRoots extends Feature<NoneFeatureConfiguration> {
 
-	private BlockState rootBlock = TFBlocks.root.get().getDefaultState();
-	private BlockState oreBlock = TFBlocks.liveroot_block.get().getDefaultState();
+	private BlockState rootBlock = TFBlocks.root.get().defaultBlockState();
+	private BlockState oreBlock = TFBlocks.liveroot_block.get().defaultBlockState();
 
-	public TFGenWoodRoots(Codec<NoFeatureConfig> configIn) {
+	public TFGenWoodRoots(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
 		// start must be in stone
 		if (world.getBlockState(pos).getBlock() != Blocks.STONE) {
 			return false;
@@ -41,12 +41,12 @@ public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
 		return drawRoot(world, rand, pos, length, rand.nextFloat(), tilt);
 	}
 
-	private boolean drawRoot(IWorld world, Random rand, BlockPos pos, float length, float angle, float tilt) {
+	private boolean drawRoot(LevelAccessor world, Random rand, BlockPos pos, float length, float angle, float tilt) {
 		// put origin at where we start
 		return this.drawRoot(world, rand, pos, pos, length, angle, tilt);
 	}
 
-	private boolean drawRoot(IWorld world, Random rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt) {
+	private boolean drawRoot(LevelAccessor world, Random rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt) {
 		// generate a direction and a length
 		BlockPos dest = FeatureUtil.translate(pos, length, angle, tilt);
 
@@ -111,9 +111,9 @@ public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
-	protected void placeRootBlock(IWorld world, BlockPos pos, BlockState state) {
+	protected void placeRootBlock(LevelAccessor world, BlockPos pos, BlockState state) {
 		if (TFTreeGenerator.canRootGrowIn(world, pos)) {
-			world.setBlockState(pos, state, 3);
+			world.setBlock(pos, state, 3);
 		}
 	}
 }

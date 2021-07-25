@@ -1,14 +1,16 @@
 package twilightforest.tileentity.spawner;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.boss.SnowQueenEntity;
+import twilightforest.entity.boss.UrGhastEntity;
 import twilightforest.tileentity.TFTileEntities;
 
-public class SnowQueenSpawnerTileEntity extends BossSpawnerTileEntity<SnowQueenEntity> {
+public class UrGhastSpawnerTileEntity extends BossSpawnerTileEntity<UrGhastEntity> {
 
-	public SnowQueenSpawnerTileEntity() {
-		super(TFTileEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.snow_queen);
+	public UrGhastSpawnerTileEntity(BlockPos pos, BlockState state) {
+		super(TFTileEntities.TOWER_BOSS_SPAWNER.get(), TFEntities.ur_ghast, pos, state);
 	}
 
 	@Override

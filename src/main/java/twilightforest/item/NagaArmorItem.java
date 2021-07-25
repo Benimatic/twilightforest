@@ -1,20 +1,27 @@
 package twilightforest.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.item.*;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import twilightforest.TwilightForestMod;
 
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+
 public class NagaArmorItem extends ArmorItem {
-	protected NagaArmorItem(IArmorMaterial materialIn, EquipmentSlotType equipmentSlotIn, Properties props) {
+	protected NagaArmorItem(ArmorMaterial materialIn, EquipmentSlot equipmentSlotIn, Properties props) {
 		super(materialIn, equipmentSlotIn, props);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlotType slot, String layer) {
-		if (slot == EquipmentSlotType.LEGS) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "naga_scale_2.png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "naga_scale_1.png";
@@ -22,15 +29,15 @@ public class NagaArmorItem extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
-		if (isInGroup(tab)) {
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+		if (allowdedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.slot) {
 				case CHEST:
-					istack.addEnchantment(Enchantments.FIRE_PROTECTION, 3);
+					istack.enchant(Enchantments.FIRE_PROTECTION, 3);
 					break;
 				case LEGS:
-					istack.addEnchantment(Enchantments.PROTECTION, 3);
+					istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 3);
 					break;
 				default:
 					break;

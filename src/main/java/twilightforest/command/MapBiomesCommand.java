@@ -7,12 +7,12 @@ package twilightforest.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import twilightforest.item.MagicMapItem;
 
@@ -61,12 +61,12 @@ public class MapBiomesCommand {
         BIOME2COLOR.put(TFBiomes.highlandsCenter    .get(), new Color(128, 128, 128));*/
     }
 
-    public static LiteralArgumentBuilder<CommandSource> register() {
+    public static LiteralArgumentBuilder<CommandSourceStack> register() {
         // TODO elevate command perm
-        return Commands.literal("biomepng").requires(cs -> cs.hasPermissionLevel(2)).executes(MapBiomesCommand::execute);
+        return Commands.literal("biomepng").requires(cs -> cs.hasPermission(2)).executes(MapBiomesCommand::execute);
     }
 
-    private static int execute(CommandContext<CommandSource> source) {
+    private static int execute(CommandContext<CommandSourceStack> source) {
         if (FMLEnvironment.dist.isDedicatedServer())
             return -1;
 
@@ -80,7 +80,7 @@ public class MapBiomesCommand {
 
         for (int x = 0; x < img.getHeight(); x++) {
             for (int z = 0; z < img.getWidth(); z++) {
-                Biome b = source.getSource().getWorld().getNoiseBiome(x - 2048, 0, z - 2048);
+                Biome b = source.getSource().getLevel().getNoiseBiome(x - 2048, 0, z - 2048);
                 Color color = BIOME2COLOR.get(b);
 
                 if (color == null) {
@@ -104,13 +104,13 @@ public class MapBiomesCommand {
 
             //send a progress update to let people know the server isn't dying
             if (x % progressUpdate == 0) {
-                source.getSource().sendFeedback(new TranslationTextComponent(((double) x / img.getHeight()) * 100 + "% Done mapping"), true);
+                source.getSource().sendSuccess(new TranslatableComponent(((double) x / img.getHeight()) * 100 + "% Done mapping"), true);
             }
         }
 
-        source.getSource().sendFeedback(new StringTextComponent("Approximate biome-block counts within an 2048x2048 region"), true);
+        source.getSource().sendSuccess(new TextComponent("Approximate biome-block counts within an 2048x2048 region"), true);
         int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
-        biomeCount.forEach((biome, integer) -> source.getSource().sendFeedback(new StringTextComponent(biome.toString()).appendString(": " + (integer) + TextFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
+        biomeCount.forEach((biome, integer) -> source.getSource().sendSuccess(new TextComponent(biome.toString()).append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
 
         //save the biome map
         Path p = Paths.get("biomemap.png");
@@ -121,7 +121,7 @@ public class MapBiomesCommand {
             return 0;
         }
 
-        source.getSource().sendFeedback(new StringTextComponent("Image saved!"), true);
+        source.getSource().sendSuccess(new TextComponent("Image saved!"), true);
 
         return Command.SINGLE_SUCCESS;
     }

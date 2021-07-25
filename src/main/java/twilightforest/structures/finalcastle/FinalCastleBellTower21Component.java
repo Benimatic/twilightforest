@@ -1,17 +1,17 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -24,12 +24,12 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 
 	private static final int FLOORS = 8;
 
-	public FinalCastleBellTower21Component(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleBellTower21Component(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCBelTo, nbt);
 	}
 
 	public FinalCastleBellTower21Component(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCBelTo, feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.castle_rune_brick_blue.get().getDefaultState(), direction);
+		super(FinalCastlePieces.TFFCBelTo, feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.castle_rune_brick_blue.get().defaultBlockState(), direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;
@@ -39,7 +39,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -47,20 +47,20 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		// add foundation
 		FinalCastleBellFoundation21Component foundation = new FinalCastleBellFoundation21Component(getFeatureType(), rand, 4, this);
 		list.add(foundation);
-		foundation.buildComponent(this, list, rand);
+		foundation.addChildren(this, list, rand);
 
 		// add roof
 		TFStructureComponentOld roof = new FinalCastleRoof13CrenellatedComponent(getFeatureType(), rand, 4, this);
 		list.add(roof);
-		roof.buildComponent(this, list, rand);
+		roof.addChildren(this, list, rand);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// openings!
-		BlockState fieldBlock = TFBlocks.force_field_blue.get().getDefaultState();
+		BlockState fieldBlock = TFBlocks.force_field_blue.get().defaultBlockState();
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			int y = 48;
 			for (int x = 5; x < this.size - 4; x += 2) {

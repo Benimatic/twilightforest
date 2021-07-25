@@ -1,18 +1,18 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -23,71 +23,78 @@ import twilightforest.util.WorldUtil;
 
 import java.util.Random;
 
-public class CubeOfAnnihilationEntity extends ThrowableEntity {
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+
+public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 
 	private boolean hasHitObstacle = false;
 
-	public CubeOfAnnihilationEntity(EntityType<? extends CubeOfAnnihilationEntity> type, World world) {
+	public CubeOfAnnihilationEntity(EntityType<? extends CubeOfAnnihilationEntity> type, Level world) {
 		super(type, world);
-		this.isImmuneToFire();
+		this.fireImmune();
 	}
 
-	public CubeOfAnnihilationEntity(EntityType<? extends CubeOfAnnihilationEntity> type, World world, LivingEntity thrower) {
+	public CubeOfAnnihilationEntity(EntityType<? extends CubeOfAnnihilationEntity> type, Level world, LivingEntity thrower) {
 		super(type, thrower, world);
-		this.isImmuneToFire();
-		this.setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.fireImmune();
+		this.shootFromRotation(thrower, thrower.xRot, thrower.yRot, 0F, 1.5F, 1F);
 	}
 
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return 0F;
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult ray) {
-		if (world.isRemote)
+	protected void onHit(HitResult ray) {
+		if (level.isClientSide)
 			return;
 
 		// only hit living things
-		if (ray instanceof EntityRayTraceResult) {
-			if (((EntityRayTraceResult) ray).getEntity() instanceof LivingEntity && ((EntityRayTraceResult) ray).getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
-				this.ticksExisted += 60;
+		if (ray instanceof EntityHitResult) {
+			if (((EntityHitResult) ray).getEntity() instanceof LivingEntity && ((EntityHitResult) ray).getEntity().hurt(this.getDamageSource(), 10)) {
+				this.tickCount += 60;
 			}
 		}
 
-		if (ray instanceof BlockRayTraceResult) {
-			if (((BlockRayTraceResult)ray).getPos() != null && !this.world.isAirBlock(((BlockRayTraceResult)ray).getPos())) {
-				this.affectBlocksInAABB(this.getBoundingBox().grow(0.2F, 0.2F, 0.2F));
+		if (ray instanceof BlockHitResult) {
+			if (((BlockHitResult)ray).getBlockPos() != null && !this.level.isEmptyBlock(((BlockHitResult)ray).getBlockPos())) {
+				this.affectBlocksInAABB(this.getBoundingBox().inflate(0.2F, 0.2F, 0.2F));
 			}
 		}
 	}
 
 	private DamageSource getDamageSource() {
-		LivingEntity thrower = (LivingEntity) this.getShooter();
-		if (thrower instanceof PlayerEntity) {
-			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
+		LivingEntity thrower = (LivingEntity) this.getOwner();
+		if (thrower instanceof Player) {
+			return DamageSource.playerAttack((Player) thrower);
 		} else if (thrower != null) {
-			return DamageSource.causeMobDamage(thrower);
+			return DamageSource.mobAttack(thrower);
 		} else {
-			return DamageSource.causeThrownDamage(this, null);
+			return DamageSource.thrown(this, null);
 		}
 	}
 
-	private void affectBlocksInAABB(AxisAlignedBB box) {
+	private void affectBlocksInAABB(AABB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			BlockState state = world.getBlockState(pos);
-			if (!state.getBlock().isAir(state, world, pos)) {
-				if (getShooter() instanceof PlayerEntity) {
-					PlayerEntity player = (PlayerEntity) getShooter();
-					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
+			BlockState state = level.getBlockState(pos);
+			if (!state.getBlock().isAir(state, level, pos)) {
+				if (getOwner() instanceof Player) {
+					Player player = (Player) getOwner();
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
 						if (canAnnihilate(pos, state)) {
-							this.world.removeBlock(pos, false);
-							this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
-							this.annihilateParticles(world, pos);
+							this.level.removeBlock(pos, false);
+							this.playSound(SoundEvents.GENERIC_EXTINGUISH_FIRE, 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
+							this.annihilateParticles(level, pos);
 						} else {
 							this.hasHitObstacle = true;
 						}
@@ -102,12 +109,12 @@ public class CubeOfAnnihilationEntity extends ThrowableEntity {
 	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return block.isIn(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
+		return block.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(level, pos) >= 0;
 	}
 
-	private void annihilateParticles(World world, BlockPos pos) {
+	private void annihilateParticles(Level world, BlockPos pos) {
 		Random rand = world.getRandom();
-		if(world instanceof ServerWorld) {
+		if(world instanceof ServerLevel) {
 			for (int dx = 0; dx < 3; ++dx) {
 				for (int dy = 0; dy < 3; ++dy) {
 					for (int dz = 0; dz < 3; ++dz) {
@@ -118,7 +125,7 @@ public class CubeOfAnnihilationEntity extends ThrowableEntity {
 
 						double speed = rand.nextGaussian() * 0.2D;
 
-						((ServerWorld)world).spawnParticle(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+						((ServerLevel)world).sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
 					}
 				}
 			}
@@ -129,16 +136,16 @@ public class CubeOfAnnihilationEntity extends ThrowableEntity {
 	public void tick() {
 		super.tick();
 
-		if (!this.world.isRemote) {
-			if (this.getShooter() == null) {
+		if (!this.level.isClientSide) {
+			if (this.getOwner() == null) {
 				this.remove();
 				return;
 			}
 
 			// always head towards either the point or towards the player
-			Vector3d destPoint = new Vector3d(this.getShooter().getPosX(), this.getShooter().getPosY() + this.getShooter().getEyeHeight(), this.getShooter().getPosZ());
+			Vec3 destPoint = new Vec3(this.getOwner().getX(), this.getOwner().getY() + this.getOwner().getEyeHeight(), this.getOwner().getZ());
 
-			double distToPlayer = this.getDistance(this.getShooter());
+			double distToPlayer = this.distanceTo(this.getOwner());
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
@@ -146,54 +153,54 @@ public class CubeOfAnnihilationEntity extends ThrowableEntity {
 					this.remove();
 				}
 			} else {
-				destPoint = destPoint.add(getShooter().getLookVec().scale(16F));
+				destPoint = destPoint.add(getOwner().getLookAngle().scale(16F));
 			}
 
 			// set motions
-			Vector3d velocity = new Vector3d(this.getPosX() - destPoint.getX(), (this.getPosY() + this.getHeight() / 2F) - destPoint.getY(), this.getPosZ() - destPoint.getZ());
+			Vec3 velocity = new Vec3(this.getX() - destPoint.x(), (this.getY() + this.getBbHeight() / 2F) - destPoint.y(), this.getZ() - destPoint.z());
 
-			setMotion(-velocity.getX(), -velocity.getY(), -velocity.getZ());
+			setDeltaMovement(-velocity.x(), -velocity.y(), -velocity.z());
 
 			// normalize speed
-			float currentSpeed = MathHelper.sqrt(this.getMotion().getX() * this.getMotion().getX() + this.getMotion().getY() * this.getMotion().getY() + this.getMotion().getZ() * this.getMotion().getZ());
+			float currentSpeed = Mth.sqrt(this.getDeltaMovement().x() * this.getDeltaMovement().x() + this.getDeltaMovement().y() * this.getDeltaMovement().y() + this.getDeltaMovement().z() * this.getDeltaMovement().z());
 
 			float maxSpeed = 0.5F;
 
 			if (currentSpeed > maxSpeed) {
-				this.setMotion(new Vector3d(
-						this.getMotion().getX() / (currentSpeed / maxSpeed),
-						this.getMotion().getY() / (currentSpeed / maxSpeed),
-						this.getMotion().getZ() / (currentSpeed / maxSpeed)));
+				this.setDeltaMovement(new Vec3(
+						this.getDeltaMovement().x() / (currentSpeed / maxSpeed),
+						this.getDeltaMovement().y() / (currentSpeed / maxSpeed),
+						this.getDeltaMovement().z() / (currentSpeed / maxSpeed)));
 			} else {
 				float slow = 0.5F;
-				this.getMotion().mul(slow, slow, slow);
+				this.getDeltaMovement().multiply(slow, slow, slow);
 			}
 
 			// demolish some blocks
-			this.affectBlocksInAABB(this.getBoundingBox().grow(0.2F, 0.2F, 0.2F));
+			this.affectBlocksInAABB(this.getBoundingBox().inflate(0.2F, 0.2F, 0.2F));
 		}
 	}
 
 	@Override
 	public void remove() {
 		super.remove();
-		LivingEntity thrower = (LivingEntity) this.getShooter();
-		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation.get()) {
-			thrower.resetActiveHand();
+		LivingEntity thrower = (LivingEntity) this.getOwner();
+		if (thrower != null && thrower.getUseItem().getItem() == TFItems.cube_of_annihilation.get()) {
+			thrower.stopUsingItem();
 		}
 	}
 
 	private boolean isReturning() {
-		if (this.hasHitObstacle || this.getShooter() == null || !(this.getShooter() instanceof PlayerEntity)) {
+		if (this.hasHitObstacle || this.getOwner() == null || !(this.getOwner() instanceof Player)) {
 			return true;
 		} else {
-			PlayerEntity player = (PlayerEntity) this.getShooter();
-			return !player.isHandActive();
+			Player player = (Player) this.getOwner();
+			return !player.isUsingItem();
 		}
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

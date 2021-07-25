@@ -4,31 +4,31 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 public class ConquerCommand {
-    private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.tffeature.structure.required"));
+    private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(new TranslatableComponent("commands.tffeature.structure.required"));
 
-    public static LiteralArgumentBuilder<CommandSource> register() {
-        LiteralArgumentBuilder<CommandSource> conquer = Commands.literal("conquer").requires(cs -> cs.hasPermissionLevel(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
-        LiteralArgumentBuilder<CommandSource> reactivate = Commands.literal("reactivate").requires(cs -> cs.hasPermissionLevel(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), false));
+    public static LiteralArgumentBuilder<CommandSourceStack> register() {
+        LiteralArgumentBuilder<CommandSourceStack> conquer = Commands.literal("conquer").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
+        LiteralArgumentBuilder<CommandSourceStack> reactivate = Commands.literal("reactivate").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), false));
         return conquer.then(reactivate);
     }
 
-    private static int changeStructureActivity(CommandSource source, boolean flag) throws CommandSyntaxException {
-        if (!TFGenerationSettings.isTwilightChunk(source.getWorld())) {
+    private static int changeStructureActivity(CommandSourceStack source, boolean flag) throws CommandSyntaxException {
+        if (!TFGenerationSettings.isTwilightChunk(source.getLevel())) {
             throw TFCommand.NOT_IN_TF.create();
         }
 
         // are you in a structure?
-        ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(source.getWorld());
+        ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(source.getLevel());
 
-        BlockPos pos = new BlockPos(source.getPos());
+        BlockPos pos = new BlockPos(source.getPosition());
         if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
             //source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag), true);
             //chunkGenerator.setStructureConquered(pos, flag);

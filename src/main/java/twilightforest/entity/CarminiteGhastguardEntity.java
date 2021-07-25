@@ -1,32 +1,32 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.monster.GhastEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.LargeFireball;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.entity.boss.UrGhastEntity;
@@ -34,17 +34,19 @@ import twilightforest.entity.boss.UrGhastEntity;
 import java.util.EnumSet;
 import java.util.Random;
 
-public class CarminiteGhastguardEntity extends GhastEntity {
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
+public class CarminiteGhastguardEntity extends Ghast {
 	// 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
-	private static final DataParameter<Byte> ATTACK_STATUS = EntityDataManager.createKey(CarminiteGhastguardEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Byte> ATTACK_TIMER = EntityDataManager.createKey(CarminiteGhastguardEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Byte> ATTACK_PREVTIMER = EntityDataManager.createKey(CarminiteGhastguardEntity.class, DataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> ATTACK_STATUS = SynchedEntityData.defineId(CarminiteGhastguardEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> ATTACK_TIMER = SynchedEntityData.defineId(CarminiteGhastguardEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> ATTACK_PREVTIMER = SynchedEntityData.defineId(CarminiteGhastguardEntity.class, EntityDataSerializers.BYTE);
 
 	private AIAttack attackAI;
 	protected float wanderFactor;
 	private int inTrapCounter;
 
-	public CarminiteGhastguardEntity(EntityType<? extends CarminiteGhastguardEntity> type, World world) {
+	public CarminiteGhastguardEntity(EntityType<? extends CarminiteGhastguardEntity> type, Level world) {
 		super(type, world);
 
 		this.wanderFactor = 16.0F;
@@ -52,20 +54,20 @@ public class CarminiteGhastguardEntity extends GhastEntity {
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		this.dataManager.register(ATTACK_STATUS, (byte) 0);
-		this.dataManager.register(ATTACK_TIMER, (byte) 0);
-		this.dataManager.register(ATTACK_PREVTIMER, (byte) 0);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(ATTACK_STATUS, (byte) 0);
+		this.entityData.define(ATTACK_TIMER, (byte) 0);
+		this.entityData.define(ATTACK_PREVTIMER, (byte) 0);
 	}
 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(5, new AIHomedFly(this));
 		if (!(this instanceof UrGhastEntity)) this.goalSelector.addGoal(5, new AIRandomFly(this));
-		this.goalSelector.addGoal(7, new GhastEntity.LookAroundGoal(this));
+		this.goalSelector.addGoal(7, new Ghast.GhastLookGoal(this));
 		this.goalSelector.addGoal(7, attackAI = new AIAttack(this));
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 	
 	@Override
@@ -89,35 +91,35 @@ public class CarminiteGhastguardEntity extends GhastEntity {
 
 		public AIRandomFly(CarminiteGhastguardEntity ghast) {
 			this.parentEntity = ghast;
-			this.setMutexFlags(EnumSet.of(Flag.MOVE));
+			this.setFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			MovementController entitymovehelper = this.parentEntity.getMoveHelper();
-			if (!entitymovehelper.isUpdating()) {
-				return parentEntity.getAttackTarget() == null;
+		public boolean canUse() {
+			MoveControl entitymovehelper = this.parentEntity.getMoveControl();
+			if (!entitymovehelper.hasWanted()) {
+				return parentEntity.getTarget() == null;
 			} else {
-				double d0 = entitymovehelper.getX() - this.parentEntity.getPosX();
-				double d1 = entitymovehelper.getY() - this.parentEntity.getPosY();
-				double d2 = entitymovehelper.getZ() - this.parentEntity.getPosZ();
+				double d0 = entitymovehelper.getWantedX() - this.parentEntity.getX();
+				double d1 = entitymovehelper.getWantedY() - this.parentEntity.getY();
+				double d2 = entitymovehelper.getWantedZ() - this.parentEntity.getZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-				return parentEntity.getAttackTarget() == null && (d3 < 1.0D || d3 > 3600.0D);
+				return parentEntity.getTarget() == null && (d3 < 1.0D || d3 > 3600.0D);
 			}
 		}
 
 		@Override
-		public boolean shouldContinueExecuting() {
+		public boolean canContinueToUse() {
 			return false;
 		}
 
 		@Override
-		public void startExecuting() {
-			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getPosX() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
-			double d1 = this.parentEntity.getPosY() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
-			double d2 = this.parentEntity.getPosZ() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
-			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+		public void start() {
+			Random random = this.parentEntity.getRandom();
+			double d0 = this.parentEntity.getX() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			double d1 = this.parentEntity.getY() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			double d2 = this.parentEntity.getZ() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			this.parentEntity.getMoveControl().setWantedPosition(d0, d1, d2, 1.0D);
 		}
 	}
 
@@ -127,51 +129,51 @@ public class CarminiteGhastguardEntity extends GhastEntity {
 
 		AIHomedFly(CarminiteGhastguardEntity ghast) {
 			this.parentEntity = ghast;
-			setMutexFlags(EnumSet.of(Flag.MOVE));
+			setFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		// From AIFly, but with extra condition from AIStayNearHome
 		@Override
-		public boolean shouldExecute() {
-			MovementController entitymovehelper = this.parentEntity.getMoveHelper();
+		public boolean canUse() {
+			MoveControl entitymovehelper = this.parentEntity.getMoveControl();
 
-			if (!entitymovehelper.isUpdating()) {
-				return !this.parentEntity.isWithinHomeDistanceCurrentPosition();
+			if (!entitymovehelper.hasWanted()) {
+				return !this.parentEntity.isWithinRestriction();
 			} else {
-				double d0 = entitymovehelper.getX() - this.parentEntity.getPosX();
-				double d1 = entitymovehelper.getY() - this.parentEntity.getPosY();
-				double d2 = entitymovehelper.getZ() - this.parentEntity.getPosZ();
+				double d0 = entitymovehelper.getWantedX() - this.parentEntity.getX();
+				double d1 = entitymovehelper.getWantedY() - this.parentEntity.getY();
+				double d2 = entitymovehelper.getWantedZ() - this.parentEntity.getZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 				return (d3 < 1.0D || d3 > 3600.0D)
-						&& !this.parentEntity.isWithinHomeDistanceCurrentPosition();
+						&& !this.parentEntity.isWithinRestriction();
 			}
 		}
 
 		// From AIFly
 		@Override
-		public boolean shouldContinueExecuting() {
+		public boolean canContinueToUse() {
 			return false;
 		}
 
 		// From AIStayNearHome but use move helper instead of PathNavigate
 		@Override
-		public void startExecuting() {
-			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getPosX() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
-			double d1 = this.parentEntity.getPosY() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
-			double d2 = this.parentEntity.getPosZ() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
-			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+		public void start() {
+			Random random = this.parentEntity.getRandom();
+			double d0 = this.parentEntity.getX() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			double d1 = this.parentEntity.getY() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			double d2 = this.parentEntity.getZ() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			this.parentEntity.getMoveControl().setWantedPosition(d0, d1, d2, 1.0D);
 
-			if (this.parentEntity.getDistanceSq(Vector3d.copy(this.parentEntity.getHomePosition())) > 256.0D) {
-				Vector3d vecToHome = Vector3d.copy(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVec()).normalize();
+			if (this.parentEntity.distanceToSqr(Vec3.atLowerCornerOf(this.parentEntity.getRestrictCenter())) > 256.0D) {
+				Vec3 vecToHome = Vec3.atLowerCornerOf(this.parentEntity.getRestrictCenter()).subtract(this.parentEntity.position()).normalize();
 
-				double targetX = this.parentEntity.getPosX() + vecToHome.x * parentEntity.wanderFactor + (this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
-				double targetY = this.parentEntity.getPosY() + vecToHome.y * parentEntity.wanderFactor + (this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
-				double targetZ = this.parentEntity.getPosZ() + vecToHome.z * parentEntity.wanderFactor + (this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+				double targetX = this.parentEntity.getX() + vecToHome.x * parentEntity.wanderFactor + (this.parentEntity.random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+				double targetY = this.parentEntity.getY() + vecToHome.y * parentEntity.wanderFactor + (this.parentEntity.random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+				double targetZ = this.parentEntity.getZ() + vecToHome.z * parentEntity.wanderFactor + (this.parentEntity.random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
 
-				this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
+				this.parentEntity.getMoveControl().setWantedPosition(targetX, targetY, targetZ, 1.0D);
 			} else {
-				this.parentEntity.getMoveHelper().setMoveTo(this.parentEntity.getHomePosition().getX() + 0.5D, this.parentEntity.getHomePosition().getY(), this.parentEntity.getHomePosition().getZ() + 0.5D, 1.0D);
+				this.parentEntity.getMoveControl().setWantedPosition(this.parentEntity.getRestrictCenter().getX() + 0.5D, this.parentEntity.getRestrictCenter().getY(), this.parentEntity.getRestrictCenter().getZ() + 0.5D, 1.0D);
 			}
 		}
 	}
@@ -187,39 +189,39 @@ public class CarminiteGhastguardEntity extends GhastEntity {
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			return this.parentEntity.getAttackTarget() != null && parentEntity.shouldAttack(parentEntity.getAttackTarget());
+		public boolean canUse() {
+			return this.parentEntity.getTarget() != null && parentEntity.shouldAttack(parentEntity.getTarget());
 		}
 
 		@Override
-		public void startExecuting() {
+		public void start() {
 			this.attackTimer = this.prevAttackTimer = 0;
 		}
 
 		@Override
-		public void resetTask() {
-			this.parentEntity.setAttacking(false);
+		public void stop() {
+			this.parentEntity.setCharging(false);
 		}
 
 		@Override
 		public void tick() {
-			LivingEntity entitylivingbase = this.parentEntity.getAttackTarget();
+			LivingEntity entitylivingbase = this.parentEntity.getTarget();
 
-			if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.getEntitySenses().canSee(entitylivingbase)) {
+			if (entitylivingbase.distanceToSqr(this.parentEntity) < 4096.0D && this.parentEntity.getSensing().canSee(entitylivingbase)) {
 				this.prevAttackTimer = attackTimer;
 				++this.attackTimer;
 
 				// TF face our target at all times
-				this.parentEntity.getLookController().setLookPositionWithEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
+				this.parentEntity.getLookControl().setLookAt(entitylivingbase, 10F, this.parentEntity.getMaxHeadXRot());
 
 				if (this.attackTimer == 10) {
-					parentEntity.playSound(SoundEvents.ENTITY_GHAST_WARN, 10.0F, parentEntity.getSoundPitch());
+					parentEntity.playSound(SoundEvents.GHAST_WARN, 10.0F, parentEntity.getVoicePitch());
 				}
 
 				if (this.attackTimer == 20) {
 					if (this.parentEntity.shouldAttack(entitylivingbase)) {
 						// TF - call custom method
-						parentEntity.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 10.0F, parentEntity.getSoundPitch());
+						parentEntity.playSound(SoundEvents.GHAST_SHOOT, 10.0F, parentEntity.getVoicePitch());
 						this.parentEntity.spitFireball();
 						this.prevAttackTimer = attackTimer;
 					}
@@ -230,14 +232,14 @@ public class CarminiteGhastguardEntity extends GhastEntity {
 				--this.attackTimer;
 			}
 
-			this.parentEntity.setAttacking(this.attackTimer > 10);
+			this.parentEntity.setCharging(this.attackTimer > 10);
 		}
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return GhastEntity.func_234290_eH_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
-				.createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Ghast.createAttributes()
+				.add(Attributes.MAX_HEALTH, 30.0D)
+				.add(Attributes.FOLLOW_RANGE, 64.0D);
 	}
 
 	@Override
@@ -246,55 +248,55 @@ public class CarminiteGhastguardEntity extends GhastEntity {
 	}
 
 	@Override
-	public int getTalkInterval() {
+	public int getAmbientSoundInterval() {
 		return 160;
 	}
 
 	@Override
-	public int getMaxSpawnedInChunk() {
+	public int getMaxSpawnClusterSize() {
 		return 8;
 	}
 
 	@Override
-	public void livingTick() {
+	public void aiStep() {
 		// age when in light, like mobs
 		if (getBrightness() > 0.5F) {
-			this.idleTime += 2;
+			this.noActionTime += 2;
 		}
 
-		if (this.rand.nextBoolean()) {
-			this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.getPosY() + this.rand.nextDouble() * this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), 0, 0, 0);
+		if (this.random.nextBoolean()) {
+			this.level.addParticle(DustParticleOptions.REDSTONE, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.random.nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
 		}
 
-		super.livingTick();
+		super.aiStep();
 	}
 
 	@Override
-	protected void updateAITasks() {
+	protected void customServerAiStep() {
 		findHome();
 
 		if (this.inTrapCounter > 0) {
 			this.inTrapCounter--;
-			setAttackTarget(null);
+			setTarget(null);
 		}
 
-		int status = getAttackTarget() != null && shouldAttack(getAttackTarget()) ? 1 : 0;
+		int status = getTarget() != null && shouldAttack(getTarget()) ? 1 : 0;
 
-		dataManager.set(ATTACK_STATUS, (byte) status);
-		dataManager.set(ATTACK_TIMER, (byte) attackAI.attackTimer);
-		dataManager.set(ATTACK_PREVTIMER, (byte) attackAI.prevAttackTimer);
+		entityData.set(ATTACK_STATUS, (byte) status);
+		entityData.set(ATTACK_TIMER, (byte) attackAI.attackTimer);
+		entityData.set(ATTACK_PREVTIMER, (byte) attackAI.prevAttackTimer);
 	}
 
 	public int getAttackStatus() {
-		return dataManager.get(ATTACK_STATUS);
+		return entityData.get(ATTACK_STATUS);
 	}
 
 	public int getAttackTimer() {
-		return dataManager.get(ATTACK_TIMER);
+		return entityData.get(ATTACK_TIMER);
 	}
 
 	public int getPrevAttackTimer() {
-		return dataManager.get(ATTACK_PREVTIMER);
+		return entityData.get(ATTACK_PREVTIMER);
 	}
 
 	protected boolean shouldAttack(LivingEntity living) {
@@ -305,48 +307,48 @@ public class CarminiteGhastguardEntity extends GhastEntity {
 	 * Something is deeply wrong with the calculations based off of this value, so let's set it high enough that it's ignored.
 	 */
 	@Override
-	public int getVerticalFaceSpeed() {
+	public int getMaxHeadXRot() {
 		return 500;
 	}
 
 	protected void spitFireball() {
-		Vector3d vec3d = this.getLook(1.0F);
-		double d2 = getAttackTarget().getPosX() - (this.getPosX() + vec3d.x * 4.0D);
-		double d3 = getAttackTarget().getBoundingBox().minY + getAttackTarget().getHeight() / 2.0F - (0.5D + this.getPosY() + this.getHeight() / 2.0F);
-		double d4 = getAttackTarget().getPosZ() - (this.getPosZ() + vec3d.z * 4.0D);
-		FireballEntity entitylargefireball = new FireballEntity(world, this, d2, d3, d4);
-		entitylargefireball.explosionPower = this.getFireballStrength();
-		entitylargefireball.setPosition(this.getPosX() + vec3d.x * 4.0D, this.getPosY() + this.getHeight() / 2.0F + 0.5D, this.getPosZ() + vec3d.z * 4.0D);
-		world.addEntity(entitylargefireball);
+		Vec3 vec3d = this.getViewVector(1.0F);
+		double d2 = getTarget().getX() - (this.getX() + vec3d.x * 4.0D);
+		double d3 = getTarget().getBoundingBox().minY + getTarget().getBbHeight() / 2.0F - (0.5D + this.getY() + this.getBbHeight() / 2.0F);
+		double d4 = getTarget().getZ() - (this.getZ() + vec3d.z * 4.0D);
+		LargeFireball entitylargefireball = new LargeFireball(level, this, d2, d3, d4);
+		entitylargefireball.explosionPower = this.getExplosionPower();
+		entitylargefireball.setPos(this.getX() + vec3d.x * 4.0D, this.getY() + this.getBbHeight() / 2.0F + 0.5D, this.getZ() + vec3d.z * 4.0D);
+		level.addFreshEntity(entitylargefireball);
 
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
-		if (rand.nextInt(6) == 0) {
-			setAttackTarget(null);
+		if (random.nextInt(6) == 0) {
+			setTarget(null);
 		}
 	}
 
-	public static boolean ghastSpawnHandler(EntityType<? extends CarminiteGhastguardEntity> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entityType, world, reason, pos, random);
+	public static boolean ghastSpawnHandler(EntityType<? extends CarminiteGhastguardEntity> entityType, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entityType, world, reason, pos, random);
 	}
 
 	@Override
-	public boolean isNotColliding(IWorldReader world) {
-		return world.checkNoEntityCollision(this) && !world.containsAnyLiquid(this.getBoundingBox()); //TODO: Verify
+	public boolean checkSpawnObstruction(LevelReader world) {
+		return world.isUnobstructed(this) && !world.containsAnyLiquid(this.getBoundingBox()); //TODO: Verify
 	}
 
 	private void findHome() {
 		if (!this.hasHome()) {
-			int chunkX = MathHelper.floor(this.getPosX()) >> 4;
-			int chunkZ = MathHelper.floor(this.getPosZ()) >> 4;
+			int chunkX = Mth.floor(this.getX()) >> 4;
+			int chunkZ = Mth.floor(this.getZ()) >> 4;
 
-			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, (ServerWorld) this.world);
+			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, (ServerLevel) this.level);
 
 			if (nearFeature != TFFeature.DARK_TOWER) {
-				this.detachHome();
-				this.idleTime += 5;
+				this.hasRestriction();
+				this.noActionTime += 5;
 			} else {
 				BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ);
-				this.setHomePosAndDistance(cc.up(128), 64);
+				this.restrictTo(cc.above(128), 64);
 			}
 		}
 	}
@@ -360,43 +362,43 @@ public class CarminiteGhastguardEntity extends GhastEntity {
 	private float maximumHomeDistance = -1.0F;
 
 	@Override
-	public boolean isWithinHomeDistanceCurrentPosition() {
-		return this.isWithinHomeDistanceFromPosition(getPosition());
+	public boolean isWithinRestriction() {
+		return this.isWithinRestriction(blockPosition());
 	}
 
 	@Override
-	public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
+	public boolean isWithinRestriction(BlockPos pos) {
 		// TF - restrict valid y levels
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
 		return this.maximumHomeDistance == -1.0F
 				? true
-				: pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distanceSq(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
+				: pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distSqr(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
 	}
 
 	@Override
-	public void setHomePosAndDistance(BlockPos pos, int distance) {
+	public void restrictTo(BlockPos pos, int distance) {
 		this.homePosition = pos;
 		this.maximumHomeDistance = distance;
 	}
 
 	@Override
-	public BlockPos getHomePosition() {
+	public BlockPos getRestrictCenter() {
 		return this.homePosition;
 	}
 
 	@Override
-	public float getMaximumHomeDistance() {
+	public float getRestrictRadius() {
 		return this.maximumHomeDistance;
 	}
 
 	@Override
-	public boolean detachHome() {
+	public boolean hasRestriction() {
 		this.maximumHomeDistance = -1.0F;
 		return false;
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 

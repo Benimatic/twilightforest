@@ -1,35 +1,35 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
 
 public class TowerRoofPointyComponent extends TowerRoofComponent {
 
-	public TowerRoofPointyComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerRoofPointyComponent(StructureManager manager, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRP, nbt);
 	}
 
-	public TowerRoofPointyComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public TowerRoofPointyComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public TowerRoofPointyComponent(IStructurePieceType piece, TFFeature feature, int i, TowerWingComponent wing) {
+	public TowerRoofPointyComponent(StructurePieceType piece, TFFeature feature, int i, TowerWingComponent wing) {
 		super(piece, feature, i);
 
 		// same facing, but it doesn't matter
-		this.setCoordBaseMode(wing.getCoordBaseMode());
+		this.setOrientation(wing.getOrientation());
 
 		this.size = wing.size; // assuming only square towers and roofs right now.
 		this.height = size;
@@ -42,9 +42,9 @@ public class TowerRoofPointyComponent extends TowerRoofComponent {
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		BlockState birchSlab = Blocks.BIRCH_SLAB.getDefaultState();
-		BlockState birchPlanks = Blocks.BIRCH_PLANKS.getDefaultState();
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState();
+		BlockState birchPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 
 		for (int y = 0; y <= height; y++) {
 			int min, mid, max;
@@ -59,14 +59,14 @@ public class TowerRoofPointyComponent extends TowerRoofComponent {
 			mid = min + ((max - min) / 2);
 			for (int x = min; x <= max; x++) {
 				for (int z = min; z <= max; z++) {
-					setBlockState(world, birchPlanks, x, y, z, sbb);
+					placeBlock(world, birchPlanks, x, y, z, sbb);
 					// some of these are unnecessary and will just be overwritten by a normal block, but whatevs.
 					if ((x == min && (z == min || z == max)) || (x == max && (z == min || z == max))) {
-						setBlockState(world, birchSlab, x, y + 1, z, sbb);
+						placeBlock(world, birchSlab, x, y + 1, z, sbb);
 					}
 					// mid blocks
 					if (((((x == min || x == max) && z == mid) && x % 2 == 0) || (((z == min || z == max) && x == mid) && z % 2 == 0)) && mid != min + 1) {
-						setBlockState(world, birchSlab, x, y + 1, z, sbb);
+						placeBlock(world, birchSlab, x, y + 1, z, sbb);
 					}
 				}
 			}

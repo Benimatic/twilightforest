@@ -1,10 +1,10 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.SnowQueenEntity;
 import twilightforest.entity.boss.SnowQueenEntity.Phase;
 
@@ -13,6 +13,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 
@@ -30,7 +32,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 	public HoverBeamGoal(SnowQueenEntity snowQueen, int hoverTime, int dropTime) {
 		super(snowQueen, 3F, 4F);
 
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 		this.maxHoverTime = hoverTime;
 		this.maxSeekTime = hoverTime;
 		this.maxBeamTime = dropTime;
@@ -40,8 +42,8 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		LivingEntity target = this.attacker.getAttackTarget();
+	public boolean canUse() {
+		LivingEntity target = this.attacker.getTarget();
 
 		if (target == null) {
 			return false;
@@ -55,8 +57,8 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		LivingEntity target = this.attacker.getAttackTarget();
+	public boolean canContinueToUse() {
+		LivingEntity target = this.attacker.getTarget();
 
 		if (target == null || !target.isAlive()) {
 			return false;
@@ -72,7 +74,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.seekTimer = 0;
 		this.hoverTimer = 0;
 		this.beamTimer = 0;
@@ -85,7 +87,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 	public void tick() {
 
 		// check if we're in position
-		if (this.attacker.getDistanceSq(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
+		if (this.attacker.distanceToSqr(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
 			this.isInPosition = true;
 		}
 
@@ -113,13 +115,13 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 		}
 
 		// check if we are at our waypoint target
-		double offsetX = this.hoverPosX - this.attacker.getPosX();
-		double offsetY = this.hoverPosY - this.attacker.getPosY();
-		double offsetZ = this.hoverPosZ - this.attacker.getPosZ();
+		double offsetX = this.hoverPosX - this.attacker.getX();
+		double offsetY = this.hoverPosY - this.attacker.getY();
+		double offsetZ = this.hoverPosZ - this.attacker.getZ();
 
 		double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
-		distanceDesired = MathHelper.sqrt(distanceDesired);
+		distanceDesired = Mth.sqrt(distanceDesired);
 
 		if (distanceDesired > 0.5) {
 
@@ -131,16 +133,16 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 			// gravity offset
 			velY += 0.02F;
 
-			this.attacker.addVelocity(velX, velY, velZ);
+			this.attacker.push(velX, velY, velZ);
 		}
 
 		// look at target
-		LivingEntity target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getTarget();
 		if (target != null) {
 			float tracking = this.isInPosition ? 1F : 20.0F;
 
-			this.attacker.faceEntity(target, tracking, tracking);
-			this.attacker.getLookController().setLookPositionWithEntity(target, tracking, tracking);
+			this.attacker.lookAt(target, tracking, tracking);
+			this.attacker.getLookControl().setLookAt(target, tracking, tracking);
 		}
 	}
 
@@ -148,20 +150,20 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 
 		double range = 20.0D;
 		double offset = 10.0D;
-		Vector3d srcVec = new Vector3d(this.attacker.getPosX(), this.attacker.getPosY() + 0.25, this.attacker.getPosZ());
-		Vector3d lookVec = this.attacker.getLook(1.0F);
-		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
-		List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(range, range, range));
+		Vec3 srcVec = new Vec3(this.attacker.getX(), this.attacker.getY() + 0.25, this.attacker.getZ());
+		Vec3 lookVec = this.attacker.getViewVector(1.0F);
+		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		List<Entity> possibleList = this.attacker.level.getEntities(this.attacker, this.attacker.getBoundingBox().move(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).inflate(range, range, range));
 		double hitDist = 0;
 
 		if(attacker.isMultipartEntity())
 			possibleList.removeAll(Arrays.asList(Objects.requireNonNull(attacker.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
-			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.attacker) {
-				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
-				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
+			if (possibleEntity.isPickable() && possibleEntity != this.attacker) {
+				float borderSize = possibleEntity.getPickRadius();
+				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
+				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -183,7 +185,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 	@Override
 	protected void makeNewHoverSpot(LivingEntity target) {
 		super.makeNewHoverSpot(target);
-		this.beamY = target.getPosY();
+		this.beamY = target.getY();
 		this.seekTimer = 0;
 	}
 }

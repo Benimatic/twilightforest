@@ -1,18 +1,18 @@
 package twilightforest.world;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.NoiseChunkGenerator;
-import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.StructureFeatureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.start.TFStructure;
@@ -23,24 +23,24 @@ import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
 // Actually, figure out how to get this back up again
-public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
+public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerator {
 	protected final long seed;
-	protected final Supplier<DimensionSettings> dimensionSettings;
+	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
 	private final boolean shouldGenerateBedrock;
 
-	public ChunkGeneratorTwilightBase(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings, boolean shouldGenerateBedrock) {
+	public ChunkGeneratorTwilightBase(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings, boolean shouldGenerateBedrock) {
 		super(provider, seed, settings);
 		this.seed = seed;
 		this.dimensionSettings = settings;
 		this.shouldGenerateBedrock = shouldGenerateBedrock;
 	}
 
-	public ChunkGeneratorTwilightBase(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
+	public ChunkGeneratorTwilightBase(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings) {
 		this(provider, seed, settings, true);
 	}
 
 	@Override
-	public int getGroundHeight() {
+	public int getSpawnHeight() {
 		return 32;
 	}
 
@@ -174,14 +174,14 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 
 						if (dist < 7 || cv < 0.05F) {
 
-							primer.setBlockState(withY(getPos(primer).asBlockPos().add(lx, 0, lz), y), TFBlocks.wispy_cloud.get().getDefaultState(), 3);
+							primer.setBlock(withY(getPos(primer).getWorldPosition().offset(lx, 0, lz), y), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(withY(getPos(primer).asBlockPos().add(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().getDefaultState(), 3);
+								primer.setBlock(withY(getPos(primer).getWorldPosition().offset(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
 							}
-							primer.setBlockState(withY(getPos(primer).asBlockPos().add(lx, 0, lz), y - depth), TFBlocks.wispy_cloud.get().getDefaultState(), 3);
+							primer.setBlock(withY(getPos(primer).getWorldPosition().offset(lx, 0, lz), y - depth), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(withY(getPos(primer).asBlockPos().add(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().getDefaultState(), 3);
+								primer.setBlock(withY(getPos(primer).getWorldPosition().offset(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
 							}
 						}
 					}
@@ -201,7 +201,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 
 		// raise the hill
 		for (int y = TFGenerationSettings.SEALEVEL; y < TFGenerationSettings.CHUNKHEIGHT; y++) {
-			Block currentTerrain = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
+			Block currentTerrain = primer.getBlockState(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y)).getBlock();
 			if (currentTerrain != Blocks.STONE) {
 				// we found the top of the stone layer
 				oldGround = y;
@@ -213,7 +213,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 
 		if (foundGroundLevel) {
 			for (int y = oldGround; y <= newGround; y++) {
-				primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
+				primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
 			}
 		}
 
@@ -244,14 +244,14 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 		if (hillHeight > 0) {
 			// put a base on hills that go over open space or water
 			for (int y = 0; y < TFGenerationSettings.SEALEVEL; y++) {
-				if (primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock() != Blocks.STONE) {
-					primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
+				if (primer.getBlockState(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y)).getBlock() != Blocks.STONE) {
+					primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
 				}
 			}
 		}
 
 		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
-			primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
+			primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), Blocks.AIR.defaultBlockState(), 3);
 		}
 	}
 
@@ -276,7 +276,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
 			for (int y = 0; y <= 127; y++) {
-				Block currentTerrain = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
+				Block currentTerrain = primer.getBlockState(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y)).getBlock();
 				// we're still in ground
 				if (currentTerrain != Blocks.STONE) {
 					// we found the lowest chunk of earth
@@ -288,15 +288,15 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 
 		// sets the ground level to the maze height
 		for (int y = 0; y < mazeHeight; y++) {
-			Block b = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
+			Block b = primer.getBlockState(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y)).getBlock();
 			if (b == Blocks.AIR || b == Blocks.WATER) {
-				primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
+				primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
 			}
 		}
 		for (int y = mazeHeight; y <= 127; y++) {
-			Block b = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
+			Block b = primer.getBlockState(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y)).getBlock();
 			if (b != Blocks.AIR && b != Blocks.WATER) {
-				primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
+				primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), Blocks.AIR.defaultBlockState(), 3);
 			}
 		}
 	}
@@ -344,7 +344,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
 			for (int y = 0; y <= 127; y++) {
-				Block currentTerrain = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
+				Block currentTerrain = primer.getBlockState(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y)).getBlock();
 				if (currentTerrain != Blocks.STONE) {
 					// we found the lowest chunk of earth
 					topHeight += ((y - topHeight) * squishFactor);
@@ -358,20 +358,20 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 
 		// add stone
 		for (int y = 0; y < topHeight; y++) {
-			Block b = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
+			Block b = primer.getBlockState(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y)).getBlock();
 			if (b == Blocks.AIR || b == Blocks.WATER) {
-				primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
+				primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
 			}
 		}
 
 		// hollow out inside
 		for (int y = hollowFloor + 1; y < hollowCeiling; ++y) {
-			primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
+			primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), Blocks.AIR.defaultBlockState(), 3);
 		}
 
 		// ice floor
 		if (hollowFloor < hollowCeiling && hollowFloor < TFGenerationSettings.SEALEVEL + 3) {
-			primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), hollowFloor), Blocks.PACKED_ICE.getDefaultState(), 3);
+			primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), hollowFloor), Blocks.PACKED_ICE.defaultBlockState(), 3);
 		}
 	}
 
@@ -380,7 +380,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 	}
 	
 	protected final ChunkPos getPos(WorldGenRegion primer) {
-		return new ChunkPos(primer.getMainChunkX(), primer.getMainChunkZ());
+		return new ChunkPos(primer.getCenterX(), primer.getCenterZ());
 	}
 
 	protected final BlockPos withY(BlockPos old, int y) {
@@ -388,14 +388,14 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 	}
 
 	@Override
-	public List<MobSpawnInfo.Spawners> func_230353_a_(Biome biome, StructureManager structureManager, EntityClassification classification, BlockPos pos) {
-		List<MobSpawnInfo.Spawners> potentialStructureSpawns = TFStructure.gatherPotentialSpawns(structureManager, classification, pos);
+	public List<MobSpawnSettings.SpawnerData> getMobsAt(Biome biome, StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructure.gatherPotentialSpawns(structureManager, classification, pos);
 		if (potentialStructureSpawns != null)
 			return potentialStructureSpawns;
-		List<MobSpawnInfo.Spawners> spawns = net.minecraftforge.common.world.StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);
+		List<MobSpawnSettings.SpawnerData> spawns = net.minecraftforge.common.world.StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);
 		if (spawns != null)
 			return spawns;
-		return classification == EntityClassification.MONSTER && pos.getY() >= TFGenerationSettings.SEALEVEL ? ImmutableList.of() : super.func_230353_a_(biome, structureManager, classification, pos);
+		return classification == MobCategory.MONSTER && pos.getY() >= TFGenerationSettings.SEALEVEL ? ImmutableList.of() : super.getMobsAt(biome, structureManager, classification, pos);
 	}
 
 }

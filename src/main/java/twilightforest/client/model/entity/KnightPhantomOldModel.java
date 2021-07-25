@@ -1,23 +1,25 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import twilightforest.entity.boss.KnightPhantomEntity;
 
-@Deprecated
-public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends BipedModel<T> {
+import net.minecraft.client.model.HumanoidModel.ArmPose;
 
-	public ModelRenderer helmet;
-	public ModelRenderer righthorn1;
-	public ModelRenderer righthorn2;
-	public ModelRenderer lefthorn1;
-	public ModelRenderer lefthorn2;
+@Deprecated
+public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends HumanoidModel<T> {
+
+	public ModelPart helmet;
+	public ModelPart righthorn1;
+	public ModelPart righthorn2;
+	public ModelPart lefthorn1;
+	public ModelPart lefthorn2;
 
 	@Deprecated
 	public KnightPhantomOldModel() {
 		super(0.0F, 0.0F, 128, 64);
-		this.isSneak = false;
+		this.crouching = false;
 //		this.textureWidth = 128;
 //		this.textureHeight = 64;
 
@@ -32,70 +34,70 @@ public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends BipedM
         this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
 */
 
-		this.bipedHead = new ModelRenderer(this, 0, 0);
-		this.bipedHead.addBox(0, 0, 0, 0, 0, 0);
-		this.bipedHead.setRotationPoint(0.0F, -10.0F, 0.0F);
+		this.head = new ModelPart(this, 0, 0);
+		this.head.addBox(0, 0, 0, 0, 0, 0);
+		this.head.setPos(0.0F, -10.0F, 0.0F);
 
-		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
-		this.bipedHeadwear.addBox(0, 0, 0, 0, 0, 0);
-		this.bipedHeadwear.setRotationPoint(0.0F, -10.0F, 0.0F);
+		this.hat = new ModelPart(this, 0, 0);
+		this.hat.addBox(0, 0, 0, 0, 0, 0);
+		this.hat.setPos(0.0F, -10.0F, 0.0F);
 
-		this.helmet = new ModelRenderer(this, 0, 0);
+		this.helmet = new ModelPart(this, 0, 0);
 		this.helmet.addBox(-4.0F, -11.0F, -4.0F, 8, 11, 8);
-		this.helmet.rotateAngleY = 45F / (180F / (float) Math.PI);
+		this.helmet.yRot = 45F / (180F / (float) Math.PI);
 
-		this.righthorn1 = new ModelRenderer(this, 28, 0);
+		this.righthorn1 = new ModelPart(this, 28, 0);
 		this.righthorn1.addBox(-6F, -1.5F, -1.5F, 7, 3, 3);
-		this.righthorn1.setRotationPoint(-3.5F, -9F, 0.0F);
-		this.righthorn1.rotateAngleY = 15F / (180F / (float) Math.PI);
-		this.righthorn1.rotateAngleZ = 10F / (180F / (float) Math.PI);
+		this.righthorn1.setPos(-3.5F, -9F, 0.0F);
+		this.righthorn1.yRot = 15F / (180F / (float) Math.PI);
+		this.righthorn1.zRot = 10F / (180F / (float) Math.PI);
 
-		this.righthorn2 = new ModelRenderer(this, 28, 6);
+		this.righthorn2 = new ModelPart(this, 28, 6);
 		this.righthorn2.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2);
-		this.righthorn2.setRotationPoint(-5.5F, 0.0F, 0.0F);
-		this.righthorn2.rotateAngleZ = 10F / (180F / (float) Math.PI);
+		this.righthorn2.setPos(-5.5F, 0.0F, 0.0F);
+		this.righthorn2.zRot = 10F / (180F / (float) Math.PI);
 
 		this.righthorn1.addChild(righthorn2);
 
-		this.lefthorn1 = new ModelRenderer(this, 28, 0);
+		this.lefthorn1 = new ModelPart(this, 28, 0);
 		this.lefthorn1.mirror = true;
 		this.lefthorn1.addBox(-1F, -1.5F, -1.5F, 7, 3, 3);
-		this.lefthorn1.setRotationPoint(3.5F, -9F, 0.0F);
-		this.lefthorn1.rotateAngleY = -15F / (180F / (float) Math.PI);
-		this.lefthorn1.rotateAngleZ = -10F / (180F / (float) Math.PI);
+		this.lefthorn1.setPos(3.5F, -9F, 0.0F);
+		this.lefthorn1.yRot = -15F / (180F / (float) Math.PI);
+		this.lefthorn1.zRot = -10F / (180F / (float) Math.PI);
 
-		this.lefthorn2 = new ModelRenderer(this, 28, 6);
+		this.lefthorn2 = new ModelPart(this, 28, 6);
 		this.lefthorn2.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2);
-		this.lefthorn2.setRotationPoint(5.5F, 0.0F, 0.0F);
-		this.lefthorn2.rotateAngleZ = -10F / (180F / (float) Math.PI);
+		this.lefthorn2.setPos(5.5F, 0.0F, 0.0F);
+		this.lefthorn2.zRot = -10F / (180F / (float) Math.PI);
 
 		this.lefthorn1.addChild(lefthorn2);
 
-		this.bipedHeadwear.addChild(helmet);
-		this.bipedHeadwear.addChild(righthorn1);
-		this.bipedHeadwear.addChild(lefthorn1);
+		this.hat.addChild(helmet);
+		this.hat.addChild(righthorn1);
+		this.hat.addChild(lefthorn1);
 
-		this.bipedBody = new ModelRenderer(this, 0, 18);
-		this.bipedBody.setRotationPoint(0.0F, 2.0F, 0.0F);
-		this.bipedBody.addBox(-7.0F, -12.0F, -3.5F, 14, 12, 7);
-		this.bipedBody.setTextureOffset(30, 24).addBox(-6.0F, 0F, -3F, 12, 8, 6); // torso
+		this.body = new ModelPart(this, 0, 18);
+		this.body.setPos(0.0F, 2.0F, 0.0F);
+		this.body.addBox(-7.0F, -12.0F, -3.5F, 14, 12, 7);
+		this.body.texOffs(30, 24).addBox(-6.0F, 0F, -3F, 12, 8, 6); // torso
 
-		this.bipedRightArm = new ModelRenderer(this, 44, 16);
-		this.bipedRightArm.addBox(-5.0F, -2.0F, -3.0F, 6, 7, 6);
-		this.bipedRightArm.setRotationPoint(-8.0F, -8.0F, 0.0F);
+		this.rightArm = new ModelPart(this, 44, 16);
+		this.rightArm.addBox(-5.0F, -2.0F, -3.0F, 6, 7, 6);
+		this.rightArm.setPos(-8.0F, -8.0F, 0.0F);
 
-		this.bipedLeftArm = new ModelRenderer(this, 44, 16);
-		this.bipedLeftArm.mirror = true;
-		this.bipedLeftArm.addBox(-1.0F, -2.0F, -3.0F, 6, 7, 6);
-		this.bipedLeftArm.setRotationPoint(8.0F, -8.0F, 0.0F);
+		this.leftArm = new ModelPart(this, 44, 16);
+		this.leftArm.mirror = true;
+		this.leftArm.addBox(-1.0F, -2.0F, -3.0F, 6, 7, 6);
+		this.leftArm.setPos(8.0F, -8.0F, 0.0F);
 
-		this.bipedRightLeg = new ModelRenderer(this, 0, 0);
-		this.bipedRightLeg.addBox(0, 0, 0, 0, 0, 0);
-		this.bipedRightLeg.setRotationPoint(0.0F, 12.0F, 0.0F);
+		this.rightLeg = new ModelPart(this, 0, 0);
+		this.rightLeg.addBox(0, 0, 0, 0, 0, 0);
+		this.rightLeg.setPos(0.0F, 12.0F, 0.0F);
 
-		this.bipedLeftLeg = new ModelRenderer(this, 0, 0);
-		this.bipedLeftLeg.addBox(0, 0, 0, 0, 0, 0);
-		this.bipedLeftLeg.setRotationPoint(0.0F, 12.0F, 0.0F);
+		this.leftLeg = new ModelPart(this, 0, 0);
+		this.leftLeg.addBox(0, 0, 0, 0, 0, 0);
+		this.leftLeg.setPos(0.0F, 12.0F, 0.0F);
 	}
 
 
@@ -105,18 +107,18 @@ public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends BipedM
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
-		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
-		this.bipedHead.rotateAngleZ = 0;
-		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
-		this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
-		this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ;
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		this.head.xRot = headPitch / (180F / (float) Math.PI);
+		this.head.zRot = 0;
+		this.hat.yRot = this.head.yRot;
+		this.hat.xRot = this.head.xRot;
+		this.hat.zRot = this.head.zRot;
 
-		this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
-		this.bipedRightArm.rotateAngleZ = 0.0F;
-		this.bipedLeftArm.rotateAngleZ = 0.0F;
+		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		this.rightArm.zRot = 0.0F;
+		this.leftArm.zRot = 0.0F;
 
 //        this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 //        this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
@@ -134,13 +136,13 @@ public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends BipedM
 //        }
 
 		if (this.leftArmPose != ArmPose.EMPTY) {
-			this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float) Math.PI / 10F);
+			this.leftArm.xRot = this.leftArm.xRot * 0.5F - ((float) Math.PI / 10F);
 		}
 
 		this.rightArmPose = ArmPose.ITEM;
 
 		if (this.rightArmPose != ArmPose.EMPTY) {
-			this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float) Math.PI / 10F);
+			this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
 		}
 //
 //        bipedRightArm.rotateAngleX -= (Math.PI * 0.66);
@@ -154,9 +156,9 @@ public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends BipedM
 //        this.bipedRightArm.rotateAngleY = 0.0F;
 //        this.bipedLeftArm.rotateAngleY = 0.0F;
 
-		this.bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+		this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 	}
 }

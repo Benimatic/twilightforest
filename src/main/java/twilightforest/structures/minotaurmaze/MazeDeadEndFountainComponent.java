@@ -1,16 +1,16 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -18,33 +18,33 @@ import java.util.Random;
 
 public class MazeDeadEndFountainComponent extends MazeDeadEndComponent {
 
-	public MazeDeadEndFountainComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeDeadEndFountainComponent(StructureManager manager, CompoundTag nbt) {
 		this(MinotaurMazePieces.TFMMDEF, nbt);
 	}
 
-	public MazeDeadEndFountainComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public MazeDeadEndFountainComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public MazeDeadEndFountainComponent(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+	public MazeDeadEndFountainComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(type, feature, i, x, y, z, rotation);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// normal doorway
-		super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
+		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// back wall brick
-		this.fillWithBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, false);
 
 		// water
-		this.setBlockState(world, Blocks.WATER.getDefaultState(), 2, 3, 4, sbb);
-		this.setBlockState(world, Blocks.WATER.getDefaultState(), 3, 3, 4, sbb);
+		this.placeBlock(world, Blocks.WATER.defaultBlockState(), 2, 3, 4, sbb);
+		this.placeBlock(world, Blocks.WATER.defaultBlockState(), 3, 3, 4, sbb);
 
 		// receptacle
-		this.setBlockState(world, AIR, 2, 0, 3, sbb);
-		this.setBlockState(world, AIR, 3, 0, 3, sbb);
+		this.placeBlock(world, AIR, 2, 0, 3, sbb);
+		this.placeBlock(world, AIR, 3, 0, 3, sbb);
 
 		return true;
 	}

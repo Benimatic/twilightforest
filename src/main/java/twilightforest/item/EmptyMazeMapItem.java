@@ -1,15 +1,17 @@
 package twilightforest.item;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AbstractMapItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ComplexItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
-public class EmptyMazeMapItem extends AbstractMapItem {
+import net.minecraft.world.item.Item.Properties;
+
+public class EmptyMazeMapItem extends ComplexItem {
 	boolean mapOres;
 
 	protected EmptyMazeMapItem(boolean mapOres, Properties props) {
@@ -19,22 +21,22 @@ public class EmptyMazeMapItem extends AbstractMapItem {
 
 	// [VanillaCopy] MapItem.onItemRightClick calling own setup method
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		ItemStack itemstack = MazeMapItem.setupNewMap(worldIn, MathHelper.floor(playerIn.getPosX()), MathHelper.floor(playerIn.getPosZ()), (byte) 0, true, false, MathHelper.floor(playerIn.getPosY()), this.mapOres);
-		ItemStack itemstack1 = playerIn.getHeldItem(handIn);
-		if (!playerIn.abilities.isCreativeMode) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+		ItemStack itemstack = MazeMapItem.setupNewMap(worldIn, Mth.floor(playerIn.getX()), Mth.floor(playerIn.getZ()), (byte) 0, true, false, Mth.floor(playerIn.getY()), this.mapOres);
+		ItemStack itemstack1 = playerIn.getItemInHand(handIn);
+		if (!playerIn.abilities.instabuild) {
 			itemstack1.shrink(1);
 		}
 
 		if (itemstack1.isEmpty()) {
-			return ActionResult.resultSuccess(itemstack);
+			return InteractionResultHolder.success(itemstack);
 		} else {
-			if (!playerIn.inventory.addItemStackToInventory(itemstack.copy())) {
-				playerIn.dropItem(itemstack, false);
+			if (!playerIn.inventory.add(itemstack.copy())) {
+				playerIn.drop(itemstack, false);
 			}
 
-			playerIn.addStat(Stats.ITEM_USED.get(this));
-			return ActionResult.resultSuccess(itemstack1);
+			playerIn.awardStat(Stats.ITEM_USED.get(this));
+			return InteractionResultHolder.success(itemstack1);
 		}
 	}
 }

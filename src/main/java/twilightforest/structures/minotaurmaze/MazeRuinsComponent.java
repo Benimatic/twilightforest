@@ -1,15 +1,15 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 
@@ -23,13 +23,13 @@ import java.util.Random;
  */
 public class MazeRuinsComponent extends TFStructureComponentOld {
 
-	public MazeRuinsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeRuinsComponent(StructureManager manager, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMRuins, nbt);
 	}
 
 	public MazeRuinsComponent(TFFeature feature, int i, int x, int y, int z) {
 		super(MinotaurMazePieces.TFMMRuins, feature, i);
-		this.setCoordBaseMode(Direction.SOUTH);
+		this.setOrientation(Direction.SOUTH);
 
 		// I have no bounding box
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y - 2, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH);
@@ -39,23 +39,23 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
-		super.buildComponent(structurecomponent, list, random);
+	public void addChildren(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
+		super.addChildren(structurecomponent, list, random);
 
 		// add a maze
-		MinotaurMazeComponent maze = new MinotaurMazeComponent(getFeatureType(), 1, boundingBox.minX, boundingBox.minY - 14, boundingBox.minZ, 1);
+		MinotaurMazeComponent maze = new MinotaurMazeComponent(getFeatureType(), 1, boundingBox.x0, boundingBox.y0 - 14, boundingBox.z0, 1);
 		list.add(maze);
-		maze.buildComponent(this, list, random);
+		maze.addChildren(this, list, random);
 
 		// add maze entrance shaft
-		MazeEntranceShaftComponent mazeEnter = new MazeEntranceShaftComponent(getFeatureType(), 2, random, boundingBox.minX + 1, boundingBox.minY, boundingBox.minZ + 1);
+		MazeEntranceShaftComponent mazeEnter = new MazeEntranceShaftComponent(getFeatureType(), 2, random, boundingBox.x0 + 1, boundingBox.y0, boundingBox.z0 + 1);
 		list.add(mazeEnter);
-		mazeEnter.buildComponent(this, list, random);
+		mazeEnter.addChildren(this, list, random);
 
 		// add aboveground maze entrance building
-		MazeMoundComponent mazeAbove = new MazeMoundComponent(getFeatureType(), 2, random, boundingBox.minX - 14, boundingBox.minY, boundingBox.minZ - 14);
+		MazeMoundComponent mazeAbove = new MazeMoundComponent(getFeatureType(), 2, random, boundingBox.x0 - 14, boundingBox.y0, boundingBox.z0 - 14);
 		list.add(mazeAbove);
-		mazeAbove.buildComponent(this, list, random);
+		mazeAbove.addChildren(this, list, random);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	 * the end, it adds Fences...
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// I have no components
 		return true;
 	}

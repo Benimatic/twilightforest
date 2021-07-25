@@ -1,24 +1,32 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.LilyPadItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.WaterLilyBlockItem;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 
-public class HugeWaterLilyItem extends LilyPadItem {
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+
+public class HugeWaterLilyItem extends WaterLilyBlockItem {
 
 	public HugeWaterLilyItem(Block block, Properties props) {
 		super(block, props);
@@ -26,50 +34,50 @@ public class HugeWaterLilyItem extends LilyPadItem {
 
 	// [VanillaCopy] ItemLilyPad.onItemRightClick, edits noted
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack itemstack = player.getHeldItem(hand);
-		RayTraceResult raytraceresult = rayTrace(world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
-		if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
-			return ActionResult.resultPass(itemstack);
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+		ItemStack itemstack = player.getItemInHand(hand);
+		HitResult raytraceresult = getPlayerPOVHitResult(world, player, ClipContext.Fluid.SOURCE_ONLY);
+		if (raytraceresult.getType() == HitResult.Type.MISS) {
+			return InteractionResultHolder.pass(itemstack);
 		} else {
-			if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
-				BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult)raytraceresult;
-				BlockPos blockpos = blockraytraceresult.getPos();
-				Direction direction = blockraytraceresult.getFace();
-				if (!world.isBlockModifiable(player, blockpos) || !player.canPlayerEdit(blockpos.offset(direction), direction, itemstack)) {
-					return ActionResult.resultFail(itemstack);
+			if (raytraceresult.getType() == HitResult.Type.BLOCK) {
+				BlockHitResult blockraytraceresult = (BlockHitResult)raytraceresult;
+				BlockPos blockpos = blockraytraceresult.getBlockPos();
+				Direction direction = blockraytraceresult.getDirection();
+				if (!world.mayInteract(player, blockpos) || !player.mayUseItemAt(blockpos.relative(direction), direction, itemstack)) {
+					return InteractionResultHolder.fail(itemstack);
 				}
 
-				BlockPos blockpos1 = blockpos.up();
+				BlockPos blockpos1 = blockpos.above();
 				BlockState blockstate = world.getBlockState(blockpos);
 				Material material = blockstate.getMaterial();
 				FluidState ifluidstate = world.getFluidState(blockpos);
-				if ((ifluidstate.getFluid() == Fluids.WATER || material == Material.ICE) && world.isAirBlock(blockpos1)) {
+				if ((ifluidstate.getType() == Fluids.WATER || material == Material.ICE) && world.isEmptyBlock(blockpos1)) {
 
 					// special case for handling block placement with water lilies
-					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.create(world.getDimensionKey(), world, blockpos1);
+					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.create(world.dimension(), world, blockpos1);
 					// TF - getBlock() instead of hardcoded lilypad
-					world.setBlockState(blockpos1, getBlock().getDefaultState(), 11);
-					if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player, blocksnapshot, net.minecraft.util.Direction.UP)) {
+					world.setBlock(blockpos1, getBlock().defaultBlockState(), 11);
+					if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player, blocksnapshot, net.minecraft.core.Direction.UP)) {
 						blocksnapshot.restore(true, false);
-						return ActionResult.resultFail(itemstack);
+						return InteractionResultHolder.fail(itemstack);
 					}
 
-					if (player instanceof ServerPlayerEntity) {
-						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos1, itemstack);
+					if (player instanceof ServerPlayer) {
+						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1, itemstack);
 					}
 
-					if (!player.abilities.isCreativeMode) {
+					if (!player.abilities.instabuild) {
 						itemstack.shrink(1);
 					}
 
-					player.addStat(Stats.ITEM_USED.get(this));
-					world.playSound(player, blockpos, SoundEvents.BLOCK_LILY_PAD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return ActionResult.resultSuccess(itemstack);
+					player.awardStat(Stats.ITEM_USED.get(this));
+					world.playSound(player, blockpos, SoundEvents.LILY_PAD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+					return InteractionResultHolder.success(itemstack);
 				}
 			}
 
-			return ActionResult.resultFail(itemstack);
+			return InteractionResultHolder.fail(itemstack);
 		}
 	}
 }

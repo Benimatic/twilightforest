@@ -1,30 +1,32 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
-public class ThornsBlock extends ConnectableRotatedPillarBlock implements IWaterLoggable {
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -32,7 +34,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements IWater
 
 	ThornsBlock(Properties props) {
 		super(props, 10);
-		this.setDefaultState(getDefaultState().with(WATERLOGGED, false));
+		this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -40,37 +42,37 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements IWater
 		return (state.getBlock() instanceof ThornsBlock
 						|| state.getBlock() == TFBlocks.thorn_rose.get()
 						|| state.getBlock() == TFBlocks.thorn_leaves.get()
-						|| state.getMaterial() == Material.PLANTS
-						|| state.getMaterial() == Material.EARTH);
+						|| state.getMaterial() == Material.PLANT
+						|| state.getMaterial() == Material.DIRT);
 	}
 
 	@Nullable
 	@Override
-	public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, @Nullable MobEntity entity) {
-		return PathNodeType.DAMAGE_CACTUS;
+	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
+		return BlockPathTypes.DAMAGE_CACTUS;
 	}
 
 	@Override
 	@Deprecated
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
-		entity.attackEntityFrom(TFDamageSources.THORNS, THORN_DAMAGE);
+	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
+		entity.hurt(TFDamageSources.THORNS, THORN_DAMAGE);
 	}
 
 	@Override
-	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+	public void stepOn(Level world, BlockPos pos, Entity entity) {
 		BlockState state = world.getBlockState(pos);
 
-		if (state.getBlock() instanceof ThornsBlock && state.get(AXIS) == Direction.Axis.Y) {
-			onEntityCollision(state, world, pos, entity);
+		if (state.getBlock() instanceof ThornsBlock && state.getValue(AXIS) == Direction.Axis.Y) {
+			entityInside(state, world, pos, entity);
 		}
 
-		super.onEntityWalk(world, pos, entity);
+		super.stepOn(world, pos, entity);
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
-		if (!player.abilities.isCreativeMode) {
-			if (!world.isRemote) {
+	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+		if (!player.abilities.instabuild) {
+			if (!world.isClientSide) {
 				// grow more
 				this.doThornBurst(world, pos, state);
 			}
@@ -82,15 +84,15 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements IWater
 
 	@Override
 	@Deprecated
-	public PushReaction getPushReaction(BlockState state) {
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
 
 	/**
 	 * Grow thorns out of both the ends, then maybe in another direction too
 	 */
-	private void doThornBurst(World world, BlockPos pos, BlockState state) {
-		switch (state.get(AXIS)) {
+	private void doThornBurst(Level world, BlockPos pos, BlockState state) {
+		switch (state.getValue(AXIS)) {
 			case Y:
 				growThorns(world, pos, Direction.UP);
 				growThorns(world, pos, Direction.DOWN);
@@ -106,22 +108,22 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements IWater
 		}
 
 		// also try three random directions
-		growThorns(world, pos, Direction.getRandomDirection(world.rand));
-		growThorns(world, pos, Direction.getRandomDirection(world.rand));
-		growThorns(world, pos, Direction.getRandomDirection(world.rand));
+		growThorns(world, pos, Direction.getRandom(world.random));
+		growThorns(world, pos, Direction.getRandom(world.random));
+		growThorns(world, pos, Direction.getRandom(world.random));
 	}
 
 	/**
 	 * grow several green thorns in the specified direction
 	 */
-	private void growThorns(World world, BlockPos pos, Direction dir) {
-		int length = 1 + world.rand.nextInt(3);
+	private void growThorns(Level world, BlockPos pos, Direction dir) {
+		int length = 1 + world.random.nextInt(3);
 
 		for (int i = 1; i < length; i++) {
-			BlockPos dPos = pos.offset(dir, i);
+			BlockPos dPos = pos.relative(dir, i);
 
-			if (world.isAirBlock(dPos)) {
-				world.setBlockState(dPos, TFBlocks.green_thorns.get().getDefaultState().with(AXIS, dir.getAxis()), 2);
+			if (world.isEmptyBlock(dPos)) {
+				world.setBlock(dPos, TFBlocks.green_thorns.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
 			} else {
 				break;
 			}
@@ -130,29 +132,29 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements IWater
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-		boolean flag = fluidstate.getFluid() == Fluids.WATER;
-		return super.getStateForPlacement(context).with(WATERLOGGED, Boolean.valueOf(flag));
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+		boolean flag = fluidstate.getType() == Fluids.WATER;
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.getValue(WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(WATERLOGGED);
 	}
 }

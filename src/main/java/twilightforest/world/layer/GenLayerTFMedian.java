@@ -1,20 +1,20 @@
 package twilightforest.world.layer;
 
-import net.minecraft.world.gen.IExtendedNoiseRandom;
-import net.minecraft.world.gen.area.IArea;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
+import net.minecraft.world.level.newbiome.context.BigContext;
+import net.minecraft.world.level.newbiome.area.Area;
+import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer1;
 
-public enum GenLayerTFMedian implements IAreaTransformer1 {
+public enum GenLayerTFMedian implements AreaTransformer1 {
 	INSTANCE;
 
 	GenLayerTFMedian() {}
 
 	@Override
-	public int apply(IExtendedNoiseRandom<?> iExtendedNoiseRandom, IArea iArea, int x, int z) {
+	public int applyPixel(BigContext<?> iExtendedNoiseRandom, Area iArea, int x, int z) {
 		int[] biomes = new int[9];
 
 		for (int pos = 0; pos < 9; pos++) {
-			biomes[pos] = iArea.getValue(x + (pos % 3), z + (pos / 3));
+			biomes[pos] = iArea.get(x + (pos % 3), z + (pos / 3));
 		}
 
 		int biomeRecordIndex = 0;
@@ -35,7 +35,7 @@ public enum GenLayerTFMedian implements IAreaTransformer1 {
 			}
 
 			// If there are two biomes with same dominating quantity, then randomly pick unless it is the central biome.
-			if (biomeRecordCount == iterationQuantity && (index == 5 || (biomeRecordIndex != 5 && iExtendedNoiseRandom.random(2) == 0))) {
+			if (biomeRecordCount == iterationQuantity && (index == 5 || (biomeRecordIndex != 5 && iExtendedNoiseRandom.nextRandom(2) == 0))) {
 				biomeRecordIndex = index;
 			}
 
@@ -49,12 +49,12 @@ public enum GenLayerTFMedian implements IAreaTransformer1 {
 	}
 
 	@Override
-	public int getOffsetX(int x) {
+	public int getParentX(int x) {
 		return x;
 	}
 
 	@Override
-	public int getOffsetZ(int z) {
+	public int getParentY(int z) {
 		return z;
 	}
 }

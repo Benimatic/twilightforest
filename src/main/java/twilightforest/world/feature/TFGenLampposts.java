@@ -1,31 +1,31 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
+public class TFGenLampposts extends Feature<BlockStateConfiguration> {
 
 	private static final Rotation[] ROTATIONS = Rotation.values();
 	//private final BlockState lamp;
 
-	public TFGenLampposts(Codec<BlockStateFeatureConfig> configIn) {
+	public TFGenLampposts(Codec<BlockStateConfiguration> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config) {
 		// we should start on a grass block
-		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS_BLOCK) {
+		if (world.getBlockState(pos.below()).getBlock() != Blocks.GRASS_BLOCK) {
 			return false;
 		}
 
@@ -34,17 +34,17 @@ public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
 
 		// is it air or replaceable above our grass block
 		for (int dy = 0; dy <= height; dy++) {
-			BlockState state = world.getBlockState(pos.up(dy));
-			if (!state.getBlock().isAir(state, world, pos.up(dy)) && !state.getMaterial().isReplaceable()) {
+			BlockState state = world.getBlockState(pos.above(dy));
+			if (!state.getBlock().isAir(state, world, pos.above(dy)) && !state.getMaterial().isReplaceable()) {
 				return false;
 			}
 		}
 
 		// generate lamp
 		for (int dy = 0; dy < height; dy++) {
-			world.setBlockState(pos.up(dy), TFBlocks.canopy_fence.get().getDefaultState(), 16 | 2);
+			world.setBlock(pos.above(dy), TFBlocks.canopy_fence.get().defaultBlockState(), 16 | 2);
 		}
-		world.setBlockState(pos.up(height), config.state.rotate(ROTATIONS[rand.nextInt(ROTATIONS.length)]), 16 | 2);
+		world.setBlock(pos.above(height), config.state.rotate(ROTATIONS[rand.nextInt(ROTATIONS.length)]), 16 | 2);
 		return true;
 	}
 }

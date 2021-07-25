@@ -1,26 +1,26 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.level.biome.Biome;
 import twilightforest.TFSounds;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.entity.ai.ThrowRiderGoal;
@@ -30,90 +30,100 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-public class YetiEntity extends MonsterEntity implements IHostileMount {
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 
-	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(YetiEntity.class, DataSerializers.BOOLEAN);
+public class YetiEntity extends Monster implements IHostileMount {
+
+	private static final EntityDataAccessor<Boolean> ANGER_FLAG = SynchedEntityData.defineId(YetiEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION);
 
-	public YetiEntity(EntityType<? extends YetiEntity> type, World world) {
+	public YetiEntity(EntityType<? extends YetiEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new ThrowRiderGoal(this, 1.0D, false) {
 			@Override
 			protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.YETI_GRAB, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+					playSound(TFSounds.YETI_GRAB, 1F, 1.25F + getRandom().nextFloat() * 0.5F);
 			}
 
 			@Override
-			public void resetTask() {
+			public void stop() {
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.YETI_THROW, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
-				super.resetTask();
+					playSound(TFSounds.YETI_THROW, 1F, 1.25F + getRandom().nextFloat() * 0.5F);
+				super.stop();
 			}
 		});
-		this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.38D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D)
-				.createMutableAttribute(Attributes.FOLLOW_RANGE, 4.0D);
-	}
-
-	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(ANGER_FLAG, false);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, 20.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.38D)
+				.add(Attributes.ATTACK_DAMAGE, 0.0D)
+				.add(Attributes.FOLLOW_RANGE, 4.0D);
 	}
 
 	@Override
-	public void livingTick() {
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(ANGER_FLAG, false);
+	}
 
-		super.livingTick();
+	@Override
+	public void aiStep() {
+
+		super.aiStep();
 
 		// look at things in our jaws
 		if (!this.getPassengers().isEmpty()) {
-			this.getLookController().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
+			this.getLookControl().setLookAt(getPassengers().get(0), 100F, 100F);
 
 			// push out of user in wall
-			Vector3d riderPos = this.getRiderPosition(getPassengers().get(0));
-			this.pushOutOfBlocks(riderPos.x, riderPos.y, riderPos.z);
+			Vec3 riderPos = this.getRiderPosition(getPassengers().get(0));
+			this.moveTowardsClosestSpace(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (source.getTrueSource() != null && !source.isCreativePlayer()) {
+	public boolean hurt(DamageSource source, float amount) {
+		if (source.getEntity() != null && !source.isCreativePlayer()) {
 			// become angry
 			this.setAngry(true);
 		}
 
-		return super.attackEntityFrom(source, amount);
+		return super.hurt(source, amount);
 	}
 
 	public boolean isAngry() {
-		return dataManager.get(ANGER_FLAG);
+		return entityData.get(ANGER_FLAG);
 	}
 
 	public void setAngry(boolean anger) {
-		dataManager.set(ANGER_FLAG, anger);
+		entityData.set(ANGER_FLAG, anger);
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			if (anger) {
 				if (!getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
-					this.getAttribute(Attributes.FOLLOW_RANGE).applyNonPersistentModifier(ANGRY_MODIFIER);
+					this.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(ANGRY_MODIFIER);
 				}
 			} else {
 				this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
@@ -122,14 +132,14 @@ public class YetiEntity extends MonsterEntity implements IHostileMount {
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putBoolean("Angry", this.isAngry());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		this.setAngry(compound.getBoolean("Angry"));
 	}
 
@@ -137,32 +147,32 @@ public class YetiEntity extends MonsterEntity implements IHostileMount {
 	 * Put the player out in front of where we are
 	 */
 	@Override
-	public void updatePassenger(Entity passenger) {
-		Vector3d riderPos = this.getRiderPosition(passenger);
-		passenger.setPosition(riderPos.x, riderPos.y, riderPos.z);
+	public void positionRider(Entity passenger) {
+		Vec3 riderPos = this.getRiderPosition(passenger);
+		passenger.setPos(riderPos.x, riderPos.y, riderPos.z);
 	}
 
 	/**
 	 * Returns the Y offset from the entity's position for any entity riding this one.
 	 */
 	@Override
-	public double getMountedYOffset() {
+	public double getPassengersRidingOffset() {
 		return 2.25D;
 	}
 
 	/**
 	 * Used to both get a rider position and to push out of blocks
 	 */
-	private Vector3d getRiderPosition(@Nullable Entity passenger) {
+	private Vec3 getRiderPosition(@Nullable Entity passenger) {
 		if (passenger != null) {
 			float distance = 0.4F;
 
-			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dx = Math.cos((this.yRot + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.yRot + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getMountedYOffset() + passenger.getYOffset(), this.getPosZ() + dz);
+			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + dz);
 		} else {
-			return new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
+			return new Vec3(this.getX(), this.getY(), this.getZ());
 		}
 	}
 
@@ -171,33 +181,33 @@ public class YetiEntity extends MonsterEntity implements IHostileMount {
 		return true;
 	}
 
-	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends YetiEntity> entityType, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		Optional<RegistryKey<Biome>> key = world.func_242406_i(pos);
+	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends YetiEntity> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+		Optional<ResourceKey<Biome>> key = world.getBiomeName(pos);
 		if (Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST))) {
-			return canSpawnOn(entityType, world, reason, pos, random);
+			return checkMobSpawnRules(entityType, world, reason, pos, random);
 		} else {
 			// normal EntityMob spawn check, checks light level
 			return normalYetiSpawnHandler(entityType, world, reason, pos, random);
 		}
 	}
 
-	public static boolean normalYetiSpawnHandler(EntityType<? extends MonsterEntity> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
+	public static boolean normalYetiSpawnHandler(EntityType<? extends Monster> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(IServerWorld world, BlockPos blockPos, Random random) {
-		Optional<RegistryKey<Biome>> key = world.func_242406_i(blockPos);
-		if (world.getLightFor(LightType.SKY, blockPos) > random.nextInt(32)) {
+	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos blockPos, Random random) {
+		Optional<ResourceKey<Biome>> key = world.getBiomeName(blockPos);
+		if (world.getBrightness(LightLayer.SKY, blockPos) > random.nextInt(32)) {
 			return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
 		} else {
-			int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
+			int i = world.getLevel().isThundering() ? world.getMaxLocalRawBrightness(blockPos, 10) : world.getMaxLocalRawBrightness(blockPos);
 			return i <= random.nextInt(8) || Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
 		}
 	}
 
 	@Override
-	protected float getSoundPitch() {
-		return super.getSoundPitch() + 0.55F;
+	protected float getVoicePitch() {
+		return super.getVoicePitch() + 0.55F;
 	}
 
 	@Nullable

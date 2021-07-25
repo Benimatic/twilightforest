@@ -1,25 +1,27 @@
 package twilightforest;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.MapData;
-import net.minecraft.world.storage.MapDecoration;
+import net.minecraft.nbt.CompoundTag;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class TFMagicMapData extends MapData {
-	private static final Map<World, Map<String, TFMagicMapData>> CLIENT_DATA = new WeakHashMap<>();
+import net.minecraft.world.level.saveddata.maps.MapDecoration.Type;
+
+public class TFMagicMapData extends MapItemSavedData {
+	private static final Map<Level, Map<String, TFMagicMapData>> CLIENT_DATA = new WeakHashMap<>();
 
 	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
 
@@ -28,8 +30,8 @@ public class TFMagicMapData extends MapData {
 	}
 
 	@Override
-	public void read(CompoundNBT cmp) {
-		super.read(cmp);
+	public void load(CompoundTag cmp) {
+		super.load(cmp);
 
 		byte[] featureStorage = cmp.getByteArray("features");
 		if (featureStorage.length > 0) {
@@ -38,8 +40,8 @@ public class TFMagicMapData extends MapData {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT cmp) {
-		cmp = super.write(cmp);
+	public CompoundTag save(CompoundTag cmp) {
+		cmp = super.save(cmp);
 
 		if (this.tfDecorations.size() > 0) {
 			cmp.putByteArray("features", serializeFeatures());
@@ -51,18 +53,18 @@ public class TFMagicMapData extends MapData {
 	/**
 	 * Checks existing features against the feature cache changes wrong ones
 	 */
-	public void checkExistingFeatures(World world) {
+	public void checkExistingFeatures(Level world) {
 		List<TFMapDecoration> toRemove = new ArrayList<>();
 		List<TFMapDecoration> toAdd = new ArrayList<>();
 
 		for (TFMapDecoration coord : tfDecorations) {
-			int worldX = (coord.getX() << this.scale - 1) + this.xCenter;
-			int worldZ = (coord.getY() << this.scale - 1) + this.zCenter;
+			int worldX = (coord.getX() << this.scale - 1) + this.x;
+			int worldZ = (coord.getY() << this.scale - 1) + this.z;
 
-			int trueId = TFFeature.getFeatureID(worldX, worldZ, (ServerWorld) world);
+			int trueId = TFFeature.getFeatureID(worldX, worldZ, (ServerLevel) world);
 			if (coord.featureId != trueId) {
 				toRemove.add(coord);
-				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRotation()));
+				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRot()));
 			}
 		}
 
@@ -98,31 +100,31 @@ public class TFMagicMapData extends MapData {
 
 	// VanillaCopy of super, but adjust origin
 	@Override
-	public void calculateMapCenter(double x, double z, int mapScale) {
+	public void setOrigin(double x, double z, int mapScale) {
 		// magic maps are offset by 1024 from normal maps so that 0,0 is in the middle of the map containing those coords
 		int mapSize = 128 * (1 << mapScale);
 		int roundX = (int) Math.round(x / mapSize);
 		int roundZ = (int) Math.round(z / mapSize);
-		this.xCenter = roundX * mapSize;
-		this.zCenter = roundZ * mapSize;
+		this.x = roundX * mapSize;
+		this.z = roundZ * mapSize;
 	}
 
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
-	public static TFMagicMapData getMagicMapData(World world, String name) {
-		if (world.isRemote) {
+	public static TFMagicMapData getMagicMapData(Level world, String name) {
+		if (world.isClientSide) {
 			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
 		} else {
-			return world.getServer().getWorld(World.OVERWORLD).getSavedData().get(() -> new TFMagicMapData(name), name);
+			return world.getServer().getLevel(Level.OVERWORLD).getDataStorage().get(() -> new TFMagicMapData(name), name);
 		}
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
-	public static void registerMagicMapData(World world, TFMagicMapData data) {
-		if (world.isRemote) {
-			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getName(), data);
+	public static void registerMagicMapData(Level world, TFMagicMapData data) {
+		if (world.isClientSide) {
+			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
 		} else {
-			world.getServer().getWorld(World.OVERWORLD).getSavedData().set(data);
+			world.getServer().getLevel(Level.OVERWORLD).getDataStorage().set(data);
 		}
 	}
 
@@ -131,16 +133,16 @@ public class TFMagicMapData extends MapData {
 
 		@OnlyIn(Dist.CLIENT)
 		public static class RenderContext {
-			private static final RenderType MAP_ICONS = RenderType.getText(TwilightForestMod.prefix("textures/gui/mapicons.png"));
-			public static MatrixStack stack;
-			public static IRenderTypeBuffer buffer;
+			private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
+			public static PoseStack stack;
+			public static MultiBufferSource buffer;
 			public static int light;
 		}
 
 		final int featureId;
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
-			super(Type.TARGET_X, xIn, yIn, rotationIn, new TranslationTextComponent("map.magic.text")); //TODO: Shush for now
+			super(Type.TARGET_X, xIn, yIn, rotationIn, new TranslatableComponent("map.magic.text")); //TODO: Shush for now
 			this.featureId = featureId;
 		}
 
@@ -149,22 +151,22 @@ public class TFMagicMapData extends MapData {
 		public boolean render(int idx) {
 			// TODO: Forge needs to pass in the ms and buffers, but for now this works
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
-				RenderContext.stack.push();
+				RenderContext.stack.pushPose();
 				RenderContext.stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-				RenderContext.stack.rotate(Vector3f.ZP.rotationDegrees(getRotation() * 360 / 16.0F));
+				RenderContext.stack.mulPose(Vector3f.ZP.rotationDegrees(getRot() * 360 / 16.0F));
 				RenderContext.stack.scale(4.0F, 4.0F, 3.0F);
 				RenderContext.stack.translate(-0.125D, 0.125D, 0.0D);
 				float f1 = featureId % 8 / 8.0F;
 				float f2 = featureId / 8 / 8.0F;
 				float f3 = (featureId % 8 + 1) / 8.0F;
 				float f4 = (featureId / 8 + 1) / 8.0F;
-				Matrix4f matrix4f1 = RenderContext.stack.getLast().getMatrix();
-				IVertexBuilder ivertexbuilder1 = RenderContext.buffer.getBuffer(RenderContext.MAP_ICONS);
-				ivertexbuilder1.pos(matrix4f1, -1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).tex(f1, f2).lightmap(RenderContext.light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, 1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).tex(f3, f2).lightmap(RenderContext.light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, 1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).tex(f3, f4).lightmap(RenderContext.light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, -1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).tex(f1, f4).lightmap(RenderContext.light).endVertex();
-				RenderContext.stack.pop();
+				Matrix4f matrix4f1 = RenderContext.stack.last().pose();
+				VertexConsumer ivertexbuilder1 = RenderContext.buffer.getBuffer(RenderContext.MAP_ICONS);
+				ivertexbuilder1.vertex(matrix4f1, -1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f2).uv2(RenderContext.light).endVertex();
+				ivertexbuilder1.vertex(matrix4f1, 1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f3, f2).uv2(RenderContext.light).endVertex();
+				ivertexbuilder1.vertex(matrix4f1, 1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f3, f4).uv2(RenderContext.light).endVertex();
+				ivertexbuilder1.vertex(matrix4f1, -1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f4).uv2(RenderContext.light).endVertex();
+				RenderContext.stack.popPose();
 			}
 			return true;
 		}

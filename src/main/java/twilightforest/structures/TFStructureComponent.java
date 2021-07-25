@@ -4,24 +4,24 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.DyeColor;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
@@ -69,7 +69,7 @@ public abstract class TFStructureComponent extends StructurePiece {
 			.build();
 
 
-	public TFStructureComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public TFStructureComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 		this.spawnListIndex = nbt.getInt("si");
 		this.deco = TFStructureDecorator.getDecoFor(nbt.getString("deco"));
@@ -77,12 +77,12 @@ public abstract class TFStructureComponent extends StructurePiece {
 		this.rotation = Rotation.values()[nbt.getInt("rot") % Rotation.values().length];
 	}
 
-	public TFStructureComponent(IStructurePieceType type, int i) {
+	public TFStructureComponent(StructurePieceType type, int i) {
 		super(type, i);
 		this.rotation = Rotation.NONE;
 	}
 
-	public TFStructureComponent(IStructurePieceType type, TFFeature feature, int i) {
+	public TFStructureComponent(StructurePieceType type, TFFeature feature, int i) {
 		this(type, i);
 		this.feature = feature;
 	}
@@ -96,50 +96,50 @@ public abstract class TFStructureComponent extends StructurePiece {
 	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setDebugCorners(World world) {
+	protected void setDebugCorners(Level world) {
 		if (rotation == null) rotation = Rotation.NONE;
 
 		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
 			int i = rotation.ordinal() * 4;
 			DyeColor[] colors = DyeColor.values();
-			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i    , this.getBoundingBox().minZ), ColorUtil.WOOL.getColor(colors[i]));
-			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 1, this.getBoundingBox().minZ), ColorUtil.WOOL.getColor(colors[1 + i]));
-			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i + 2, this.getBoundingBox().maxZ), ColorUtil.WOOL.getColor(colors[2 + i]));
-			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 3, this.getBoundingBox().maxZ), ColorUtil.WOOL.getColor(colors[3 + i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().x0, this.getBoundingBox().y1 + i    , this.getBoundingBox().z0), ColorUtil.WOOL.getColor(colors[i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().x1, this.getBoundingBox().y1 + i + 1, this.getBoundingBox().z0), ColorUtil.WOOL.getColor(colors[1 + i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().x0, this.getBoundingBox().y1 + i + 2, this.getBoundingBox().z1), ColorUtil.WOOL.getColor(colors[2 + i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().x1, this.getBoundingBox().y1 + i + 3, this.getBoundingBox().z1), ColorUtil.WOOL.getColor(colors[3 + i]));
 		}
 	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setDebugEntity(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, String s) {
+	protected void setDebugEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s) {
 		setInvisibleTextEntity(world, x, y, z, sbb, s, shouldDebug(), 0f);
 	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setInvisibleTextEntity(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
+	protected void setInvisibleTextEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
 		if (forcePlace) {
-			final BlockPos pos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
+			final BlockPos pos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
 
-			if (sbb.isVecInside(pos)) {
-				final ArmorStandEntity armorStand = new ArmorStandEntity(EntityType.ARMOR_STAND, world.getWorld());
-				armorStand.setCustomName(new StringTextComponent(s));
-				armorStand.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
+			if (sbb.isInside(pos)) {
+				final ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, world.getLevel());
+				armorStand.setCustomName(new TextComponent(s));
+				armorStand.moveTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
 				armorStand.setInvulnerable(true);
 				armorStand.setInvisible(true);
 				armorStand.setCustomNameVisible(true);
 				armorStand.setSilent(true);
 				armorStand.setNoGravity(true);
 				// set marker flag
-				armorStand.getDataManager().set(ArmorStandEntity.STATUS, (byte) (armorStand.getDataManager().get(ArmorStandEntity.STATUS) | 16));
-				world.addEntity(armorStand);
+				armorStand.getEntityData().set(ArmorStand.DATA_CLIENT_FLAGS, (byte) (armorStand.getEntityData().get(ArmorStand.DATA_CLIENT_FLAGS) | 16));
+				world.addFreshEntity(armorStand);
 			}
 		}
 	}
 
 	@Override
-	protected void setBlockState(ISeedReader worldIn, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox boundingboxIn) {
-	      BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
+	protected void placeBlock(WorldGenLevel worldIn, BlockState blockstateIn, int x, int y, int z, BoundingBox boundingboxIn) {
+	      BlockPos blockpos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
 
-	      if (boundingboxIn.isVecInside(blockpos)) {
+	      if (boundingboxIn.isInside(blockpos)) {
 	          if (this.mirror != Mirror.NONE) {
 	             blockstateIn = blockstateIn.mirror(this.mirror);
 	          }
@@ -148,37 +148,37 @@ public abstract class TFStructureComponent extends StructurePiece {
 	             blockstateIn = blockstateIn.rotate(this.rotation);
 	          }
 
-	          worldIn.setBlockState(blockpos, blockstateIn, 2);
+	          worldIn.setBlock(blockpos, blockstateIn, 2);
 	          FluidState fluidstate = worldIn.getFluidState(blockpos);
 	          if (!fluidstate.isEmpty()) {
-	             worldIn.getPendingFluidTicks().scheduleTick(blockpos, fluidstate.getFluid(), 0);
+	             worldIn.getLiquidTicks().scheduleTick(blockpos, fluidstate.getType(), 0);
 	          }
 
 	          if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
-	             worldIn.getChunk(blockpos).markBlockForPostprocessing(blockpos);
+	             worldIn.getChunk(blockpos).markPosForPostprocessing(blockpos);
 	          }
 
 	       }
 	   }
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setDebugEntity(World world, BlockPos blockpos, String s) {
+	protected void setDebugEntity(Level world, BlockPos blockpos, String s) {
 		if (shouldDebug()) {
-			final SheepEntity sheep = new SheepEntity(EntityType.SHEEP, world);
-			sheep.setCustomName(new StringTextComponent(s));
-			sheep.setNoAI(true);
-			sheep.setLocationAndAngles(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
+			final Sheep sheep = new Sheep(EntityType.SHEEP, world);
+			sheep.setCustomName(new TextComponent(s));
+			sheep.setNoAi(true);
+			sheep.moveTo(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
 			sheep.setInvulnerable(true);
 			sheep.setInvisible(true);
 			sheep.setCustomNameVisible(true);
 			sheep.setSilent(true);
 			sheep.setNoGravity(true);
-			world.addEntity(sheep);
+			world.addFreshEntity(sheep);
 		}
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
 		tagCompound.putInt("si", this.spawnListIndex);
 		tagCompound.putString("deco", TFStructureDecorator.getDecoString(this.deco));
 		tagCompound.putInt("rot", this.rotation.ordinal());

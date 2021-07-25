@@ -1,13 +1,13 @@
 package twilightforest.world.layer;
 
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.ICastleTransformer;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.newbiome.context.Context;
+import net.minecraft.world.level.newbiome.layer.traits.CastleTransformer;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.TFBiomeProvider;
 
-public enum GenLayerTFCompanionBiomes implements ICastleTransformer {
+public enum GenLayerTFCompanionBiomes implements CastleTransformer {
 	INSTANCE;
 
 	GenLayerTFCompanionBiomes() { }
@@ -20,7 +20,7 @@ public enum GenLayerTFCompanionBiomes implements ICastleTransformer {
 	}
 
 	@Override
-	public int apply(INoiseRandom noise, int up, int left, int down, int right, int center) {
+	public int apply(Context noise, int up, int left, int down, int right, int center) {
 		int fireSwamp        = TFBiomeProvider.getBiomeId(BiomeKeys.FIRE_SWAMP, registry);
 		int swamp            = TFBiomeProvider.getBiomeId(BiomeKeys.SWAMP, registry);
 		int glacier          = TFBiomeProvider.getBiomeId(BiomeKeys.GLACIER, registry);

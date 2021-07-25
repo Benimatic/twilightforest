@@ -1,18 +1,18 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import java.util.Random;
 
-public class TFGenWebs extends Feature<NoFeatureConfig> {
+public class TFGenWebs extends Feature<NoneFeatureConfiguration> {
 
-	public TFGenWebs(Codec<NoFeatureConfig> config) {
+	public TFGenWebs(Codec<NoneFeatureConfiguration> config) {
 		super(config);
 	}
 
@@ -21,20 +21,20 @@ public class TFGenWebs extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
-		while (pos.getY() > generator.getGroundHeight() && world.isAirBlock(pos))
-			pos = pos.down();
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
+		while (pos.getY() > generator.getSpawnHeight() && world.isEmptyBlock(pos))
+			pos = pos.below();
 
 		if (!isValidMaterial(world.getBlockState(pos).getMaterial()))
 			return false;
 
 		do {
-			if (world.isAirBlock(pos.down())) {
-				world.setBlockState(pos.down(), Blocks.COBWEB.getDefaultState(), 16 | 2);
+			if (world.isEmptyBlock(pos.below())) {
+				world.setBlock(pos.below(), Blocks.COBWEB.defaultBlockState(), 16 | 2);
 				return true;
 			}
-			pos = pos.down();
-		} while (pos.getY() > generator.getGroundHeight() && isValidMaterial(world.getBlockState(pos).getMaterial()));
+			pos = pos.below();
+		} while (pos.getY() > generator.getSpawnHeight() && isValidMaterial(world.getBlockState(pos).getMaterial()));
 
 		return false;
 	}

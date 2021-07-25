@@ -1,28 +1,28 @@
 package twilightforest.client.renderer.tileentity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalBlock;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.tileentity.IChestLid;
-import net.minecraft.tileentity.TileEntityMerger;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.DoubleBlockCombiner;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import com.mojang.math.Vector3f;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
@@ -39,70 +39,70 @@ import java.util.Locale;
  */
 //Most of the other stuff is derived from ChestTileEntityRenderer
 @OnlyIn(Dist.CLIENT)
-public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & IChestLid> extends TileEntityRenderer<T> {
+public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBlockEntity> extends BlockEntityRenderer<T> {
 
-    public ModelRenderer base;
-    public ModelRenderer lid;
+    public ModelPart base;
+    public ModelPart lid;
 
-    public CasketTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
+    public CasketTileEntityRenderer(BlockEntityRenderDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
 
-        this.lid = new ModelRenderer(64, 64, 0, 0);
-        this.lid.setRotationPoint(0.0F, -6.0F, 6.0F);
+        this.lid = new ModelPart(64, 64, 0, 0);
+        this.lid.setPos(0.0F, -6.0F, 6.0F);
         this.lid.addBox(-8.0F, -8.0F, -13.0F, 16.0F, 10.0F, 14.0F, 0.0F, 0.0F, 0.0F);
-        this.lid.setTextureOffset(0, 46).addBox(-8.0F, -10.0F, -13.0F, 16.0F, 2.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.lid.setTextureOffset(2, 34).addBox(-7.99F, -10.0F, -12.0F, 0.0F, 2.0F, 14.0F, 0.0F, 0.0F, 0.0F);
-        this.lid.setTextureOffset(2, 36).addBox(7.99F, -10.0F, -12.0F, 0.0F, 2.0F, 14.0F, 0.0F, 0.0F, 0.0F);
-        this.base = new ModelRenderer(64, 64, 0, 0);
-        this.base.setRotationPoint(0.0F, -0.01F, 0.0F);
-        this.base.setTextureOffset(1, 28).addBox(-7.0F, -10.0F, -2.0F, 14.0F, 10.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-        this.base.setTextureOffset(0, 26).addBox(-7.0F, -10.0F, -6.0F, 1.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.base.setTextureOffset(40, 26).addBox(6.0F, -10.0F, -6.0F, 1.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.base.setTextureOffset(0, 56).addBox(-7.0F, -4.0F, -6.0F, 14.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+        this.lid.texOffs(0, 46).addBox(-8.0F, -10.0F, -13.0F, 16.0F, 2.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.lid.texOffs(2, 34).addBox(-7.99F, -10.0F, -12.0F, 0.0F, 2.0F, 14.0F, 0.0F, 0.0F, 0.0F);
+        this.lid.texOffs(2, 36).addBox(7.99F, -10.0F, -12.0F, 0.0F, 2.0F, 14.0F, 0.0F, 0.0F, 0.0F);
+        this.base = new ModelPart(64, 64, 0, 0);
+        this.base.setPos(0.0F, -0.01F, 0.0F);
+        this.base.texOffs(1, 28).addBox(-7.0F, -10.0F, -2.0F, 14.0F, 10.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+        this.base.texOffs(0, 26).addBox(-7.0F, -10.0F, -6.0F, 1.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+        this.base.texOffs(40, 26).addBox(6.0F, -10.0F, -6.0F, 1.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+        this.base.texOffs(0, 56).addBox(-7.0F, -4.0F, -6.0F, 14.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
     }
 
     @Override
-    public void render(T tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        World world = tileEntityIn.getWorld();
+    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        Level world = tileEntityIn.getLevel();
         boolean flag = world != null;
-        BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.keepsake_casket.get().getDefaultState();
+        BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.keepsake_casket.get().defaultBlockState();
         Block block = blockstate.getBlock();
         if (block instanceof KeepsakeCasketBlock) {
-            BlockLoggingEnum type = blockstate.get(BlockLoggingEnum.MULTILOGGED);
-            int damage = blockstate.get(KeepsakeCasketBlock.BREAKAGE);
+            BlockLoggingEnum type = blockstate.getValue(BlockLoggingEnum.MULTILOGGED);
+            int damage = blockstate.getValue(KeepsakeCasketBlock.BREAKAGE);
             boolean solid = type.getBlock() != Blocks.AIR && type.getFluid() == Fluids.EMPTY;
-            float facing = blockstate.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle();
+            float facing = blockstate.getValue(HorizontalDirectionalBlock.FACING).toYRot();
 
             if(solid) {
-                matrixStackIn.push();
+                matrixStackIn.pushPose();
                 matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-facing));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-facing));
                 matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
                 ResourceLocation BLOCK = TwilightForestMod.prefix("block/casket_" + type.getBlock().getRegistryName().getPath().toLowerCase(Locale.ROOT));
-                IBakedModel blockrender = Minecraft.getInstance().getModelManager().getModel(BLOCK);
-                BlockRendererDispatcher render = Minecraft.getInstance().getBlockRendererDispatcher();
-                render.getBlockModelRenderer().renderModel(world, blockrender, type.getBlock().getDefaultState(), tileEntityIn.getPos(), matrixStackIn, bufferIn.getBuffer(RenderType.getTranslucent()), false, world.rand, MathHelper.getPositionRandom(BlockPos.ZERO), OverlayTexture.NO_OVERLAY);
-                matrixStackIn.pop();
+                BakedModel blockrender = Minecraft.getInstance().getModelManager().getModel(BLOCK);
+                BlockRenderDispatcher render = Minecraft.getInstance().getBlockRenderer();
+                render.getModelRenderer().tesselateBlock(world, blockrender, type.getBlock().defaultBlockState(), tileEntityIn.getBlockPos(), matrixStackIn, bufferIn.getBuffer(RenderType.translucent()), false, world.random, Mth.getSeed(BlockPos.ZERO), OverlayTexture.NO_OVERLAY);
+                matrixStackIn.popPose();
             }
 
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             matrixStackIn.scale(-1, -1, -1);
             matrixStackIn.translate(-0.5D, 0.0D, -0.5D);
-            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-facing));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-facing));
 
-            TileEntityMerger.ICallbackWrapper<? extends KeepsakeCasketTileEntity> icallbackwrapper = TileEntityMerger.ICallback::func_225537_b_;
+            DoubleBlockCombiner.NeighborCombineResult<? extends KeepsakeCasketTileEntity> icallbackwrapper = DoubleBlockCombiner.Combiner::acceptNone;
             float f1 = icallbackwrapper.apply(KeepsakeCasketBlock.getLidRotationCallback(tileEntityIn)).get(partialTicks);
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;
 
             ResourceLocation CASKET = TwilightForestMod.getModelTexture("casket/keepsake_casket_" + damage + ".png");
-            this.renderModels(matrixStackIn, bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(CASKET)), this.lid, this.base, f1, combinedLightIn, combinedOverlayIn);
-            matrixStackIn.pop();
+            this.renderModels(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(CASKET)), this.lid, this.base, f1, combinedLightIn, combinedOverlayIn);
+            matrixStackIn.popPose();
         }
     }
 
-    private void renderModels(MatrixStack matrixStackIn, IVertexBuilder bufferIn, ModelRenderer lid, ModelRenderer base, float lidAngle, int combinedLightIn, int combinedOverlayIn) {
-        lid.rotateAngleX = -(lidAngle * ((float)Math.PI / 2F));
+    private void renderModels(PoseStack matrixStackIn, VertexConsumer bufferIn, ModelPart lid, ModelPart base, float lidAngle, int combinedLightIn, int combinedOverlayIn) {
+        lid.xRot = -(lidAngle * ((float)Math.PI / 2F));
         lid.render(matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
         base.render(matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }

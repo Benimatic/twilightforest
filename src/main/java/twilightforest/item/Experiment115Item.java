@@ -1,11 +1,17 @@
 package twilightforest.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.item.*;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.resources.ResourceLocation;
 import static twilightforest.TwilightForestMod.prefix;
+
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 
 public class Experiment115Item extends BlockItem {
 	public static final ResourceLocation THINK = prefix("think");
@@ -16,12 +22,12 @@ public class Experiment115Item extends BlockItem {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		PlayerEntity player = context.getPlayer();
-		if(!player.isSneaking()) {
-			ActionResultType actionresulttype = this.tryPlace(new BlockItemUseContext(context));
-			return !actionresulttype.isSuccessOrConsume() && this.isFood() ? this.onItemRightClick(context.getWorld(), context.getPlayer(), context.getHand()).getType() : actionresulttype;
+	public InteractionResult useOn(UseOnContext context) {
+		Player player = context.getPlayer();
+		if(!player.isShiftKeyDown()) {
+			InteractionResult actionresulttype = this.place(new BlockPlaceContext(context));
+			return !actionresulttype.consumesAction() && this.isEdible() ? this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult() : actionresulttype;
 		}
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 }

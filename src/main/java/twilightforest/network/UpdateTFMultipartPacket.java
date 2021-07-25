@@ -1,10 +1,10 @@
 package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.entity.TFPartEntity;
@@ -16,10 +16,10 @@ import java.util.function.Supplier;
 public class UpdateTFMultipartPacket {
 
 	private int id;
-	private PacketBuffer buffer;
+	private FriendlyByteBuf buffer;
 	private Entity entity;
 
-	public UpdateTFMultipartPacket(PacketBuffer buf) {
+	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
 		id = buf.readInt();
 		buffer = buf;
 	}
@@ -28,9 +28,9 @@ public class UpdateTFMultipartPacket {
 		this.entity = entity;
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		try {
-			buf.writeInt(entity.getEntityId());
+			buf.writeInt(entity.getId());
 			PartEntity<?>[] parts = entity.getParts();
 			// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
 			if (parts != null) {
@@ -38,10 +38,10 @@ public class UpdateTFMultipartPacket {
 					if (part instanceof TFPartEntity) {
 						TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
 						tfPart.writeData(buf);
-						boolean dirty = tfPart.getDataManager().isDirty();
+						boolean dirty = tfPart.getEntityData().isDirty();
 						buf.writeBoolean(dirty);
 						if (dirty)
-							EntityDataManager.writeEntries(tfPart.getDataManager().getDirty(), buf);
+							SynchedEntityData.pack(tfPart.getEntityData().packDirty(), buf);
 					}
 				}
 			}
@@ -56,10 +56,10 @@ public class UpdateTFMultipartPacket {
 				@Override
 				public void run() {
 					try {
-						World world = Minecraft.getInstance().world;
+						Level world = Minecraft.getInstance().level;
 						if (world == null)
 							return;
-						Entity ent = world.getEntityByID(message.id);
+						Entity ent = world.getEntity(message.id);
 						if (ent != null && ent.isMultipartEntity()) {
 							PartEntity<?>[] parts = ent.getParts();
 							if (parts == null)
@@ -69,9 +69,9 @@ public class UpdateTFMultipartPacket {
 									TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
 									tfPart.readData(message.buffer);
 									if (message.buffer.readBoolean()) {
-										List<EntityDataManager.DataEntry<?>> data = EntityDataManager.readEntries(message.buffer);
+										List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
 										if (data != null)
-											tfPart.getDataManager().setEntryValues(data);
+											tfPart.getEntityData().assignValues(data);
 									}
 								}
 							}

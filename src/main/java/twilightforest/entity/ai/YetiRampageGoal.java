@@ -1,13 +1,15 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.IceBombEntity;
 import twilightforest.entity.boss.AlphaYetiEntity;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class YetiRampageGoal extends Goal {
 
@@ -23,12 +25,12 @@ public class YetiRampageGoal extends Goal {
 		this.maxTantrumTimeOut = timeout;
 		this.tantrumDuration = duration;
 
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		if (this.yeti.getAttackTarget() != null && this.yeti.canRampage()) {
+	public boolean canUse() {
+		if (this.yeti.getTarget() != null && this.yeti.canRampage()) {
 			this.currentTimeOut--;
 		}
 
@@ -39,17 +41,17 @@ public class YetiRampageGoal extends Goal {
 	 * Execute a one shot task or start executing a continuous task
 	 */
 	@Override
-	public void startExecuting() {
+	public void start() {
 		this.currentDuration = this.tantrumDuration;
 		this.yeti.setRampaging(true);
-		this.yeti.playSound(TFSounds.ALPHAYETI_ROAR, 4F, 0.5F + yeti.getRNG().nextFloat() * 0.5F);
+		this.yeti.playSound(TFSounds.ALPHAYETI_ROAR, 4F, 0.5F + yeti.getRandom().nextFloat() * 0.5F);
 	}
 
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		return currentDuration > 0;
 	}
 
@@ -60,15 +62,15 @@ public class YetiRampageGoal extends Goal {
 	public void tick() {
 		this.currentDuration--;
 
-        if (this.yeti.getAttackTarget() != null) {
-			this.yeti.getLookController().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, this.yeti.getVerticalFaceSpeed());
+        if (this.yeti.getTarget() != null) {
+			this.yeti.getLookControl().setLookAt(this.yeti.getTarget(), 10.0F, this.yeti.getMaxHeadXRot());
 		}
 
 		if (this.yeti.isOnGround()) {
-            this.yeti.setMotion(0, 0.4, 0);
+            this.yeti.setDeltaMovement(0, 0.4, 0);
 		}
 
-		this.yeti.destroyBlocksInAABB(this.yeti.getBoundingBox().grow(1, 2, 1).offset(0, 2, 0));
+		this.yeti.destroyBlocksInAABB(this.yeti.getBoundingBox().inflate(1, 2, 1).move(0, 2, 0));
 
 		// regular falling blocks
 		if (this.currentDuration % 20 == 0) {
@@ -86,11 +88,11 @@ public class YetiRampageGoal extends Goal {
 		}
 
 		if (currentDuration % 10 == 0) {
-			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, yeti.world, yeti);
-			Vector3d vec = new Vector3d(0.5F + yeti.getRNG().nextFloat() * 0.5F, 0.5F + yeti.getRNG().nextFloat() * 0.3F, 0).rotateYaw(yeti.getRNG().nextFloat() * 360F);
-			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRNG().nextFloat() * 0.3F, 0);
-			yeti.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (yeti.getRNG().nextFloat() * 0.4F + 0.8F));
-			yeti.world.addEntity(ice);
+			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, yeti.level, yeti);
+			Vec3 vec = new Vec3(0.5F + yeti.getRandom().nextFloat() * 0.5F, 0.5F + yeti.getRandom().nextFloat() * 0.3F, 0).yRot(yeti.getRandom().nextFloat() * 360F);
+			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
+			yeti.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (yeti.getRandom().nextFloat() * 0.4F + 0.8F));
+			yeti.level.addFreshEntity(ice);
 		}
 	}
 
@@ -98,7 +100,7 @@ public class YetiRampageGoal extends Goal {
 	 * Resets the task
 	 */
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.currentTimeOut = this.maxTantrumTimeOut;
 		this.yeti.setRampaging(false);
 		this.yeti.setTired(true);

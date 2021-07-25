@@ -1,7 +1,7 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -9,18 +9,18 @@ import java.util.Random;
 public class KnightStones extends StructurePiece.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random random, int x, int y, int z, boolean edge) {
+	public void next(Random random, int x, int y, int z, boolean edge) {
 		if (!edge) {
-			this.blockstate = Blocks.AIR.getDefaultState();
+			this.next = Blocks.AIR.defaultBlockState();
 		} else {
 			float f = random.nextFloat();
 
 			if (f < 0.2F) {
-				this.blockstate = TFBlocks.underbrick_cracked.get().getDefaultState();
+				this.next = TFBlocks.underbrick_cracked.get().defaultBlockState();
 			} else if (f < 0.5F) {
-				this.blockstate = TFBlocks.underbrick_mossy.get().getDefaultState();
+				this.next = TFBlocks.underbrick_mossy.get().defaultBlockState();
 			} else {
-				this.blockstate = TFBlocks.underbrick.get().getDefaultState();
+				this.next = TFBlocks.underbrick.get().defaultBlockState();
 			}
 		}
 	}

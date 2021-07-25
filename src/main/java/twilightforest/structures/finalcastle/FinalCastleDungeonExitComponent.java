@@ -1,18 +1,18 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Component {
 
-	public FinalCastleDungeonExitComponent(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleDungeonExitComponent(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCDunEx, nbt);
 	}
 
@@ -32,7 +32,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -40,11 +40,11 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		// no need for additional rooms, we're along the outside anyways
 
 		// add stairway down
-		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX, parent.getBoundingBox().minZ);
+		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().x0, parent.getBoundingBox().z0);
 
-		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, 5, boundingBox.minX + 15, boundingBox.minY, boundingBox.minZ + 15, bestDir.rotate(Direction.SOUTH));
+		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, 5, boundingBox.x0 + 15, boundingBox.y0, boundingBox.z0 + 15, bestDir.rotate(Direction.SOUTH));
 		list.add(steps0);
-		steps0.buildComponent(this, list, rand);
+		steps0.addChildren(this, list, rand);
 
 		// another level!?
 		if (this.level == 1) {
@@ -55,23 +55,23 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
-		if (!super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos)) {
+		if (!super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos)) {
 			return false;
 		}
 
 		// door
-		final BlockState castleDoor = TFBlocks.castle_door_pink.get().getDefaultState();
+		final BlockState castleDoor = TFBlocks.castle_door_pink.get().defaultBlockState();
 
-		this.fillWithBlocks(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
-		this.fillWithBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
+		this.generateBox(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
+		this.generateBox(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
 
 		return true;
 	}
 
 	public Rotation findStairDirectionTowards(int x, int z) {
-		Vector3i center = StructureBoundingBoxUtils.getCenter(this.boundingBox);
+		Vec3i center = StructureBoundingBoxUtils.getCenter(this.boundingBox);
 		// difference
 		int dx = center.getX() - x;
 		int dz = center.getZ() - z;
@@ -88,11 +88,11 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 
 	@Override
 	protected BlockState getForceFieldColor(Random decoRNG) {
-		return TFBlocks.force_field_pink.get().getDefaultState();
+		return TFBlocks.force_field_pink.get().defaultBlockState();
 	}
 
 	@Override
 	protected BlockState getRuneColor(BlockState fieldColor) {
-		return TFBlocks.castle_rune_brick_pink.get().getDefaultState();
+		return TFBlocks.castle_rune_brick_pink.get().defaultBlockState();
 	}
 }

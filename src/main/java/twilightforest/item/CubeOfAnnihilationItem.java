@@ -1,20 +1,26 @@
 package twilightforest.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.entity.CubeOfAnnihilationEntity;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
+
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 
 public class CubeOfAnnihilationItem extends Item {
 
@@ -25,44 +31,44 @@ public class CubeOfAnnihilationItem extends Item {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, World world, Entity holder, int slot, boolean isSelected) {
-		if (!world.isRemote && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
+	public void inventoryTick(ItemStack stack, Level world, Entity holder, int slot, boolean isSelected) {
+		if (!world.isClientSide && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
 			stack.getTag().remove(THROWN_UUID_KEY);
 		}
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 
 		if (getThrownUuid(stack) != null)
-			return new ActionResult<>(ActionResultType.PASS, stack);
+			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			CubeOfAnnihilationEntity launchedCube = new CubeOfAnnihilationEntity(TFEntities.cube_of_annihilation, world, player);
-			world.addEntity(launchedCube);
+			world.addFreshEntity(launchedCube);
 			setThrownEntity(stack, launchedCube);
 		}
 
-		player.setActiveHand(hand);
-		return new ActionResult<>(ActionResultType.SUCCESS, stack);
+		player.startUsingItem(hand);
+		return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 	}
 
 	@Nullable
 	protected static UUID getThrownUuid(ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().hasUniqueId(THROWN_UUID_KEY)) {
-			return stack.getTag().getUniqueId(THROWN_UUID_KEY);
+		if (stack.hasTag() && stack.getTag().hasUUID(THROWN_UUID_KEY)) {
+			return stack.getTag().getUUID(THROWN_UUID_KEY);
 		}
 
 		return null;
 	}
 
 	@Nullable
-	private static CubeOfAnnihilationEntity getThrownEntity(World world, ItemStack stack) {
-		if (world instanceof ServerWorld) {
+	private static CubeOfAnnihilationEntity getThrownEntity(Level world, ItemStack stack) {
+		if (world instanceof ServerLevel) {
 			UUID id = getThrownUuid(stack);
 			if (id != null) {
-				Entity e = ((ServerWorld) world).getEntityByUuid(id);
+				Entity e = ((ServerLevel) world).getEntity(id);
 				if (e instanceof CubeOfAnnihilationEntity) {
 					return (CubeOfAnnihilationEntity) e;
 				}
@@ -74,9 +80,9 @@ public class CubeOfAnnihilationItem extends Item {
 
 	private static void setThrownEntity(ItemStack stack, CubeOfAnnihilationEntity cube) {
 		if (!stack.hasTag()) {
-			stack.setTag(new CompoundNBT());
+			stack.setTag(new CompoundTag());
 		}
-		stack.getTag().putUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
+		stack.getTag().putUUID(THROWN_UUID_KEY, cube.getUUID());
 	}
 
 	@Override
@@ -85,8 +91,8 @@ public class CubeOfAnnihilationItem extends Item {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnimation(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	@Override

@@ -1,17 +1,17 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -21,54 +21,54 @@ import java.util.Random;
 
 public class MazeRoomComponent extends TFStructureComponentOld {
 
-	public MazeRoomComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeRoomComponent(StructureManager manager, CompoundTag nbt) {
 		this(MinotaurMazePieces.TFMMR, nbt);
 	}
 
-	public MazeRoomComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public MazeRoomComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public MazeRoomComponent(IStructurePieceType type, TFFeature feature, int i, Random rand, int x, int y, int z) {
+	public MazeRoomComponent(StructurePieceType type, TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(type, feature, i);
-		this.setCoordBaseMode(Direction.Plane.HORIZONTAL.random(rand));
+		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
-		this.boundingBox = new MutableBoundingBox(x, y, z, x + 15, y + 4, z + 15);
+		this.boundingBox = new BoundingBox(x, y, z, x + 15, y + 4, z + 15);
 	}
 
 	/**
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		// NO-OP
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// floor border
-		fillWithBlocks(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.maze_stone_border.get().getDefaultState(), AIR, true);
-		fillWithBlocks(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.maze_stone_mosaic.get().getDefaultState(), AIR, true);
+		generateBox(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.maze_stone_border.get().defaultBlockState(), AIR, true);
+		generateBox(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.maze_stone_mosaic.get().defaultBlockState(), AIR, true);
 
 		// doorways
-		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
-			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
-			fillWithAir(world, sbb, 7, 1, 0, 8, 3, 0);
+		if (this.getBlock(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
+			generateBox(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);
+			generateAirBox(world, sbb, 7, 1, 0, 8, 3, 0);
 		}
 
-		if (this.getBlockStateFromPos(world, 7, 1, 15, sbb).getBlock() == Blocks.AIR) {
-			fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
-			fillWithAir(world, sbb, 7, 1, 15, 8, 3, 15);
+		if (this.getBlock(world, 7, 1, 15, sbb).getBlock() == Blocks.AIR) {
+			generateBox(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);
+			generateAirBox(world, sbb, 7, 1, 15, 8, 3, 15);
 		}
 
-		if (this.getBlockStateFromPos(world, 0, 1, 7, sbb).getBlock() == Blocks.AIR) {
-			fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
-			fillWithAir(world, sbb, 0, 1, 7, 0, 3, 8);
+		if (this.getBlock(world, 0, 1, 7, sbb).getBlock() == Blocks.AIR) {
+			generateBox(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);
+			generateAirBox(world, sbb, 0, 1, 7, 0, 3, 8);
 		}
 
-		if (this.getBlockStateFromPos(world, 15, 1, 7, sbb).getBlock() == Blocks.AIR) {
-			fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
-			fillWithAir(world, sbb, 15, 1, 7, 15, 3, 8);
+		if (this.getBlock(world, 15, 1, 7, sbb).getBlock() == Blocks.AIR) {
+			generateBox(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);
+			generateAirBox(world, sbb, 15, 1, 7, 15, 3, 8);
 		}
 		return true;
 	}

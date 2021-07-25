@@ -1,7 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import twilightforest.client.model.entity.TFGhastModel;
 import twilightforest.entity.CarminiteGhastguardEntity;
 
@@ -12,17 +12,17 @@ public class CarminiteGhastRenderer<T extends CarminiteGhastguardEntity, M exten
 
 	private float ghastScale = 8.0F;
 
-	public CarminiteGhastRenderer(EntityRendererManager renderManager, M modelTFGhast, float f) {
+	public CarminiteGhastRenderer(EntityRenderDispatcher renderManager, M modelTFGhast, float f) {
 		super(renderManager, modelTFGhast, f);
 	}
 
-	public CarminiteGhastRenderer(EntityRendererManager renderManager, M modelTFGhast, float f, float scale) {
+	public CarminiteGhastRenderer(EntityRenderDispatcher renderManager, M modelTFGhast, float f, float scale) {
 		super(renderManager, modelTFGhast, f);
 		this.ghastScale = scale;
 	}
 
 	@Override
-	protected void preRenderCallback(T ghast, MatrixStack stack, float partialTicks) {
+	protected void scale(T ghast, PoseStack stack, float partialTicks) {
 		int attackTimer = ghast.getAttackTimer();
 		int prevAttackTimer = ghast.getPrevAttackTimer();
 		float scaleVariable = (prevAttackTimer + (attackTimer - prevAttackTimer) * partialTicks) / 20.0F;

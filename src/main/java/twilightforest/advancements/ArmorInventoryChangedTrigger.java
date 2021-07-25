@@ -3,15 +3,15 @@ package twilightforest.advancements;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInventoryChangedTrigger.Instance> {
+import net.minecraft.advancements.CriterionTrigger.Listener;
+
+public class ArmorInventoryChangedTrigger implements CriterionTrigger<ArmorInventoryChangedTrigger.Instance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("armor_changed");
 	private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
@@ -30,13 +32,13 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
 	}
 
 	@Override
-	public void addListener(PlayerAdvancements playerAdvancements, Listener<Instance> listener) {
+	public void addPlayerListener(PlayerAdvancements playerAdvancements, Listener<Instance> listener) {
 		Listeners listeners = this.listeners.computeIfAbsent(playerAdvancements, Listeners::new);
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeListener(PlayerAdvancements playerAdvancements, Listener<Instance> listener) {
+	public void removePlayerListener(PlayerAdvancements playerAdvancements, Listener<Instance> listener) {
 		Listeners listeners = this.listeners.get(playerAdvancements);
 		if (listeners != null) {
 			listeners.remove(listener);
@@ -47,42 +49,42 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
 	}
 
 	@Override
-	public void removeAllListeners(PlayerAdvancements playerAdvancements) {
+	public void removePlayerListeners(PlayerAdvancements playerAdvancements) {
 		this.listeners.remove(playerAdvancements);
 	}
 
 	@Override
-	public Instance deserialize(JsonObject json, ConditionArrayParser condition) {
-		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
-		ItemPredicate from = ItemPredicate.deserialize(json.get("from"));
-		ItemPredicate to = ItemPredicate.deserialize(json.get("to"));
+	public Instance createInstance(JsonObject json, DeserializationContext condition) {
+		EntityPredicate.Composite player = EntityPredicate.Composite.fromJson(json, "player", condition);
+		ItemPredicate from = ItemPredicate.fromJson(json.get("from"));
+		ItemPredicate to = ItemPredicate.fromJson(json.get("to"));
 		return new Instance(player, from, to);
 	}
 
-	public void trigger(ServerPlayerEntity player, ItemStack from, ItemStack to) {
+	public void trigger(ServerPlayer player, ItemStack from, ItemStack to) {
 		Listeners listeners = this.listeners.get(player.getAdvancements());
 		if (listeners != null) {
 			listeners.trigger(from, to);
 		}
 	}
 
-	public static class Instance extends CriterionInstance {
+	public static class Instance extends AbstractCriterionTriggerInstance {
 
 		private final ItemPredicate from;
 		private final ItemPredicate to;
 
-		public Instance(EntityPredicate.AndPredicate player, ItemPredicate from, ItemPredicate to) {
+		public Instance(EntityPredicate.Composite player, ItemPredicate from, ItemPredicate to) {
 			super(ArmorInventoryChangedTrigger.ID, player);
 			this.from = from;
 			this.to = to;
 		}
 
 		public boolean test(ItemStack from, ItemStack to) {
-			return this.from.test(from) && this.to.test(to);
+			return this.from.matches(from) && this.to.matches(to);
 		}
 
 		@Override
-		public ResourceLocation getId() {
+		public ResourceLocation getCriterion() {
 			return ArmorInventoryChangedTrigger.ID;
 		}
 	}
@@ -113,13 +115,13 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
 			List<Listener<Instance>> list = new ArrayList<>();
 
 			for (Listener<Instance> listener : this.listeners) {
-				if (listener.getCriterionInstance().test(from, to)) {
+				if (listener.getTriggerInstance().test(from, to)) {
 					list.add(listener);
 				}
 			}
 
 			for (Listener<Instance> listener : list) {
-				listener.grantCriterion(this.playerAdvancements);
+				listener.run(this.playerAdvancements);
 			}
 		}
 	}

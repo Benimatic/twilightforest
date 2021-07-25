@@ -1,50 +1,58 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
 
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+
 public class UnstableIceCoreEntity extends IceMobEntity {
 
 	private static final float EXPLOSION_RADIUS = 1;
 
-	public UnstableIceCoreEntity(EntityType<? extends UnstableIceCoreEntity> type, World world) {
+	public UnstableIceCoreEntity(EntityType<? extends UnstableIceCoreEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, false));
-		this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.add(Attributes.ATTACK_DAMAGE, 3.0D);
 	}
 
 	@Override
@@ -64,18 +72,18 @@ public class UnstableIceCoreEntity extends IceMobEntity {
 
 	@Override
 	public float getEyeHeight(Pose pose) {
-		return this.getHeight() * 0.6F;
+		return this.getBbHeight() * 0.6F;
 	}
 
 	@Override
-	protected void onDeathUpdate() {
+	protected void tickDeath() {
 		++this.deathTime;
 
 		if (this.deathTime == 60) // delay until 3 seconds
 		{
-			if (!world.isRemote) {
-				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(world, this);
-				this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), UnstableIceCoreEntity.EXPLOSION_RADIUS, mobGriefing ? Explosion.Mode.BREAK : Explosion.Mode.DESTROY);
+			if (!level.isClientSide) {
+				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(level, this);
+				this.level.explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCoreEntity.EXPLOSION_RADIUS, mobGriefing ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.DESTROY);
 
 				if (mobGriefing) {
 					this.transformBlocks();
@@ -83,7 +91,7 @@ public class UnstableIceCoreEntity extends IceMobEntity {
 			}
 			// Fake to trigger super's behaviour
 			deathTime = 19;
-			super.onDeathUpdate();
+			super.tickDeath();
 			deathTime = 60;
 		}
 	}
@@ -91,17 +99,17 @@ public class UnstableIceCoreEntity extends IceMobEntity {
 	private void transformBlocks() {
 		int range = 4;
 
-		BlockPos pos = new BlockPos(this.getPosition());
+		BlockPos pos = new BlockPos(this.blockPosition());
 
 		for (int dx = -range; dx <= range; dx++) {
 			for (int dy = -range; dy <= range; dy++) {
 				for (int dz = -range; dz <= range; dz++) {
 					double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-					float randRange = range + (rand.nextFloat() - rand.nextFloat()) * 2F;
+					float randRange = range + (random.nextFloat() - random.nextFloat()) * 2F;
 
 					if (distance < randRange) {
-						this.transformBlock(pos.add(dx, dy, dz));
+						this.transformBlock(pos.offset(dx, dy, dz));
 					}
 				}
 			}
@@ -109,32 +117,32 @@ public class UnstableIceCoreEntity extends IceMobEntity {
 	}
 
 	private void transformBlock(BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0) {
+		if (block.getExplosionResistance() < 8F && state.getDestroySpeed(level, pos) >= 0) {
 			// todo improve for blocks where state is known? or perhaps if a propertycolor is present
-			int blockColor = state.getMaterialColor(world, pos).colorValue;
+			int blockColor = state.getMapColor(level, pos).col;
 
 			// do appropriate transformation
 			if (this.shouldTransformGlass(state, pos)) {
-				this.world.setBlockState(pos, ColorUtil.STAINED_GLASS.getColor(getClosestDyeColor(blockColor)));
+				this.level.setBlockAndUpdate(pos, ColorUtil.STAINED_GLASS.getColor(getClosestDyeColor(blockColor)));
 			} else if (this.shouldTransformClay(state, pos)) {
-				this.world.setBlockState(pos, ColorUtil.TERRACOTTA.getColor(getClosestDyeColor(blockColor)));
+				this.level.setBlockAndUpdate(pos, ColorUtil.TERRACOTTA.getColor(getClosestDyeColor(blockColor)));
 			}
 		}
 	}
 
 	private boolean shouldTransformClay(BlockState state, BlockPos pos) {
-		return state.isNormalCube(this.world, pos);
+		return state.isRedstoneConductor(this.level, pos);
 	}
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
-		return state.getBlock() != Blocks.AIR && isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getMaterial() == Material.LEAVES || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.aurora_block.get());
+		return state.getBlock() != Blocks.AIR && isBlockNormalBounds(state, pos) && (!state.getMaterial().isSolidBlocking() || state.getMaterial() == Material.LEAVES || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.aurora_block.get());
 	}
 
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {
-		return Block.isOpaque(state.getShape(world, pos));
+		return Block.isShapeFullBlock(state.getShape(level, pos));
 	}
 
 	private static DyeColor getClosestDyeColor(int blockColor) {
@@ -147,7 +155,7 @@ public class UnstableIceCoreEntity extends IceMobEntity {
 		int bestDifference = 1024;
 
 		for (DyeColor color : DyeColor.values()) {
-			float[] iColor = color.getColorComponentValues();
+			float[] iColor = color.getTextureDiffuseColors();
 
 			int iRed = (int) (iColor[0] * 255F);
 			int iGreen = (int) (iColor[1] * 255F);
@@ -165,7 +173,7 @@ public class UnstableIceCoreEntity extends IceMobEntity {
 	}
 
 	@Override
-	public int getMaxSpawnedInChunk() {
+	public int getMaxSpawnClusterSize() {
 		return 8;
 	}
 }

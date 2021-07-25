@@ -1,12 +1,12 @@
 package twilightforest.network;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.client.particle.data.LeafParticleData;
 
@@ -16,19 +16,19 @@ import java.util.function.Supplier;
 public class SpawnFallenLeafFromPacket {
 
 	private final BlockPos pos;
-	private final Vector3d motion;
+	private final Vec3 motion;
 
-	public SpawnFallenLeafFromPacket(PacketBuffer buf) {
+	public SpawnFallenLeafFromPacket(FriendlyByteBuf buf) {
 		pos = buf.readBlockPos();
-		motion = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+		motion = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}
 
-	public SpawnFallenLeafFromPacket(BlockPos pos, Vector3d motion) {
+	public SpawnFallenLeafFromPacket(BlockPos pos, Vec3 motion) {
 		this.pos = pos;
 		this.motion = motion;
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
 		buf.writeDouble(motion.x);
 		buf.writeDouble(motion.y);
@@ -41,19 +41,19 @@ public class SpawnFallenLeafFromPacket {
 				@Override
 				public void run() {
 					Random rand = new Random();
-					World world = Minecraft.getInstance().world;
-					int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.getDefaultState(), world, message.pos, 0);
-					int r = MathHelper.clamp(((color >> 16) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
-					int g = MathHelper.clamp(((color >> 8) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
-					int b = MathHelper.clamp((color & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+					Level world = Minecraft.getInstance().level;
+					int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), world, message.pos, 0);
+					int r = Mth.clamp(((color >> 16) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+					int g = Mth.clamp(((color >> 8) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+					int b = Mth.clamp((color & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
 					world.addParticle(new LeafParticleData(r, g, b),
-							message.pos.getX() + world.rand.nextFloat(),
+							message.pos.getX() + world.random.nextFloat(),
 							message.pos.getY(),
-							message.pos.getZ() + world.rand.nextFloat(),
+							message.pos.getZ() + world.random.nextFloat(),
 
-							(world.rand.nextFloat() * -0.5F) * message.motion.getX(),
-							world.rand.nextFloat() * 0.5F + 0.25F,
-							(world.rand.nextFloat() * -0.5F) * message.motion.getZ()
+							(world.random.nextFloat() * -0.5F) * message.motion.x(),
+							world.random.nextFloat() * 0.5F + 0.25F,
+							(world.random.nextFloat() * -0.5F) * message.motion.z()
 					);
 				}
 			});

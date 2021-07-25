@@ -1,11 +1,11 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.PinchBeetleEntity;
@@ -15,69 +15,69 @@ import twilightforest.entity.PinchBeetleEntity;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class PinchBeetleModel extends SegmentedModel<PinchBeetleEntity> {
-    public ModelRenderer Head;
-    public ModelRenderer body;
-    public ModelRenderer rightLeg1;
-    public ModelRenderer rightLeg2;
-    public ModelRenderer rightLeg3;
-    public ModelRenderer leftLeg1;
-    public ModelRenderer leftLeg2;
-    public ModelRenderer leftLeg3;
-    public ModelRenderer rightPincer;
-    public ModelRenderer leftPincer;
-    public ModelRenderer rightAntenna;
-    public ModelRenderer leftAntenna;
+public class PinchBeetleModel extends ListModel<PinchBeetleEntity> {
+    public ModelPart Head;
+    public ModelPart body;
+    public ModelPart rightLeg1;
+    public ModelPart rightLeg2;
+    public ModelPart rightLeg3;
+    public ModelPart leftLeg1;
+    public ModelPart leftLeg2;
+    public ModelPart leftLeg3;
+    public ModelPart rightPincer;
+    public ModelPart leftPincer;
+    public ModelPart rightAntenna;
+    public ModelPart leftAntenna;
 
     public PinchBeetleModel() {
-        this.textureWidth = 64;
-        this.textureHeight = 64;
-        this.leftLeg2 = new ModelRenderer(this, 0, 0);
-        this.leftLeg2.setRotationPoint(2.0F, 21.0F, 4.0F);
-        this.leftLeg2.setTextureOffset(40, 46).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.texWidth = 64;
+        this.texHeight = 64;
+        this.leftLeg2 = new ModelPart(this, 0, 0);
+        this.leftLeg2.setPos(2.0F, 21.0F, 4.0F);
+        this.leftLeg2.texOffs(40, 46).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(leftLeg2, 0.0F, -0.20943951023931953F, 0.17453292519943295F);
-        this.leftAntenna = new ModelRenderer(this, 0, 0);
-        this.leftAntenna.setRotationPoint(1.0F, -3.0F, -6.0F);
-        this.leftAntenna.setTextureOffset(52, 0).addBox(0.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F, 0.0F, 0.0F, 0.0F);
+        this.leftAntenna = new ModelPart(this, 0, 0);
+        this.leftAntenna.setPos(1.0F, -3.0F, -6.0F);
+        this.leftAntenna.texOffs(52, 0).addBox(0.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(leftAntenna, -0.4363323129985824F, -0.4363323129985824F, 0.0F);
-        this.rightLeg3 = new ModelRenderer(this, 0, 0);
-        this.rightLeg3.setRotationPoint(-2.0F, 21.0F, 2.0F);
-        this.rightLeg3.setTextureOffset(40, 36).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.rightLeg3 = new ModelPart(this, 0, 0);
+        this.rightLeg3.setPos(-2.0F, 21.0F, 2.0F);
+        this.rightLeg3.texOffs(40, 36).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(rightLeg3, 0.0F, -0.20943951023931953F, -0.17453292519943295F);
-        this.rightLeg2 = new ModelRenderer(this, 0, 0);
-        this.rightLeg2.setRotationPoint(-2.0F, 21.0F, 4.0F);
-        this.rightLeg2.setTextureOffset(40, 32).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.rightLeg2 = new ModelPart(this, 0, 0);
+        this.rightLeg2.setPos(-2.0F, 21.0F, 4.0F);
+        this.rightLeg2.texOffs(40, 32).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(rightLeg2, 0.0F, 0.20943951023931953F, -0.17453292519943295F);
-        this.rightLeg1 = new ModelRenderer(this, 0, 0);
-        this.rightLeg1.setRotationPoint(-2.0F, 21.0F, 6.0F);
-        this.rightLeg1.setTextureOffset(40, 28).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.rightLeg1 = new ModelPart(this, 0, 0);
+        this.rightLeg1.setPos(-2.0F, 21.0F, 6.0F);
+        this.rightLeg1.texOffs(40, 28).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(rightLeg1, 0.0F, 0.6108652381980153F, -0.17453292519943295F);
-        this.leftPincer = new ModelRenderer(this, 0, 0);
-        this.leftPincer.setRotationPoint(4.0F, 2.0F, -4.0F);
-        this.leftPincer.setTextureOffset(16, 14).addBox(0.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F, 0.0F, 0.0F, 0.0F);
+        this.leftPincer = new ModelPart(this, 0, 0);
+        this.leftPincer.setPos(4.0F, 2.0F, -4.0F);
+        this.leftPincer.texOffs(16, 14).addBox(0.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(leftPincer, 0.08726646259971647F, 0.6108652381980153F, 0.0F);
-        this.leftLeg1 = new ModelRenderer(this, 0, 0);
-        this.leftLeg1.setRotationPoint(2.0F, 21.0F, 6.0F);
-        this.leftLeg1.setTextureOffset(40, 42).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.leftLeg1 = new ModelPart(this, 0, 0);
+        this.leftLeg1.setPos(2.0F, 21.0F, 6.0F);
+        this.leftLeg1.texOffs(40, 42).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(leftLeg1, 0.0F, -0.6108652381980153F, 0.17453292519943295F);
-        this.Head = new ModelRenderer(this, 0, 0);
-        this.Head.setRotationPoint(0.0F, 19.0F, 0.0F);
+        this.Head = new ModelPart(this, 0, 0);
+        this.Head.setPos(0.0F, 19.0F, 0.0F);
         this.Head.addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.body = new ModelRenderer(this, 0, 0);
-        this.body.setRotationPoint(0.0F, 19.0F, 8.0F);
-        this.body.setTextureOffset(0, 28).addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 7.0F, 0.0F, 0.0F, 0.0F);
+        this.body = new ModelPart(this, 0, 0);
+        this.body.setPos(0.0F, 19.0F, 8.0F);
+        this.body.texOffs(0, 28).addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 7.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(body, 1.5707963267948966F, 0.0F, 0.0F);
-        this.leftLeg3 = new ModelRenderer(this, 0, 0);
-        this.leftLeg3.setRotationPoint(2.0F, 21.0F, 2.0F);
-        this.leftLeg3.setTextureOffset(40, 50).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.leftLeg3 = new ModelPart(this, 0, 0);
+        this.leftLeg3.setPos(2.0F, 21.0F, 2.0F);
+        this.leftLeg3.texOffs(40, 50).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(leftLeg3, 0.0F, 0.20943951023931953F, 0.17453292519943295F);
-        this.rightPincer = new ModelRenderer(this, 0, 0);
-        this.rightPincer.setRotationPoint(-4.0F, 2.0F, -4.0F);
-        this.rightPincer.setTextureOffset(16, 0).addBox(-12.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F, 0.0F, 0.0F, 0.0F);
+        this.rightPincer = new ModelPart(this, 0, 0);
+        this.rightPincer.setPos(-4.0F, 2.0F, -4.0F);
+        this.rightPincer.texOffs(16, 0).addBox(-12.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(rightPincer, 0.08726646259971647F, -0.6108652381980153F, 0.0F);
-        this.rightAntenna = new ModelRenderer(this, 0, 0);
-        this.rightAntenna.setRotationPoint(-1.0F, -3.0F, -6.0F);
-        this.rightAntenna.setTextureOffset(48, 0).addBox(-1.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F, 0.0F, 0.0F, 0.0F);
+        this.rightAntenna = new ModelPart(this, 0, 0);
+        this.rightAntenna.setPos(-1.0F, -3.0F, -6.0F);
+        this.rightAntenna.texOffs(48, 0).addBox(-1.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(rightAntenna, -0.4363323129985824F, 0.4363323129985824F, 0.0F);
         this.Head.addChild(this.leftAntenna);
         this.Head.addChild(this.leftPincer);
@@ -86,7 +86,7 @@ public class PinchBeetleModel extends SegmentedModel<PinchBeetleEntity> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(
                 Head,
                 body,
@@ -100,77 +100,77 @@ public class PinchBeetleModel extends SegmentedModel<PinchBeetleEntity> {
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if(this.isSitting) matrixStackIn.translate(0, -0.15F, 0);
-        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if(this.riding) matrixStackIn.translate(0, -0.15F, 0);
+        super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
     @Override
-    public void setRotationAngles(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.Head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
-        this.Head.rotateAngleX = headPitch / (180F / (float) Math.PI);
+    public void setupAnim(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.Head.yRot = netHeadYaw / (180F / (float) Math.PI);
+        this.Head.xRot = headPitch / (180F / (float) Math.PI);
 
         float legZ = ((float) Math.PI / 11F);
-        this.leftLeg1.rotateAngleZ = legZ;
-        this.rightLeg1.rotateAngleZ = -legZ;
-        this.leftLeg2.rotateAngleZ = legZ * 0.74F;
-        this.rightLeg2.rotateAngleZ = -legZ * 0.74F;
-        this.leftLeg3.rotateAngleZ = legZ;
-        this.rightLeg3.rotateAngleZ = -legZ;
+        this.leftLeg1.zRot = legZ;
+        this.rightLeg1.zRot = -legZ;
+        this.leftLeg2.zRot = legZ * 0.74F;
+        this.rightLeg2.zRot = -legZ * 0.74F;
+        this.leftLeg3.zRot = legZ;
+        this.rightLeg3.zRot = -legZ;
 
         float var9 = -0.0F;
         float var10 = 0.3926991F;
-        this.leftLeg1.rotateAngleY = -var10 * 2.0F + var9;
-        this.rightLeg1.rotateAngleY = var10 * 2.0F - var9;
-        this.leftLeg2.rotateAngleY = var10 + var9;
-        this.rightLeg2.rotateAngleY = -var10 - var9;
-        this.leftLeg3.rotateAngleY = var10 * 2.0F + var9;
-        this.rightLeg3.rotateAngleY = -var10 * 2.0F - var9;
+        this.leftLeg1.yRot = -var10 * 2.0F + var9;
+        this.rightLeg1.yRot = var10 * 2.0F - var9;
+        this.leftLeg2.yRot = var10 + var9;
+        this.rightLeg2.yRot = -var10 - var9;
+        this.leftLeg3.yRot = var10 * 2.0F + var9;
+        this.rightLeg3.yRot = -var10 * 2.0F - var9;
 
-        float var11 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
-        float var12 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
-        float var14 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
+        float var11 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
+        float var12 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
+        float var14 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 
-        float var15 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
-        float var16 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
-        float var18 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
+        float var15 = Math.abs(Mth.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
+        float var16 = Math.abs(Mth.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
+        float var18 = Math.abs(Mth.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 
-        this.leftLeg1.rotateAngleY += var11;
-        this.rightLeg1.rotateAngleY += -var11;
-        this.leftLeg2.rotateAngleY += var12;
-        this.rightLeg2.rotateAngleY += -var12;
-        this.leftLeg3.rotateAngleY += var14;
-        this.rightLeg3.rotateAngleY += -var14;
+        this.leftLeg1.yRot += var11;
+        this.rightLeg1.yRot += -var11;
+        this.leftLeg2.yRot += var12;
+        this.rightLeg2.yRot += -var12;
+        this.leftLeg3.yRot += var14;
+        this.rightLeg3.yRot += -var14;
 
-        this.leftLeg1.rotateAngleZ += var15;
-        this.rightLeg1.rotateAngleZ += -var15;
+        this.leftLeg1.zRot += var15;
+        this.rightLeg1.zRot += -var15;
 
-        this.leftLeg2.rotateAngleZ += var16;
-        this.rightLeg2.rotateAngleZ += -var16;
+        this.leftLeg2.zRot += var16;
+        this.rightLeg2.zRot += -var16;
 
-        this.leftLeg3.rotateAngleZ += var18;
-        this.rightLeg3.rotateAngleZ += -var18;
+        this.leftLeg3.zRot += var18;
+        this.rightLeg3.zRot += -var18;
     }
 
     @Override
-    public void setLivingAnimations(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-        if (entity.isBeingRidden()) {
+    public void prepareMobModel(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+        if (entity.isVehicle()) {
             // open jaws
-            this.rightPincer.rotateAngleY = -0.3490658503988659F;
-            this.leftPincer.rotateAngleY = 0.3490658503988659F;
+            this.rightPincer.yRot = -0.3490658503988659F;
+            this.leftPincer.yRot = 0.3490658503988659F;
         } else {
             // close jaws
-            this.rightPincer.rotateAngleY = -0.7853981633974483F;
-            this.leftPincer.rotateAngleY = 0.7853981633974483F;
+            this.rightPincer.yRot = -0.7853981633974483F;
+            this.leftPincer.yRot = 0.7853981633974483F;
         }
     }
 
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
+        modelRenderer.xRot = x;
+        modelRenderer.yRot = y;
+        modelRenderer.zRot = z;
     }
 }

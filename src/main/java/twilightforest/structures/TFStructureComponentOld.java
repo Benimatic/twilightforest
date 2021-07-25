@@ -1,27 +1,27 @@
 package twilightforest.structures;
 
 import net.minecraft.block.*;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.ChestType;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
-import net.minecraft.tileentity.SignTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFTreasure;
@@ -33,17 +33,25 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.TripWireHookBlock;
+import net.minecraft.world.level.block.state.BlockState;
+
 @Deprecated
 public abstract class TFStructureComponentOld extends TFStructureComponent {
 
-	protected static final BlockState AIR = Blocks.AIR.getDefaultState();
+	protected static final BlockState AIR = Blocks.AIR.defaultBlockState();
 	private static final StrongholdStones strongholdStones = new StrongholdStones();
 
-	public TFStructureComponentOld(IStructurePieceType piece, CompoundNBT nbt) {
+	public TFStructureComponentOld(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public TFStructureComponentOld(IStructurePieceType type, TFFeature feature, int i) {
+	public TFStructureComponentOld(StructurePieceType type, TFFeature feature, int i) {
 		super(type, i);
 		this.feature = feature;
 	}
@@ -55,8 +63,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	//Let's not use vanilla's weird rotation+mirror thing...
 	@Override
-	public void setCoordBaseMode(@Nullable Direction facing) {
-		this.coordBaseMode = facing;
+	public void setOrientation(@Nullable Direction facing) {
+		this.orientation = facing;
 		this.mirror = Mirror.NONE;
 
 		if (facing == null) {
@@ -81,68 +89,68 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Fixed a bug with direction 1 and -z values, but I'm not sure if it'll break other things
 	 */
-	public static MutableBoundingBox getComponentToAddBoundingBox2(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Direction dir) {
+	public static BoundingBox getComponentToAddBoundingBox2(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Direction dir) {
 		switch (dir) {
 
 			case SOUTH: // '\0'
 			default:
-				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+				return new BoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
 			case WEST: // '\001'
-				return new MutableBoundingBox(x - maxZ - minZ, y + minY, z + minX, x - minZ, y + maxY + minY, z + maxX + minX);
+				return new BoundingBox(x - maxZ - minZ, y + minY, z + minX, x - minZ, y + maxY + minY, z + maxX + minX);
 
 			case NORTH: // '\002'
-				return new MutableBoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
+				return new BoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
 
 			case EAST: // '\003'
-				return new MutableBoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z - minX);
+				return new BoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z - minX);
 		}
 	}
 
 	// [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
-	protected MobSpawnerTileEntity setSpawner(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, EntityType<?> monsterID) {
-		MobSpawnerTileEntity tileEntitySpawner = null;
+	protected SpawnerBlockEntity setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID) {
+		SpawnerBlockEntity tileEntitySpawner = null;
 
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
-			world.setBlockState(pos, Blocks.SPAWNER.getDefaultState(), 2);
-			tileEntitySpawner = (MobSpawnerTileEntity) world.getTileEntity(pos);
+		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
+			world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 2);
+			tileEntitySpawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
 			if (tileEntitySpawner != null) {
-				tileEntitySpawner.getSpawnerBaseLogic().setEntityType(monsterID);
+				tileEntitySpawner.getSpawner().setEntityId(monsterID);
 			}
 		}
 
 		return tileEntitySpawner;
 	}
 
-	protected void surroundBlockCardinal(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
-		setBlockState(world, block, x, y, z - 1, sbb);
-		setBlockState(world, block, x, y, z + 1, sbb);
-		setBlockState(world, block, x - 1, y, z, sbb);
-		setBlockState(world, block, x + 1, y, z, sbb);
+	protected void surroundBlockCardinal(WorldGenLevel world, BlockState block, int x, int y, int z, BoundingBox sbb) {
+		placeBlock(world, block, x, y, z - 1, sbb);
+		placeBlock(world, block, x, y, z + 1, sbb);
+		placeBlock(world, block, x - 1, y, z, sbb);
+		placeBlock(world, block, x + 1, y, z, sbb);
 	}
 
-	protected void surroundBlockCardinalRotated(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
-		setBlockState(world, block.with(StairsBlock.FACING, Direction.NORTH), x, y, z - 1, sbb);
-		setBlockState(world, block.with(StairsBlock.FACING, Direction.SOUTH), x, y, z + 1, sbb);
-		setBlockState(world, block.with(StairsBlock.FACING, Direction.WEST), x - 1, y, z, sbb);
-		setBlockState(world, block.with(StairsBlock.FACING, Direction.EAST), x + 1, y, z, sbb);
+	protected void surroundBlockCardinalRotated(WorldGenLevel world, BlockState block, int x, int y, int z, BoundingBox sbb) {
+		placeBlock(world, block.setValue(StairBlock.FACING, Direction.NORTH), x, y, z - 1, sbb);
+		placeBlock(world, block.setValue(StairBlock.FACING, Direction.SOUTH), x, y, z + 1, sbb);
+		placeBlock(world, block.setValue(StairBlock.FACING, Direction.WEST), x - 1, y, z, sbb);
+		placeBlock(world, block.setValue(StairBlock.FACING, Direction.EAST), x + 1, y, z, sbb);
 	}
 
-	protected void surroundBlockCorners(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
-		setBlockState(world, block, x - 1, y, z - 1, sbb);
-		setBlockState(world, block, x - 1, y, z + 1, sbb);
-		setBlockState(world, block, x + 1, y, z - 1, sbb);
-		setBlockState(world, block, x + 1, y, z + 1, sbb);
+	protected void surroundBlockCorners(WorldGenLevel world, BlockState block, int x, int y, int z, BoundingBox sbb) {
+		placeBlock(world, block, x - 1, y, z - 1, sbb);
+		placeBlock(world, block, x - 1, y, z + 1, sbb);
+		placeBlock(world, block, x + 1, y, z - 1, sbb);
+		placeBlock(world, block, x + 1, y, z + 1, sbb);
 	}
 
-	protected MobSpawnerTileEntity setSpawnerRotated(ISeedReader world, int x, int y, int z, Rotation rotation, EntityType<?> monsterID, MutableBoundingBox sbb) {
+	protected SpawnerBlockEntity setSpawnerRotated(WorldGenLevel world, int x, int y, int z, Rotation rotation, EntityType<?> monsterID, BoundingBox sbb) {
 		Direction oldBase = fakeBaseMode(rotation);
-		MobSpawnerTileEntity ret = setSpawner(world, x, y, z, sbb, monsterID);
-		setCoordBaseMode(oldBase);
+		SpawnerBlockEntity ret = setSpawner(world, x, y, z, sbb, monsterID);
+		setOrientation(oldBase);
 		return ret;
 	}
 
@@ -151,7 +159,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureAtCurrentPosition(ISeedReader world, int x, int y, int z, TFTreasure treasureType, MutableBoundingBox sbb) {
+	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFTreasure treasureType, BoundingBox sbb) {
 		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
 	}
 
@@ -160,13 +168,13 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureAtCurrentPosition(ISeedReader world, int x, int y, int z, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFTreasure treasureType, boolean trapped, BoundingBox sbb) {
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, getCoordBaseMode(), trapped);
+		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
+			treasureType.generateChest(world, pos, getOrientation(), trapped);
 		}
 	}
 
@@ -175,7 +183,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, MutableBoundingBox sbb) {
+	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, BoundingBox sbb) {
 		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
 	}
 
@@ -184,42 +192,42 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, boolean trapped, BoundingBox sbb) {
 		if(facing == null) {
 			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
 		}
 
 		int dx = getXWithOffsetRotated(x, z, rotation);
-		int dy = getYWithOffset(y);
+		int dy = getWorldY(y);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
+		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
 			treasureType.generateChest(world, pos, facing, trapped);
 		}
 	}
 
-	protected void manualTreaurePlacement(ISeedReader world, int x, int y, int z, Direction facing, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
-		int lootx = getXWithOffset(x, z);
-		int looty = getYWithOffset(y);
-		int lootz = getZWithOffset(x, z);
+	protected void manualTreaurePlacement(WorldGenLevel world, int x, int y, int z, Direction facing, TFTreasure treasureType, boolean trapped, BoundingBox sbb) {
+		int lootx = getWorldX(x, z);
+		int looty = getWorldY(y);
+		int lootz = getWorldZ(x, z);
 		BlockPos lootPos = new BlockPos(lootx, looty, lootz);
-		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.LEFT).with(ChestBlock.FACING, facing), x, y, z, sbb);
+		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.LEFT).setValue(ChestBlock.FACING, facing), x, y, z, sbb);
 		treasureType.generateChestContents(world, lootPos);
 	}
 
-	protected void setDoubleLootChest(ISeedReader world, int x, int y, int z, int otherx, int othery, int otherz, Direction facing, TFTreasure treasureType, MutableBoundingBox sbb, boolean trapped) {
+	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, Direction facing, TFTreasure treasureType, BoundingBox sbb, boolean trapped) {
 		if(facing == null) {
 			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
 		}
 
-		int lootx = getXWithOffset(x, z);
-		int looty = getYWithOffset(y);
-		int lootz = getZWithOffset(x, z);
+		int lootx = getWorldX(x, z);
+		int looty = getWorldY(y);
+		int lootz = getWorldZ(x, z);
 		BlockPos lootPos = new BlockPos(lootx, looty, lootz);
-		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.LEFT).with(ChestBlock.FACING, facing), x, y, z, sbb);
-		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.RIGHT).with(ChestBlock.FACING, facing), otherx, othery, otherz, sbb);
+		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.LEFT).setValue(ChestBlock.FACING, facing), x, y, z, sbb);
+		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.RIGHT).setValue(ChestBlock.FACING, facing), otherx, othery, otherz, sbb);
 		treasureType.generateChestContents(world, lootPos);
 	}
 
@@ -230,39 +238,39 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 * scan unloaded chunks looking for connections.
 	 *
 	 */
-	protected void placeTripwire(ISeedReader world, int x, int y, int z, int size, Direction facing, MutableBoundingBox sbb) {
+	protected void placeTripwire(WorldGenLevel world, int x, int y, int z, int size, Direction facing, BoundingBox sbb) {
 
 		// FIXME: not sure if this capture crap is still needed
 
-		int dx = facing.getXOffset();
-		int dz = facing.getZOffset();
+		int dx = facing.getStepX();
+		int dz = facing.getStepZ();
 
 //		world.captureBlockSnapshots = true;
 
 		// add tripwire hooks
-		BlockState tripwireHook = Blocks.TRIPWIRE_HOOK.getDefaultState();
-		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
-		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
+		BlockState tripwireHook = Blocks.TRIPWIRE_HOOK.defaultBlockState();
+		placeBlock(world, tripwireHook.setValue(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
+		placeBlock(world, tripwireHook.setValue(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
 
 		// add string
-		BlockState tripwire = Blocks.TRIPWIRE.getDefaultState();
+		BlockState tripwire = Blocks.TRIPWIRE.defaultBlockState();
 		for (int i = 1; i < size; i++) {
-			setBlockState(world, tripwire, x + dx * i, y, z + dz * i, sbb);
+			placeBlock(world, tripwire, x + dx * i, y, z + dz * i, sbb);
 		}
 	}
 
-	protected void placeSignAtCurrentPosition(ISeedReader world, int x, int y, int z, String string0, String string1, MutableBoundingBox sbb) {
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+	protected void placeSignAtCurrentPosition(WorldGenLevel world, int x, int y, int z, String string0, String string1, BoundingBox sbb) {
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.OAK_SIGN) {
-			world.setBlockState(pos, Blocks.OAK_SIGN.getDefaultState().with(StandingSignBlock.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
+		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.OAK_SIGN) {
+			world.setBlock(pos, Blocks.OAK_SIGN.defaultBlockState().setValue(StandingSignBlock.ROTATION, this.getOrientation().get2DDataValue() * 4), 2);
 
-			SignTileEntity teSign = (SignTileEntity) world.getTileEntity(pos);
+			SignBlockEntity teSign = (SignBlockEntity) world.getBlockEntity(pos);
 			if (teSign != null) {
-				teSign.setText(1, new StringTextComponent(string0));
-				teSign.setText(2, new StringTextComponent(string1));
+				teSign.setMessage(1, new TextComponent(string0));
+				teSign.setMessage(2, new TextComponent(string1));
 			}
 		}
 	}
@@ -272,9 +280,9 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 */
 	protected int[] offsetTowerCoords(int x, int y, int z, int towerSize, Direction direction) {
 
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 
 		if (direction == Direction.SOUTH) {
 			return new int[]{dx + 1, dy - 1, dz - towerSize / 2};
@@ -296,9 +304,9 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 */
 	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, Direction direction) {
 
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 
 		switch (direction) {
 			case SOUTH:
@@ -318,23 +326,23 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	@Override
-	protected int getXWithOffset(int x, int z) {
+	protected int getWorldX(int x, int z) {
 		//return super.getXWithOffset(x, z);
 		// [VanillaCopy] of super, edits noted.
-		Direction enumfacing = this.getCoordBaseMode();
+		Direction enumfacing = this.getOrientation();
 
 		if (enumfacing == null) {
 			return x;
 		} else {
 			switch (enumfacing) {
 				case SOUTH:
-					return this.boundingBox.minX + x;
+					return this.boundingBox.x0 + x;
 				case WEST:
-					return this.boundingBox.maxX - z;
+					return this.boundingBox.x1 - z;
 				case NORTH:
-					return this.boundingBox.maxX - x; // TF - Add case for NORTH todo 1.9 is this correct?
+					return this.boundingBox.x1 - x; // TF - Add case for NORTH todo 1.9 is this correct?
 				case EAST:
-					return this.boundingBox.minX + z;
+					return this.boundingBox.x0 + z;
 				default:
 					return x;
 			}
@@ -342,23 +350,23 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	@Override
-	protected int getZWithOffset(int x, int z) {
+	protected int getWorldZ(int x, int z) {
 		//return super.getZWithOffset(x, z);
 		// [VanillaCopy] of super, edits noted.
-		Direction enumfacing = this.getCoordBaseMode();
+		Direction enumfacing = this.getOrientation();
 
 		if (enumfacing == null) {
 			return z;
 		} else {
 			switch (enumfacing) {
 				case SOUTH:
-					return this.boundingBox.minZ + z;
+					return this.boundingBox.z0 + z;
 				case WEST:
-					return this.boundingBox.minZ + x;
+					return this.boundingBox.z0 + x;
 				case NORTH:
-					return this.boundingBox.maxZ - z;
+					return this.boundingBox.z1 - z;
 				case EAST:
-					return this.boundingBox.maxZ - x;
+					return this.boundingBox.z1 - x;
 				default:
 					return z;
 			}
@@ -366,13 +374,13 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	private Direction fakeBaseMode(Rotation rotationsCW) {
-		final Direction oldBaseMode = getCoordBaseMode();
+		final Direction oldBaseMode = getOrientation();
 
 		if (oldBaseMode != null) {
 			Direction pretendBaseMode = oldBaseMode;
 			pretendBaseMode = rotationsCW.rotate(pretendBaseMode);
 
-			setCoordBaseMode(pretendBaseMode);
+			setOrientation(pretendBaseMode);
 		}
 
 		return oldBaseMode;
@@ -381,92 +389,92 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	// [VanillaCopy] Keep pinned to the signature of getXWithOffset
 	protected int getXWithOffsetRotated(int x, int z, Rotation rotationsCW) {
 		Direction oldMode = fakeBaseMode(rotationsCW);
-		int ret = getXWithOffset(x, z);
-		setCoordBaseMode(oldMode);
+		int ret = getWorldX(x, z);
+		setOrientation(oldMode);
 		return ret;
 	}
 
 	// [VanillaCopy] Keep pinned to the signature of getZWithOffset
 	protected int getZWithOffsetRotated(int x, int z, Rotation rotationsCW) {
 		Direction oldMode = fakeBaseMode(rotationsCW);
-		int ret = getZWithOffset(x, z);
-		setCoordBaseMode(oldMode);
+		int ret = getWorldZ(x, z);
+		setOrientation(oldMode);
 		return ret;
 	}
 
-	protected void setBlockStateRotated(ISeedReader world, BlockState state, int x, int y, int z, Rotation rotationsCW, MutableBoundingBox sbb) {
+	protected void setBlockStateRotated(WorldGenLevel world, BlockState state, int x, int y, int z, Rotation rotationsCW, BoundingBox sbb) {
 		Direction oldMode = fakeBaseMode(rotationsCW);
-		setBlockState(world, state, x, y, z, sbb);
-		setCoordBaseMode(oldMode);
+		placeBlock(world, state, x, y, z, sbb);
+		setOrientation(oldMode);
 	}
 
 	@Override
-	protected BlockState getBlockStateFromPos(IBlockReader world, int x, int y, int z, MutableBoundingBox sbb) {
+	protected BlockState getBlock(BlockGetter world, int x, int y, int z, BoundingBox sbb) {
 		// Making public
-		return super.getBlockStateFromPos(world, x, y, z, sbb);
+		return super.getBlock(world, x, y, z, sbb);
 	}
 
 	@Override
-	protected void setBlockState(ISeedReader worldIn, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeBlock(WorldGenLevel worldIn, BlockState blockstateIn, int x, int y, int z, BoundingBox sbb) {
 		// Making public
-		super.setBlockState(worldIn, blockstateIn, x, y, z, sbb);
+		super.placeBlock(worldIn, blockstateIn, x, y, z, sbb);
 	}
 
 	// [VanillaCopy] Keep pinned to the signature of getBlockStateFromPos
-	public BlockState getBlockStateFromPosRotated(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, Rotation rotationsCW) {
+	public BlockState getBlockStateFromPosRotated(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, Rotation rotationsCW) {
 		Direction oldMode = fakeBaseMode(rotationsCW);
-		BlockState ret = getBlockStateFromPos(world, x, y, z, sbb);
-		setCoordBaseMode(oldMode);
+		BlockState ret = getBlock(world, x, y, z, sbb);
+		setOrientation(oldMode);
 		return ret;
 	}
 
-	protected void fillBlocksRotated(ISeedReader world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState state, Rotation rotation) {
+	protected void fillBlocksRotated(WorldGenLevel world, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState state, Rotation rotation) {
 		Direction oldBase = fakeBaseMode(rotation);
-		fillWithBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, state, state, false);
-		setCoordBaseMode(oldBase);
+		generateBox(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, state, state, false);
+		setOrientation(oldBase);
 	}
 
 	// [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
-	protected void randomlyFillBlocksRotated(ISeedReader worldIn, MutableBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
+	protected void randomlyFillBlocksRotated(WorldGenLevel worldIn, BoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
 		Direction oldBase = fakeBaseMode(rotation);
 		final boolean minimumLightLevel = true;
 		generateMaybeBox(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
-		setCoordBaseMode(oldBase);
+		setOrientation(oldBase);
 	}
 
 	// [VanillaCopy] Keep pinned to signature of replaceAirAndLiquidDownwards
-	public void replaceAirAndLiquidDownwardsRotated(ISeedReader world, BlockState state, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	public void replaceAirAndLiquidDownwardsRotated(WorldGenLevel world, BlockState state, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
 		Direction oldBaseMode = fakeBaseMode(rotation);
-		replaceAirAndLiquidDownwards(world, state, x, y, z, sbb);
-		setCoordBaseMode(oldBaseMode);
+		fillColumnDown(world, state, x, y, z, sbb);
+		setOrientation(oldBaseMode);
 	}
 
-	protected void fillAirRotated(ISeedReader world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Rotation rotation) {
+	protected void fillAirRotated(WorldGenLevel world, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Rotation rotation) {
 		Direction oldBaseMode = fakeBaseMode(rotation);
-		fillWithAir(world, sbb, minX, minY, minZ, maxX, maxY, maxZ);
-		setCoordBaseMode(oldBaseMode);
+		generateAirBox(world, sbb, minX, minY, minZ, maxX, maxY, maxZ);
+		setOrientation(oldBaseMode);
 	}
 
-	protected void fillWithAir(ISeedReader world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, Predicate<BlockState> predicate) {
-		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, Blocks.AIR.getDefaultState(), predicate);
+	protected void fillWithAir(WorldGenLevel world, BoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, Predicate<BlockState> predicate) {
+		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, Blocks.AIR.defaultBlockState(), predicate);
 	}
 
-	protected void fillWithBlocks(ISeedReader world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState state, Predicate<BlockState> predicate) {
+	protected void fillWithBlocks(WorldGenLevel world, BoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState state, Predicate<BlockState> predicate) {
 		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, state, state, predicate);
 	}
 
-	protected void fillWithBlocks(ISeedReader world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState borderState, BlockState interiorState, Predicate<BlockState> predicate) {
+	protected void fillWithBlocks(WorldGenLevel world, BoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState borderState, BlockState interiorState, Predicate<BlockState> predicate) {
 		for (int y = yMin; y <= yMax; ++y) {
 			for (int x = xMin; x <= xMax; ++x) {
 				for (int z = zMin; z <= zMax; ++z) {
 
-					if (predicate.test(this.getBlockStateFromPos(world, x, y, z, boundingBox))) {
+					if (predicate.test(this.getBlock(world, x, y, z, boundingBox))) {
 
 						boolean isBorder = yMin != yMax && (y == yMin || y == yMax)
 								|| xMin != xMax && (x == xMin || x == xMax)
 								|| zMin != zMax && (z == zMin || z == zMax);
 
-						this.setBlockState(world, isBorder ? borderState : interiorState, x, y, z, boundingBox);
+						this.placeBlock(world, isBorder ? borderState : interiorState, x, y, z, boundingBox);
 					}
 				}
 			}
@@ -478,7 +486,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	protected Direction getStructureRelativeRotation(Rotation rotationsCW) {
-		return rotationsCW.rotate(getCoordBaseMode());
+		return rotationsCW.rotate(getOrientation());
 	}
 
 	/**
@@ -487,15 +495,15 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 * <p>
 	 * This is basically copied from ComponentVillage
 	 */
-	protected int getAverageGroundLevel(ISeedReader world, ChunkGenerator generator, MutableBoundingBox sbb) {
+	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox sbb) {
 		int totalHeight = 0;
 		int heightCount = 0;
 
-		for (int bz = this.boundingBox.minZ; bz <= this.boundingBox.maxZ; ++bz) {
-			for (int by = this.boundingBox.minX; by <= this.boundingBox.maxX; ++by) {
+		for (int bz = this.boundingBox.z0; bz <= this.boundingBox.z1; ++bz) {
+			for (int by = this.boundingBox.x0; by <= this.boundingBox.x1; ++by) {
 				BlockPos pos = new BlockPos(by, 64, bz);
-				if (sbb.isVecInside(pos)) {
-					totalHeight += Math.max(world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos).getY(), generator.getGroundHeight());
+				if (sbb.isInside(pos)) {
+					totalHeight += Math.max(world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).getY(), generator.getSpawnHeight());
 					++heightCount;
 				}
 			}
@@ -511,10 +519,10 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Find what y-level the ground is. Just check the center of the chunk we're given.
 	 */
-	protected int findGroundLevel(ISeedReader world, MutableBoundingBox sbb, int start, Predicate<BlockState> predicate) {
+	protected int findGroundLevel(WorldGenLevel world, BoundingBox sbb, int start, Predicate<BlockState> predicate) {
 
-		Vector3i center = StructureBoundingBoxUtils.getCenter(sbb);
-		BlockPos.Mutable pos = new BlockPos.Mutable(center.getX(), 0, center.getZ());
+		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
 		for (int y = start; y > 0; y--) {
 			pos.setY(y);
@@ -526,18 +534,18 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		return 0;
 	}
 
-	protected boolean isBoundingBoxOutsideBiomes(ISeedReader world, Predicate<Biome> predicate) {
+	protected boolean isBoundingBoxOutsideBiomes(WorldGenLevel world, Predicate<Biome> predicate) {
 
-		int minX = this.boundingBox.minX - 1;
-		int minZ = this.boundingBox.minZ - 1;
-		int maxX = this.boundingBox.maxX + 1;
-		int maxZ = this.boundingBox.maxZ + 1;
+		int minX = this.boundingBox.x0 - 1;
+		int minZ = this.boundingBox.z0 - 1;
+		int maxX = this.boundingBox.x1 + 1;
+		int maxZ = this.boundingBox.z1 + 1;
 
-		BlockPos.Mutable pos = new BlockPos.Mutable();
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
-				if (!predicate.test(world.getBiome(pos.setPos(x, 0, z)))) {
+				if (!predicate.test(world.getBiome(pos.set(x, 0, z)))) {
 					return true;
 				}
 			}
@@ -550,7 +558,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
 	@Nullable
-	public static StructurePiece findIntersectingExcluding(List<StructurePiece> list, MutableBoundingBox toCheck, StructurePiece exclude) {
+	public static StructurePiece findIntersectingExcluding(List<StructurePiece> list, BoundingBox toCheck, StructurePiece exclude) {
 		Iterator<StructurePiece> iterator = list.iterator();
 		StructurePiece structurecomponent;
 
@@ -561,28 +569,28 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 			structurecomponent = iterator.next();
 		}
-		while (structurecomponent == exclude || structurecomponent.getBoundingBox() == null || !structurecomponent.getBoundingBox().intersectsWith(toCheck));
+		while (structurecomponent == exclude || structurecomponent.getBoundingBox() == null || !structurecomponent.getBoundingBox().intersects(toCheck));
 
 		return structurecomponent;
 	}
 
 	public BlockPos getBlockPosWithOffset(int x, int y, int z) {
 		return new BlockPos(
-				getXWithOffset(x, z),
-				getYWithOffset(y),
-				getZWithOffset(x, z)
+				getWorldX(x, z),
+				getWorldY(y),
+				getWorldZ(x, z)
 		);
 	}
 
 	/* BlockState Helpers */
 	protected static BlockState getStairState(BlockState stairState, Direction direction, boolean isTopHalf) {
 		return stairState
-				.with(StairsBlock.FACING, direction)
-				.with(StairsBlock.HALF, isTopHalf ? Half.TOP : Half.BOTTOM);
+				.setValue(StairBlock.FACING, direction)
+				.setValue(StairBlock.HALF, isTopHalf ? Half.TOP : Half.BOTTOM);
 	}
 
 	protected static BlockState getSlabState(BlockState inputBlockState, SlabType half) {
 		return inputBlockState
-				.with(SlabBlock.TYPE, half);
+				.setValue(SlabBlock.TYPE, half);
 	}
 }

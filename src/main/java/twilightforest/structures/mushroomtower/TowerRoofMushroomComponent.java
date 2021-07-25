@@ -1,16 +1,16 @@
 package twilightforest.structures.mushroomtower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.structures.lichtower.TowerRoofComponent;
@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
-	public TowerRoofMushroomComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerRoofMushroomComponent(StructureManager manager, CompoundTag nbt) {
 		super(MushroomTowerPieces.TFMTRoofMush, nbt);
 	}
 
@@ -30,12 +30,12 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 		this.height = wing.size;
 		int overhang = (int) (height * pHang);
 		this.size = height + (overhang * 2);
-		this.setCoordBaseMode(Direction.SOUTH);
-		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - overhang, wing.getBoundingBox().maxY + 2, wing.getBoundingBox().minZ - overhang, wing.getBoundingBox().maxX + overhang, wing.getBoundingBox().maxY + this.height + 1, wing.getBoundingBox().maxZ + overhang);
+		this.setOrientation(Direction.SOUTH);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 - overhang, wing.getBoundingBox().y1 + 2, wing.getBoundingBox().z0 - overhang, wing.getBoundingBox().x1 + overhang, wing.getBoundingBox().y1 + this.height + 1, wing.getBoundingBox().z1 + overhang);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -45,12 +45,12 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		for (int y = 0; y <= height; y++) {
 
-			int radius = (int) (MathHelper.sin((y + height / 1.2F) / (height * 2.05F) * 3.14F) * this.size / 2F);
-			int hollow = MathHelper.floor(radius * .9F);
+			int radius = (int) (Mth.sin((y + height / 1.2F) / (height * 2.05F) * 3.14F) * this.size / 2F);
+			int hollow = Mth.floor(radius * .9F);
 
 			if ((height - y) < 3) {
 				hollow = -1;
@@ -62,7 +62,7 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 		return true;
 	}
 
-	private void makeCircle(ISeedReader world, int y, int radius, int hollow, MutableBoundingBox sbb) {
+	private void makeCircle(WorldGenLevel world, int y, int radius, int hollow, BoundingBox sbb) {
 
 		int cx = size / 2;
 		int cz = size / 2;
@@ -71,15 +71,15 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 		for (int dx = -radius; dx <= radius; dx++) {
 			for (int dz = -radius; dz <= radius; dz++) {
 				// determine how far we are from the center.
-				float dist = MathHelper.sqrt(dx * dx + dz * dz);
+				float dist = Mth.sqrt(dx * dx + dz * dz);
 
 				// make a trunk!
 				if (dist <= (radius + 0.5F)) {
 					if (dist > hollow) {
-						setBlockState(world, deco.accentState, dx + cx, y, dz + cz, sbb);
+						placeBlock(world, deco.accentState, dx + cx, y, dz + cz, sbb);
 					} else {
 						// spore
-						setBlockState(world, deco.accentState.getBlock().getDefaultState(), dx + cx, y, dz + cz, sbb);
+						placeBlock(world, deco.accentState.getBlock().defaultBlockState(), dx + cx, y, dz + cz, sbb);
 
 					}
 				}

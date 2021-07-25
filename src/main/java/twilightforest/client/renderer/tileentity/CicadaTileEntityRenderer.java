@@ -1,14 +1,14 @@
 package twilightforest.client.renderer.tileentity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.block.DirectionalBlock;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.CicadaModel;
@@ -16,21 +16,21 @@ import twilightforest.tileentity.CicadaTileEntity;
 
 import javax.annotation.Nullable;
 
-public class CicadaTileEntityRenderer extends TileEntityRenderer<CicadaTileEntity> {
+public class CicadaTileEntityRenderer extends BlockEntityRenderer<CicadaTileEntity> {
 
 	private final CicadaModel cicadaModel = new CicadaModel();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
 
-	public CicadaTileEntityRenderer(TileEntityRendererDispatcher dispatch) {
+	public CicadaTileEntityRenderer(BlockEntityRenderDispatcher dispatch) {
 		super(dispatch);
 	}
 
 	@Override
-	public void render(@Nullable CicadaTileEntity te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light, int overlay) {
+	public void render(@Nullable CicadaTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
 		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
 
-		ms.push();
-		Direction facing = te != null ? te.getBlockState().get(DirectionalBlock.FACING) : Direction.NORTH;
+		ms.pushPose();
+		Direction facing = te != null ? te.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;
@@ -48,15 +48,15 @@ public class CicadaTileEntityRenderer extends TileEntityRenderer<CicadaTileEntit
 			rotX = 180F;
 		}
 		ms.translate(0.5, 0.5, 0.5);
-		ms.rotate(Vector3f.XP.rotationDegrees(rotX));
-		ms.rotate(Vector3f.ZP.rotationDegrees(rotZ));
-		ms.rotate(Vector3f.YP.rotationDegrees(yaw));
+		ms.mulPose(Vector3f.XP.rotationDegrees(rotX));
+		ms.mulPose(Vector3f.ZP.rotationDegrees(rotZ));
+		ms.mulPose(Vector3f.YP.rotationDegrees(yaw));
 
 		//ms.push();
 		ms.scale(-1f, -1f, -1f);
-		IVertexBuilder vertex = buffers.getBuffer(cicadaModel.getRenderType(textureLoc));
-		cicadaModel.render(ms, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
-		ms.pop();
+		VertexConsumer vertex = buffers.getBuffer(cicadaModel.renderType(textureLoc));
+		cicadaModel.renderToBuffer(ms, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+		ms.popPose();
 		//ms.pop();
 	}
 }

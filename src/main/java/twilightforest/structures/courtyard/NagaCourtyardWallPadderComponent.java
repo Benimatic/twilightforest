@@ -1,14 +1,14 @@
 package twilightforest.structures.courtyard;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
 public class NagaCourtyardWallPadderComponent extends NagaCourtyardWallAbstractComponent {
-    public NagaCourtyardWallPadderComponent(TemplateManager manager, CompoundNBT nbt) {
+    public NagaCourtyardWallPadderComponent(StructureManager manager, CompoundTag nbt) {
         super(manager, NagaCourtyardPieces.TFNCWP, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding"), new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding_decayed"));
     }
 

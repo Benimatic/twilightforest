@@ -1,9 +1,9 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelAccessor;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -22,10 +22,10 @@ public class TFGenHollowStump extends TFGenHollowTree {
 	}
 
 	@Override
-	public boolean generate(IWorld world, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	public boolean generate(LevelAccessor world, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, BoundingBox mbb, TFTreeFeatureConfig config) {
 		int radius = rand.nextInt(2) + 2;
 
-		if (!FeatureUtil.isAreaSuitable(world, pos.add(-radius, 0, -radius), 2 * radius, 6, 2 * radius)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos.offset(-radius, 0, -radius), 2 * radius, 6, 2 * radius)) {
 			return false;
 		}
 
@@ -41,7 +41,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 	}
 
 	@Override
-	protected void buildTrunk(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> branch, Set<BlockPos> root, int diameter, int maxHeight, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected void buildTrunk(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> branch, Set<BlockPos> root, int diameter, int maxHeight, BoundingBox mbb, TFTreeFeatureConfig config) {
 
 		int hollow = diameter / 2;
 
@@ -55,7 +55,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 					int dist = (int) (Math.max(ax, az) + (Math.min(ax, az) * 0.5));
 
 					if (dist <= diameter) {
-						BlockPos dPos = pos.add(dx, dy, dz);
+						BlockPos dPos = pos.offset(dx, dy, dz);
 						if (FeatureUtil.hasAirAround(world, dPos)) {
 							if (dist > hollow) {
 								this.setLogBlockState(world, random, dPos, trunk, mbb, config);
@@ -83,7 +83,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 
 					// make a trunk!
 					if (dist <= diameter && dist > hollow) {
-						this.setLogBlockState(world, random, pos.add(dx, dy, dz), trunk, mbb, config);
+						this.setLogBlockState(world, random, pos.offset(dx, dy, dz), trunk, mbb, config);
 					}
 				}
 			}

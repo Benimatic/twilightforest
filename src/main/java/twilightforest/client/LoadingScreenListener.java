@@ -1,11 +1,11 @@
 package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.DownloadTerrainScreen;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.ReceivingLevelScreen;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -20,11 +20,11 @@ public class LoadingScreenListener {
 
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
-		if (event.getGui() instanceof DownloadTerrainScreen && client.player != null) {
-			RegistryKey<World> tfDimension = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
-			if (client.player.getEntityWorld().getBlockState(client.player.getPosition().down()) == TFBlocks.twilight_portal.get().getDefaultState() || client.player.getEntityWorld().getDimensionKey() == tfDimension) {
+		if (event.getGui() instanceof ReceivingLevelScreen && client.player != null) {
+			ResourceKey<Level> tfDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
+			if (client.player.getCommandSenderWorld().getBlockState(client.player.blockPosition().below()) == TFBlocks.twilight_portal.get().defaultBlockState() || client.player.getCommandSenderWorld().dimension() == tfDimension) {
 				LoadingScreenGui guiLoading = new LoadingScreenGui();
-				guiLoading.setEntering(client.player.getEntityWorld().getDimensionKey() == World.OVERWORLD);
+				guiLoading.setEntering(client.player.getCommandSenderWorld().dimension() == Level.OVERWORLD);
 				event.setGui(guiLoading);
 			}
 		}

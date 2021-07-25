@@ -1,47 +1,53 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 
 import java.util.Random;
+
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
 
 public class CarminiteGhastlingEntity extends CarminiteGhastguardEntity {
 
 	private boolean isMinion = false;
 
-	public CarminiteGhastlingEntity(EntityType<? extends CarminiteGhastlingEntity> type, World world) {
+	public CarminiteGhastlingEntity(EntityType<? extends CarminiteGhastlingEntity> type, Level world) {
 		super(type, world);
 		this.wanderFactor = 4.0F;
 	}
 
 	@Override
-	public int getMaxSpawnedInChunk() {
+	public int getMaxSpawnClusterSize() {
 		return 16;
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeSupplier.Builder registerAttributes() {
 		return CarminiteGhastguardEntity.registerAttributes()
-				.createMutableAttribute(Attributes.MAX_HEALTH,/* this.isMinion ? 6 :*/ 10) //TODO
-				.createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D);
+				.add(Attributes.MAX_HEALTH,/* this.isMinion ? 6 :*/ 10) //TODO
+				.add(Attributes.FOLLOW_RANGE, 16.0D);
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+	protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
 		return 0.5F;
 	}
 	
@@ -63,24 +69,24 @@ public class CarminiteGhastlingEntity extends CarminiteGhastguardEntity {
 	// Loosely based on EntityEnderman.shouldAttackPlayer
 	@Override
 	protected boolean shouldAttack(LivingEntity living) {
-		ItemStack helmet = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
-		if (!helmet.isEmpty() && helmet.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN)) {
+		ItemStack helmet = living.getItemBySlot(EquipmentSlot.HEAD);
+		if (!helmet.isEmpty() && helmet.getItem() == Item.byBlock(Blocks.PUMPKIN)) {
 			return false;
-		} else if (living.getDistance(this) <= 3.5F) {
-			return living.canEntityBeSeen(this);
+		} else if (living.distanceTo(this) <= 3.5F) {
+			return living.canSee(this);
 		} else {
-			Vector3d vec3d = living.getLook(1.0F).normalize();
-			Vector3d vec3d1 = new Vector3d(this.getPosX() - living.getPosX(), this.getBoundingBox().minY + this.getEyeHeight() - (living.getPosY() + living.getEyeHeight()), this.getPosZ() - living.getPosZ());
+			Vec3 vec3d = living.getViewVector(1.0F).normalize();
+			Vec3 vec3d1 = new Vec3(this.getX() - living.getX(), this.getBoundingBox().minY + this.getEyeHeight() - (living.getY() + living.getEyeHeight()), this.getZ() - living.getZ());
 			double d0 = vec3d1.length();
 			vec3d1 = vec3d1.normalize();
-			double d1 = vec3d.dotProduct(vec3d1);
-			return d1 > 1.0D - 0.025D / d0 ? living.canEntityBeSeen(this) : false;
+			double d1 = vec3d.dot(vec3d1);
+			return d1 > 1.0D - 0.025D / d0 ? living.canSee(this) : false;
 		}
 	}
 
 	//This does not factor into whether the entity is a Minion or not. However, since it is spawned via MOB_SUMMONED, it will always spawn if that is the SpawnReason
-	public static boolean canSpawnHere(EntityType<CarminiteGhastlingEntity> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == SpawnReason.MOB_SUMMONED || MonsterEntity.isValidLightLevel(world, pos, random)) && canSpawnOn(entity, world, reason, pos, random);
+	public static boolean canSpawnHere(EntityType<CarminiteGhastlingEntity> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.MOB_SUMMONED || Monster.isDarkEnoughToSpawn(world, pos, random)) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
 	public void makeBossMinion() {
@@ -96,14 +102,14 @@ public class CarminiteGhastlingEntity extends CarminiteGhastguardEntity {
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
+	public void addAdditionalSaveData(CompoundTag compound) {
 		compound.putBoolean("isMinion", this.isMinion);
-		super.writeAdditional(compound);
+		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		if (compound.getBoolean("isMinion")) {
 			makeBossMinion();
 		}

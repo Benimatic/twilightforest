@@ -1,14 +1,14 @@
 package twilightforest.entity.finalcastle;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
-public class CastleGuardianEntity extends CreatureEntity { // Not exactly living but requires the logic >.>
-    public CastleGuardianEntity(EntityType<? extends CastleGuardianEntity> type, World worldIn) {
+public class CastleGuardianEntity extends PathfinderMob { // Not exactly living but requires the logic >.>
+    public CastleGuardianEntity(EntityType<? extends CastleGuardianEntity> type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -20,10 +20,10 @@ public class CastleGuardianEntity extends CreatureEntity { // Not exactly living
     }
 
     @Override
-    protected float updateDistance(float renderYawOffset, float p_110146_2_) {
-        float f = MathHelper.wrapDegrees(renderYawOffset - this.renderYawOffset);
-        this.renderYawOffset += f * 0.5F;
-        float f1 = MathHelper.wrapDegrees(this.rotationYaw - this.renderYawOffset);
+    protected float tickHeadTurn(float renderYawOffset, float p_110146_2_) {
+        float f = Mth.wrapDegrees(renderYawOffset - this.yBodyRot);
+        this.yBodyRot += f * 0.5F;
+        float f1 = Mth.wrapDegrees(this.yRot - this.yBodyRot);
         boolean flag = f1 < -90.0F || f1 >= 90.0F;
 
         if (f1 < -75.0F)
@@ -32,10 +32,10 @@ public class CastleGuardianEntity extends CreatureEntity { // Not exactly living
         if (f1 >= 75.0F)
             f1 = 75.0F;
 
-        this.renderYawOffset = this.rotationYaw - f1;
+        this.yBodyRot = this.yRot - f1;
 
         if (f1 * f1 > 2500.0F)
-            this.renderYawOffset += f1 * 0.5F;
+            this.yBodyRot += f1 * 0.5F;
 
         if (flag)
             p_110146_2_ *= -1.0F;
@@ -51,27 +51,27 @@ public class CastleGuardianEntity extends CreatureEntity { // Not exactly living
 
     // To go with the fix me above. I think this is the solution?
     @Override
-    public boolean func_241845_aY() {
-        return true;
-    }
-
-    @Override
     public boolean canBeCollidedWith() {
         return true;
     }
 
     @Override
-    protected boolean canBeRidden(Entity entityIn) {
+    public boolean isPickable() {
+        return true;
+    }
+
+    @Override
+    protected boolean canRide(Entity entityIn) {
         return false;
     }
 
     @Override // So it won't be allowed to be duplicated by Mod mob spawners
-    public boolean canChangeDimension() {
+    public boolean canChangeDimensions() {
         return false;
     }
 
     @Override
-    public boolean isPushedByWater() {
+    public boolean isPushedByFluid() {
         return false;
     }
 

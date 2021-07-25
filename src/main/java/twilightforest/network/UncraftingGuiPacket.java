@@ -1,8 +1,8 @@
 package twilightforest.network;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.inventory.UncraftingContainer;
 
@@ -15,11 +15,11 @@ public class UncraftingGuiPacket {
         this.type = type;
     }
 
-    public UncraftingGuiPacket(PacketBuffer buf) {
+    public UncraftingGuiPacket(FriendlyByteBuf buf) {
         type = buf.readInt();
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
         buf.writeInt(type);
     }
 
@@ -27,12 +27,12 @@ public class UncraftingGuiPacket {
 
         @SuppressWarnings("Convert2Lambda")
         public static boolean onMessage(UncraftingGuiPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ServerPlayerEntity player = ctx.get().getSender();
+            ServerPlayer player = ctx.get().getSender();
 
             ctx.get().enqueueWork(new Runnable() {
                 @Override
                 public void run() {
-                    Container container = player.openContainer;
+                    AbstractContainerMenu container = player.containerMenu;
 
                     if (container instanceof UncraftingContainer) {
                         UncraftingContainer uncrafting = (UncraftingContainer) container;
@@ -59,10 +59,10 @@ public class UncraftingGuiPacket {
                         }
 
                         if (message.type < 4)
-                            uncrafting.onCraftMatrixChanged(uncrafting.tinkerInput);
+                            uncrafting.slotsChanged(uncrafting.tinkerInput);
 
                         if (message.type >= 4)
-                            uncrafting.onCraftMatrixChanged(uncrafting.assemblyMatrix);
+                            uncrafting.slotsChanged(uncrafting.assemblyMatrix);
                     }
                 }
             });

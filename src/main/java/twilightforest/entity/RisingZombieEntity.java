@@ -1,25 +1,25 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
-public class RisingZombieEntity extends ZombieEntity {
+public class RisingZombieEntity extends Zombie {
 
-	public RisingZombieEntity(EntityType<? extends RisingZombieEntity> type, World worldIn) {
+	public RisingZombieEntity(EntityType<? extends RisingZombieEntity> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
@@ -30,39 +30,39 @@ public class RisingZombieEntity extends ZombieEntity {
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
 		// NO-OP
 		return livingdata;
 	}
 
 	@Override
-	public void livingTick() {
-		setMotion(new Vector3d(0, 0, 0));
-		super.livingTick();
-		if (!world.isRemote && ticksExisted % 130 == 0) {
+	public void aiStep() {
+		setDeltaMovement(new Vec3(0, 0, 0));
+		super.aiStep();
+		if (!level.isClientSide && tickCount % 130 == 0) {
 			remove();
-			ZombieEntity zombie = new ZombieEntity(world);
-			zombie.setPositionAndUpdate(getPosX(), getPosY(), getPosZ());
+			Zombie zombie = new Zombie(level);
+			zombie.teleportTo(getX(), getY(), getZ());
 			zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getMaxHealth());
 			zombie.setHealth(getHealth());
-			zombie.setChild(isChild());
-			world.addEntity(zombie);
-			if (rand.nextBoolean() && world.getBlockState(getPosition().down()).getBlock() == Blocks.GRASS_BLOCK)
-				world.setBlockState(getPosition().down(), Blocks.DIRT.getDefaultState());
+			zombie.setBaby(isBaby());
+			level.addFreshEntity(zombie);
+			if (random.nextBoolean() && level.getBlockState(blockPosition().below()).getBlock() == Blocks.GRASS_BLOCK)
+				level.setBlockAndUpdate(blockPosition().below(), Blocks.DIRT.defaultBlockState());
 		}
-		if (world.isRemote && !world.isAirBlock(getPosition().down())) {
+		if (level.isClientSide && !level.isEmptyBlock(blockPosition().below())) {
 			for (int i = 0; i < 5; i++)
-				world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(getPosition().down())), getPosX() + rand.nextGaussian() * 0.01F, getPosY() + rand.nextGaussian() * 0.01F, getPosZ() + rand.nextGaussian() * 0.01F, 0, 0, 0);
+				level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, level.getBlockState(blockPosition().below())), getX() + random.nextGaussian() * 0.01F, getY() + random.nextGaussian() * 0.01F, getZ() + random.nextGaussian() * 0.01F, 0, 0, 0);
 		}
 	}
 
 	@Override
-	public void applyKnockback(float strength, double xRatio, double zRatio) {
+	public void knockback(float strength, double xRatio, double zRatio) {
 		//NO-OP
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 }

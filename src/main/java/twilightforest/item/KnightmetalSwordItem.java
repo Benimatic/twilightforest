@@ -1,16 +1,16 @@
 package twilightforest.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.network.play.server.SAnimateHandPacket;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,12 +21,14 @@ import twilightforest.TwilightForestMod;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraft.world.item.Item.Properties;
+
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class KnightmetalSwordItem extends SwordItem {
 
 	private static final int BONUS_DAMAGE = 2;
 
-	public KnightmetalSwordItem(IItemTier material, Properties props) {
+	public KnightmetalSwordItem(Tier material, Properties props) {
 		super(material, 3, -2.4F, props);
 	}
 
@@ -34,24 +36,24 @@ public class KnightmetalSwordItem extends SwordItem {
 	public static void onDamage(LivingAttackEvent evt) {
 		LivingEntity target = evt.getEntityLiving();
 
-		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof LivingEntity) {
-			ItemStack weapon = ((LivingEntity) evt.getSource().getImmediateSource()).getHeldItemMainhand();
+		if (!target.level.isClientSide && evt.getSource().getDirectEntity() instanceof LivingEntity) {
+			ItemStack weapon = ((LivingEntity) evt.getSource().getDirectEntity()).getMainHandItem();
 
-			if (!weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe.get() || weapon.getItem() == TFItems.knightmetal_sword.get())) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe.get()))) {
+			if (!weapon.isEmpty() && ((target.getArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe.get() || weapon.getItem() == TFItems.knightmetal_sword.get())) || (target.getArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe.get()))) {
 				// TODO scale bonus dmg with the amount of armor?
-				target.attackEntityFrom(DamageSource.MAGIC, BONUS_DAMAGE);
+				target.hurt(DamageSource.MAGIC, BONUS_DAMAGE);
 				// don't prevent main damage from applying
-				target.hurtResistantTime = 0;
+				target.invulnerableTime = 0;
 				// enchantment attack sparkles
-				((ServerWorld) target.world).getChunkProvider().sendToTrackingAndSelf(target, new SAnimateHandPacket(target, 5));
+				((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 			}
 		}
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flags) {
-		super.addInformation(stack, world, list, flags);
-		list.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list, TooltipFlag flags) {
+		super.appendHoverText(stack, world, list, flags);
+		list.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
 	}
 }

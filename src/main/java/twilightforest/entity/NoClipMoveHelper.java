@@ -1,32 +1,32 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.util.Mth;
 
-public class NoClipMoveHelper extends MovementController {
+public class NoClipMoveHelper extends MoveControl {
 	private final LivingEntity parentEntity;
 	private int courseChangeCooldown;
 
-	public NoClipMoveHelper(MobEntity entity) {
+	public NoClipMoveHelper(Mob entity) {
 		super(entity);
 		this.parentEntity = entity;
 	}
 
 	@Override
 	public void tick() {
-		if (this.action == MovementController.Action.MOVE_TO) {
-			double dx = this.getX() - this.parentEntity.getPosX();
-			double dy = this.getY() - this.parentEntity.getPosY();
-			double dz = this.getZ() - this.parentEntity.getPosZ();
+		if (this.operation == MoveControl.Operation.MOVE_TO) {
+			double dx = this.getWantedX() - this.parentEntity.getX();
+			double dy = this.getWantedY() - this.parentEntity.getY();
+			double dz = this.getWantedZ() - this.parentEntity.getZ();
 			double dist = dx * dx + dy * dy + dz * dz;
 
 			if (this.courseChangeCooldown-- <= 0) {
-				this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
-				dist = MathHelper.sqrt(dist);
+				this.courseChangeCooldown += this.parentEntity.getRandom().nextInt(5) + 2;
+				dist = Mth.sqrt(dist);
 
-				this.parentEntity.setMotion(this.parentEntity.getMotion().add((dx / dist * 0.1D) * speed, (dy / dist * 0.1D) * speed, (dz / dist * 0.1D) * speed));
+				this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().add((dx / dist * 0.1D) * speedModifier, (dy / dist * 0.1D) * speedModifier, (dz / dist * 0.1D) * speedModifier));
 			}
 		}
 	}

@@ -1,21 +1,21 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DirectionalBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.DirectionalPlaceContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.TFBlocks;
@@ -23,15 +23,15 @@ import twilightforest.entity.TFEntities;
 
 public class MoonwormShotEntity extends TFThrowableEntity {
 
-	public MoonwormShotEntity(EntityType<? extends MoonwormShotEntity> type, World world) {
+	public MoonwormShotEntity(EntityType<? extends MoonwormShotEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public MoonwormShotEntity(EntityType<? extends MoonwormShotEntity> type, World world, LivingEntity thrower) {
+	public MoonwormShotEntity(EntityType<? extends MoonwormShotEntity> type, Level world, LivingEntity thrower) {
 		super(type, world, thrower);
-		setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
+		shootFromRotation(thrower, thrower.xRot, thrower.yRot, 0F, 1.5F, 1.0F);
 	}
-	public MoonwormShotEntity(World worldIn, double x, double y, double z) {
+	public MoonwormShotEntity(Level worldIn, double x, double y, double z) {
 		super(TFEntities.moonworm_shot, worldIn, x, y, z);
 	}
 
@@ -62,57 +62,57 @@ public class MoonwormShotEntity extends TFThrowableEntity {
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return true;
 	}
 
 	@Override
-	public float getCollisionBorderSize() {
+	public float getPickRadius() {
 		return 1.0F;
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return 0.03F;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, TFBlocks.moonworm.get().getDefaultState()), false, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+				this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, TFBlocks.moonworm.get().defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
-			super.handleStatusUpdate(id);
+			super.handleEntityEvent(id);
 		}
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult ray) {
-		if (!world.isRemote) {
-			if (ray instanceof BlockRayTraceResult) {
-				BlockRayTraceResult blockray = (BlockRayTraceResult) ray;
-				BlockPos pos = blockray.getPos().offset(blockray.getFace());
-				BlockState currentState = world.getBlockState(pos);
+	protected void onHit(HitResult ray) {
+		if (!level.isClientSide) {
+			if (ray instanceof BlockHitResult) {
+				BlockHitResult blockray = (BlockHitResult) ray;
+				BlockPos pos = blockray.getBlockPos().relative(blockray.getDirection());
+				BlockState currentState = level.getBlockState(pos);
 
-				DirectionalPlaceContext context = new DirectionalPlaceContext(world, pos, blockray.getFace(), ItemStack.EMPTY, blockray.getFace().getOpposite());
-				if (currentState.isReplaceable(context)) {
-					world.setBlockState(pos, TFBlocks.moonworm.get().getDefaultState().with(DirectionalBlock.FACING, ((BlockRayTraceResult) ray).getFace()));
+				DirectionalPlaceContext context = new DirectionalPlaceContext(level, pos, blockray.getDirection(), ItemStack.EMPTY, blockray.getDirection().getOpposite());
+				if (currentState.canBeReplaced(context)) {
+					level.setBlockAndUpdate(pos, TFBlocks.moonworm.get().defaultBlockState().setValue(DirectionalBlock.FACING, ((BlockHitResult) ray).getDirection()));
 					// todo sound
 				} else {
-					ItemEntity squish = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ());
-					squish.entityDropItem(Items.LIME_DYE);
+					ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ());
+					squish.spawnAtLocation(Items.LIME_DYE);
 				}
 			}
 
-			if (ray instanceof EntityRayTraceResult) {
-				if (((EntityRayTraceResult)ray).getEntity() != null) {
-					((EntityRayTraceResult)ray).getEntity().attackEntityFrom(new IndirectEntityDamageSource("moonworm", this, this), rand.nextInt(3) == 0 ? 1 : 0);
+			if (ray instanceof EntityHitResult) {
+				if (((EntityHitResult)ray).getEntity() != null) {
+					((EntityHitResult)ray).getEntity().hurt(new IndirectEntityDamageSource("moonworm", this, this), random.nextInt(3) == 0 ? 1 : 0);
 				}
 			}
 
-			this.world.setEntityState(this, (byte) 3);
+			this.level.broadcastEntityEvent(this, (byte) 3);
 			this.remove();
 		}
 	}

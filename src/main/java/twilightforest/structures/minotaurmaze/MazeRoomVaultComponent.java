@@ -1,15 +1,15 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class MazeRoomVaultComponent extends MazeRoomComponent {
 
-	public MazeRoomVaultComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeRoomVaultComponent(StructureManager manager, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMRV, nbt);
 	}
 
@@ -30,30 +30,30 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fill room with bricks
-		fillWithBlocks(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, false);
+		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, false);
 
 		// 4x4 room in the middle
-		fillWithAir(world, sbb, 6, 2, 6, 9, 3, 9);
+		generateAirBox(world, sbb, 6, 2, 6, 9, 3, 9);
 
 		// pressure plates, sand & tnt
-		fillWithBlocks(world, sbb, 6, 2, 5, 9, 2, 5, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 6, 2, 10, 9, 2, 10, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 5, 2, 6, 5, 2, 9, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 10, 2, 6, 10, 2, 9, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), AIR, false);
+		generateBox(world, sbb, 6, 2, 5, 9, 2, 5, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 6, 2, 10, 9, 2, 10, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 5, 2, 6, 5, 2, 9, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 10, 2, 6, 10, 2, 9, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), AIR, false);
 
 		// unfair sand
-		fillWithBlocks(world, sbb, 6, 4, 5, 9, 4, 5, Blocks.SAND.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 6, 4, 10, 9, 4, 10, Blocks.SAND.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 5, 4, 6, 5, 4, 9, Blocks.SAND.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 10, 4, 6, 10, 4, 9, Blocks.SAND.getDefaultState(), AIR, false);
+		generateBox(world, sbb, 6, 4, 5, 9, 4, 5, Blocks.SAND.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 6, 4, 10, 9, 4, 10, Blocks.SAND.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 5, 4, 6, 5, 4, 9, Blocks.SAND.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 10, 4, 6, 10, 4, 9, Blocks.SAND.defaultBlockState(), AIR, false);
 
-		fillWithBlocks(world, sbb, 6, 0, 5, 9, 0, 5, Blocks.TNT.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 6, 0, 10, 9, 0, 10, Blocks.TNT.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 5, 0, 6, 5, 0, 9, Blocks.TNT.getDefaultState(), AIR, false);
-		fillWithBlocks(world, sbb, 10, 0, 6, 10, 0, 9, Blocks.TNT.getDefaultState(), AIR, false);
+		generateBox(world, sbb, 6, 0, 5, 9, 0, 5, Blocks.TNT.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 6, 0, 10, 9, 0, 10, Blocks.TNT.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 5, 0, 6, 5, 0, 9, Blocks.TNT.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 10, 0, 6, 10, 0, 9, Blocks.TNT.defaultBlockState(), AIR, false);
 
 		// LEWTZ!
 		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFTreasure.labyrinth_vault, sbb, false);

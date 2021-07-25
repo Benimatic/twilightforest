@@ -1,16 +1,16 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 
-	public MazeRoomSpawnerChestsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeRoomSpawnerChestsComponent(StructureManager manager, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMRSC, nbt);
 	}
 
@@ -29,8 +29,8 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// 4 pillar enclosures
 		placePillarEnclosure(world, sbb, 3, 3);
@@ -48,47 +48,47 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 		this.placeTreasureAtCurrentPosition(world, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
 
 		// trap
-		setBlockState(world, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), 11, 1, 11, sbb);
-		setBlockState(world, Blocks.TNT.getDefaultState(), 10, 0, 11, sbb);
-		setBlockState(world, Blocks.TNT.getDefaultState(), 11, 0, 10, sbb);
-		setBlockState(world, Blocks.TNT.getDefaultState(), 11, 0, 12, sbb);
-		setBlockState(world, Blocks.TNT.getDefaultState(), 12, 0, 11, sbb);
+		placeBlock(world, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), 11, 1, 11, sbb);
+		placeBlock(world, Blocks.TNT.defaultBlockState(), 10, 0, 11, sbb);
+		placeBlock(world, Blocks.TNT.defaultBlockState(), 11, 0, 10, sbb);
+		placeBlock(world, Blocks.TNT.defaultBlockState(), 11, 0, 12, sbb);
+		placeBlock(world, Blocks.TNT.defaultBlockState(), 12, 0, 11, sbb);
 
 		return true;
 	}
 
-	private void placePillarEnclosure(ISeedReader world, MutableBoundingBox sbb,
+	private void placePillarEnclosure(WorldGenLevel world, BoundingBox sbb,
 									  int dx, int dz) {
 		for (int y = 1; y < 5; y++) {
-			final BlockState chiselledMazeBlock = TFBlocks.maze_stone_chiseled.get().getDefaultState();
-			setBlockState(world, chiselledMazeBlock, dx, y, dz, sbb);
-			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz, sbb);
-			setBlockState(world, chiselledMazeBlock, dx, y, dz + 2, sbb);
-			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz + 2, sbb);
+			final BlockState chiselledMazeBlock = TFBlocks.maze_stone_chiseled.get().defaultBlockState();
+			placeBlock(world, chiselledMazeBlock, dx, y, dz, sbb);
+			placeBlock(world, chiselledMazeBlock, dx + 2, y, dz, sbb);
+			placeBlock(world, chiselledMazeBlock, dx, y, dz + 2, sbb);
+			placeBlock(world, chiselledMazeBlock, dx + 2, y, dz + 2, sbb);
 		}
-		setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), dx + 1, 1, dz + 1, sbb);
-		setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), dx + 1, 4, dz + 1, sbb);
+		placeBlock(world, Blocks.OAK_PLANKS.defaultBlockState(), dx + 1, 1, dz + 1, sbb);
+		placeBlock(world, Blocks.OAK_PLANKS.defaultBlockState(), dx + 1, 4, dz + 1, sbb);
 
-		final BlockState defaultState = Blocks.OAK_STAIRS.getDefaultState();
+		final BlockState defaultState = Blocks.OAK_STAIRS.defaultBlockState();
 
 
-		setBlockState(world, getStairState(defaultState, Direction.NORTH, false), dx + 1, 1, dz, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.WEST, false), dx, 1, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.EAST, false), dx + 2, 1, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.SOUTH, false), dx + 1, 1, dz + 2, sbb);
+		placeBlock(world, getStairState(defaultState, Direction.NORTH, false), dx + 1, 1, dz, sbb);
+		placeBlock(world, getStairState(defaultState, Direction.WEST, false), dx, 1, dz + 1, sbb);
+		placeBlock(world, getStairState(defaultState, Direction.EAST, false), dx + 2, 1, dz + 1, sbb);
+		placeBlock(world, getStairState(defaultState, Direction.SOUTH, false), dx + 1, 1, dz + 2, sbb);
 
-		setBlockState(world, getStairState(defaultState, Direction.NORTH, true), dx + 1, 4, dz, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.WEST, true), dx, 4, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.EAST, true), dx + 2, 4, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.SOUTH, true), dx + 1, 4, dz + 2, sbb);
+		placeBlock(world, getStairState(defaultState, Direction.NORTH, true), dx + 1, 4, dz, sbb);
+		placeBlock(world, getStairState(defaultState, Direction.WEST, true), dx, 4, dz + 1, sbb);
+		placeBlock(world, getStairState(defaultState, Direction.EAST, true), dx + 2, 4, dz + 1, sbb);
+		placeBlock(world, getStairState(defaultState, Direction.SOUTH, true), dx + 1, 4, dz + 2, sbb);
 
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 2, dz, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx, 2, dz + 1, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 2, 2, dz + 1, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 2, dz + 2, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 3, dz, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx, 3, dz + 1, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 2, 3, dz + 1, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 3, dz + 2, sbb);
+		placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx + 1, 2, dz, sbb);
+		placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx, 2, dz + 1, sbb);
+		placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx + 2, 2, dz + 1, sbb);
+		placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx + 1, 2, dz + 2, sbb);
+		placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx + 1, 3, dz, sbb);
+		placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx, 3, dz + 1, sbb);
+		placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx + 2, 3, dz + 1, sbb);
+		placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx + 1, 3, dz + 2, sbb);
 	}
 }

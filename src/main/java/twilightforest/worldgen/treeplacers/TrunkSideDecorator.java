@@ -2,15 +2,15 @@ package twilightforest.worldgen.treeplacers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
-import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.worldgen.TwilightFeatures;
 
 import java.util.List;
@@ -37,22 +37,22 @@ public class TrunkSideDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<TrunkSideDecorator> getDecoratorType() {
+    protected TreeDecoratorType<TrunkSideDecorator> type() {
         return TwilightFeatures.TRUNKSIDE_DECORATOR;
     }
 
     @Override
-    public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, MutableBoundingBox mutableBoundingBox) {
+    public void place(WorldGenLevel world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, BoundingBox mutableBoundingBox) {
         int blockCount = trunkBlocks.size();
 
         for (int attempt = 0; attempt < count; attempt++) {
             if (random.nextFloat() >= probability) continue;
 
-            Rotation rot = Rotation.randomRotation(random);
-            BlockPos pos = trunkBlocks.get(random.nextInt(blockCount)).offset(rot.rotate(Direction.NORTH));
+            Rotation rot = Rotation.getRandom(random);
+            BlockPos pos = trunkBlocks.get(random.nextInt(blockCount)).relative(rot.rotate(Direction.NORTH));
 
-            if (Feature.isAirAt(world, pos)) // Checks if block is air
-                func_227423_a_(world, pos, decoration.getBlockState(random, pos).rotate(rot), decorations, mutableBoundingBox);
+            if (Feature.isAir(world, pos)) // Checks if block is air
+                setBlock(world, pos, decoration.getState(random, pos).rotate(rot), decorations, mutableBoundingBox);
         }
     }
 }

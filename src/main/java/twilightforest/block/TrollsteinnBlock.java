@@ -1,21 +1,23 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 import java.util.Random;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TrollsteinnBlock extends Block {
 
@@ -38,45 +40,45 @@ public class TrollsteinnBlock extends Block {
 	TrollsteinnBlock(Properties props) {
 		super(props);
 
-		this.setDefaultState(stateContainer.getBaseState()
-				.with(DOWN_LIT, false).with(UP_LIT, false)
-				.with(NORTH_LIT, false).with(SOUTH_LIT, false)
-				.with(WEST_LIT, false).with(EAST_LIT, false));
+		this.registerDefaultState(stateDefinition.any()
+				.setValue(DOWN_LIT, false).setValue(UP_LIT, false)
+				.setValue(NORTH_LIT, false).setValue(SOUTH_LIT, false)
+				.setValue(WEST_LIT, false).setValue(EAST_LIT, false));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
-		boolean lit = world.getLight(neighborPos) > LIGHT_THRESHHOLD;
-		return state.with(PROPERTY_MAP.get(dirToNeighbor), lit);
+	public BlockState updateShape(BlockState state, Direction dirToNeighbor, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+		boolean lit = world.getMaxLocalRawBrightness(neighborPos) > LIGHT_THRESHHOLD;
+		return state.setValue(PROPERTY_MAP.get(dirToNeighbor), lit);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		BlockState ret = getDefaultState();
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		BlockState ret = defaultBlockState();
 		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
-			int light = ctx.getWorld().getLight(ctx.getPos().offset(e.getKey()));
-			ret = ret.with(e.getValue(), light > LIGHT_THRESHHOLD);
+			int light = ctx.getLevel().getMaxLocalRawBrightness(ctx.getClickedPos().relative(e.getKey()));
+			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHHOLD);
 		}
 		return ret;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
 		if (rand.nextInt(2) == 0) {
 			this.sparkle(world, pos);
 		}
 	}
 
 	// [VanillaCopy] Based on BlockRedstoneOre.spawnParticles
-	private void sparkle(World world, BlockPos pos) {
-		Random random = world.rand;
+	private void sparkle(Level world, BlockPos pos) {
+		Random random = world.random;
 		int threshhold = LIGHT_THRESHHOLD;
 
 		for (Direction side : Direction.values()) {
@@ -84,32 +86,32 @@ public class TrollsteinnBlock extends Block {
 			double ry = pos.getY() + random.nextFloat();
 			double rz = pos.getZ() + random.nextFloat();
 
-			if (side == Direction.DOWN && !world.getBlockState(pos.down()).isOpaqueCube(world, pos) && world.getLight(pos.down()) <= threshhold) {
+			if (side == Direction.DOWN && !world.getBlockState(pos.below()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.below()) <= threshhold) {
 				ry = pos.getY() - 0.0625D;
 			}
 
-			if (side == Direction.UP && !world.getBlockState(pos.up()).isOpaqueCube(world, pos) && world.getLight(pos.up()) <= threshhold) {
+			if (side == Direction.UP && !world.getBlockState(pos.above()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.above()) <= threshhold) {
 				ry = pos.getY() + 0.0625D + 1.0D;
 			}
 
-			if (side == Direction.NORTH && !world.getBlockState(pos.north()).isOpaqueCube(world, pos) && world.getLight(pos.north()) <= threshhold) {
+			if (side == Direction.NORTH && !world.getBlockState(pos.north()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.north()) <= threshhold) {
 				rz = pos.getZ() - 0.0625D;
 			}
 
-			if (side == Direction.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube(world, pos) && world.getLight(pos.south()) <= threshhold) {
+			if (side == Direction.SOUTH && !world.getBlockState(pos.south()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.south()) <= threshhold) {
 				rz = pos.getZ() + 0.0625D + 1.0D;
 			}
 
-			if (side == Direction.WEST && !world.getBlockState(pos.west()).isOpaqueCube(world, pos) && world.getLight(pos.west()) <= threshhold) {
+			if (side == Direction.WEST && !world.getBlockState(pos.west()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.west()) <= threshhold) {
 				rx = pos.getX() - 0.0625D;
 			}
 
-			if (side == Direction.EAST && !world.getBlockState(pos.east()).isOpaqueCube(world, pos) && world.getLight(pos.east()) <= threshhold) {
+			if (side == Direction.EAST && !world.getBlockState(pos.east()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.east()) <= threshhold) {
 				rx = pos.getX() + 0.0625D + 1.0D;
 			}
 
 			if (rx < pos.getX() || rx > pos.getX() + 1 || ry < 0.0D || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
-				world.addParticle(new RedstoneParticleData(0.0F, random.nextFloat(), 1.0F, 1.0F), rx, ry, rz, 0.25D, -1.0D, 0.5D);
+				world.addParticle(new DustParticleOptions(0.0F, random.nextFloat(), 1.0F, 1.0F), rx, ry, rz, 0.25D, -1.0D, 0.5D);
 			}
 		}
 	}

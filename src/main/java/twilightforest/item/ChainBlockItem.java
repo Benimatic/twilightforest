@@ -1,20 +1,20 @@
 package twilightforest.item;
 
 import com.google.common.collect.Sets;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.UseAction;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ToolType;
 import twilightforest.TFSounds;
 import twilightforest.entity.ChainBlockEntity;
@@ -24,7 +24,9 @@ import twilightforest.enums.TwilightItemTier;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class ChainBlockItem extends ToolItem {
+import net.minecraft.world.item.Item.Properties;
+
+public class ChainBlockItem extends DiggerItem {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
@@ -33,48 +35,48 @@ public class ChainBlockItem extends ToolItem {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, World world, Entity holder, int slot, boolean isSelected) {
-		if (!world.isRemote && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
+	public void inventoryTick(ItemStack stack, Level world, Entity holder, int slot, boolean isSelected) {
+		if (!world.isClientSide && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
 			stack.getTag().remove(THROWN_UUID_KEY);
 		}
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 
 		if (getThrownUuid(stack) != null)
-			return new ActionResult<>(ActionResultType.PASS, stack);
+			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F));
 
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			ChainBlockEntity launchedBlock = new ChainBlockEntity(TFEntities.chain_block, world, player, hand);
-			world.addEntity(launchedBlock);
+			world.addFreshEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 
-			stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
+			stack.hurtAndBreak(1, player, (user) -> user.broadcastBreakEvent(hand));
 		}
 
-		player.setActiveHand(hand);
-		return new ActionResult<>(ActionResultType.SUCCESS, stack);
+		player.startUsingItem(hand);
+		return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 	}
 
 	@Nullable
 	protected static UUID getThrownUuid(ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().hasUniqueId(THROWN_UUID_KEY)) {
-			return stack.getTag().getUniqueId(THROWN_UUID_KEY);
+		if (stack.hasTag() && stack.getTag().hasUUID(THROWN_UUID_KEY)) {
+			return stack.getTag().getUUID(THROWN_UUID_KEY);
 		}
 
 		return null;
 	}
 
 	@Nullable
-	private static ChainBlockEntity getThrownEntity(World world, ItemStack stack) {
-		if (world instanceof ServerWorld) {
+	private static ChainBlockEntity getThrownEntity(Level world, ItemStack stack) {
+		if (world instanceof ServerLevel) {
 			UUID id = getThrownUuid(stack);
 			if (id != null) {
-				Entity e = ((ServerWorld) world).getEntityByUuid(id);
+				Entity e = ((ServerLevel) world).getEntity(id);
 				if (e instanceof ChainBlockEntity) {
 					return (ChainBlockEntity) e;
 				}
@@ -86,9 +88,9 @@ public class ChainBlockItem extends ToolItem {
 
 	private static void setThrownEntity(ItemStack stack, ChainBlockEntity cube) {
 		if (!stack.hasTag()) {
-			stack.setTag(new CompoundNBT());
+			stack.setTag(new CompoundTag());
 		}
-		stack.getTag().putUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
+		stack.getTag().putUUID(THROWN_UUID_KEY, cube.getUUID());
 	}
 
 	@Override
@@ -97,8 +99,8 @@ public class ChainBlockItem extends ToolItem {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnimation(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	@Override
@@ -107,7 +109,7 @@ public class ChainBlockItem extends ToolItem {
 	}
 
 	@Override
-	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable PlayerEntity player, @Nullable BlockState blockState) {
+	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable Player player, @Nullable BlockState blockState) {
 		if (tool == ToolType.PICKAXE) {
 			return 2;
 		} else {

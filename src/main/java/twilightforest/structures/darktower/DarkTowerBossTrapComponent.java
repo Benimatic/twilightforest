@@ -1,17 +1,17 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 
-	public DarkTowerBossTrapComponent(TemplateManager manager, CompoundNBT nbt) {
+	public DarkTowerBossTrapComponent(StructureManager manager, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBT, nbt);
 	}
 
@@ -34,7 +34,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -53,7 +53,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 			int[] dest = getValidOpening(rand, i);
 			// move opening to tower base
 			dest[1] = 1;
-			makeTowerBalcony(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], i);
+			makeTowerBalcony(list, rand, this.getGenDepth(), dest[0], dest[1], dest[2], i);
 		}
 	}
 
@@ -66,14 +66,14 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
 
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
 
 		// clear inside
-		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
+		generateAirBox(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		// openings
 		makeOpenings(world, sbb);
@@ -90,17 +90,17 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 		destroyTower(world, decoRNG, 5, 6, 5, 2, sbb);
 
 		// redraw some of the floor in case we destroyed it
-		this.fillWithBlocks(world, sbb, 1, 0, 1, size / 2, 0, size - 2, deco.blockState, Blocks.AIR.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 1, 1, 1, size / 2, 1, size - 2, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
+		this.generateBox(world, sbb, 1, 0, 1, size / 2, 0, size - 2, deco.blockState, Blocks.AIR.defaultBlockState(), false);
+		this.generateBox(world, sbb, 1, 1, 1, size / 2, 1, size - 2, Blocks.AIR.defaultBlockState(), Blocks.AIR.defaultBlockState(), false);
 
 		// add boss trap
-		this.setBlockState(world, TFBlocks.ghast_trap.get().getDefaultState(), 5, 1, 5, sbb);
-		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 6, sbb);
-		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 7, sbb);
-		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 8, sbb);
-		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 4, 1, 8, sbb);
-		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 3, 1, 8, sbb);
-		this.setBlockState(world, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), 2, 1, 8, sbb);
+		this.placeBlock(world, TFBlocks.ghast_trap.get().defaultBlockState(), 5, 1, 5, sbb);
+		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 6, sbb);
+		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 7, sbb);
+		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 8, sbb);
+		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 4, 1, 8, sbb);
+		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 3, 1, 8, sbb);
+		this.placeBlock(world, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), 2, 1, 8, sbb);
 
 		return true;
 	}
@@ -108,7 +108,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 	/**
 	 * Add specific boss trap floors
 	 */
-	protected void addBossTrapFloors(ISeedReader world, MutableBoundingBox sbb) {
+	protected void addBossTrapFloors(WorldGenLevel world, BoundingBox sbb) {
 
 		makeFullFloor(world, sbb, 4);
 

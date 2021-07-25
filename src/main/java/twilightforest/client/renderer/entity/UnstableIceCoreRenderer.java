@@ -1,28 +1,28 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.util.Mth;
+import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
 import twilightforest.entity.UnstableIceCoreEntity;
 
 public class UnstableIceCoreRenderer<T extends UnstableIceCoreEntity, M extends UnstableIceCoreModel<T>> extends TFBipedRenderer<T, M> {
 
-	public UnstableIceCoreRenderer(EntityRendererManager manager, M model) {
+	public UnstableIceCoreRenderer(EntityRenderDispatcher manager, M model) {
 		super(manager, model, 0.4F, "iceexploder.png");
 	}
 
 	@Override
-	protected void preRenderCallback(T entity, MatrixStack stack, float partialTicks) {
-		float bounce = entity.ticksExisted + partialTicks;
+	protected void scale(T entity, PoseStack stack, float partialTicks) {
+		float bounce = entity.tickCount + partialTicks;
 
-		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+		stack.translate(0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0F);
 
 		// flash
 		float f1 = entity.deathTime;
 		if (f1 > 0) {
-			float f2 = 1.0F + MathHelper.sin(f1 * 100.0F) * f1 * 0.01F;
+			float f2 = 1.0F + Mth.sin(f1 * 100.0F) * f1 * 0.01F;
 
 			if (f1 < 0.0F) {
 				f1 = 0.0F;
@@ -41,12 +41,12 @@ public class UnstableIceCoreRenderer<T extends UnstableIceCoreEntity, M extends 
 	}
 
 	@Override
-	protected void applyRotations(T entity, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		stack.rotate(Vector3f.YP.rotationDegrees(180 - rotationYaw));
+	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+		stack.mulPose(Vector3f.YP.rotationDegrees(180 - rotationYaw));
 	}
 
 	@Override
-	protected float getOverlayProgress(T entity, float partialTicks) {
+	protected float getWhiteOverlayProgress(T entity, float partialTicks) {
 		if (entity.deathTime > 0) {
 			float f2 = entity.deathTime + partialTicks;
 

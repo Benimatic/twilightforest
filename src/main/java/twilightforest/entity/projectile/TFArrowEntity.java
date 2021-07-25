@@ -1,31 +1,31 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.IPacket;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public abstract class TFArrowEntity extends AbstractArrowEntity implements ITFProjectile {
+public abstract class TFArrowEntity extends AbstractArrow implements ITFProjectile {
 
-	public TFArrowEntity(EntityType<? extends TFArrowEntity> type, World worldIn) {
+	public TFArrowEntity(EntityType<? extends TFArrowEntity> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	public TFArrowEntity(EntityType<? extends TFArrowEntity> type, World worldIn, LivingEntity shooter) {
+	public TFArrowEntity(EntityType<? extends TFArrowEntity> type, Level worldIn, LivingEntity shooter) {
 		super(type, shooter, worldIn);
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
-	protected ItemStack getArrowStack() {
+	protected ItemStack getPickupItem() {
 		return new ItemStack(Items.ARROW);
 	}
 }

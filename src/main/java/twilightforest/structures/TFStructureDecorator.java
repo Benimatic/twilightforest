@@ -1,8 +1,8 @@
 package twilightforest.structures;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.structures.darktower.StructureDecoratorDarkTower;
 import twilightforest.structures.finalcastle.StructureTFDecoratorCastle;
 import twilightforest.structures.icetower.IceTowerDecorator;
@@ -15,14 +15,14 @@ import twilightforest.structures.stronghold.StrongholdDecorator;
  * @author Ben
  */
 public class TFStructureDecorator {
-	public BlockState blockState = Blocks.STONE.getDefaultState();
-	public BlockState accentState = Blocks.COBBLESTONE.getDefaultState();
-	public BlockState stairState = Blocks.STONE_STAIRS.getDefaultState();
-	public BlockState fenceState = Blocks.OAK_FENCE.getDefaultState();
-	public BlockState pillarState = Blocks.STONE_BRICKS.getDefaultState();
-	public BlockState platformState = Blocks.STONE_SLAB.getDefaultState();
-	public BlockState floorState = Blocks.STONE_BRICKS.getDefaultState();
-	public BlockState roofState = Blocks.STONE_BRICKS.getDefaultState();
+	public BlockState blockState = Blocks.STONE.defaultBlockState();
+	public BlockState accentState = Blocks.COBBLESTONE.defaultBlockState();
+	public BlockState stairState = Blocks.STONE_STAIRS.defaultBlockState();
+	public BlockState fenceState = Blocks.OAK_FENCE.defaultBlockState();
+	public BlockState pillarState = Blocks.STONE_BRICKS.defaultBlockState();
+	public BlockState platformState = Blocks.STONE_SLAB.defaultBlockState();
+	public BlockState floorState = Blocks.STONE_BRICKS.defaultBlockState();
+	public BlockState roofState = Blocks.STONE_BRICKS.defaultBlockState();
 
 	public StructurePiece.BlockSelector randomBlocks = new StrongholdStones();
 

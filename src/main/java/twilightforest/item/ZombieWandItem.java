@@ -1,20 +1,20 @@
 package twilightforest.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.potion.Effects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.LoyalZombieEntity;
@@ -25,6 +25,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class ZombieWandItem extends Item {
 
 	protected ZombieWandItem(Properties props) {
@@ -33,32 +35,32 @@ public class ZombieWandItem extends Item {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
 
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage()) {
-			return ActionResult.resultFail(stack);
+		if (stack.getDamageValue() == stack.getMaxDamage()) {
+			return InteractionResultHolder.fail(stack);
 		}
 
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			// what block is the player pointing at?
-			BlockRayTraceResult blockray = EntityUtil.rayTrace(player, 20.0);
+			BlockHitResult blockray = EntityUtil.rayTrace(player, 20.0);
 
-			if (blockray.getType() != RayTraceResult.Type.MISS) {
+			if (blockray.getType() != HitResult.Type.MISS) {
 				LoyalZombieEntity zombie = TFEntities.loyal_zombie.create(world);
-				Direction face = blockray.getFace();
-				zombie.setPositionAndRotation(blockray.getPos().getX() + 0.5F + face.getXOffset(), blockray.getPos().getY() + face.getYOffset(), blockray.getPos().getZ() + 0.5F + face.getZOffset(), 1.0F, 1.0F);
-				zombie.setTamed(true);
-				zombie.setOwnerId(player.getUniqueID());
-				zombie.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 1));
-				world.addEntity(zombie);
+				Direction face = blockray.getDirection();
+				zombie.absMoveTo(blockray.getBlockPos().getX() + 0.5F + face.getStepX(), blockray.getBlockPos().getY() + face.getStepY(), blockray.getBlockPos().getZ() + 0.5F + face.getStepZ(), 1.0F, 1.0F);
+				zombie.setTame(true);
+				zombie.setOwnerUUID(player.getUUID());
+				zombie.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1));
+				world.addFreshEntity(zombie);
 
-				stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
+				stack.hurt(1, random, (ServerPlayer) null);
 			}
 		}
 
-		return ActionResult.resultFail(stack);
+		return InteractionResultHolder.fail(stack);
 	}
 
 	@Override
@@ -68,8 +70,8 @@ public class ZombieWandItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
-		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(new TranslationTextComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamage()));
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, world, tooltip, flags);
+		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()));
 	}
 }

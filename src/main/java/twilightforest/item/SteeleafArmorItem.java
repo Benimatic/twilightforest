@@ -1,21 +1,28 @@
 package twilightforest.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.item.*;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import twilightforest.TwilightForestMod;
+
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 public class SteeleafArmorItem extends ArmorItem {
 
-	public SteeleafArmorItem(IArmorMaterial material, EquipmentSlotType slot, Properties props) {
+	public SteeleafArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
 		super(material, slot, props);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlotType slot, String layer) {
-		if (slot == EquipmentSlotType.LEGS) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_2.png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
@@ -23,21 +30,21 @@ public class SteeleafArmorItem extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
-		if (isInGroup(tab)) {
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+		if (allowdedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.slot) {
 				case HEAD:
-					istack.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 2);
+					istack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);
 					break;
 				case CHEST:
-					istack.addEnchantment(Enchantments.BLAST_PROTECTION, 2);
+					istack.enchant(Enchantments.BLAST_PROTECTION, 2);
 					break;
 				case LEGS:
-					istack.addEnchantment(Enchantments.FIRE_PROTECTION, 2);
+					istack.enchant(Enchantments.FIRE_PROTECTION, 2);
 					break;
 				case FEET:
-					istack.addEnchantment(Enchantments.FEATHER_FALLING, 2);
+					istack.enchant(Enchantments.FALL_PROTECTION, 2);
 					break;
 				default:
 					break;

@@ -1,12 +1,14 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.RedcapEntity;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class RedcapShyGoal extends RedcapBaseGoal {
 
@@ -23,22 +25,22 @@ public class RedcapShyGoal extends RedcapBaseGoal {
 	public RedcapShyGoal(RedcapEntity entityTFRedcap, float moveSpeed) {
 		super(entityTFRedcap);
 		this.speed = moveSpeed;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		LivingEntity attackTarget = this.redcap.getAttackTarget();
+	public boolean canUse() {
+		LivingEntity attackTarget = this.redcap.getTarget();
 
 		if (attackTarget == null
 				|| !this.redcap.isShy()
-				|| attackTarget.getDistance(redcap) > maxDistance
-				|| attackTarget.getDistance(redcap) < minDistance
+				|| attackTarget.distanceTo(redcap) > maxDistance
+				|| attackTarget.distanceTo(redcap) < minDistance
 				|| !isTargetLookingAtMe(attackTarget)) {
 			return false;
 		} else {
 			this.entityTarget = attackTarget;
-			Vector3d avoidPos = findCirclePoint(redcap, entityTarget, 5, lefty ? 1 : -1);
+			Vec3 avoidPos = findCirclePoint(redcap, entityTarget, 5, lefty ? 1 : -1);
 
 			this.targetX = avoidPos.x;
 			this.targetY = avoidPos.y;
@@ -52,50 +54,50 @@ public class RedcapShyGoal extends RedcapBaseGoal {
 	 * Execute a one shot task or start executing a continuous task
 	 */
 	@Override
-	public void startExecuting() {
-		this.redcap.getNavigator().tryMoveToXYZ(this.targetX, this.targetY, this.targetZ, this.speed);
+	public void start() {
+		this.redcap.getNavigation().moveTo(this.targetX, this.targetY, this.targetZ, this.speed);
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		LivingEntity attackTarget = this.redcap.getAttackTarget();
+	public boolean canContinueToUse() {
+		LivingEntity attackTarget = this.redcap.getTarget();
 
 		if (attackTarget == null) {
 			return false;
 		} else if (!this.entityTarget.isAlive()) {
 			return false;
-		} else if (this.redcap.getNavigator().noPath()) {
+		} else if (this.redcap.getNavigation().isDone()) {
 			return false;
 		}
 
-		return redcap.isShy() && attackTarget.getDistance(redcap) < maxDistance && attackTarget.getDistance(redcap) > minDistance && isTargetLookingAtMe(attackTarget);
+		return redcap.isShy() && attackTarget.distanceTo(redcap) < maxDistance && attackTarget.distanceTo(redcap) > minDistance && isTargetLookingAtMe(attackTarget);
 	}
 
 	@Override
 	public void tick() {
-		this.redcap.getLookController().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);
+		this.redcap.getLookControl().setLookAt(this.entityTarget, 30.0F, 30.0F);
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.entityTarget = null;
-		this.redcap.getNavigator().clearPath();
+		this.redcap.getNavigation().stop();
 	}
 
-	private Vector3d findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
+	private Vec3 findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
 		// compute angle
-		double vecx = circler.getPosX() - toCircle.getPosX();
-		double vecz = circler.getPosZ() - toCircle.getPosZ();
+		double vecx = circler.getX() - toCircle.getX();
+		double vecz = circler.getZ() - toCircle.getZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		// add a little, so he circles
 		rangle += rotation;
 
 		// figure out where we're headed from the target angle
-		double dx = MathHelper.cos(rangle) * radius;
-		double dz = MathHelper.sin(rangle) * radius;
+		double dx = Mth.cos(rangle) * radius;
+		double dz = Mth.sin(rangle) * radius;
 
 		// add that to the target entity's position, and we have our destination
-		return new Vector3d(toCircle.getPosX() + dx, circler.getBoundingBox().minY, toCircle.getPosZ() + dz);
+		return new Vec3(toCircle.getX() + dx, circler.getBoundingBox().minY, toCircle.getZ() + dz);
 	}
 }

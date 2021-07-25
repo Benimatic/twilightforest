@@ -1,15 +1,15 @@
 package twilightforest.dispenser;
 
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.Position;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 
 //[VanillaCopy] of ProjectileDispenseBehavior, but it damages the moonworm queen instead of using it up every shot
@@ -17,16 +17,16 @@ public abstract class MoonwormDispenseBehavior extends DefaultDispenseItemBehavi
 
     boolean fired = false;
 
-    public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-        World world = source.getWorld();
-        IPosition iposition = DispenserBlock.getDispensePosition(source);
-        Direction direction = source.getBlockState().get(DispenserBlock.FACING);
-        if(!world.isRemote) {
-            if(!(stack.getMaxDamage() == stack.getDamage() + 2)) {
-                ProjectileEntity projectileentity = this.getProjectileEntity(world, iposition, stack);
-                projectileentity.shoot((double) direction.getXOffset(), (double) ((float) direction.getYOffset() + 0.1F), (double) direction.getZOffset(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
-                world.addEntity(projectileentity);
-                if (stack.attemptDamageItem(2, world.rand, (ServerPlayerEntity) null)) {
+    public ItemStack execute(BlockSource source, ItemStack stack) {
+        Level world = source.getLevel();
+        Position iposition = DispenserBlock.getDispensePosition(source);
+        Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
+        if(!world.isClientSide) {
+            if(!(stack.getMaxDamage() == stack.getDamageValue() + 2)) {
+                Projectile projectileentity = this.getProjectileEntity(world, iposition, stack);
+                projectileentity.shoot((double) direction.getStepX(), (double) ((float) direction.getStepY() + 0.1F), (double) direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
+                world.addFreshEntity(projectileentity);
+                if (stack.hurt(2, world.random, (ServerPlayer) null)) {
                     stack.setCount(0);
                 }
                 fired = true;
@@ -35,16 +35,16 @@ public abstract class MoonwormDispenseBehavior extends DefaultDispenseItemBehavi
         return stack;
     }
 
-    protected void playDispenseSound(IBlockSource source) {
+    protected void playSound(BlockSource source) {
         if(fired) {
-            source.getWorld().playSound(null, source.getX(), source.getY(), source.getZ(), TFSounds.MOONWORM_SQUISH, SoundCategory.NEUTRAL, 1, 1);
+            source.getLevel().playSound(null, source.x(), source.y(), source.z(), TFSounds.MOONWORM_SQUISH, SoundSource.NEUTRAL, 1, 1);
             fired = false;
         } else {
-            source.getWorld().playEvent(1001, source.getBlockPos(), 0);
+            source.getLevel().levelEvent(1001, source.getPos(), 0);
         }
     }
 
-    protected abstract ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn);
+    protected abstract Projectile getProjectileEntity(Level worldIn, Position position, ItemStack stackIn);
 
     //bigger inaccuracy is a good thing in this case, right?
     protected float getProjectileInaccuracy() {

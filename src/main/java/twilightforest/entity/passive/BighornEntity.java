@@ -1,21 +1,21 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
@@ -24,23 +24,23 @@ import twilightforest.loot.TFTreasure;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BighornEntity extends SheepEntity {
+public class BighornEntity extends Sheep {
 
-	public BighornEntity(EntityType<? extends BighornEntity> type, World world) {
+	public BighornEntity(EntityType<? extends BighornEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public BighornEntity(World world, double x, double y, double z) {
+	public BighornEntity(Level world, double x, double y, double z) {
 		this(TFEntities.bighorn_sheep, world);
-		this.setPosition(x, y, z);
+		this.setPos(x, y, z);
 	}
 
 	@Override
-	public ResourceLocation getLootTable() {
-		if (this.getSheared()) {
-			return this.getType().getLootTable();
+	public ResourceLocation getDefaultLootTable() {
+		if (this.isSheared()) {
+			return this.getType().getDefaultLootTable();
 		} else {
-			switch(this.getFleeceColor()) {
+			switch(this.getColor()) {
 				case WHITE:
 				default:
 					return TFTreasure.BIGHORN_SHEEP_WHITE;
@@ -86,14 +86,14 @@ public class BighornEntity extends SheepEntity {
 
 	@Nullable
     @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
-        livingdata = super.onInitialSpawn(worldIn, difficulty, reason, livingdata, dataTag);
-        this.setFleeceColor(getRandomFleeceColor(this.world.rand));
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
+        livingdata = super.finalizeSpawn(worldIn, difficulty, reason, livingdata, dataTag);
+        this.setColor(getRandomFleeceColor(this.level.random));
         return livingdata;
     }
 
     @Override
-	public SheepEntity createChild(ServerWorld world, AgeableEntity ageable) {
+	public Sheep getBreedOffspring(ServerLevel world, AgableMob ageable) {
 		if (!(ageable instanceof BighornEntity)) {
 			TwilightForestMod.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
 			return null;
@@ -101,7 +101,7 @@ public class BighornEntity extends SheepEntity {
 
 		BighornEntity otherParent = (BighornEntity) ageable;
 		BighornEntity babySheep = TFEntities.bighorn_sheep.create(world);
-		babySheep.setFleeceColor(getDyeColorMixFromParents(this, otherParent));
+		babySheep.setColor(getOffspringColor(this, otherParent));
 		return babySheep;
 	}
     

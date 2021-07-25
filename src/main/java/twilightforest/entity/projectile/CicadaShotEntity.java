@@ -1,22 +1,22 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DirectionalBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.DirectionalPlaceContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.TFBlocks;
@@ -28,19 +28,19 @@ import javax.annotation.Nullable;
 //falling blocks dont work well with bugs, so I made this
 public class CicadaShotEntity extends TFThrowableEntity {
 
-    public CicadaShotEntity(EntityType<? extends CicadaShotEntity> type, World world) {
+    public CicadaShotEntity(EntityType<? extends CicadaShotEntity> type, Level world) {
         super(type, world);
     }
 
-    public CicadaShotEntity(World worldIn, @Nullable LivingEntity living, double x, double y, double z) {
+    public CicadaShotEntity(Level worldIn, @Nullable LivingEntity living, double x, double y, double z) {
         super(TFEntities.cicada_shot, worldIn);
-        float yaw = living != null ? living.rotationYaw : 0;
-        float pitch = living !=null ? living.rotationPitch : 0;
-        this.setLocationAndAngles(living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ(), yaw, pitch);
-        this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-        setMotion(x, y, z);
-        setShooter(living);
-        Vector3d motion = getMotion();
+        float yaw = living != null ? living.yRot : 0;
+        float pitch = living !=null ? living.xRot : 0;
+        this.moveTo(living.getX(), living.getY() + living.getEyeHeight(), living.getZ(), yaw, pitch);
+        this.setPos(this.getX(), this.getY(), this.getZ());
+        setDeltaMovement(x, y, z);
+        setOwner(living);
+        Vec3 motion = getDeltaMovement();
         this.shoot(motion.x, motion.y, motion.z, 2*1.5F, 1.0F);
     }
 
@@ -57,56 +57,56 @@ public class CicadaShotEntity extends TFThrowableEntity {
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return true;
     }
 
     @Override
-    public float getCollisionBorderSize() {
+    public float getPickRadius() {
         return 1.0F;
     }
 
     @Override
-    protected float getGravityVelocity() {
+    protected float getGravity() {
         return 0.03F;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void handleStatusUpdate(byte id) {
+    public void handleEntityEvent(byte id) {
         if (id == 3) {
             for (int i = 0; i < 8; ++i) {
-                this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, TFBlocks.cicada.get().getDefaultState()), false, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, TFBlocks.cicada.get().defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         } else {
-            super.handleStatusUpdate(id);
+            super.handleEntityEvent(id);
         }
     }
 
     @Override
-    protected void onImpact(RayTraceResult ray) {
-        if (!world.isRemote) {
-            if (ray instanceof BlockRayTraceResult) {
-                BlockRayTraceResult blockray = (BlockRayTraceResult) ray;
-                BlockPos pos = blockray.getPos().offset(blockray.getFace());
-                BlockState currentState = world.getBlockState(pos);
+    protected void onHit(HitResult ray) {
+        if (!level.isClientSide) {
+            if (ray instanceof BlockHitResult) {
+                BlockHitResult blockray = (BlockHitResult) ray;
+                BlockPos pos = blockray.getBlockPos().relative(blockray.getDirection());
+                BlockState currentState = level.getBlockState(pos);
 
-                DirectionalPlaceContext context = new DirectionalPlaceContext(world, pos, blockray.getFace(), ItemStack.EMPTY, blockray.getFace().getOpposite());
-                if (currentState.isReplaceable(context)) {
-                    world.setBlockState(pos, TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, ((BlockRayTraceResult) ray).getFace()));
+                DirectionalPlaceContext context = new DirectionalPlaceContext(level, pos, blockray.getDirection(), ItemStack.EMPTY, blockray.getDirection().getOpposite());
+                if (currentState.canBeReplaced(context)) {
+                    level.setBlockAndUpdate(pos, TFBlocks.cicada.get().defaultBlockState().setValue(DirectionalBlock.FACING, ((BlockHitResult) ray).getDirection()));
                 } else {
-                    ItemEntity squish = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ());
-                    squish.entityDropItem(Items.GRAY_DYE);
+                    ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ());
+                    squish.spawnAtLocation(Items.GRAY_DYE);
                 }
             }
 
-            if (ray instanceof EntityRayTraceResult) {
-                if (((EntityRayTraceResult)ray).getEntity() != null) {
-                    ((EntityRayTraceResult)ray).getEntity().attackEntityFrom(new IndirectEntityDamageSource("cicada", this, null), 2);
+            if (ray instanceof EntityHitResult) {
+                if (((EntityHitResult)ray).getEntity() != null) {
+                    ((EntityHitResult)ray).getEntity().hurt(new IndirectEntityDamageSource("cicada", this, null), 2);
                 }
             }
 
-            this.world.setEntityState(this, (byte) 3);
+            this.level.broadcastEntityEvent(this, (byte) 3);
             this.remove();
         }
     }

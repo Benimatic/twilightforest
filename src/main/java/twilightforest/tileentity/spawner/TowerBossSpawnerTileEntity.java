@@ -1,6 +1,6 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.UrGhastEntity;
 import twilightforest.tileentity.TFTileEntities;
@@ -13,7 +13,7 @@ public class TowerBossSpawnerTileEntity extends BossSpawnerTileEntity<UrGhastEnt
 
 	@Override
 	public boolean anyPlayerInRange() {
-		PlayerEntity closestPlayer = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.getPosY() > pos.getY() - 4;
+		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);
+		return closestPlayer != null && closestPlayer.getY() > worldPosition.getY() - 4;
 	}
 }

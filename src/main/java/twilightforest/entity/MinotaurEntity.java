@@ -1,25 +1,25 @@
 package twilightforest.entity;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.ChargeAttackGoal;
 import twilightforest.entity.boss.MinoshroomEntity;
@@ -28,78 +28,90 @@ import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
-public class MinotaurEntity extends MonsterEntity implements ITFCharger {
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-	private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(MinotaurEntity.class, DataSerializers.BOOLEAN);
+public class MinotaurEntity extends Monster implements ITFCharger {
 
-	public MinotaurEntity(EntityType<? extends MinotaurEntity> type, World world) {
+	private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(MinotaurEntity.class, EntityDataSerializers.BOOLEAN);
+
+	public MinotaurEntity(EntityType<? extends MinotaurEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new ChargeAttackGoal(this, 1.5F, this instanceof MinoshroomEntity));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
-		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, 30.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.25D);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(CHARGING, false);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(CHARGING, false);
 	}
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
-		ILivingEntityData data = super.onInitialSpawn(worldIn, difficulty, reason, livingdata, dataTag);
-		this.setEquipmentBasedOnDifficulty(difficulty);
-		this.setEnchantmentBasedOnDifficulty(difficulty);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
+		SpawnGroupData data = super.finalizeSpawn(worldIn, difficulty, reason, livingdata, dataTag);
+		this.populateDefaultEquipmentSlots(difficulty);
+		this.populateDefaultEquipmentEnchantments(difficulty);
 		return data;
 	}
 
 	@Override
-	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		int random = this.rand.nextInt(10);
+	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+		int random = this.random.nextInt(10);
 
-		float additionalDiff = difficulty.getAdditionalDifficulty() + 1;
+		float additionalDiff = difficulty.getEffectiveDifficulty() + 1;
 
 		int result = (int) (random / additionalDiff);
 
 		if (result == 0)
-			this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.minotaur_axe_gold.get()));
+			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe_gold.get()));
 		else
-			this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
+			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}
 
 	@Override
 	public boolean isCharging() {
-		return dataManager.get(CHARGING);
+		return entityData.get(CHARGING);
 	}
 
 	@Override
 	public void setCharging(boolean flag) {
-		dataManager.set(CHARGING, flag);
+		entityData.set(CHARGING, flag);
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entity) {
-		entity.attackEntityFrom(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		boolean success = super.attackEntityAsMob(entity);
+	public boolean doHurtTarget(Entity entity) {
+		entity.hurt(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		boolean success = super.doHurtTarget(entity);
 		if (success && this.isCharging()) {
-			entity.attackEntityFrom(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-			entity.addVelocity(0, 0.4, 0);
+			entity.hurt(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+			entity.push(0, 0.4, 0);
 			playSound(TFSounds.MINOTAUR_ATTACK, 1.0F, 1.0F);
 		}
 
@@ -107,11 +119,11 @@ public class MinotaurEntity extends MonsterEntity implements ITFCharger {
 	}
 
 	@Override
-	public void livingTick() {
-		super.livingTick();
+	public void aiStep() {
+		super.aiStep();
 
 		if (isCharging()) {
-			this.limbSwingAmount += 0.6;
+			this.animationSpeed += 0.6;
 		}
 	}
 
@@ -136,8 +148,8 @@ public class MinotaurEntity extends MonsterEntity implements ITFCharger {
 	}
 
 	@Override
-	protected float getSoundPitch() {
-		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.7F;
+	protected float getVoicePitch() {
+		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.7F;
 	}
 
 }

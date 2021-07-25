@@ -1,14 +1,14 @@
 package twilightforest.client.model.item;
 
 import com.google.common.collect.Maps;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.ItemOverrideList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 
@@ -18,17 +18,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class FullbrightBakedModel implements IBakedModel {
+public class FullbrightBakedModel implements BakedModel {
 
-	private final IBakedModel delegate;
+	private final BakedModel delegate;
 	private Map<Direction, List<BakedQuad>> cachedQuads = Maps.newHashMap();
 
-	public FullbrightBakedModel(IBakedModel delegate) {
+	public FullbrightBakedModel(BakedModel delegate) {
 		this.delegate = delegate;
 	}
 
 	@Override
-	public IBakedModel getBakedModel() {
+	public BakedModel getBakedModel() {
 		return delegate;
 	}
 
@@ -49,8 +49,8 @@ public class FullbrightBakedModel implements IBakedModel {
 	}
 
 	@Override
-	public boolean isAmbientOcclusion() {
-		return delegate.isAmbientOcclusion();
+	public boolean useAmbientOcclusion() {
+		return delegate.useAmbientOcclusion();
 	}
 
 	@Override
@@ -59,32 +59,32 @@ public class FullbrightBakedModel implements IBakedModel {
 	}
 
 	@Override
-	public boolean isSideLit() {
-		return delegate.isSideLit();
+	public boolean usesBlockLight() {
+		return delegate.usesBlockLight();
 	}
 
 	@Override
-	public boolean isBuiltInRenderer() {
-		return delegate.isBuiltInRenderer();
+	public boolean isCustomRenderer() {
+		return delegate.isCustomRenderer();
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return delegate.getParticleTexture();
+	public TextureAtlasSprite getParticleIcon() {
+		return delegate.getParticleIcon();
 	}
 
 	@Override
-	public ItemCameraTransforms getItemCameraTransforms() {
-		return delegate.getItemCameraTransforms();
+	public ItemTransforms getTransforms() {
+		return delegate.getTransforms();
 	}
 
 	@Override
-	public ItemOverrideList getOverrides() {
+	public ItemOverrides getOverrides() {
 		return delegate.getOverrides();
 	}
 
 	@Override
-	public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
+	public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack mat) {
 		return net.minecraftforge.client.ForgeHooksClient.handlePerspective(this, cameraTransformType, mat);
 	}
 }

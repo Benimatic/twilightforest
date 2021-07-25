@@ -1,11 +1,11 @@
 package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Difficulty;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
@@ -17,6 +17,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 
 /**
  * This class holds the state data for a single hydra head
@@ -138,7 +144,7 @@ public class HydraHeadContainer {
 		this.respawnCounter = -1;
 
 		headEntity = new HydraHeadEntity(hydra);
-		headEntity.setPosition(hydra.getPosX(), hydra.getPosY(), hydra.getPosZ());
+		headEntity.setPos(hydra.getX(), hydra.getY(), hydra.getZ());
 
 		necka = new HydraNeckEntity(this.headEntity);
 		neckb = new HydraNeckEntity(this.headEntity);
@@ -329,13 +335,13 @@ public class HydraHeadContainer {
 
 		if (headEntity != null) {
 			// make sure this is set up
-			if(isActive() && headEntity.size.width > 0)
+			if(isActive() && headEntity.dimensions.width > 0)
 				headEntity.activate();
-			else if(!isActive() && headEntity.size.width != 0)
+			else if(!isActive() && headEntity.dimensions.width != 0)
 				headEntity.deactivate();
 
 			// only actually do these things on the server
-			if (!hydra.world.isRemote) {
+			if (!hydra.level.isClientSide) {
 				advanceRespawnCounter();
 				advanceHeadState();
 				setHeadPosition();
@@ -404,10 +410,10 @@ public class HydraHeadContainer {
 
 	private void doExplosionOn(HydraPartEntity part, boolean large) {
 		for (int i = 0; i < 10; ++i) {
-			double vx = part.world.rand.nextGaussian() * 0.02D;
-			double vy = part.world.rand.nextGaussian() * 0.02D;
-			double vz = part.world.rand.nextGaussian() * 0.02D;
-			part.world.addParticle((part.world.rand.nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getPosX() + part.world.rand.nextFloat() * part.getWidth() * 2.0F - part.getWidth(), part.getPosY() + part.world.rand.nextFloat() * part.getHeight(), part.getPosZ() + part.world.rand.nextFloat() * part.getWidth() * 2.0F - part.getWidth(), vx, vy, vz);
+			double vx = part.level.random.nextGaussian() * 0.02D;
+			double vy = part.level.random.nextGaussian() * 0.02D;
+			double vz = part.level.random.nextGaussian() * 0.02D;
+			part.level.addParticle((part.level.random.nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getX() + part.level.random.nextFloat() * part.getBbWidth() * 2.0F - part.getBbWidth(), part.getY() + part.level.random.nextFloat() * part.getBbHeight(), part.getZ() + part.level.random.nextFloat() * part.getBbWidth() * 2.0F - part.getBbWidth(), vx, vy, vz);
 		}
 	}
 
@@ -446,7 +452,7 @@ public class HydraHeadContainer {
 	private void setHeadFacing() {
 		if (this.currentState == State.BITE_READY) {
 			// face target within certain constraints
-			this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
+			this.faceEntity(targetEntity, 5F, hydra.getMaxHeadXRot());
 
 			// head 0 and 1 max yaw
 			float biteMaxYaw = -60;
@@ -458,44 +464,44 @@ public class HydraHeadContainer {
 				biteMinYaw = 90;
 			}
 
-			float yawOffOffset = MathHelper.wrapDegrees(headEntity.rotationYaw - hydra.renderYawOffset);
+			float yawOffOffset = Mth.wrapDegrees(headEntity.yRot - hydra.yBodyRot);
 
 			if (yawOffOffset > biteMaxYaw) {
-				headEntity.rotationYaw = hydra.renderYawOffset + biteMaxYaw;
+				headEntity.yRot = hydra.yBodyRot + biteMaxYaw;
 			}
 			if (yawOffOffset < biteMinYaw) {
-				headEntity.rotationYaw = hydra.renderYawOffset + biteMinYaw;
+				headEntity.yRot = hydra.yBodyRot + biteMinYaw;
 			}
 
 			// make the target vector be a point off in the distance in the direction we're already facing
-			Vector3d look = this.headEntity.getLookVec();
+			Vec3 look = this.headEntity.getLookAngle();
 			double distance = 16.0D;
-			this.targetX = headEntity.getPosX() + look.x * distance;
-			this.targetY = headEntity.getPosY() + 1.5 + look.y * distance;
-			this.targetZ = headEntity.getPosZ() + look.z * distance;
+			this.targetX = headEntity.getX() + look.x * distance;
+			this.targetY = headEntity.getY() + 1.5 + look.y * distance;
+			this.targetZ = headEntity.getZ() + look.z * distance;
 
 		} else if (this.currentState == State.BITING || this.currentState == State.BITE_ENDING) {
-			this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
-			headEntity.rotationPitch += Math.PI / 4;
+			this.faceEntity(targetEntity, 5F, hydra.getMaxHeadXRot());
+			headEntity.xRot += Math.PI / 4;
 
 		} else if (this.currentState == State.ROAR_RAWR) {
 			// keep facing target vector, don't move
-			this.faceVec(this.targetX, this.targetY, this.targetZ, 10F, hydra.getVerticalFaceSpeed());
+			this.faceVec(this.targetX, this.targetY, this.targetZ, 10F, hydra.getMaxHeadXRot());
 
 		} else if (this.currentState == State.FLAMING || this.currentState == State.FLAME_BEGINNING) {
 			// move flame breath slowly towards the player
 			moveTargetCoordsTowardsTargetEntity(FLAME_BREATH_TRACKING_SPEED);
 			// face the target coordinates
-			this.faceVec(this.targetX, this.targetY, this.targetZ, 5F, hydra.getVerticalFaceSpeed());
+			this.faceVec(this.targetX, this.targetY, this.targetZ, 5F, hydra.getMaxHeadXRot());
 
 		} else {
 			if (this.isActive()) {
 				if (this.targetEntity != null) {
 					// watch the target entity
-					this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
+					this.faceEntity(targetEntity, 5F, hydra.getMaxHeadXRot());
 				} else {
 					// while idle, look where the body is looking?
-					faceIdle(1.5F, hydra.getVerticalFaceSpeed());
+					faceIdle(1.5F, hydra.getMaxHeadXRot());
 				}
 			}
 		}
@@ -503,7 +509,7 @@ public class HydraHeadContainer {
 
 	private void moveTargetCoordsTowardsTargetEntity(double distance) {
 		if (this.targetEntity != null) {
-			Vector3d vect = new Vector3d(this.targetEntity.getPosX() - this.targetX, this.targetEntity.getPosY() - this.targetY, this.targetEntity.getPosZ() - this.targetZ);
+			Vec3 vect = new Vec3(this.targetEntity.getX() - this.targetX, this.targetEntity.getY() - this.targetY, this.targetEntity.getZ() - this.targetZ);
 
 			vect = vect.normalize();
 
@@ -514,104 +520,104 @@ public class HydraHeadContainer {
 	}
 
 	private void addMouthParticles() {
-		Vector3d vector = headEntity.getLookVec();
+		Vec3 vector = headEntity.getLookAngle();
 
 		double dist = 3.5;
-		double px = headEntity.getPosX() + vector.x * dist;
-		double py = headEntity.getPosY() + 1 + vector.y * dist;
-		double pz = headEntity.getPosZ() + vector.z * dist;
+		double px = headEntity.getX() + vector.x * dist;
+		double py = headEntity.getY() + 1 + vector.y * dist;
+		double pz = headEntity.getZ() + vector.z * dist;
 
 		if (headEntity.getState() == State.FLAME_BEGINNING) {
-			headEntity.world.addParticle(ParticleTypes.FLAME, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
-			headEntity.world.addParticle(ParticleTypes.SMOKE, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addParticle(ParticleTypes.FLAME, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addParticle(ParticleTypes.SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.FLAMING) {
-			Vector3d look = headEntity.getLookVec();
+			Vec3 look = headEntity.getLookAngle();
 			for (int i = 0; i < 5; i++) {
 				double dx = look.x;
 				double dy = look.y;
 				double dz = look.z;
 
-				double spread = 5 + headEntity.world.rand.nextDouble() * 2.5;
-				double velocity = 1.0 + headEntity.world.rand.nextDouble();
+				double spread = 5 + headEntity.level.random.nextDouble() * 2.5;
+				double velocity = 1.0 + headEntity.level.random.nextDouble();
 
 				// spread flame
-				dx += headEntity.world.rand.nextGaussian() * 0.007499999832361937D * spread;
-				dy += headEntity.world.rand.nextGaussian() * 0.007499999832361937D * spread;
-				dz += headEntity.world.rand.nextGaussian() * 0.007499999832361937D * spread;
+				dx += headEntity.level.random.nextGaussian() * 0.007499999832361937D * spread;
+				dy += headEntity.level.random.nextGaussian() * 0.007499999832361937D * spread;
+				dz += headEntity.level.random.nextGaussian() * 0.007499999832361937D * spread;
 				dx *= velocity;
 				dy *= velocity;
 				dz *= velocity;
 
-				headEntity.world.addParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
+				headEntity.level.addParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 
 		if (headEntity.getState() == State.BITE_BEGINNING || headEntity.getState() == State.BITE_READY) {
-			headEntity.world.addParticle(ParticleTypes.SPLASH, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addParticle(ParticleTypes.SPLASH, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.MORTAR_BEGINNING) {
-			headEntity.world.addParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
 	private void playSounds() {
-		if (headEntity.getState() == State.FLAMING && headEntity.ticksExisted % 5 == 0) {
+		if (headEntity.getState() == State.FLAMING && headEntity.tickCount % 5 == 0) {
 			// fire breathing!
-			headEntity.playSound(TFSounds.HYDRA_SHOOT, 0.5F + headEntity.world.rand.nextFloat(), headEntity.world.rand.nextFloat() * 0.7F + 0.3F);
+			headEntity.playSound(TFSounds.HYDRA_SHOOT, 0.5F + headEntity.level.random.nextFloat(), headEntity.level.random.nextFloat() * 0.7F + 0.3F);
 		}
 		if (headEntity.getState() == State.ROAR_RAWR) {
-			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.world.rand.nextFloat() * 0.3F + 0.7F);
+			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
 		}
 		if (headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
-			headEntity.playSound(TFSounds.HYDRA_WARN, 2.0F, headEntity.world.rand.nextFloat() * 0.3F + 0.7F);
+			headEntity.playSound(TFSounds.HYDRA_WARN, 2.0F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
 		}
 	}
 
 	protected void setNeckPosition() {
 		// set neck positions
-		Vector3d vector = null;
+		Vec3 vector = null;
 		float neckRotation = 0;
 
 		if (headNum == 0) {
-			vector = new Vector3d(0, 3, -1);
+			vector = new Vec3(0, 3, -1);
 			neckRotation = 0;
 		}
 		if (headNum == 1) {
-			vector = new Vector3d(-1, 3, 3);
+			vector = new Vec3(-1, 3, 3);
 			neckRotation = 90;
 		}
 		if (headNum == 2) {
-			vector = new Vector3d(1, 3, 3);
+			vector = new Vec3(1, 3, 3);
 			neckRotation = -90;
 		}
 		if (headNum == 3) {
-			vector = new Vector3d(-1, 3, 3);
+			vector = new Vec3(-1, 3, 3);
 			neckRotation = 135;
 		}
 		if (headNum == 4) {
-			vector = new Vector3d(1, 3, 3);
+			vector = new Vec3(1, 3, 3);
 			neckRotation = -135;
 		}
 
 		if (headNum == 5) {
-			vector = new Vector3d(-1, 3, 5);
+			vector = new Vec3(-1, 3, 5);
 			neckRotation = 135;
 		}
 		if (headNum == 6) {
-			vector = new Vector3d(1, 3, 5);
+			vector = new Vec3(1, 3, 5);
 			neckRotation = -135;
 		}
 
-		vector = vector.rotateYaw((-(hydra.renderYawOffset + neckRotation) * 3.141593F) / 180F);
-		setNeckPosition(hydra.getPosX() + vector.x, hydra.getPosY() + vector.y, hydra.getPosZ() + vector.z, hydra.renderYawOffset, 0);
+		vector = vector.yRot((-(hydra.yBodyRot + neckRotation) * 3.141593F) / 180F);
+		setNeckPosition(hydra.getX() + vector.x, hydra.getY() + vector.y, hydra.getZ() + vector.z, hydra.yBodyRot, 0);
 	}
 
 	protected void setHeadPosition() {
 		// set head positions
-		Vector3d vector;
+		Vec3 vector;
 		double dx, dy, dz;
 
 		// head1 is above
@@ -627,22 +633,22 @@ public class HydraHeadContainer {
 		float periodX = (headNum == 0 || headNum == 3) ? 20F : ((headNum == 1 || headNum == 4) ? 5.0f : 7.0F);
 		float periodY = (headNum == 0 || headNum == 4) ? 10F : ((headNum == 1 || headNum == 6) ? 6.0f : 5.0F);
 
-		float xSwing = MathHelper.sin(hydra.ticksExisted / periodX) * 3.0F;
-		float ySwing = MathHelper.sin(hydra.ticksExisted / periodY) * 5.0F;
+		float xSwing = Mth.sin(hydra.tickCount / periodX) * 3.0F;
+		float ySwing = Mth.sin(hydra.tickCount / periodY) * 5.0F;
 
 		if (!this.isActive()) {
 			xSwing = ySwing = 0;
 		}
 
-		vector = new Vector3d(0, 0, neckLength); // -53 = 3.3125
-		vector = vector.rotatePitch((xRotation * 3.141593F + xSwing) / 180F);
-		vector = vector.rotateYaw((-(hydra.renderYawOffset + yRotation + ySwing) * 3.141593F) / 180F);
+		vector = new Vec3(0, 0, neckLength); // -53 = 3.3125
+		vector = vector.xRot((xRotation * 3.141593F + xSwing) / 180F);
+		vector = vector.yRot((-(hydra.yBodyRot + yRotation + ySwing) * 3.141593F) / 180F);
 
-		dx = hydra.getPosX() + vector.x;
-		dy = hydra.getPosY() + vector.y + 3;
-		dz = hydra.getPosZ() + vector.z;
+		dx = hydra.getX() + vector.x;
+		dy = hydra.getY() + vector.y + 3;
+		dz = hydra.getZ() + vector.z;
 
-		headEntity.setPosition(dx, dy, dz);
+		headEntity.setPos(dx, dy, dz);
 		headEntity.setMouthOpen(getCurrentMouthOpen());
 	}
 
@@ -653,26 +659,26 @@ public class HydraHeadContainer {
 				// stop hurting yourself!
 				this.endCurrentAction();
 			} else */{
-				HydraMortarHead mortar = new HydraMortarHead(TFEntities.hydra_mortar, headEntity.world, headEntity);
+				HydraMortarHead mortar = new HydraMortarHead(TFEntities.hydra_mortar, headEntity.level, headEntity);
 
 				// launch blasting mortars if the player is hiding
 				if (this.targetEntity != null && !headEntity.canEntityBeSeen(this.targetEntity)) {
 					mortar.setToBlasting();
 				}
 
-				headEntity.world.playEvent(1016, new BlockPos(headEntity.getPosition()), 0);
+				headEntity.level.levelEvent(1016, new BlockPos(headEntity.blockPosition()), 0);
 
-				headEntity.world.addEntity(mortar);
+				headEntity.level.addFreshEntity(mortar);
 			}
 		}
 		if (headEntity.getState() == State.BITING) {
 			// damage nearby things
-			List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getBoundingBox().grow(0.0, 1.0, 0.0));
+			List<Entity> nearbyList = headEntity.level.getEntities(headEntity, headEntity.getBoundingBox().inflate(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
 				if (nearby instanceof LivingEntity && nearby != hydra) {
 					// bite it!
-					nearby.attackEntityFrom(TFDamageSources.HYDRA_BITE, BITE_DAMAGE);
+					nearby.hurt(TFDamageSources.HYDRA_BITE, BITE_DAMAGE);
 				}
 			}
 		}
@@ -681,15 +687,15 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != headEntity.getParent() && (!(target instanceof HydraPartEntity) || ((HydraPartEntity) target).getParent() != headEntity.getParent())) {
-				if (!target.isImmuneToFire() && target.attackEntityFrom(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
-					target.setFire(FLAME_BURN_FACTOR);
+				if (!target.fireImmune() && target.hurt(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
+					target.setSecondsOnFire(FLAME_BURN_FACTOR);
 				}
 			}
 		}
 	}
 
 	private void setDifficultyVariables() {
-		if (this.hydra.world.getDifficulty() != Difficulty.HARD) {
+		if (this.hydra.level.getDifficulty() != Difficulty.HARD) {
 			HydraHeadContainer.FLAME_BREATH_TRACKING_SPEED = 0.04D;
 		} else {
 			// hard mode!
@@ -703,23 +709,23 @@ public class HydraHeadContainer {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-		Vector3d srcVec = new Vector3d(headEntity.getPosX(), headEntity.getPosY() + 1.0, headEntity.getPosZ());
-		Vector3d lookVec = headEntity.getLook(1.0F);
-		BlockRayTraceResult raytrace = headEntity.world.rayTraceBlocks(new RayTraceContext(srcVec, srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, headEntity));
-		BlockPos hitpos = raytrace != null ? raytrace.getPos() : null;
-		double rx = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getPosX() - hitpos.getX()));
-		double ry = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getPosY() - hitpos.getY()));
-		double rz = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getPosZ() - hitpos.getZ()));
-		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3 srcVec = new Vec3(headEntity.getX(), headEntity.getY() + 1.0, headEntity.getZ());
+		Vec3 lookVec = headEntity.getViewVector(1.0F);
+		BlockHitResult raytrace = headEntity.level.clip(new ClipContext(srcVec, srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range), ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, headEntity));
+		BlockPos hitpos = raytrace != null ? raytrace.getBlockPos() : null;
+		double rx = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getX() - hitpos.getX()));
+		double ry = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getY() - hitpos.getY()));
+		double rz = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getZ() - hitpos.getZ()));
+		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 3.0F;
-		List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getBoundingBox().offset(lookVec.x * rx, lookVec.y * ry, lookVec.z * rz).grow(var9, var9, var9));
+		List<Entity> possibleList = headEntity.level.getEntities(headEntity, headEntity.getBoundingBox().move(lookVec.x * rx, lookVec.y * ry, lookVec.z * rz).inflate(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
-			if (possibleEntity.canBeCollidedWith() && possibleEntity != headEntity && possibleEntity != necka && possibleEntity != neckb && possibleEntity != neckc) {
-				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
-				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
+			if (possibleEntity.isPickable() && possibleEntity != headEntity && possibleEntity != necka && possibleEntity != neckb && possibleEntity != neckc) {
+				float borderSize = possibleEntity.getPickRadius();
+				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
+				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -752,7 +758,7 @@ public class HydraHeadContainer {
 		float curLength = stateNeckLength[this.headNum].get(currentState);
 		float progress = (float) ticksProgress / (float) ticksNeeded;
 
-		return (float) MathHelper.clampedLerp(prevLength, curLength, progress);
+		return (float) Mth.clampedLerp(prevLength, curLength, progress);
 	}
 
 	private float getCurrentHeadXRotation() {
@@ -760,7 +766,7 @@ public class HydraHeadContainer {
 		float currentRotation = stateXRotations[this.headNum].get(currentState);
 		float progress = (float) ticksProgress / (float) ticksNeeded;
 
-		return (float) MathHelper.clampedLerp(prevRotation, currentRotation, progress);
+		return (float) Mth.clampedLerp(prevRotation, currentRotation, progress);
 	}
 
 	private float getCurrentHeadYRotation() {
@@ -768,7 +774,7 @@ public class HydraHeadContainer {
 		float currentRotation = stateYRotations[this.headNum].get(currentState);
 		float progress = (float) ticksProgress / (float) ticksNeeded;
 
-		return (float) MathHelper.clampedLerp(prevRotation, currentRotation, progress);
+		return (float) Mth.clampedLerp(prevRotation, currentRotation, progress);
 	}
 
 	protected float getCurrentMouthOpen() {
@@ -776,7 +782,7 @@ public class HydraHeadContainer {
 		float curOpen = stateMouthOpen[this.headNum].get(currentState);
 		float progress = (float) ticksProgress / (float) ticksNeeded;
 
-		return (float) MathHelper.clampedLerp(prevOpen, curOpen, progress);
+		return (float) Mth.clampedLerp(prevOpen, curOpen, progress);
 	}
 
 	/**
@@ -784,11 +790,11 @@ public class HydraHeadContainer {
 	 */
 	protected void setNeckPosition(double startX, double startY, double startZ, float startYaw, float startPitch) {
 
-		double endX = headEntity.getPosX();
-		double endY = headEntity.getPosY();
-		double endZ = headEntity.getPosZ();
-		float endYaw = headEntity.rotationYaw;
-		float endPitch = headEntity.rotationPitch;
+		double endX = headEntity.getX();
+		double endY = headEntity.getY();
+		double endZ = headEntity.getZ();
+		float endYaw = headEntity.yRot;
+		float endPitch = headEntity.xRot;
 
 		for (; startYaw - endYaw < -180F; endYaw -= 360F) {
 		}
@@ -802,13 +808,13 @@ public class HydraHeadContainer {
 		// translate the end position back 1 unit
 		if (endPitch > 0) {
 			// if we are looking down, don't raise the first neck position, it looks weird
-			Vector3d vector = new Vector3d(0, 0, -1.0).rotateYaw((-endYaw * 3.141593F) / 180F);
+			Vec3 vector = new Vec3(0, 0, -1.0).yRot((-endYaw * 3.141593F) / 180F);
 			endX += vector.x;
 			endY += vector.y;
 			endZ += vector.z;
 		} else {
 			// but if we are looking up, lower it or it goes through the crest
-			Vector3d vector = headEntity.getLookVec();
+			Vec3 vector = headEntity.getLookAngle();
 			float dist = 1.0f;
 
 			endX -= vector.x * dist;
@@ -820,38 +826,38 @@ public class HydraHeadContainer {
 		float factor;
 
 		factor = 0.00F;
-		necka.setPosition(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		necka.rotationYaw = endYaw + (startYaw - endYaw) * factor;
-		necka.rotationPitch = endPitch + (startPitch - endPitch) * factor;
+		necka.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		necka.yRot = endYaw + (startYaw - endYaw) * factor;
+		necka.xRot = endPitch + (startPitch - endPitch) * factor;
 
 		factor = 0.25F;
-		neckb.setPosition(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckb.rotationYaw = endYaw + (startYaw - endYaw) * factor;
-		neckb.rotationPitch = endPitch + (startPitch - endPitch) * factor;
+		neckb.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		neckb.yRot = endYaw + (startYaw - endYaw) * factor;
+		neckb.xRot = endPitch + (startPitch - endPitch) * factor;
 
 		factor = 0.50F;
-		neckc.setPosition(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckc.rotationYaw = endYaw + (startYaw - endYaw) * factor;
-		neckc.rotationPitch = endPitch + (startPitch - endPitch) * factor;
+		neckc.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		neckc.yRot = endYaw + (startYaw - endYaw) * factor;
+		neckc.xRot = endPitch + (startPitch - endPitch) * factor;
 
 		factor = 0.75F;
-		neckd.setPosition(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckd.rotationYaw = endYaw + (startYaw - endYaw) * factor;
-		neckd.rotationPitch = endPitch + (startPitch - endPitch) * factor;
+		neckd.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		neckd.yRot = endYaw + (startYaw - endYaw) * factor;
+		neckd.xRot = endPitch + (startPitch - endPitch) * factor;
 
 		factor = 1.0F;
-		necke.setPosition(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		necke.rotationYaw = endYaw + (startYaw - endYaw) * factor;
-		necke.rotationPitch = endPitch + (startPitch - endPitch) * factor;
+		necke.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		necke.yRot = endYaw + (startYaw - endYaw) * factor;
+		necke.xRot = endPitch + (startPitch - endPitch) * factor;
 	}
 
 	private void faceIdle(float yawConstraint, float pitchConstraint) {
-		float angle = (((hydra.rotationYaw) * 3.141593F) / 180F);
+		float angle = (((hydra.yRot) * 3.141593F) / 180F);
 		float distance = 30.0F;
 
-		double dx = hydra.getPosX() - MathHelper.sin(angle) * distance;
-		double dy = hydra.getPosY() + 3.0;
-		double dz = hydra.getPosZ() + MathHelper.cos(angle) * distance;
+		double dx = hydra.getX() - Mth.sin(angle) * distance;
+		double dy = hydra.getY() + 3.0;
+		double dz = hydra.getZ() + Mth.cos(angle) * distance;
 
 		faceVec(dx, dy, dz, yawConstraint, pitchConstraint);
 	}
@@ -860,33 +866,33 @@ public class HydraHeadContainer {
 		double yTarget;
 		if (entity instanceof LivingEntity) {
 			LivingEntity entityliving = (LivingEntity) entity;
-			yTarget = entityliving.getPosY() + entityliving.getEyeHeight();
+			yTarget = entityliving.getY() + entityliving.getEyeHeight();
 		} else {
 			yTarget = (entity.getBoundingBox().minY + entity.getBoundingBox().maxY) / 2D;
 		}
 
-		faceVec(entity.getPosX(), yTarget, entity.getPosZ(), yawConstraint, pitchConstraint);
+		faceVec(entity.getX(), yTarget, entity.getZ(), yawConstraint, pitchConstraint);
 
 		// let's just set the target vector here
-		this.targetX = entity.getPosX();
-		this.targetY = entity.getPosY();
-		this.targetZ = entity.getPosZ();
+		this.targetX = entity.getX();
+		this.targetY = entity.getY();
+		this.targetZ = entity.getZ();
 	}
 
 	private void faceVec(double x, double y, double z, float yawConstraint, float pitchConstraint) {
-		double xOffset = x - headEntity.getPosX();
-		double zOffset = z - headEntity.getPosZ();
-		double yOffset = (headEntity.getPosY() + 1.0) - y;
+		double xOffset = x - headEntity.getX();
+		double zOffset = z - headEntity.getZ();
+		double yOffset = (headEntity.getY() + 1.0) - y;
 
-		double distance = MathHelper.sqrt(xOffset * xOffset + zOffset * zOffset);
+		double distance = Mth.sqrt(xOffset * xOffset + zOffset * zOffset);
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
-		headEntity.rotationPitch = -updateRotation(headEntity.rotationPitch, zdAngle, pitchConstraint);
-		headEntity.rotationYaw = updateRotation(headEntity.rotationYaw, xyAngle, yawConstraint);
+		headEntity.xRot = -updateRotation(headEntity.xRot, zdAngle, pitchConstraint);
+		headEntity.yRot = updateRotation(headEntity.yRot, xyAngle, yawConstraint);
 	}
 
 	private float updateRotation(float current, float intended, float increment) {
-		float delta = MathHelper.wrapDegrees(intended - current);
+		float delta = Mth.wrapDegrees(intended - current);
 
 		if (delta > increment) {
 			delta = increment;
@@ -896,7 +902,7 @@ public class HydraHeadContainer {
 			delta = -increment;
 		}
 
-		return MathHelper.wrapDegrees(current + delta);
+		return Mth.wrapDegrees(current + delta);
 	}
 
 	public void setTargetEntity(@Nullable Entity targetEntity) {

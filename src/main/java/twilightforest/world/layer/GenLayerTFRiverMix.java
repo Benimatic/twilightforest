@@ -1,15 +1,15 @@
 package twilightforest.world.layer;
 
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.area.IArea;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer2;
-import net.minecraft.world.gen.layer.traits.IDimOffset0Transformer;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.newbiome.context.Context;
+import net.minecraft.world.level.newbiome.area.Area;
+import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer2;
+import net.minecraft.world.level.newbiome.layer.traits.DimensionOffset0Transformer;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.TFBiomeProvider;
 
-public enum GenLayerTFRiverMix implements IAreaTransformer2, IDimOffset0Transformer {
+public enum GenLayerTFRiverMix implements AreaTransformer2, DimensionOffset0Transformer {
 
 	INSTANCE;
 
@@ -58,9 +58,9 @@ public enum GenLayerTFRiverMix implements IAreaTransformer2, IDimOffset0Transfor
 
 
 	@Override
-	public int apply(INoiseRandom iNoiseRandom, IArea area1, IArea area2, int val1, int val2) {
-		int biomeInputs = area1.getValue(this.getOffsetX(val1), this.getOffsetZ(val2));
-		int riverInputs = area2.getValue(this.getOffsetX(val1), this.getOffsetZ(val2));
+	public int applyPixel(Context iNoiseRandom, Area area1, Area area2, int val1, int val2) {
+		int biomeInputs = area1.get(this.getParentX(val1), this.getParentY(val2));
+		int riverInputs = area2.get(this.getParentX(val1), this.getParentY(val2));
 
 		int stream = TFBiomeProvider.getBiomeId(BiomeKeys.STREAM, registry);
 

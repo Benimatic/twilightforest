@@ -1,15 +1,15 @@
 package twilightforest.client;
 
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.FoliageColors;
-import net.minecraft.world.GrassColors;
-import net.minecraft.world.biome.BiomeColors;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.FoliageColor;
+import net.minecraft.world.level.GrassColor;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,11 +33,11 @@ public final class ColorHandler {
 
 		BlockColors blockColors = event.getBlockColors();
 
-		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.aurora_block.get());
+		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.aurora_block.get());
 		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			int normalColor = blockColors.getColor(TFBlocks.aurora_block.get().getDefaultState(), worldIn, pos, tintIndex);
+			int normalColor = blockColors.getColor(TFBlocks.aurora_block.get().defaultBlockState(), worldIn, pos, tintIndex);
 
 			int red = (normalColor >> 16) & 255;
 			int blue = normalColor & 255;
@@ -51,7 +51,7 @@ public final class ColorHandler {
 			if (tintIndex > 15) return 0xFFFFFF;
 
 			if (worldIn == null || pos == null) {
-				return FoliageColors.getDefault();
+				return FoliageColor.getDefaultColor();
 			}
 
 			int red = 0;
@@ -61,7 +61,7 @@ public final class ColorHandler {
 			for (int dz = -1; dz <= 1; ++dz) {
 				for (int dx = -1; dx <= 1; ++dx) {
 					//int i2 = worldIn.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos.add(dx, 0, dz));
-					int i2 = BiomeColors.getFoliageColor(worldIn, pos.add(dx, 0, dz));
+					int i2 = BiomeColors.getAverageFoliageColor(worldIn, pos.offset(dx, 0, dz));
 					red += (i2 & 16711680) >> 16;
 					grn += (i2 & 65280) >> 8;
 					blu += i2 & 255;
@@ -70,7 +70,7 @@ public final class ColorHandler {
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 		}, TFBlocks.dark_leaves.get(), TFBlocks.giant_leaves.get());
-		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : blockColors.getColor(Blocks.GRASS.getDefaultState(), worldIn, pos, tintIndex), TFBlocks.smoker.get(), TFBlocks.fire_jet.get());
+		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : blockColors.getColor(Blocks.GRASS.defaultBlockState(), worldIn, pos, tintIndex), TFBlocks.smoker.get(), TFBlocks.fire_jet.get());
 		blockColors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? 2129968 : 7455580, TFBlocks.huge_lilypad.get());
 		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
@@ -191,7 +191,7 @@ public final class ColorHandler {
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
 						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
-						int color = BiomeColors.getFoliageColor(world, pos);
+						int color = BiomeColors.getAverageFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
 						blue += color & 255;
@@ -214,7 +214,7 @@ public final class ColorHandler {
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
 						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
-						int color = BiomeColors.getFoliageColor(world, pos);
+						int color = BiomeColors.getAverageFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
 						blue += color & 255;
@@ -240,7 +240,7 @@ public final class ColorHandler {
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
 						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
-						int color = BiomeColors.getFoliageColor(world, pos);
+						int color = BiomeColors.getAverageFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
 						blue += color & 255;
@@ -265,7 +265,7 @@ public final class ColorHandler {
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
 						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
-						int color = BiomeColors.getFoliageColor(world, pos);
+						int color = BiomeColors.getAverageFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
 						blue += color & 255;
@@ -295,15 +295,15 @@ public final class ColorHandler {
 				return red << 16 | blue << 8 | green;
 			}
 		}, TFBlocks.rainboak_leaves.get());
-		blockColors.register((state, worldIn, pos, tintIndex) -> FoliageColors.getSpruce(), TFBlocks.beanstalk_leaves.get(), TFBlocks.thorn_leaves.get());
+		blockColors.register((state, worldIn, pos, tintIndex) -> FoliageColor.getEvergreenColor(), TFBlocks.beanstalk_leaves.get(), TFBlocks.thorn_leaves.get());
 		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex != 0) {
 				return 0xFFFFFF;
 			} else {
 				if (worldIn != null && pos != null) {
-					return BiomeColors.getFoliageColor(worldIn, pos);
+					return BiomeColors.getAverageFoliageColor(worldIn, pos);
 				} else {
-					return FoliageColors.getDefault();
+					return FoliageColor.getDefaultColor();
 				}
 			}
 		}, TFBlocks.fallen_leaves.get());
@@ -312,13 +312,13 @@ public final class ColorHandler {
 				return 0xFFFFFF;
 			} else {
 				if (worldIn != null && pos != null) {
-					return BiomeColors.getGrassColor(worldIn, pos);
+					return BiomeColors.getAverageGrassColor(worldIn, pos);
 				} else {
-					return GrassColors.get(0.5D, 1.0D);
+					return GrassColor.get(0.5D, 1.0D);
 				}
 			}
 		}, TFBlocks.fiddlehead.get(), TFBlocks.potted_fiddlehead.get());
-		blockColors.register((state, worldIn, pos, tintIndex) -> GrassColors.get(0.5D, 1.0D),
+		blockColors.register((state, worldIn, pos, tintIndex) -> GrassColor.get(0.5D, 1.0D),
 				TFBlocks.twilight_portal_miniature_structure.get(), /*TFBlocks.hedge_maze_miniature_structure.get(), TFBlocks.hollow_hill_miniature_structure.get(), TFBlocks.quest_grove_miniature_structure.get(), TFBlocks.mushroom_tower_miniature_structure.get(),*/ TFBlocks.naga_courtyard_miniature_structure.get(), TFBlocks.lich_tower_miniature_structure.get() //TFBlocks.minotaur_labyrinth_miniature_structure.get(),
 				/*TFBlocks.hydra_lair_miniature_structure.get(), TFBlocks.goblin_stronghold_miniature_structure.get(), TFBlocks.dark_tower_miniature_structure.get(), TFBlocks.yeti_cave_miniature_structure.get(), TFBlocks.aurora_palace_miniature_structure.get(), TFBlocks.troll_cave_cottage_miniature_structure.get(), TFBlocks.final_castle_miniature_structure.get()*/);
 		blockColors.register((state, worldIn, pos, tintIndex) -> {
@@ -364,7 +364,7 @@ public final class ColorHandler {
 		ItemColors itemColors = event.getItemColors();
 		BlockColors blockColors = event.getBlockColors();
 
-		itemColors.register((stack, tintIndex) -> blockColors.getColor(((BlockItem)stack.getItem()).getBlock().getDefaultState(), null, null, tintIndex),
+		itemColors.register((stack, tintIndex) -> blockColors.getColor(((BlockItem)stack.getItem()).getBlock().defaultBlockState(), null, null, tintIndex),
 				TFBlocks.aurora_block.get(), TFBlocks.aurora_pillar.get(), TFBlocks.aurora_slab.get(), TFBlocks.auroralized_glass.get(), TFBlocks.dark_leaves.get(), TFBlocks.giant_leaves.get(), TFBlocks.smoker.get(), TFBlocks.fire_jet.get(),
 				TFBlocks.time_leaves.get(), TFBlocks.transformation_leaves.get(), TFBlocks.mining_leaves.get(), TFBlocks.sorting_leaves.get(), TFBlocks.oak_leaves.get(), TFBlocks.canopy_leaves.get(), TFBlocks.mangrove_leaves.get(), TFBlocks.rainboak_leaves.get(), TFBlocks.thorn_leaves.get(), TFBlocks.beanstalk_leaves.get(),
 				TFBlocks.fallen_leaves.get(), TFBlocks.fiddlehead.get(), TFBlocks.potted_fiddlehead.get(), TFBlocks.castle_rune_brick_pink.get(), TFBlocks.castle_rune_brick_blue.get(), TFBlocks.castle_rune_brick_yellow.get(), TFBlocks.castle_rune_brick_purple.get(),

@@ -1,21 +1,26 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
 
-public class HugeWaterLilyBlock extends LilyPadBlock {
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-	private static final VoxelShape AABB = makeCuboidShape(1.6, 1.6, 1.6, 14.4, 14.4, 14.4);
+import net.minecraft.world.level.block.WaterlilyBlock;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class HugeWaterLilyBlock extends WaterlilyBlock {
+
+	private static final VoxelShape AABB = box(1.6, 1.6, 1.6, 14.4, 14.4, 14.4);
 
 	protected HugeWaterLilyBlock(Properties props) {
 		super(props);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
 }

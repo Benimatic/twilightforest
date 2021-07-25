@@ -1,17 +1,17 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
@@ -25,15 +25,15 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 
 	public List<BlockPos> doors = new ArrayList<>();
 
-	public StructureTFStrongholdComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public StructureTFStrongholdComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
 	}
 
-	public StructureTFStrongholdComponent(IStructurePieceType type, TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent(StructurePieceType type, TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(type, feature, i);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
-		this.setCoordBaseMode(facing);
+		this.setOrientation(facing);
 	}
 
 	/**
@@ -52,8 +52,8 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
 	}
 
@@ -68,27 +68,27 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		}
 	}
 
-	public abstract MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z);
+	public abstract BoundingBox generateBoundingBox(Direction facing, int x, int y, int z);
 
 	/**
 	 * used to project a possible new component Bounding Box - to check if it would cut anything already spawned
 	 */
-	public static MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, Direction facing) {
+	public static BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, Direction facing) {
 		switch (facing) {
 			case WEST:
-				return new MutableBoundingBox(x - zSize + 1 + zOff, y + yOff, z + xOff, x + zOff, y + ySize - 1 + yOff, z + xSize - 1 + xOff);
+				return new BoundingBox(x - zSize + 1 + zOff, y + yOff, z + xOff, x + zOff, y + ySize - 1 + yOff, z + xSize - 1 + xOff);
 			case NORTH:
-				return new MutableBoundingBox(x - xSize + 1 - xOff, y + yOff, z - zSize + 1 + zOff, x - xOff, y + ySize - 1 + yOff, z + zOff);
+				return new BoundingBox(x - xSize + 1 - xOff, y + yOff, z - zSize + 1 + zOff, x - xOff, y + ySize - 1 + yOff, z + zOff);
 			case EAST:
-				return new MutableBoundingBox(x + zOff, y + yOff, z - xSize + 1 - xOff, x + zSize - 1 + zOff, y + ySize - 1 + yOff, z - xOff);
+				return new BoundingBox(x + zOff, y + yOff, z - xSize + 1 - xOff, x + zSize - 1 + zOff, y + ySize - 1 + yOff, z - xOff);
 			case SOUTH:
 			default:
-				return new MutableBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
+				return new BoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
 		}
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -98,11 +98,11 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 * Add a new component in the specified direction
 	 */
 	protected void addNewComponent(StructurePiece entrance, List<StructurePiece> list, Random random, Rotation facing, int x, int y, int z) {
-		int index = this.componentType + 1;
+		int index = this.genDepth + 1;
 		Direction nFacing = getStructureRelativeRotation(facing);
-		int nx = this.getXWithOffset(x, z);
-		int ny = this.getYWithOffset(y);
-		int nz = this.getZWithOffset(x, z);
+		int nx = this.getWorldX(x, z);
+		int ny = this.getWorldY(y);
+		int nz = this.getWorldZ(x, z);
 
 		// limit sprawl to a reasonable amount
 		if (index > 50 || isOutOfRange(entrance, nx, nz, 112)) {
@@ -125,7 +125,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		if (nextComponent != null) {
 			// if so, add it
 			list.add(nextComponent);
-			nextComponent.buildComponent(entrance, list, random);
+			nextComponent.addChildren(entrance, list, random);
 			this.addDoorwayTo(x, y, z, facing);
 		}
 	}
@@ -136,7 +136,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	protected StructurePiece findBreakInComponent(List<StructurePiece> list, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
 		for (StructurePiece component : list) {
-			if (component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos)) {
+			if (component.getBoundingBox() != null && component.getBoundingBox().isInside(pos)) {
 				return component;
 			}
 		}
@@ -147,11 +147,11 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	protected void addNewUpperComponent(StructurePiece parent, List<StructurePiece> list, Random random, Rotation facing, int x, int y, int z) {
 		StructureTFStrongholdComponent attempted;
 
-		int index = this.componentType + 1;
+		int index = this.genDepth + 1;
 		Direction nFacing = getStructureRelativeRotation(facing);
-		int nx = this.getXWithOffset(x, z);
-		int ny = this.getYWithOffset(y);
-		int nz = this.getZWithOffset(x, z);
+		int nx = this.getWorldX(x, z);
+		int ny = this.getWorldY(y);
+		int nz = this.getWorldZ(x, z);
 
 		// limit sprawl to a reasonable amount
 		if (index > 100 || isOutOfRange(parent, nx, nz, 48)) {
@@ -179,10 +179,10 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		}
 
 		// is it clear?
-		if (attempted != null && StructurePiece.findIntersecting(list, attempted.getBoundingBox()) == null) {
+		if (attempted != null && StructurePiece.findCollisionPiece(list, attempted.getBoundingBox()) == null) {
 			// if so, add it
 			list.add(attempted);
-			attempted.buildComponent(parent, list, random);
+			attempted.addChildren(parent, list, random);
 
 		}
 	}
@@ -192,54 +192,54 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 */
 	private boolean isOutOfRange(StructurePiece parent, int nx, int nz, int range) {
 
-		return Math.abs(nx - parent.getBoundingBox().minX) > range
-				|| Math.abs(nz - parent.getBoundingBox().minZ) > range;
+		return Math.abs(nx - parent.getBoundingBox().x0) > range
+				|| Math.abs(nz - parent.getBoundingBox().z0) > range;
 	}
 
 	/**
 	 * Make a doorway
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void placeDoorwayAt(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeDoorwayAt(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
 		if (x == 0 || x == this.getXSize()) {
-			this.fillWithBlocks(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceState, Blocks.AIR.getDefaultState(), false);
-			this.fillWithAir(world, sbb, x, y, z - 1, x, y + 3, z + 1);
+			this.generateBox(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceState, Blocks.AIR.defaultBlockState(), false);
+			this.generateAirBox(world, sbb, x, y, z - 1, x, y + 3, z + 1);
 		} else {
-			this.fillWithBlocks(world, sbb, x - 2, y, z, x + 2, y + 3, z, deco.fenceState, Blocks.AIR.getDefaultState(), false);
-			this.fillWithAir(world, sbb, x - 1, y, z, x + 1, y + 3, z);
+			this.generateBox(world, sbb, x - 2, y, z, x + 2, y + 3, z, deco.fenceState, Blocks.AIR.defaultBlockState(), false);
+			this.generateAirBox(world, sbb, x - 1, y, z, x + 1, y + 3, z);
 		}
 
 		//this.setBlockState(world, Blocks.WOOL, this.coordBaseMode, x, y, z, sbb);
 	}
 
 	protected int getXSize() {
-		switch (this.getCoordBaseMode()) {
+		switch (this.getOrientation()) {
 			default:
 			case SOUTH:
 			case NORTH:
-				return this.boundingBox.getXSize() - 1;
+				return this.boundingBox.getXSpan() - 1;
 			case WEST:
 			case EAST:
-				return this.boundingBox.getZSize() - 1;
+				return this.boundingBox.getZSpan() - 1;
 		}
 	}
 
 	/**
 	 * Make a smaller doorway
 	 */
-	protected void placeSmallDoorwayAt(ISeedReader world, int facing, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeSmallDoorwayAt(WorldGenLevel world, int facing, int x, int y, int z, BoundingBox sbb) {
 		if (facing == 0 || facing == 2) {
-			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
+			this.generateBox(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL.defaultBlockState(), Blocks.AIR.defaultBlockState(), true);
 		} else {
-			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 1, z + 1, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
+			this.generateBox(world, sbb, x, y, z - 1, x, y + 1, z + 1, Blocks.COBBLESTONE_WALL.defaultBlockState(), Blocks.AIR.defaultBlockState(), true);
 		}
-		this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
+		this.generateAirBox(world, sbb, x, y, z, x, y + 1, z);
 	}
 
 	/**
 	 * Generate a statue in the corner
 	 */
-	public void placeCornerStatue(ISeedReader world, int x, int y, int z, int facing, MutableBoundingBox sbb) {
+	public void placeCornerStatue(WorldGenLevel world, int x, int y, int z, int facing, BoundingBox sbb) {
 
 		// set offsets and stair metas
 		int ox = 1;
@@ -269,39 +269,39 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 
 		// the center is always the same
 		for (int sy = 0; sy < 5; sy++) {
-			this.setBlockState(world, deco.pillarState, x, y + sy, z, sbb);
+			this.placeBlock(world, deco.pillarState, x, y + sy, z, sbb);
 		}
 
 		// antlers
-		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z + oz, sbb);
-		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z, sbb);
+		this.placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), x, y + 4, z + oz, sbb);
+		this.placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), x + ox, y + 4, z, sbb);
 
 		// arms
-		this.setBlockState(world, getStairState(deco.stairState, smz, false), x, y + 3, z + oz, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smx, false), x + ox, y + 3, z, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smz, true), x, y + 2, z + oz, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smx, true), x + ox, y + 2, z, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smx, true), x + ox, y + 2, z + oz, sbb);
+		this.placeBlock(world, getStairState(deco.stairState, smz, false), x, y + 3, z + oz, sbb);
+		this.placeBlock(world, getStairState(deco.stairState, smx, false), x + ox, y + 3, z, sbb);
+		this.placeBlock(world, getStairState(deco.stairState, smz, true), x, y + 2, z + oz, sbb);
+		this.placeBlock(world, getStairState(deco.stairState, smx, true), x + ox, y + 2, z, sbb);
+		this.placeBlock(world, getStairState(deco.stairState, smx, true), x + ox, y + 2, z + oz, sbb);
 
 		// sword
-		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y, z + oz, sbb);
-		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z + oz, sbb);
+		this.placeBlock(world, Blocks.COBBLESTONE_WALL.defaultBlockState(), x + ox, y, z + oz, sbb);
+		this.placeBlock(world, Blocks.COBBLESTONE_WALL.defaultBlockState(), x + ox, y + 1, z + oz, sbb);
 
 		// feet
-		this.setBlockState(world, getStairState(deco.stairState, smz, false), x, y, z + oz, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smx, false), x + ox, y, z, sbb);
+		this.placeBlock(world, getStairState(deco.stairState, smz, false), x, y, z + oz, sbb);
+		this.placeBlock(world, getStairState(deco.stairState, smx, false), x + ox, y, z, sbb);
 	}
 
 	/**
 	 * Make a statue that faces out from a wall
 	 */
-	public void placeWallStatue(ISeedReader world, int x, int y, int z, Rotation facing, MutableBoundingBox sbb) {
+	public void placeWallStatue(WorldGenLevel world, int x, int y, int z, Rotation facing, BoundingBox sbb) {
 		int ox = 1;
 		int oz = 1;
 
 		// the center is always the same
 		for (int sy = 0; sy < 5; sy++) {
-			this.setBlockState(world, deco.pillarState, x, y + sy, z, sbb);
+			this.placeBlock(world, deco.pillarState, x, y + sy, z, sbb);
 		}
 
 		if (facing == Rotation.NONE || facing == Rotation.CLOCKWISE_180) {
@@ -311,29 +311,29 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 			}
 
 			// antlers
-			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x - ox, y + 4, z, sbb);
-			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z, sbb);
+			this.placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), x - ox, y + 4, z, sbb);
+			this.placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), x + ox, y + 4, z, sbb);
 
 			// arms
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), false), x - ox, y + 3, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x + ox, y + 3, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x - ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.NONE).rotate(Direction.WEST), false), x - ox, y + 3, z, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x + ox, y + 3, z, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x - ox, y + 3, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z - oz, sbb);
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), true), x - ox, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), true), x + ox, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x - ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.NONE).rotate(Direction.WEST), true), x - ox, y + 2, z, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_180).rotate(Direction.WEST), true), x + ox, y + 2, z, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x, y + 2, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x - ox, y + 2, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z - oz, sbb);
 
 			// sword
-			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y, z - oz, sbb);
-			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 1, z - oz, sbb);
+			this.placeBlock(world, Blocks.COBBLESTONE_WALL.defaultBlockState(), x, y, z - oz, sbb);
+			this.placeBlock(world, Blocks.COBBLESTONE_WALL.defaultBlockState(), x, y + 1, z - oz, sbb);
 
 			// feet
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), false), x - ox, y, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x + ox, y, z, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.NONE).rotate(Direction.WEST), false), x - ox, y, z, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x + ox, y, z, sbb);
 		} else {
 			if (facing == Rotation.COUNTERCLOCKWISE_90) {
 				oz = -oz;
@@ -341,28 +341,28 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 			}
 
 			// antlers
-			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z - oz, sbb);
-			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z + oz, sbb);
+			this.placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), x, y + 4, z - oz, sbb);
+			this.placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), x, y + 4, z + oz, sbb);
 
 			// arms
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), false), x, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x, y + 3, z + oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z + oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.NONE).rotate(Direction.WEST), false), x, y + 3, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x, y + 3, z + oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z + oz, sbb);
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), true), x, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), true), x, y + 2, z + oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + oz, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z + oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.NONE).rotate(Direction.WEST), true), x, y + 2, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_180).rotate(Direction.WEST), true), x, y + 2, z + oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + oz, y + 2, z, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z - oz, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z + oz, sbb);
 
 			// sword
-			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y, z, sbb);
-			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z, sbb);
+			this.placeBlock(world, Blocks.COBBLESTONE_WALL.defaultBlockState(), x + ox, y, z, sbb);
+			this.placeBlock(world, Blocks.COBBLESTONE_WALL.defaultBlockState(), x + ox, y + 1, z, sbb);
 
 			// feet
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), false), x, y, z - ox, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x, y, z + ox, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.NONE).rotate(Direction.WEST), false), x, y, z - ox, sbb);
+			this.placeBlock(world, getStairState(deco.stairState, facing.getRotated(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x, y, z + ox, sbb);
 		}
 	}
 
@@ -414,12 +414,12 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 * Is the specified point a valid spot to break in?
 	 */
 	protected boolean isValidBreakInPoint(int wx, int wy, int wz) {
-		if (wy < this.boundingBox.minY || wy > this.boundingBox.maxY) {
+		if (wy < this.boundingBox.y0 || wy > this.boundingBox.y1) {
 			return false;
-		} else if (wx == this.boundingBox.minX || wx == this.boundingBox.maxX) {
-			return wz > this.boundingBox.minZ && wz < this.boundingBox.maxZ;
-		} else if (wz == this.boundingBox.minZ || wz == this.boundingBox.maxZ) {
-			return wx > this.boundingBox.minX && wx < this.boundingBox.maxX;
+		} else if (wx == this.boundingBox.x0 || wx == this.boundingBox.x1) {
+			return wz > this.boundingBox.z0 && wz < this.boundingBox.z1;
+		} else if (wz == this.boundingBox.z0 || wz == this.boundingBox.z1) {
+			return wx > this.boundingBox.x0 && wx < this.boundingBox.x1;
 		} else {
 			return false;
 		}
@@ -428,34 +428,34 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	protected int getRelativeX(int x, int z) {
 		//this.getXWithOffset(x, z);
 
-		switch (getCoordBaseMode()) {
+		switch (getOrientation()) {
 			case SOUTH:
-				return x - boundingBox.minX;
+				return x - boundingBox.x0;
 			case NORTH:
-				return boundingBox.maxX - x;
+				return boundingBox.x1 - x;
 			case WEST:
-				return z - boundingBox.minZ;
+				return z - boundingBox.z0;
 			case EAST:
-				return boundingBox.maxZ - z;
+				return boundingBox.z1 - z;
 			default:
 				return x;
 		}
 	}
 
 	protected int getRelativeY(int y) {
-		return y - this.boundingBox.minY;
+		return y - this.boundingBox.y0;
 	}
 
 	protected int getRelativeZ(int x, int z) {
-		switch (getCoordBaseMode()) {
+		switch (getOrientation()) {
 			case SOUTH:
-				return z - boundingBox.minZ;
+				return z - boundingBox.z0;
 			case NORTH:
-				return boundingBox.maxZ - z;
+				return boundingBox.z1 - z;
 			case WEST:
-				return boundingBox.maxX - x;
+				return boundingBox.x1 - x;
 			case EAST:
-				return x - boundingBox.minX;
+				return x - boundingBox.x0;
 			default:
 				return z;
 		}
@@ -464,7 +464,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	/**
 	 * Place any doors on our list
 	 */
-	public void placeDoors(ISeedReader world, MutableBoundingBox sbb) {
+	public void placeDoors(WorldGenLevel world, BoundingBox sbb) {
 		if (this.doors != null) {
 			for (BlockPos doorCoords : doors) {
 				this.placeDoorwayAt(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
@@ -477,28 +477,28 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	/**
 	 * Place stronghold walls in every position except those filled with dirt.
 	 */
-	protected void placeStrongholdWalls(ISeedReader world, MutableBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
+	protected void placeStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
-					Block blockID = this.getBlockStateFromPos(world, x, y, z, sbb).getBlock();
+					Block blockID = this.getBlock(world, x, y, z, sbb).getBlock();
 
 					if (blockID == Blocks.AIR && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get()) {
 						// cobblestone to "fill in holes"
 						if (wall) {
-							this.setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y, z, sbb);
+							this.placeBlock(world, Blocks.COBBLESTONE.defaultBlockState(), x, y, z, sbb);
 						}
 					} else if (y == sy || y == dy) {
 						// do stronghold bricks for floor/ceiling
 						StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
-						strongBlocks.selectBlocks(rand, x, y, z, wall);
-						this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
+						strongBlocks.next(rand, x, y, z, wall);
+						this.placeBlock(world, strongBlocks.getNext(), x, y, z, sbb);
 
 					} else if (!wall || blockID != Blocks.DIRT) { // leave dirt there
 						// and use decorator (with presumably underbricks) for walls
-						randomBlocks.selectBlocks(rand, x, y, z, wall);
-						this.setBlockState(world, randomBlocks.getBlockState(), x, y, z, sbb);
+						randomBlocks.next(rand, x, y, z, wall);
+						this.placeBlock(world, randomBlocks.getNext(), x, y, z, sbb);
 					}
 				}
 			}
@@ -508,26 +508,26 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	/**
 	 * Place stronghold walls on dirt/grass/stone
 	 */
-	protected void placeUpperStrongholdWalls(ISeedReader world, MutableBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
+	protected void placeUpperStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
-					BlockState state = this.getBlockStateFromPos(world, x, y, z, sbb);
+					BlockState state = this.getBlock(world, x, y, z, sbb);
 					Block blockID = state.getBlock();
 
-					if ((blockID != Blocks.AIR && (state.getMaterial() == Material.ROCK || state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.EARTH))
-							|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockStateFromPos(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
+					if ((blockID != Blocks.AIR && (state.getMaterial() == Material.STONE || state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT))
+							|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlock(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
 						if (y == sy || y == dy) {
 							// do stronghold bricks for floor/ceiling
 							StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
-							strongBlocks.selectBlocks(rand, x, y, z, wall);
-							this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
+							strongBlocks.next(rand, x, y, z, wall);
+							this.placeBlock(world, strongBlocks.getNext(), x, y, z, sbb);
 
 						} else {
 							// and use decorator (with presumably underbricks) for walls
-							randomBlocks.selectBlocks(rand, x, y, z, wall);
-							this.setBlockState(world, randomBlocks.getBlockState(), x, y, z, sbb);
+							randomBlocks.next(rand, x, y, z, wall);
+							this.placeBlock(world, randomBlocks.getNext(), x, y, z, sbb);
 						}
 					}
 				}

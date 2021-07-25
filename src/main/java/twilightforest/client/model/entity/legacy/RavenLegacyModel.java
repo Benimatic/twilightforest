@@ -7,92 +7,92 @@
 package twilightforest.client.model.entity.legacy;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import twilightforest.entity.passive.RavenEntity;
 
-public class RavenLegacyModel extends SegmentedModel<RavenEntity> {
+public class RavenLegacyModel extends ListModel<RavenEntity> {
 	//fields
-	ModelRenderer head;
-	ModelRenderer beak1;
-	ModelRenderer beak2;
-	ModelRenderer body;
-	ModelRenderer rightarm;
-	ModelRenderer leftarm;
-	ModelRenderer rightleg;
-	ModelRenderer leftleg;
-	ModelRenderer rightfoot;
-	ModelRenderer leftfoot;
-	ModelRenderer tail;
+	ModelPart head;
+	ModelPart beak1;
+	ModelPart beak2;
+	ModelPart body;
+	ModelPart rightarm;
+	ModelPart leftarm;
+	ModelPart rightleg;
+	ModelPart leftleg;
+	ModelPart rightfoot;
+	ModelPart leftfoot;
+	ModelPart tail;
 
 	public RavenLegacyModel() {
-		textureWidth = 32;
-		textureHeight = 32;
+		texWidth = 32;
+		texHeight = 32;
 
-		head = new ModelRenderer(this, 0, 0);
+		head = new ModelPart(this, 0, 0);
 		head.addBox(-1.5F, -1.5F, -3F, 3, 3, 3);
-		head.setRotationPoint(0F, 18F, 0F);
-		head.setTextureSize(32, 32);
+		head.setPos(0F, 18F, 0F);
+		head.setTexSize(32, 32);
 		head.mirror = true;
 		setRotation(head, 0F, 0F, 0F);
 
-		beak1 = new ModelRenderer(this, 12, 0);
+		beak1 = new ModelPart(this, 12, 0);
 		beak1.addBox(-0.5F, -1F, -2F, 1, 1, 2);
-		beak1.setRotationPoint(0F, 0F, -2.5F);
-		beak1.rotateAngleX = 0.2617994F;
+		beak1.setPos(0F, 0F, -2.5F);
+		beak1.xRot = 0.2617994F;
 		head.addChild(beak1);
 
-		beak2 = new ModelRenderer(this, 12, 0);
+		beak2 = new ModelPart(this, 12, 0);
 		beak2.addBox(-0.5F, 0F, -2F, 1, 1, 2);
-		beak2.setRotationPoint(0F, 0F, -2.5F);
-		beak2.rotateAngleX = -0.2617994F;
+		beak2.setPos(0F, 0F, -2.5F);
+		beak2.xRot = -0.2617994F;
 		head.addChild(beak2);
 
-		body = new ModelRenderer(this, 0, 6);
+		body = new ModelPart(this, 0, 6);
 		body.addBox(-1.5F, 0F, -1F, 3, 4, 6);
-		body.setRotationPoint(0F, 17F, 1F);
-		body.setTextureSize(32, 32);
+		body.setPos(0F, 17F, 1F);
+		body.setTexSize(32, 32);
 		setRotation(body, -0.5235988F, 0F, 0F);
 
-		rightarm = new ModelRenderer(this, 0, 16);
+		rightarm = new ModelPart(this, 0, 16);
 		rightarm.addBox(-1F, 0F, -1.5F, 1, 3, 6);
-		rightarm.setRotationPoint(-1.5F, 18F, 1F);
-		rightarm.setTextureSize(32, 32);
+		rightarm.setPos(-1.5F, 18F, 1F);
+		rightarm.setTexSize(32, 32);
 
-		leftarm = new ModelRenderer(this, 0, 16);
+		leftarm = new ModelPart(this, 0, 16);
 		leftarm.addBox(0F, 0F, -1.5F, 1, 3, 6);
-		leftarm.setRotationPoint(1.5F, 18F, 1F);
-		leftarm.setTextureSize(32, 32);
+		leftarm.setPos(1.5F, 18F, 1F);
+		leftarm.setTexSize(32, 32);
 
-		rightleg = new ModelRenderer(this, 14, 16);
+		rightleg = new ModelPart(this, 14, 16);
 		rightleg.addBox(0F, 0F, 0F, 1, 2, 1);
-		rightleg.setRotationPoint(-1.5F, 21F, 1F);
-		rightleg.setTextureSize(32, 32);
+		rightleg.setPos(-1.5F, 21F, 1F);
+		rightleg.setTexSize(32, 32);
 
-		rightfoot = new ModelRenderer(this, 14, 20);
+		rightfoot = new ModelPart(this, 14, 20);
 		rightfoot.addBox(0F, -1F, -2F, 1, 1, 2);
-		rightfoot.setRotationPoint(0F, 2F, 1F);
-		rightfoot.setTextureSize(32, 32);
+		rightfoot.setPos(0F, 2F, 1F);
+		rightfoot.setTexSize(32, 32);
 		setRotation(rightfoot, 0.5235988F, 0F, 0F);
 		rightleg.addChild(rightfoot);
 
-		leftleg = new ModelRenderer(this, 14, 16);
+		leftleg = new ModelPart(this, 14, 16);
 		leftleg.addBox(0F, 0F, 0F, 1, 2, 1);
-		leftleg.setRotationPoint(0.5F, 21F, 1F);
-		leftleg.setTextureSize(32, 32);
+		leftleg.setPos(0.5F, 21F, 1F);
+		leftleg.setTexSize(32, 32);
 
-		leftfoot = new ModelRenderer(this, 14, 20);
+		leftfoot = new ModelPart(this, 14, 20);
 		leftfoot.addBox(0F, -1F, -2F, 1, 1, 2);
-		leftfoot.setRotationPoint(0F, 2F, 1F);
-		leftfoot.setTextureSize(32, 32);
+		leftfoot.setPos(0F, 2F, 1F);
+		leftfoot.setTexSize(32, 32);
 		setRotation(leftfoot, 0.5235988F, 0F, 0F);
 		leftleg.addChild(leftfoot);
 
-		tail = new ModelRenderer(this, 0, 25);
+		tail = new ModelPart(this, 0, 25);
 		tail.addBox(-1.5F, -0.5F, 0F, 3, 1, 3);
-		tail.setRotationPoint(0F, 21F, 4F);
-		tail.setTextureSize(32, 32);
+		tail.setPos(0F, 21F, 4F);
+		tail.setTexSize(32, 32);
 		setRotation(tail, -0.5235988F, 0F, 0F);
 	}
 
@@ -103,7 +103,7 @@ public class RavenLegacyModel extends SegmentedModel<RavenEntity> {
 //	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(
 				head,
 				body,
@@ -115,31 +115,31 @@ public class RavenLegacyModel extends SegmentedModel<RavenEntity> {
 		);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
+	private void setRotation(ModelPart model, float x, float y, float z) {
+		model.xRot = x;
+		model.yRot = y;
+		model.zRot = z;
 	}
 
 
 	@Override
-	public void setRotationAngles(RavenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
-		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
-		head.rotateAngleZ = netHeadYaw > 5 ? -0.2617994F : 0;
+	public void setupAnim(RavenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		head.xRot = headPitch / (180F / (float) Math.PI);
+		head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		head.zRot = netHeadYaw > 5 ? -0.2617994F : 0;
 
-		rightleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		leftleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		rightleg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		leftleg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 
-		rightarm.rotateAngleZ = ageInTicks;
-		leftarm.rotateAngleZ = -ageInTicks;
+		rightarm.zRot = ageInTicks;
+		leftarm.zRot = -ageInTicks;
 
 		if (entity.isBirdLanded()) {
-			rightleg.rotationPointY = 21;
-			leftleg.rotationPointY = 21;
+			rightleg.y = 21;
+			leftleg.y = 21;
 		} else {
-			rightleg.rotationPointY = 20F;
-			leftleg.rotationPointY = 20F;
+			rightleg.y = 20F;
+			leftleg.y = 20F;
 		}
 	}
 }

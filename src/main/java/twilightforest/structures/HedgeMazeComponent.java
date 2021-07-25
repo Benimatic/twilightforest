@@ -1,18 +1,18 @@
 package twilightforest.structures;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CarvedPumpkinBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CarvedPumpkinBlock;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -27,57 +27,57 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	private static final int DIAMETER = 2 * RADIUS;
 	private static final int FLOOR_LEVEL = 3;
 
-	public HedgeMazeComponent(TemplateManager manager, CompoundNBT nbt) {
+	public HedgeMazeComponent(StructureManager manager, CompoundTag nbt) {
 		super(TFFeature.TFHedge, nbt);
 	}
 
 	public HedgeMazeComponent(TFFeature feature, int i, int x, int y, int z) {
 		super(TFFeature.TFHedge, feature, i);
 
-		this.setCoordBaseMode(Direction.SOUTH);
+		this.setOrientation(Direction.SOUTH);
 
 		// the maze is 50 x 50 for now
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 
 		maze.oddBias = 2;
-		maze.torchBlockState = TFBlocks.firefly.get().getDefaultState();
-		maze.wallBlockState = TFBlocks.hedge.get().getDefaultState();
+		maze.torchBlockState = TFBlocks.firefly.get().defaultBlockState();
+		maze.wallBlockState = TFBlocks.hedge.get().defaultBlockState();
 		maze.type = 4;
 		maze.tall = 3;
 		maze.roots = 3;
 
 		// set the seed to a fixed value based on this maze's x and z
-		maze.setSeed(world.getSeed() + this.boundingBox.minX * this.boundingBox.minZ);
+		maze.setSeed(world.getSeed() + this.boundingBox.x0 * this.boundingBox.z0);
 
 		// just add grass below the maze for now
 		// grass underneath
 		for (int fx = 0; fx <= DIAMETER; fx++) {
 			for (int fz = 0; fz <= DIAMETER; fz++) {
-				setBlockState(world, Blocks.GRASS_BLOCK.getDefaultState(), fx, FLOOR_LEVEL - 1, fz, sbb);
+				placeBlock(world, Blocks.GRASS_BLOCK.defaultBlockState(), fx, FLOOR_LEVEL - 1, fz, sbb);
 			}
 		}
 
-		BlockState northJacko = Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.NORTH);
-		BlockState southJacko = Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.SOUTH);
-		BlockState westJacko = Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.WEST);
-		BlockState eastJacko = Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.EAST);
+		BlockState northJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.NORTH);
+		BlockState southJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.SOUTH);
+		BlockState westJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.WEST);
+		BlockState eastJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.EAST);
 
 		// plunk down some jack-o-lanterns outside for decoration
-		setBlockState(world, westJacko, 0, FLOOR_LEVEL, 24, sbb);
-		setBlockState(world, westJacko, 0, FLOOR_LEVEL, 29, sbb);
-		setBlockState(world, eastJacko, 50, FLOOR_LEVEL, 24, sbb);
-		setBlockState(world, eastJacko, 50, FLOOR_LEVEL, 29, sbb);
+		placeBlock(world, westJacko, 0, FLOOR_LEVEL, 24, sbb);
+		placeBlock(world, westJacko, 0, FLOOR_LEVEL, 29, sbb);
+		placeBlock(world, eastJacko, 50, FLOOR_LEVEL, 24, sbb);
+		placeBlock(world, eastJacko, 50, FLOOR_LEVEL, 29, sbb);
 
-		setBlockState(world, northJacko, 24, FLOOR_LEVEL, 0, sbb);
-		setBlockState(world, northJacko, 29, FLOOR_LEVEL, 0, sbb);
-		setBlockState(world, southJacko, 24, FLOOR_LEVEL, 50, sbb);
-		setBlockState(world, southJacko, 29, FLOOR_LEVEL, 50, sbb);
+		placeBlock(world, northJacko, 24, FLOOR_LEVEL, 0, sbb);
+		placeBlock(world, northJacko, 29, FLOOR_LEVEL, 0, sbb);
+		placeBlock(world, southJacko, 24, FLOOR_LEVEL, 50, sbb);
+		placeBlock(world, southJacko, 29, FLOOR_LEVEL, 50, sbb);
 
 		int nrooms = MSIZE / 3;
 		int rcoords[] = new int[nrooms * 2];
@@ -130,7 +130,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		return false;
 	}
 
-	private void decorate3x3Rooms(ISeedReader world, int[] rcoords, MutableBoundingBox sbb) {
+	private void decorate3x3Rooms(WorldGenLevel world, int[] rcoords, BoundingBox sbb) {
 		for (int i = 0; i < rcoords.length / 2; i++) {
 			int dx = rcoords[i * 2];
 			int dz = rcoords[i * 2 + 1];
@@ -146,7 +146,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Decorates a room in the maze.  Makes assumptions that the room is 3x3 cells and thus 11x11 blocks large.
 	 */
-	private void decorate3x3Room(ISeedReader world, int x, int z, MutableBoundingBox sbb) {
+	private void decorate3x3Room(WorldGenLevel world, int x, int z, BoundingBox sbb) {
 		// make a new RNG for this room!
 		Random roomRNG = new Random(world.getSeed() ^ x + z);
 
@@ -169,7 +169,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Place a spawner within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomSpawner(ISeedReader world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
+	private void roomSpawner(WorldGenLevel world, Random rand, int x, int z, int diameter, BoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
@@ -193,7 +193,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Place a treasure chest within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomTreasure(ISeedReader world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
+	private void roomTreasure(WorldGenLevel world, Random rand, int x, int z, int diameter, BoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
@@ -203,11 +203,11 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Place a lit pumpkin lantern within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomJackO(ISeedReader world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
+	private void roomJackO(WorldGenLevel world, Random rand, int x, int z, int diameter, BoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		setBlockState(world, Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.byHorizontalIndex(rand.nextInt(4))),
+		placeBlock(world, Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.from2DDataValue(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
 	}
 }

@@ -1,20 +1,20 @@
 package twilightforest;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.BackgroundMusicSelector;
-import net.minecraft.client.audio.BackgroundMusicTracks;
+import net.minecraft.sounds.Music;
+import net.minecraft.sounds.Musics;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.registry.SimpleRegistry;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression"})
 public class ASMHooks {
 
-	public static volatile World world;
+	public static volatile Level world;
 
 	/**
 	 * Injection Point:<br>
@@ -55,10 +55,10 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.gui.MapItemRenderer.Instance#func_228089_a_(MatrixStack, IRenderTypeBuffer, boolean, int)}<br>
+	 * {@link net.minecraft.client.gui.MapItemRenderer.Instance#draw(MatrixStack, IRenderTypeBuffer, boolean, int)}<br>
 	 * [BEFORE FIRST ISTORE]
 	 */
-	public static void mapRenderContext(MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public static void mapRenderContext(PoseStack stack, MultiBufferSource buffer, int light) {
 		TFMagicMapData.TFMapDecoration.RenderContext.stack = stack;
 		TFMagicMapData.TFMapDecoration.RenderContext.buffer = buffer;
 		TFMagicMapData.TFMapDecoration.RenderContext.light = light;
@@ -69,13 +69,13 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.audio.MusicTicker#tick()}<br>
 	 * [AFTER FIRST INVOKEVIRTUAL]
 	 */
-	public static BackgroundMusicSelector music(BackgroundMusicSelector music) {
-		if (Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && (music == BackgroundMusicTracks.CREATIVE_MODE_MUSIC || music == BackgroundMusicTracks.UNDER_WATER_MUSIC) && Minecraft.getInstance().world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()))
-			return Minecraft.getInstance().world.getBiomeManager().getBiomeAtPosition(Minecraft.getInstance().player.getPosition()).getBackgroundMusic().orElse(BackgroundMusicTracks.WORLD_MUSIC);
+	public static Music music(Music music) {
+		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && Minecraft.getInstance().level.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()))
+			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).getBackgroundMusic().orElse(Musics.GAME);
 		return music;
 	}
 
-	private static final WeakHashMap<World, List<TFPartEntity<?>>> cache = new WeakHashMap<>();
+	private static final WeakHashMap<Level, List<TFPartEntity<?>>> cache = new WeakHashMap<>();
 
 	public static void registerMultipartEvents(IEventBus bus) {
 		bus.addListener((Consumer<EntityJoinWorldEvent>) event -> {
@@ -106,7 +106,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.World#getEntitiesInAABBexcluding }<br>
 	 * [BEFORE ARETURN]
 	 */
-	public static synchronized List<Entity> multipartHitbox(List<Entity> list, World world, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
+	public static synchronized List<Entity> multipartHitbox(List<Entity> list, Level world, @Nullable Entity entityIn, AABB boundingBox, @Nullable Predicate<? super Entity> predicate) {
 		synchronized (cache) {
 			List<TFPartEntity<?>> parts = cache.get(world);
 			if(parts != null) {
@@ -143,7 +143,7 @@ public class ASMHooks {
 	 */
 	@Nullable
 	@OnlyIn(Dist.CLIENT)
-	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity, EntityRendererManager manager) {
+	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity, EntityRenderDispatcher manager) {
 		if(entity instanceof TFPartEntity<?>)
 			return ((TFPartEntity) entity).renderer(manager);
 		return renderer;

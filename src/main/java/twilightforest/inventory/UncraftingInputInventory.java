@@ -1,10 +1,10 @@
 package twilightforest.inventory;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
-public class UncraftingInputInventory implements IInventory {
+public class UncraftingInputInventory implements Container {
 
 	private ItemStack stack = ItemStack.EMPTY;
 	private final UncraftingContainer container;
@@ -14,7 +14,7 @@ public class UncraftingInputInventory implements IInventory {
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		return 1;
 	}
 
@@ -24,23 +24,23 @@ public class UncraftingInputInventory implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) {
+	public ItemStack getItem(int index) {
 		return index == 0 ? stack : ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int amount) {
+	public ItemStack removeItem(int index, int amount) {
 		if (index == 0 && !this.stack.isEmpty()) {
 			ItemStack takenStack;
 
 			if (this.stack.getCount() <= amount) {
 				takenStack = this.stack;
 				this.stack = ItemStack.EMPTY;
-				this.container.onCraftMatrixChanged(this);
+				this.container.slotsChanged(this);
 				return takenStack;
 			} else {
 				takenStack = this.stack.split(amount);
-				this.container.onCraftMatrixChanged(this);
+				this.container.slotsChanged(this);
 				return takenStack;
 			}
 		} else {
@@ -49,7 +49,7 @@ public class UncraftingInputInventory implements IInventory {
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int index) {
+	public ItemStack removeItemNoUpdate(int index) {
 		if (index == 0 && !this.stack.isEmpty()) {
 			ItemStack stack = this.stack;
 			this.stack = ItemStack.EMPTY;
@@ -60,25 +60,25 @@ public class UncraftingInputInventory implements IInventory {
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
+	public void setItem(int index, ItemStack stack) {
 		if (index == 0) {
 			this.stack = stack;
-			this.container.onCraftMatrixChanged(this);
+			this.container.slotsChanged(this);
 		}
 	}
 
 	@Override
-	public void markDirty() {
-		this.container.onCraftMatrixChanged(this);
+	public void setChanged() {
+		this.container.slotsChanged(this);
 	}
 
 	@Override
-	public boolean isUsableByPlayer(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 
 	@Override
-	public void clear() {
+	public void clearContent() {
 		stack = ItemStack.EMPTY;
 	}
 }

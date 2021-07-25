@@ -1,11 +1,11 @@
 package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.MapItemRenderer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SMapDataPacket;
-import net.minecraft.world.storage.MapData;
-import net.minecraft.world.storage.MapDecoration;
+import net.minecraft.client.gui.MapRenderer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TFMagicMapData;
 import twilightforest.item.MagicMapItem;
@@ -18,29 +18,29 @@ import java.util.function.Supplier;
 // Rewraps vanilla SPacketMaps to properly expose our custom decorations
 public class MagicMapPacket {
 	private final byte[] featureData;
-	private final SMapDataPacket inner;
+	private final ClientboundMapItemDataPacket inner;
 
-	public MagicMapPacket(TFMagicMapData mapData, SMapDataPacket inner) {
+	public MagicMapPacket(TFMagicMapData mapData, ClientboundMapItemDataPacket inner) {
 		this.featureData = mapData.serializeFeatures();
 		this.inner = inner;
 	}
 
-	public MagicMapPacket(PacketBuffer buf) {
+	public MagicMapPacket(FriendlyByteBuf buf) {
 		featureData = buf.readByteArray();
 
-		inner = new SMapDataPacket();
+		inner = new ClientboundMapItemDataPacket();
 		try {
-			inner.readPacketData(buf);
+			inner.read(buf);
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't read inner SPacketMaps", e);
 		}
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeByteArray(featureData);
 
 		try {
-			inner.writePacketData(buf);
+			inner.write(buf);
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't write inner SPacketMaps", e);
 		}
@@ -52,22 +52,22 @@ public class MagicMapPacket {
 				@Override
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
-					MapItemRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapItemRenderer();
+					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
 					String s = MagicMapItem.getMapName(message.inner.getMapId());
-					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(Minecraft.getInstance().world, s);
+					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(Minecraft.getInstance().level, s);
 					if (mapdata == null) {
 						mapdata = new TFMagicMapData(s);
 						if (mapitemrenderer.getMapInstanceIfExists(s) != null) {
-							MapData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
+							MapItemSavedData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
 							if (mapdata1 instanceof TFMagicMapData) {
 								mapdata = (TFMagicMapData) mapdata1;
 							}
 						}
 
-						TFMagicMapData.registerMagicMapData(Minecraft.getInstance().world, mapdata);
+						TFMagicMapData.registerMagicMapData(Minecraft.getInstance().level, mapdata);
 					}
 
-					message.inner.setMapdataTo(mapdata);
+					message.inner.applyToMap(mapdata);
 
 					// TF - handle custom decorations
 					{
@@ -75,17 +75,17 @@ public class MagicMapPacket {
 
 						// Cheat and put tfDecorations into main collection so they are called by renderer
 						// However, ensure they come before vanilla's markers, so player markers go above feature markers.
-						Map<String, MapDecoration> saveVanilla = new LinkedHashMap<>(mapdata.mapDecorations);
-						mapdata.mapDecorations.clear();
+						Map<String, MapDecoration> saveVanilla = new LinkedHashMap<>(mapdata.decorations);
+						mapdata.decorations.clear();
 
 						for (TFMagicMapData.TFMapDecoration tfDecor : mapdata.tfDecorations) {
-							mapdata.mapDecorations.put(tfDecor.toString(), tfDecor);
+							mapdata.decorations.put(tfDecor.toString(), tfDecor);
 						}
 
-						mapdata.mapDecorations.putAll(saveVanilla);
+						mapdata.decorations.putAll(saveVanilla);
 					}
 
-					mapitemrenderer.updateMapTexture(mapdata);
+					mapitemrenderer.update(mapdata);
 				}
 			});
 

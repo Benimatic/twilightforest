@@ -1,11 +1,13 @@
 package twilightforest.item;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
 import twilightforest.entity.projectile.IceArrowEntity;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class IceBowItem extends BowItem {
 
@@ -14,15 +16,15 @@ public class IceBowItem extends BowItem {
 	}
 
 	@Override
-	public AbstractArrowEntity customArrow(AbstractArrowEntity arrow) {
-		if (arrow.getShooter() instanceof LivingEntity) {
-			return new IceArrowEntity(arrow.world, (LivingEntity) arrow.getShooter());
+	public AbstractArrow customArrow(AbstractArrow arrow) {
+		if (arrow.getOwner() instanceof LivingEntity) {
+			return new IceArrowEntity(arrow.level, (LivingEntity) arrow.getOwner());
 		}
 		return arrow;
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repairWith) {
-		return repairWith.getItem() == Blocks.ICE.asItem() || super.getIsRepairable(toRepair, repairWith);
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repairWith) {
+		return repairWith.getItem() == Blocks.ICE.asItem() || super.isValidRepairItem(toRepair, repairWith);
 	}
 }

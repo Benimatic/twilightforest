@@ -1,11 +1,11 @@
 package twilightforest.enums;
 
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
 
 import java.util.Locale;
 
-public enum NagastoneVariant implements IStringSerializable {
+public enum NagastoneVariant implements StringRepresentable {
 	NORTH_DOWN,
 	SOUTH_DOWN,
 	WEST_DOWN,
@@ -20,7 +20,7 @@ public enum NagastoneVariant implements IStringSerializable {
 	SOLID; // This can act as null
 
 	@Override
-	public String getString() {
+	public String getSerializedName() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 

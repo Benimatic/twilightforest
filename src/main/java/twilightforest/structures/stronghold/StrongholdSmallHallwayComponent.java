@@ -1,16 +1,16 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class StrongholdSmallHallwayComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdSmallHallwayComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdSmallHallwayComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSSH, nbt);
 	}
 
@@ -27,13 +27,13 @@ public class StrongholdSmallHallwayComponent extends StructureTFStrongholdCompon
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		// entrance
 		this.addDoor(4, 1, 0);
@@ -43,7 +43,7 @@ public class StrongholdSmallHallwayComponent extends StructureTFStrongholdCompon
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 17, rand, deco.randomBlocks);
 
 		// statues

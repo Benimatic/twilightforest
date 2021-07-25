@@ -1,8 +1,8 @@
 package twilightforest.client;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.ASMHooks;
 import twilightforest.TFCommonProxy;
 
@@ -14,7 +14,7 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Nullable
 	public static Iterable<Entity> getEntityListForASM() {
-		return ASMHooks.world instanceof ServerWorld ? ((ServerWorld) ASMHooks.world).getEntitiesIteratable() : ASMHooks.world instanceof ClientWorld ? ((ClientWorld) ASMHooks.world).getAllEntities() : null;
+		return ASMHooks.world instanceof ServerLevel ? ((ServerLevel) ASMHooks.world).getAllEntities() : ASMHooks.world instanceof ClientLevel ? ((ClientLevel) ASMHooks.world).entitiesForRendering() : null;
 	}
 
 	@Override

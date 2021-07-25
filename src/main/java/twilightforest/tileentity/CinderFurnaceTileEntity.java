@@ -1,23 +1,23 @@
 package twilightforest.tileentity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.FurnaceTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraftforge.common.Tags;
 import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.block.TFBlocks;
@@ -25,7 +25,7 @@ import twilightforest.block.TFBlocks;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class CinderFurnaceTileEntity extends FurnaceTileEntity {
+public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 	private static final int SMELT_LOG_FACTOR = 10;
 
 	// [VanillaCopy] of superclass, edits noted
@@ -35,17 +35,17 @@ public class CinderFurnaceTileEntity extends FurnaceTileEntity {
 		boolean flag1 = false;
 
 		if (this.isBurning()) {
-			--this.burnTime;
+			--this.litTime;
 		}
 
-		if (!this.world.isRemote) {
+		if (!this.level.isClientSide) {
 			ItemStack itemstack = this.items.get(1);
 
 			if (this.isBurning() || !itemstack.isEmpty() && !this.items.get(0).isEmpty()) {
-				IRecipe<?> irecipe = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, this.world).orElse(null);
-				if (!this.isBurning() && this.canSmelt(irecipe)) {
-					this.burnTime = getBurnTime(itemstack);
-					this.burnTimeTotal = this.burnTime;
+				Recipe<?> irecipe = this.level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, this, this.level).orElse(null);
+				if (!this.isBurning() && this.canBurn(irecipe)) {
+					this.litTime = getBurnDuration(itemstack);
+					this.litDuration = this.litTime;
 
 					if (this.isBurning()) {
 						flag1 = true;
@@ -62,65 +62,65 @@ public class CinderFurnaceTileEntity extends FurnaceTileEntity {
 					}
 				}
 
-				if (this.isBurning() && this.canSmelt(irecipe)) {
+				if (this.isBurning() && this.canBurn(irecipe)) {
 					// TF - cook faster
-					this.cookTime += this.getCurrentSpeedMultiplier();
+					this.cookingProgress += this.getCurrentSpeedMultiplier();
 
-					if (this.cookTime >= this.cookTimeTotal) { // TF - change to geq since we can increment by >1
-						this.cookTime = 0;
-						this.cookTimeTotal = this.getRecipeBurnTime();
+					if (this.cookingProgress >= this.cookingTotalTime) { // TF - change to geq since we can increment by >1
+						this.cookingProgress = 0;
+						this.cookingTotalTime = this.getRecipeBurnTime();
 						this.smeltItem(irecipe);
 						flag1 = true;
 					}
 				} else {
-					this.cookTime = 0;
+					this.cookingProgress = 0;
 				}
-			} else if (!this.isBurning() && this.cookTime > 0) {
-				this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.cookTimeTotal);
+			} else if (!this.isBurning() && this.cookingProgress > 0) {
+				this.cookingProgress = Mth.clamp(this.cookingProgress - 2, 0, this.cookingTotalTime);
 			}
 
 			if (flag != this.isBurning()) {
 				flag1 = true;
-				this.world.setBlockState(this.pos, this.world.getBlockState(pos).with(CinderFurnaceBlock.LIT, isBurning()), 3); // TF - use our furnace
+				this.level.setBlock(this.worldPosition, this.level.getBlockState(worldPosition).setValue(CinderFurnaceBlock.LIT, isBurning()), 3); // TF - use our furnace
 			}
 
 			// TF - occasionally cinderize nearby logs
-			if (this.isBurning() && this.burnTime % 5 == 0) {
+			if (this.isBurning() && this.litTime % 5 == 0) {
 				this.cinderizeNearbyLog();
 			}
 		}
 
 		if (flag1) {
-			this.markDirty();
+			this.setChanged();
 		}
 	}
 
 	// [VanillaCopy] of super
 	private boolean isBurning() {
-		return this.burnTime > 0;
+		return this.litTime > 0;
 	}
 
 	// [VanillaCopy] of super, only using SMELTING IRecipeType
 	protected int getRecipeBurnTime() {
-		return this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, this.world).map(AbstractCookingRecipe::getCookTime).orElse(200);
+		return this.level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, this, this.level).map(AbstractCookingRecipe::getCookingTime).orElse(200);
 	}
 
 	private void cinderizeNearbyLog() {
-		Random rand = this.getWorld().rand;
+		Random rand = this.getLevel().random;
 
 		int dx = rand.nextInt(2) - rand.nextInt(2);
 		int dy = rand.nextInt(2) - rand.nextInt(2);
 		int dz = rand.nextInt(2) - rand.nextInt(2);
-		BlockPos pos = getPos().add(dx, dy, dz);
+		BlockPos pos = getBlockPos().offset(dx, dy, dz);
 
-		if (this.world.isBlockLoaded(pos)) {
-			Block nearbyBlock = this.getWorld().getBlockState(pos).getBlock();
+		if (this.level.hasChunkAt(pos)) {
+			Block nearbyBlock = this.getLevel().getBlockState(pos).getBlock();
 
 			if (nearbyBlock != TFBlocks.cinder_log.get() && BlockTags.LOGS.contains(nearbyBlock)) {
-				this.getWorld().setBlockState(pos, getCinderLog(dx, dy, dz), 2);
-				this.getWorld().playEvent(2004, pos, 0);
-				this.getWorld().playEvent(2004, pos, 0);
-				this.getWorld().playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				this.getLevel().setBlock(pos, getCinderLog(dx, dy, dz), 2);
+				this.getLevel().levelEvent(2004, pos, 0);
+				this.getLevel().levelEvent(2004, pos, 0);
+				this.getLevel().playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
 		}
 	}
@@ -140,8 +140,8 @@ public class CinderFurnaceTileEntity extends FurnaceTileEntity {
 			direction = dy == 0 ? Direction.Axis.Y : null; //We return null so we can get Cinder Wood.
 		}
 
-		return direction != null ? TFBlocks.cinder_log.get().getDefaultState().with(RotatedPillarBlock.AXIS, direction)
-				: TFBlocks.cinder_wood.get().getDefaultState();
+		return direction != null ? TFBlocks.cinder_log.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction)
+				: TFBlocks.cinder_wood.get().defaultBlockState();
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class CinderFurnaceTileEntity extends FurnaceTileEntity {
 		if (logs < factor) {
 			return 1;
 		} else {
-			return (logs / factor) + (this.world.rand.nextInt(factor) >= (logs % factor) ? 0 : 1);
+			return (logs / factor) + (this.level.random.nextInt(factor) >= (logs % factor) ? 0 : 1);
 		}
 	}
 
@@ -170,8 +170,8 @@ public class CinderFurnaceTileEntity extends FurnaceTileEntity {
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
-					BlockPos pos = getPos().add(dx, dy, dz);
-					if (this.world.isBlockLoaded(pos) && this.getWorld().getBlockState(pos).getBlock() == TFBlocks.cinder_log.get()) {
+					BlockPos pos = getBlockPos().offset(dx, dy, dz);
+					if (this.level.hasChunkAt(pos) && this.getLevel().getBlockState(pos).getBlock() == TFBlocks.cinder_log.get()) {
 						count++;
 					}
 				}
@@ -183,20 +183,20 @@ public class CinderFurnaceTileEntity extends FurnaceTileEntity {
 
 	// [VanillaCopy] of superclass ver, changes noted
 	@Override
-	protected boolean canSmelt(IRecipe<?> recipe) {
+	protected boolean canBurn(Recipe<?> recipe) {
 		if (this.items.get(0).isEmpty()) {
 			return false;
 		} else {
-			ItemStack itemstack = recipe.getRecipeOutput();
+			ItemStack itemstack = recipe.getResultItem();
 
 			if (itemstack.isEmpty()) {
 				return false;
 			} else {
 				ItemStack itemstack1 = this.items.get(2);
 				if (itemstack1.isEmpty()) return true;
-				if (!itemstack1.isItemEqual(itemstack)) return false;
+				if (!itemstack1.sameItem(itemstack)) return false;
 				int result = itemstack1.getCount() + getMaxOutputStacks(items.get(0), itemstack); // TF - account for multiplying
-				return result <= getInventoryStackLimit() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+				return result <= getMaxStackSize() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
 			}
 		}
 	}
@@ -213,10 +213,10 @@ public class CinderFurnaceTileEntity extends FurnaceTileEntity {
 	}
 
 	// [VanillaCopy] superclass, using our own canSmelt and multiplying output
-	public void smeltItem(IRecipe<?> recipe) {
-		if (this.canSmelt(recipe)) {
+	public void smeltItem(Recipe<?> recipe) {
+		if (this.canBurn(recipe)) {
 			ItemStack itemstack = this.items.get(0);
-			ItemStack itemstack1 = recipe.getRecipeOutput();
+			ItemStack itemstack1 = recipe.getResultItem();
 			itemstack1.setCount(itemstack1.getCount() * getCurrentSmeltMultiplier());
 			ItemStack itemstack2 = this.items.get(2);
 

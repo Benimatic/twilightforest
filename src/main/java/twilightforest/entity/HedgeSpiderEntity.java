@@ -1,22 +1,22 @@
 package twilightforest.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 
@@ -27,9 +27,9 @@ import java.util.Random;
  *
  * @author Ben
  */
-public class HedgeSpiderEntity extends SpiderEntity {
+public class HedgeSpiderEntity extends Spider {
 
-	public HedgeSpiderEntity(EntityType<? extends HedgeSpiderEntity> type, World world) {
+	public HedgeSpiderEntity(EntityType<? extends HedgeSpiderEntity> type, Level world) {
 		super(type, world);
 	}
 
@@ -38,29 +38,29 @@ public class HedgeSpiderEntity extends SpiderEntity {
 		super.registerGoals();
 
 		// Remove default spider melee task
-		this.goalSelector.goals.removeIf(t -> t.getGoal() instanceof MeleeAttackGoal);
+		this.goalSelector.availableGoals.removeIf(t -> t.getGoal() instanceof MeleeAttackGoal);
 
 		// Replace with one that doesn't become docile in light
 		// [VanillaCopy] based on EntitySpider.AISpiderAttack
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true) {
 			@Override
 			protected double getAttackReachSqr(LivingEntity attackTarget) {
-				return 4.0F + attackTarget.getWidth();
+				return 4.0F + attackTarget.getBbWidth();
 			}
 		});
 
 		// Remove default spider target player task
-		this.targetSelector.goals.removeIf(t -> t.getPriority() == 2 && t.getGoal() instanceof NearestAttackableTargetGoal);
+		this.targetSelector.availableGoals.removeIf(t -> t.getPriority() == 2 && t.getGoal() instanceof NearestAttackableTargetGoal);
 		// Replace with one that doesn't care about light
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
-	public static boolean isValidLightLevel(IServerWorld world, BlockPos pos, Random random) {
-		int chunkX = MathHelper.floor(pos.getX()) >> 4;
-		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
+	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos pos, Random random) {
+		int chunkX = Mth.floor(pos.getX()) >> 4;
+		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, (ServerWorld) world) == TFFeature.HEDGE_MAZE
-				|| MonsterEntity.isValidLightLevel(world, pos, random);
+		return TFFeature.getNearestFeature(chunkX, chunkZ, (ServerLevel) world) == TFFeature.HEDGE_MAZE
+				|| Monster.isDarkEnoughToSpawn(world, pos, random);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class HedgeSpiderEntity extends SpiderEntity {
 		this.playSound(TFSounds.HEDGE_SPIDER_STEP, 0.15F, 1.0F);
 	}
 
-	public static boolean canSpawn(EntityType<HedgeSpiderEntity> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean canSpawn(EntityType<HedgeSpiderEntity> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random);
 	}
 }

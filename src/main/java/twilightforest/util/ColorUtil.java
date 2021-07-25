@@ -1,9 +1,9 @@
 package twilightforest.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.DyeColor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.DyeColor;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -80,7 +80,7 @@ public class ColorUtil {
 	}
 
 	public BlockState getColor(DyeColor color) {
-		return function.apply(color).getDefaultState();
+		return function.apply(color).defaultBlockState();
 	}
 
 	public Block getRandomColor(Random rand) {

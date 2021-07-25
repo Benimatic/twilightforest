@@ -1,7 +1,7 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -9,19 +9,19 @@ import java.util.Random;
 public class MazestoneProcessor extends StructurePiece.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random random, int x, int y, int z, boolean wall) {
+	public void next(Random random, int x, int y, int z, boolean wall) {
 		if (!wall) {
-			this.blockstate = Blocks.AIR.getDefaultState();
+			this.next = Blocks.AIR.defaultBlockState();
 		} else {
-			this.blockstate = TFBlocks.maze_stone.get().getDefaultState();
+			this.next = TFBlocks.maze_stone.get().defaultBlockState();
 			float rf = random.nextFloat();
 
 			if (rf < 0.2F) {
-				this.blockstate = TFBlocks.maze_stone_mossy.get().getDefaultState();
+				this.next = TFBlocks.maze_stone_mossy.get().defaultBlockState();
 			} else if (rf < 0.5F) {
-				this.blockstate = TFBlocks.maze_stone_cracked.get().getDefaultState();
+				this.next = TFBlocks.maze_stone_cracked.get().defaultBlockState();
 			} else {
-				this.blockstate = TFBlocks.maze_stone_brick.get().getDefaultState();
+				this.next = TFBlocks.maze_stone_brick.get().defaultBlockState();
 			}
 		}
 	}

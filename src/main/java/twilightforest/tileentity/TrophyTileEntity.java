@@ -1,13 +1,13 @@
 package twilightforest.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.TFBlocks;
 
-public class TrophyTileEntity extends TileEntity implements ITickableTileEntity {
+public class TrophyTileEntity extends BlockEntity implements TickableBlockEntity {
 
 	private int animatedTicks;
 	private boolean animated;
@@ -19,7 +19,7 @@ public class TrophyTileEntity extends TileEntity implements ITickableTileEntity 
 	@Override
 	public void tick() {
 		BlockState blockstate = this.getBlockState();
-		if (blockstate.matchesBlock(TFBlocks.ur_ghast_trophy.get()) || blockstate.matchesBlock(TFBlocks.ur_ghast_wall_trophy.get())) {
+		if (blockstate.is(TFBlocks.ur_ghast_trophy.get()) || blockstate.is(TFBlocks.ur_ghast_wall_trophy.get())) {
 			this.animated = true;
 			++this.animatedTicks;
 		}

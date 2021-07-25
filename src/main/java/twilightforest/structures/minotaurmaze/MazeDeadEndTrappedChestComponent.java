@@ -1,16 +1,16 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
@@ -19,27 +19,27 @@ import java.util.Random;
 
 public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 
-	public MazeDeadEndTrappedChestComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeDeadEndTrappedChestComponent(StructureManager manager, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMDETrC, nbt);
 	}
 
 	public MazeDeadEndTrappedChestComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(MinotaurMazePieces.TFMMDETrC, feature, i, x, y, z, rotation);
-		this.setCoordBaseMode(rotation);
+		this.setOrientation(rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		//super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// dais
-		this.setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), 2, 1, 4, sbb);
-		this.setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), 3, 1, 4, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, false), 2, 1, 3, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, false), 3, 1, 3, sbb);
+		this.placeBlock(world, Blocks.OAK_PLANKS.defaultBlockState(), 2, 1, 4, sbb);
+		this.placeBlock(world, Blocks.OAK_PLANKS.defaultBlockState(), 3, 1, 4, sbb);
+		this.placeBlock(world, getStairState(Blocks.OAK_STAIRS.defaultBlockState(), Direction.NORTH, false), 2, 1, 3, sbb);
+		this.placeBlock(world, getStairState(Blocks.OAK_STAIRS.defaultBlockState(), Direction.NORTH, false), 3, 1, 3, sbb);
 
 		// chest
 		this.setDoubleLootChest(world, 2, 2, 4,3, 2, 4, Direction.SOUTH, TFTreasure.labyrinth_deadend, sbb, true);
@@ -49,16 +49,16 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 //		this.setBlockState(world, Blocks.TORCH, 0, 4, 3, 4, sbb);
 
 		// doorway w/ bars
-		this.fillWithBlocks(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.maze_stone_chiseled.get().getDefaultState(), AIR, false);
-		this.fillWithBlocks(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
-		this.fillWithBlocks(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.getDefaultState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.maze_stone_chiseled.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.defaultBlockState(), AIR, false);
 
 		// TNT!
-		BlockState tnt = Blocks.TNT.getDefaultState();
-		this.setBlockState(world, tnt, 2,  0, 3, sbb);
-		this.setBlockState(world, tnt, 3,  0, 3, sbb);
-		this.setBlockState(world, tnt, 2,  0, 4, sbb);
-		this.setBlockState(world, tnt, 3,  0, 4, sbb);
+		BlockState tnt = Blocks.TNT.defaultBlockState();
+		this.placeBlock(world, tnt, 2,  0, 3, sbb);
+		this.placeBlock(world, tnt, 3,  0, 3, sbb);
+		this.placeBlock(world, tnt, 2,  0, 4, sbb);
+		this.placeBlock(world, tnt, 3,  0, 4, sbb);
 
 		return true;
 	}

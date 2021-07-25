@@ -1,36 +1,36 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.BossInfo;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerBossEvent;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 
-public class PlateauBossEntity extends MonsterEntity {
+public class PlateauBossEntity extends Monster {
 
-	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
+	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 
-	public PlateauBossEntity(EntityType<? extends PlateauBossEntity> type, World world) {
+	public PlateauBossEntity(EntityType<? extends PlateauBossEntity> type, Level world) {
 		super(type, world);
-		this.experienceValue = 647;
+		this.xpReward = 647;
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_();
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes();
 	}
 
 	@Override
@@ -38,22 +38,22 @@ public class PlateauBossEntity extends MonsterEntity {
 	}
 
 	@Override
-	public void livingTick() {
-		if (!world.isRemote) {
+	public void aiStep() {
+		if (!level.isClientSide) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 		}
 	}
 
 	@Override
-	public boolean canDespawn(double p_213397_1_) {
+	public boolean removeWhenFarAway(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
 	public void checkDespawn() {
-		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (!detachHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_final_boss.get().getDefaultState());
+		if (level.getDifficulty() == Difficulty.PEACEFUL) {
+			if (!hasRestriction()) {
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_final_boss.get().defaultBlockState());
 			}
 			remove();
 		} else {
@@ -62,51 +62,51 @@ public class PlateauBossEntity extends MonsterEntity {
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
-		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.FINAL_CASTLE);
+	public void die(DamageSource cause) {
+		super.die(cause);
+		if (!level.isClientSide) {
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.FINAL_CASTLE);
 		}
 	}
 
 	@Override
-	public void setCustomName(@Nullable ITextComponent name) {
+	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
-	public void addTrackingPlayer(ServerPlayerEntity player) {
-		super.addTrackingPlayer(player);
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(ServerPlayerEntity player) {
-		super.removeTrackingPlayer(player);
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		BlockPos home = this.getHomePosition();
-		compound.put("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
-		compound.putBoolean("HasHome", this.detachHome());
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		BlockPos home = this.getRestrictCenter();
+		compound.put("Home", newDoubleList(home.getX(), home.getY(), home.getZ()));
+		compound.putBoolean("HasHome", this.hasRestriction());
+		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		if (compound.contains("Home", 9)) {
-			ListNBT nbttaglist = compound.getList("Home", 6);
+			ListTag nbttaglist = compound.getList("Home", 6);
 			int hx = (int) nbttaglist.getDouble(0);
 			int hy = (int) nbttaglist.getDouble(1);
 			int hz = (int) nbttaglist.getDouble(2);
-			this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 30);
+			this.restrictTo(new BlockPos(hx, hy, hz), 30);
 		}
 		if (!compound.getBoolean("HasHome")) {
-			this.detachHome();
+			this.hasRestriction();
 		}
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
@@ -114,12 +114,12 @@ public class PlateauBossEntity extends MonsterEntity {
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public boolean canChangeDimension() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 }

@@ -1,14 +1,14 @@
 package twilightforest.structures.trollcave;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -17,14 +17,14 @@ import java.util.Random;
 
 public class CloudTreeComponent extends TFStructureComponentOld {
 
-	public CloudTreeComponent(TemplateManager manager, CompoundNBT nbt) {
+	public CloudTreeComponent(StructureManager manager, CompoundTag nbt) {
 		super(TrollCavePieces.TFClTr, nbt);
 	}
 
 	public CloudTreeComponent(TFFeature feature, int index, int x, int y, int z) {
 		super(TrollCavePieces.TFClTr, feature, index);
 
-		this.setCoordBaseMode(Direction.SOUTH);
+		this.setOrientation(Direction.SOUTH);
 
 		// adjust x, y, z
 		x = (x >> 2) << 2;
@@ -38,19 +38,19 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// leaves
-		this.fillWithBlocks(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
+		this.generateBox(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.giant_leaves.get().defaultBlockState(), TFBlocks.giant_leaves.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.giant_leaves.get().defaultBlockState(), TFBlocks.giant_leaves.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.giant_leaves.get().defaultBlockState(), TFBlocks.giant_leaves.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.giant_leaves.get().defaultBlockState(), TFBlocks.giant_leaves.get().defaultBlockState(), false);
 
 		// trunk
-		this.fillWithBlocks(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.giant_log.get().getDefaultState(), TFBlocks.giant_log.get().getDefaultState(), false);
+		this.generateBox(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.giant_log.get().defaultBlockState(), TFBlocks.giant_log.get().defaultBlockState(), false);
 
 		// cloud base
-		this.fillWithBlocks(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.fluffy_cloud.get().getDefaultState(), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
+		this.generateBox(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.fluffy_cloud.get().defaultBlockState(), TFBlocks.fluffy_cloud.get().defaultBlockState(), false);
 
 		return true;
 	}

@@ -1,15 +1,15 @@
 package twilightforest.structures.courtyard;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.TFStructureComponentTemplate;
@@ -20,7 +20,7 @@ public class NagaCourtyardPathComponent extends TFStructureComponentTemplate {
 
     private static final ResourceLocation PATH = new ResourceLocation(TwilightForestMod.ID, "courtyard/pathway");
 
-    public NagaCourtyardPathComponent(TemplateManager manager, CompoundNBT nbt) {
+    public NagaCourtyardPathComponent(StructureManager manager, CompoundTag nbt) {
         super(manager, NagaCourtyardPieces.TFNCPa, nbt);
     }
 
@@ -29,14 +29,14 @@ public class NagaCourtyardPathComponent extends TFStructureComponentTemplate {
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager) {
-        TEMPLATE = templateManager.getTemplate(PATH);
+    protected void loadTemplates(StructureManager templateManager) {
+        TEMPLATE = templateManager.get(PATH);
     }
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random random, BoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeSettings.setBoundingBox(structureBoundingBox).addProcessor(new CourtyardWallTemplateProcessor(0.0F));
-		TEMPLATE.func_237146_a_(world, templatePosition, templatePosition, placeSettings, random, 18);
+		TEMPLATE.placeInWorld(world, templatePosition, templatePosition, placeSettings, random, 18);
 		return true;
 	}
 }

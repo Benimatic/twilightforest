@@ -1,7 +1,7 @@
 package twilightforest.util;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HugeMushroomBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.HugeMushroomBlock;
 
 /**
  * Utility class for Huge Mushroom blocks. Contains presets
@@ -10,12 +10,12 @@ public class MushroomUtil {
 
 	public static BlockState getState(Type type, BlockState base) {
 		return base
-				.with(HugeMushroomBlock.UP, type.top)
-				.with(HugeMushroomBlock.DOWN, type.bottom)
-				.with(HugeMushroomBlock.NORTH, type.north)
-				.with(HugeMushroomBlock.SOUTH, type.south)
-				.with(HugeMushroomBlock.EAST, type.east)
-				.with(HugeMushroomBlock.WEST, type.west);
+				.setValue(HugeMushroomBlock.UP, type.top)
+				.setValue(HugeMushroomBlock.DOWN, type.bottom)
+				.setValue(HugeMushroomBlock.NORTH, type.north)
+				.setValue(HugeMushroomBlock.SOUTH, type.south)
+				.setValue(HugeMushroomBlock.EAST, type.east)
+				.setValue(HugeMushroomBlock.WEST, type.west);
 	}
 
 	public enum Type {

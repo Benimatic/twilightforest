@@ -11,8 +11,8 @@ package twilightforest.client.shader;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.resources.SimpleReloadableResourceManager;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 import net.minecraftforge.resource.VanillaResourceType;
 import org.lwjgl.opengl.*;
@@ -52,10 +52,10 @@ public final class ShaderManager {
     @SuppressWarnings("WeakerAccess")
     public static final class Uniforms {
 
-        public static final ShaderUniform TIME       = ShaderUniform.create("time"      , () -> TFClientEvents.time + Minecraft.getInstance().getRenderPartialTicks());
-        public static final ShaderUniform YAW        = ShaderUniform.create("yaw"       , () ->  (Minecraft.getInstance().player.rotationYaw   * 2.0f * TFClientEvents.PI) / 360.0f);
-        public static final ShaderUniform PITCH      = ShaderUniform.create("pitch"     , () -> -(Minecraft.getInstance().player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
-        public static final ShaderUniform RESOLUTION = ShaderUniform.create("resolution", () -> Minecraft.getInstance().getMainWindow().getWidth(), () -> Minecraft.getInstance().getMainWindow().getHeight());
+        public static final ShaderUniform TIME       = ShaderUniform.create("time"      , () -> TFClientEvents.time + Minecraft.getInstance().getFrameTime());
+        public static final ShaderUniform YAW        = ShaderUniform.create("yaw"       , () ->  (Minecraft.getInstance().player.yRot   * 2.0f * TFClientEvents.PI) / 360.0f);
+        public static final ShaderUniform PITCH      = ShaderUniform.create("pitch"     , () -> -(Minecraft.getInstance().player.xRot * 2.0f * TFClientEvents.PI) / 360.0f);
+        public static final ShaderUniform RESOLUTION = ShaderUniform.create("resolution", () -> Minecraft.getInstance().getWindow().getScreenWidth(), () -> Minecraft.getInstance().getWindow().getScreenHeight());
         public static final ShaderUniform ZERO       = ShaderUniform.create("zero"      , 0);
         public static final ShaderUniform ONE        = ShaderUniform.create("one"       , 1);
         public static final ShaderUniform TWO        = ShaderUniform.create("two"       , 2);
@@ -65,10 +65,10 @@ public final class ShaderManager {
     }
 
     public static void initShaders() {
-        IResourceManager iManager;
+        ResourceManager iManager;
 
         if ((iManager = Minecraft.getInstance().getResourceManager()) instanceof SimpleReloadableResourceManager) {
-            ((SimpleReloadableResourceManager) iManager).addReloadListener(shaderReloadListener = (manager, predicate) -> {
+            ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager, predicate) -> {
                 if (predicate.test(VanillaResourceType.SHADERS)) reloadShaders();
             });
         }

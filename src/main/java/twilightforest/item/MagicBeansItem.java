@@ -1,20 +1,22 @@
 package twilightforest.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import javax.annotation.Nonnull;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class MagicBeansItem extends Item {
 
@@ -24,27 +26,27 @@ public class MagicBeansItem extends Item {
 
 	@Nonnull
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		World world = context.getWorld();
-		BlockPos pos = context.getPos();
-		PlayerEntity player = context.getPlayer();
+	public InteractionResult useOn(UseOnContext context) {
+		Level world = context.getLevel();
+		BlockPos pos = context.getClickedPos();
+		Player player = context.getPlayer();
 		Block blockAt = world.getBlockState(pos).getBlock();
 
 		int minY = pos.getY() + 1;
 		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight() + 40));
 		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil.get()) {
-			if (!world.isRemote) {
-				ItemStack is = player.getHeldItem(context.getHand());
+			if (!world.isClientSide) {
+				ItemStack is = player.getItemInHand(context.getHand());
 				is.shrink(1);
 				makeHugeStalk(world, pos, minY, maxY);
 
-				if (player instanceof ServerPlayerEntity)
-					TFAdvancements.ITEM_USE_TRIGGER.trigger((ServerPlayerEntity) player, is, world, pos);
+				if (player instanceof ServerPlayer)
+					TFAdvancements.ITEM_USE_TRIGGER.trigger((ServerPlayer) player, is, world, pos);
 			}
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		} else {
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		}
 	}
 
@@ -53,32 +55,32 @@ public class MagicBeansItem extends Item {
 	}
 
 
-	private void makeHugeStalk(World world, BlockPos pos, int minY, int maxY) {
+	private void makeHugeStalk(Level world, BlockPos pos, int minY, int maxY) {
 		float x = pos.getX();
 		float z = pos.getZ();
 
-		int yOffset = world.rand.nextInt(100);
+		int yOffset = world.random.nextInt(100);
 
-		float cScale = world.rand.nextFloat() * 0.25F + 0.125F; // spiral tightness scaling
-		float rScale = world.rand.nextFloat() * 0.25F + 0.125F; // radius change scaling
+		float cScale = world.random.nextFloat() * 0.25F + 0.125F; // spiral tightness scaling
+		float rScale = world.random.nextFloat() * 0.25F + 0.125F; // radius change scaling
 
 		// offset x and z to make stalk start at origin
-		float radius = 4F + MathHelper.sin((minY + yOffset) * rScale) * 3F; // make radius a little wavy
-		x -= MathHelper.sin((minY + yOffset) * cScale) * radius;
-		z -= MathHelper.cos((minY + yOffset) * cScale) * radius;
+		float radius = 4F + Mth.sin((minY + yOffset) * rScale) * 3F; // make radius a little wavy
+		x -= Mth.sin((minY + yOffset) * cScale) * radius;
+		z -= Mth.cos((minY + yOffset) * cScale) * radius;
 
 		// leaves!
-		int nextLeafY = minY + 10 + world.rand.nextInt(20);
+		int nextLeafY = minY + 10 + world.random.nextInt(20);
 
 		// make stalk
 		boolean isClear = true;
 		for (int dy = minY; dy < maxY && isClear; dy++) {
 			// make radius a little wavy
-			radius = 5F + MathHelper.sin((dy + yOffset) * rScale) * 2.5F;
+			radius = 5F + Mth.sin((dy + yOffset) * rScale) * 2.5F;
 
 			// find center of stalk
-			float cx = x + MathHelper.sin((dy + yOffset) * cScale) * radius;
-			float cz = z + MathHelper.cos((dy + yOffset) * cScale) * radius;
+			float cx = x + Mth.sin((dy + yOffset) * cScale) * radius;
+			float cz = z + Mth.cos((dy + yOffset) * cScale) * radius;
 
 
 			float stalkThickness = 2.5F;
@@ -88,10 +90,10 @@ public class MagicBeansItem extends Item {
 				stalkThickness *= (maxY - dy) / 5F;
 			}
 
-			int minX = MathHelper.floor(x - radius - stalkThickness);
-			int maxX = MathHelper.ceil(x + radius + stalkThickness);
-			int minZ = MathHelper.floor(z - radius - stalkThickness);
-			int maxZ = MathHelper.ceil(z + radius + stalkThickness);
+			int minX = Mth.floor(x - radius - stalkThickness);
+			int maxX = Mth.ceil(x + radius + stalkThickness);
+			int minZ = Mth.floor(z - radius - stalkThickness);
+			int maxZ = Mth.ceil(z + radius + stalkThickness);
 
 			// generate stalk
 			for (int dx = minX; dx < maxX; dx++) {
@@ -106,32 +108,32 @@ public class MagicBeansItem extends Item {
 			if (dy == nextLeafY) {
 				// make leaf blob
 
-				int lx = (int) (x + MathHelper.sin((dy + yOffset) * cScale) * (radius + stalkThickness));
-				int lz = (int) (z + MathHelper.cos((dy + yOffset) * cScale) * (radius + stalkThickness));
+				int lx = (int) (x + Mth.sin((dy + yOffset) * cScale) * (radius + stalkThickness));
+				int lz = (int) (z + Mth.cos((dy + yOffset) * cScale) * (radius + stalkThickness));
 
 				this.placeLeaves(world, new BlockPos(lx, dy, lz));
 
-				nextLeafY = dy + 5 + world.rand.nextInt(10);
+				nextLeafY = dy + 5 + world.random.nextInt(10);
 			}
 		}
 	}
 
-	private void placeLeaves(World world, BlockPos pos) {
+	private void placeLeaves(Level world, BlockPos pos) {
 		// stalk at center
-		world.setBlockState(pos, TFBlocks.huge_stalk.get().getDefaultState());
+		world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.get().defaultBlockState());
 
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dz = -1; dz <= 1; dz++) {
-				this.tryToPlaceLeaves(world, pos.add(dx, -1, dz));
-				this.tryToPlaceLeaves(world, pos.add(dx, 1, dz));
+				this.tryToPlaceLeaves(world, pos.offset(dx, -1, dz));
+				this.tryToPlaceLeaves(world, pos.offset(dx, 1, dz));
 			}
 		}
 		// larger square
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
 				if (!((dx == 2 || dx == -2) && (dz == 2 || dz == -2))) {
-					this.tryToPlaceLeaves(world, pos.add(dx, 0, dz));
+					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz));
 				}
 			}
 		}
@@ -140,20 +142,20 @@ public class MagicBeansItem extends Item {
 	/**
 	 * Place the stalk block only if the destination is clear.  Return false if blocked.
 	 */
-	private boolean tryToPlaceStalk(World world, BlockPos pos) {
+	private boolean tryToPlaceStalk(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock().isAir(state, world, pos) || state.getMaterial().isReplaceable() || state.getBlock().canBeReplacedByLeaves(state, world, pos) || BlockTags.LEAVES.contains(state.getBlock()) /*|| state.getBlock().canSustainLeaves(state, world, pos)*/) {
-			world.setBlockState(pos, TFBlocks.huge_stalk.get().getDefaultState());
+			world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.get().defaultBlockState());
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	private void tryToPlaceLeaves(World world, BlockPos pos) {
+	private void tryToPlaceLeaves(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
-			world.setBlockState(pos, TFBlocks.beanstalk_leaves.get().getDefaultState(), 2);
+			world.setBlock(pos, TFBlocks.beanstalk_leaves.get().defaultBlockState(), 2);
 		}
 	}
 }

@@ -1,14 +1,14 @@
 package twilightforest.util;
 
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
 
 import java.util.Random;
 
 import static net.minecraft.util.Rotation.CLOCKWISE_180;
-import static net.minecraft.util.Rotation.CLOCKWISE_90;
+import staticnet.minecraft.world.level.block.Rotationn.CLOCKWISE_90;
 import static net.minecraft.util.Rotation.COUNTERCLOCKWISE_90;
-import static net.minecraft.util.Rotation.NONE;
+import staticnet.minecraft.world.level.block.Rotationn.NONE;
 
 public final class RotationUtil {
 	public static final Rotation[] ROTATIONS = Rotation.values();
@@ -22,7 +22,7 @@ public final class RotationUtil {
 	}
 
 	public static Rotation add(Rotation original, int rotations) {
-		return original.add(ROTATIONS[(rotations + 4) & 3]);
+		return original.getRotated(ROTATIONS[(rotations + 4) & 3]);
 	}
 
 	public static Rotation subtract(Rotation original, Rotation rotation) {

@@ -1,10 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import twilightforest.TFSounds;
 import twilightforest.entity.boss.AlphaYetiEntity;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class YetiTiredGoal extends Goal {
 
@@ -15,31 +17,31 @@ public class YetiTiredGoal extends Goal {
 	public YetiTiredGoal(AlphaYetiEntity entityTFYetiAlpha, int i) {
 		this.yeti = entityTFYetiAlpha;
 		this.tiredDuration = i;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		return this.yeti.isTired();
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		return this.tiredTimer < this.tiredDuration;
 	}
 
 	@Override
-	public boolean isPreemptible() {
+	public boolean isInterruptable() {
 		return false;
 	}
 
 	@Override
-	public void startExecuting() {
+	public void start() {
 		this.tiredTimer = 0;
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.tiredTimer = 0;
 		this.yeti.setTired(false);
 	}
@@ -47,6 +49,6 @@ public class YetiTiredGoal extends Goal {
 	@Override
 	public void tick() {
 		if(++this.tiredTimer % 10 == 0)
-			this.yeti.playSound(TFSounds.ALPHAYETI_PANT, 4F, 0.5F + yeti.getRNG().nextFloat() * 0.5F);
+			this.yeti.playSound(TFSounds.ALPHAYETI_PANT, 4F, 0.5F + yeti.getRandom().nextFloat() * 0.5F);
 	}
 }

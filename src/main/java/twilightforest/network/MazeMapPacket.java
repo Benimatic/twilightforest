@@ -1,10 +1,10 @@
 package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.MapItemRenderer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SMapDataPacket;
-import net.minecraft.world.storage.MapData;
+import net.minecraft.client.gui.MapRenderer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TFMazeMapData;
 import twilightforest.item.MazeMapItem;
@@ -18,24 +18,24 @@ import java.util.function.Supplier;
  */
 public class MazeMapPacket {
 
-	private final SMapDataPacket inner;
+	private final ClientboundMapItemDataPacket inner;
 
-	public MazeMapPacket(SMapDataPacket inner) {
+	public MazeMapPacket(ClientboundMapItemDataPacket inner) {
 		this.inner = inner;
 	}
 
-	public MazeMapPacket(PacketBuffer buf) {
-		inner = new SMapDataPacket();
+	public MazeMapPacket(FriendlyByteBuf buf) {
+		inner = new ClientboundMapItemDataPacket();
 		try {
-			inner.readPacketData(buf);
+			inner.read(buf);
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't read inner SPacketMaps", e);
 		}
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		try {
-			inner.writePacketData(buf);
+			inner.write(buf);
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't write inner SPacketMaps", e);
 		}
@@ -47,23 +47,23 @@ public class MazeMapPacket {
 				@Override
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
-					MapItemRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapItemRenderer();
+					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
 					String s = MazeMapItem.getMapName(message.inner.getMapId());
-					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(Minecraft.getInstance().world, s);
+					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(Minecraft.getInstance().level, s);
 					if (mapdata == null) {
 						mapdata = new TFMazeMapData(s);
 						if (mapitemrenderer.getMapInstanceIfExists(s) != null) {
-							MapData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
+							MapItemSavedData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
 							if (mapdata1 instanceof TFMazeMapData) {
 								mapdata = (TFMazeMapData) mapdata1;
 							}
 						}
 
-						TFMazeMapData.registerMazeMapData(Minecraft.getInstance().world, mapdata);
+						TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata);
 					}
 
-					message.inner.setMapdataTo(mapdata);
-					mapitemrenderer.updateMapTexture(mapdata);
+					message.inner.applyToMap(mapdata);
+					mapitemrenderer.update(mapdata);
 				}
 			});
 			return true;

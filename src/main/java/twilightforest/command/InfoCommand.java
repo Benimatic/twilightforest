@@ -4,36 +4,36 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import twilightforest.TFFeature;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 public class InfoCommand {
-    public static LiteralArgumentBuilder<CommandSource> register() {
-        return Commands.literal("info").requires(cs -> cs.hasPermissionLevel(2)).executes(InfoCommand::run);
+    public static LiteralArgumentBuilder<CommandSourceStack> register() {
+        return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(InfoCommand::run);
     }
 
-    private static int run(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
-        CommandSource source = ctx.getSource();
+    private static int run(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        CommandSourceStack source = ctx.getSource();
 
-        if (!TFGenerationSettings.isTwilightChunk(source.getWorld())) {
+        if (!TFGenerationSettings.isTwilightChunk(source.getLevel())) {
             throw TFCommand.NOT_IN_TF.create();
         }
 
-        BlockPos pos = new BlockPos(source.getPos());
+        BlockPos pos = new BlockPos(source.getPosition());
 
         // nearest feature
-        TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), source.getWorld());
-        source.sendFeedback(new TranslationTextComponent("commands.tffeature.nearest", nearbyFeature.name), false);
+        TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), source.getLevel());
+        source.sendSuccess(new TranslatableComponent("commands.tffeature.nearest", nearbyFeature.name), false);
 
         // are you in a structure?
-        ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(source.getWorld());
+        ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(source.getLevel());
         if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
-            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.inside"), false);
+            source.sendSuccess(new TranslatableComponent("commands.tffeature.structure.inside"), false);
 
 //            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)), false); TODO: Sorry...I got rid of the Chunk Generator's things
             // are you in a room?
@@ -45,7 +45,7 @@ public class InfoCommand {
 //							sender.sendMessage(new TextComponentTranslation(entry.toString()));
 //						}
         } else {
-            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.outside"), false);
+            source.sendSuccess(new TranslatableComponent("commands.tffeature.structure.outside"), false);
         }
 
         return Command.SINGLE_SUCCESS;

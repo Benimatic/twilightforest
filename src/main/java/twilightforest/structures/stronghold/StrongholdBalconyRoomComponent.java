@@ -1,17 +1,17 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 
 	boolean enterBottom;
 
-	public StrongholdBalconyRoomComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdBalconyRoomComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSBalR, nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
@@ -31,13 +31,13 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putBoolean("enterBottom", this.enterBottom);
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 
 		if (y > 17) {
 			this.enterBottom = false;
@@ -56,8 +56,8 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		// lower left exit
 		addNewComponent(parent, list, random, Rotation.NONE, 13, 1, 27);
@@ -92,13 +92,13 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 	 * Generate the blocks that go here
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 13, 26, rand, deco.randomBlocks);
 
 		// balcony
-		this.fillWithRandomizedBlocks(world, sbb, 1, 6, 1, 16, 7, 25, false, rand, deco.randomBlocks);
-		this.fillWithBlocks(world, sbb, 4, 8, 4, 13, 8, 22, deco.fenceState, Blocks.AIR.getDefaultState(), false);
-		this.fillWithAir(world, sbb, 5, 6, 5, 12, 8, 21);
+		this.generateBox(world, sbb, 1, 6, 1, 16, 7, 25, false, rand, deco.randomBlocks);
+		this.generateBox(world, sbb, 4, 8, 4, 13, 8, 22, deco.fenceState, Blocks.AIR.defaultBlockState(), false);
+		this.generateAirBox(world, sbb, 5, 6, 5, 12, 8, 21);
 
 		// stairs & pillars
 		placeStairsAndPillars(world, sbb, Rotation.NONE);
@@ -110,7 +110,7 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 		return true;
 	}
 
-	private void placeStairsAndPillars(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
+	private void placeStairsAndPillars(WorldGenLevel world, BoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 4, 1, 4, 4, 12, 4, deco.pillarState, rotation);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), false), 4, 1, 5, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), false), 5, 1, 4, rotation, sbb);

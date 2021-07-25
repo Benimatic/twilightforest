@@ -3,14 +3,14 @@ package twilightforest.advancements;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class StructureClearedTrigger implements ICriterionTrigger<StructureClearedTrigger.Instance> {
+import net.minecraft.advancements.CriterionTrigger.Listener;
+
+public class StructureClearedTrigger implements CriterionTrigger<StructureClearedTrigger.Instance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("structure_cleared");
 	private final Map<PlayerAdvancements, StructureClearedTrigger.Listeners> listeners = Maps.newHashMap();
@@ -29,13 +31,13 @@ public class StructureClearedTrigger implements ICriterionTrigger<StructureClear
 	}
 
 	@Override
-	public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<StructureClearedTrigger.Instance> listener) {
+	public void addPlayerListener(PlayerAdvancements playerAdvancementsIn, Listener<StructureClearedTrigger.Instance> listener) {
 		StructureClearedTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeListener(PlayerAdvancements playerAdvancementsIn, Listener<StructureClearedTrigger.Instance> listener) {
+	public void removePlayerListener(PlayerAdvancements playerAdvancementsIn, Listener<StructureClearedTrigger.Instance> listener) {
 		StructureClearedTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
 		if (listeners != null) {
 			listeners.remove(listener);
@@ -46,29 +48,29 @@ public class StructureClearedTrigger implements ICriterionTrigger<StructureClear
 	}
 
 	@Override
-	public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
+	public void removePlayerListeners(PlayerAdvancements playerAdvancementsIn) {
 		this.listeners.remove(playerAdvancementsIn);
 	}
 
 	@Override
-	public Instance deserialize(JsonObject json, ConditionArrayParser condition) {
-		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
-		String structureName = JSONUtils.getString(json, "structure");
+	public Instance createInstance(JsonObject json, DeserializationContext condition) {
+		EntityPredicate.Composite player = EntityPredicate.Composite.fromJson(json, "player", condition);
+		String structureName = GsonHelper.getAsString(json, "structure");
 		return new StructureClearedTrigger.Instance(player, structureName);
 	}
 
-	public void trigger(ServerPlayerEntity player, String structureName) {
+	public void trigger(ServerPlayer player, String structureName) {
 		StructureClearedTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
 		if (listeners != null) {
 			listeners.trigger(structureName);
 		}
 	}
 
-	public static class Instance extends CriterionInstance {
+	public static class Instance extends AbstractCriterionTriggerInstance {
 
 		private final String structureName;
 
-		public Instance(EntityPredicate.AndPredicate player, String structureName) {
+		public Instance(EntityPredicate.Composite player, String structureName) {
 			super(StructureClearedTrigger.ID, player);
 			this.structureName = structureName;
 		}
@@ -103,14 +105,14 @@ public class StructureClearedTrigger implements ICriterionTrigger<StructureClear
 
 			List<Listener<StructureClearedTrigger.Instance>> list = new ArrayList<>();
 
-			for (ICriterionTrigger.Listener<StructureClearedTrigger.Instance> listener : this.listeners) {
-				if (listener.getCriterionInstance().test(structureName)) {
+			for (CriterionTrigger.Listener<StructureClearedTrigger.Instance> listener : this.listeners) {
+				if (listener.getTriggerInstance().test(structureName)) {
 					list.add(listener);
 				}
 			}
 
-			for (ICriterionTrigger.Listener<StructureClearedTrigger.Instance> listener : list) {
-				listener.grantCriterion(this.playerAdvancements);
+			for (CriterionTrigger.Listener<StructureClearedTrigger.Instance> listener : list) {
+				listener.run(this.playerAdvancements);
 			}
 		}
 	}

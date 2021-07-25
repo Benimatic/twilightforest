@@ -1,9 +1,9 @@
 package twilightforest.capabilities;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -35,7 +35,7 @@ public class CapabilityList {
 	@SubscribeEvent
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e) {
 		if (e.getObject() instanceof LivingEntity) {
-			e.addCapability(IShieldCapability.ID, new ICapabilitySerializable<CompoundNBT>() {
+			e.addCapability(IShieldCapability.ID, new ICapabilitySerializable<CompoundTag>() {
 
 				IShieldCapability inst = SHIELDS.getDefaultInstance();
 
@@ -50,12 +50,12 @@ public class CapabilityList {
 				}
 
 				@Override
-				public CompoundNBT serializeNBT() {
-					return (CompoundNBT) SHIELDS.getStorage().writeNBT(SHIELDS, inst, null);
+				public CompoundTag serializeNBT() {
+					return (CompoundTag) SHIELDS.getStorage().writeNBT(SHIELDS, inst, null);
 				}
 
 				@Override
-				public void deserializeNBT(CompoundNBT nbt) {
+				public void deserializeNBT(CompoundTag nbt) {
 					SHIELDS.getStorage().readNBT(SHIELDS, inst, null, nbt);
 				}
 

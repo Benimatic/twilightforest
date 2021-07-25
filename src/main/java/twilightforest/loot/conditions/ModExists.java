@@ -3,16 +3,16 @@ package twilightforest.loot.conditions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.util.GsonHelper;
 import net.minecraftforge.fml.ModList;
 import twilightforest.loot.TFTreasure;
 
 // Loot condition for checking if a mod exists.
-public class ModExists implements ILootCondition {
+public class ModExists implements LootItemCondition {
 
     private final boolean exists;
     private final String modID;
@@ -23,7 +23,7 @@ public class ModExists implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getConditionType() {
+    public LootItemConditionType getType() {
         return TFTreasure.MOD_EXISTS;
     }
 
@@ -32,11 +32,11 @@ public class ModExists implements ILootCondition {
         return exists;
     }
 
-    public static ILootCondition.IBuilder builder(String modid) {
+    public static LootItemCondition.Builder builder(String modid) {
         return () -> new ModExists(modid);
     }
 
-    public static class Serializer implements ILootSerializer<ModExists> {
+    public static class Serializer implements Serializer<ModExists> {
 
 		@Override
 		public void serialize(JsonObject json, ModExists value, JsonSerializationContext context) {
@@ -45,7 +45,7 @@ public class ModExists implements ILootCondition {
 
 		@Override
 		public ModExists deserialize(JsonObject json, JsonDeserializationContext context) {
-			return new ModExists(JSONUtils.getString(json, "mod_id"));
+			return new ModExists(GsonHelper.getAsString(json, "mod_id"));
 		}
 	}
 }

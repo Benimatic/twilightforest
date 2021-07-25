@@ -1,13 +1,13 @@
 package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.MainMenuScreen;
-import net.minecraft.client.renderer.Atlases;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -43,9 +43,9 @@ public class TFClientSetup {
 
 		@SubscribeEvent
 		public static void showOptifineWarning(GuiScreenEvent.InitGuiEvent.Post event) {
-			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getGui() instanceof MainMenuScreen) {
+			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getGui() instanceof TitleScreen) {
 				optifineWarningShown = true;
-				Minecraft.getInstance().displayGuiScreen(new OptifineWarningScreen(event.getGui()));
+				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getGui()));
 			}
 		}
 
@@ -72,18 +72,18 @@ public class TFClientSetup {
         TFTileEntities.registerTileEntityRenders();
         TFContainers.renderScreens();
 
-        TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
-        DimensionRenderInfo.field_239208_a_.put(TwilightForestMod.prefix("renderer"), renderInfo);
+        TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
+        DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
 
         evt.enqueueWork(() -> {
-            Atlases.addWoodType(TFBlocks.TWILIGHT_OAK);
-            Atlases.addWoodType(TFBlocks.CANOPY);
-            Atlases.addWoodType(TFBlocks.MANGROVE);
-            Atlases.addWoodType(TFBlocks.DARKWOOD);
-            Atlases.addWoodType(TFBlocks.TIMEWOOD);
-            Atlases.addWoodType(TFBlocks.TRANSFORMATION);
-            Atlases.addWoodType(TFBlocks.MINING);
-            Atlases.addWoodType(TFBlocks.SORTING);
+            Sheets.addWoodType(TFBlocks.TWILIGHT_OAK);
+            Sheets.addWoodType(TFBlocks.CANOPY);
+            Sheets.addWoodType(TFBlocks.MANGROVE);
+            Sheets.addWoodType(TFBlocks.DARKWOOD);
+            Sheets.addWoodType(TFBlocks.TIMEWOOD);
+            Sheets.addWoodType(TFBlocks.TRANSFORMATION);
+            Sheets.addWoodType(TFBlocks.MINING);
+            Sheets.addWoodType(TFBlocks.SORTING);
         });
        
     }
@@ -94,9 +94,9 @@ public class TFClientSetup {
             // Normally Minecraft Client is never null except when generating through runData
             return;
 
-        Minecraft.getInstance().getResourcePackList().addPackFinder(
+        Minecraft.getInstance().getResourcePackRepository().addPackFinder(
                 (consumer, iFactory) -> consumer.accept(
-                        ResourcePackInfo.createResourcePack(
+                        Pack.create(
                                 TwilightForestMod.prefix("classic_textures").toString(),
                                 false,
                                 () -> new TwilightLegacyPack(
@@ -106,7 +106,7 @@ public class TFClientSetup {
                                                 .getFile()
                                 ),
                                 iFactory,
-                                ResourcePackInfo.Priority.TOP,
+                                Pack.Position.TOP,
                                 iTextComponent -> iTextComponent
                         )
                 )
@@ -115,15 +115,15 @@ public class TFClientSetup {
 
     @SubscribeEvent
     public static void loadComplete(FMLLoadCompleteEvent evt) {
-        Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
-            if (r instanceof LivingRenderer) {
-                attachRenderLayers((LivingRenderer<?, ?>) r);
+        Minecraft.getInstance().getEntityRenderDispatcher().renderers.values().forEach(r -> {
+            if (r instanceof LivingEntityRenderer) {
+                attachRenderLayers((LivingEntityRenderer<?, ?>) r);
             }
         });
-        Minecraft.getInstance().getRenderManager().getSkinMap().values().forEach(TFClientSetup::attachRenderLayers);
+        Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().values().forEach(TFClientSetup::attachRenderLayers);
     }
 
-    private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingRenderer<T, M> renderer) {
+    private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
         renderer.addLayer(new ShieldLayer<>(renderer));
         renderer.addLayer(new IceLayer<>(renderer));
     }

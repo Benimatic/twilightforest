@@ -1,19 +1,19 @@
 package twilightforest.util;
 
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeature;
-import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
+import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import twilightforest.world.feature.TFTreeGenerator;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -21,16 +21,16 @@ import java.util.Random;
 import java.util.Set;
 
 public class FeatureUtil {
-	public static void putLeafBlock(IWorldGenerationReader world, Random random, BlockPos pos, BlockStateProvider state, Set<BlockPos> leavesPos) {
-		if (/*leavesPos.contains(pos) ||*/ !TreeFeature.isReplaceableAt(world, pos))
+	public static void putLeafBlock(LevelSimulatedRW world, Random random, BlockPos pos, BlockStateProvider state, Set<BlockPos> leavesPos) {
+		if (/*leavesPos.contains(pos) ||*/ !TreeFeature.validTreePos(world, pos))
 			return;
 
-		world.setBlockState(pos, state.getBlockState(random, pos), 3);
-		leavesPos.add(pos.toImmutable());
+		world.setBlock(pos, state.getState(random, pos), 3);
+		leavesPos.add(pos.immutable());
 	}
 
 	// TODO phase out other leaf circle algorithms
-	public static void makeLeafCircle(IWorldGenerationReader world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
+	public static void makeLeafCircle(LevelSimulatedRW world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
 		// Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
 		// the pos to be immutable causing multiple same BlockPos instances to exist.
 		float radiusSquared = radius * radius;
@@ -42,10 +42,10 @@ public class FeatureUtil {
 				// if we're inside the blob, fill it
 				if (x * x + z * z <= radiusSquared) {
 					// do four at a time for easiness!
-					putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
-					putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
+					putLeafBlock(world, random, centerPos.offset(  x, 0,  z), state, leaves);
+					putLeafBlock(world, random, centerPos.offset( -x, 0, -z), state, leaves);
+					putLeafBlock(world, random, centerPos.offset( -z, 0,  x), state, leaves);
+					putLeafBlock(world, random, centerPos.offset(  z, 0, -x), state, leaves);
 					// Confused how this circle pixel-filling algorithm works exactly? https://www.desmos.com/calculator/psqynhk21k
 				}
 			}
@@ -53,7 +53,7 @@ public class FeatureUtil {
 	}
 
 	// TODO Determine if we should cut this method
-	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
+	public static void makeLeafSpheroid(LevelSimulatedRW world, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
 		float xzRadiusSquared = xzRadius * xzRadius;
 		float yRadiusSquared = yRadius * yRadius;
 		float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
@@ -62,63 +62,63 @@ public class FeatureUtil {
 		for (int y = 0; y <= yRadius; y++) {
 			if (y > yRadius) continue;
 
-			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
 
-			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
 		}
 
 		for (int x = 0; x <= xzRadius; x++) {
 			for (int z = 1; z <= xzRadius; z++) {
 				if (x * x + z * z > xzRadiusSquared) continue;
 
-				putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
-				putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
-				putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
-				putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
+				putLeafBlock(world, random, centerPos.offset(  x, 0,  z), state, leaves);
+				putLeafBlock(world, random, centerPos.offset( -x, 0, -z), state, leaves);
+				putLeafBlock(world, random, centerPos.offset( -z, 0,  x), state, leaves);
+				putLeafBlock(world, random, centerPos.offset(  z, 0, -x), state, leaves);
 
 				for (int y = 1; y <= yRadius; y++) {
 					float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
 					if (xzSquare + (((y - verticalBias) * (y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
-						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
-						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
-						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
-						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+						putLeafBlock(world, random, centerPos.offset(  x,  y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.offset( -x,  y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.offset( -z,  y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.offset(  z,  y, -x), state, leaves);
 					}
 
 					if (xzSquare + (((y + verticalBias) * (y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
-						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
-						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
-						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
-						putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+						putLeafBlock(world, random, centerPos.offset(  x, -y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.offset( -x, -y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.offset( -z, -y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.offset(  z, -y, -x), state, leaves);
 					}
 				}
 			}
 		}
 	}
 
-	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
+	public static void makeLeafSpheroid(LevelSimulatedRW world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
 		float radiusSquared = radius * radius;
 		putLeafBlock(world, random, centerPos, state, leaves);
 
 		for (int y = 0; y <= radius; y++) {
 			if (y > radius) continue;
 
-			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
 
-			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
 		}
 
 		for (int x = 0; x <= radius; x++) {
@@ -127,32 +127,32 @@ public class FeatureUtil {
 
 				if (xzSquare > radiusSquared) continue;
 
-				putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
-				putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
-				putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
-				putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
+				putLeafBlock(world, random, centerPos.offset(  x, 0,  z), state, leaves);
+				putLeafBlock(world, random, centerPos.offset( -x, 0, -z), state, leaves);
+				putLeafBlock(world, random, centerPos.offset( -z, 0,  x), state, leaves);
+				putLeafBlock(world, random, centerPos.offset(  z, 0, -x), state, leaves);
 
 				for (int y = 1; y <= radius; y++) {
 
 					if (xzSquare + y * y <= radius * radius) {
-						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
-						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
-						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
-						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+						putLeafBlock(world, random, centerPos.offset(  x,  y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.offset( -x,  y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.offset( -z,  y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.offset(  z,  y, -x), state, leaves);
 
-						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
-						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
-						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
-						putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+						putLeafBlock(world, random, centerPos.offset(  x, -y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.offset( -x, -y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.offset( -z, -y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.offset(  z, -y, -x), state, leaves);
 					}
 				}
 			}
 		}
 	}
 
-	public static boolean hasAirAround(IWorldGenerationReader world, BlockPos pos) {
+	public static boolean hasAirAround(LevelSimulatedRW world, BlockPos pos) {
 		for (Direction e : directionsExceptDown) {
-			if (world.hasBlockState(pos, b -> b.getBlock() instanceof AirBlock)) {
+			if (world.isStateAtPosition(pos, b -> b.getBlock() instanceof AirBlock)) {
 				return true;
 			}
 		}
@@ -164,9 +164,9 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	public static void drawBresenhamBranch(IWorldGenerationReader world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+	public static void drawBresenhamBranch(LevelSimulatedRW world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, BoundingBox mbb, TreeConfiguration config) {
 		for (BlockPos pixel : getBresenhamArrays(from, to)) {
-			AbstractTrunkPlacer.func_236911_a_(world, random, pixel, state, mbb, config);
+			TrunkPlacer.placeLog(world, random, pixel, state, mbb, config);
 		}
 	}
 
@@ -182,7 +182,7 @@ public class FeatureUtil {
 		double rangle = angle * 2.0D * Math.PI;
 		double rtilt = tilt * Math.PI;
 
-		return pos.add(
+		return pos.offset(
 				Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance),
 				Math.round(Math.cos(rtilt) * distance),
 				Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance)
@@ -193,7 +193,7 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	public static void drawBresenhamBranch(TFTreeGenerator<? extends TFTreeFeatureConfig> generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	public static void drawBresenhamBranch(TFTreeGenerator<? extends TFTreeFeatureConfig> generator, LevelAccessor world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, BoundingBox mbb, TFTreeFeatureConfig config) {
 		for (BlockPos pixel : getBresenhamArrays(from, to)) {
 			generator.setBranchBlockState(world, random, pixel, state, mbb, config);
 			//world.setBlockState(pixel, state);
@@ -204,10 +204,10 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This just takes a BlockState, used to set Trunk
 	 */
-	public static void drawBresenhamTree(IWorld world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
+	public static void drawBresenhamTree(LevelAccessor world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
 		for (BlockPos pixel : getBresenhamArrays(from, to)) {
-			world.setBlockState(pixel, state, 3);
-			treepos.add(pixel.toImmutable());
+			world.setBlock(pixel, state, 3);
+			treepos.add(pixel.immutable());
 		}
 	}
 
@@ -248,7 +248,7 @@ public class FeatureUtil {
 			for (i = 0; i < absDx; i++) {
 				lineArray[i] = pixel;
 				if (err_1 > 0) {
-					pixel = pixel.up(y_inc);
+					pixel = pixel.above(y_inc);
 					err_1 -= doubleAbsDx;
 				}
 				if (err_2 > 0) {
@@ -275,7 +275,7 @@ public class FeatureUtil {
 				}
 				err_1 += doubleAbsDx;
 				err_2 += doubleAbsDz;
-				pixel = pixel.up(y_inc);
+				pixel = pixel.above(y_inc);
 			}
 		} else {
 			err_1 = doubleAbsDy - absDz;
@@ -284,7 +284,7 @@ public class FeatureUtil {
 			for (i = 0; i < absDz; i++) {
 				lineArray[i] = pixel;
 				if (err_1 > 0) {
-					pixel = pixel.up(y_inc);
+					pixel = pixel.above(y_inc);
 					err_1 -= doubleAbsDz;
 				}
 				if (err_2 > 0) {
@@ -304,7 +304,7 @@ public class FeatureUtil {
 	/**
 	 * Draw a flat blob (circle) of leaves
 	 */
-	public static void makeLeafCircle(IWorld world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves, boolean useHack) {
+	public static void makeLeafCircle(LevelAccessor world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -318,10 +318,10 @@ public class FeatureUtil {
 				// if we're inside the blob, fill it
 				if (dist <= rad) {
 					// do four at a time for easiness!
-					putLeafBlock(world, pos.add(+dx, 0, +dz), state, leaves);
-					putLeafBlock(world, pos.add(+dx, 0, -dz), state, leaves);
-					putLeafBlock(world, pos.add(-dx, 0, +dz), state, leaves);
-					putLeafBlock(world, pos.add(-dx, 0, -dz), state, leaves);
+					putLeafBlock(world, pos.offset(+dx, 0, +dz), state, leaves);
+					putLeafBlock(world, pos.offset(+dx, 0, -dz), state, leaves);
+					putLeafBlock(world, pos.offset(-dx, 0, +dz), state, leaves);
+					putLeafBlock(world, pos.offset(-dx, 0, -dz), state, leaves);
 				}
 			}
 		}
@@ -330,12 +330,12 @@ public class FeatureUtil {
 	/**
 	 * Put a leaf only in spots where leaves can go!
 	 */
-	public static void putLeafBlock(IWorld world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
+	public static void putLeafBlock(LevelAccessor world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
 		BlockState whatsThere = world.getBlockState(pos);
 
 		if (whatsThere.canBeReplacedByLeaves(world, pos) && whatsThere.getBlock() != state.getBlock()) {
-			world.setBlockState(pos, state, 3);
-			leavespos.add(pos.toImmutable());
+			world.setBlock(pos, state, 3);
+			leavespos.add(pos.immutable());
 		}
 	}
 
@@ -343,7 +343,7 @@ public class FeatureUtil {
 	 * Draw a flat blob (circle) of leaves.  This one makes it offset to surround a 2x2 area instead of a 1 block area
 	 */
 	// FIXME Probably nuke method once 1.16.2 comes
-	public static void makeLeafCircle2(IWorld world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
+	public static void makeLeafCircle2(LevelAccessor world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -357,10 +357,10 @@ public class FeatureUtil {
 				// if we're inside the blob, fill it
 				if (dx * dx + dz * dz <= rad * rad) {
 					// do four at a time for easiness!
-					putLeafBlock(world, pos.add(1 + dx, 0, 1 + dz), state, leaves);
-					putLeafBlock(world, pos.add(1 + dx, 0, -dz), state, leaves);
-					putLeafBlock(world, pos.add(-dx, 0, 1 + dz), state, leaves);
-					putLeafBlock(world, pos.add(-dx, 0, -dz), state, leaves);
+					putLeafBlock(world, pos.offset(1 + dx, 0, 1 + dz), state, leaves);
+					putLeafBlock(world, pos.offset(1 + dx, 0, -dz), state, leaves);
+					putLeafBlock(world, pos.offset(-dx, 0, 1 + dz), state, leaves);
+					putLeafBlock(world, pos.offset(-dx, 0, -dz), state, leaves);
 				}
 			}
 		}
@@ -370,30 +370,30 @@ public class FeatureUtil {
 	 * Gets either cobblestone or mossy cobblestone, randomly.  Used for ruins.
 	 */
 	public static BlockState randStone(Random rand, int howMuch) {
-		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.getDefaultState() : Blocks.MOSSY_COBBLESTONE.getDefaultState();
+		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState();
 	}
 
 	/**
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 */
-	public static boolean isAreaSuitable(IWorld world, BlockPos pos, int width, int height, int depth) {
+	public static boolean isAreaSuitable(LevelAccessor world, BlockPos pos, int width, int height, int depth) {
 		boolean flag = true;
 
 		// check if there's anything within the diameter
 		for (int cx = 0; cx < width; cx++) {
 			for (int cz = 0; cz < depth; cz++) {
-				BlockPos pos_ = pos.add(cx, 0, cz);
+				BlockPos pos_ = pos.offset(cx, 0, cz);
 				// check if the blocks even exist?
-				if (world.isBlockLoaded(pos_)) {
+				if (world.hasChunkAt(pos_)) {
 					// is there grass, dirt or stone below?
-					Material m = world.getBlockState(pos_.down()).getMaterial();
-					if (m != Material.EARTH && m != Material.ORGANIC && m != Material.ROCK) {
+					Material m = world.getBlockState(pos_.below()).getMaterial();
+					if (m != Material.DIRT && m != Material.GRASS && m != Material.STONE) {
 						flag = false;
 					}
 
 					for (int cy = 0; cy < height; cy++) {
 						// blank space above?
-						if (!world.isAirBlock(pos_.up(cy))) {
+						if (!world.isEmptyBlock(pos_.above(cy))) {
 							flag = false;
 						}
 					}
@@ -410,7 +410,7 @@ public class FeatureUtil {
 	/**
 	 * Draw a giant blob of whatevs.
 	 */
-	public static void drawBlob(IWorld world, BlockPos pos, int rad, BlockState state) {
+	public static void drawBlob(LevelAccessor world, BlockPos pos, int rad, BlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -429,14 +429,14 @@ public class FeatureUtil {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						world.setBlockState(pos.add(+dx, +dy, +dz), state, 3);
-						world.setBlockState(pos.add(+dx, +dy, -dz), state, 3);
-						world.setBlockState(pos.add(-dx, +dy, +dz), state, 3);
-						world.setBlockState(pos.add(-dx, +dy, -dz), state, 3);
-						world.setBlockState(pos.add(+dx, -dy, +dz), state, 3);
-						world.setBlockState(pos.add(+dx, -dy, -dz), state, 3);
-						world.setBlockState(pos.add(-dx, -dy, +dz), state, 3);
-						world.setBlockState(pos.add(-dx, -dy, -dz), state, 3);
+						world.setBlock(pos.offset(+dx, +dy, +dz), state, 3);
+						world.setBlock(pos.offset(+dx, +dy, -dz), state, 3);
+						world.setBlock(pos.offset(-dx, +dy, +dz), state, 3);
+						world.setBlock(pos.offset(-dx, +dy, -dz), state, 3);
+						world.setBlock(pos.offset(+dx, -dy, +dz), state, 3);
+						world.setBlock(pos.offset(+dx, -dy, -dz), state, 3);
+						world.setBlock(pos.offset(-dx, -dy, +dz), state, 3);
+						world.setBlock(pos.offset(-dx, -dy, -dz), state, 3);
 					}
 				}
 			}
@@ -446,7 +446,7 @@ public class FeatureUtil {
 	/**
 	 * Draw a giant blob of leaves.
 	 */
-	public static void drawLeafBlob(IWorld world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
+	public static void drawLeafBlob(LevelAccessor world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -464,14 +464,14 @@ public class FeatureUtil {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						putLeafBlock(world, pos.add(+dx, +dy, +dz), state, leaves);
-						putLeafBlock(world, pos.add(+dx, +dy, -dz), state, leaves);
-						putLeafBlock(world, pos.add(-dx, +dy, +dz), state, leaves);
-						putLeafBlock(world, pos.add(-dx, +dy, -dz), state, leaves);
-						putLeafBlock(world, pos.add(+dx, -dy, +dz), state, leaves);
-						putLeafBlock(world, pos.add(+dx, -dy, -dz), state, leaves);
-						putLeafBlock(world, pos.add(-dx, -dy, +dz), state, leaves);
-						putLeafBlock(world, pos.add(-dx, -dy, -dz), state, leaves);
+						putLeafBlock(world, pos.offset(+dx, +dy, +dz), state, leaves);
+						putLeafBlock(world, pos.offset(+dx, +dy, -dz), state, leaves);
+						putLeafBlock(world, pos.offset(-dx, +dy, +dz), state, leaves);
+						putLeafBlock(world, pos.offset(-dx, +dy, -dz), state, leaves);
+						putLeafBlock(world, pos.offset(+dx, -dy, +dz), state, leaves);
+						putLeafBlock(world, pos.offset(+dx, -dy, -dz), state, leaves);
+						putLeafBlock(world, pos.offset(-dx, -dy, +dz), state, leaves);
+						putLeafBlock(world, pos.offset(-dx, -dy, -dz), state, leaves);
 					}
 				}
 			}
@@ -481,9 +481,9 @@ public class FeatureUtil {
 	/**
 	 * Does the block have only air blocks adjacent
 	 */
-	public static boolean surroundedByAir(IWorldReader world, BlockPos pos) {
+	public static boolean surroundedByAir(LevelReader world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
-			if (!world.isAirBlock(pos.offset(e))) {
+			if (!world.isEmptyBlock(pos.relative(e))) {
 				return false;
 			}
 		}
@@ -496,9 +496,9 @@ public class FeatureUtil {
 	 */
 	private static final Direction[] directionsExceptDown = new Direction[]{Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
 
-	public static boolean hasAirAround(IWorld world, BlockPos pos) {
+	public static boolean hasAirAround(LevelAccessor world, BlockPos pos) {
 		for (Direction e : directionsExceptDown) {
-			if (world.isAirBlock(pos.offset(e))) {
+			if (world.isEmptyBlock(pos.relative(e))) {
 				return true;
 			}
 		}
@@ -506,10 +506,10 @@ public class FeatureUtil {
 		return false;
 	}
 
-	public static boolean isNearSolid(IWorldReader world, BlockPos pos) {
+	public static boolean isNearSolid(LevelReader world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
-			if (world.isBlockLoaded(pos.offset(e))
-					&& world.getBlockState(pos.offset(e)).getMaterial().isSolid()) {
+			if (world.hasChunkAt(pos.relative(e))
+					&& world.getBlockState(pos.relative(e)).getMaterial().isSolid()) {
 				return true;
 			}
 		}
@@ -517,7 +517,7 @@ public class FeatureUtil {
 		return false;
 	}
 
-	public static void setBlockStateProvider(IWorld world, BlockStateProvider provider, Random rand, BlockPos pos) {
-		world.setBlockState(pos, provider.getBlockState(rand, pos), 3);
+	public static void setBlockStateProvider(LevelAccessor world, BlockStateProvider provider, Random rand, BlockPos pos) {
+		world.setBlock(pos, provider.getState(rand, pos), 3);
 	}
 }

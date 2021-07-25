@@ -1,29 +1,29 @@
 package twilightforest.block;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.enums.BossVariant;
@@ -33,17 +33,17 @@ import twilightforest.tileentity.TrophyTileEntity;
 import java.util.Random;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
-public abstract class AbstractTrophyBlock extends ContainerBlock {
+public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 
 	private final BossVariant variant;
 	private final int comparatorValue;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	
-	protected AbstractTrophyBlock(BossVariant variant, int value, AbstractBlock.Properties builder) {
+	protected AbstractTrophyBlock(BossVariant variant, int value, BlockBehaviour.Properties builder) {
 		super(builder);
 		this.variant = variant;
 		this.comparatorValue = value;
-		setDefaultState(stateContainer.getBaseState().with(POWERED, Boolean.valueOf(false)));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, Boolean.valueOf(false)));
 	}
 
 	public int getComparatorValue() {
@@ -51,27 +51,27 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if(!worldIn.isRemote) {
-			boolean flag = worldIn.isBlockPowered(pos);
-			if (flag != state.get(POWERED)) {
+	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		if(!worldIn.isClientSide) {
+			boolean flag = worldIn.hasNeighborSignal(pos);
+			if (flag != state.getValue(POWERED)) {
 				if (flag) {
 					this.playSound(worldIn, pos);
 				}
-				worldIn.setBlockState(pos, state.with(POWERED, Boolean.valueOf(flag)));
+				worldIn.setBlockAndUpdate(pos, state.setValue(POWERED, Boolean.valueOf(flag)));
 			}
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit) {
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand handIn, BlockHitResult hit) {
 		playSound(worldIn, pos);
 		createParticle(worldIn, pos);
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader worldIn) {
+	public BlockEntity newBlockEntity(BlockGetter worldIn) {
 	      return new TrophyTileEntity();
 	   }
 
@@ -80,18 +80,18 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type) {
 		return false;
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(POWERED);
 	}
 
-	public void playSound(World world, BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
-		if (!world.isRemote && te instanceof TrophyTileEntity) {
+	public void playSound(Level world, BlockPos pos) {
+		BlockEntity te = world.getBlockEntity(pos);
+		if (!world.isClientSide && te instanceof TrophyTileEntity) {
 			SoundEvent sound = null;
 			float volume = 1.0F;
 			float pitch = 0.9F;
@@ -127,7 +127,7 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 					pitch = 0.7F;
 					break;
 				case ALPHA_YETI:
-					sound = world.rand.nextInt(50) == 0 ? TFSounds.ALPHAYETI_ROAR : TFSounds.ALPHAYETI_GROWL;
+					sound = world.random.nextInt(50) == 0 ? TFSounds.ALPHAYETI_ROAR : TFSounds.ALPHAYETI_GROWL;
 					volume = 0.75F;
 					pitch = 0.75F;
 					break;
@@ -139,20 +139,20 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 					break;
 			}
 			if (sound != null) {
-				world.playSound((PlayerEntity)null, pos, sound, SoundCategory.BLOCKS, volume, world.rand.nextFloat() * 0.1F + pitch);
+				world.playSound((Player)null, pos, sound, SoundSource.BLOCKS, volume, world.random.nextFloat() * 0.1F + pitch);
 			}
 		}
 	}
 
-	public void createParticle(World world, BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
+	public void createParticle(Level world, BlockPos pos) {
+		BlockEntity te = world.getBlockEntity(pos);
 		if (te instanceof TrophyTileEntity) {
 			Random rand = world.getRandom();
-			if(world instanceof ServerWorld) {
+			if(world instanceof ServerLevel) {
 				switch (variant) {
 					case NAGA:
 						for (int daze = 0; daze < 10; daze++) {
-							((ServerWorld)world).spawnParticle(ParticleTypes.CRIT,
+							((ServerLevel)world).sendParticles(ParticleTypes.CRIT,
 									((double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F),
 									(double) pos.getY() + 0.25,
 									((double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F),
@@ -161,7 +161,7 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 						break;
 					case LICH:
 						for (int a = 0; a < 5; a++) {
-							((ServerWorld)world).spawnParticle(ParticleTypes.ANGRY_VILLAGER,
+							((ServerLevel)world).sendParticles(ParticleTypes.ANGRY_VILLAGER,
 									(double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F,
 									(double) pos.getY() + 0.5 + rand.nextFloat() * 0.25,
 									(double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F, 1,
@@ -170,7 +170,7 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 						break;
 					case MINOSHROOM:
 						for (int g = 0; g < 10; g++) {
-							((ServerWorld)world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(pos.down())),
+							((ServerLevel)world).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, world.getBlockState(pos.below())),
 									(double) pos.getX() + rand.nextFloat() * 10F - 5F,
 									(double) pos.getY() + 0.1F + rand.nextFloat() * 0.3F,
 									(double) pos.getZ() + rand.nextFloat() * 10F - 5F,
@@ -179,7 +179,7 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 						break;
 					case KNIGHT_PHANTOM:
 						for (int brek = 0; brek < 10; brek++) {
-							((ServerWorld)world).spawnParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(TFItems.knightmetal_sword.get())),
+							((ServerLevel)world).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.knightmetal_sword.get())),
 									pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
 									pos.getY() + rand.nextFloat() + 0.5,
 									pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),
@@ -189,7 +189,7 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 						break;
 					case UR_GHAST:
 						for (int red = 0; red < 10; red++) {
-							((ServerWorld)world).spawnParticle(RedstoneParticleData.REDSTONE_DUST,
+							((ServerLevel)world).sendParticles(DustParticleOptions.REDSTONE,
 									(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
 									(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
 									(double) pos.getZ() + (rand.nextDouble() * 1),
@@ -198,7 +198,7 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 						break;
 					case ALPHA_YETI:
 						for(int sweat = 0; sweat < 10; sweat++) {
-							((ServerWorld)world).spawnParticle(ParticleTypes.SPLASH,
+							((ServerLevel)world).sendParticles(ParticleTypes.SPLASH,
 									(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
 									(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
 									(double) pos.getZ() + (rand.nextDouble() * 1),
@@ -207,7 +207,7 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 						break;
 					case SNOW_QUEEN:
 						for (int b = 0; b < 20; b++) {
-							((ServerWorld)world).spawnParticle(TFParticleType.SNOW_WARNING.get(),
+							((ServerLevel)world).sendParticles(TFParticleType.SNOW_WARNING.get(),
 									(double) pos.getX() - 1 + (rand.nextDouble() * 3.25),
 									(double) pos.getY() + 5,
 									(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25), 1,
@@ -216,7 +216,7 @@ public abstract class AbstractTrophyBlock extends ContainerBlock {
 						break;
 					case QUEST_RAM:
 						for (int p = 0; p < 10; p++) {
-							((ServerWorld)world).spawnParticle(ParticleTypes.ENTITY_EFFECT,
+							((ServerLevel)world).sendParticles(ParticleTypes.ENTITY_EFFECT,
 									(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
 									(double) pos.getY() + (rand.nextDouble() - 0.5),
 									(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5), 1,

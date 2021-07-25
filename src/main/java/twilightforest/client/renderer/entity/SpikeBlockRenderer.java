@@ -1,16 +1,16 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 
 public class SpikeBlockRenderer<T extends Entity, M extends EntityModel<T>> extends EntityRenderer<T> {
@@ -19,28 +19,28 @@ public class SpikeBlockRenderer<T extends Entity, M extends EntityModel<T>> exte
 
 	private final Model model;
 
-	public SpikeBlockRenderer(EntityRendererManager manager, M model) {
+	public SpikeBlockRenderer(EntityRenderDispatcher manager, M model) {
 		super(manager);
 		this.model = model;
 	}
 
 	@Override
-	public void render(T goblin, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(T goblin, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 
-		stack.push();
+		stack.pushPose();
 		stack.scale(-1.0F, -1.0F, 1.0F);
 
-		IVertexBuilder ivertexbuilder = buffer.getBuffer(this.model.getRenderType(textureLoc));
+		VertexConsumer ivertexbuilder = buffer.getBuffer(this.model.renderType(textureLoc));
 
-		stack.rotate(Vector3f.ZP.rotationDegrees(yaw));
+		stack.mulPose(Vector3f.ZP.rotationDegrees(yaw));
 
-		this.model.render(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.pop();
+		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		stack.popPose();
 		super.render(goblin, yaw, partialTicks, stack, buffer, light);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getTextureLocation(T entity) {
 		return textureLoc;
 	}
 }

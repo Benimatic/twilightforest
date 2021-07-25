@@ -2,40 +2,40 @@ package twilightforest.entity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.item.DyeColor;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 
 public class MistWolfEntity extends HostileWolfEntity {
 
-	public MistWolfEntity(EntityType<? extends MistWolfEntity> type, World world) {
+	public MistWolfEntity(EntityType<? extends MistWolfEntity> type, Level world) {
 		super(type, world);
 		setCollarColor(DyeColor.GRAY);
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeSupplier.Builder registerAttributes() {
 		return HostileWolfEntity.registerAttributes()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6);
+				.add(Attributes.MAX_HEALTH, 30.0D)
+				.add(Attributes.ATTACK_DAMAGE, 6);
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entity) {
-		if (super.attackEntityAsMob(entity)) {
+	public boolean doHurtTarget(Entity entity) {
+		if (super.doHurtTarget(entity)) {
 			float myBrightness = this.getBrightness();
 
 			if (entity instanceof LivingEntity && myBrightness < 0.10F) {
 				int effectDuration;
-				switch (world.getDifficulty()) {
+				switch (level.getDifficulty()) {
 					case EASY:
 						effectDuration = 0;
 						break;
@@ -49,7 +49,7 @@ public class MistWolfEntity extends HostileWolfEntity {
 				}
 
 				if (effectDuration > 0) {
-					((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, effectDuration * 20, 0));
+					((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, effectDuration * 20, 0));
 				}
 			}
 
@@ -60,10 +60,10 @@ public class MistWolfEntity extends HostileWolfEntity {
 	}
 	
 	@Override
-	public void setAttackTarget(@Nullable LivingEntity entity) {
-		if (entity != null && entity != getAttackTarget())
-			playSound(TFSounds.MISTWOLF_TARGET, 4F, getSoundPitch());
-		super.setAttackTarget(entity);
+	public void setTarget(@Nullable LivingEntity entity) {
+		if (entity != null && entity != getTarget())
+			playSound(TFSounds.MISTWOLF_TARGET, 4F, getVoicePitch());
+		super.setTarget(entity);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class MistWolfEntity extends HostileWolfEntity {
 	}
 
 	@Override
-	protected float getSoundPitch() {
-		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.6F;
+	protected float getVoicePitch() {
+		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.6F;
 	}
 }

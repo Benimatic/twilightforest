@@ -1,35 +1,35 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.IntArrayNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.*;
-import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -45,7 +45,20 @@ import twilightforest.world.TFGenerationSettings;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class NagaEntity extends MonsterEntity {
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.level.Level;
+
+public class NagaEntity extends Monster {
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -60,20 +73,20 @@ public class NagaEntity extends MonsterEntity {
 	private AIMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
 
-	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.NOTCHED_10);
+	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.NOTCHED_10);
 
 	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, AttributeModifier.Operation.ADDITION);
 	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, AttributeModifier.Operation.ADDITION);
 
-	private static final DataParameter<Boolean> DATA_DAZE = EntityDataManager.createKey(NagaEntity.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Boolean> DATA_CHARGE = EntityDataManager.createKey(NagaEntity.class, DataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_DAZE = SynchedEntityData.defineId(NagaEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_CHARGE = SynchedEntityData.defineId(NagaEntity.class, EntityDataSerializers.BOOLEAN);
 
-	public NagaEntity(EntityType<? extends NagaEntity> type, World world) {
+	public NagaEntity(EntityType<? extends NagaEntity> type, Level world) {
 		super(type, world);
-		this.stepHeight = 2;
+		this.maxUpStep = 2;
 		this.healthPerSegment = getMaxHealth() / 10;
-		this.experienceValue = 217;
-		this.ignoreFrustumCheck = true;
+		this.xpReward = 217;
+		this.noCulling = true;
 
 		for (int i = 0; i < bodySegments.length; i++) {
 			bodySegments[i] = new NagaSegmentEntity(this);
@@ -83,30 +96,30 @@ public class NagaEntity extends MonsterEntity {
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(DATA_DAZE, false);
-		dataManager.register(DATA_CHARGE, false);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_DAZE, false);
+		entityData.define(DATA_CHARGE, false);
 	}
 
 	public boolean isDazed() {
-		return dataManager.get(DATA_DAZE);
+		return entityData.get(DATA_DAZE);
 	}
 
 	protected void setDazed(boolean daze) {
-		dataManager.set(DATA_DAZE, daze);
+		entityData.set(DATA_DAZE, daze);
 	}
 
 	public boolean isCharging() {
-		return dataManager.get(DATA_CHARGE);
+		return entityData.get(DATA_CHARGE);
 	}
 
 	protected void setCharging(boolean charge) {
-		dataManager.set(DATA_CHARGE, charge);
+		entityData.set(DATA_CHARGE, charge);
 	}
 
 	private float getMaxHealthPerDifficulty() {
-		switch (world.getDifficulty()) {
+		switch (level.getDifficulty()) {
 			case EASY:
 				return 120;
 			default:
@@ -118,38 +131,38 @@ public class NagaEntity extends MonsterEntity {
 	}
 
 	@Override
-	public void setCustomName(@Nullable ITextComponent name) {
+	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
-	public boolean canDespawn(double p_213397_1_) {
+	public boolean removeWhenFarAway(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new AIAttack(this));
 		this.goalSelector.addGoal(3, new AISmash(this));
 		this.goalSelector.addGoal(4, movementAI = new AIMovementPattern(this));
-		this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 1, 1) {
+		this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1, 1) {
 			@Override
-			public void startExecuting() {
+			public void start() {
 				NagaEntity.this.goNormal();
-				super.startExecuting();
+				super.start();
 			}
 
 			@Override
-			protected Vector3d getPosition() {
-				return RandomPositionGenerator.findRandomTarget(this.creature, 30, 7);
+			protected Vec3 getPosition() {
+				return RandomPos.getPos(this.mob, 30, 7);
 			}
 		});
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
 
-		this.moveController = new NagaMoveHelper(this);
+		this.moveControl = new NagaMoveHelper(this);
 	}
 
 	// Similar to MeleeAttackGoal but simpler (no pathfinding)
@@ -163,14 +176,14 @@ public class NagaEntity extends MonsterEntity {
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			LivingEntity target = taskOwner.getAttackTarget();
+		public boolean canUse() {
+			LivingEntity target = taskOwner.getTarget();
 
 			return target != null
 					&& target.getBoundingBox().maxY > taskOwner.getBoundingBox().minY - 2.5
 					&& target.getBoundingBox().minY < taskOwner.getBoundingBox().maxY + 2.5
-					&& taskOwner.getDistanceSq(target) <= 4.0D
-					&& taskOwner.getEntitySenses().canSee(target);
+					&& taskOwner.distanceToSqr(target) <= 4.0D
+					&& taskOwner.getSensing().canSee(target);
 
 		}
 
@@ -182,13 +195,13 @@ public class NagaEntity extends MonsterEntity {
 		}
 
 		@Override
-		public void resetTask() {
+		public void stop() {
 			attackTick = 20;
 		}
 
 		@Override
-		public void startExecuting() {
-			taskOwner.attackEntityAsMob(taskOwner.getAttackTarget());
+		public void start() {
+			taskOwner.doHurtTarget(taskOwner.getTarget());
 			attackTick = 20;
 		}
 	}
@@ -202,31 +215,31 @@ public class NagaEntity extends MonsterEntity {
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			return /*taskOwner.getAttackTarget() != null &&*/ taskOwner.collidedHorizontally && ForgeEventFactory.getMobGriefingEvent(taskOwner.world, taskOwner);
+		public boolean canUse() {
+			return /*taskOwner.getAttackTarget() != null &&*/ taskOwner.horizontalCollision && ForgeEventFactory.getMobGriefingEvent(taskOwner.level, taskOwner);
 		}
 
 		@Override
-		public void startExecuting() {
+		public void start() {
 			// NAGA SMASH!
-			if (taskOwner.world.isRemote) return;
+			if (taskOwner.level.isClientSide) return;
 
-			AxisAlignedBB bb = taskOwner.getBoundingBox();
+			AABB bb = taskOwner.getBoundingBox();
 
-			int minx = MathHelper.floor(bb.minX - 0.75D);
-			int miny = MathHelper.floor(bb.minY + 1.01D);
-			int minz = MathHelper.floor(bb.minZ - 0.75D);
-			int maxx = MathHelper.floor(bb.maxX + 0.75D);
-			int maxy = MathHelper.floor(bb.maxY + 0.0D);
-			int maxz = MathHelper.floor(bb.maxZ + 0.75D);
+			int minx = Mth.floor(bb.minX - 0.75D);
+			int miny = Mth.floor(bb.minY + 1.01D);
+			int minz = Mth.floor(bb.minZ - 0.75D);
+			int maxx = Mth.floor(bb.maxX + 0.75D);
+			int maxy = Mth.floor(bb.maxY + 0.0D);
+			int maxz = Mth.floor(bb.maxZ + 0.75D);
 
 			BlockPos min = new BlockPos(minx, miny, minz);
 			BlockPos max = new BlockPos(maxx, maxy, maxz);
 
-			if (taskOwner.world.isAreaLoaded(min, max)) {
-				for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
-					if (EntityUtil.canDestroyBlock(taskOwner.world, pos, taskOwner)) {
-						taskOwner.world.destroyBlock(pos, true);
+			if (taskOwner.level.hasChunksAt(min, max)) {
+				for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+					if (EntityUtil.canDestroyBlock(taskOwner.level, pos, taskOwner)) {
+						taskOwner.level.destroyBlock(pos, true);
 					}
 				}
 			}
@@ -250,17 +263,17 @@ public class NagaEntity extends MonsterEntity {
 
 		AIMovementPattern(NagaEntity taskOwner) {
 			this.taskOwner = taskOwner;
-			setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-			resetTask();
+			setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+			stop();
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			return taskOwner.getAttackTarget() != null;
+		public boolean canUse() {
+			return taskOwner.getTarget() != null;
 		}
 
 		@Override
-		public void resetTask() {
+		public void stop() {
 			movementState = MovementState.CIRCLE;
 			stateCounter = 15;
 			clockwise = false;
@@ -268,7 +281,7 @@ public class NagaEntity extends MonsterEntity {
 
 		@Override
 		public void tick() {
-			if (!taskOwner.getNavigator().noPath()) {
+			if (!taskOwner.getNavigation().isDone()) {
 				// If we still have an uncompleted path don't run yet
 				// This isn't in shouldExecute/shouldContinueExecuting because we don't want to reset the task
 				// todo 1.10 there's a better way to do this I think
@@ -278,21 +291,21 @@ public class NagaEntity extends MonsterEntity {
 
 			switch (movementState) {
 				case INTIMIDATE: {
-					taskOwner.getNavigator().clearPath();
-					taskOwner.getLookController().setLookPositionWithEntity(taskOwner.getAttackTarget(), 30F, 30F);
-					taskOwner.faceEntity(taskOwner.getAttackTarget(), 30F, 30F);
-					taskOwner.moveForward = 0.1f;
+					taskOwner.getNavigation().stop();
+					taskOwner.getLookControl().setLookAt(taskOwner.getTarget(), 30F, 30F);
+					taskOwner.lookAt(taskOwner.getTarget(), 30F, 30F);
+					taskOwner.zza = 0.1f;
 					break;
 				}
 				case CRUMBLE: {
-					taskOwner.getNavigator().clearPath();
+					taskOwner.getNavigation().stop();
 					taskOwner.crumbleBelowTarget(2);
 					taskOwner.crumbleBelowTarget(3);
 					break;
 				}
 				case CHARGE: {
 					BlockPos tpoint = taskOwner.findCirclePoint(clockwise, 14, Math.PI);
-					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
+					taskOwner.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
 					taskOwner.setCharging(true);
 					break;
 				}
@@ -312,7 +325,7 @@ public class NagaEntity extends MonsterEntity {
 					}
 
 					BlockPos tpoint = taskOwner.findCirclePoint(clockwise, radius, rotation);
-					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
+					taskOwner.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
 					break;
 				}
 				case DAZE: {
@@ -335,7 +348,7 @@ public class NagaEntity extends MonsterEntity {
 				case INTIMIDATE: {
 					clockwise = !clockwise;
 
-					if (taskOwner.getAttackTarget().getBoundingBox().minY > taskOwner.getBoundingBox().maxY) {
+					if (taskOwner.getTarget().getBoundingBox().minY > taskOwner.getBoundingBox().maxY) {
 						doCrumblePlayer();
 					} else {
 						doCharge();
@@ -358,19 +371,19 @@ public class NagaEntity extends MonsterEntity {
 
 		private void doDaze() {
 			movementState = MovementState.DAZE;
-			taskOwner.getNavigator().clearPath();
-			stateCounter = 60 + taskOwner.rand.nextInt(40);
+			taskOwner.getNavigation().stop();
+			stateCounter = 60 + taskOwner.random.nextInt(40);
 		}
 
 		private void doCircle() {
 			movementState = MovementState.CIRCLE;
-			stateCounter += 10 + taskOwner.rand.nextInt(10);
+			stateCounter += 10 + taskOwner.random.nextInt(10);
 			taskOwner.goNormal();
 		}
 
 		private void doCrumblePlayer() {
 			movementState = MovementState.CRUMBLE;
-			stateCounter = 20 + taskOwner.rand.nextInt(20);
+			stateCounter = 20 + taskOwner.random.nextInt(20);
 			taskOwner.goSlow();
 		}
 
@@ -385,48 +398,48 @@ public class NagaEntity extends MonsterEntity {
 
 		private void doIntimidate() {
 			movementState = MovementState.INTIMIDATE;
-			taskOwner.playSound(TFSounds.NAGA_RATTLE, taskOwner.getSoundVolume() * 4F, taskOwner.getSoundPitch());
+			taskOwner.playSound(TFSounds.NAGA_RATTLE, taskOwner.getSoundVolume() * 4F, taskOwner.getVoicePitch());
 
-			stateCounter += 15 + taskOwner.rand.nextInt(10);
+			stateCounter += 15 + taskOwner.random.nextInt(10);
 			taskOwner.goSlow();
 		}
 	}
 
 	@Override
-	public void livingTick() {
+	public void aiStep() {
 
-		super.livingTick();
+		super.aiStep();
 
-		if (world.isRemote || !ForgeEventFactory.getMobGriefingEvent(world, this)) return;
+		if (level.isClientSide || !ForgeEventFactory.getMobGriefingEvent(level, this)) return;
 
-		AxisAlignedBB bb = this.getBoundingBox();
+		AABB bb = this.getBoundingBox();
 
-		int minx = MathHelper.floor(bb.minX - 0.75D);
-		int miny = MathHelper.floor(bb.minY + 1.01D);
-		int minz = MathHelper.floor(bb.minZ - 0.75D);
-		int maxx = MathHelper.floor(bb.maxX + 0.75D);
-		int maxy = MathHelper.floor(bb.maxY + 0.0D);
-		int maxz = MathHelper.floor(bb.maxZ + 0.75D);
+		int minx = Mth.floor(bb.minX - 0.75D);
+		int miny = Mth.floor(bb.minY + 1.01D);
+		int minz = Mth.floor(bb.minZ - 0.75D);
+		int maxx = Mth.floor(bb.maxX + 0.75D);
+		int maxy = Mth.floor(bb.maxY + 0.0D);
+		int maxz = Mth.floor(bb.maxZ + 0.75D);
 
 		BlockPos min = new BlockPos(minx, miny, minz);
 		BlockPos max = new BlockPos(maxx, maxy, maxz);
 
-		if (world.isAreaLoaded(min, max)) {
-			for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
-				BlockState state = world.getBlockState(pos);
-				if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(world, pos, state, this)) {
-					world.destroyBlock(pos, true);
+		if (level.hasChunksAt(min, max)) {
+			for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+				BlockState state = level.getBlockState(pos);
+				if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(level, pos, state, this)) {
+					level.destroyBlock(pos, true);
 				}
 			}
 		}
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, /*getMaxHealthPerDifficulty()*/ 200) //TODO: We're static now
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)
-				.createMutableAttribute(Attributes.FOLLOW_RANGE, 80.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, /*getMaxHealthPerDifficulty()*/ 200) //TODO: We're static now
+				.add(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
+				.add(Attributes.ATTACK_DAMAGE, 5.0D)
+				.add(Attributes.FOLLOW_RANGE, 80.0D);
 	}
 
 	/**
@@ -434,7 +447,7 @@ public class NagaEntity extends MonsterEntity {
 	 */
 	private void setSegmentsPerHealth() {
 		int oldSegments = this.currentSegmentCount;
-		int newSegments = MathHelper.clamp((int) ((this.getHealth() / healthPerSegment) + (getHealth() > 0 ? 2 : 0)), 0, MAX_SEGMENTS);
+		int newSegments = Mth.clamp((int) ((this.getHealth() / healthPerSegment) + (getHealth() > 0 ? 2 : 0)), 0, MAX_SEGMENTS);
 		this.currentSegmentCount = newSegments;
 		if (newSegments < oldSegments) {
 			for (int i = newSegments; i < oldSegments; i++) {
@@ -444,7 +457,7 @@ public class NagaEntity extends MonsterEntity {
 			this.activateBodySegments();
 		}
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			double newSpeed = DEFAULT_SPEED - newSegments * (-0.2F / 12F);
 			if (newSpeed < 0)
 				newSpeed = 0;
@@ -466,17 +479,17 @@ public class NagaEntity extends MonsterEntity {
 	public void tick() {
 		if (deathTime > 0) {
 			for (int k = 0; k < 5; k++) {
-				double d = rand.nextGaussian() * 0.02D;
-				double d1 = rand.nextGaussian() * 0.02D;
-				double d2 = rand.nextGaussian() * 0.02D;
-				world.addParticle((rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+				double d = random.nextGaussian() * 0.02D;
+				double d1 = random.nextGaussian() * 0.02D;
+				double d2 = random.nextGaussian() * 0.02D;
+				level.addParticle((random.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), (getX() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(), getY() + random.nextFloat() * getBbHeight(), (getZ() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(), d, d1, d2);
 			}
 		}
 
 		// update health
 		this.ticksSinceDamaged++;
 
-		if (!this.world.isRemote && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0) {
+		if (!this.level.isClientSide && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0) {
 			this.heal(1);
 		}
 
@@ -488,40 +501,40 @@ public class NagaEntity extends MonsterEntity {
 	}
 
 	@Override
-	protected void updateAITasks() {
-		super.updateAITasks();
+	protected void customServerAiStep() {
+		super.customServerAiStep();
 
-		if (getAttackTarget() != null && (getDistanceSq(getAttackTarget()) > 80 * 80 || !this.isEntityWithinHomeArea(getAttackTarget()))) {
-			setAttackTarget(null);
+		if (getTarget() != null && (distanceToSqr(getTarget()) > 80 * 80 || !this.isEntityWithinHomeArea(getTarget()))) {
+			setTarget(null);
 		}
 
 		// if we are very close to the path point, go to the next point, unless the path is finished
 		// TODO 1.10 this runs after the path navigator runs, is that okay?
-		double d = getWidth() * 4.0F;
-		Vector3d vec3d = hasPath() ? getNavigator().getPath().getPosition(this) : null;
+		double d = getBbWidth() * 4.0F;
+		Vec3 vec3d = isPathFinding() ? getNavigation().getPath().getNextEntityPos(this) : null;
 
-		while (vec3d != null && vec3d.squareDistanceTo(getPosX(), vec3d.y, getPosZ()) < d * d) {
-			getNavigator().getPath().incrementPathIndex();
+		while (vec3d != null && vec3d.distanceToSqr(getX(), vec3d.y, getZ()) < d * d) {
+			getNavigation().getPath().advance();
 
-			if (getNavigator().getPath().isFinished()) {
+			if (getNavigation().getPath().isDone()) {
 				vec3d = null;
 			} else {
-				vec3d = getNavigator().getPath().getPosition(this);
+				vec3d = getNavigation().getPath().getNextEntityPos(this);
 			}
 		}
 
-		if (!isWithinHomeDistanceCurrentPosition()) {
-			setAttackTarget(null);
-			getNavigator().setPath(getNavigator().getPathToPos(getHomePosition(), 0), 1.0F);
+		if (!isWithinRestriction()) {
+			setTarget(null);
+			getNavigation().moveTo(getNavigation().createPath(getRestrictCenter(), 0), 1.0F);
 		}
 
 		// BOSS BAR!
 		this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
 	}
 
-	static class NagaMoveHelper extends MovementController {
+	static class NagaMoveHelper extends MoveControl {
 
-		public NagaMoveHelper(MobEntity naga) {
+		public NagaMoveHelper(Mob naga) {
 			super(naga);
 		}
 
@@ -530,11 +543,11 @@ public class NagaEntity extends MonsterEntity {
 			// TF - slither!
 			MovementState currentState = ((NagaEntity) mob).movementAI.movementState;
 			if (currentState == MovementState.DAZE) {
-				this.mob.moveStrafing = 0F;
+				this.mob.xxa = 0F;
 			} else if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
-				this.mob.moveStrafing = MathHelper.cos(this.mob.ticksExisted * 0.3F) * 0.6F;
+				this.mob.xxa = Mth.cos(this.mob.tickCount * 0.3F) * 0.6F;
 			} else {
-				this.mob.moveStrafing *= 0.8F;
+				this.mob.xxa *= 0.8F;
 			}
 
 			super.tick();
@@ -557,15 +570,15 @@ public class NagaEntity extends MonsterEntity {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!ForgeEventFactory.getMobGriefingEvent(world, this)) return;
+		if (!ForgeEventFactory.getMobGriefingEvent(level, this)) return;
 
 		int floor = (int) getBoundingBox().minY;
-		int targetY = (int) getAttackTarget().getBoundingBox().minY;
+		int targetY = (int) getTarget().getBoundingBox().minY;
 
 		if (targetY > floor) {
-			int dx = (int) getAttackTarget().getPosX() + rand.nextInt(range) - rand.nextInt(range);
-			int dz = (int) getAttackTarget().getPosZ() + rand.nextInt(range) - rand.nextInt(range);
-			int dy = targetY - rand.nextInt(range) + rand.nextInt(range > 1 ? range - 1 : range);
+			int dx = (int) getTarget().getX() + random.nextInt(range) - random.nextInt(range);
+			int dz = (int) getTarget().getZ() + random.nextInt(range) - random.nextInt(range);
+			int dy = targetY - random.nextInt(range) + random.nextInt(range > 1 ? range - 1 : range);
 
 			if (dy <= floor) {
 				dy = targetY;
@@ -573,17 +586,17 @@ public class NagaEntity extends MonsterEntity {
 
 			BlockPos pos = new BlockPos(dx, dy, dz);
 
-			if (EntityUtil.canDestroyBlock(world, pos, this)) {
+			if (EntityUtil.canDestroyBlock(level, pos, this)) {
 				// todo limit what can be broken
-				world.destroyBlock(pos, true);
+				level.destroyBlock(pos, true);
 
 				// sparkle!!
 				for (int k = 0; k < 20; k++) {
-					double d = rand.nextGaussian() * 0.02D;
-					double d1 = rand.nextGaussian() * 0.02D;
-					double d2 = rand.nextGaussian() * 0.02D;
+					double d = random.nextGaussian() * 0.02D;
+					double d1 = random.nextGaussian() * 0.02D;
+					double d2 = random.nextGaussian() * 0.02D;
 
-					world.addParticle(ParticleTypes.CRIT, (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+					level.addParticle(ParticleTypes.CRIT, (getX() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(), getY() + random.nextFloat() * getBbHeight(), (getZ() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(), d, d1, d2);
 				}
 			}
 		}
@@ -595,7 +608,7 @@ public class NagaEntity extends MonsterEntity {
 	private void goSlow() {
 		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
 		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
-		this.getAttribute(Attributes.MOVEMENT_SPEED).applyNonPersistentModifier(slowSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(slowSpeed);
 	}
 
 	/**
@@ -612,11 +625,11 @@ public class NagaEntity extends MonsterEntity {
 	private void goFast() {
 		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
 		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
-		this.getAttribute(Attributes.MOVEMENT_SPEED).applyNonPersistentModifier(fastSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(fastSpeed);
 	}
 
 	@Override
-	public boolean canBePushed() {
+	public boolean isPushable() {
 		return false;
 	}
 
@@ -624,36 +637,36 @@ public class NagaEntity extends MonsterEntity {
 	 * Finds a point that allows us to circle the target clockwise.
 	 */
 	private BlockPos findCirclePoint(boolean clockwise, double radius, double rotation) {
-		LivingEntity toCircle = getAttackTarget();
+		LivingEntity toCircle = getTarget();
 
 		// compute angle
-		double vecx = getPosX() - toCircle.getPosX();
-		double vecz = getPosZ() - toCircle.getPosZ();
+		double vecx = getX() - toCircle.getX();
+		double vecz = getZ() - toCircle.getZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		// add a little, so he circles (clockwise)
 		rangle += clockwise ? rotation : -rotation;
 
 		// figure out where we're headed from the target angle
-		double dx = MathHelper.cos(rangle) * radius;
-		double dz = MathHelper.sin(rangle) * radius;
+		double dx = Mth.cos(rangle) * radius;
+		double dz = Mth.sin(rangle) * radius;
 
-		double dy = Math.min(getBoundingBox().minY, toCircle.getPosY());
+		double dy = Math.min(getBoundingBox().minY, toCircle.getY());
 
 		// add that to the target entity's position, and we have our destination
-		return new BlockPos(toCircle.getPosX() + dx, dy, toCircle.getPosZ() + dz);
+		return new BlockPos(toCircle.getX() + dx, dy, toCircle.getZ() + dz);
 	}
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
-		return src.getTrueSource() != null && !this.isEntityWithinHomeArea(src.getTrueSource()) // reject damage from outside of our home radius
-				|| src.getImmediateSource() != null && !this.isEntityWithinHomeArea(src.getImmediateSource())
-				|| src.isFireDamage() || src.isExplosion() || super.isInvulnerableTo(src);
+		return src.getEntity() != null && !this.isEntityWithinHomeArea(src.getEntity()) // reject damage from outside of our home radius
+				|| src.getDirectEntity() != null && !this.isEntityWithinHomeArea(src.getDirectEntity())
+				|| src.isFire() || src.isExplosion() || super.isInvulnerableTo(src);
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (source != DamageSource.FALL && super.attackEntityFrom(source, amount)) {
+	public boolean hurt(DamageSource source, float amount) {
+		if (source != DamageSource.FALL && super.hurt(source, amount)) {
 			this.ticksSinceDamaged = 0;
 			return true;
 		} else {
@@ -662,31 +675,31 @@ public class NagaEntity extends MonsterEntity {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity toAttack) {
-		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof LivingEntity && ((LivingEntity) toAttack).isActiveItemStackBlocking()) {
-			Vector3d motion = this.getMotion();
-			toAttack.addVelocity(motion.x * 1.25D, 0.5D, motion.z * 1.25D);
-			this.setMotion(motion.x * -1.5D, motion.y + 0.5D, motion.z * -1.5D);
-			if (toAttack instanceof ServerPlayerEntity)
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) toAttack), new ThrowPlayerPacket((float) toAttack.getMotion().getX(), (float) toAttack.getMotion().getY(), (float) toAttack.getMotion().getZ()));
-			attackEntityFrom(DamageSource.GENERIC, 4F);
-			world.playSound(null, toAttack.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
+	public boolean doHurtTarget(Entity toAttack) {
+		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof LivingEntity && ((LivingEntity) toAttack).isBlocking()) {
+			Vec3 motion = this.getDeltaMovement();
+			toAttack.push(motion.x * 1.25D, 0.5D, motion.z * 1.25D);
+			this.setDeltaMovement(motion.x * -1.5D, motion.y + 0.5D, motion.z * -1.5D);
+			if (toAttack instanceof ServerPlayer)
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) toAttack), new ThrowPlayerPacket((float) toAttack.getDeltaMovement().x(), (float) toAttack.getDeltaMovement().y(), (float) toAttack.getDeltaMovement().z()));
+			hurt(DamageSource.GENERIC, 4F);
+			level.playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level.random.nextFloat() * 0.4F);
 			movementAI.doDaze();
 			return false;
 		}
-		boolean result = super.attackEntityAsMob(toAttack);
+		boolean result = super.doHurtTarget(toAttack);
 
 		if (result) {
 			// charging, apply extra pushback
-			toAttack.addVelocity(-MathHelper.sin((rotationYaw * 3.141593F) / 180F) * 2.0F, 0.4F, MathHelper.cos((rotationYaw * 3.141593F) / 180F) * 2.0F);
+			toAttack.push(-Mth.sin((yRot * 3.141593F) / 180F) * 2.0F, 0.4F, Mth.cos((yRot * 3.141593F) / 180F) * 2.0F);
 		}
 
 		return result;
 	}
 
 	@Override
-	public float getBlockPathWeight(BlockPos pos) {
-		if (!this.isWithinHomeDistanceFromPosition(pos)) {
+	public float getWalkTargetValue(BlockPos pos) {
+		if (!this.isWithinRestriction(pos)) {
 			return Float.MIN_VALUE;
 		} else {
 			return 0.0F;
@@ -695,9 +708,9 @@ public class NagaEntity extends MonsterEntity {
 
 	@Override
 	public void checkDespawn() {
-		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (getHomePosition() != BlockPos.ZERO) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_naga.get().getDefaultState());
+		if (level.getDifficulty() == Difficulty.PEACEFUL) {
+			if (getRestrictCenter() != BlockPos.ZERO) {
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_naga.get().defaultBlockState());
 			}
 			remove();
 		} else {
@@ -708,7 +721,7 @@ public class NagaEntity extends MonsterEntity {
 	@Override
 	public void remove() {
 		super.remove();
-		if (this.world instanceof ServerWorld) {
+		if (this.level instanceof ServerLevel) {
 			for (NagaSegmentEntity seg : bodySegments) {
 				// must use this instead of setDead
 				// since multiparts are not added to the world tick list which is what checks isDead
@@ -720,35 +733,35 @@ public class NagaEntity extends MonsterEntity {
 	}
 
 	@Override
-	public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
-		if (this.getMaximumHomeDistance() == -1) {
+	public boolean isWithinRestriction(BlockPos pos) {
+		if (this.getRestrictRadius() == -1) {
 			return true;
 		} else {
-			int distX = Math.abs(this.getHomePosition().getX() - pos.getX());
-			int distY = Math.abs(this.getHomePosition().getY() - pos.getY());
-			int distZ = Math.abs(this.getHomePosition().getZ() - pos.getZ());
+			int distX = Math.abs(this.getRestrictCenter().getX() - pos.getX());
+			int distY = Math.abs(this.getRestrictCenter().getY() - pos.getY());
+			int distZ = Math.abs(this.getRestrictCenter().getZ() - pos.getZ());
 
 			return distX <= LEASH_X && distY <= LEASH_Y && distZ <= LEASH_Z;
 		}
 	}
 
 	private boolean isEntityWithinHomeArea(Entity entity) {
-		return isWithinHomeDistanceFromPosition(entity.getPosition());
+		return isWithinRestriction(entity.blockPosition());
 	}
 
 	private void activateBodySegments() {
 		for (int i = 0; i < currentSegmentCount; i++) {
 			NagaSegmentEntity segment = bodySegments[i];
 			segment.activate();
-			segment.setLocationAndAngles(getPosX() + 0.1 * i, getPosY() + 0.5D, getPosZ() + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
+			segment.moveTo(getX() + 0.1 * i, getY() + 0.5D, getZ() + 0.1 * i, random.nextFloat() * 360F, 0.0F);
 			for (int j = 0; j < 20; j++) {
-				double d0 = this.rand.nextGaussian() * 0.02D;
-				double d1 = this.rand.nextGaussian() * 0.02D;
-				double d2 = this.rand.nextGaussian() * 0.02D;
-				this.world.addParticle(ParticleTypes.EXPLOSION,
-						segment.getPosX() + this.rand.nextFloat() * segment.getWidth() * 2.0F - segment.getWidth() - d0 * 10.0D,
-						segment.getPosY() + this.rand.nextFloat() * segment.getHeight() - d1 * 10.0D,
-						segment.getPosZ() + this.rand.nextFloat() * segment.getWidth() * 2.0F - segment.getWidth() - d2 * 10.0D,
+				double d0 = this.random.nextGaussian() * 0.02D;
+				double d1 = this.random.nextGaussian() * 0.02D;
+				double d2 = this.random.nextGaussian() * 0.02D;
+				this.level.addParticle(ParticleTypes.EXPLOSION,
+						segment.getX() + this.random.nextFloat() * segment.getBbWidth() * 2.0F - segment.getBbWidth() - d0 * 10.0D,
+						segment.getY() + this.random.nextFloat() * segment.getBbHeight() - d1 * 10.0D,
+						segment.getZ() + this.random.nextFloat() * segment.getBbWidth() * 2.0F - segment.getBbWidth() - d2 * 10.0D,
 						d0, d1, d2);
 			}
 		}
@@ -761,21 +774,21 @@ public class NagaEntity extends MonsterEntity {
 		for (int i = 0; i < this.bodySegments.length; i++) {
 			bodySegments[i].tick();
 			Entity leader = i == 0 ? this : this.bodySegments[i - 1];
-			double followX = leader.getPosX();
-			double followY = leader.getPosY();
-			double followZ = leader.getPosZ();
+			double followX = leader.getX();
+			double followY = leader.getY();
+			double followZ = leader.getZ();
 
 			// also weight the position so that the segments straighten out a little bit, and the front ones straighten more
-			float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
+			float angle = (((leader.yRot + 180) * 3.141593F) / 180F);
 
 
 			double straightenForce = 0.05D + (1.0 / (i + 1)) * 0.5D;
 
-			double idealX = -MathHelper.sin(angle) * straightenForce;
-			double idealZ = MathHelper.cos(angle) * straightenForce;
+			double idealX = -Mth.sin(angle) * straightenForce;
+			double idealZ = Mth.cos(angle) * straightenForce;
 
 
-			Vector3d diff = new Vector3d(bodySegments[i].getPosX() - followX, bodySegments[i].getPosY() - followY, bodySegments[i].getPosZ() - followZ);
+			Vec3 diff = new Vec3(bodySegments[i].getX() - followX, bodySegments[i].getY() - followY, bodySegments[i].getZ() - followZ);
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position
@@ -787,38 +800,38 @@ public class NagaEntity extends MonsterEntity {
 			double destY = followY + f * diff.y;
 			double destZ = followZ + f * diff.z;
 
-			bodySegments[i].setPosition(destX, destY, destZ);
+			bodySegments[i].setPos(destX, destY, destZ);
 
-			double distance = MathHelper.sqrt(diff.x * diff.x + diff.z * diff.z);
+			double distance = Mth.sqrt(diff.x * diff.x + diff.z * diff.z);
 
 			if (i == 0) {
 				// tilt segment next to head up towards head
 				diff = diff.add(0, -0.15, 0);
 			}
 
-			bodySegments[i].setRotation((float) (Math.atan2(diff.z, diff.x) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.y, distance) * 180.0D / Math.PI));
+			bodySegments[i].setRot((float) (Math.atan2(diff.z, diff.x) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.y, distance) * 180.0D / Math.PI));
 		}
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		if (getHomePosition() != BlockPos.ZERO) {
-			BlockPos home = this.getHomePosition();
-			compound.put("Home", new IntArrayNBT(new int[]{home.getX(), home.getY(), home.getZ()}));
+	public void addAdditionalSaveData(CompoundTag compound) {
+		if (getRestrictCenter() != BlockPos.ZERO) {
+			BlockPos home = this.getRestrictCenter();
+			compound.put("Home", new IntArrayTag(new int[]{home.getX(), home.getY(), home.getZ()}));
 		}
 
-		super.writeAdditional(compound);
+		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 
 		if (compound.contains("Home", Constants.NBT.TAG_INT_ARRAY)) {
 			int[] home = compound.getIntArray("Home");
-			this.setHomePosAndDistance(new BlockPos(home[0], home[1], home[2]), 20);
+			this.restrictTo(new BlockPos(home[0], home[1], home[2]), 20);
 		} else {
-			this.detachHome();
+			this.hasRestriction();
 		}
 
 		if (this.hasCustomName()) {
@@ -827,11 +840,11 @@ public class NagaEntity extends MonsterEntity {
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
+	public void die(DamageSource cause) {
+		super.die(cause);
 		// mark the courtyard as defeated
-		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.NAGA_COURTYARD);
+		if (!level.isClientSide) {
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.NAGA_COURTYARD);
 		}
 	}
 
@@ -847,24 +860,24 @@ public class NagaEntity extends MonsterEntity {
 	}
 
 	@Override
-	public void addTrackingPlayer(ServerPlayerEntity player) {
-		super.addTrackingPlayer(player);
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(ServerPlayerEntity player) {
-		super.removeTrackingPlayer(player);
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public boolean canChangeDimension() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 }

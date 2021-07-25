@@ -1,14 +1,14 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class MazeRoomCollapseComponent extends MazeRoomComponent {
 
-	public MazeRoomCollapseComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeRoomCollapseComponent(StructureManager manager, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMRC, nbt);
 	}
 
@@ -25,8 +25,8 @@ public class MazeRoomCollapseComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		//
 		for (int x = 1; x < 14; x++) {
@@ -38,14 +38,14 @@ public class MazeRoomCollapseComponent extends MazeRoomComponent {
 
 				if (gravel > 0) {
 					gravel++; // get it out of the floor
-					this.fillWithBlocks(world, sbb, x, 1, z, x, gravel, z, Blocks.GRAVEL.getDefaultState(), AIR, false);
-					this.fillWithAir(world, sbb, x, gravel, z, x, gravel + 5, z);
+					this.generateBox(world, sbb, x, 1, z, x, gravel, z, Blocks.GRAVEL.defaultBlockState(), AIR, false);
+					this.generateAirBox(world, sbb, x, gravel, z, x, gravel + 5, z);
 				} else if (root > 0) {
-					this.fillWithBlocks(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT.getDefaultState(), AIR, true);
-					this.fillWithBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.root_strand.get().getDefaultState(), AIR, false);
+					this.generateBox(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT.defaultBlockState(), AIR, true);
+					this.generateBox(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.root_strand.get().defaultBlockState(), AIR, false);
 				} else if (rand.nextInt(dist + 1) > 0) {
 					// remove ceiling
-					this.fillWithAir(world, sbb, x, 5, z, x, 5, z);
+					this.generateAirBox(world, sbb, x, 5, z, x, 5, z);
 				}
 			}
 		}

@@ -1,13 +1,13 @@
 package twilightforest.entity;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.Pose;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
@@ -15,7 +15,7 @@ import twilightforest.client.renderer.entity.NoopRenderer;
 
 public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 
-	protected EntitySize realSize;
+	protected EntityDimensions realSize;
 
 	protected int newPosRotationIncrements;
 	protected double interpTargetX;
@@ -34,7 +34,7 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRendererManager manager) {
+	public EntityRenderer<?> renderer(EntityRenderDispatcher manager) {
 		return new NoopRenderer<>(manager);
 	}
 
@@ -53,72 +53,72 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 		updateLastPos();
 		super.tick();
 		if (this.newPosRotationIncrements > 0) {
-			double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / (double)this.newPosRotationIncrements;
-			double d2 = this.getPosY() + (this.interpTargetY - this.getPosY()) / (double)this.newPosRotationIncrements;
-			double d4 = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / (double)this.newPosRotationIncrements;
-			double d6 = MathHelper.wrapDegrees(this.interpTargetYaw - (double)this.rotationYaw);
-			this.rotationYaw = (float)((double)this.rotationYaw + d6 / (double)this.newPosRotationIncrements);
-			this.rotationPitch = (float)((double)this.rotationPitch + (this.interpTargetPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
+			double d0 = this.getX() + (this.interpTargetX - this.getX()) / (double)this.newPosRotationIncrements;
+			double d2 = this.getY() + (this.interpTargetY - this.getY()) / (double)this.newPosRotationIncrements;
+			double d4 = this.getZ() + (this.interpTargetZ - this.getZ()) / (double)this.newPosRotationIncrements;
+			double d6 = Mth.wrapDegrees(this.interpTargetYaw - (double)this.yRot);
+			this.yRot = (float)((double)this.yRot + d6 / (double)this.newPosRotationIncrements);
+			this.xRot = (float)((double)this.xRot + (this.interpTargetPitch - (double)this.xRot) / (double)this.newPosRotationIncrements);
 			--this.newPosRotationIncrements;
-			this.setPosition(d0, d2, d4);
-			this.setRotation(this.rotationYaw, this.rotationPitch);
+			this.setPos(d0, d2, d4);
+			this.setRot(this.yRot, this.xRot);
 		}
 
-		while (rotationYaw - prevRotationYaw < -180F) prevRotationYaw -= 360F;
-		while (rotationYaw - prevRotationYaw >= 180F) prevRotationYaw += 360F;
+		while (yRot - yRotO < -180F) yRotO -= 360F;
+		while (yRot - yRotO >= 180F) yRotO += 360F;
 
 		while (renderYawOffset - prevRenderYawOffset < -180F) prevRenderYawOffset -= 360F;
 		while (renderYawOffset - prevRenderYawOffset >= 180F) prevRenderYawOffset += 360F;
 
-		while (rotationPitch - prevRotationPitch < -180F) prevRotationPitch -= 360F;
-		while (rotationPitch - prevRotationPitch >= 180F) prevRotationPitch += 360F;
+		while (xRot - xRotO < -180F) xRotO -= 360F;
+		while (xRot - xRotO >= 180F) xRotO += 360F;
 	}
 
 	public final void updateLastPos() {
-		forceSetPosition(getPosX(), getPosY(), getPosZ());
-		prevRotationYaw = rotationYaw;
-		prevRotationPitch = rotationPitch;
-		ticksExisted++;
+		setPosAndOldPos(getX(), getY(), getZ());
+		yRotO = yRot;
+		xRotO = xRot;
+		tickCount++;
 	}
 
-	protected void setSize(EntitySize size) {
+	protected void setSize(EntityDimensions size) {
 		this.realSize = size;
-		recalculateSize();
+		refreshDimensions();
 	}
 
 	@Override
-	public EntitySize getSize(Pose poseIn) {
+	public EntityDimensions getDimensions(Pose poseIn) {
 		return realSize;
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return true;
 	}
 
 	@Override
-	public void setEntityId(int id) {
-		super.setEntityId(id + 1);
+	public void setId(int id) {
+		super.setId(id + 1);
 	}
 
-	public void writeData(PacketBuffer buffer) {
-		buffer.writeDouble(getPosX());
-		buffer.writeDouble(getPosY());
-		buffer.writeDouble(getPosZ());
-		buffer.writeFloat(rotationYaw);
-		buffer.writeFloat(rotationPitch);
-		buffer.writeFloat(size.width);
-		buffer.writeFloat(size.height);
-		buffer.writeBoolean(size.fixed);
+	public void writeData(FriendlyByteBuf buffer) {
+		buffer.writeDouble(getX());
+		buffer.writeDouble(getY());
+		buffer.writeDouble(getZ());
+		buffer.writeFloat(yRot);
+		buffer.writeFloat(xRot);
+		buffer.writeFloat(dimensions.width);
+		buffer.writeFloat(dimensions.height);
+		buffer.writeBoolean(dimensions.fixed);
 
 	}
 
-	public void readData(PacketBuffer buffer) {
-		Vector3d vec = new Vector3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+	public void readData(FriendlyByteBuf buffer) {
+		Vec3 vec = new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 		setPositionAndRotationDirect(vec.x, vec.y, vec.z, buffer.readFloat(), buffer.readFloat(), 3);
 		final float w = buffer.readFloat();
 		final float h = buffer.readFloat();
-		setSize(buffer.readBoolean() ? EntitySize.fixed(w, h) : EntitySize.flexible(w, h));
-		recalculateSize();
+		setSize(buffer.readBoolean() ? EntityDimensions.fixed(w, h) : EntityDimensions.scalable(w, h));
+		refreshDimensions();
 	}
 }

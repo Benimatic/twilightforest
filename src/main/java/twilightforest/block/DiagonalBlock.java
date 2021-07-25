@@ -1,17 +1,19 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 
 import javax.annotation.Nullable;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class DiagonalBlock extends Block {
 
@@ -22,26 +24,26 @@ public class DiagonalBlock extends Block {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        super.fillStateContainer(builder);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(IS_ROTATED);
     }
 
 	@Override
-	public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation rot) {
-		return rot == Rotation.NONE || rot == Rotation.CLOCKWISE_180 ? state : state.with(IS_ROTATED, !state.get(IS_ROTATED));
+	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation rot) {
+		return rot == Rotation.NONE || rot == Rotation.CLOCKWISE_180 ? state : state.setValue(IS_ROTATED, !state.getValue(IS_ROTATED));
 	}
 
 	@Override
 	@Deprecated
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return mirrorIn == Mirror.NONE ? state : state.with(IS_ROTATED, !state.get(IS_ROTATED));
+		return mirrorIn == Mirror.NONE ? state : state.setValue(IS_ROTATED, !state.getValue(IS_ROTATED));
 	}
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		boolean rot = context.getPlacementHorizontalFacing().getOpposite() == Direction.WEST;
-		return this.getDefaultState().with(IS_ROTATED, rot);
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		boolean rot = context.getHorizontalDirection().getOpposite() == Direction.WEST;
+		return this.defaultBlockState().setValue(IS_ROTATED, rot);
 	}
 }

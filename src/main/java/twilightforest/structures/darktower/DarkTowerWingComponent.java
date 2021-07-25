@@ -1,32 +1,32 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DirectionalBlock;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.HorizontalFaceBlock;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.block.LeverBlock;
-import net.minecraft.block.RedstoneDiodeBlock;
-import net.minecraft.block.RepeaterBlock;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.DiodeBlock;
+import net.minecraft.world.level.block.RepeaterBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -49,18 +49,18 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	protected boolean keyTower = false;
 	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<>();
 
-	public DarkTowerWingComponent(TemplateManager manager, CompoundNBT nbt) {
+	public DarkTowerWingComponent(StructureManager manager, CompoundTag nbt) {
 		this(DarkTowerPieces.TFDTWin, nbt);
 	}
 
-	public DarkTowerWingComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public DarkTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 		this.keyTower = nbt.getBoolean("keyTower");
 
 		this.readDoorsTypesFromArray(nbt.getIntArray("doorTypeInts"));
 	}
 
-	protected DarkTowerWingComponent(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected DarkTowerWingComponent(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
@@ -80,8 +80,8 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 
 		tagCompound.putBoolean("keyTower", this.keyTower);
 
@@ -98,7 +98,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -118,18 +118,18 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 				int[] dest = getValidOpening(rand, direction);
 				int childHeight = validateChildHeight(height - 4 + rand.nextInt(10) - rand.nextInt(10));
 
-				boolean madeWing = makeTowerWing(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], size - 2, childHeight, direction);
+				boolean madeWing = makeTowerWing(list, rand, this.getGenDepth(), dest[0], dest[1], dest[2], size - 2, childHeight, direction);
 
 				// occasional balcony
 				if (!madeWing && (direction == Rotation.CLOCKWISE_180 || rand.nextBoolean())) {
-					makeTowerBalcony(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], direction);
+					makeTowerBalcony(list, rand, this.getGenDepth(), dest[0], dest[1], dest[2], direction);
 				}
 			}
 		} else if (rand.nextInt(4) == 0) {
 			// occasional balcony on small towers too
 			Rotation direction = RotationUtil.ROTATIONS[rand.nextInt(4)];
 			int[] dest = getValidOpening(rand, direction);
-			makeTowerBalcony(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], direction);
+			makeTowerBalcony(list, rand, this.getGenDepth(), dest[0], dest[1], dest[2], direction);
 		}
 	}
 
@@ -142,7 +142,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 */
 	@Override
 	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
-		int index = this.getComponentType();
+		int index = this.getGenDepth();
 
 		TowerRoofComponent roof;
 
@@ -164,13 +164,13 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		}
 
 		list.add(roof);
-		roof.buildComponent(this, list, rand);
+		roof.addChildren(this, list, rand);
 		roofType = roof.getClass();
 	}
 
 	@Override
 	protected void makeAttachedRoof(List<StructurePiece> list, Random rand) {
-		int index = this.getComponentType();
+		int index = this.getGenDepth();
 		TowerRoofComponent roof;
 
 		// this is our preferred roof type:
@@ -203,9 +203,9 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 */
 	@Override
 	public void makeABeard(StructurePiece parent, List<StructurePiece> list, Random rand) {
-		DarkTowerBeardComponent beard = new DarkTowerBeardComponent(getFeatureType(), this.getComponentType() + 1, this);
+		DarkTowerBeardComponent beard = new DarkTowerBeardComponent(getFeatureType(), this.getGenDepth() + 1, this);
 		list.add(beard);
-		beard.buildComponent(this, list, rand);
+		beard.addChildren(this, list, rand);
 	}
 
 	/**
@@ -228,15 +228,15 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		DarkTowerBridgeComponent bridge = new DarkTowerBridgeComponent(DarkTowerPieces.TFDTBri, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findIntersecting(list, bridge.getBoundingBox());
+		StructurePiece intersect = StructurePiece.findCollisionPiece(list, bridge.getBoundingBox());
 		if (intersect == null || intersect == this) {
-			intersect = StructurePiece.findIntersecting(list, bridge.getWingBB());
+			intersect = StructurePiece.findCollisionPiece(list, bridge.getWingBB());
 		} else {
 			return false;
 		}
 		if (intersect == null || intersect == this) {
 			list.add(bridge);
-			bridge.buildComponent(this, list, rand);
+			bridge.addChildren(this, list, rand);
 			addOpening(x, y, z, rotation);
 			return true;
 		} else {
@@ -250,10 +250,10 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		DarkTowerBalconyComponent balcony = new DarkTowerBalconyComponent(getFeatureType(), index, dx[0], dx[1], dx[2], direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findIntersecting(list, balcony.getBoundingBox());
+		StructurePiece intersect = StructurePiece.findCollisionPiece(list, balcony.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.add(balcony);
-			balcony.buildComponent(this, list, rand);
+			balcony.addChildren(this, list, rand);
 			addOpening(x, y, z, rotation, EnumDarkTowerDoor.REAPPEARING);
 			return true;
 		} else {
@@ -262,14 +262,14 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
 
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
 
 		// clear inside
-		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
+		generateAirBox(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		// sky light
 //		nullifySkyLightForBoundingBox(world);
@@ -313,7 +313,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Add a destruction burst
 	 */
-	protected void destroyTower(ISeedReader world, Random decoRNG, int x, int y, int z, int amount, MutableBoundingBox sbb) {
+	protected void destroyTower(WorldGenLevel world, Random decoRNG, int x, int y, int z, int amount, BoundingBox sbb) {
 		//makeNetherburst(world, decoRNG, 16, 100, 40, x, y, z, 0, sbb);
 
 		int initialRadius = decoRNG.nextInt(amount) + amount;
@@ -330,7 +330,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private void netherTransformBlob(ISeedReader world, Random inRand, int sx, int sy, int sz, int rad, MutableBoundingBox sbb) {
+	private void netherTransformBlob(WorldGenLevel world, Random inRand, int sx, int sy, int sz, int rad, BoundingBox sbb) {
 
 		Random rand = new Random(inRand.nextLong());
 
@@ -366,12 +366,12 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private void testAndChangeToNetherrack(ISeedReader world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
-		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock() != Blocks.AIR) {
-			this.setBlockState(world, Blocks.NETHERRACK.getDefaultState(), x, y, z, sbb);
+	private void testAndChangeToNetherrack(WorldGenLevel world, Random rand, int x, int y, int z, BoundingBox sbb) {
+		if (this.getBlock(world, x, y, z, sbb).getBlock() != Blocks.AIR) {
+			this.placeBlock(world, Blocks.NETHERRACK.defaultBlockState(), x, y, z, sbb);
 
-			if (this.getBlockStateFromPos(world, x, y + 1, z, sbb).getBlock() == Blocks.AIR && rand.nextBoolean()) {
-				this.setBlockState(world, Blocks.FIRE.getDefaultState(), x, y + 1, z, sbb);
+			if (this.getBlock(world, x, y + 1, z, sbb).getBlock() == Blocks.AIR && rand.nextBoolean()) {
+				this.placeBlock(world, Blocks.FIRE.defaultBlockState(), x, y + 1, z, sbb);
 			}
 		}
 	}
@@ -379,7 +379,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Draw a giant blob of whatevs (okay, it's going to be leaves).
 	 */
-	private void drawBlob(ISeedReader world, int sx, int sy, int sz, int rad, BlockState state, MutableBoundingBox sbb) {
+	private void drawBlob(WorldGenLevel world, int sx, int sy, int sz, int rad, BlockState state, BoundingBox sbb) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -397,14 +397,14 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						this.setBlockState(world, state, sx + dx, sy + dy, sz + dz, sbb);
-						this.setBlockState(world, state, sx + dx, sy + dy, sz - dz, sbb);
-						this.setBlockState(world, state, sx - dx, sy + dy, sz + dz, sbb);
-						this.setBlockState(world, state, sx - dx, sy + dy, sz - dz, sbb);
-						this.setBlockState(world, state, sx + dx, sy - dy, sz + dz, sbb);
-						this.setBlockState(world, state, sx + dx, sy - dy, sz - dz, sbb);
-						this.setBlockState(world, state, sx - dx, sy - dy, sz + dz, sbb);
-						this.setBlockState(world, state, sx - dx, sy - dy, sz - dz, sbb);
+						this.placeBlock(world, state, sx + dx, sy + dy, sz + dz, sbb);
+						this.placeBlock(world, state, sx + dx, sy + dy, sz - dz, sbb);
+						this.placeBlock(world, state, sx - dx, sy + dy, sz + dz, sbb);
+						this.placeBlock(world, state, sx - dx, sy + dy, sz - dz, sbb);
+						this.placeBlock(world, state, sx + dx, sy - dy, sz + dz, sbb);
+						this.placeBlock(world, state, sx + dx, sy - dy, sz - dz, sbb);
+						this.placeBlock(world, state, sx - dx, sy - dy, sz + dz, sbb);
+						this.placeBlock(world, state, sx - dx, sy - dy, sz - dz, sbb);
 					}
 				}
 			}
@@ -415,10 +415,10 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Add a bunch of random half floors
 	 */
 	@SuppressWarnings("fallthrough")
-	private void addHalfFloors(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
+	private void addHalfFloors(WorldGenLevel world, Random rand, BoundingBox sbb, int bottom, int top) {
 
 		int spacing = 4;//this.size > 9 ? 4 : 3;
-		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY + bottom) % 3];
+		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.y0 + bottom) % 3];
 
 		if (bottom == 0) {
 			bottom += spacing;
@@ -426,7 +426,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		// fill with half floors
 		for (int y = bottom; y < top; y += spacing) {
-			rotation = rotation.add(Rotation.CLOCKWISE_180);
+			rotation = rotation.getRotated(Rotation.CLOCKWISE_180);
 
 			if (y >= top - spacing) {
 				makeFullFloor(world, sbb, y);
@@ -472,7 +472,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 			}
 		}
 
-		rotation = rotation.add(Rotation.CLOCKWISE_180);
+		rotation = rotation.getRotated(Rotation.CLOCKWISE_180);
 
 		// stairs to roof
 		addStairsDown(world, sbb, rotation, this.height - 1, size - 2, spacing);
@@ -481,7 +481,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Dark tower half floors
 	 */
-	protected void makeHalfFloor(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
+	protected void makeHalfFloor(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
 		this.fillBlocksRotated(world, sbb, size / 2, y, 1, size - 2, y, size - 2, deco.blockState, rotation);
 		this.fillBlocksRotated(world, sbb, size / 2 - 1, y, 1, size / 2 - 1, y, size - 2, deco.accentState, rotation);
 	}
@@ -489,10 +489,10 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Dark tower full floors
 	 */
-	protected void makeFullFloor(ISeedReader world, MutableBoundingBox sbb, int y) {
+	protected void makeFullFloor(WorldGenLevel world, BoundingBox sbb, int y) {
 		// half floor
-		this.fillWithBlocks(world, sbb, 1, y, 1, size - 2, y, size - 2, deco.blockState, Blocks.AIR.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, size / 2, y, 1, size / 2, y, size - 2, deco.accentState, Blocks.AIR.getDefaultState(), true);
+		this.generateBox(world, sbb, 1, y, 1, size - 2, y, size - 2, deco.blockState, Blocks.AIR.defaultBlockState(), false);
+		this.generateBox(world, sbb, size / 2, y, 1, size / 2, y, size - 2, deco.accentState, Blocks.AIR.defaultBlockState(), true);
 	}
 
 	/**
@@ -500,7 +500,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 *
 	 * @param myDeco
 	 */
-	protected void decorateTreasureRoom(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing, TFStructureDecorator myDeco) {
+	protected void decorateTreasureRoom(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y, int spacing, TFStructureDecorator myDeco) {
 		//treasure chest!
 		int x = this.size / 2;
 		int z = this.size / 2;
@@ -512,7 +512,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFTreasure.darktower_key : TFTreasure.darktower_cache, sbb);
 	}
 
-	private void decorateSpawner(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateSpawner(WorldGenLevel world, Random rand, BoundingBox sbb, Rotation rotation, int y) {
 		int x = this.size > 9 ? 4 : 3;
 		int z = this.size > 9 ? 5 : 4;
 
@@ -532,7 +532,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * A lounge with a couch and table
 	 */
-	private void decorateLounge(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateLounge(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
 		int cx = this.size > 9 ? 9 : 7;
 		int cz = this.size > 9 ? 4 : 3;
 
@@ -543,16 +543,16 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		cx = this.size > 9 ? 5 : 3;
 
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, true), cx, y + 1, cz, rotation, sbb);
-		setBlockStateRotated(world, getSlabState(Blocks.SPRUCE_SLAB.getDefaultState(), SlabType.TOP), cx, y + 1, cz + 1, rotation, sbb);
+		setBlockStateRotated(world, getSlabState(Blocks.SPRUCE_SLAB.defaultBlockState(), SlabType.TOP), cx, y + 1, cz + 1, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, true), cx, y + 1, cz + 2, rotation, sbb);
 	}
 
 	/**
 	 * Decorate with a pressure plate triggered reappearing floor.  Only suitable for small towers
 	 */
-	private void decorateReappearingFloor(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
-		final BlockState inactiveReappearing = TFBlocks.reappearing_block.get().getDefaultState();
-		final BlockState woodenPressurePlate = Blocks.OAK_PRESSURE_PLATE.getDefaultState();
+	private void decorateReappearingFloor(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
+		final BlockState inactiveReappearing = TFBlocks.reappearing_block.get().defaultBlockState();
+		final BlockState woodenPressurePlate = Blocks.OAK_PRESSURE_PLATE.defaultBlockState();
 		// floor
 		this.fillBlocksRotated(world, sbb, 4, y, 3, 7, y, 5, inactiveReappearing, rotation);
 		// plates
@@ -563,19 +563,19 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Decorate with a redstone device that turns a lamp on or off
 	 */
-	private void decorateExperimentLamp(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateExperimentLamp(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
 
 		int cx = this.size > 9 ? 5 : 3;
 		int cz = this.size > 9 ? 5 : 4;
 
-		final BlockState redstoneLamp = Blocks.REDSTONE_LAMP.getDefaultState();
+		final BlockState redstoneLamp = Blocks.REDSTONE_LAMP.defaultBlockState();
 
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.UP), cx, y + 1, cz, rotation, sbb);
+		setBlockStateRotated(world, Blocks.STICKY_PISTON.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.UP), cx, y + 1, cz, rotation, sbb);
 		setBlockStateRotated(world, redstoneLamp, cx, y + 2, cz, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, cx, y + 1, cz + 1, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.NORTH, false), cx, y + 1, cz + 2, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), AttachFace.WALL, Direction.NORTH, false), cx, y + 1, cz + 2, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, cx, y + 3, cz - 1, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, true), cx, y + 3, cz - 2, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), AttachFace.WALL, Direction.SOUTH, true), cx, y + 3, cz - 2, rotation, sbb);
 	}
 
 	protected static BlockState getLeverState(BlockState initialState, AttachFace face, Direction direction, boolean isPowered) {
@@ -592,23 +592,23 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 				//Levers cannot face Up or Down, as it is a Horizontal Face
 				direction = Direction.NORTH;
 		}
-		return initialState.with(HorizontalBlock.HORIZONTAL_FACING, direction)
-				.with(HorizontalFaceBlock.FACE, face)
-				.with(LeverBlock.POWERED, isPowered);
+		return initialState.setValue(HorizontalDirectionalBlock.FACING, direction)
+				.setValue(FaceAttachedHorizontalDirectionalBlock.FACE, face)
+				.setValue(LeverBlock.POWERED, isPowered);
 	}
 
 	/**
 	 * Decorate with a redstone device that pulses a block back and forth
 	 */
-	private void decorateExperimentPulser(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateExperimentPulser(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
 
 		int cx = this.size > 9 ? 6 : 5;
 		int cz = this.size > 9 ? 4 : 3;
 
-		BlockState redstoneWire = Blocks.REDSTONE_WIRE.getDefaultState();
-		BlockState woodenPressurePlate = Blocks.OAK_PRESSURE_PLATE.getDefaultState();
-		BlockState stickyPiston = Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.SOUTH);
-		BlockState unpoweredRepeater = Blocks.REPEATER.getDefaultState().with(RedstoneDiodeBlock.POWERED, false).with(HorizontalBlock.HORIZONTAL_FACING, Direction.WEST).with(RepeaterBlock.DELAY, 2);
+		BlockState redstoneWire = Blocks.REDSTONE_WIRE.defaultBlockState();
+		BlockState woodenPressurePlate = Blocks.OAK_PRESSURE_PLATE.defaultBlockState();
+		BlockState stickyPiston = Blocks.STICKY_PISTON.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH);
+		BlockState unpoweredRepeater = Blocks.REPEATER.defaultBlockState().setValue(DiodeBlock.POWERED, false).setValue(HorizontalDirectionalBlock.FACING, Direction.WEST).setValue(RepeaterBlock.DELAY, 2);
 
 		setBlockStateRotated(world, stickyPiston, cx, y + 1, cz + 1, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, cx, y + 1, cz, rotation, sbb);
@@ -623,7 +623,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Decorate with some bookshelves
 	 */
-	private void decorateLibrary(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateLibrary(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
 		int bx = this.size > 9 ? 4 : 3;
 		int bz = this.size > 9 ? 3 : 2;
 
@@ -634,12 +634,12 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		makeSmallBookshelf(world, sbb, rotation, y, bx, bz);
 	}
 
-	protected void makeSmallBookshelf(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int bx, int bz) {
+	protected void makeSmallBookshelf(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y, int bx, int bz) {
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, false), bx, y + 1, bz, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, true), bx, y + 2, bz, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, false), bx, y + 1, bz + 3, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, true), bx, y + 2, bz + 3, rotation, sbb);
-		final BlockState bookshelf = Blocks.BOOKSHELF.getDefaultState();
+		final BlockState bookshelf = Blocks.BOOKSHELF.defaultBlockState();
 		setBlockStateRotated(world, bookshelf, bx, y + 1, bz + 1, rotation, sbb);
 		setBlockStateRotated(world, bookshelf, bx, y + 2, bz + 1, rotation, sbb);
 		setBlockStateRotated(world, bookshelf, bx, y + 1, bz + 2, rotation, sbb);
@@ -649,7 +649,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * A chest with an extremely simple puzzle
 	 */
-	private void decoratePuzzleChest(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decoratePuzzleChest(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
 		int x = this.size > 9 ? 4 : 3;
 		int z = this.size > 9 ? 5 : 4;
 		// pillar frameframe
@@ -667,24 +667,24 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		setBlockStateRotated(world, deco.blockState, x + 1, y + 3, z + 2, rotation, sbb);
 		setBlockStateRotated(world, AIR, x + 1, y + 3, z, rotation, sbb);
 		setBlockStateRotated(world, deco.blockState, x + 1, y + 3, z + 1, rotation, sbb);
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH), x + 1, y + 3, z - 1, rotation, sbb);
+		setBlockStateRotated(world, Blocks.STICKY_PISTON.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH), x + 1, y + 3, z - 1, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, x + 1, y + 3, z - 2, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.WEST, false), x + 2, y + 3, z - 2, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), AttachFace.WALL, Direction.WEST, false), x + 2, y + 3, z - 2, rotation, sbb);
 
-		placeTreasureRotated(world, x + 1, y + 2, z + 1, getCoordBaseMode(), rotation, TFTreasure.darktower_cache, sbb);
+		placeTreasureRotated(world, x + 1, y + 2, z + 1, getOrientation(), rotation, TFTreasure.darktower_cache, sbb);
 	}
 
 	/**
 	 * Make a 3x3x3 pillar frame
 	 */
-	protected void makePillarFrame(ISeedReader world, MutableBoundingBox sbb, TFStructureDecorator myDeco, Rotation rotation, int x, int y, int z, boolean fenced) {
+	protected void makePillarFrame(WorldGenLevel world, BoundingBox sbb, TFStructureDecorator myDeco, Rotation rotation, int x, int y, int z, boolean fenced) {
 		makePillarFrame(world, sbb, myDeco, rotation, x, y, z, 3, 3, 3, fenced);
 	}
 
 	/**
 	 * Place one of the architectural features that I frequently overuse in my structures
 	 */
-	protected void makePillarFrame(ISeedReader world, MutableBoundingBox sbb, TFStructureDecorator myDeco, Rotation rotation, int x, int y, int z, int width, int height, int length, boolean fenced) {
+	protected void makePillarFrame(WorldGenLevel world, BoundingBox sbb, TFStructureDecorator myDeco, Rotation rotation, int x, int y, int z, int width, int height, int length, boolean fenced) {
 		// fill in posts
 		for (int dx = 0; dx < width; dx++) {
 			for (int dz = 0; dz < length; dz++) {
@@ -696,19 +696,19 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 					if (dx == 0) {
 						final BlockState southStairs = getStairState(deco.stairState, Direction.WEST, false);
 						setBlockStateRotated(world, southStairs, x + dx, y + 1, z + dz, rotation, sbb);
-						setBlockStateRotated(world, southStairs.with(StairsBlock.HALF, Half.TOP), x + dx, y + height, z + dz, rotation, sbb);
+						setBlockStateRotated(world, southStairs.setValue(StairBlock.HALF, Half.TOP), x + dx, y + height, z + dz, rotation, sbb);
 					} else if (dx == width - 1) {
 						final BlockState northStairs = getStairState(deco.stairState, Direction.EAST, false);
 						setBlockStateRotated(world, northStairs, x + dx, y + 1, z + dz, rotation, sbb);
-						setBlockStateRotated(world, northStairs.with(StairsBlock.HALF, Half.TOP), x + dx, y + height, z + dz, rotation, sbb);
+						setBlockStateRotated(world, northStairs.setValue(StairBlock.HALF, Half.TOP), x + dx, y + height, z + dz, rotation, sbb);
 					} else if (dz == 0) {
 						final BlockState westStairs = getStairState(deco.stairState, Direction.NORTH, false);
 						setBlockStateRotated(world, westStairs, x + dx, y + 1, z + dz, rotation, sbb);
-						setBlockStateRotated(world, westStairs.with(StairsBlock.HALF, Half.TOP), x + dx, y + height, z + dz, rotation, sbb);
+						setBlockStateRotated(world, westStairs.setValue(StairBlock.HALF, Half.TOP), x + dx, y + height, z + dz, rotation, sbb);
 					} else if (dz == length - 1) {
 						final BlockState eastStairs = getStairState(deco.stairState, Direction.SOUTH, false);
 						setBlockStateRotated(world, eastStairs, x + dx, y + 1, z + dz, rotation, sbb);
-						setBlockStateRotated(world, eastStairs.with(StairsBlock.HALF, Half.TOP), x + dx, y + height, z + dz, rotation, sbb);
+						setBlockStateRotated(world, eastStairs.setValue(StairBlock.HALF, Half.TOP), x + dx, y + height, z + dz, rotation, sbb);
 					}
 
 					if (fenced && (dx == 0 || dx == width - 1 || dz == 0 || dz == length - 1)) {
@@ -724,7 +724,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Dark tower half floors
 	 */
-	protected void addStairsDown(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int sz, int spacing) {
+	protected void addStairsDown(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y, int sz, int spacing) {
 		// stairs
 		for (int i = 0; i < spacing; i++) {
 			int sx = size - 3 - i;
@@ -742,7 +742,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Add a bunch of timber beams
 	 */
-	protected void addSmallTimberBeams(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
+	protected void addSmallTimberBeams(WorldGenLevel world, Random rand, BoundingBox sbb, int bottom, int top) {
 
 		int spacing = 4;
 		Rotation rotation = Rotation.NONE;
@@ -752,15 +752,15 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		// fill with 3/4 floors
 		for (int y = bottom; y < top; y += spacing) {
-			rotation = rotation.add(Rotation.CLOCKWISE_90);
+			rotation = rotation.getRotated(Rotation.CLOCKWISE_90);
 
 			if (y >= top - spacing && isDeadEnd()) {
 				makeTimberFloor(world, sbb, rotation, y);
 
 				TFStructureDecorator logDeco = new StructureDecoratorDarkTower();
 
-				logDeco.pillarState = TFBlocks.dark_log.get().getDefaultState();
-				logDeco.platformState = TFBlocks.dark_log.get().getDefaultState();
+				logDeco.pillarState = TFBlocks.dark_log.get().defaultBlockState();
+				logDeco.platformState = TFBlocks.dark_log.get().defaultBlockState();
 
 				decorateTreasureRoom(world, sbb, rotation, y, 4, logDeco);
 			} else {
@@ -772,11 +772,11 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Make a mostly soid timber floor
 	 */
-	protected void makeTimberFloor(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
-		BlockState beamID = TFBlocks.dark_log.get().getDefaultState();
-		BlockState beamStateNS = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
-		BlockState beamStateUD = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Y);
-		BlockState beamStateEW = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
+	protected void makeTimberFloor(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
+		BlockState beamID = TFBlocks.dark_log.get().defaultBlockState();
+		BlockState beamStateNS = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+		BlockState beamStateUD = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+		BlockState beamStateEW = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		for (int z = 1; z < size - 1; z++) {
 			for (int x = 1; x < size - 1; x++) {
@@ -790,11 +790,11 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		// beams going down
 		for (int by = 1; by < 4; by++) {
-			BlockState ladder = Blocks.LADDER.getDefaultState();
+			BlockState ladder = Blocks.LADDER.defaultBlockState();
 			setBlockStateRotated(world, beamStateUD, 2, y - by, 2, rotation, sbb);
-			setBlockStateRotated(world, ladder.with(LadderBlock.FACING, Direction.WEST), 2 + 1, y - by, 2, rotation, sbb);
+			setBlockStateRotated(world, ladder.setValue(LadderBlock.FACING, Direction.WEST), 2 + 1, y - by, 2, rotation, sbb);
 			setBlockStateRotated(world, beamStateUD, 6, y - by, 6, rotation, sbb);
-			setBlockStateRotated(world, ladder.with(LadderBlock.FACING, Direction.EAST), 6 - 1, y - by, 6, rotation, sbb);
+			setBlockStateRotated(world, ladder.setValue(LadderBlock.FACING, Direction.EAST), 6 - 1, y - by, 6, rotation, sbb);
 		}
 
 		// holes for entrance
@@ -805,11 +805,11 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Make a lattice of log blocks
 	 */
-	protected void makeSmallTimberBeams(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean bottom) {
-		BlockState beamID = TFBlocks.dark_log.get().getDefaultState();
-		BlockState beamStateNS = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
-		BlockState beamStateUD = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Y);
-		BlockState beamStateEW = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	protected void makeSmallTimberBeams(WorldGenLevel world, Random rand, BoundingBox sbb, Rotation rotation, int y, boolean bottom) {
+		BlockState beamID = TFBlocks.dark_log.get().defaultBlockState();
+		BlockState beamStateNS = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+		BlockState beamStateUD = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+		BlockState beamStateEW = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 
 		// two beams going e/w
 		for (int z = 1; z < size - 1; z++) {
@@ -830,14 +830,14 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		int z3 = rand.nextBoolean() ? 2 : 6;
 
 		for (int by = 1; by < 4; by++) {
-			final BlockState ladder = Blocks.LADDER.getDefaultState();
+			final BlockState ladder = Blocks.LADDER.defaultBlockState();
 			if (!bottom || checkPost(world, x1, y - 4, z1, rotation, sbb)) {
 				setBlockStateRotated(world, beamStateUD, x1, y - by, z1, rotation, sbb);
-				setBlockStateRotated(world, ladder.with(LadderBlock.FACING, Direction.WEST), x1 + 1, y - by, z1, rotation, sbb);
+				setBlockStateRotated(world, ladder.setValue(LadderBlock.FACING, Direction.WEST), x1 + 1, y - by, z1, rotation, sbb);
 			}
 			if (!bottom || checkPost(world, x3, y - 4, z3, rotation, sbb)) {
 				setBlockStateRotated(world, beamStateUD, x3, y - by, z3, rotation, sbb);
-				setBlockStateRotated(world, ladder.with(LadderBlock.FACING, Direction.EAST), x3 - 1, y - by, z3, rotation, sbb);
+				setBlockStateRotated(world, ladder.setValue(LadderBlock.FACING, Direction.EAST), x3 - 1, y - by, z3, rotation, sbb);
 			}
 		}
 	}
@@ -874,12 +874,12 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Utility function for beam maze that checks if we should build a beam all the way down -- is there a valid spot to end it?
 	 */
-	protected boolean checkPost(ISeedReader world, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	protected boolean checkPost(WorldGenLevel world, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
 		int worldX = this.getXWithOffsetRotated(x, z, rotation);
-		int worldY = this.getYWithOffset(y);
+		int worldY = this.getWorldY(y);
 		int worldZ = this.getZWithOffsetRotated(x, z, rotation);
 		final BlockPos vec = new BlockPos(worldX, worldY, worldZ);
-		if (!sbb.isVecInside(vec)) return false;
+		if (!sbb.isInside(vec)) return false;
 		BlockState blockState = world.getBlockState(vec);
 		return blockState.getBlock() != Blocks.AIR && blockState != deco.accentState;
 	}
@@ -889,7 +889,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 *
 	 * @param rand
 	 */
-	protected void makeEncasedWalls(ISeedReader world, Random rand, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	protected void makeEncasedWalls(WorldGenLevel world, Random rand, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int y = minY; y <= maxY; y++) {
@@ -900,12 +900,12 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 						// wall
 						if (((y == minY || y == maxY) && ((x == minY || x == maxX) || (z == minZ || z == maxZ)))
 								|| ((z == minZ || z == maxZ) && ((x == minY || x == maxX) || (y == minY || y == maxY)))) {
-							this.setBlockState(world, deco.accentState, x, y, z, sbb);
+							this.placeBlock(world, deco.accentState, x, y, z, sbb);
 						} else {
 							StructurePiece.BlockSelector blocker = deco.randomBlocks;
 
-							blocker.selectBlocks(rand, x, y, z, true);
-							this.setBlockState(world, blocker.getBlockState(), x, y, z, sbb);
+							blocker.next(rand, x, y, z, true);
+							this.placeBlock(world, blocker.getNext(), x, y, z, sbb);
 						}
 					}
 				}
@@ -913,32 +913,32 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		}
 
 		// corners
-		this.setBlockState(world, deco.accentState, minX + 1, minY + 1, minZ, sbb);
-		this.setBlockState(world, deco.accentState, minX + 1, minY + 1, maxZ, sbb);
-		this.setBlockState(world, deco.accentState, maxX - 1, minY + 1, minZ, sbb);
-		this.setBlockState(world, deco.accentState, maxX - 1, minY + 1, maxZ, sbb);
-		this.setBlockState(world, deco.accentState, minX + 1, maxY - 1, minZ, sbb);
-		this.setBlockState(world, deco.accentState, minX + 1, maxY - 1, maxZ, sbb);
-		this.setBlockState(world, deco.accentState, maxX - 1, maxY - 1, minZ, sbb);
-		this.setBlockState(world, deco.accentState, maxX - 1, maxY - 1, maxZ, sbb);
+		this.placeBlock(world, deco.accentState, minX + 1, minY + 1, minZ, sbb);
+		this.placeBlock(world, deco.accentState, minX + 1, minY + 1, maxZ, sbb);
+		this.placeBlock(world, deco.accentState, maxX - 1, minY + 1, minZ, sbb);
+		this.placeBlock(world, deco.accentState, maxX - 1, minY + 1, maxZ, sbb);
+		this.placeBlock(world, deco.accentState, minX + 1, maxY - 1, minZ, sbb);
+		this.placeBlock(world, deco.accentState, minX + 1, maxY - 1, maxZ, sbb);
+		this.placeBlock(world, deco.accentState, maxX - 1, maxY - 1, minZ, sbb);
+		this.placeBlock(world, deco.accentState, maxX - 1, maxY - 1, maxZ, sbb);
 
-		this.setBlockState(world, deco.accentState, minX, minY + 1, minZ + 1, sbb);
-		this.setBlockState(world, deco.accentState, minX, minY + 1, maxZ - 1, sbb);
-		this.setBlockState(world, deco.accentState, maxX, minY + 1, minZ + 1, sbb);
-		this.setBlockState(world, deco.accentState, maxX, minY + 1, maxZ - 1, sbb);
-		this.setBlockState(world, deco.accentState, minX, maxY - 1, minZ + 1, sbb);
-		this.setBlockState(world, deco.accentState, minX, maxY - 1, maxZ - 1, sbb);
-		this.setBlockState(world, deco.accentState, maxX, maxY - 1, minZ + 1, sbb);
-		this.setBlockState(world, deco.accentState, maxX, maxY - 1, maxZ - 1, sbb);
+		this.placeBlock(world, deco.accentState, minX, minY + 1, minZ + 1, sbb);
+		this.placeBlock(world, deco.accentState, minX, minY + 1, maxZ - 1, sbb);
+		this.placeBlock(world, deco.accentState, maxX, minY + 1, minZ + 1, sbb);
+		this.placeBlock(world, deco.accentState, maxX, minY + 1, maxZ - 1, sbb);
+		this.placeBlock(world, deco.accentState, minX, maxY - 1, minZ + 1, sbb);
+		this.placeBlock(world, deco.accentState, minX, maxY - 1, maxZ - 1, sbb);
+		this.placeBlock(world, deco.accentState, maxX, maxY - 1, minZ + 1, sbb);
+		this.placeBlock(world, deco.accentState, maxX, maxY - 1, maxZ - 1, sbb);
 
-		this.setBlockState(world, deco.accentState, minX + 1, minY, minZ + 1, sbb);
-		this.setBlockState(world, deco.accentState, minX + 1, minY, maxZ - 1, sbb);
-		this.setBlockState(world, deco.accentState, maxX - 1, minY, minZ + 1, sbb);
-		this.setBlockState(world, deco.accentState, maxX - 1, minY, maxZ - 1, sbb);
-		this.setBlockState(world, deco.accentState, minX + 1, maxY, minZ + 1, sbb);
-		this.setBlockState(world, deco.accentState, minX + 1, maxY, maxZ - 1, sbb);
-		this.setBlockState(world, deco.accentState, maxX - 1, maxY, minZ + 1, sbb);
-		this.setBlockState(world, deco.accentState, maxX - 1, maxY, maxZ - 1, sbb);
+		this.placeBlock(world, deco.accentState, minX + 1, minY, minZ + 1, sbb);
+		this.placeBlock(world, deco.accentState, minX + 1, minY, maxZ - 1, sbb);
+		this.placeBlock(world, deco.accentState, maxX - 1, minY, minZ + 1, sbb);
+		this.placeBlock(world, deco.accentState, maxX - 1, minY, maxZ - 1, sbb);
+		this.placeBlock(world, deco.accentState, minX + 1, maxY, minZ + 1, sbb);
+		this.placeBlock(world, deco.accentState, minX + 1, maxY, maxZ - 1, sbb);
+		this.placeBlock(world, deco.accentState, maxX - 1, maxY, minZ + 1, sbb);
+		this.placeBlock(world, deco.accentState, maxX - 1, maxY, maxZ - 1, sbb);
 	}
 
 	/**
@@ -991,7 +991,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Iterate through the openings on our list and add them to the tower
 	 */
 	@Override
-	protected void makeOpenings(ISeedReader world, MutableBoundingBox sbb) {
+	protected void makeOpenings(WorldGenLevel world, BoundingBox sbb) {
 		for (int i = 0; i < openings.size(); i++) {
 			BlockPos doorCoords = openings.get(i);
 
@@ -1021,69 +1021,69 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Make an opening in this tower for a door.
 	 */
 	@Override
-	protected void makeDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeDoorOpening(WorldGenLevel world, int dx, int dy, int dz, BoundingBox sbb) {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final BlockState inactiveVanish = TFBlocks.vanishing_block.get().getDefaultState();
+		final BlockState inactiveVanish = TFBlocks.vanishing_block.get().defaultBlockState();
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {
-			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
-			this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveVanish, AIR, false);
+			this.generateBox(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
+			this.generateBox(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveVanish, AIR, false);
 		}
 		if (dz == 0 || dz == size - 1) {
-			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
-			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveVanish, AIR, false);
+			this.generateBox(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
+			this.generateBox(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveVanish, AIR, false);
 		}
 	}
 
 	/**
 	 * Make a 3x3 tower door that reappears
 	 */
-	protected void makeReappearingDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeReappearingDoorOpening(WorldGenLevel world, int dx, int dy, int dz, BoundingBox sbb) {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final BlockState inactiveReappearing = TFBlocks.reappearing_block.get().getDefaultState();
+		final BlockState inactiveReappearing = TFBlocks.reappearing_block.get().defaultBlockState();
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {
-			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
-			this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveReappearing, AIR, false);
+			this.generateBox(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
+			this.generateBox(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveReappearing, AIR, false);
 		}
 		if (dz == 0 || dz == size - 1) {
-			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
-			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveReappearing, AIR, false);
+			this.generateBox(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
+			this.generateBox(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveReappearing, AIR, false);
 		}
 	}
 
 	/**
 	 * Make a 3x3 tower door that is locked
 	 */
-	protected void makeLockedDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeLockedDoorOpening(WorldGenLevel world, int dx, int dy, int dz, BoundingBox sbb) {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
 		// clear the door
-		final BlockState lockedVanish = TFBlocks.locked_vanishing_block.get().getDefaultState();
-		final BlockState inactiveVanish = TFBlocks.vanishing_block.get().getDefaultState();
+		final BlockState lockedVanish = TFBlocks.locked_vanishing_block.get().defaultBlockState();
+		final BlockState inactiveVanish = TFBlocks.vanishing_block.get().defaultBlockState();
 
 		if (dx == 0 || dx == size - 1) {
-			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
-			this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveVanish, AIR, false);
-			this.setBlockState(world, lockedVanish, dx, dy, dz + 1, sbb);
-			this.setBlockState(world, lockedVanish, dx, dy, dz - 1, sbb);
-			this.setBlockState(world, lockedVanish, dx, dy + 2, dz + 1, sbb);
-			this.setBlockState(world, lockedVanish, dx, dy + 2, dz - 1, sbb);
+			this.generateBox(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
+			this.generateBox(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveVanish, AIR, false);
+			this.placeBlock(world, lockedVanish, dx, dy, dz + 1, sbb);
+			this.placeBlock(world, lockedVanish, dx, dy, dz - 1, sbb);
+			this.placeBlock(world, lockedVanish, dx, dy + 2, dz + 1, sbb);
+			this.placeBlock(world, lockedVanish, dx, dy + 2, dz - 1, sbb);
 		}
 		if (dz == 0 || dz == size - 1) {
-			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
-			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveVanish, AIR, false);
-			this.setBlockState(world, lockedVanish, dx + 1, dy, dz, sbb);
-			this.setBlockState(world, lockedVanish, dx - 1, dy, dz, sbb);
-			this.setBlockState(world, lockedVanish, dx + 1, dy + 2, dz, sbb);
-			this.setBlockState(world, lockedVanish, dx - 1, dy + 2, dz, sbb);
+			this.generateBox(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
+			this.generateBox(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveVanish, AIR, false);
+			this.placeBlock(world, lockedVanish, dx + 1, dy, dz, sbb);
+			this.placeBlock(world, lockedVanish, dx - 1, dy, dz, sbb);
+			this.placeBlock(world, lockedVanish, dx + 1, dy + 2, dz, sbb);
+			this.placeBlock(world, lockedVanish, dx - 1, dy + 2, dz, sbb);
 		}
 	}
 

@@ -1,15 +1,15 @@
 package twilightforest.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
@@ -18,6 +18,8 @@ import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class TwilightWandItem extends Item {
 
 	protected TwilightWandItem(Properties props) {
@@ -25,20 +27,20 @@ public class TwilightWandItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage()) {
-			return ActionResult.resultFail(player.getHeldItem(hand));
+		if (stack.getDamageValue() == stack.getMaxDamage()) {
+			return InteractionResultHolder.fail(player.getItemInHand(hand));
 		} else {
-			player.playSound(TFSounds.SCEPTER_PEARL, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+			player.playSound(TFSounds.SCEPTER_PEARL, 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
 
-			if (!world.isRemote) {
-				world.addEntity(new TwilightWandBoltEntity(world, player));
-				stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
+			if (!world.isClientSide) {
+				world.addFreshEntity(new TwilightWandBoltEntity(world, player));
+				stack.hurt(1, random, (ServerPlayer) null);
 			}
 
-			return ActionResult.resultSuccess(player.getHeldItem(hand));
+			return InteractionResultHolder.success(player.getItemInHand(hand));
 		}
 	}
 
@@ -49,8 +51,8 @@ public class TwilightWandItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
-		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(new TranslationTextComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamage()));
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, world, tooltip, flags);
+		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()));
 	}
 }

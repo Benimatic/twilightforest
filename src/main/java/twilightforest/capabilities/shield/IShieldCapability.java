@@ -1,7 +1,7 @@
 package twilightforest.capabilities.shield;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public interface IShieldCapability {

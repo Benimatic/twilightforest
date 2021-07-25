@@ -1,20 +1,27 @@
 package twilightforest.item;
 
-import net.minecraft.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.item.*;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
+
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 
 public class SteeleafSwordItem extends SwordItem {
 
-	public SteeleafSwordItem(IItemTier material, Properties props) {
+	public SteeleafSwordItem(Tier material, Properties props) {
 		super(material, 3, -2.4F, props);
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
-		if (isInGroup(tab)) {
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+		if (allowdedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
-			istack.addEnchantment(Enchantments.LOOTING, 2);
+			istack.enchant(Enchantments.MOB_LOOTING, 2);
 			list.add(istack);
 		}
 	}

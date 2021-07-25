@@ -1,6 +1,6 @@
 package twilightforest.compat;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.ModList;
 import twilightforest.TwilightForestMod;

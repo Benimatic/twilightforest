@@ -13,22 +13,22 @@ import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerTileEntit
 import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerWallBlock;
 import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
 import blusunrize.immersiveengineering.common.util.Utils;
-import net.minecraft.block.BannerBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.WallBannerBlock;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.world.level.block.BannerBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.WallBannerBlock;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.item.*;
-import net.minecraft.tileentity.BannerTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BannerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -40,10 +40,16 @@ import java.util.List;
 import java.util.Locale;
 
 // TODO Move to shader capability, where we can then just turn item Trophies into the shaders
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.context.UseOnContext;
+
 public class TFShaderItem extends Item implements IShaderItem {
 
     public TFShaderItem() {
-        super(TFItems.defaultBuilder().maxStackSize(1));
+        super(TFItems.defaultBuilder().stacksTo(1));
     }
 
     static final String TAG_SHADER = "shader_name";
@@ -59,28 +65,28 @@ public class TFShaderItem extends Item implements IShaderItem {
     }
 
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
+    public Component getName(ItemStack stack) {
         ResourceLocation rawShaderName = this.getShaderName(stack);
         String unlocalizedShaderName = ("item." + rawShaderName.getNamespace() + ".shader.name." + rawShaderName.getPath().replace(' ', '_').toLowerCase(Locale.ROOT));
-        String localizedShaderName = new TranslationTextComponent(unlocalizedShaderName).getString();
+        String localizedShaderName = new TranslatableComponent(unlocalizedShaderName).getString();
 
         if (unlocalizedShaderName.equals(localizedShaderName))
-            return new TranslationTextComponent(this.getTranslationKey(stack), rawShaderName.getPath()).appendString(" *TRANSLATION FAILURE*").mergeStyle(TextFormatting.DARK_RED); // Translation failure
+            return new TranslatableComponent(this.getDescriptionId(stack), rawShaderName.getPath()).append(" *TRANSLATION FAILURE*").withStyle(ChatFormatting.DARK_RED); // Translation failure
         else
-            return new TranslationTextComponent(this.getTranslationKey(stack), localizedShaderName);
+            return new TranslatableComponent(this.getDescriptionId(stack), localizedShaderName);
     }
 
     //Copy of ShaderItem.onItemUse so we can apply to banners
     @Override
-    public ActionResultType onItemUse(ItemUseContext ctx) {
-        World world = ctx.getWorld();
-        BlockPos pos = ctx.getPos();
-        ResourceLocation name = getShaderName(ctx.getItem());
+    public InteractionResult useOn(UseOnContext ctx) {
+        Level world = ctx.getLevel();
+        BlockPos pos = ctx.getClickedPos();
+        ResourceLocation name = getShaderName(ctx.getItemInHand());
         if(ShaderRegistry.shaderRegistry.containsKey(name))
         {
             BlockState blockState = world.getBlockState(pos);
-            TileEntity tile = world.getTileEntity(pos);
-            if(tile instanceof BannerTileEntity)
+            BlockEntity tile = world.getBlockEntity(pos);
+            if(tile instanceof BannerBlockEntity)
             {
                 ShaderCase sCase = ShaderRegistry.shaderRegistry.get(name).getCase(new ResourceLocation("immersiveengineering", "banner"));
                 if(sCase!=null)
@@ -88,44 +94,44 @@ public class TFShaderItem extends Item implements IShaderItem {
                     boolean wall = blockState.getBlock() instanceof WallBannerBlock;
 
                     if(wall)
-                        world.setBlockState(pos, IEBlocks.Cloth.shaderBannerWall.getDefaultState()
-                                .with(ShaderBannerWallBlock.FACING, blockState.get(WallBannerBlock.HORIZONTAL_FACING)));
+                        world.setBlockAndUpdate(pos, IEBlocks.Cloth.shaderBannerWall.defaultBlockState()
+                                .setValue(ShaderBannerWallBlock.FACING, blockState.getValue(WallBannerBlock.FACING)));
                     else
-                        world.setBlockState(pos, IEBlocks.Cloth.shaderBanner.getDefaultState()
-                                .with(ShaderBannerStandingBlock.ROTATION, blockState.get(BannerBlock.ROTATION)));
-                    tile = world.getTileEntity(pos);
+                        world.setBlockAndUpdate(pos, IEBlocks.Cloth.shaderBanner.defaultBlockState()
+                                .setValue(ShaderBannerStandingBlock.ROTATION, blockState.getValue(BannerBlock.ROTATION)));
+                    tile = world.getBlockEntity(pos);
                     if(tile instanceof ShaderBannerTileEntity)
                     {
-                        ((ShaderBannerTileEntity)tile).shader.setShaderItem(ItemHandlerHelper.copyStackWithSize(ctx.getItem(), 1));
-                        tile.markDirty();
-                        return ActionResultType.SUCCESS;
+                        ((ShaderBannerTileEntity)tile).shader.setShaderItem(ItemHandlerHelper.copyStackWithSize(ctx.getItemInHand(), 1));
+                        tile.setChanged();
+                        return InteractionResult.SUCCESS;
                     }
                 }
             }
             else if(tile instanceof ShaderBannerTileEntity)
             {
-                ((ShaderBannerTileEntity)tile).shader.setShaderItem(ItemHandlerHelper.copyStackWithSize(ctx.getItem(), 1));
-                tile.markDirty();
-                return ActionResultType.SUCCESS;
+                ((ShaderBannerTileEntity)tile).shader.setShaderItem(ItemHandlerHelper.copyStackWithSize(ctx.getItemInHand(), 1));
+                tile.setChanged();
+                return InteractionResult.SUCCESS;
             }
 
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.level").appendSibling(TextUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader.rarity." + this.getRarity(stack).name().toLowerCase(Locale.US)), getRarity(stack).color)));
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list, TooltipFlag flag) {
+        list.add(new TranslatableComponent(Lib.DESC_INFO + "shader.level").append(TextUtils.applyFormat(new TranslatableComponent(Lib.DESC_INFO + "shader.rarity." + this.getRarity(stack).name().toLowerCase(Locale.US)), getRarity(stack).color)));
         if(ShaderRegistry.shaderRegistry.containsKey(getShaderName(stack))) {
             if (!Screen.hasShiftDown())
-                list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo").appendString(" ").appendSibling(new TranslationTextComponent(Lib.DESC_INFO + "holdShift")));
+                list.add(new TranslatableComponent(Lib.DESC_INFO + "shader.applyTo").append(" ").append(new TranslatableComponent(Lib.DESC_INFO + "holdShift")));
             else {
-                list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo"));
+                list.add(new TranslatableComponent(Lib.DESC_INFO + "shader.applyTo"));
 
                 for (ShaderCase sCase : ShaderRegistry.shaderRegistry.get(getShaderName(stack)).getCases())
                     if (!(sCase instanceof ShaderCaseItem))
-                        list.add(TextUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader." + sCase.getShaderType()), TextFormatting.DARK_GRAY));
+                        list.add(TextUtils.applyFormat(new TranslatableComponent(Lib.DESC_INFO + "shader." + sCase.getShaderType()), ChatFormatting.DARK_GRAY));
             }
         }
     }
@@ -155,7 +161,7 @@ public class TFShaderItem extends Item implements IShaderItem {
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
         if (group == TFItems.creativeTab) {
             for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.getAllTwilightShaders()) {
                 ItemStack stack = new ItemStack(this);

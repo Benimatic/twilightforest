@@ -1,31 +1,31 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.BossInfo;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
@@ -43,12 +43,18 @@ import twilightforest.world.TFGenerationSettings;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+
+public class SnowQueenEntity extends Monster implements IBreathAttacker {
 
 	private static final int MAX_SUMMONS = 6;
-	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(SnowQueenEntity.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Byte> PHASE_FLAG = EntityDataManager.createKey(SnowQueenEntity.class, DataSerializers.BYTE);
-	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
+	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueenEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Byte> PHASE_FLAG = SynchedEntityData.defineId(SnowQueenEntity.class, EntityDataSerializers.BYTE);
+	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
 
@@ -61,7 +67,7 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 	private int maxDrops;
 	private int damageWhileBeaming;
 
-	public SnowQueenEntity(EntityType<? extends SnowQueenEntity> type, World world) {
+	public SnowQueenEntity(EntityType<? extends SnowQueenEntity> type, Level world) {
 		super(type, world);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
@@ -70,8 +76,8 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 
 		this.setCurrentPhase(Phase.SUMMON);
 
-		this.isImmuneToFire();
-		this.experienceValue = 317;
+		this.fireImmune();
+		this.xpReward = 317;
 	}
 
 	@Override
@@ -80,30 +86,30 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 		this.goalSelector.addGoal(2, new HoverThenDropGoal(this, 80, 20));
 		this.goalSelector.addGoal(3, new HoverBeamGoal(this, 80, 100));
 		this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
 	@Override
-	public boolean canBePushed() {
+	public boolean isPushable() {
 		return false;
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D)
-				.createMutableAttribute(Attributes.FOLLOW_RANGE, 40.0D)
-				.createMutableAttribute(Attributes.MAX_HEALTH, 200.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.add(Attributes.ATTACK_DAMAGE, 7.0D)
+				.add(Attributes.FOLLOW_RANGE, 40.0D)
+				.add(Attributes.MAX_HEALTH, 200.0D);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(BEAM_FLAG, false);
-		dataManager.register(PHASE_FLAG, (byte) 0);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(BEAM_FLAG, false);
+		entityData.define(PHASE_FLAG, (byte) 0);
 	}
 
 	@Override
@@ -122,9 +128,9 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 	}
 
 	@Override
-	public void livingTick() {
-		super.livingTick();
-		if (!world.isRemote) {
+	public void aiStep() {
+		super.aiStep();
+		if (!level.isClientSide) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 		} else {
 			spawnParticles();
@@ -134,50 +140,50 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 	private void spawnParticles() {
 		// make snow particles
 		for (int i = 0; i < 3; i++) {
-			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
-			float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
-			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+			float px = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
+			float py = this.getEyeHeight() + (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
+			float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
 
-			world.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			level.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 		}
 
 		// during drop phase, all the ice blocks should make particles
 		if (this.getCurrentPhase() == Phase.DROP) {
 			for (Entity ice : this.iceArray) {
-				float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
-				float py = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
-				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
+				float px = (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
+				float py = (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
+				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
 
-				world.addParticle(TFParticleType.SNOW_WARNING.get(), ice.lastTickPosX + px, ice.lastTickPosY + py, ice.lastTickPosZ + pz, 0, 0, 0);
+				level.addParticle(TFParticleType.SNOW_WARNING.get(), ice.xOld + px, ice.yOld + py, ice.zOld + pz, 0, 0, 0);
 			}
 		}
 
 		// when ice beaming, spew particles
 		if (isBreathing() && this.isAlive()) {
-			Vector3d look = this.getLookVec();
+			Vec3 look = this.getLookAngle();
 
 			double dist = 0.5;
-			double px = this.getPosX() + look.x * dist;
-			double py = this.getPosY() + 1.7F + look.y * dist;
-			double pz = this.getPosZ() + look.z * dist;
+			double px = this.getX() + look.x * dist;
+			double py = this.getY() + 1.7F + look.y * dist;
+			double pz = this.getZ() + look.z * dist;
 
 			for (int i = 0; i < 10; i++) {
 				double dx = look.x;
 				double dy = 0;//look.y;
 				double dz = look.z;
 
-				double spread = 2 + this.getRNG().nextDouble() * 2.5;
-				double velocity = 2.0 + this.getRNG().nextDouble() * 0.15;
+				double spread = 2 + this.getRandom().nextDouble() * 2.5;
+				double velocity = 2.0 + this.getRandom().nextDouble() * 0.15;
 
 				// beeeam
-				dx += this.getRNG().nextGaussian() * 0.0075D * spread;
-				dy += this.getRNG().nextGaussian() * 0.0075D * spread;
-				dz += this.getRNG().nextGaussian() * 0.0075D * spread;
+				dx += this.getRandom().nextGaussian() * 0.0075D * spread;
+				dy += this.getRandom().nextGaussian() * 0.0075D * spread;
+				dz += this.getRandom().nextGaussian() * 0.0075D * spread;
 				dx *= velocity;
 				dy *= velocity;
 				dz *= velocity;
 
-				world.addParticle(TFParticleType.ICE_BEAM.get(), px, py, pz, dx, dy, dz);
+				level.addParticle(TFParticleType.ICE_BEAM.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 	}
@@ -190,17 +196,17 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 			iceArray[i].tick();
 			if (i < this.iceArray.length - 1) {
 				// set block position
-				Vector3d blockPos = this.getIceShieldPosition(i);
+				Vec3 blockPos = this.getIceShieldPosition(i);
 
-				this.iceArray[i].setPosition(blockPos.x, blockPos.y, blockPos.z);
+				this.iceArray[i].setPos(blockPos.x, blockPos.y, blockPos.z);
 			} else {
 				// last block beneath
-				this.iceArray[i].setPosition(this.getPosX(), this.getPosY() - 1, this.getPosZ());
+				this.iceArray[i].setPos(this.getX(), this.getY() - 1, this.getZ());
 			}
-			this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
+			this.iceArray[i].yRot = this.getIceShieldAngle(i);
 
 			// collide things with the block
-			if (!world.isRemote) {
+			if (!level.isClientSide) {
 				this.applyShieldCollisions(this.iceArray[i]);
 			}
 		}
@@ -208,24 +214,24 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 		// death animation
 		if (deathTime > 0) {
 			for (int k = 0; k < 5; k++) {
-				double d = rand.nextGaussian() * 0.02D;
-				double d1 = rand.nextGaussian() * 0.02D;
-				double d2 = rand.nextGaussian() * 0.02D;
-				world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION, (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+				double d = random.nextGaussian() * 0.02D;
+				double d1 = random.nextGaussian() * 0.02D;
+				double d2 = random.nextGaussian() * 0.02D;
+				level.addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION, (getX() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(), getY() + random.nextFloat() * getBbHeight(), (getZ() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(), d, d1, d2);
 			}
 		}
 	}
 
 	@Override
-	public boolean canDespawn(double p_213397_1_) {
+	public boolean removeWhenFarAway(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
 	public void checkDespawn() {
-		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (getHomePosition() != BlockPos.ZERO) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_snow_queen.get().getDefaultState());
+		if (level.getDifficulty() == Difficulty.PEACEFUL) {
+			if (getRestrictCenter() != BlockPos.ZERO) {
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_snow_queen.get().defaultBlockState());
 			}
 			remove();
 		} else {
@@ -234,19 +240,19 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
+	public void die(DamageSource cause) {
+		super.die(cause);
 		// mark the tower as defeated
-		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, this.getPosition(), TFFeature.ICE_TOWER);
+		if (!level.isClientSide) {
+			TFGenerationSettings.markStructureConquered(level, this.blockPosition(), TFFeature.ICE_TOWER);
 		}
 	}
 
 	private void applyShieldCollisions(Entity collider) {
-		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getBoundingBox().grow(-0.2F, -0.2F, -0.2F));
+		List<Entity> list = this.level.getEntities(collider, collider.getBoundingBox().inflate(-0.2F, -0.2F, -0.2F));
 
 		for (Entity collided : list) {
-			if (collided.canBePushed()) {
+			if (collided.isPushable()) {
 				applyShieldCollision(collider, collided);
 			}
 		}
@@ -257,18 +263,18 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 	 */
 	private void applyShieldCollision(Entity collider, Entity collided) {
 		if (collided != this) {
-			collided.applyEntityCollision(collider);
-			if (collided instanceof LivingEntity && super.attackEntityAsMob(collided)) {
-				Vector3d motion = collided.getMotion();
-				collided.setMotion(motion.x, motion.y + 0.4, motion.z);
+			collided.push(collider);
+			if (collided instanceof LivingEntity && super.doHurtTarget(collided)) {
+				Vec3 motion = collided.getDeltaMovement();
+				collided.setDeltaMovement(motion.x, motion.y + 0.4, motion.z);
 				this.playSound(TFSounds.SNOW_QUEEN_ATTACK, 1.0F, 1.0F);
 			}
 		}
 	}
 
 	@Override
-	protected void updateAITasks() {
-		super.updateAITasks();
+	protected void customServerAiStep() {
+		super.customServerAiStep();
 
 		// switch phases
 		if (this.getCurrentPhase() == Phase.SUMMON && this.getSummonsRemaining() == 0 && this.countMyMinions() <= 0) {
@@ -283,8 +289,8 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float damage) {
-		boolean result = super.attackEntityFrom(TFDamageSources.SQUISH, damage);
+	public boolean hurt(DamageSource source, float damage) {
+		boolean result = super.hurt(TFDamageSources.SQUISH, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
 			this.damageWhileBeaming += damage;
@@ -294,19 +300,19 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 
 	}
 
-	private Vector3d getIceShieldPosition(int idx) {
+	private Vec3 getIceShieldPosition(int idx) {
 		return this.getIceShieldPosition(getIceShieldAngle(idx), 1F);
 	}
 
 	private float getIceShieldAngle(int idx) {
-		return 60F * idx + (this.ticksExisted * 5F);
+		return 60F * idx + (this.tickCount * 5F);
 	}
 
-	private Vector3d getIceShieldPosition(float angle, float distance) {
+	private Vec3 getIceShieldPosition(float angle, float distance) {
 		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getShieldYOffset(), this.getPosZ() + dz);
+		return new Vec3(this.getX() + dx, this.getY() + this.getShieldYOffset(), this.getZ() + dz);
 	}
 
 	private double getShieldYOffset() {
@@ -314,16 +320,16 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 	}
 
 	@Override
-	public boolean onLivingFall(float distance, float damageMultiplier) {
+	public boolean causeFallDamage(float distance, float damageMultiplier) {
 		return false;
 	}
 
-	public void destroyBlocksInAABB(AxisAlignedBB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
+	public void destroyBlocksInAABB(AABB box) {
+		if (ForgeEventFactory.getMobGriefingEvent(level, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				BlockState state = world.getBlockState(pos);
+				BlockState state = level.getBlockState(pos);
 				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
-					world.destroyBlock(pos, false);
+					level.destroyBlock(pos, false);
 				}
 			}
 		}
@@ -331,20 +337,20 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 
 	@Override
 	public boolean isBreathing() {
-		return dataManager.get(BEAM_FLAG);
+		return entityData.get(BEAM_FLAG);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-		dataManager.set(BEAM_FLAG, flag);
+		entityData.set(BEAM_FLAG, flag);
 	}
 
 	public Phase getCurrentPhase() {
-		return Phase.values()[dataManager.get(PHASE_FLAG)];
+		return Phase.values()[entityData.get(PHASE_FLAG)];
 	}
 
 	public void setCurrentPhase(Phase currentPhase) {
-		dataManager.set(PHASE_FLAG, (byte) currentPhase.ordinal());
+		entityData.set(PHASE_FLAG, (byte) currentPhase.ordinal());
 
 		// set variables for current phase
 		if (currentPhase == Phase.SUMMON) {
@@ -352,7 +358,7 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 		}
 		if (currentPhase == Phase.DROP) {
 			this.successfulDrops = 0;
-			this.maxDrops = 2 + this.rand.nextInt(3);
+			this.maxDrops = 2 + this.random.nextInt(3);
 		}
 		if (currentPhase == Phase.BEAM) {
 			this.damageWhileBeaming = 0;
@@ -368,38 +374,38 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 	}
 
 	public void summonMinionAt(LivingEntity targetedEntity) {
-		IceCrystalEntity minion = new IceCrystalEntity(world);
-		minion.setPositionAndRotation(getPosX(), getPosY(), getPosZ(), 0, 0);
+		IceCrystalEntity minion = new IceCrystalEntity(level);
+		minion.absMoveTo(getX(), getY(), getZ(), 0, 0);
 
-		world.addEntity(minion);
+		level.addFreshEntity(minion);
 
 		for (int i = 0; i < 100; i++) {
 			double attemptX;
 			double attemptY;
 			double attemptZ;
-			if (getHomePosition() != BlockPos.ZERO) {
-				BlockPos home = getHomePosition();
-				attemptX = home.getX() + rand.nextGaussian() * 7D;
-				attemptY = home.getY() + rand.nextGaussian() * 2D;
-				attemptZ = home.getZ() + rand.nextGaussian() * 7D;
+			if (getRestrictCenter() != BlockPos.ZERO) {
+				BlockPos home = getRestrictCenter();
+				attemptX = home.getX() + random.nextGaussian() * 7D;
+				attemptY = home.getY() + random.nextGaussian() * 2D;
+				attemptZ = home.getZ() + random.nextGaussian() * 7D;
 			} else {
-				attemptX = targetedEntity.getPosX() + rand.nextGaussian() * 16D;
-				attemptY = targetedEntity.getPosY() + rand.nextGaussian() * 8D;
-				attemptZ = targetedEntity.getPosZ() + rand.nextGaussian() * 16D;
+				attemptX = targetedEntity.getX() + random.nextGaussian() * 16D;
+				attemptY = targetedEntity.getY() + random.nextGaussian() * 8D;
+				attemptZ = targetedEntity.getZ() + random.nextGaussian() * 16D;
 			}
-			if (minion.attemptTeleport(attemptX, attemptY, attemptZ, true)) {
+			if (minion.randomTeleport(attemptX, attemptY, attemptZ, true)) {
 				break;
 			}
 		}
 
-		minion.setAttackTarget(targetedEntity);
+		minion.setTarget(targetedEntity);
 		minion.setToDieIn30Seconds(); // don't stick around
 
 		this.summonsRemaining--;
 	}
 
 	public int countMyMinions() {
-		return world.getEntitiesWithinAABB(IceCrystalEntity.class, new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX() + 1, getPosY() + 1, getPosZ() + 1).grow(32.0D, 16.0D, 32.0D)).size();
+		return level.getEntitiesOfClass(IceCrystalEntity.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D)).size();
 	}
 
 	public void incrementSuccessfulDrops() {
@@ -408,42 +414,42 @@ public class SnowQueenEntity extends MonsterEntity implements IBreathAttacker {
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		target.attackEntityFrom(TFDamageSources.CHILLING_BREATH, BREATH_DAMAGE);
+		target.hurt(TFDamageSources.CHILLING_BREATH, BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 
 	@Override
-	public void setCustomName(@Nullable ITextComponent name) {
+	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
-	public void addTrackingPlayer(ServerPlayerEntity player) {
-		super.addTrackingPlayer(player);
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(ServerPlayerEntity player) {
-		super.removeTrackingPlayer(player);
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		if (this.hasCustomName())
 			this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public boolean canChangeDimension() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 

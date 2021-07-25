@@ -1,94 +1,111 @@
 package twilightforest.entity;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.GhastEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.horse.AbstractHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFSounds;
 
-public class LoyalZombieEntity extends TameableEntity {
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 
-	public LoyalZombieEntity(EntityType<? extends LoyalZombieEntity> type, World world) {
+public class LoyalZombieEntity extends TamableAnimal {
+
+	public LoyalZombieEntity(EntityType<? extends LoyalZombieEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
 		this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, true));
-		this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
 		this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, MonsterEntity.class, true));
+		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Monster.class, true));
 	}
 
 	@Override
-	public AnimalEntity createChild(ServerWorld world, AgeableEntity entityanimal) {
+	public Animal getBreedOffspring(ServerLevel world, AgableMob entityanimal) {
 		return null;
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3D)
-				.createMutableAttribute(Attributes.ARMOR, 3.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 40.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.3D)
+				.add(Attributes.ARMOR, 3.0D);
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entity) {
-		boolean success = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 7);
+	public boolean doHurtTarget(Entity entity) {
+		boolean success = entity.hurt(DamageSource.mobAttack(this), 7);
 
 		if (success) {
-			entity.addVelocity(0, 0.2, 0);
+			entity.push(0, 0.2, 0);
 		}
 
 		return success;
 	}
 
 	@Override
-	public void livingTick() {
+	public void aiStep() {
 		// once our damage boost effect wears out, start to burn
 		// the effect here is that we die shortly after our 60 second lifespan
-		if (!this.world.isRemote && this.getActivePotionEffect(Effects.STRENGTH) == null) {
-			this.setFire(100);
+		if (!this.level.isClientSide && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
+			this.setSecondsOnFire(100);
 		}
 
-		super.livingTick();
+		super.aiStep();
 	}
 
 	/**
 	 * [VanillaCopy] {@link net.minecraft.entity.passive.WolfEntity#shouldAttackEntity}, substituting with our class
  	 */
 	@Override
-	public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
-		if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
+	public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
+		if (!(target instanceof Creeper) && !(target instanceof Ghast)) {
 			if (target instanceof LoyalZombieEntity) {
 				LoyalZombieEntity zombie = (LoyalZombieEntity) target;
-				return !zombie.isTamed() || zombie.getOwner() != owner;
-			} else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
+				return !zombie.isTame() || zombie.getOwner() != owner;
+			} else if (target instanceof Player && owner instanceof Player && !((Player)owner).canHarmPlayer((Player)target)) {
 				return false;
-			} else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+			} else if (target instanceof AbstractHorse && ((AbstractHorse)target).isTamed()) {
 				return false;
 			} else {
-				return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
+				return !(target instanceof TamableAnimal) || !((TamableAnimal)target).isTame();
 			}
 		} else {
 			return false;
@@ -96,8 +113,8 @@ public class LoyalZombieEntity extends TameableEntity {
 	}
 
 	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return !this.isTamed();
+	public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+		return !this.isTame();
 	}
 
 	@Override
@@ -121,8 +138,8 @@ public class LoyalZombieEntity extends TameableEntity {
 	}
 
 	@Override
-	public CreatureAttribute getCreatureAttribute() {
-		return CreatureAttribute.UNDEAD;
+	public MobType getMobType() {
+		return MobType.UNDEAD;
 	}
 
 	@Override

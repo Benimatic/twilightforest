@@ -1,16 +1,16 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
@@ -21,7 +21,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 
 	public StrongholdPieces lowerPieces;
 
-	public StrongholdEntranceComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdEntranceComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSEnter, nbt);
 
 		this.deco = new StrongholdDecorator();
@@ -38,8 +38,8 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		// make a random component in each direction
 		lowerPieces.prepareStructurePieces();
@@ -62,7 +62,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 		if (!listContainsBossRoom(list)) {
 			TwilightForestMod.LOGGER.warn("Did not find boss room from exit 3 - EPIC FAIL");
 		}
-		MutableBoundingBox shieldBox = new MutableBoundingBox(this.boundingBox);
+		BoundingBox shieldBox = new BoundingBox(this.boundingBox);
 
 		int tStairs = 0;
 		int tCorridors = 0;
@@ -72,7 +72,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 
 		// compute and generate MEGASHIELD
 		for (StructurePiece component : list) {
-			shieldBox.expandTo(component.getBoundingBox());
+			shieldBox.expand(component.getBoundingBox());
 
 
 			if (component instanceof StrongholdSmallStairsComponent && ((StrongholdSmallStairsComponent) component).hasTreasure) {
@@ -99,9 +99,9 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 //		list.add(shield);
 
 		// add the upper stronghold
-		StructureTFStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(getFeatureType(), 2, this.getCoordBaseMode(), boundingBox.minX + 8, boundingBox.minY + 7, boundingBox.minZ + 4);
+		StructureTFStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(getFeatureType(), 2, this.getOrientation(), boundingBox.x0 + 8, boundingBox.y0 + 7, boundingBox.z0 + 4);
 		list.add(accessChamber);
-		accessChamber.buildComponent(this, list, random);
+		accessChamber.addChildren(this, list, random);
 	}
 
 	private boolean listContainsBossRoom(List<StructurePiece> list) {
@@ -115,12 +115,12 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -1, -1, 0, 18, 7, 18, facing);
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+		return BoundingBox.orientBox(x, y, z, -1, -1, 0, 18, 7, 18, facing);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
 
 		// statues

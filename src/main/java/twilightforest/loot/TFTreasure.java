@@ -1,18 +1,18 @@
 package twilightforest.loot;
 
 import com.google.common.collect.Sets;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootFunctionType;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.conditions.IsMinion;
 import twilightforest.loot.conditions.ModExists;
@@ -74,11 +74,11 @@ public class TFTreasure {
 	public static final ResourceLocation USELESS_LOOT = register("structures/useless");
 	public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 
-	public static LootFunctionType ENCHANT;
-	public static LootFunctionType ITEM_OR_DEFAULT;
+	public static LootItemFunctionType ENCHANT;
+	public static LootItemFunctionType ITEM_OR_DEFAULT;
 
-	public static LootConditionType IS_MINION;
-	public static LootConditionType MOD_EXISTS;
+	public static LootItemConditionType IS_MINION;
+	public static LootItemConditionType MOD_EXISTS;
 
 	public final ResourceLocation lootTable;
 
@@ -87,32 +87,32 @@ public class TFTreasure {
 	}
 
 	public static void init() {
-		ENCHANT = registerFunction("enchant", new LootFunctionType(new Enchant.Serializer()));
-		ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootFunctionType(new ModItemSwap.Serializer()));
+		ENCHANT = registerFunction("enchant", new LootItemFunctionType(new Enchant.Serializer()));
+		ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootItemFunctionType(new ModItemSwap.Serializer()));
 
-		IS_MINION = registerCondition("is_minion", new LootConditionType(new IsMinion.Serializer()));
-		MOD_EXISTS = registerCondition("mod_exists", new LootConditionType(new ModExists.Serializer()));
+		IS_MINION = registerCondition("is_minion", new LootItemConditionType(new IsMinion.Serializer()));
+		MOD_EXISTS = registerCondition("mod_exists", new LootItemConditionType(new ModExists.Serializer()));
 	}
 
-	public void generateChest(IWorld world, BlockPos pos, Direction dir, boolean trapped) {
-		world.setBlockState(pos, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.FACING, dir), 2);
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof ChestTileEntity) {
-			((ChestTileEntity) te).setLootTable(lootTable, ((ISeedReader)world).getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+	public void generateChest(LevelAccessor world, BlockPos pos, Direction dir, boolean trapped) {
+		world.setBlock(pos, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.FACING, dir), 2);
+		BlockEntity te = world.getBlockEntity(pos);
+		if (te instanceof ChestBlockEntity) {
+			((ChestBlockEntity) te).setLootTable(lootTable, ((WorldGenLevel)world).getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
 		}
 	}
 
-	public void generateChestContents(ISeedReader world, BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof ChestTileEntity)
-			((ChestTileEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+	public void generateChestContents(WorldGenLevel world, BlockPos pos) {
+		BlockEntity te = world.getBlockEntity(pos);
+		if (te instanceof ChestBlockEntity)
+			((ChestBlockEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
 	}
 
-	private static LootFunctionType registerFunction(String name, LootFunctionType function) {
+	private static LootItemFunctionType registerFunction(String name, LootItemFunctionType function) {
 		return Registry.register(Registry.LOOT_FUNCTION_TYPE, TwilightForestMod.prefix(name), function); //ILootFunction registry
 	}
 
-	private static LootConditionType registerCondition(String name, LootConditionType condition) {
+	private static LootItemConditionType registerCondition(String name, LootItemConditionType condition) {
 		return Registry.register(Registry.LOOT_CONDITION_TYPE, TwilightForestMod.prefix(name), condition); //ILootCondition registry
 	}
 

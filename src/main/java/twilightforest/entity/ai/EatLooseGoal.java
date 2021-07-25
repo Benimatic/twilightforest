@@ -1,12 +1,14 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.DyeColor;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.DyeColor;
 import twilightforest.entity.passive.QuestRamEntity;
 
 import java.util.EnumSet;
 import java.util.List;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EatLooseGoal extends Goal {
 	private final QuestRamEntity temptedQuestRam;
@@ -16,18 +18,18 @@ public class EatLooseGoal extends Goal {
 
 	public EatLooseGoal(QuestRamEntity entityTFQuestRam) {
 		this.temptedQuestRam = entityTFQuestRam;
-		setMutexFlags(EnumSet.of(Flag.LOOK));
+		setFlags(EnumSet.of(Flag.LOOK));
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		if (this.delayTemptCounter > 0) {
 			--this.delayTemptCounter;
 			return false;
 		} else {
 			this.temptingItem = null;
 
-			List<ItemEntity> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(ItemEntity.class, this.temptedQuestRam.getBoundingBox().grow(2.0D, 2.0D, 2.0D), e -> e.isAlive() && !e.getItem().isEmpty());
+			List<ItemEntity> nearbyItems = this.temptedQuestRam.level.getEntitiesOfClass(ItemEntity.class, this.temptedQuestRam.getBoundingBox().inflate(2.0D, 2.0D, 2.0D), e -> e.isAlive() && !e.getItem().isEmpty());
 
 			for (ItemEntity itemNearby : nearbyItems) {
 				DyeColor color = QuestRamEntity.guessColor(itemNearby.getItem());
@@ -42,17 +44,17 @@ public class EatLooseGoal extends Goal {
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.temptingItem = null;
-		this.temptedQuestRam.getNavigator().clearPath();
+		this.temptedQuestRam.getNavigation().stop();
 		this.delayTemptCounter = 100;
 	}
 
 	@Override
 	public void tick() {
-		this.temptedQuestRam.getLookController().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedQuestRam.getVerticalFaceSpeed());
+		this.temptedQuestRam.getLookControl().setLookAt(this.temptingItem, 30.0F, this.temptedQuestRam.getMaxHeadXRot());
 
-		if (this.temptedQuestRam.getDistanceSq(this.temptingItem) < 6.25D && temptedQuestRam.tryAccept(temptingItem.getItem())) {
+		if (this.temptedQuestRam.distanceToSqr(this.temptingItem) < 6.25D && temptedQuestRam.tryAccept(temptingItem.getItem())) {
 			this.temptingItem.remove();
 		}
 	}

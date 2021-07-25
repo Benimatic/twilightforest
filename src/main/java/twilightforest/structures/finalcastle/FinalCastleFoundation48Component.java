@@ -1,15 +1,15 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.util.RotationUtil;
@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 
-	public FinalCastleFoundation48Component(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleFoundation48Component(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCToF48, nbt);
 	}
 
@@ -27,23 +27,23 @@ public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 	public FinalCastleFoundation48Component(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
 		super(FinalCastlePieces.TFFCToF48, feature, i);
 
-		this.setCoordBaseMode(sideTower.getCoordBaseMode());
-		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX, sideTower.getBoundingBox().minY, sideTower.getBoundingBox().minZ, sideTower.getBoundingBox().maxX, sideTower.getBoundingBox().minY - 1, sideTower.getBoundingBox().maxZ);
+		this.setOrientation(sideTower.getOrientation());
+		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().x0, sideTower.getBoundingBox().y0, sideTower.getBoundingBox().z0, sideTower.getBoundingBox().x1, sideTower.getBoundingBox().y0 - 1, sideTower.getBoundingBox().z1);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// foundation
 		for (int x = 4; x < 45; x++) {
 			for (int z = 4; z < 45; z++) {
-				this.replaceAirAndLiquidDownwards(world, deco.blockState, x, -1, z, sbb);
+				this.fillColumnDown(world, deco.blockState, x, -1, z, sbb);
 			}
 		}
 
@@ -77,7 +77,7 @@ public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 		return true;
 	}
 
-	private void makePiling(ISeedReader world, MutableBoundingBox sbb, int mid, Rotation rotation, int i) {
+	private void makePiling(WorldGenLevel world, BoundingBox sbb, int mid, Rotation rotation, int i) {
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, i, -7, 3, rotation, sbb);
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, i, -mid, 2, rotation, sbb);
 

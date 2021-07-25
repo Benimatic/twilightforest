@@ -1,22 +1,22 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.UpperGoblinKnightModel;
 import twilightforest.entity.UpperGoblinKnightEntity;
 
 public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnightEntity, UpperGoblinKnightModel> {
-	public UpperGoblinKnightRenderer(EntityRendererManager manager, UpperGoblinKnightModel model, float shadowSize) {
+	public UpperGoblinKnightRenderer(EntityRenderDispatcher manager, UpperGoblinKnightModel model, float shadowSize) {
 		super(manager, model, shadowSize, "doublegoblin.png");
 	}
 
 	@Override
-	protected void applyRotations(UpperGoblinKnightEntity upperKnight, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		super.applyRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
+	protected void setupRotations(UpperGoblinKnightEntity upperKnight, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+		super.setupRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
 
 		if (upperKnight.heavySpearTimer > 0) {
-			stack.rotate(Vector3f.XP.rotationDegrees(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));
+			stack.mulPose(Vector3f.XP.rotationDegrees(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));
 		}
 	}
 

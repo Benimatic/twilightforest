@@ -1,9 +1,9 @@
 package twilightforest.tileentity;
 
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class MoonwormTileEntity extends TileEntity implements ITickableTileEntity {
+public class MoonwormTileEntity extends BlockEntity implements TickableBlockEntity {
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
@@ -17,9 +17,9 @@ public class MoonwormTileEntity extends TileEntity implements ITickableTileEntit
 
 	@Override
 	public void tick() {
-		if (world.isRemote) {
+		if (level.isClientSide) {
 			if (currentYaw == -1) {
-				currentYaw = world.rand.nextInt(4) * 90;
+				currentYaw = level.random.nextInt(4) * 90;
 			}
 
 			if (yawDelay > 0) {
@@ -27,8 +27,8 @@ public class MoonwormTileEntity extends TileEntity implements ITickableTileEntit
 			} else {
 				if (desiredYaw == 0) {
 					// make it rotate!
-					yawDelay = 200 + world.rand.nextInt(200);
-					desiredYaw = world.rand.nextInt(4) * 90;
+					yawDelay = 200 + level.random.nextInt(200);
+					desiredYaw = level.random.nextInt(4) * 90;
 				}
 
 				currentYaw++;

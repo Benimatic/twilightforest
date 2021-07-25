@@ -1,8 +1,8 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.TFGhastModel;
 import twilightforest.entity.CarminiteGhastguardEntity;
@@ -13,13 +13,13 @@ public class TFGhastRenderer<T extends CarminiteGhastguardEntity, M extends TFGh
 	private static final ResourceLocation textureLocOpen = TwilightForestMod.getModelTexture("towerghast_openeyes.png");
 	private static final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerghast_fire.png");
 
-	public TFGhastRenderer(EntityRendererManager manager, M model, float shadowSize) {
+	public TFGhastRenderer(EntityRenderDispatcher manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
-		switch (entity.isAttacking() ? 2 : entity.getAttackStatus()) {
+	public ResourceLocation getTextureLocation(T entity) {
+		switch (entity.isCharging() ? 2 : entity.getAttackStatus()) {
 			default:
 			case 0:
 				return textureLocClosed;

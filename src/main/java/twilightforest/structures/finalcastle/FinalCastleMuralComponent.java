@@ -1,15 +1,15 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
@@ -24,23 +24,23 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	// we will model the mural in this byte array
 	private byte[][] mural;
 
-	public FinalCastleMuralComponent(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleMuralComponent(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCMur, nbt);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleMuralComponent(TFFeature feature, Random rand, int i, int x, int y, int z, int width, int height, Direction direction) {
 		super(FinalCastlePieces.TFFCMur, feature, i);
-		this.setCoordBaseMode(direction);
+		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		this.height = this.boundingBox.getYSize();
-		this.width = (this.getCoordBaseMode() == Direction.SOUTH || this.getCoordBaseMode() == Direction.NORTH) ? this.boundingBox.getZSize() : this.boundingBox.getXSize();
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		this.height = this.boundingBox.getYSpan();
+		this.width = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.getZSpan() : this.boundingBox.getXSpan();
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
 
 		if (mural == null) {
 			// only make it once
@@ -67,14 +67,14 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 			makeStripes(decoRNG, mural);
 		}
 
-		final BlockState castleMagic = TFBlocks.castle_rune_brick_blue.get().getDefaultState();
+		final BlockState castleMagic = TFBlocks.castle_rune_brick_blue.get().defaultBlockState();
 
 		// copy mural to world
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				if (mural[x][y] > 0) {
 
-					this.setBlockState(world, castleMagic, 0, y, x, sbb);
+					this.placeBlock(world, castleMagic, 0, y, x, sbb);
 				} else {
 					//this.setBlockState(world, TFBlocks.forceField, 0, 0, y, x, sbb);
 				}

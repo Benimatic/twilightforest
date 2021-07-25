@@ -1,14 +1,16 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.entity.TowerwoodBorerEntity;
 import twilightforest.entity.TFEntities;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class InfestedTowerwoodBlock extends FlammableBlock {
 
@@ -18,13 +20,13 @@ public class InfestedTowerwoodBlock extends FlammableBlock {
 
 	@Override
 	@Deprecated
-	public void spawnAdditionalDrops(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack) {
-		super.spawnAdditionalDrops(state, world, pos, stack);
-		if (!world.isRemote && world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) {
+	public void spawnAfterBreak(BlockState state, ServerLevel world, BlockPos pos, ItemStack stack) {
+		super.spawnAfterBreak(state, world, pos, stack);
+		if (!world.isClientSide && world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) {
 			TowerwoodBorerEntity termite = new TowerwoodBorerEntity(TFEntities.tower_termite, world);
-			termite.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
-			world.addEntity(termite);
-			termite.spawnExplosionParticle();
+			termite.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
+			world.addFreshEntity(termite);
+			termite.spawnAnim();
 		}
 
 	}

@@ -1,18 +1,18 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 
 	boolean exitTop;
 
-	public StrongholdUpperAscenderComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdUpperAscenderComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSUA, nbt);
 		this.exitTop = nbt.getBoolean("exitTop");
 	}
@@ -32,33 +32,33 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putBoolean("exitTop", this.exitTop);
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		if (y < 36) {
 			this.exitTop = true;
-			return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
+			return BoundingBox.orientBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
 		} else {
 			this.exitTop = false;
-			return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -6, 0, 5, 10, 10, facing);
+			return BoundingBox.orientBox(x, y, z, -2, -6, 0, 5, 10, 10, facing);
 		}
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		// make a random component on the other side
 		addNewUpperComponent(parent, list, random, Rotation.NONE, 2, exitTop ? 6 : 1, 10);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.isLiquidInStructureBoundingBox(world, sbb)) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		if (this.edgesLiquid(world, sbb)) {
 			return false;
 		} else {
 			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 9, 9, rand, deco.randomBlocks);
@@ -92,11 +92,11 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	/**
 	 * Check if we can find at least one wall, and if so, generate stairs
 	 */
-	private void makeStairsAt(ISeedReader world, int y, int z, Direction facing, MutableBoundingBox sbb) {
+	private void makeStairsAt(WorldGenLevel world, int y, int z, Direction facing, BoundingBox sbb) {
 		// check walls
-		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
+		if (this.getBlock(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlock(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {
-				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().with(StairsBlock.FACING, facing), x, y, z, sbb);
+				this.placeBlock(world, Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.FACING, facing), x, y, z, sbb);
 			}
 		}
 	}
@@ -104,11 +104,11 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	/**
 	 * Check if we can find at least one wall, and if so, generate blocks
 	 */
-	private void makePlatformAt(ISeedReader world, int y, int z, MutableBoundingBox sbb) {
+	private void makePlatformAt(WorldGenLevel world, int y, int z, BoundingBox sbb) {
 		// check walls
-		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
+		if (this.getBlock(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlock(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {
-				this.setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), x, y, z, sbb);
+				this.placeBlock(world, Blocks.STONE_BRICKS.defaultBlockState(), x, y, z, sbb);
 			}
 		}
 	}

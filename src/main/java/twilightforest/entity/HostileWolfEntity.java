@@ -1,75 +1,91 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TurtleEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class HostileWolfEntity extends WolfEntity implements IMob {
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
-	public HostileWolfEntity(EntityType<? extends HostileWolfEntity> type, World world) {
+public class HostileWolfEntity extends Wolf implements Enemy {
+
+	public HostileWolfEntity(EntityType<? extends HostileWolfEntity> type, Level world) {
 		super(type, world);
-		this.setTamed(false);
-		this.setSitting(false);
+		this.setTame(false);
+		this.setOrderedToSit(false);
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return WolfEntity.registerAttributes()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Wolf.createAttributes()
+				.add(Attributes.MAX_HEALTH, 10.0D);
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
-		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-		this.targetSelector.addGoal(5, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
-		this.targetSelector.addGoal(6, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
-		this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
-		this.targetSelector.addGoal(8, new ResetAngerGoal<>(this, true));
+		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		this.targetSelector.addGoal(5, new NonTameRandomTargetGoal<>(this, Animal.class, false, PREY_SELECTOR));
+		this.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
+		this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
+		this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends HostileWolfEntity> type, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<? extends HostileWolfEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
 		// are we near a hedge maze?
-		int chunkX = MathHelper.floor(pos.getX()) >> 4;
-		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
-		return (TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random));
+		int chunkX = Mth.floor(pos.getX()) >> 4;
+		int chunkZ = Mth.floor(pos.getZ()) >> 4;
+		return (TFFeature.getNearestFeature(chunkX, chunkZ, world.getLevel()) == TFFeature.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(world, pos, random));
 				/*&& world.checkNoEntityCollision(this)
 				&& world.getCollisionBoxes(this, getBoundingBox()).size() == 0
 				&& !world.containsAnyLiquid(getBoundingBox());*/
 	}
 
 	@Override
-	public void setAttackTarget(@Nullable LivingEntity entity) {
-		if (entity != null && entity != getAttackTarget())
-			playSound(TFSounds.HOSTILE_WOLF_TARGET, 4F, getSoundPitch());
-		super.setAttackTarget(entity);
+	public void setTarget(@Nullable LivingEntity entity) {
+		if (entity != null && entity != getTarget())
+			playSound(TFSounds.HOSTILE_WOLF_TARGET, 4F, getVoicePitch());
+		super.setTarget(entity);
 	}
 
 	@Override
@@ -88,37 +104,37 @@ public class HostileWolfEntity extends WolfEntity implements IMob {
 	}
 
 	@Override
-	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-		return ActionResultType.PASS;
+	public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public ActionResultType getEntityInteractionResult(PlayerEntity playerIn, Hand hand) {
-		return ActionResultType.PASS;
+	public InteractionResult mobInteract(Player playerIn, InteractionHand hand) {
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public boolean isBreedingItem(ItemStack stack) {
+	public boolean isFood(ItemStack stack) {
 		return false;
 	}
 
 	@Override
-	public boolean isBegging() {
+	public boolean isInterested() {
 		return false;
 	}
 
 	@Override
-	public boolean canMateWith(AnimalEntity otherAnimal) {
+	public boolean canMate(Animal otherAnimal) {
 		return false;
 	}
 
 	@Override
-	public WolfEntity createChild(ServerWorld world, AgeableEntity mate) {
+	public Wolf getBreedOffspring(ServerLevel world, AgableMob mate) {
 		return null;
 	}
 
 	@Override
-	protected boolean isDespawnPeaceful() {
+	protected boolean shouldDespawnInPeaceful() {
 		return true;
 	}
 }

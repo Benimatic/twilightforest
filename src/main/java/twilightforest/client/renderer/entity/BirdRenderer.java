@@ -1,10 +1,10 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.BirdEntity;
 
@@ -12,7 +12,7 @@ public class BirdRenderer<T extends BirdEntity, M extends EntityModel<T>> extend
 
 	private final ResourceLocation textureLoc;
 
-	public BirdRenderer(EntityRendererManager manager, M model, float shadowSize, String textureName) {
+	public BirdRenderer(EntityRenderDispatcher manager, M model, float shadowSize, String textureName) {
 		super(manager, model, shadowSize);
 		textureLoc = TwilightForestMod.getModelTexture(textureName);
 	}
@@ -21,14 +21,14 @@ public class BirdRenderer<T extends BirdEntity, M extends EntityModel<T>> extend
 	 * Defines what float the third param in setRotationAngles of ModelBase is
 	 */
 	@Override
-	protected float handleRotationFloat(T living, float time) {
+	protected float getBob(T living, float time) {
 		float var3 = living.lastFlapLength + (living.flapLength - living.lastFlapLength) * time;
 		float var4 = living.lastFlapIntensity + (living.flapIntensity - living.lastFlapIntensity) * time;
-		return (MathHelper.sin(var3) + 1.0F) * var4;
+		return (Mth.sin(var3) + 1.0F) * var4;
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getTextureLocation(T entity) {
 		return textureLoc;
 	}
 }

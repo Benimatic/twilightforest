@@ -1,16 +1,16 @@
 package twilightforest.structures;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 /**
@@ -18,51 +18,51 @@ import twilightforest.TFFeature;
  */
 public abstract class TFStructureComponentTemplate extends TFStructureComponent {
 
-    protected PlacementSettings placeSettings = new PlacementSettings().addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
+    protected StructurePlaceSettings placeSettings = new StructurePlaceSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
     protected BlockPos templatePosition;
     protected BlockPos rotatedPosition;
-    protected Template TEMPLATE;
+    protected StructureTemplate TEMPLATE;
     public Runnable LAZY_TEMPLATE_LOADER;
 
-    public TFStructureComponentTemplate(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt) {
+    public TFStructureComponentTemplate(StructureManager manager, StructurePieceType piece, CompoundTag nbt) {
         super(piece, nbt);
         this.templatePosition = new BlockPos(nbt.getInt("TPX"), nbt.getInt("TPY"), nbt.getInt("TPZ"));
         this.placeSettings.setRotation(this.rotation);
 		LAZY_TEMPLATE_LOADER = () -> setup(manager);
     }
 
-    public TFStructureComponentTemplate(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(type, i);
         this.feature = feature;
         this.rotation = rotation;
         this.mirror = Mirror.NONE;
         this.placeSettings.setRotation(rotation);
         this.templatePosition = new BlockPos(x, y, z);
-        this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
+        this.boundingBox = new BoundingBox(x, y, z, x, y, z);
     }
 
     //TODO: Unused. Remove?
-    public TFStructureComponentTemplate(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
+    public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
         super(type, i);
         this.feature = feature;
         this.rotation = rotation;
         this.mirror = mirror;
         this.placeSettings.setRotation(rotation);
         this.templatePosition = new BlockPos(x, y, z);
-        this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
+        this.boundingBox = new BoundingBox(x, y, z, x, y, z);
     }
 
-    public final void setup(TemplateManager templateManager) {
+    public final void setup(StructureManager templateManager) {
         loadTemplates(templateManager);
         setModifiedTemplatePositionFromRotation();
         setBoundingBoxFromTemplate(rotatedPosition);
     }
 
-    protected abstract void loadTemplates(TemplateManager templateManager);
+    protected abstract void loadTemplates(StructureManager templateManager);
 
     @Override
-    protected void readAdditional(CompoundNBT tagCompound) {
-        super.readAdditional(tagCompound);
+    protected void addAdditionalSaveData(CompoundTag tagCompound) {
+        super.addAdditionalSaveData(tagCompound);
         tagCompound.putInt("TPX", this.templatePosition.getX());
         tagCompound.putInt("TPY", this.templatePosition.getY());
         tagCompound.putInt("TPZ", this.templatePosition.getZ());
@@ -71,7 +71,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     protected final void setModifiedTemplatePositionFromRotation() {
 
         Rotation rotation = this.placeSettings.getRotation();
-        BlockPos size = this.TEMPLATE.transformedSize(rotation);
+        BlockPos size = this.TEMPLATE.getSize(rotation);
 
         rotatedPosition = new BlockPos(this.templatePosition);
 
@@ -86,22 +86,22 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 
     protected final void setBoundingBoxFromTemplate(BlockPos pos) {
         Rotation rotation = this.placeSettings.getRotation();
-        BlockPos size = this.TEMPLATE.transformedSize(rotation);
+        BlockPos size = this.TEMPLATE.getSize(rotation);
         Mirror mirror = this.placeSettings.getMirror();
-        this.boundingBox = new MutableBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
+        this.boundingBox = new BoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 
         switch (rotation) {
             case NONE:
             default:
                 break;
             case CLOCKWISE_90:
-                this.boundingBox.offset(-size.getX(), 0, 0);
+                this.boundingBox.move(-size.getX(), 0, 0);
                 break;
             case COUNTERCLOCKWISE_90:
-                this.boundingBox.offset(0, 0, -size.getZ());
+                this.boundingBox.move(0, 0, -size.getZ());
                 break;
             case CLOCKWISE_180:
-                this.boundingBox.offset(-size.getX(), 0, -size.getZ());
+                this.boundingBox.move(-size.getX(), 0, -size.getZ());
         }
 
         switch (mirror) {
@@ -113,39 +113,39 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
                     if (rotation == Rotation.CLOCKWISE_180) {
-                        blockpos2 = blockpos2.offset(Direction.EAST, size.getX());
+                        blockpos2 = blockpos2.relative(Direction.EAST, size.getX());
                     } else {
-                        blockpos2 = blockpos2.offset(Direction.WEST, size.getX());
+                        blockpos2 = blockpos2.relative(Direction.WEST, size.getX());
                     }
                 } else {
-                    blockpos2 = blockpos2.offset(rotation.rotate(Direction.WEST), size.getZ());
+                    blockpos2 = blockpos2.relative(rotation.rotate(Direction.WEST), size.getZ());
                 }
 
-                this.boundingBox.offset(blockpos2.getX(), 0, blockpos2.getZ());
+                this.boundingBox.move(blockpos2.getX(), 0, blockpos2.getZ());
                 break;
             case LEFT_RIGHT:
                 BlockPos blockpos1 = BlockPos.ZERO;
 
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
                     if (rotation == Rotation.CLOCKWISE_180) {
-                        blockpos1 = blockpos1.offset(Direction.SOUTH, size.getZ());
+                        blockpos1 = blockpos1.relative(Direction.SOUTH, size.getZ());
                     } else {
-                        blockpos1 = blockpos1.offset(Direction.NORTH, size.getZ());
+                        blockpos1 = blockpos1.relative(Direction.NORTH, size.getZ());
                     }
                 } else {
-                    blockpos1 = blockpos1.offset(rotation.rotate(Direction.NORTH), size.getX());
+                    blockpos1 = blockpos1.relative(rotation.rotate(Direction.NORTH), size.getX());
                 }
 
-                this.boundingBox.offset(blockpos1.getX(), 0, blockpos1.getZ());
+                this.boundingBox.move(blockpos1.getX(), 0, blockpos1.getZ());
         }
 
-        this.boundingBox.offset(pos.getX(), pos.getY(), pos.getZ());
+        this.boundingBox.move(pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Deprecated
     protected final void setTemplatePositionFromRotation() {
         Rotation rotation = this.placeSettings.getRotation();
-        BlockPos size = this.TEMPLATE.transformedSize(rotation);
+        BlockPos size = this.TEMPLATE.getSize(rotation);
 
         if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.CLOCKWISE_180)
             this.templatePosition = this.templatePosition.east(size.getZ()-1);
@@ -157,22 +157,22 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     @Deprecated
     protected final void setBoundingBoxFromTemplate() {
         Rotation rotation = this.placeSettings.getRotation();
-        BlockPos size = this.TEMPLATE.transformedSize(rotation);
+        BlockPos size = this.TEMPLATE.getSize(rotation);
         Mirror mirror = this.placeSettings.getMirror();
-        this.boundingBox = new MutableBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
+        this.boundingBox = new BoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 
         switch (rotation) {
             case NONE:
             default:
                 break;
             case CLOCKWISE_90:
-                this.boundingBox.offset(-size.getX(), 0, 0);
+                this.boundingBox.move(-size.getX(), 0, 0);
                 break;
             case COUNTERCLOCKWISE_90:
-                this.boundingBox.offset(0, 0, -size.getZ());
+                this.boundingBox.move(0, 0, -size.getZ());
                 break;
             case CLOCKWISE_180:
-                this.boundingBox.offset(-size.getX(), 0, -size.getZ());
+                this.boundingBox.move(-size.getX(), 0, -size.getZ());
         }
 
         switch (mirror) {
@@ -184,32 +184,32 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
                     if (rotation == Rotation.CLOCKWISE_180) {
-                        blockpos2 = blockpos2.offset(Direction.EAST, size.getX());
+                        blockpos2 = blockpos2.relative(Direction.EAST, size.getX());
                     } else {
-                        blockpos2 = blockpos2.offset(Direction.WEST, size.getX());
+                        blockpos2 = blockpos2.relative(Direction.WEST, size.getX());
                     }
                 } else {
-                    blockpos2 = blockpos2.offset(rotation.rotate(Direction.WEST), size.getZ());
+                    blockpos2 = blockpos2.relative(rotation.rotate(Direction.WEST), size.getZ());
                 }
 
-                this.boundingBox.offset(blockpos2.getX(), 0, blockpos2.getZ());
+                this.boundingBox.move(blockpos2.getX(), 0, blockpos2.getZ());
                 break;
             case LEFT_RIGHT:
                 BlockPos blockpos1 = BlockPos.ZERO;
 
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
                     if (rotation == Rotation.CLOCKWISE_180) {
-                        blockpos1 = blockpos1.offset(Direction.SOUTH, size.getZ());
+                        blockpos1 = blockpos1.relative(Direction.SOUTH, size.getZ());
                     } else {
-                        blockpos1 = blockpos1.offset(Direction.NORTH, size.getZ());
+                        blockpos1 = blockpos1.relative(Direction.NORTH, size.getZ());
                     }
                 } else {
-                    blockpos1 = blockpos1.offset(rotation.rotate(Direction.NORTH), size.getX());
+                    blockpos1 = blockpos1.relative(rotation.rotate(Direction.NORTH), size.getX());
                 }
 
-                this.boundingBox.offset(blockpos1.getX(), 0, blockpos1.getZ());
+                this.boundingBox.move(blockpos1.getX(), 0, blockpos1.getZ());
         }
 
-        this.boundingBox.offset(this.templatePosition.getX(), this.templatePosition.getY(), this.templatePosition.getZ());
+        this.boundingBox.move(this.templatePosition.getX(), this.templatePosition.getY(), this.templatePosition.getZ());
     }
 }

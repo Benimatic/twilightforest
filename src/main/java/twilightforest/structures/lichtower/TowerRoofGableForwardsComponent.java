@@ -1,24 +1,24 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
 
 public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 
-	public TowerRoofGableForwardsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerRoofGableForwardsComponent(StructureManager manager, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRGF, nbt);
 	}
 
@@ -26,7 +26,7 @@ public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 		super(LichTowerPieces.TFLTRGF, feature, i);
 
 		// same facing
-		this.setCoordBaseMode(wing.getCoordBaseMode());
+		this.setOrientation(wing.getOrientation());
 
 		this.size = wing.size + 2; // assuming only square towers and roofs right now.
 		this.height = size;
@@ -39,9 +39,9 @@ public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		BlockState birchSlab = Blocks.BIRCH_SLAB.getDefaultState();
-		BlockState birchPlanks = Blocks.BIRCH_PLANKS.getDefaultState();
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState();
+		BlockState birchPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 
 		int slopeChange = slopeChangeForSize();
 		for (int y = 0; y <= height; y++) {
@@ -56,9 +56,9 @@ public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 			for (int x = 0; x <= size - 2; x++) {
 				for (int z = min; z <= max; z++) {
 					if (z == min || z == max) {
-						setBlockState(world, birchPlanks, x, y, z, sbb);
+						placeBlock(world, birchPlanks, x, y, z, sbb);
 					} else if (x < size - 2) {
-						setBlockState(world, birchPlanks, x, y, z, sbb);
+						placeBlock(world, birchPlanks, x, y, z, sbb);
 					}
 				}
 			}
@@ -70,12 +70,12 @@ public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 		int top = (size + 1) - slopeChange;
 		int zMid = size / 2;
 
-		setBlockState(world, birchSlab.with(SlabBlock.TYPE, SlabType.TOP), size - 1, top - 1, zMid, sbb);
-		setBlockState(world, birchSlab, 0, top, zMid, sbb);
-		setBlockState(world, birchSlab, size - 3, top, zMid, sbb);
-		setBlockState(world, birchPlanks, size - 2, top, zMid, sbb);
-		setBlockState(world, birchPlanks, size - 1, top, zMid, sbb);
-		setBlockState(world, birchPlanks, size - 1, top + 1, zMid, sbb);
+		placeBlock(world, birchSlab.setValue(SlabBlock.TYPE, SlabType.TOP), size - 1, top - 1, zMid, sbb);
+		placeBlock(world, birchSlab, 0, top, zMid, sbb);
+		placeBlock(world, birchSlab, size - 3, top, zMid, sbb);
+		placeBlock(world, birchPlanks, size - 2, top, zMid, sbb);
+		placeBlock(world, birchPlanks, size - 1, top, zMid, sbb);
+		placeBlock(world, birchPlanks, size - 1, top + 1, zMid, sbb);
 
 		return true;
 	}

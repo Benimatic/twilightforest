@@ -1,15 +1,15 @@
 package twilightforest.dispenser;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.BlockSource;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.block.TFBlocks;
 
@@ -26,25 +26,25 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
     private final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
 
     @Override
-    protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+    protected ItemStack execute(BlockSource source, ItemStack stack) {
         this.addCrumbleTransforms();
         boolean crumbled = false;
         boolean harvested = false;
-        World world = source.getWorld();
-        BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
+        Level world = source.getLevel();
+        BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
         BlockState blockstate = world.getBlockState(blockpos);
-        if(!world.isRemote) {
-            if (!(stack.getMaxDamage() == stack.getDamage() + 1)) {
+        if(!world.isClientSide) {
+            if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
                 for (Pair<Predicate<BlockState>, UnaryOperator<BlockState>> transform : crumbleTransforms) {
                     if (transform.getLeft().test(blockstate)) {
-                        world.setBlockState(blockpos, transform.getRight().apply(blockstate), 3);
+                        world.setBlock(blockpos, transform.getRight().apply(blockstate), 3);
                         crumbled = true;
                     }
                 }
 
                 if (crumbled) {
-                    world.playEvent(2001, blockpos, Block.getStateId(blockstate));
-                    if (stack.attemptDamageItem(1, world.rand, (ServerPlayerEntity) null)) {
+                    world.levelEvent(2001, blockpos, Block.getId(blockstate));
+                    if (stack.hurt(1, world.random, (ServerPlayer) null)) {
                         stack.setCount(0);
                     }
                     fired = true;
@@ -58,7 +58,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
                 }
 
                 if (harvested) {
-                    if (stack.attemptDamageItem(1, world.rand, (ServerPlayerEntity) null)) {
+                    if (stack.hurt(1, world.random, (ServerPlayer) null)) {
                         stack.setCount(0);
                     }
                     fired = true;
@@ -70,38 +70,38 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
     }
 
     @Override
-    protected void playDispenseSound(IBlockSource source) {
+    protected void playSound(BlockSource source) {
         if (fired) {
-            super.playDispenseSound(source);
+            super.playSound(source);
             fired = false;
         } else {
-            source.getWorld().playEvent(1001, source.getBlockPos(), 0);
+            source.getLevel().levelEvent(1001, source.getPos(), 0);
         }
     }
 
     private void addCrumbleTransforms() {
-        addCrumble(() -> Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS::getDefaultState);
-        addCrumble(() -> Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS::getDefaultState);
-        addCrumble(() -> Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE::getDefaultState);
-        addCrumble(() -> Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS::getDefaultState);
-        addCrumble(TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.get().getDefaultState());
-        addCrumble(TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.get().getDefaultState());
-        addCrumble(TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.get().getDefaultState());
-        addCrumble(TFBlocks.deadrock, () -> TFBlocks.deadrock_cracked.get().getDefaultState());
-        addCrumble(TFBlocks.castle_brick, () -> TFBlocks.castle_brick_cracked.get().getDefaultState());
-        addCrumble(TFBlocks.nagastone_pillar, () -> TFBlocks.nagastone_pillar_weathered.get().getDefaultState());
-        addCrumble(TFBlocks.etched_nagastone, () -> TFBlocks.etched_nagastone_weathered.get().getDefaultState());
-        addCrumble(() -> Blocks.STONE, Blocks.COBBLESTONE::getDefaultState);
-        addCrumble(() -> Blocks.COBBLESTONE, Blocks.GRAVEL::getDefaultState);
-        addCrumble(() -> Blocks.SANDSTONE, Blocks.SAND::getDefaultState);
-        addCrumble(() -> Blocks.RED_SANDSTONE, Blocks.RED_SAND::getDefaultState);
-        addCrumble(() -> Blocks.GRASS_BLOCK, Blocks.DIRT::getDefaultState);
-        addCrumble(() -> Blocks.MYCELIUM, Blocks.DIRT::getDefaultState);
-        addCrumble(() -> Blocks.PODZOL, Blocks.DIRT::getDefaultState);
-        addCrumble(() -> Blocks.COARSE_DIRT, Blocks.DIRT::getDefaultState);
-        addCrumble(() -> Blocks.CRIMSON_NYLIUM, Blocks.NETHERRACK::getDefaultState);
-        addCrumble(() -> Blocks.WARPED_NYLIUM, Blocks.NETHERRACK::getDefaultState);
-        addCrumble(() -> Blocks.QUARTZ_BLOCK, Blocks.SAND::getDefaultState);
+        addCrumble(() -> Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS::defaultBlockState);
+        addCrumble(() -> Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS::defaultBlockState);
+        addCrumble(() -> Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE::defaultBlockState);
+        addCrumble(() -> Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS::defaultBlockState);
+        addCrumble(TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.get().defaultBlockState());
+        addCrumble(TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.get().defaultBlockState());
+        addCrumble(TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.get().defaultBlockState());
+        addCrumble(TFBlocks.deadrock, () -> TFBlocks.deadrock_cracked.get().defaultBlockState());
+        addCrumble(TFBlocks.castle_brick, () -> TFBlocks.castle_brick_cracked.get().defaultBlockState());
+        addCrumble(TFBlocks.nagastone_pillar, () -> TFBlocks.nagastone_pillar_weathered.get().defaultBlockState());
+        addCrumble(TFBlocks.etched_nagastone, () -> TFBlocks.etched_nagastone_weathered.get().defaultBlockState());
+        addCrumble(() -> Blocks.STONE, Blocks.COBBLESTONE::defaultBlockState);
+        addCrumble(() -> Blocks.COBBLESTONE, Blocks.GRAVEL::defaultBlockState);
+        addCrumble(() -> Blocks.SANDSTONE, Blocks.SAND::defaultBlockState);
+        addCrumble(() -> Blocks.RED_SANDSTONE, Blocks.RED_SAND::defaultBlockState);
+        addCrumble(() -> Blocks.GRASS_BLOCK, Blocks.DIRT::defaultBlockState);
+        addCrumble(() -> Blocks.MYCELIUM, Blocks.DIRT::defaultBlockState);
+        addCrumble(() -> Blocks.PODZOL, Blocks.DIRT::defaultBlockState);
+        addCrumble(() -> Blocks.COARSE_DIRT, Blocks.DIRT::defaultBlockState);
+        addCrumble(() -> Blocks.CRIMSON_NYLIUM, Blocks.NETHERRACK::defaultBlockState);
+        addCrumble(() -> Blocks.WARPED_NYLIUM, Blocks.NETHERRACK::defaultBlockState);
+        addCrumble(() -> Blocks.QUARTZ_BLOCK, Blocks.SAND::defaultBlockState);
         addHarvest(() -> Blocks.GRAVEL);
         addHarvest(() -> Blocks.DIRT);
         addHarvest(() -> Blocks.SAND);

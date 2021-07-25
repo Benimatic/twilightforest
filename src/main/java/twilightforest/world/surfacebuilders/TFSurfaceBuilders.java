@@ -1,7 +1,7 @@
 package twilightforest.world.surfacebuilders;
 
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -11,9 +11,9 @@ import twilightforest.TwilightForestMod;
 public class TFSurfaceBuilders {
 	// Biomes are registered before surface builders and need the raw objects. So don't use DeferredRegister here.
 	// Do we need to keep these? What do these do that vanilla cannot?
-	public static final TFDefaultSurfaceBuilder DEFAULT_TF = new TFDefaultSurfaceBuilder(SurfaceBuilderConfig.CODEC);
-	public static final TFHighlandsSurfaceBuilder HIGHLANDS = new TFHighlandsSurfaceBuilder(SurfaceBuilderConfig.CODEC);
-	public static final TFPlateauSurfaceBuilder PLATEAU = new TFPlateauSurfaceBuilder(SurfaceBuilderConfig.CODEC);
+	public static final TFDefaultSurfaceBuilder DEFAULT_TF = new TFDefaultSurfaceBuilder(SurfaceBuilderBaseConfiguration.CODEC);
+	public static final TFHighlandsSurfaceBuilder HIGHLANDS = new TFHighlandsSurfaceBuilder(SurfaceBuilderBaseConfiguration.CODEC);
+	public static final TFPlateauSurfaceBuilder PLATEAU = new TFPlateauSurfaceBuilder(SurfaceBuilderBaseConfiguration.CODEC);
 
 	static {
 		// setRegistryName for some dumb reason erases the type for SurfaceBuilder<> and we have to keep the type for later in the line, so the reg names are kept here instead

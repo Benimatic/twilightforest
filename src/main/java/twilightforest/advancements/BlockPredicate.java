@@ -3,17 +3,17 @@ package twilightforest.advancements;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.criterion.NBTPredicate;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.state.Property;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.advancements.critereon.NbtPredicate;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -21,14 +21,14 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class BlockPredicate {
-    public static final BlockPredicate ANY = new BlockPredicate(ImmutableSet.of(), Blocks.AIR, NBTPredicate.ANY) {
-        @Override public boolean test(World world, BlockPos pos) { return true; }
+    public static final BlockPredicate ANY = new BlockPredicate(ImmutableSet.of(), Blocks.AIR, NbtPredicate.ANY) {
+        @Override public boolean test(Level world, BlockPos pos) { return true; }
     };
     private ImmutableSet<PropertyPredicate<?>> propertyPredicates;
     private final Block block;
-    private final NBTPredicate nbtPredicate;
+    private final NbtPredicate nbtPredicate;
 
-    private BlockPredicate(ImmutableSet<PropertyPredicate<?>> propertyPredicates, Block block, NBTPredicate nbt) {
+    private BlockPredicate(ImmutableSet<PropertyPredicate<?>> propertyPredicates, Block block, NbtPredicate nbt) {
         this.propertyPredicates = propertyPredicates;
         this.block = block;
         this.nbtPredicate = nbt;
@@ -40,27 +40,27 @@ public class BlockPredicate {
 
         JsonObject json = element.getAsJsonObject();
 
-        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(JSONUtils.getString(json, "block")));
-        StateContainer<?, ?> container = block.getStateContainer();
+        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(GsonHelper.getAsString(json, "block")));
+        StateDefinition<?, ?> container = block.getStateDefinition();
         HashSet<PropertyPredicate<?>> properties = new HashSet<>();
 
         if (json.has("properties")) {
-            for (JsonElement propertyRawGroup : JSONUtils.getJsonArray(json, "properties")) {
+            for (JsonElement propertyRawGroup : GsonHelper.getAsJsonArray(json, "properties")) {
                 JsonObject propertyGroup = propertyRawGroup.getAsJsonObject();
 
-                Property<?> propertyKey = container.getProperty(JSONUtils.getString(propertyGroup, "property"));
+                Property<?> propertyKey = container.getProperty(GsonHelper.getAsString(propertyGroup, "property"));
 
                 if (propertyKey != null)
                     createPropertyPredicateAndAddToSet(
                             properties,
                             propertyKey,
-                            JSONUtils.getString(propertyGroup, "value"),
-                            JSONUtils.getString(propertyGroup, "comparator")
+                            GsonHelper.getAsString(propertyGroup, "value"),
+                            GsonHelper.getAsString(propertyGroup, "comparator")
                     );
             }
         }
 
-        NBTPredicate nbtPredicate = json.has("nbt") ? NBTPredicate.deserialize(json.get("nbt")) : NBTPredicate.ANY;
+        NbtPredicate nbtPredicate = json.has("nbt") ? NbtPredicate.fromJson(json.get("nbt")) : NbtPredicate.ANY;
 
         return new BlockPredicate(new ImmutableSet.Builder<PropertyPredicate<?>>().addAll(properties).build(), block, nbtPredicate);
     }
@@ -71,7 +71,7 @@ public class BlockPredicate {
             String value,
             String comparisonType) {
 
-        Optional<T> schrodingersVar = key.parseValue(value);
+        Optional<T> schrodingersVar = key.getValue(value);
         PropertyPredicate.ComparisonType predicateComparator = PropertyPredicate.ComparisonType.get(comparisonType);
 
         if (predicateComparator == null || !schrodingersVar.isPresent()) return; // Skip
@@ -79,16 +79,16 @@ public class BlockPredicate {
         predicateSet.add(new PropertyPredicate<>(key, schrodingersVar.get(), predicateComparator));
     }
 
-    public boolean test(World world, BlockPos pos) {
+    public boolean test(Level world, BlockPos pos) {
         if (!test(world.getBlockState(pos))) // If BlockState check fails, we're done
             return false;
 
-        if (nbtPredicate == NBTPredicate.ANY) // Do we accept any NBT including lack thereof?
+        if (nbtPredicate == NbtPredicate.ANY) // Do we accept any NBT including lack thereof?
             return true;
 
-        TileEntity te = world.getTileEntity(pos);
+        BlockEntity te = world.getBlockEntity(pos);
 
-        return te != null && nbtPredicate.test(te.serializeNBT());
+        return te != null && nbtPredicate.matches(te.serializeNBT());
     }
 
     private boolean test(BlockState state) {
@@ -113,7 +113,7 @@ public class BlockPredicate {
         }
 
         private boolean test(BlockState state) {
-            return state.getProperties().contains(property) && comparisonType.test(value, state.get(property));
+            return state.getProperties().contains(property) && comparisonType.test(value, state.getValue(property));
         }
 
         private enum ComparisonType {

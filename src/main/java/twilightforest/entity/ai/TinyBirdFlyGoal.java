@@ -1,9 +1,11 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import twilightforest.entity.passive.TinyBirdEntity;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class TinyBirdFlyGoal extends Goal {
 
@@ -11,11 +13,11 @@ public class TinyBirdFlyGoal extends Goal {
 
 	public TinyBirdFlyGoal(TinyBirdEntity bird) {
 		this.entity = bird;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		return !entity.isBirdLanded();
 	}
 }

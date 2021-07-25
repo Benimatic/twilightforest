@@ -1,29 +1,29 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.BossInfo;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
@@ -39,7 +39,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class HydraEntity extends MobEntity implements IMob {
+public class HydraEntity extends Mob implements Enemy {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;
@@ -60,12 +60,12 @@ public class HydraEntity extends MobEntity implements IMob {
 	private final HydraSmallPartEntity leftLeg;
 	private final HydraSmallPartEntity rightLeg;
 	private final HydraSmallPartEntity tail;
-	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
+	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
 	private float randomYawVelocity = 0f;
 
 	private int ticksSinceDamaged = 0;
 
-	public HydraEntity(EntityType<? extends HydraEntity> type, World world) {
+	public HydraEntity(EntityType<? extends HydraEntity> type, Level world) {
 		super(type, world);
 
 		List<HydraPartEntity> parts = new ArrayList<>();
@@ -88,40 +88,40 @@ public class HydraEntity extends MobEntity implements IMob {
 
 		partArray = parts.toArray(new HydraPartEntity[0]);
 
-		this.ignoreFrustumCheck = true;
-		this.isImmuneToFire();
-		this.experienceValue = 511;
+		this.noCulling = true;
+		this.fireImmune();
+		this.xpReward = 511;
 
 	}
 
 	@Override
-	public void setCustomName(@Nullable ITextComponent name) {
+	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
+				.add(Attributes.MOVEMENT_SPEED, 0.28D);
 	}
 
 	@Override
-	public void addTrackingPlayer(ServerPlayerEntity player) {
-		super.addTrackingPlayer(player);
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(ServerPlayerEntity player) {
-		super.removeTrackingPlayer(player);
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
 
 	@Override
 	public void checkDespawn() {
-		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner_hydra.get().getDefaultState());
+		if (level.getDifficulty() == Difficulty.PEACEFUL) {
+			level.setBlockAndUpdate(blockPosition().offset(0, 2, 0), TFBlocks.boss_spawner_hydra.get().defaultBlockState());
 			remove();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -135,11 +135,11 @@ public class HydraEntity extends MobEntity implements IMob {
 
 	// [Vanilla Copy] from LivingEntity. Hydra doesn't like the one from EntityLiving for whatever reason
 	@Override
-	protected float updateDistance(float p_110146_1_, float p_110146_2_)
+	protected float tickHeadTurn(float p_110146_1_, float p_110146_2_)
 	{
-		float f = MathHelper.wrapDegrees(p_110146_1_ - this.renderYawOffset);
-		this.renderYawOffset += f * 0.3F;
-		float f1 = MathHelper.wrapDegrees(this.rotationYaw - this.renderYawOffset);
+		float f = Mth.wrapDegrees(p_110146_1_ - this.yBodyRot);
+		this.yBodyRot += f * 0.3F;
+		float f1 = Mth.wrapDegrees(this.yRot - this.yBodyRot);
 		boolean flag = f1 < -90.0F || f1 >= 90.0F;
 
 		if (f1 < -75.0F)
@@ -152,11 +152,11 @@ public class HydraEntity extends MobEntity implements IMob {
 			f1 = 75.0F;
 		}
 
-		this.renderYawOffset = this.rotationYaw - f1;
+		this.yBodyRot = this.yRot - f1;
 
 		if (f1 * f1 > 2500.0F)
 		{
-			this.renderYawOffset += f1 * 0.2F;
+			this.yBodyRot += f1 * 0.2F;
 		}
 
 		if (flag)
@@ -168,8 +168,8 @@ public class HydraEntity extends MobEntity implements IMob {
 	}
 
 	@Override
-	public void livingTick() {
-		extinguish();
+	public void aiStep() {
+		clearFire();
 		body.tick();
 		leftLeg.tick();
 		rightLeg.tick();
@@ -187,37 +187,37 @@ public class HydraEntity extends MobEntity implements IMob {
 
 		this.ticksSinceDamaged++;
 
-		if (!this.world.isRemote && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0) {
+		if (!this.level.isClientSide && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0) {
 			this.heal(1);
 		}
 
 		// update fight variables for difficulty setting
 		setDifficultyVariables();
 
-		super.livingTick();
+		super.aiStep();
 
 		// set body part positions
 		float angle;
 		double dx, dy, dz;
 
 		// body goes behind the actual position of the hydra
-		angle = (((renderYawOffset + 180) * 3.141593F) / 180F);
+		angle = (((yBodyRot + 180) * 3.141593F) / 180F);
 
-		dx = getPosX() - MathHelper.sin(angle) * 3.0;
-		dy = getPosY() + 0.1;
-		dz = getPosZ() + MathHelper.cos(angle) * 3.0;
-		body.setPosition(dx, dy, dz);
+		dx = getX() - Mth.sin(angle) * 3.0;
+		dy = getY() + 0.1;
+		dz = getZ() + Mth.cos(angle) * 3.0;
+		body.setPos(dx, dy, dz);
 
-		dx = getPosX() - MathHelper.sin(angle) * 10.5;
-		dy = getPosY() + 0.1;
-		dz = getPosZ() + MathHelper.cos(angle) * 10.5;
-		tail.setPosition(dx, dy, dz);
+		dx = getX() - Mth.sin(angle) * 10.5;
+		dy = getY() + 0.1;
+		dz = getZ() + Mth.cos(angle) * 10.5;
+		tail.setPos(dx, dy, dz);
 
 		// destroy blocks
-		if (!this.world.isRemote) {
+		if (!this.level.isClientSide) {
 			if (hurtTime == 0) {
-				this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.body.getBoundingBox()), this.body);
-				this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.tail.getBoundingBox()), this.tail);
+				this.collideWithEntities(this.level.getEntities(this, this.body.getBoundingBox()), this.body);
+				this.collideWithEntities(this.level.getEntities(this, this.tail.getBoundingBox()), this.tail);
 			}
 
 			this.destroyBlocksInAABB(this.body.getBoundingBox());
@@ -230,9 +230,9 @@ public class HydraEntity extends MobEntity implements IMob {
 			}
 
 			// smash blocks beneath us too
-			if (this.ticksExisted % 20 == 0) {
+			if (this.tickCount % 20 == 0) {
 				if (isUnsteadySurfaceBeneath()) {
-					this.destroyBlocksInAABB(this.getBoundingBox().offset(0, -1, 0));
+					this.destroyBlocksInAABB(this.getBoundingBox().move(0, -1, 0));
 
 				}
 			}
@@ -242,14 +242,14 @@ public class HydraEntity extends MobEntity implements IMob {
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putByte("NumHeads", (byte) countActiveHeads());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		activateNumberOfHeads(compound.getByte("NumHeads"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
@@ -261,9 +261,9 @@ public class HydraEntity extends MobEntity implements IMob {
 	private int numTicksToChaseTarget;
 
 	@Override
-	protected void updateAITasks() {
-		moveStrafing = 0.0F;
-		moveForward = 0.0F;
+	protected void customServerAiStep() {
+		xxa = 0.0F;
+		zza = 0.0F;
 		float f = 48F;
 
 		// kill heads that have taken too much damage
@@ -281,46 +281,46 @@ public class HydraEntity extends MobEntity implements IMob {
 			}
 		}
 
-		if (rand.nextFloat() < 0.7F) {
-			PlayerEntity entityplayer1 = world.getClosestPlayer(this, f);
+		if (random.nextFloat() < 0.7F) {
+			Player entityplayer1 = level.getNearestPlayer(this, f);
 
 			if (entityplayer1 != null && !entityplayer1.isCreative()) {
-				setAttackTarget(entityplayer1);
-				numTicksToChaseTarget = 100 + rand.nextInt(20);
+				setTarget(entityplayer1);
+				numTicksToChaseTarget = 100 + random.nextInt(20);
 			} else {
-				randomYawVelocity = (rand.nextFloat() - 0.5F) * 20F;
+				randomYawVelocity = (random.nextFloat() - 0.5F) * 20F;
 			}
 		}
 
-		if (getAttackTarget() != null) {
-			faceEntity(getAttackTarget(), 10F, getVerticalFaceSpeed());
+		if (getTarget() != null) {
+			lookAt(getTarget(), 10F, getMaxHeadXRot());
 
 			// have any heads not currently attacking switch to the primary target
 			for (int i = 0; i < numHeads; i++) {
 				if (!hc[i].isAttacking() && !hc[i].isSecondaryAttacking) {
-					hc[i].setTargetEntity(getAttackTarget());
+					hc[i].setTargetEntity(getTarget());
 				}
 			}
 
 			// let's pick an attack
-			if (this.getAttackTarget().isAlive()) {
-				float distance = this.getAttackTarget().getDistance(this);
+			if (this.getTarget().isAlive()) {
+				float distance = this.getTarget().distanceTo(this);
 
-				if (this.getEntitySenses().canSee(this.getAttackTarget())) {
-					this.attackEntity(this.getAttackTarget(), distance);
+				if (this.getSensing().canSee(this.getTarget())) {
+					this.attackEntity(this.getTarget(), distance);
 				}
 			}
 
-			if (numTicksToChaseTarget-- <= 0 || !getAttackTarget().isAlive() || getAttackTarget().getDistanceSq(this) > f * f) {
-				setAttackTarget(null);
+			if (numTicksToChaseTarget-- <= 0 || !getTarget().isAlive() || getTarget().distanceToSqr(this) > f * f) {
+				setTarget(null);
 			}
 		} else {
-			if (rand.nextFloat() < 0.05F) {
-				randomYawVelocity = (rand.nextFloat() - 0.5F) * 20F;
+			if (random.nextFloat() < 0.05F) {
+				randomYawVelocity = (random.nextFloat() - 0.5F) * 20F;
 			}
 
-			rotationYaw += randomYawVelocity;
-			rotationPitch = 0;
+			yRot += randomYawVelocity;
+			xRot = 0;
 
 			// TODO: while we are idle, consider having the heads breathe fire on passive mobs
 
@@ -337,7 +337,7 @@ public class HydraEntity extends MobEntity implements IMob {
 	}
 
 	private void setDifficultyVariables() {
-		if (world.getDifficulty() != Difficulty.HARD) {
+		if (level.getDifficulty() != Difficulty.HARD) {
 			HydraEntity.HEADS_ACTIVITY_FACTOR = 0.3F;
 		} else {
 			HydraEntity.HEADS_ACTIVITY_FACTOR = 0.5F;  // higher is harder
@@ -384,11 +384,11 @@ public class HydraEntity extends MobEntity implements IMob {
 		// three main heads can do these kinds of attacks
 		for (int i = 0; i < 3; i++) {
 			if (hc[i].isIdle() && !areTooManyHeadsAttacking(i)) {
-				if (distance > 4 && distance < 10 && rand.nextInt(BITE_CHANCE) == 0 && this.countActiveHeads() > 2 && !areOtherHeadsBiting(i)) {
+				if (distance > 4 && distance < 10 && random.nextInt(BITE_CHANCE) == 0 && this.countActiveHeads() > 2 && !areOtherHeadsBiting(i)) {
 					hc[i].setNextState(HydraHeadContainer.State.BITE_BEGINNING);
-				} else if (distance > 0 && distance < 20 && rand.nextInt(FLAME_CHANCE) == 0) {
+				} else if (distance > 0 && distance < 20 && random.nextInt(FLAME_CHANCE) == 0) {
 					hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
-				} else if (distance > 8 && distance < 32 && !targetAbove && rand.nextInt(MORTAR_CHANCE) == 0) {
+				} else if (distance > 8 && distance < 32 && !targetAbove && random.nextInt(MORTAR_CHANCE) == 0) {
 					hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
 				}
 			}
@@ -397,9 +397,9 @@ public class HydraEntity extends MobEntity implements IMob {
 		// heads 4-7 can do everything but bite
 		for (int i = 3; i < numHeads; i++) {
 			if (hc[i].isIdle() && !areTooManyHeadsAttacking(i)) {
-				if (distance > 0 && distance < 20 && rand.nextInt(FLAME_CHANCE) == 0) {
+				if (distance > 0 && distance < 20 && random.nextInt(FLAME_CHANCE) == 0) {
 					hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
-				} else if (distance > 8 && distance < 32 && !targetAbove && rand.nextInt(MORTAR_CHANCE) == 0) {
+				} else if (distance > 8 && distance < 32 && !targetAbove && random.nextInt(MORTAR_CHANCE) == 0) {
 					hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
 				}
 			}
@@ -459,15 +459,15 @@ public class HydraEntity extends MobEntity implements IMob {
 		LivingEntity secondaryTarget = findSecondaryTarget(20);
 
 		if (secondaryTarget != null) {
-			float distance = secondaryTarget.getDistance(this);
+			float distance = secondaryTarget.distanceTo(this);
 
 			for (int i = 1; i < numHeads; i++) {
 				if (hc[i].isActive() && hc[i].isIdle() && isTargetOnThisSide(i, secondaryTarget)) {
-					if (distance > 0 && distance < 20 && rand.nextInt(SECONDARY_FLAME_CHANCE) == 0) {
+					if (distance > 0 && distance < 20 && random.nextInt(SECONDARY_FLAME_CHANCE) == 0) {
 						hc[i].setTargetEntity(secondaryTarget);
 						hc[i].isSecondaryAttacking = true;
 						hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
-					} else if (distance > 8 && distance < 32 && rand.nextInt(SECONDARY_MORTAR_CHANCE) == 0) {
+					} else if (distance > 8 && distance < 32 && random.nextInt(SECONDARY_MORTAR_CHANCE) == 0) {
 						hc[i].setTargetEntity(secondaryTarget);
 						hc[i].isSecondaryAttacking = true;
 						hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
@@ -490,18 +490,18 @@ public class HydraEntity extends MobEntity implements IMob {
 	 * Square of distance between two entities with y not a factor, just x and z
 	 */
 	private double distanceSqXZ(Entity headEntity, Entity target) {
-		double distX = headEntity.getPosX() - target.getPosX();
-		double distZ = headEntity.getPosZ() - target.getPosZ();
+		double distX = headEntity.getX() - target.getX();
+		double distZ = headEntity.getZ() - target.getZ();
 		return distX * distX + distZ * distZ;
 	}
 
 	@Nullable
 	private LivingEntity findSecondaryTarget(double range) {
-		return this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(), this.getPosX() + 1, this.getPosY() + 1, this.getPosZ() + 1).grow(range, range, range))
+		return this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof HydraEntity))
-				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e) && EntityPredicates.CAN_HOSTILE_AI_TARGET.test(e))
-				.min(Comparator.comparingDouble(this::getDistanceSq)).orElse(null);
+				.filter(e -> e != getTarget() && !isAnyHeadTargeting(e) && getSensing().canSee(e) && EntitySelector.ATTACK_ALLOWED.test(e))
+				.min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
 	}
 
 	private boolean isAnyHeadTargeting(Entity targetEntity) {
@@ -521,10 +521,10 @@ public class HydraEntity extends MobEntity implements IMob {
 
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity) {
-				double d2 = entity.getPosX() - d0;
-				double d3 = entity.getPosZ() - d1;
+				double d2 = entity.getX() - d0;
+				double d3 = entity.getZ() - d1;
 				double d4 = d2 * d2 + d3 * d3;
-				entity.addVelocity(d2 / d4 * 4.0D, 0.20000000298023224D, d3 / d4 * 4.0D);
+				entity.push(d2 / d4 * 4.0D, 0.20000000298023224D, d3 / d4 * 4.0D);
 			}
 		}
 	}
@@ -533,11 +533,11 @@ public class HydraEntity extends MobEntity implements IMob {
 	 * Check the surface immediately beneath us, if it is less than 80% solid
 	 */
 	private boolean isUnsteadySurfaceBeneath() {
-		int minX = MathHelper.floor(this.getBoundingBox().minX);
-		int minZ = MathHelper.floor(this.getBoundingBox().minZ);
-		int maxX = MathHelper.floor(this.getBoundingBox().maxX);
-		int maxZ = MathHelper.floor(this.getBoundingBox().maxZ);
-		int minY = MathHelper.floor(this.getBoundingBox().minY);
+		int minX = Mth.floor(this.getBoundingBox().minX);
+		int minZ = Mth.floor(this.getBoundingBox().minZ);
+		int maxX = Mth.floor(this.getBoundingBox().maxX);
+		int maxZ = Mth.floor(this.getBoundingBox().maxZ);
+		int minY = Mth.floor(this.getBoundingBox().minY);
 
 		int solid = 0;
 		int total = 0;
@@ -547,7 +547,7 @@ public class HydraEntity extends MobEntity implements IMob {
 		for (int dx = minX; dx <= maxX; ++dx) {
 			for (int dz = minZ; dz <= maxZ; ++dz) {
 				total++;
-				if (this.world.getBlockState(new BlockPos(dx, dy, dz)).getMaterial().isSolid()) {
+				if (this.level.getBlockState(new BlockPos(dx, dy, dz)).getMaterial().isSolid()) {
 					solid++;
 				}
 			}
@@ -556,32 +556,32 @@ public class HydraEntity extends MobEntity implements IMob {
 		return ((float) solid / (float) total) < 0.6F;
 	}
 
-	private void destroyBlocksInAABB(AxisAlignedBB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
+	private void destroyBlocksInAABB(AABB box) {
+		if (ForgeEventFactory.getMobGriefingEvent(level, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				if (EntityUtil.canDestroyBlock(world, pos, this)) {
-					world.destroyBlock(pos, false);
+				if (EntityUtil.canDestroyBlock(level, pos, this)) {
+					level.destroyBlock(pos, false);
 				}
 			}
 		}
 	}
 
 	@Override
-	public int getVerticalFaceSpeed() {
+	public int getMaxHeadXRot() {
 		return 500;
 	}
 
 	public boolean attackEntityFromPart(HydraPartEntity part, DamageSource source, float damage) {
 		// if we're in a wall, kill that wall
-		if (!world.isRemote && source == DamageSource.IN_WALL) {
+		if (!level.isClientSide && source == DamageSource.IN_WALL) {
 			destroyBlocksInAABB(part.getBoundingBox());
 		}
 
-		if (source.getTrueSource() == this || source.getImmediateSource() == this)
+		if (source.getEntity() == this || source.getDirectEntity() == this)
 			return false;
 		if (getParts() != null)
 			for (PartEntity<?> partEntity : getParts())
-				if (partEntity == source.getTrueSource() || partEntity == source.getImmediateSource())
+				if (partEntity == source.getEntity() || partEntity == source.getDirectEntity())
 					return false;
 
 		HydraHeadContainer headCon = null;
@@ -596,7 +596,7 @@ public class HydraEntity extends MobEntity implements IMob {
 		double range = calculateRange(source);
 
 		// Give some leeway for reflected mortars
-		if (range > 400 + (source.getImmediateSource() instanceof HydraMortarHead ? 200 : 0)) {
+		if (range > 400 + (source.getDirectEntity() instanceof HydraMortarHead ? 200 : 0)) {
 			return false;
 		}
 
@@ -607,11 +607,11 @@ public class HydraEntity extends MobEntity implements IMob {
 
 		boolean tookDamage;
 		if (headCon != null && headCon.getCurrentMouthOpen() > 0.5) {
-			tookDamage = super.attackEntityFrom(source, damage);
+			tookDamage = super.hurt(source, damage);
 			headCon.addDamage(damage);
 		} else {
 			int armoredDamage = Math.round(damage / ARMOR_MULTIPLIER);
-			tookDamage = super.attackEntityFrom(source, armoredDamage);
+			tookDamage = super.hurt(source, armoredDamage);
 
 			if (headCon != null) {
 				headCon.addDamage(armoredDamage);
@@ -626,12 +626,12 @@ public class HydraEntity extends MobEntity implements IMob {
 	}
 
 	private double calculateRange(DamageSource damagesource) {
-		return damagesource.getTrueSource() != null ? getDistanceSq(damagesource.getTrueSource()) : -1;
+		return damagesource.getEntity() != null ? distanceToSqr(damagesource.getEntity()) : -1;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource src, float damage) {
-		return src == DamageSource.OUT_OF_WORLD && super.attackEntityFrom(src, damage);
+	public boolean hurt(DamageSource src, float damage) {
+		return src == DamageSource.OUT_OF_WORLD && super.hurt(src, damage);
 	}
 
 	@Override
@@ -652,7 +652,7 @@ public class HydraEntity extends MobEntity implements IMob {
 	 * This is set as off for the hydra, which has an enormous bounding box, but set as on for the parts.
 	 */
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return false;
 	}
 
@@ -660,15 +660,15 @@ public class HydraEntity extends MobEntity implements IMob {
 	 * If this is on, the player pushes us based on our bounding box rather than it going by parts
 	 */
 	@Override
-	public boolean canBePushed() {
+	public boolean isPushable() {
 		return false;
 	}
 
 	@Override
-	protected void collideWithEntity(Entity entity) {}
+	protected void doPush(Entity entity) {}
 
 	@Override
-	public void applyKnockback(float strength, double xRatio, double zRatio) {
+	public void knockback(float strength, double xRatio, double zRatio) {
 	}
 
 	@Override
@@ -692,26 +692,26 @@ public class HydraEntity extends MobEntity implements IMob {
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
+	public void die(DamageSource cause) {
+		super.die(cause);
 		// mark the lair as defeated
-		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.HYDRA_LAIR);
+		if (!level.isClientSide) {
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.HYDRA_LAIR);
 		}
 	}
 
 	@Override
-	public boolean canDespawn(double distance) {
+	public boolean removeWhenFarAway(double distance) {
 		return false;
 	}
 
 	@Override
-	public boolean isBurning() {
+	public boolean isOnFire() {
 		return false;
 	}
 
 	@Override
-	protected void onDeathUpdate() {
+	protected void tickDeath() {
 		++this.deathTime;
 
 		// stop any head actions on death
@@ -737,13 +737,13 @@ public class HydraEntity extends MobEntity implements IMob {
 		}
 
 		if (this.deathTime == 200) {
-			if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT))) {
-				int i = this.getExperiencePoints(this.attackingPlayer);
-				i = ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
+			if (!this.level.isClientSide && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
+				int i = this.getExperienceReward(this.lastHurtByPlayer);
+				i = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i);
 				while (i > 0) {
-					int j = ExperienceOrbEntity.getXPSplit(i);
+					int j = ExperienceOrb.getExperienceValue(i);
 					i -= j;
-					this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), j));
+					this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY(), this.getZ(), j));
 				}
 			}
 
@@ -751,25 +751,25 @@ public class HydraEntity extends MobEntity implements IMob {
 		}
 
 		for (int i = 0; i < 20; ++i) {
-			double vx = this.rand.nextGaussian() * 0.02D;
-			double vy = this.rand.nextGaussian() * 0.02D;
-			double vz = this.rand.nextGaussian() * 0.02D;
-			this.world.addParticle((rand.nextInt(2) == 0 ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION),
-					this.getPosX() + this.rand.nextFloat() * this.body.getWidth() * 2.0F - this.body.getWidth(),
-					this.getPosY() + this.rand.nextFloat() * this.body.getHeight(),
-					this.getPosZ() + this.rand.nextFloat() * this.body.getWidth() * 2.0F - this.body.getWidth(),
+			double vx = this.random.nextGaussian() * 0.02D;
+			double vy = this.random.nextGaussian() * 0.02D;
+			double vz = this.random.nextGaussian() * 0.02D;
+			this.level.addParticle((random.nextInt(2) == 0 ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION),
+					this.getX() + this.random.nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+					this.getY() + this.random.nextFloat() * this.body.getBbHeight(),
+					this.getZ() + this.random.nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
 					vx, vy, vz
 			);
 		}
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public boolean canChangeDimension() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 }

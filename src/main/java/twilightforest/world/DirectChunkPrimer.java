@@ -1,18 +1,18 @@
 package twilightforest.world;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.palette.UpgradeData;
-import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.UpgradeData;
+import net.minecraft.world.level.chunk.ProtoChunk;
 
 /**
  * ChunkPrimer that stores states directly.
  */
-public class DirectChunkPrimer extends ChunkPrimer {
+public class DirectChunkPrimer extends ProtoChunk {
 
-	private static final BlockState DEFAULT_STATE = Blocks.AIR.getDefaultState();
+	private static final BlockState DEFAULT_STATE = Blocks.AIR.defaultBlockState();
 
 	private final BlockState[] states = new BlockState[65536];
 

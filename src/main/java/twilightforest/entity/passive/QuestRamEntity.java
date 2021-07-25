@@ -1,37 +1,37 @@
 package twilightforest.entity.passive;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -42,65 +42,75 @@ import twilightforest.loot.TFTreasure;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class QuestRamEntity extends AnimalEntity {
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 
-	private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(QuestRamEntity.class, DataSerializers.VARINT);
-	private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(QuestRamEntity.class, DataSerializers.BOOLEAN);
+public class QuestRamEntity extends Animal {
+
+	private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(QuestRamEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Boolean> DATA_REWARDED = SynchedEntityData.defineId(QuestRamEntity.class, EntityDataSerializers.BOOLEAN);
 
 	private int randomTickDivider;
 
-	public QuestRamEntity(EntityType<? extends QuestRamEntity> type, World world) {
+	public QuestRamEntity(EntityType<? extends QuestRamEntity> type, Level world) {
 		super(type, world);
 		this.randomTickDivider = 0;
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL), false));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL), false));
 		this.goalSelector.addGoal(3, new EatLooseGoal(this));
-		this.goalSelector.addGoal(4, new FindLooseGoal(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL)));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
-		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(4, new FindLooseGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL)));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
+		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 	}
 
 	@Nullable
 	@Override
-	public AnimalEntity createChild(ServerWorld world, AgeableEntity mate) {
+	public Animal getBreedOffspring(ServerLevel world, AgableMob mate) {
 		return null;
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 70.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 70.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.23);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(DATA_COLOR, 0);
-		dataManager.register(DATA_REWARDED, false);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_COLOR, 0);
+		entityData.define(DATA_REWARDED, false);
 	}
 
 	@Override
-	protected void updateAITasks() {
+	protected void customServerAiStep() {
 		if (--this.randomTickDivider <= 0) {
-			this.randomTickDivider = 70 + this.rand.nextInt(50);
+			this.randomTickDivider = 70 + this.random.nextInt(50);
 
 			// check if we're near a quest grove and if so, set that as home
-			int chunkX = MathHelper.floor(this.getPosX()) / 16;
-			int chunkZ = MathHelper.floor(this.getPosZ()) / 16;
+			int chunkX = Mth.floor(this.getX()) / 16;
+			int chunkZ = Mth.floor(this.getZ()) / 16;
 
-			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, (ServerWorld) this.world);
+			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, (ServerLevel) this.level);
 
 			if (nearFeature != TFFeature.QUEST_GROVE) {
-				this.detachHome();
+				this.hasRestriction();
 			} else {
 				// set our home position to the center of the quest grove
-				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosZ()));
-				this.setHomePosAndDistance(cc, 13);
+				BlockPos cc = TFFeature.getNearestCenterXYZ(Mth.floor(this.getX()), Mth.floor(this.getZ()));
+				this.restrictTo(cc, 13);
 			}
 
 			if (countColorsSet() > 15 && !getRewarded()) {
@@ -110,45 +120,45 @@ public class QuestRamEntity extends AnimalEntity {
 
 		}
 
-		super.updateAITasks();
+		super.customServerAiStep();
 	}
 
 	private void rewardQuest() {
 		// todo flesh the context out more
-		LootContext ctx = new LootContext.Builder((ServerWorld) world).withParameter(LootParameters.THIS_ENTITY, this).build(LootParameterSets.BARTER);
-		world.getServer().getLootTableManager().getLootTableFromLocation(TFTreasure.QUESTING_RAM_REWARDS).generate(ctx, s -> entityDropItem(s, 1.0F));
+		LootContext ctx = new LootContext.Builder((ServerLevel) level).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
+		level.getServer().getLootTables().get(TFTreasure.QUESTING_RAM_REWARDS).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 
-		for (ServerPlayerEntity player : this.world.getEntitiesWithinAABB(ServerPlayerEntity.class, getBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
+		for (ServerPlayer player : this.level.getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
 		}
 	}
 
 	@Override
-	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-		ItemStack currentItem = player.getHeldItem(hand);
+	public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
+		ItemStack currentItem = player.getItemInHand(hand);
 
 		if (tryAccept(currentItem)) {
-			if (!player.abilities.isCreativeMode) {
+			if (!player.abilities.instabuild) {
 				currentItem.shrink(1);
 			}
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		} else {
-			return super.applyPlayerInteraction(player, vec, hand);
+			return super.interactAt(player, vec, hand);
 		}
 	}
 
 	@Override
-	public void livingTick() {
-		super.livingTick();
+	public void aiStep() {
+		super.aiStep();
 
-		if (world.isRemote && countColorsSet() > 15 && !getRewarded()) {
-			animateAddColor(DyeColor.byId(this.rand.nextInt(16)), 5);
+		if (level.isClientSide && countColorsSet() > 15 && !getRewarded()) {
+			animateAddColor(DyeColor.byId(this.random.nextInt(16)), 5);
 		}
 	}
 
 	public boolean tryAccept(ItemStack stack) {
-		if (stack.getItem().isIn(ItemTags.WOOL)) {
+		if (stack.getItem().is(ItemTags.WOOL)) {
 			DyeColor color = guessColor(stack);
 			if (color != null && !isColorPresent(color)) {
 				setColorPresent(color);
@@ -177,25 +187,25 @@ public class QuestRamEntity extends AnimalEntity {
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putInt("ColorFlags", this.getColorFlags());
 		compound.putBoolean("Rewarded", this.getRewarded());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		this.setColorFlags(compound.getInt("ColorFlags"));
 		this.setRewarded(compound.getBoolean("Rewarded"));
 	}
 
 	private int getColorFlags() {
-		return dataManager.get(DATA_COLOR);
+		return entityData.get(DATA_COLOR);
 	}
 
 	private void setColorFlags(int flags) {
-		dataManager.set(DATA_COLOR, flags);
+		entityData.set(DATA_COLOR, flags);
 	}
 
 	public boolean isColorPresent(DyeColor color) {
@@ -207,21 +217,21 @@ public class QuestRamEntity extends AnimalEntity {
 	}
 
 	public boolean getRewarded() {
-		return dataManager.get(DATA_REWARDED);
+		return entityData.get(DATA_REWARDED);
 	}
 
 	public void setRewarded(boolean rewarded) {
-		dataManager.set(DATA_REWARDED, rewarded);
+		entityData.set(DATA_REWARDED, rewarded);
 	}
 
 	private void animateAddColor(DyeColor color, int iterations) {
-		float[] colorVal = color.getColorComponentValues();
+		float[] colorVal = color.getTextureDiffuseColors();
 		float red = colorVal[0];
 		float green = colorVal[1];
 		float blue = colorVal[2];
 
 		for (int i = 0; i < iterations; i++) {
-			this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, this.getPosY() + this.rand.nextDouble() * this.getHeight() * 1.5, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, red, green, blue);
+			this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 1.5, this.getY() + this.random.nextDouble() * this.getBbHeight() * 1.5, this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 1.5, red, green, blue);
 		}
 
 		playAmbientSound();
@@ -232,7 +242,7 @@ public class QuestRamEntity extends AnimalEntity {
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
@@ -242,8 +252,8 @@ public class QuestRamEntity extends AnimalEntity {
 	}
 
 	@Override
-	protected float getSoundPitch() {
-		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.7F;
+	protected float getVoicePitch() {
+		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.7F;
 	}
 
 	@Override

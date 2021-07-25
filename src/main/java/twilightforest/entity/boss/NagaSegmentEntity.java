@@ -1,17 +1,17 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.renderer.entity.NagaSegmentRenderer;
@@ -25,38 +25,38 @@ public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
 
 	public NagaSegmentEntity(NagaEntity naga) {
 		super(naga);
-		setPosition(naga.getPosX(), naga.getPosY(), naga.getPosZ());
+		setPos(naga.getX(), naga.getY(), naga.getZ());
 	}
 
 	@Override
-	protected void registerData() {
-		this.stepHeight = 2;
+	protected void defineSynchedData() {
+		this.maxUpStep = 2;
 		deactivate();
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRendererManager manager) {
+	public EntityRenderer<?> renderer(EntityRenderDispatcher manager) {
 		return new NagaSegmentRenderer<>(manager);
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource src, float damage) {
-		return !isInvisible() && getParent().attackEntityFrom(src, damage * 2F / 3F);
+	public boolean hurt(DamageSource src, float damage) {
+		return !isInvisible() && getParent().hurt(src, damage * 2F / 3F);
 	}
 
 	@Override
-	public boolean isEntityEqual(Entity entityIn) {
+	public boolean is(Entity entityIn) {
 		return entityIn == this || entityIn == getParent();
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundTag compound) {
 
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundTag compound) {
 
 	}
 
@@ -64,7 +64,7 @@ public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
 	public void tick() {
 		super.tick();
 
-		++this.ticksExisted;
+		++this.tickCount;
 
 		if (!isInvisible())
 			collideWithOthers();
@@ -76,12 +76,12 @@ public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
 			{
 				for (int k = 0; k < 20; k++)
 				{
-					double d = rand.nextGaussian() * 0.02D;
-					double d1 = rand.nextGaussian() * 0.02D;
-					double d2 = rand.nextGaussian() * 0.02D;
-					BasicParticleType explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION;
+					double d = random.nextGaussian() * 0.02D;
+					double d1 = random.nextGaussian() * 0.02D;
+					double d2 = random.nextGaussian() * 0.02D;
+					SimpleParticleType explosionType = random.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION;
 
-					this.world.addParticle(explosionType, (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+					this.level.addParticle(explosionType, (getX() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(), getY() + random.nextFloat() * getBbHeight(), (getZ() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(), d, d1, d2);
 				}
 
 				deactivate();
@@ -90,45 +90,45 @@ public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
 	}
 
 	private void collideWithOthers() {
-		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(0.2D, 0.0D, 0.2D));
+		List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
 
 		for (Entity entity : list) {
-			if (entity.canBePushed()) {
+			if (entity.isPushable()) {
 				this.collideWithEntity(entity);
 			}
 		}
 	}
 
 	private void collideWithEntity(Entity entity) {
-		entity.applyEntityCollision(this);
+		entity.push(this);
 
 		// attack anything that's not us
 		if (entity instanceof LivingEntity && !(entity instanceof NagaEntity)) {
 			int attackStrength = 2;
 
 			// get rid of nearby deer & look impressive
-			if (entity instanceof AnimalEntity) {
+			if (entity instanceof Animal) {
 				attackStrength *= 3;
 			}
 
-			entity.attackEntityFrom(DamageSource.causeMobDamage(getParent()), attackStrength);
+			entity.hurt(DamageSource.mobAttack(getParent()), attackStrength);
 		}
 	}
 
 	public void deactivate() {
-		setSize(EntitySize.flexible(0.0F, 0.0F));
+		setSize(EntityDimensions.scalable(0.0F, 0.0F));
 		setInvisible(true);
 	}
 
 	public void activate() {
-		setSize(EntitySize.flexible(1.8F, 1.8F));
+		setSize(EntityDimensions.scalable(1.8F, 1.8F));
 		setInvisible(false);
 	}
 
 	// make public
 	@Override
-	public void setRotation(float yaw, float pitch) {
-		super.setRotation(yaw, pitch);
+	public void setRot(float yaw, float pitch) {
+		super.setRot(yaw, pitch);
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
 	}
 
 	@Override
-	public boolean canChangeDimension() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 }

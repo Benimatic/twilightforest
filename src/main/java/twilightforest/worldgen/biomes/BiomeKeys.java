@@ -1,12 +1,12 @@
 package twilightforest.worldgen.biomes;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeAmbience;
-import net.minecraft.world.biome.BiomeGenerationSettings;
-import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.data.worldgen.SurfaceBuilders;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -15,47 +15,47 @@ import twilightforest.TwilightForestMod;
 public class BiomeKeys {
 	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
 
-	public static final RegistryKey<Biome> FOREST = makeKey("forest");
-	public static final RegistryKey<Biome> DENSE_FOREST = makeKey("dense_forest");
-	public static final RegistryKey<Biome> FIREFLY_FOREST = makeKey("firefly_forest");
-	public static final RegistryKey<Biome> CLEARING = makeKey("clearing");
-	public static final RegistryKey<Biome> OAK_SAVANNAH = makeKey("oak_savannah");
-	public static final RegistryKey<Biome> STREAM = makeKey("stream");
-	public static final RegistryKey<Biome> LAKE = makeKey("lake");
+	public static final ResourceKey<Biome> FOREST = makeKey("forest");
+	public static final ResourceKey<Biome> DENSE_FOREST = makeKey("dense_forest");
+	public static final ResourceKey<Biome> FIREFLY_FOREST = makeKey("firefly_forest");
+	public static final ResourceKey<Biome> CLEARING = makeKey("clearing");
+	public static final ResourceKey<Biome> OAK_SAVANNAH = makeKey("oak_savannah");
+	public static final ResourceKey<Biome> STREAM = makeKey("stream");
+	public static final ResourceKey<Biome> LAKE = makeKey("lake");
 
-	public static final RegistryKey<Biome> MUSHROOM_FOREST = makeKey("mushroom_forest");
-	public static final RegistryKey<Biome> DENSE_MUSHROOM_FOREST = makeKey("dense_mushroom_forest");
+	public static final ResourceKey<Biome> MUSHROOM_FOREST = makeKey("mushroom_forest");
+	public static final ResourceKey<Biome> DENSE_MUSHROOM_FOREST = makeKey("dense_mushroom_forest");
 
-	public static final RegistryKey<Biome> ENCHANTED_FOREST = makeKey("enchanted_forest");
-	public static final RegistryKey<Biome> SPOOKY_FOREST = makeKey("spooky_forest");
+	public static final ResourceKey<Biome> ENCHANTED_FOREST = makeKey("enchanted_forest");
+	public static final ResourceKey<Biome> SPOOKY_FOREST = makeKey("spooky_forest");
 
-	public static final RegistryKey<Biome> SWAMP = makeKey("swamp");
-	public static final RegistryKey<Biome> FIRE_SWAMP = makeKey("fire_swamp");
+	public static final ResourceKey<Biome> SWAMP = makeKey("swamp");
+	public static final ResourceKey<Biome> FIRE_SWAMP = makeKey("fire_swamp");
 
-	public static final RegistryKey<Biome> DARK_FOREST = makeKey("dark_forest");
-	public static final RegistryKey<Biome> DARK_FOREST_CENTER = makeKey("dark_forest_center");
+	public static final ResourceKey<Biome> DARK_FOREST = makeKey("dark_forest");
+	public static final ResourceKey<Biome> DARK_FOREST_CENTER = makeKey("dark_forest_center");
 
-	public static final RegistryKey<Biome> SNOWY_FOREST = makeKey("snowy_forest");
-	public static final RegistryKey<Biome> GLACIER = makeKey("glacier");
+	public static final ResourceKey<Biome> SNOWY_FOREST = makeKey("snowy_forest");
+	public static final ResourceKey<Biome> GLACIER = makeKey("glacier");
 
-	public static final RegistryKey<Biome> HIGHLANDS = makeKey("highlands");
-	public static final RegistryKey<Biome> THORNLANDS = makeKey("thornlands");
-	public static final RegistryKey<Biome> FINAL_PLATEAU = makeKey("final_plateau");
+	public static final ResourceKey<Biome> HIGHLANDS = makeKey("highlands");
+	public static final ResourceKey<Biome> THORNLANDS = makeKey("thornlands");
+	public static final ResourceKey<Biome> FINAL_PLATEAU = makeKey("final_plateau");
 
-	private static RegistryKey<Biome> makeKey(String name) {
-		BIOMES.register(name, () -> new Biome.Builder()
-				.precipitation(Biome.RainType.NONE)
-				.category(Biome.Category.NONE)
+	private static ResourceKey<Biome> makeKey(String name) {
+		BIOMES.register(name, () -> new Biome.BiomeBuilder()
+				.precipitation(Biome.Precipitation.NONE)
+				.biomeCategory(Biome.BiomeCategory.NONE)
 				.depth(0)
 				.downfall(0)
 				.scale(0)
 				.temperature(0)
-				.setEffects(new BiomeAmbience.Builder().setFogColor(0).setWaterColor(0).setWaterFogColor(0).withSkyColor(0).build())
-				.withGenerationSettings(new BiomeGenerationSettings.Builder().withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS).build())
-				.withMobSpawnSettings(new MobSpawnInfo.Builder().build())
-				.withTemperatureModifier(Biome.TemperatureModifier.NONE)
+				.specialEffects(new BiomeSpecialEffects.Builder().fogColor(0).waterColor(0).waterFogColor(0).skyColor(0).build())
+				.generationSettings(new BiomeGenerationSettings.Builder().surfaceBuilder(SurfaceBuilders.GRASS).build())
+				.mobSpawnSettings(new MobSpawnSettings.Builder().build())
+				.temperatureAdjustment(Biome.TemperatureModifier.NONE)
 				.build());
-		return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix(name));
 	}
 
 	public static final BiomeDictionary.Type TWILIGHT = BiomeDictionary.Type.getType("TWILIGHT");

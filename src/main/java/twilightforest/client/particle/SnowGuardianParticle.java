@@ -1,33 +1,33 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.IAnimatedSprite;
-import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.BasicParticleType;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SnowGuardianParticle extends SnowParticle {
 
-	SnowGuardianParticle(ClientWorld world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	SnowGuardianParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, vx, vy, vz, scale);
-		this.maxAge = 10 + this.rand.nextInt(15);
-		this.particleRed = this.particleGreen = this.particleBlue = 0.75F + this.rand.nextFloat() * 0.25F;
+		this.lifetime = 10 + this.random.nextInt(15);
+		this.rCol = this.gCol = this.bCol = 0.75F + this.random.nextFloat() * 0.25F;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements IParticleFactory<BasicParticleType> {
-		private final IAnimatedSprite spriteSet;
+	public static class Factory implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet spriteSet;
 
-		public Factory(IAnimatedSprite sprite) {
+		public Factory(SpriteSet sprite) {
 			this.spriteSet = sprite;
 		}
 
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			SnowGuardianParticle particle = new SnowGuardianParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 0.75F);
-			particle.selectSpriteRandomly(this.spriteSet);
+			particle.pickSprite(this.spriteSet);
 			return particle;
 		}
 	}

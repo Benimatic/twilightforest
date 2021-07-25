@@ -1,18 +1,18 @@
 package twilightforest.data;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Items;
 import net.minecraft.loot.*;
-import net.minecraft.loot.conditions.EntityHasProperty;
-import net.minecraft.loot.conditions.KilledByPlayer;
-import net.minecraft.loot.conditions.RandomChance;
-import net.minecraft.loot.conditions.RandomChanceWithLooting;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
 import net.minecraft.loot.functions.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.Util;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -26,87 +26,101 @@ import twilightforest.loot.functions.ModItemSwap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EntityLootTables extends net.minecraft.data.loot.EntityLootTables {
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.ConstantIntValue;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.RandomValueBounds;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
+import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
+
+public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 
 	private final Set<EntityType<?>> knownEntities = new HashSet<>();
 
 	@Override
-	protected void registerLootTable(EntityType<?> entity, LootTable.Builder builder) {
-		super.registerLootTable(entity, builder);
+	protected void add(EntityType<?> entity, LootTable.Builder builder) {
+		super.add(entity, builder);
 		knownEntities.add(entity);
 	}
 
 	@Override
-	protected void registerLootTable(ResourceLocation id, LootTable.Builder table) {
-		super.registerLootTable(id, table);
+	protected void add(ResourceLocation id, LootTable.Builder table) {
+		super.add(id, table);
 	}
 
 	@Override
 	protected void addTables() {
-		registerLootTable(TFEntities.adherent, emptyLootTable());
-		registerLootTable(TFEntities.harbinger_cube, emptyLootTable());
-		registerLootTable(TFEntities.mosquito_swarm, emptyLootTable());
-		registerLootTable(TFEntities.pinch_beetle, emptyLootTable());
-		registerLootTable(TFEntities.quest_ram, emptyLootTable());
-		registerLootTable(TFEntities.roving_cube, emptyLootTable());
-		registerLootTable(TFEntities.squirrel, emptyLootTable());
-		registerLootTable(TFEntities.bunny, fromEntityLootTable(EntityType.RABBIT));
-		registerLootTable(TFEntities.hedge_spider, fromEntityLootTable(EntityType.SPIDER));
-		registerLootTable(TFEntities.fire_beetle, fromEntityLootTable(EntityType.CREEPER));
-		registerLootTable(TFEntities.hostile_wolf, fromEntityLootTable(EntityType.WOLF));
-		registerLootTable(TFEntities.king_spider, fromEntityLootTable(EntityType.SPIDER));
-		registerLootTable(TFEntities.mist_wolf, fromEntityLootTable(EntityType.WOLF));
-		registerLootTable(TFEntities.redcap_sapper, fromEntityLootTable(TFEntities.redcap));
-		registerLootTable(TFEntities.slime_beetle, fromEntityLootTable(EntityType.SLIME));
-		registerLootTable(TFEntities.swarm_spider, fromEntityLootTable(EntityType.SPIDER));
-		registerLootTable(TFEntities.tower_broodling, fromEntityLootTable(EntityType.SPIDER));
-		registerLootTable(TFEntities.tower_ghast, fromEntityLootTable(EntityType.GHAST));
-		registerLootTable(TFEntities.bighorn_sheep, fromEntityLootTable(EntityType.SHEEP));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_CYAN, sheepLootTableBuilderWithDrop(Blocks.CYAN_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_GRAY, sheepLootTableBuilderWithDrop(Blocks.GRAY_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_GREEN, sheepLootTableBuilderWithDrop(Blocks.GREEN_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_LIGHT_BLUE, sheepLootTableBuilderWithDrop(Blocks.LIGHT_BLUE_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_LIGHT_GRAY, sheepLootTableBuilderWithDrop(Blocks.LIGHT_GRAY_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_LIME, sheepLootTableBuilderWithDrop(Blocks.LIME_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_MAGENTA, sheepLootTableBuilderWithDrop(Blocks.MAGENTA_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_ORANGE, sheepLootTableBuilderWithDrop(Blocks.ORANGE_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_PINK, sheepLootTableBuilderWithDrop(Blocks.PINK_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_PURPLE, sheepLootTableBuilderWithDrop(Blocks.PURPLE_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_RED, sheepLootTableBuilderWithDrop(Blocks.RED_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_WHITE, sheepLootTableBuilderWithDrop(Blocks.WHITE_WOOL));
-		registerLootTable(TFTreasure.BIGHORN_SHEEP_YELLOW, sheepLootTableBuilderWithDrop(Blocks.YELLOW_WOOL));
+		add(TFEntities.adherent, emptyLootTable());
+		add(TFEntities.harbinger_cube, emptyLootTable());
+		add(TFEntities.mosquito_swarm, emptyLootTable());
+		add(TFEntities.pinch_beetle, emptyLootTable());
+		add(TFEntities.quest_ram, emptyLootTable());
+		add(TFEntities.roving_cube, emptyLootTable());
+		add(TFEntities.squirrel, emptyLootTable());
+		add(TFEntities.bunny, fromEntityLootTable(EntityType.RABBIT));
+		add(TFEntities.hedge_spider, fromEntityLootTable(EntityType.SPIDER));
+		add(TFEntities.fire_beetle, fromEntityLootTable(EntityType.CREEPER));
+		add(TFEntities.hostile_wolf, fromEntityLootTable(EntityType.WOLF));
+		add(TFEntities.king_spider, fromEntityLootTable(EntityType.SPIDER));
+		add(TFEntities.mist_wolf, fromEntityLootTable(EntityType.WOLF));
+		add(TFEntities.redcap_sapper, fromEntityLootTable(TFEntities.redcap));
+		add(TFEntities.slime_beetle, fromEntityLootTable(EntityType.SLIME));
+		add(TFEntities.swarm_spider, fromEntityLootTable(EntityType.SPIDER));
+		add(TFEntities.tower_broodling, fromEntityLootTable(EntityType.SPIDER));
+		add(TFEntities.tower_ghast, fromEntityLootTable(EntityType.GHAST));
+		add(TFEntities.bighorn_sheep, fromEntityLootTable(EntityType.SHEEP));
+		add(TFTreasure.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_CYAN, sheepLootTableBuilderWithDrop(Blocks.CYAN_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_GRAY, sheepLootTableBuilderWithDrop(Blocks.GRAY_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_GREEN, sheepLootTableBuilderWithDrop(Blocks.GREEN_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_LIGHT_BLUE, sheepLootTableBuilderWithDrop(Blocks.LIGHT_BLUE_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_LIGHT_GRAY, sheepLootTableBuilderWithDrop(Blocks.LIGHT_GRAY_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_LIME, sheepLootTableBuilderWithDrop(Blocks.LIME_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_MAGENTA, sheepLootTableBuilderWithDrop(Blocks.MAGENTA_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_ORANGE, sheepLootTableBuilderWithDrop(Blocks.ORANGE_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_PINK, sheepLootTableBuilderWithDrop(Blocks.PINK_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_PURPLE, sheepLootTableBuilderWithDrop(Blocks.PURPLE_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_RED, sheepLootTableBuilderWithDrop(Blocks.RED_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_WHITE, sheepLootTableBuilderWithDrop(Blocks.WHITE_WOOL));
+		add(TFTreasure.BIGHORN_SHEEP_YELLOW, sheepLootTableBuilderWithDrop(Blocks.YELLOW_WOOL));
 
-		registerLootTable(TFEntities.armored_giant,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.giant_sword.get()))
-								.acceptCondition(KilledByPlayer.builder())));
+		add(TFEntities.armored_giant,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.giant_sword.get()))
+								.when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
-		registerLootTable(TFEntities.giant_miner,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.giant_pickaxe.get()))
-								.acceptCondition(KilledByPlayer.builder())));
+		add(TFEntities.giant_miner,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.giant_pickaxe.get()))
+								.when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
-		registerLootTable(TFEntities.blockchain_goblin,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.armor_shard.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.blockchain_goblin,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.armor_shard.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.mini_ghast,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(TableLootEntry.builder(EntityType.GHAST.getLootTable()))
-								.acceptCondition(IsMinion.builder(true))));
+		add(TFEntities.mini_ghast,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootTableReference.lootTableReference(EntityType.GHAST.getDefaultLootTable()))
+								.when(IsMinion.builder(true))));
 
 		/*registerLootTable(TFEntities.boggard,
 				LootTable.builder()
@@ -126,499 +140,499 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLootTables {
 										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(1.0F, 1.0F))))
 								.acceptCondition(RandomChance.builder(0.1111F))));*/
 
-		registerLootTable(TFEntities.wild_boar,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.PORKCHOP)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-										.acceptFunction(Smelt.func_215953_b()
-												.acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.wild_boar,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.PORKCHOP)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(1.0F, 3.0F)))
+										.apply(SmeltItemFunction.smelted()
+												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.helmet_crab,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.armor_shard.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.COD)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 1.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))
-								.acceptCondition(RandomChance.builder(0.5F))));
+		add(TFEntities.helmet_crab,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.armor_shard.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.COD)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(1.0F, 1.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))
+								.when(LootItemRandomChanceCondition.randomChance(0.5F))));
 
-		registerLootTable(TFEntities.goblin_knight_upper,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.armor_shard.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.goblin_knight_upper,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.armor_shard.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.goblin_knight_lower,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.armor_shard.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.goblin_knight_lower,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.armor_shard.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.wraith,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.GLOWSTONE_DUST)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.wraith,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.GLOWSTONE_DUST)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.redcap,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.COAL)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 1.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.redcap,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.COAL)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 1.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.yeti,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.arctic_fur.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.yeti,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.arctic_fur.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.winter_wolf,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.arctic_fur.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.winter_wolf,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.arctic_fur.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.tiny_bird,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.FEATHER)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.tiny_bird,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.FEATHER)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.penguin,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.FEATHER)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.penguin,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.FEATHER)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.ice_crystal,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.SNOWBALL)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.ice_crystal,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.SNOWBALL)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.unstable_ice_core,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.SNOWBALL)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.unstable_ice_core,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.SNOWBALL)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.stable_ice_core,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.SNOWBALL)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.stable_ice_core,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.SNOWBALL)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.snow_guardian,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.SNOWBALL)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.snow_guardian,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.SNOWBALL)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.raven,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.raven_feather.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.raven,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.raven_feather.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.tower_termite,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.borer_essence.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.tower_termite,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.borer_essence.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.skeleton_druid,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.BONE)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
-								.addLootPool(LootPool.builder()
-										.rolls(ConstantRange.of(1))
-										.addEntry(ItemLootEntry.builder(TFItems.torchberries.get())
-												.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-												.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.skeleton_druid,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.BONE)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F)))))
+								.withPool(LootPool.lootPool()
+										.setRolls(ConstantIntValue.exactly(1))
+										.add(LootItem.lootTableItem(TFItems.torchberries.get())
+												.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+												.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.deer,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.LEATHER)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.raw_venison.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F)))
-										.acceptFunction(Smelt.func_215953_b()
-												.acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
+		add(TFEntities.deer,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.LEATHER)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.raw_venison.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(1.0F, 3.0F)))
+										.apply(SmeltItemFunction.smelted()
+												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))));
 
-		registerLootTable(TFEntities.kobold,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.WHEAT)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.GOLD_NUGGET)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(-1.0F, 1.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))
-								.acceptCondition(KilledByPlayer.builder())));
+		add(TFEntities.kobold,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.WHEAT)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(-1.0F, 1.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F))))
+								.when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
-		registerLootTable(TFEntities.maze_slime,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.SLIME_BALL)
-										.acceptFunction(SetCount.builder(ConstantRange.of(1)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.charm_of_keeping_1.get()))
-								.acceptCondition(RandomChance.builder(0.025F))));
+		add(TFEntities.maze_slime,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.SLIME_BALL)
+										.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.charm_of_keeping_1.get()))
+								.when(LootItemRandomChanceCondition.randomChance(0.025F))));
 
-		registerLootTable(TFEntities.minotaur,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.raw_meef.get())
-										.acceptFunction(SetCount.builder(ConstantRange.of(1)))
-										.acceptFunction(Smelt.func_215953_b()
-												.acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.maze_map_focus.get()))
-								.acceptCondition(RandomChance.builder(0.025F))));
+		add(TFEntities.minotaur,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.raw_meef.get())
+										.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(1)))
+										.apply(SmeltItemFunction.smelted()
+												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.maze_map_focus.get()))
+								.when(LootItemRandomChanceCondition.randomChance(0.025F))));
 
-		registerLootTable(TFEntities.tower_golem,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.IRON_INGOT)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFBlocks.tower_wood.get()))
-									.acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F)))
-									.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))));
+		add(TFEntities.tower_golem,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.IRON_INGOT)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.tower_wood.get()))
+									.apply(SetItemCountFunction.setCount(RandomValueBounds.between(0.0F, 2.0F)))
+									.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0.0F, 1.0F)))));
 
-		registerLootTable(TFEntities.troll,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.magic_beans.get()))
-								.acceptCondition(RandomChance.builder(0.025F))));
+		add(TFEntities.troll,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.magic_beans.get()))
+								.when(LootItemRandomChanceCondition.randomChance(0.025F))));
 
-		registerLootTable(TFEntities.death_tome,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.PAPER))
-								.acceptFunction(SetCount.builder(ConstantRange.of(3)))
-								.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(1, 1))))
-						.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.WRITABLE_BOOK).weight(2).quality(3))
-								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(19))
-								.addEntry(TableLootEntry.builder(TFTreasure.DEATH_TOME_BOOKS).weight(1)))
-						.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-								.acceptCondition(KilledByPlayer.builder())
-								.acceptCondition(RandomChanceWithLooting.builder(0.025F, 0.005F))
-								.addEntry(ItemLootEntry.builder(TFItems.magic_map_focus.get()))));
+		add(TFEntities.death_tome,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.PAPER))
+								.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(3)))
+								.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(1, 1))))
+						.withPool(LootPool.lootPool().setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.WRITABLE_BOOK).setWeight(2).setQuality(3))
+								.add(LootItem.lootTableItem(Items.BOOK).setWeight(19))
+								.add(LootTableReference.lootTableReference(TFTreasure.DEATH_TOME_BOOKS).setWeight(1)))
+						.withPool(LootPool.lootPool().setRolls(ConstantIntValue.exactly(1))
+								.when(LootItemKilledByPlayerCondition.killedByPlayer())
+								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.005F))
+								.add(LootItem.lootTableItem(TFItems.magic_map_focus.get()))));
 
-		registerLootTable(TFTreasure.DEATH_TOME_HURT,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(TableLootEntry.builder(LootTables.EMPTY))
-								.addEntry(ItemLootEntry.builder(Items.PAPER))));
+		add(TFTreasure.DEATH_TOME_HURT,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootTableReference.lootTableReference(BuiltInLootTables.EMPTY))
+								.add(LootItem.lootTableItem(Items.PAPER))));
 
-		registerLootTable(TFTreasure.DEATH_TOME_BOOKS,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(32)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(1, 10))))
-								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(8)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(11, 20))))
-								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(4)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(21, 30))))
-								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(1)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(31, 40))))));
+		add(TFTreasure.DEATH_TOME_BOOKS,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.BOOK).setWeight(32)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(1, 10))))
+								.add(LootItem.lootTableItem(Items.BOOK).setWeight(8)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(11, 20))))
+								.add(LootItem.lootTableItem(Items.BOOK).setWeight(4)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(21, 30))))
+								.add(LootItem.lootTableItem(Items.BOOK).setWeight(1)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(31, 40))))));
 
-		registerLootTable(TFEntities.naga,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.naga_scale.get())
-								.acceptFunction(SetCount.builder(RandomValueRange.of(6, 11)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFBlocks.naga_trophy.get().asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.naga_scale.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.naga_scale.get()))
-										.acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+		add(TFEntities.naga,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.naga_scale.get())
+								.apply(SetItemCountFunction.setCount(RandomValueBounds.between(6, 11)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.naga_trophy.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.naga_scale.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.naga_scale.get()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:naga");
 										})))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.naga_scale.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.naga_scale.get())))));
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.naga_scale.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.naga_scale.get())))));
 
-		registerLootTable(TFEntities.lich,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.twilight_scepter.get()))
-								.addEntry(ItemLootEntry.builder(TFItems.lifedrain_scepter.get()))
-								.addEntry(ItemLootEntry.builder(TFItems.zombie_scepter.get()))
-								.addEntry(ItemLootEntry.builder(TFItems.shield_scepter.get())))
-						.addLootPool(LootPool.builder()
-								.rolls(RandomValueRange.of(2, 4))
-								.addEntry(ItemLootEntry.builder(Items.GOLDEN_SWORD)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(10, 40))))
-								.addEntry(ItemLootEntry.builder(Items.GOLDEN_HELMET)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(10, 40))))
-								.addEntry(ItemLootEntry.builder(Items.GOLDEN_CHESTPLATE)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(10, 40))))
-								.addEntry(ItemLootEntry.builder(Items.GOLDEN_LEGGINGS)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(10, 40))))
-								.addEntry(ItemLootEntry.builder(Items.GOLDEN_BOOTS)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(10, 40)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.ENDER_PEARL)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(1, 4)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 1)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.BONE)
-										.acceptFunction(SetCount.builder(RandomValueRange.of(5, 9)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 1)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFBlocks.lich_trophy.get().asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.GOLD_NUGGET)
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), Items.GOLD_NUGGET))
-										.acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+		add(TFEntities.lich,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.twilight_scepter.get()))
+								.add(LootItem.lootTableItem(TFItems.lifedrain_scepter.get()))
+								.add(LootItem.lootTableItem(TFItems.zombie_scepter.get()))
+								.add(LootItem.lootTableItem(TFItems.shield_scepter.get())))
+						.withPool(LootPool.lootPool()
+								.setRolls(RandomValueBounds.between(2, 4))
+								.add(LootItem.lootTableItem(Items.GOLDEN_SWORD)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(10, 40))))
+								.add(LootItem.lootTableItem(Items.GOLDEN_HELMET)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(10, 40))))
+								.add(LootItem.lootTableItem(Items.GOLDEN_CHESTPLATE)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(10, 40))))
+								.add(LootItem.lootTableItem(Items.GOLDEN_LEGGINGS)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(10, 40))))
+								.add(LootItem.lootTableItem(Items.GOLDEN_BOOTS)
+										.apply(EnchantWithLevelsFunction.enchantWithLevels(RandomValueBounds.between(10, 40)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.ENDER_PEARL)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(1, 4)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.BONE)
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(5, 9)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.lich_trophy.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), Items.GOLD_NUGGET))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:lich");
 										})))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.GOLD_NUGGET)
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), Items.GOLD_NUGGET)))));
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), Items.GOLD_NUGGET)))));
 
-		registerLootTable(TFEntities.minoshroom,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.meef_stroganoff.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(2, 5)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 1)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFBlocks.minoshroom_trophy.get().asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.meef_stroganoff.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.meef_stroganoff.get()))
-										.acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+		add(TFEntities.minoshroom,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.meef_stroganoff.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(2, 5)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.minoshroom_trophy.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.meef_stroganoff.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.meef_stroganoff.get()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:minoshroom");
 										})))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.meef_stroganoff.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.meef_stroganoff.get())))));
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.meef_stroganoff.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.meef_stroganoff.get())))));
 
-		registerLootTable(TFEntities.hydra,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.hydra_chop.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(5, 35)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 2)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.fiery_blood.get())
-										.acceptFunction(SetCount.builder(RandomValueRange.of(7, 10)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 1)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFBlocks.hydra_trophy.get().asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.fiery_blood.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.fiery_blood.get()))
-										.acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+		add(TFEntities.hydra,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.hydra_chop.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(5, 35)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0, 2)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.fiery_blood.get())
+										.apply(SetItemCountFunction.setCount(RandomValueBounds.between(7, 10)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.hydra_trophy.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.fiery_blood.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.fiery_blood.get()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:hydra");
 										})))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.fiery_blood.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.fiery_blood.get())))));
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.fiery_blood.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.fiery_blood.get())))));
 
-		registerLootTable(TFEntities.yeti_alpha,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.alpha_fur.get())
-										.acceptFunction(SetCount.builder(ConstantRange.of(6)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 1)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.ice_bomb.get())
-										.acceptFunction(SetCount.builder(ConstantRange.of(6)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 1)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFBlocks.yeti_trophy.get().asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.ice_bomb.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.ice_bomb.get()))
-										.acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+		add(TFEntities.yeti_alpha,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.alpha_fur.get())
+										.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(6)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
+										.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(6)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.yeti_trophy.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.ice_bomb.get()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:alpha_yeti");
 										})))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.ice_bomb.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.ice_bomb.get())))));
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.ice_bomb.get())))));
 
-		registerLootTable(TFEntities.snow_queen,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.triple_bow.get()))
-								.addEntry(ItemLootEntry.builder(TFItems.seeker_bow.get())))
-						.addLootPool(LootPool.builder()
-								.rolls(RandomValueRange.of(1, 4))
-								.addEntry(ItemLootEntry.builder(Blocks.PACKED_ICE.asItem())
-										.acceptFunction(SetCount.builder(ConstantRange.of(7)))
-										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 1)))))
-						.addLootPool(LootPool.builder()
-								.rolls(RandomValueRange.of(2, 5))
-								.addEntry(ItemLootEntry.builder(Items.SNOWBALL)
-										.acceptFunction(SetCount.builder(ConstantRange.of(16)))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFBlocks.snow_queen_trophy.get().asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.ice_bomb.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.ice_bomb.get()))
-										.acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+		add(TFEntities.snow_queen,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.triple_bow.get()))
+								.add(LootItem.lootTableItem(TFItems.seeker_bow.get())))
+						.withPool(LootPool.lootPool()
+								.setRolls(RandomValueBounds.between(1, 4))
+								.add(LootItem.lootTableItem(Blocks.PACKED_ICE.asItem())
+										.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(7)))
+										.apply(LootingEnchantFunction.lootingMultiplier(RandomValueBounds.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(RandomValueBounds.between(2, 5))
+								.add(LootItem.lootTableItem(Items.SNOWBALL)
+										.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(16)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.snow_queen_trophy.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.ice_bomb.get()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:snow_queen");
 										})))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.ice_bomb.get())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.ice_bomb.get())))));
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.ice_bomb.get())))));
 
-		registerLootTable(TFTreasure.QUESTING_RAM_REWARDS,
-				LootTable.builder()
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Blocks.DIAMOND_BLOCK.asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Blocks.IRON_BLOCK.asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Blocks.EMERALD_BLOCK.asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Blocks.LAPIS_BLOCK.asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Blocks.GOLD_BLOCK.asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFBlocks.quest_ram_trophy.get().asItem())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(TFItems.crumble_horn.get())))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Blocks.COAL_BLOCK.asItem())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), Blocks.COAL_BLOCK.asItem()))
-										.acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+		add(TFTreasure.QUESTING_RAM_REWARDS,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.DIAMOND_BLOCK.asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.IRON_BLOCK.asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.EMERALD_BLOCK.asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.LAPIS_BLOCK.asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.GOLD_BLOCK.asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.quest_ram_trophy.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.crumble_horn.get())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), Blocks.COAL_BLOCK.asItem()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:questing_ram");
 										})))))
-						.addLootPool(LootPool.builder()
-								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Blocks.COAL_BLOCK.asItem())
-										.acceptCondition(ModExists.builder("immersiveengineering"))
-										.acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), Blocks.COAL_BLOCK.asItem())))));
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantIntValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), Blocks.COAL_BLOCK.asItem())))));
 	}
 
 	public LootTable.Builder emptyLootTable() {
-		return LootTable.builder();
+		return LootTable.lootTable();
 	}
 
 	public LootTable.Builder fromEntityLootTable(EntityType<?> parent) {
-		return LootTable.builder()
-				.addLootPool(LootPool.builder()
-						.rolls(ConstantRange.of(1))
-						.addEntry(TableLootEntry.builder(parent.getLootTable())));
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantIntValue.exactly(1))
+						.add(LootTableReference.lootTableReference(parent.getDefaultLootTable())));
 	}
 
-	private static LootTable.Builder sheepLootTableBuilderWithDrop(IItemProvider wool) {
-		return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(wool))).addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(TableLootEntry.builder(EntityType.SHEEP.getLootTable())));
+	private static LootTable.Builder sheepLootTableBuilderWithDrop(ItemLike wool) {
+		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantIntValue.exactly(1)).add(LootItem.lootTableItem(wool))).withPool(LootPool.lootPool().setRolls(ConstantIntValue.exactly(1)).add(LootTableReference.lootTableReference(EntityType.SHEEP.getDefaultLootTable())));
 	}
 
 	@Override

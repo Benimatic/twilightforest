@@ -1,16 +1,16 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -18,20 +18,20 @@ import java.util.Random;
 
 public class MazeDeadEndRootsComponent extends MazeDeadEndComponent {
 
-	public MazeDeadEndRootsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeDeadEndRootsComponent(StructureManager manager, CompoundTag nbt) {
 		this(MinotaurMazePieces.TFMMDER, nbt);
 	}
 
-	public MazeDeadEndRootsComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public MazeDeadEndRootsComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public MazeDeadEndRootsComponent(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+	public MazeDeadEndRootsComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(type, feature, i, x, y, z, rotation);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// no door
 		for (int x = 1; x < 5; x++) {
 			for (int z = 0; z < 5; z++) {
@@ -40,19 +40,19 @@ public class MazeDeadEndRootsComponent extends MazeDeadEndComponent {
 					int length = rand.nextInt(6);
 
 					//place dirt above ceiling
-					this.setBlockState(world, Blocks.DIRT.getDefaultState(), x, 6, z, sbb);
+					this.placeBlock(world, Blocks.DIRT.defaultBlockState(), x, 6, z, sbb);
 
 					// roots
 					for (int y = 6 - length; y < 6; y++) {
-						this.setBlockState(world, TFBlocks.root_strand.get().getDefaultState(), x, y, z, sbb);
+						this.placeBlock(world, TFBlocks.root_strand.get().defaultBlockState(), x, y, z, sbb);
 					}
 
 					// occasional gravel
 					if (rand.nextInt(z + 1) > 1) {
-						this.setBlockState(world, Blocks.GRAVEL.getDefaultState(), x, 1, z, sbb);
+						this.placeBlock(world, Blocks.GRAVEL.defaultBlockState(), x, 1, z, sbb);
 
 						if (rand.nextInt(z + 1) > 1) {
-							this.setBlockState(world, Blocks.GRAVEL.getDefaultState(), x, 2, z, sbb);
+							this.placeBlock(world, Blocks.GRAVEL.defaultBlockState(), x, 2, z, sbb);
 						}
 					}
 				}

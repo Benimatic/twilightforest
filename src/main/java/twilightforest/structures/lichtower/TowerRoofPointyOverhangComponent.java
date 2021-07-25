@@ -1,12 +1,12 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 public class TowerRoofPointyOverhangComponent extends TowerRoofPointyComponent {
 
-	public TowerRoofPointyOverhangComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerRoofPointyOverhangComponent(StructureManager manager, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRPO, nbt);
 	}
 
@@ -14,7 +14,7 @@ public class TowerRoofPointyOverhangComponent extends TowerRoofPointyComponent {
 		super(LichTowerPieces.TFLTRPO, feature, i, wing);
 
 		// same facing, but it doesn't matter
-		this.setCoordBaseMode(wing.getCoordBaseMode());
+		this.setOrientation(wing.getOrientation());
 
 		this.size = wing.size + 2; // assuming only square towers and roofs right now.
 		this.height = size;

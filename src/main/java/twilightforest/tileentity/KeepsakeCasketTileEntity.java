@@ -1,24 +1,24 @@
 package twilightforest.tileentity;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.container.ChestContainer;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.IChestLid;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.LockableLootTileEntity;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
@@ -28,8 +28,8 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 //used a fair bit of chest logic in this for the lid
-@OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
-public class KeepsakeCasketTileEntity extends LockableLootTileEntity implements IChestLid, ITickableTileEntity {
+@OnlyIn(value = Dist.CLIENT, _interface = LidBlockEntity.class)
+public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity implements LidBlockEntity, TickableBlockEntity {
     private static final int limit = 9 * 5;
     public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
     @Nullable
@@ -81,51 +81,51 @@ public class KeepsakeCasketTileEntity extends LockableLootTileEntity implements 
     }
 
     @Override
-    protected ITextComponent getDefaultName() {
-        return new TranslationTextComponent("block.twilightforest.keepsake_casket");
+    protected Component getDefaultName() {
+        return new TranslatableComponent("block.twilightforest.keepsake_casket");
     }
 
     @Override
-    protected Container createMenu(int id, PlayerInventory player) {
-        return new ChestContainer(ContainerType.GENERIC_9X5, id, player, this, 5);
+    protected AbstractContainerMenu createMenu(int id, Inventory player) {
+        return new ChestMenu(MenuType.GENERIC_9x5, id, player, this, 5);
     }
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return limit;
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
-        if (!this.checkLootAndWrite(compound)) {
-            ItemStackHelper.saveAllItems(compound, this.contents);
+    public CompoundTag save(CompoundTag compound) {
+        super.save(compound);
+        if (!this.trySaveLootTable(compound)) {
+            ContainerHelper.saveAllItems(compound, this.contents);
         }
-        if(playeruuid != null) compound.putUniqueId("deadPlayer", playeruuid);
+        if(playeruuid != null) compound.putUUID("deadPlayer", playeruuid);
         if(casketname != null) compound.putString("playerName", casketname);
         return compound;
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT nbt) {
-        super.read(state, nbt);
-        this.contents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        if (!this.checkLootAndRead(nbt)) {
-            ItemStackHelper.loadAllItems(nbt, this.contents);
+    public void load(BlockState state, CompoundTag nbt) {
+        super.load(state, nbt);
+        this.contents = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        if (!this.tryLoadLootTable(nbt)) {
+            ContainerHelper.loadAllItems(nbt, this.contents);
         }
-        if(nbt.hasUniqueId("deadPlayer")) playeruuid = nbt.getUniqueId("deadPlayer");
-        if(nbt.hasUniqueId("playerName")) casketname = nbt.getString("playerName");
+        if(nbt.hasUUID("deadPlayer")) playeruuid = nbt.getUUID("deadPlayer");
+        if(nbt.hasUUID("playerName")) casketname = nbt.getString("playerName");
     }
 
     //[VanillaCopy] of EnderChestTileEntity, with some small adaptations
     @Override
     public void tick() {
         if (++this.ticksSinceSync % 20 * 4 == 0) {
-            this.world.addBlockEvent(this.pos, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
         }
         this.prevLidAngle = this.lidAngle;
         if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
-            this.world.playSound(null, this.pos, TFSounds.CASKET_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+            this.level.playSound(null, this.worldPosition, TFSounds.CASKET_OPEN, SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
         }
         if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
             float f2 = this.lidAngle;
@@ -136,7 +136,7 @@ public class KeepsakeCasketTileEntity extends LockableLootTileEntity implements 
             if (this.lidAngle > 1.0F) this.lidAngle = 1.0F;
 
             if (this.lidAngle < 0.4F && f2 >= 0.4F) {
-                this.world.playSound(null, this.pos, TFSounds.CASKET_CLOSE, SoundCategory.BLOCKS, 0.75F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+                this.level.playSound(null, this.worldPosition, TFSounds.CASKET_CLOSE, SoundSource.BLOCKS, 0.75F, this.level.random.nextFloat() * 0.1F + 0.9F);
             }
             if (this.lidAngle < 0.0F) this.lidAngle = 0.0F;
         }
@@ -144,37 +144,37 @@ public class KeepsakeCasketTileEntity extends LockableLootTileEntity implements 
     }
 
     @Override
-    public boolean receiveClientEvent(int id, int type) {
+    public boolean triggerEvent(int id, int type) {
         if (id == 1) {
             this.numPlayersUsing = type;
             return true;
         } else {
-            return super.receiveClientEvent(id, type);
+            return super.triggerEvent(id, type);
         }
     }
 
     //if we have a dead player UUID set, then only that player can open the casket
     @Override
-    public boolean isUsableByPlayer(PlayerEntity user) {
+    public boolean stillValid(Player user) {
         if(playeruuid != null) {
-            if(user.hasPermissionLevel(3) || user.getGameProfile().getId().equals(playeruuid)) {
-                return super.isUsableByPlayer(user);
+            if(user.hasPermissions(3) || user.getGameProfile().getId().equals(playeruuid)) {
+                return super.stillValid(user);
             } else {
                 return false;
             }
         } else {
-            return super.isUsableByPlayer(user);
+            return super.stillValid(user);
         }
     }
 
     @Override
-    public boolean canOpen(PlayerEntity user) {
+    public boolean canOpen(Player user) {
         if(playeruuid != null) {
-            if(user.hasPermissionLevel(3) || user.getGameProfile().getId().equals(playeruuid)) {
+            if(user.hasPermissions(3) || user.getGameProfile().getId().equals(playeruuid)) {
                 return super.canOpen(user);
             } else {
-                user.playSound(TFSounds.CASKET_LOCKED, SoundCategory.BLOCKS, 0.5F, 0.5F);
-                user.sendStatusMessage(new TranslationTextComponent("block.twilightforest.casket.locked", name).mergeStyle(TextFormatting.RED), true);
+                user.playNotifySound(TFSounds.CASKET_LOCKED, SoundSource.BLOCKS, 0.5F, 0.5F);
+                user.displayClientMessage(new TranslatableComponent("block.twilightforest.casket.locked", name).withStyle(ChatFormatting.RED), true);
                 return false;
             }
         } else {
@@ -184,34 +184,34 @@ public class KeepsakeCasketTileEntity extends LockableLootTileEntity implements 
 
     //remove stored player when chest is broken
     @Override
-    public void remove() {
+    public void setRemoved() {
         playeruuid = null;
-        this.updateContainingBlockInfo();
-        super.remove();
+        this.clearCache();
+        super.setRemoved();
     }
 
-    public void openInventory(PlayerEntity player) {
+    public void startOpen(Player player) {
         if (!player.isSpectator()) {
             if (this.numPlayersUsing < 0) {
                 this.numPlayersUsing = 0;
             }
             ++this.numPlayersUsing;
-            this.world.addBlockEvent(this.pos, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
         }
 
     }
 
-    public void closeInventory(PlayerEntity player) {
+    public void stopOpen(Player player) {
         if (!player.isSpectator()) {
             --this.numPlayersUsing;
-            this.world.addBlockEvent(this.pos, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
         }
 
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public float getLidAngle(float partialTicks) {
-        return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
+    public float getOpenNess(float partialTicks) {
+        return Mth.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
     }
 }

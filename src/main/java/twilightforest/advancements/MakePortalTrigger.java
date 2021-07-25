@@ -6,16 +6,16 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import java.util.Map;
 import java.util.Set;
-import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.Instance> {
+public class MakePortalTrigger implements CriterionTrigger<MakePortalTrigger.Instance> {
 
     public static final ResourceLocation ID = TwilightForestMod.prefix("make_tf_portal");
     private final Map<PlayerAdvancements, MakePortalTrigger.Listeners> listeners = Maps.newHashMap();
@@ -26,13 +26,13 @@ public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.In
     }
 
     @Override
-    public void addListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
+    public void addPlayerListener(PlayerAdvancements playerAdvancementsIn, CriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
         MakePortalTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
         listeners.add(listener);
     }
 
     @Override
-    public void removeListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
+    public void removePlayerListener(PlayerAdvancements playerAdvancementsIn, CriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
         MakePortalTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
         if (listeners != null) {
             listeners.remove(listener);
@@ -43,26 +43,26 @@ public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.In
     }
 
     @Override
-    public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
+    public void removePlayerListeners(PlayerAdvancements playerAdvancementsIn) {
         this.listeners.remove(playerAdvancementsIn);
     }
 
     @Override
-    public Instance deserialize(JsonObject json, ConditionArrayParser condition) {
-		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
+    public Instance createInstance(JsonObject json, DeserializationContext condition) {
+		EntityPredicate.Composite player = EntityPredicate.Composite.fromJson(json, "player", condition);
 		return new MakePortalTrigger.Instance(player);
     }
 
-    public void trigger(ServerPlayerEntity player) {
+    public void trigger(ServerPlayer player) {
         MakePortalTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
         if (listeners != null) {
             listeners.trigger();
         }
     }
 
-    public static class Instance extends CriterionInstance {
+    public static class Instance extends AbstractCriterionTriggerInstance {
 
-        public Instance(EntityPredicate.AndPredicate player) {
+        public Instance(EntityPredicate.Composite player) {
             super(MakePortalTrigger.ID, player);
         }
     }
@@ -70,7 +70,7 @@ public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.In
     static class Listeners {
 
         private final PlayerAdvancements playerAdvancements;
-        private final Set<ICriterionTrigger.Listener<MakePortalTrigger.Instance>> listeners = Sets.newHashSet();
+        private final Set<CriterionTrigger.Listener<MakePortalTrigger.Instance>> listeners = Sets.newHashSet();
 
         public Listeners(PlayerAdvancements playerAdvancementsIn) {
             this.playerAdvancements = playerAdvancementsIn;
@@ -80,17 +80,17 @@ public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.In
             return this.listeners.isEmpty();
         }
 
-        public void add(ICriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
+        public void add(CriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
             this.listeners.add(listener);
         }
 
-        public void remove(ICriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
+        public void remove(CriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
             this.listeners.remove(listener);
         }
 
         public void trigger() {
-            for (ICriterionTrigger.Listener<MakePortalTrigger.Instance> listener : Lists.newArrayList(this.listeners)) {
-                listener.grantCriterion(this.playerAdvancements);
+            for (CriterionTrigger.Listener<MakePortalTrigger.Instance> listener : Lists.newArrayList(this.listeners)) {
+                listener.run(this.playerAdvancements);
             }
         }
     }

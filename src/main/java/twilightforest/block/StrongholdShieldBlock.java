@@ -1,56 +1,62 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.BlockGetter;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+
 public class StrongholdShieldBlock extends DirectionalBlock {
 
-	public StrongholdShieldBlock(Block.Properties props) {
+	public StrongholdShieldBlock(BlockBehaviour.Properties props) {
 		super(props);
-		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.DOWN));
+		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.DOWN));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(FACING);
 	}
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite());
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
 	}
 
 	@Override
 	@Deprecated
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
-		BlockRayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos) {
+		BlockHitResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
-		Direction hitFace = ray.getFace();
-		boolean upOrDown = state.get(DirectionalBlock.FACING) == Direction.UP || state.get(DirectionalBlock.FACING) == Direction.DOWN;
-		Direction sideFace = state.get(DirectionalBlock.FACING).getOpposite();
-		Direction upFace = state.get(DirectionalBlock.FACING);
+		Direction hitFace = ray.getDirection();
+		boolean upOrDown = state.getValue(DirectionalBlock.FACING) == Direction.UP || state.getValue(DirectionalBlock.FACING) == Direction.DOWN;
+		Direction sideFace = state.getValue(DirectionalBlock.FACING).getOpposite();
+		Direction upFace = state.getValue(DirectionalBlock.FACING);
 
 		if (hitFace == (upOrDown ? upFace : sideFace)) {
-			return player.getDigSpeed(Blocks.STONE.getDefaultState(), pos) / 1.5F / 100F;
+			return player.getDigSpeed(Blocks.STONE.defaultBlockState(), pos) / 1.5F / 100F;
 		} else {
-			return super.getPlayerRelativeBlockHardness(state, player, world, pos);
+			return super.getDestroyProgress(state, player, world, pos);
 		}
 	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
+	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
 		return false;
 	}
 }

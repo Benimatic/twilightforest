@@ -1,7 +1,7 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -9,18 +9,18 @@ import java.util.Random;
 public class CastleBlockProcessor extends StructurePiece.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random random, int x, int y, int z, boolean isWall) {
+	public void next(Random random, int x, int y, int z, boolean isWall) {
 		if (!isWall) {
-			blockstate = Blocks.AIR.getDefaultState();
+			next = Blocks.AIR.defaultBlockState();
 		} else {
 			float randFloat = random.nextFloat();
 
 			if (randFloat < 0.1F) {
-				blockstate = TFBlocks.castle_brick_worn.get().getDefaultState();
+				next = TFBlocks.castle_brick_worn.get().defaultBlockState();
 			} else if (randFloat < 0.2F) {
-				blockstate = TFBlocks.castle_brick_cracked.get().getDefaultState();
+				next = TFBlocks.castle_brick_cracked.get().defaultBlockState();
 			} else {
-				blockstate = TFBlocks.castle_brick.get().getDefaultState();
+				next = TFBlocks.castle_brick.get().defaultBlockState();
 			}
 		}
 	}

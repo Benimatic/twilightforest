@@ -1,12 +1,12 @@
 package twilightforest.tileentity;
 
-import net.minecraft.tileentity.SignTileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
-public class TFSignTileEntity extends SignTileEntity {
+public class TFSignTileEntity extends SignBlockEntity {
 
     @Override
-    public TileEntityType<?> getType() {
+    public BlockEntityType<?> getType() {
         return TFTileEntities.TF_SIGN.get();
     }
 }

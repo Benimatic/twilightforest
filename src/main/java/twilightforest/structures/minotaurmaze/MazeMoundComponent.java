@@ -1,17 +1,17 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 
@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class MazeMoundComponent extends TFStructureComponentOld {
 
-	public MazeMoundComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeMoundComponent(StructureManager manager, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMMound, nbt);
 	}
 
@@ -31,26 +31,26 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 
 	public MazeMoundComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(MinotaurMazePieces.TFMMMound, feature, i);
-		this.setCoordBaseMode(Direction.Plane.HORIZONTAL.random(rand));
+		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
-		this.boundingBox = new MutableBoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER);
+		this.boundingBox = new BoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER);
 	}
 
 	/**
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
-		super.buildComponent(structurecomponent, list, random);
+	public void addChildren(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
+		super.addChildren(structurecomponent, list, random);
 
 		// add aboveground maze entrance building
-		mazeAbove = new MazeUpperEntranceComponent(getFeatureType(), 3, random, boundingBox.minX + 10, boundingBox.minY, boundingBox.minZ + 10);
+		mazeAbove = new MazeUpperEntranceComponent(getFeatureType(), 3, random, boundingBox.x0 + 10, boundingBox.y0, boundingBox.z0 + 10);
 		list.add(mazeAbove);
-		mazeAbove.buildComponent(this, list, random);
+		mazeAbove.addChildren(this, list, random);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		if (this.averageGroundLevel < 0) {
 			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
@@ -59,12 +59,12 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 				return true;
 			}
 
-			int offset = this.averageGroundLevel - this.boundingBox.maxY + 8 - 1;
+			int offset = this.averageGroundLevel - this.boundingBox.y1 + 8 - 1;
 
-			this.boundingBox.offset(0, offset, 0);
+			this.boundingBox.move(0, offset, 0);
 
 			if (this.mazeAbove != null) {
-				mazeAbove.getBoundingBox().offset(0, offset, 0);
+				mazeAbove.getBoundingBox().move(0, offset, 0);
 			}
 		}
 
@@ -80,13 +80,13 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 
 				// leave a hole in the middle
 				if (!(cx <= 2 && cx >= -1 && cz <= 2 && cz >= -1) && ((!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) || hheight > 6)) {
-					this.setBlockState(world, Blocks.GRASS_BLOCK.getDefaultState(), x, hheight, z, sbb);
+					this.placeBlock(world, Blocks.GRASS_BLOCK.defaultBlockState(), x, hheight, z, sbb);
 
 					// only fill to the bottom when we're not in the entrances
 					if (!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) {
-						this.setBlockState(world, Blocks.DIRT.getDefaultState(), x, hheight - 1, z, sbb);
+						this.placeBlock(world, Blocks.DIRT.defaultBlockState(), x, hheight - 1, z, sbb);
 					} else if (hheight > 6) {
-						this.fillWithBlocks(world, sbb, x, 6, z, x, hheight - 1, z, Blocks.DIRT.getDefaultState(), AIR, false);
+						this.generateBox(world, sbb, x, 6, z, x, hheight - 1, z, Blocks.DIRT.defaultBlockState(), AIR, false);
 					}
 				}
 			}
@@ -100,17 +100,17 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(ISeedReader world, ChunkGenerator generator, MutableBoundingBox boundingBox) {
+	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox boundingBox) {
 		int totalHeight = 0;
 		int totalMeasures = 0;
 
-		for (int z = this.boundingBox.minZ; z <= this.boundingBox.maxZ; ++z) {
-			for (int x = this.boundingBox.minX; x <= this.boundingBox.maxX; ++x) {
+		for (int z = this.boundingBox.z0; z <= this.boundingBox.z1; ++z) {
+			for (int x = this.boundingBox.x0; x <= this.boundingBox.x1; ++x) {
 				BlockPos pos = new BlockPos(x, 64, z);
 
-				if (boundingBox.isVecInside(pos)) {
-					final BlockPos topPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos);
-					totalHeight += Math.max(topPos.getY(), generator.getGroundHeight());
+				if (boundingBox.isInside(pos)) {
+					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
+					totalHeight += Math.max(topPos.getY(), generator.getSpawnHeight());
 					++totalMeasures;
 				}
 			}

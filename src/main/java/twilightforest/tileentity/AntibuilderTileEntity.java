@@ -1,17 +1,17 @@
 package twilightforest.tileentity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.BlockTagGenerator;
 
 import java.util.Random;
 
-public class AntibuilderTileEntity extends TileEntity implements ITickableTileEntity {
+public class AntibuilderTileEntity extends BlockEntity implements TickableBlockEntity {
 	private static final int REVERT_CHANCE = 10;
 
 	private static final int RADIUS = 4;
@@ -35,11 +35,11 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 		if (this.anyPlayerInRange()) {
 			this.tickCount++;
 
-			if (this.world.isRemote) {
-				double x = this.pos.getX() + this.world.rand.nextFloat();
-				double y = this.pos.getY() + this.world.rand.nextFloat();
-				double z = this.pos.getZ() + this.world.rand.nextFloat();
-				this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, x, y, z, 0.0D, 0.0D, 0.0D);
+			if (this.level.isClientSide) {
+				double x = this.worldPosition.getX() + this.level.random.nextFloat();
+				double y = this.worldPosition.getY() + this.level.random.nextFloat();
+				double z = this.worldPosition.getZ() + this.level.random.nextFloat();
+				this.level.addParticle(DustParticleOptions.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
 
 				// occasionally make a little red dust line to outline our radius
 				if (this.rand.nextInt(10) == 0) {
@@ -50,7 +50,7 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 			} else {
 
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (blockData == null && world.isAreaLoaded(this.pos, AntibuilderTileEntity.RADIUS)) {
+				if (blockData == null && level.isAreaLoaded(this.worldPosition, AntibuilderTileEntity.RADIUS)) {
 					captureBlockData();
 					this.slowScan = true;
 				}
@@ -88,13 +88,13 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 	 */
 	private void makeOutline(int outline) {
 		// src
-		double sx = this.pos.getX();
-		double sy = this.pos.getY();
-		double sz = this.pos.getZ();
+		double sx = this.worldPosition.getX();
+		double sy = this.worldPosition.getY();
+		double sz = this.worldPosition.getZ();
 		// dest
-		double dx = this.pos.getX();
-		double dy = this.pos.getY();
-		double dz = this.pos.getZ();
+		double dx = this.worldPosition.getX();
+		double dy = this.worldPosition.getY();
+		double dz = this.worldPosition.getZ();
 
 		switch (outline) {
 			case 0:
@@ -176,9 +176,9 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 		}
 
 		if (rand.nextBoolean()) {
-			drawParticleLine(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, dx, dy, dz);
+			drawParticleLine(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, dx, dy, dz);
 		} else {
-			drawParticleLine(sx, sy, sz, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+			drawParticleLine(sx, sy, sz, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
 		}
 		drawParticleLine(sx, sy, sz, dx, dy, dz);
 	}
@@ -192,7 +192,7 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 			double tx = srcX + (destX - srcX) * trailFactor + rand.nextFloat() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + rand.nextFloat() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextFloat() * 0.005;
-			world.addParticle(RedstoneParticleData.REDSTONE_DUST, tx, ty, tz, 0, 0, 0);
+			level.addParticle(DustParticleOptions.REDSTONE, tx, ty, tz, 0, 0, 0);
 		}
 	}
 
@@ -203,10 +203,10 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 		for (int x = -RADIUS; x <= RADIUS; x++) {
 			for (int y = -RADIUS; y <= RADIUS; y++) {
 				for (int z = -RADIUS; z <= RADIUS; z++) {
-					BlockState stateThere = world.getBlockState(pos.add(x, y, z));
+					BlockState stateThere = level.getBlockState(worldPosition.offset(x, y, z));
 
 					if (blockData[index].getBlock() != stateThere.getBlock()) {
-						if (revertBlock(pos.add(x, y, z), stateThere, blockData[index])) {
+						if (revertBlock(worldPosition.offset(x, y, z), stateThere, blockData[index])) {
 							reverted = true;
 						} else {
 							blockData[index] = stateThere;
@@ -222,21 +222,21 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 	}
 
 	private boolean revertBlock(BlockPos pos, BlockState stateThere, BlockState replaceWith) {
-		if (stateThere.isAir(world, pos) && !replaceWith.getMaterial().blocksMovement()) {
+		if (stateThere.isAir(level, pos) && !replaceWith.getMaterial().blocksMotion()) {
 			return false;
 		}
-		if (stateThere.getBlockHardness(world, pos) < 0 || isUnrevertable(stateThere, replaceWith)) {
+		if (stateThere.getDestroySpeed(level, pos) < 0 || isUnrevertable(stateThere, replaceWith)) {
 			return false;
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
 			if (!replaceWith.isAir()) {
-				replaceWith = TFBlocks.antibuilt_block.get().getDefaultState();
+				replaceWith = TFBlocks.antibuilt_block.get().defaultBlockState();
 			}
 
 			if (stateThere.isAir()) {
-				world.playEvent(2001, pos, Block.getStateId(replaceWith));
+				level.levelEvent(2001, pos, Block.getId(replaceWith));
 			}
-			Block.replaceBlock(stateThere, replaceWith, world, pos, 2);
+			Block.updateOrDestroy(stateThere, replaceWith, level, pos, 2);
 		}
 
 		return true;
@@ -254,7 +254,7 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 		for (int x = -RADIUS; x <= RADIUS; x++) {
 			for (int y = -RADIUS; y <= RADIUS; y++) {
 				for (int z = -RADIUS; z <= RADIUS; z++) {
-					blockData[index] = world.getBlockState(pos.add(x, y, z));
+					blockData[index] = level.getBlockState(worldPosition.offset(x, y, z));
 					index++;
 				}
 			}
@@ -262,6 +262,6 @@ public class AntibuilderTileEntity extends TileEntity implements ITickableTileEn
 	}
 
 	private boolean anyPlayerInRange() {
-		return this.world.isPlayerWithin(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, AntibuilderTileEntity.PLAYER_RANGE);
+		return this.level.hasNearbyAlivePlayer(this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 0.5D, this.worldPosition.getZ() + 0.5D, AntibuilderTileEntity.PLAYER_RANGE);
 	}
 }

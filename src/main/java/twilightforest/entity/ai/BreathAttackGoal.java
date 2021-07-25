@@ -1,13 +1,13 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
 
 import java.util.Arrays;
@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goal {
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
+public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 
 	private final T entityHost;
 	private LivingEntity attackTarget;
@@ -36,21 +38,21 @@ public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goa
 		this.breathRange = range;
 		this.maxDuration = time;
 		this.attackChance = chance;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		this.attackTarget = this.entityHost.getRevengeTarget();
+	public boolean canUse() {
+		this.attackTarget = this.entityHost.getLastHurtByMob();
 
-		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget) || !EntityPredicates.CAN_HOSTILE_AI_TARGET.test(attackTarget)) {
+		if (this.attackTarget == null || this.entityHost.distanceTo(attackTarget) > this.breathRange || !this.entityHost.getSensing().canSee(attackTarget) || !EntitySelector.ATTACK_ALLOWED.test(attackTarget)) {
 			return false;
 		} else {
-			breathX = attackTarget.getPosX();
-			breathY = attackTarget.getPosY() + attackTarget.getEyeHeight();
-			breathZ = attackTarget.getPosZ();
+			breathX = attackTarget.getX();
+			breathY = attackTarget.getY() + attackTarget.getEyeHeight();
+			breathZ = attackTarget.getZ();
 
-			return this.entityHost.getRNG().nextFloat() < this.attackChance;
+			return this.entityHost.getRandom().nextFloat() < this.attackChance;
 		}
 	}
 
@@ -58,7 +60,7 @@ public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goa
 	 * Initialize counters
 	 */
 	@Override
-	public void startExecuting() {
+	public void start() {
 		this.durationLeft = this.maxDuration;
 		// set breather flag
 		this.entityHost.setBreathing(true);
@@ -68,11 +70,11 @@ public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goa
 	 * Keep breathing until the target dies, or moves out of range or line of sight
 	 */
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		return this.durationLeft > 0 && this.entityHost.isAlive() && this.attackTarget.isAlive()
-				&& this.entityHost.getDistance(attackTarget) <= this.breathRange
-				&& this.entityHost.getEntitySenses().canSee(attackTarget)
-				&& EntityPredicates.CAN_HOSTILE_AI_TARGET.test(attackTarget);
+				&& this.entityHost.distanceTo(attackTarget) <= this.breathRange
+				&& this.entityHost.getSensing().canSee(attackTarget)
+				&& EntitySelector.ATTACK_ALLOWED.test(attackTarget);
 	}
 
 	/**
@@ -83,7 +85,7 @@ public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goa
 		this.durationLeft--;
 
 		// why do we need both of these?
-		this.entityHost.getLookController().setLookPosition(breathX, breathY, breathZ, 100.0F, 100.0F);
+		this.entityHost.getLookControl().setLookAt(breathX, breathY, breathZ, 100.0F, 100.0F);
 		faceVec(breathX, breathY, breathZ, 100.0F, 100.0F);
 
 		if ((this.maxDuration - this.durationLeft) > 5) {
@@ -96,7 +98,7 @@ public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goa
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.durationLeft = 0;
 		this.attackTarget = null;
 		// set breather flag
@@ -110,21 +112,21 @@ public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goa
 		Entity pointedEntity = null;
 		double range = 30.0D;
 		double offset = 3.0D;
-		Vector3d srcVec = new Vector3d(this.entityHost.getPosX(), this.entityHost.getPosY() + 0.25, this.entityHost.getPosZ());
-		Vector3d lookVec = this.entityHost.getLook(1.0F);
-		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3 srcVec = new Vec3(this.entityHost.getX(), this.entityHost.getY() + 0.25, this.entityHost.getZ());
+		Vec3 lookVec = this.entityHost.getViewVector(1.0F);
+		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 0.5F;
-		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(var9, var9, var9));
+		List<Entity> possibleList = this.entityHost.level.getEntities(this.entityHost, this.entityHost.getBoundingBox().move(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).inflate(var9, var9, var9));
 		double hitDist = 0;
 
 		if(entityHost.isMultipartEntity())
 		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(entityHost.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
-			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost && EntityPredicates.CAN_HOSTILE_AI_TARGET.test(possibleEntity)) {
-				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
-				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
+			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.ATTACK_ALLOWED.test(possibleEntity)) {
+				float borderSize = possibleEntity.getPickRadius();
+				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
+				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -148,15 +150,15 @@ public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goa
 	 * Face the head towards a specific Vector
 	 */
 	public void faceVec(double x, double y, double z, float yawConstraint, float pitchConstraint) {
-		double xOffset = x - entityHost.getPosX();
-		double zOffset = z - entityHost.getPosZ();
-		double yOffset = (entityHost.getPosY() + 0.25) - y;
+		double xOffset = x - entityHost.getX();
+		double zOffset = z - entityHost.getZ();
+		double yOffset = (entityHost.getY() + 0.25) - y;
 
-		double distance = MathHelper.sqrt(xOffset * xOffset + zOffset * zOffset);
+		double distance = Mth.sqrt(xOffset * xOffset + zOffset * zOffset);
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
-		entityHost.rotationPitch = -updateRotation(entityHost.rotationPitch, zdAngle, pitchConstraint);
-		entityHost.rotationYaw = updateRotation(entityHost.rotationYaw, xyAngle, yawConstraint);
+		entityHost.xRot = -updateRotation(entityHost.xRot, zdAngle, pitchConstraint);
+		entityHost.yRot = updateRotation(entityHost.yRot, xyAngle, yawConstraint);
 
 	}
 
@@ -164,7 +166,7 @@ public class BreathAttackGoal<T extends MobEntity & IBreathAttacker> extends Goa
 	 * Arguments: current rotation, intended rotation, max increment.
 	 */
 	private float updateRotation(float current, float target, float maxDelta) {
-		float delta = MathHelper.wrapDegrees(target - current);
+		float delta = Mth.wrapDegrees(target - current);
 
 		if (delta > maxDelta) {
 			delta = maxDelta;

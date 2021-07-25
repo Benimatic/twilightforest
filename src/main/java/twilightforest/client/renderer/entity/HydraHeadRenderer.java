@@ -1,10 +1,10 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.HydraHeadModel;
 import twilightforest.entity.boss.HydraEntity;
@@ -18,19 +18,19 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHeadEntity, HydraHead
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
 
-	public HydraHeadRenderer(EntityRendererManager manager) {
+	public HydraHeadRenderer(EntityRenderDispatcher manager) {
 		super(manager, new HydraHeadModel());
 	}
 
 	@Override
-	public void render(HydraHeadEntity entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(HydraHeadEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		// get the HydraHeadContainer that we're taking about
 		HydraHeadContainer headCon = getHeadObject(entity);
 
 		if (headCon != null) {
 			// see whether we want to render these
 			if (headCon.shouldRenderHead()) {
-				stack.rotate(Vector3f.YP.rotationDegrees(-180));
+				stack.mulPose(Vector3f.YP.rotationDegrees(-180));
 				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}
 
@@ -54,7 +54,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHeadEntity, HydraHead
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(HydraHeadEntity entity) {
+	public ResourceLocation getTextureLocation(HydraHeadEntity entity) {
 		return textureLoc;
 	}
 }

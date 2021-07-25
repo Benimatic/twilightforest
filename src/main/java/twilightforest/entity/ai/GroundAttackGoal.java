@@ -1,17 +1,19 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.AABB;
 import twilightforest.entity.boss.MinoshroomEntity;
 
 import java.util.EnumSet;
 import java.util.List;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class GroundAttackGoal extends Goal {
 	private static final double MIN_RANGE_SQ = 2.0D;
@@ -25,27 +27,27 @@ public class GroundAttackGoal extends Goal {
 
 	public GroundAttackGoal(MinoshroomEntity entityTFMinoshroom) {
 		this.attacker = entityTFMinoshroom;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		this.attackTarget = this.attacker.getAttackTarget();
+	public boolean canUse() {
+		this.attackTarget = this.attacker.getTarget();
 
 		if (this.attackTarget == null) {
 			return false;
 		} else {
-			double distance = this.attacker.getDistanceSq(this.attackTarget);
+			double distance = this.attacker.distanceToSqr(this.attackTarget);
 			if (distance < MIN_RANGE_SQ || distance > MAX_RANGE_SQ) {
 				return false;
 			} else if (!this.attacker.isOnGround()) {
 				return false;
 			} else {
 
-				if (this.attacker.canEntityBeSeen(attackTarget)) {
-					return this.attacker.getRNG().nextInt(FREQ) == 0;
+				if (this.attacker.canSee(attackTarget)) {
+					return this.attacker.getRandom().nextInt(FREQ) == 0;
 				} else {
-					return this.attacker.getRNG().nextInt(FREQ - 4) == 0;
+					return this.attacker.getRandom().nextInt(FREQ - 4) == 0;
 				}
 
 			}
@@ -54,19 +56,19 @@ public class GroundAttackGoal extends Goal {
 	}
 
 	@Override
-	public void startExecuting() {
-		attackTick = 30 + attacker.getRNG().nextInt(30);
+	public void start() {
+		attackTick = 30 + attacker.getRandom().nextInt(30);
 		attacker.setMaxCharge(attackTick);
 		attacker.setGroundAttackCharge(true);
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		return this.attackTick >= 0;
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.attackTick = 0;
 		this.attackTarget = null;
 	}
@@ -74,16 +76,16 @@ public class GroundAttackGoal extends Goal {
 	@Override
 	public void tick() {
 		// look where we're going
-		this.attacker.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
-		this.attacker.getMoveHelper().action = MovementController.Action.WAIT;
+		this.attacker.getLookControl().setLookAt(attackTarget, 30.0F, 30.0F);
+		this.attacker.getMoveControl().operation = MoveControl.Operation.WAIT;
 
 		if (this.attackTick-- <= 0) {
 			this.attacker.setGroundAttackCharge(false);
-			this.attacker.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 2, 1F + this.attacker.getRNG().nextFloat() * 0.1F);
+			this.attacker.playSound(SoundEvents.GENERIC_EXPLODE, 2, 1F + this.attacker.getRandom().nextFloat() * 0.1F);
 
-			AxisAlignedBB selection = new AxisAlignedBB(this.attacker.getPosition().getX() - 7.5F, this.attacker.getPosition().getY(), this.attacker.getPosition().getZ() - 7.5F, this.attacker.getPosition().getX() + 7.5F, this.attacker.getPosition().getY() + 3.0F, this.attacker.getPosition().getZ() + 7.5F);
+			AABB selection = new AABB(this.attacker.blockPosition().getX() - 7.5F, this.attacker.blockPosition().getY(), this.attacker.blockPosition().getZ() - 7.5F, this.attacker.blockPosition().getX() + 7.5F, this.attacker.blockPosition().getY() + 3.0F, this.attacker.blockPosition().getZ() + 7.5F);
 
-			List<Entity> hit = attacker.world.getEntitiesWithinAABB(Entity.class, selection);
+			List<Entity> hit = attacker.level.getEntitiesOfClass(Entity.class, selection);
 			for (Entity entity : hit) {
 
 				if (entity == this.attacker) {
@@ -94,9 +96,9 @@ public class GroundAttackGoal extends Goal {
 
 				if (entity instanceof LivingEntity) {
 					if (entity.isOnGround()) {
-						entity.addVelocity(0, 0.23, 0);
+						entity.push(0, 0.23, 0);
 
-						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 0.5F));
+						entity.hurt(DamageSource.mobAttack(this.attacker).bypassArmor(), (float) (this.attacker.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 0.5F));
 					}
 				}
 			}

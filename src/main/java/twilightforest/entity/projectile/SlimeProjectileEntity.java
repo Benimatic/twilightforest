@@ -1,29 +1,29 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public class SlimeProjectileEntity extends TFThrowableEntity implements IRendersAsItem {
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+public class SlimeProjectileEntity extends TFThrowableEntity implements ItemSupplier {
 
-	public SlimeProjectileEntity(EntityType<? extends SlimeProjectileEntity> type, World world) {
+	public SlimeProjectileEntity(EntityType<? extends SlimeProjectileEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public SlimeProjectileEntity(EntityType<? extends SlimeProjectileEntity> type, World world, LivingEntity thrower) {
+	public SlimeProjectileEntity(EntityType<? extends SlimeProjectileEntity> type, Level world, LivingEntity thrower) {
 		super(type, world, thrower);
 	}
 
@@ -34,49 +34,49 @@ public class SlimeProjectileEntity extends TFThrowableEntity implements IRenders
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return 0.006F;
 	}
 
 	private void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			world.addParticle(ParticleTypes.ITEM_SLIME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			double dx = getX() + 0.5 * (random.nextDouble() - random.nextDouble());
+			double dy = getY() + 0.5 * (random.nextDouble() - random.nextDouble());
+			double dz = getZ() + 0.5 * (random.nextDouble() - random.nextDouble());
+			level.addParticle(ParticleTypes.ITEM_SLIME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
-		super.attackEntityFrom(source, amount);
+	public boolean hurt(DamageSource source, float amount) {
+		super.hurt(source, amount);
 		die();
 		return true;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.ITEM_SLIME, this.getPosX(), this.getPosY(), this.getPosZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.level.addParticle(ParticleTypes.ITEM_SLIME, this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
-			super.handleStatusUpdate(id);
+			super.handleEntityEvent(id);
 		}
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
+	protected void onHit(HitResult result) {
 		// only damage living things
-		if (result instanceof EntityRayTraceResult) {
-			Entity target = ((EntityRayTraceResult)result).getEntity();
-			if (!world.isRemote && target instanceof LivingEntity) {
-				target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getShooter()), 4);
+		if (result instanceof EntityHitResult) {
+			Entity target = ((EntityHitResult)result).getEntity();
+			if (!level.isClientSide && target instanceof LivingEntity) {
+				target.hurt(DamageSource.thrown(this, this.getOwner()), 4);
 				//damage armor pieces
-				if(target instanceof PlayerEntity) {
-					for(ItemStack stack : target.getArmorInventoryList())
-						stack.damageItem(rand.nextInt(1), ((PlayerEntity)target), (user) -> user.sendBreakAnimation(stack.getEquipmentSlot()));
+				if(target instanceof Player) {
+					for(ItemStack stack : target.getArmorSlots())
+						stack.hurtAndBreak(random.nextInt(1), ((Player)target), (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot()));
 				}
 			}
 		}
@@ -85,10 +85,10 @@ public class SlimeProjectileEntity extends TFThrowableEntity implements IRenders
 	}
 
 	private void die() {
-		if (!this.world.isRemote) {
-			this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+		if (!this.level.isClientSide) {
+			this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
 			this.remove();
-			this.world.setEntityState(this, (byte) 3);
+			this.level.broadcastEntityEvent(this, (byte) 3);
 		}
 	}
 

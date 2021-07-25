@@ -1,17 +1,17 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class TFGenericMobRenderer<T extends MobEntity, M extends EntityModel<T>> extends MobRenderer<T, M> {
+public class TFGenericMobRenderer<T extends Mob, M extends EntityModel<T>> extends MobRenderer<T, M> {
 
 	private final ResourceLocation textureLoc;
 
-	public TFGenericMobRenderer(EntityRendererManager manager, M model, float shadowSize, String textureName) {
+	public TFGenericMobRenderer(EntityRenderDispatcher manager, M model, float shadowSize, String textureName) {
 		super(manager, model, shadowSize);
 
 		if (textureName.startsWith("textures")) {
@@ -22,7 +22,7 @@ public class TFGenericMobRenderer<T extends MobEntity, M extends EntityModel<T>>
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getTextureLocation(T entity) {
 		return textureLoc;
 	}
 }

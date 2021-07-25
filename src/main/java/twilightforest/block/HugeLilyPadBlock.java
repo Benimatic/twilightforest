@@ -2,58 +2,64 @@ package twilightforest.block;
 
 import com.google.common.collect.Lists;
 import net.minecraft.block.*;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import twilightforest.enums.HugeLilypadPiece;
 
 import java.util.List;
 
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.state.BlockState;
+
 public class HugeLilyPadBlock extends BushBlock {
 
-	public static final DirectionProperty FACING = TFHorizontalBlock.HORIZONTAL_FACING;
+	public static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 	public static final EnumProperty<HugeLilypadPiece> PIECE = EnumProperty.create("piece", HugeLilypadPiece.class);
-	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0, 0, 0, 1, 0.015625, 1));
+	private static final VoxelShape AABB = Shapes.create(new AABB(0, 0, 0, 1, 0.015625, 1));
 
 	private boolean isSelfDestructing = false;
 
 	protected HugeLilyPadBlock(Properties props) {
 		super(props);
-		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(PIECE, HugeLilypadPiece.NW));
+		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PIECE, HugeLilypadPiece.NW));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(FACING, PIECE);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
 
 	@Override
-	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		FluidState ifluidstate = worldIn.getFluidState(pos);
-		return ifluidstate.getFluid() == Fluids.WATER;
+		return ifluidstate.getType() == Fluids.WATER;
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
 		//TwilightForestMod.LOGGER.info("Destroying giant lilypad at {}, state {}", pos, state);
 
 		if (!this.isSelfDestructing) {
@@ -61,7 +67,7 @@ public class HugeLilyPadBlock extends BushBlock {
 		}
 	}
 
-	private void setGiantBlockToAir(World world, BlockPos pos, BlockState state) {
+	private void setGiantBlockToAir(Level world, BlockPos pos, BlockState state) {
 		// this flag is not threadsafe
 		this.isSelfDestructing = true;
 
@@ -83,7 +89,7 @@ public class HugeLilyPadBlock extends BushBlock {
 		if (state.getBlock() == this) {
 			// find NW corner
 			BlockPos nwPos = pos;
-			switch (state.get(PIECE)) {
+			switch (state.getValue(PIECE)) {
 				case NE:
 					nwPos = nwPos.west();
 					break;
@@ -108,16 +114,16 @@ public class HugeLilyPadBlock extends BushBlock {
 
 	@Override
 	@Deprecated
-	public PushReaction getPushReaction(BlockState state) {
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
 
 	@Override
 	@Deprecated
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-		super.onEntityCollision(state, worldIn, pos, entityIn);
+	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
+		super.entityInside(state, worldIn, pos, entityIn);
 
-		if (entityIn instanceof BoatEntity) {
+		if (entityIn instanceof Boat) {
 			worldIn.destroyBlock(new BlockPos(pos), true);
 		}
 	}

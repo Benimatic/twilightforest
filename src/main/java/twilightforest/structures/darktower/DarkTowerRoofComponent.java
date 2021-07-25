@@ -1,15 +1,15 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.structures.lichtower.TowerRoofComponent;
@@ -20,19 +20,19 @@ import java.util.Random;
 
 public class DarkTowerRoofComponent extends TowerRoofComponent {
 
-	public DarkTowerRoofComponent(TemplateManager manager, CompoundNBT nbt) {
+	public DarkTowerRoofComponent(StructureManager manager, CompoundTag nbt) {
 		this(DarkTowerPieces.TFDTRooS, nbt);
 	}
 
-	public DarkTowerRoofComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public DarkTowerRoofComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public DarkTowerRoofComponent(IStructurePieceType piece, TFFeature feature, int i, TowerWingComponent wing) {
+	public DarkTowerRoofComponent(StructurePieceType piece, TFFeature feature, int i, TowerWingComponent wing) {
 		super(piece, feature, i);
 
 		// same alignment
-		this.setCoordBaseMode(wing.getCoordBaseMode());
+		this.setOrientation(wing.getOrientation());
 		// same size
 		this.size = wing.size; // assuming only square towers and roofs right now.
 		this.height = 12;
@@ -45,7 +45,7 @@ public class DarkTowerRoofComponent extends TowerRoofComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -55,20 +55,20 @@ public class DarkTowerRoofComponent extends TowerRoofComponent {
 	 * A fence around the roof!
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fence
 		for (int x = 0; x <= size - 1; x++) {
 			for (int z = 0; z <= size - 1; z++) {
 				if (x == 0 || x == size - 1 || z == 0 || z == size - 1) {
-					setBlockState(world, deco.fenceState, x, 1, z, sbb);
+					placeBlock(world, deco.fenceState, x, 1, z, sbb);
 				}
 			}
 		}
 
-		setBlockState(world, deco.accentState, 0, 1, 0, sbb);
-		setBlockState(world, deco.accentState, size - 1, 1, 0, sbb);
-		setBlockState(world, deco.accentState, 0, 1, size - 1, sbb);
-		setBlockState(world, deco.accentState, size - 1, 1, size - 1, sbb);
+		placeBlock(world, deco.accentState, 0, 1, 0, sbb);
+		placeBlock(world, deco.accentState, size - 1, 1, 0, sbb);
+		placeBlock(world, deco.accentState, 0, 1, size - 1, sbb);
+		placeBlock(world, deco.accentState, size - 1, 1, size - 1, sbb);
 
 		return true;
 	}

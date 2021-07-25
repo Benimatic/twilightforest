@@ -1,7 +1,7 @@
 package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -17,13 +17,13 @@ public class ThrowPlayerPacket {
 		this.motionZ = motionZ;
 	}
 
-	public ThrowPlayerPacket(PacketBuffer buf) {
+	public ThrowPlayerPacket(FriendlyByteBuf buf) {
 		motionX = buf.readFloat();
 		motionY = buf.readFloat();
 		motionZ = buf.readFloat();
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeFloat(motionX);
 		buf.writeFloat(motionY);
 		buf.writeFloat(motionZ);
@@ -35,7 +35,7 @@ public class ThrowPlayerPacket {
 			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					Minecraft.getInstance().player.addVelocity(message.motionX, message.motionY, message.motionZ);
+					Minecraft.getInstance().player.push(message.motionX, message.motionY, message.motionZ);
 				}
 			});
 

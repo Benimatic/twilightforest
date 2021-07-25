@@ -1,24 +1,24 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFFeature;
@@ -30,16 +30,16 @@ import twilightforest.item.TFItems;
 import twilightforest.world.TFGenerationSettings;
 
 public class MinoshroomEntity extends MinotaurEntity {
-	private static final DataParameter<Boolean> GROUND_ATTACK = EntityDataManager.createKey(MinoshroomEntity.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> GROUND_CHARGE = EntityDataManager.createKey(MinoshroomEntity.class, DataSerializers.VARINT);
+	private static final EntityDataAccessor<Boolean> GROUND_ATTACK = SynchedEntityData.defineId(MinoshroomEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Integer> GROUND_CHARGE = SynchedEntityData.defineId(MinoshroomEntity.class, EntityDataSerializers.INT);
 	private float prevClientSideChargeAnimation;
 	private float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
 
-	public MinoshroomEntity(EntityType<? extends MinoshroomEntity> type, World world) {
+	public MinoshroomEntity(EntityType<? extends MinoshroomEntity> type, Level world) {
 		super(type, world);
-		this.experienceValue = 100;
-		this.setDropChance(EquipmentSlotType.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped
+		this.xpReward = 100;
+		this.setDropChance(EquipmentSlot.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped
 	}
 
 	@Override
@@ -49,44 +49,44 @@ public class MinoshroomEntity extends MinotaurEntity {
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(GROUND_ATTACK, false);
-		dataManager.register(GROUND_CHARGE, 0);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(GROUND_ATTACK, false);
+		entityData.define(GROUND_CHARGE, 0);
 	}
 
 	public boolean isGroundAttackCharge() {
-		return dataManager.get(GROUND_ATTACK);
+		return entityData.get(GROUND_ATTACK);
 	}
 
 	public void setGroundAttackCharge(boolean flag) {
-		dataManager.set(GROUND_ATTACK, flag);
+		entityData.set(GROUND_ATTACK, flag);
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeSupplier.Builder registerAttributes() {
 		return MinotaurEntity.registerAttributes()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 120.0D);
+				.add(Attributes.MAX_HEALTH, 120.0D);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.world.isRemote) {
+		if (this.level.isClientSide) {
 			this.prevClientSideChargeAnimation = this.clientSideChargeAnimation;
 			if (this.isGroundAttackCharge()) {
-				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation + (1F / ((float) dataManager.get(GROUND_CHARGE)) * 6F), 0.0F, 6.0F);
+				this.clientSideChargeAnimation = Mth.clamp(this.clientSideChargeAnimation + (1F / ((float) entityData.get(GROUND_CHARGE)) * 6F), 0.0F, 6.0F);
 				groundSmashState = true;
 			} else {
-				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation - 1.0F, 0.0F, 6.0F);
+				this.clientSideChargeAnimation = Mth.clamp(this.clientSideChargeAnimation - 1.0F, 0.0F, 6.0F);
 				if (groundSmashState) {
-					BlockState block = world.getBlockState(getPosition().down());
+					BlockState block = level.getBlockState(blockPosition().below());
 
 					for (int i = 0; i < 80; i++) {
-						double cx = getPosition().getX() + world.rand.nextFloat() * 10F - 5F;
-						double cy = getBoundingBox().minY + 0.1F + world.rand.nextFloat() * 0.3F;
-						double cz = getPosition().getZ() + world.rand.nextFloat() * 10F - 5F;
+						double cx = blockPosition().getX() + level.random.nextFloat() * 10F - 5F;
+						double cy = getBoundingBox().minY + 0.1F + level.random.nextFloat() * 0.3F;
+						double cz = blockPosition().getZ() + level.random.nextFloat() * 10F - 5F;
 
-						world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, block), cx, cy, cz, 0D, 0D, 0D);
+						level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), cx, cy, cz, 0D, 0D, 0D);
 					}
 					groundSmashState = false;
 				}
@@ -115,11 +115,11 @@ public class MinoshroomEntity extends MinotaurEntity {
 	}
 	
 	@Override
-	public boolean attackEntityAsMob(Entity entity) {
-		boolean success = super.attackEntityAsMob(entity);
+	public boolean doHurtTarget(Entity entity) {
+		boolean success = super.doHurtTarget(entity);
 
 		if (success && this.isCharging()) {
-			entity.addVelocity(0, 0.4, 0);
+			entity.push(0, 0.4, 0);
 			playSound(TFSounds.MINOSHROOM_ATTACK, 1.0F, 1.0F);
 		}
 
@@ -132,33 +132,33 @@ public class MinoshroomEntity extends MinotaurEntity {
 	}
 
 	public void setMaxCharge(int charge) {
-		dataManager.set(GROUND_CHARGE, charge);
+		entityData.set(GROUND_CHARGE, charge);
 	}
 
 	@Override
-	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		super.setEquipmentBasedOnDifficulty(difficulty);
-		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.minotaur_axe.get()));
+	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+		super.populateDefaultEquipmentSlots(difficulty);
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe.get()));
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
-		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.LABYRINTH);
+	public void die(DamageSource cause) {
+		super.die(cause);
+		if (!level.isClientSide) {
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.LABYRINTH);
 		}
 	}
 
 	@Override
-	public boolean canDespawn(double distance) {
+	public boolean removeWhenFarAway(double distance) {
 		return false;
 	}
 
 	@Override
 	public void checkDespawn() {
-		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (detachHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_minoshroom.get().getDefaultState());
+		if (level.getDifficulty() == Difficulty.PEACEFUL) {
+			if (hasRestriction()) {
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_minoshroom.get().defaultBlockState());
 			}
 			remove();
 		} else {
@@ -167,12 +167,12 @@ public class MinoshroomEntity extends MinotaurEntity {
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public boolean canChangeDimension() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 }

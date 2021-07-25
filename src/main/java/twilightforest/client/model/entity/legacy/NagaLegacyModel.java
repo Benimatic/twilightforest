@@ -1,35 +1,35 @@
 package twilightforest.client.model.entity.legacy;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.Entity;
 import twilightforest.entity.boss.NagaEntity;
 import twilightforest.entity.boss.NagaSegmentEntity;
 
-public class NagaLegacyModel<T extends Entity> extends SegmentedModel<T> {
+public class NagaLegacyModel<T extends Entity> extends ListModel<T> {
 
 	private T entity;
 
 	public NagaLegacyModel() {
-		head = new ModelRenderer(this, 0, 0);
+		head = new ModelPart(this, 0, 0);
 		head.addBox(-8F, -12F, -8F, 16, 16, 16, 0F);
-		head.setRotationPoint(0F, 0F, 0F);
+		head.setPos(0F, 0F, 0F);
 
-		body = new ModelRenderer(this, 0, 0);
+		body = new ModelPart(this, 0, 0);
 		body.addBox(-8F, -16F, -8F, 16, 16, 16, 0F);
-		body.setRotationPoint(0F, 0F, 0F);
+		body.setPos(0F, 0F, 0F);
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(head, body);
 	}
 
 	@Override
-	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
 
 		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
@@ -43,11 +43,11 @@ public class NagaLegacyModel<T extends Entity> extends SegmentedModel<T> {
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(T entity, float v, float v1, float v2, float v3, float v4) {
 		this.entity = entity;
 	}
 
 	//fields
-	public ModelRenderer head;
-	public ModelRenderer body;
+	public ModelPart head;
+	public ModelPart body;
 }

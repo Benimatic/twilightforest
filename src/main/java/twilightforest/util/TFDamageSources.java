@@ -1,17 +1,17 @@
 package twilightforest.util;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 
 public class TFDamageSources {
     public static final DamageSource GHAST_TEAR = new DamageSource(tfSource("ghastTear")); //ur-ghast
     public static final DamageSource HYDRA_BITE = new DamageSource(tfSource("hydraBite")); //hydra
     public static final DamageSource HYDRA_FIRE = new DamageSource(tfSource("hydraFire")); //hydra
-    public static final DamageSource LICH_BOLT = new DamageSource(tfSource("lichBolt")).setDamageBypassesArmor().setMagicDamage(); //lich
-    public static final DamageSource LICH_BOMB = new DamageSource(tfSource("lichBomb")).setDamageBypassesArmor().setMagicDamage(); //lich
+    public static final DamageSource LICH_BOLT = new DamageSource(tfSource("lichBolt")).bypassArmor().setMagic(); //lich
+    public static final DamageSource LICH_BOMB = new DamageSource(tfSource("lichBomb")).bypassArmor().setMagic(); //lich
     public static final DamageSource CHILLING_BREATH = new DamageSource(tfSource("chillingBreath")); //snow queen
     public static final DamageSource SQUISH = new DamageSource(tfSource("squish")); //snow queen
     public static final DamageSource THROWN_AXE = new DamageSource(tfSource("thrownAxe"));
@@ -49,10 +49,10 @@ public class TFDamageSources {
         return new IndirectEntityDamageSource(tfSource("spiked"), source, mob); //block and chain
     }
     public static DamageSource LEAF_BRAIN(Entity source, LivingEntity mob) {
-        return new IndirectEntityDamageSource(tfSource("leafBrain"), source, mob).setDamageBypassesArmor().setMagicDamage(); //druid
+        return new IndirectEntityDamageSource(tfSource("leafBrain"), source, mob).bypassArmor().setMagic(); //druid
     }
     public static DamageSource LOST_WORDS(Entity source, LivingEntity mob) {
-        return new IndirectEntityDamageSource(tfSource("lostWords"), source, mob).setDamageBypassesArmor().setMagicDamage(); //tome
+        return new IndirectEntityDamageSource(tfSource("lostWords"), source, mob).bypassArmor().setMagic(); //tome
     }
     public static DamageSource SNOWBALL_FIGHT(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("snowballFight"), source, mob); //ice core

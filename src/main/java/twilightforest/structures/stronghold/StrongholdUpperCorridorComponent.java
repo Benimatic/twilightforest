@@ -1,16 +1,16 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class StrongholdUpperCorridorComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdUpperCorridorComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdUpperCorridorComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSUCo, nbt);
 	}
 
@@ -27,21 +27,21 @@ public class StrongholdUpperCorridorComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 5, 9, facing);
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+		return BoundingBox.orientBox(x, y, z, -2, -1, 0, 5, 5, 9, facing);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		// make a random component at the end
 		addNewUpperComponent(parent, list, random, Rotation.NONE, 2, 1, 9);
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.isLiquidInStructureBoundingBox(world, sbb)) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		if (this.edgesLiquid(world, sbb)) {
 			return false;
 		} else {
 			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 4, 8, rand, deco.randomBlocks);

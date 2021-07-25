@@ -1,13 +1,13 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -19,26 +19,26 @@ import java.util.function.Predicate;
 public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 
 	private final Predicate<Entity> builtTargetSelector;
-	protected final CreatureEntity entity;
+	protected final PathfinderMob entity;
 	private final double farSpeed;
 	private final double nearSpeed;
 	protected T avoidTarget;
 	protected final float avoidDistance;
 	protected Path path;
-	protected final PathNavigator navigation;
+	protected final PathNavigation navigation;
 	/** Class of entity this behavior seeks to avoid */
 	protected final Class<T> classToAvoid;
 	protected final Predicate<Entity> avoidTargetSelector;
 
-	public AvoidAnyEntityGoal(CreatureEntity entityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn) {
+	public AvoidAnyEntityGoal(PathfinderMob entityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn) {
 		this(entityIn, classToAvoidIn, (entity) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn);
 	}
 
-	public AvoidAnyEntityGoal(CreatureEntity entityIn, Class<T> avoidClass, Predicate<Entity> targetPredicate, float distance, double nearSpeedIn, double farSpeedIn) {
+	public AvoidAnyEntityGoal(PathfinderMob entityIn, Class<T> avoidClass, Predicate<Entity> targetPredicate, float distance, double nearSpeedIn, double farSpeedIn) {
 		this.builtTargetSelector = new Predicate<Entity>() {
 			@Override
 			public boolean test(@Nullable Entity input) {
-				return input.isAlive() && AvoidAnyEntityGoal.this.entity.getEntitySenses().canSee(input) && !AvoidAnyEntityGoal.this.entity.isOnSameTeam(input);
+				return input.isAlive() && AvoidAnyEntityGoal.this.entity.getSensing().canSee(input) && !AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
 			}
 		};
 
@@ -48,24 +48,24 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 		this.avoidDistance = distance;
 		this.farSpeed = nearSpeedIn;
 		this.nearSpeed = farSpeedIn;
-		this.navigation = entityIn.getNavigator();
-		this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+		this.navigation = entityIn.getNavigation();
+		this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		List<T> list = this.entity.world.getEntitiesWithinAABB(this.classToAvoid, this.entity.getBoundingBox().grow(this.avoidDistance, 3.0D, this.avoidDistance), EntityPredicates.CAN_AI_TARGET.and(this.builtTargetSelector).and(avoidTargetSelector));
+	public boolean canUse() {
+		List<T> list = this.entity.level.getEntitiesOfClass(this.classToAvoid, this.entity.getBoundingBox().inflate(this.avoidDistance, 3.0D, this.avoidDistance), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(this.builtTargetSelector).and(avoidTargetSelector));
 
 		if (!list.isEmpty()) {
 			this.avoidTarget = list.get(0);
-			Vector3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.entity, 16, 7, this.entity.getPositionVec());
+			Vec3 vec3d = RandomPos.getPosAvoid(this.entity, 16, 7, this.entity.position());
 
 			if (vec3d == null) {
 				return false;
-			} else if (this.avoidTarget.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.avoidTarget.getDistanceSq(this.entity)) {
+			} else if (this.avoidTarget.distanceToSqr(vec3d.x, vec3d.y, vec3d.z) < this.avoidTarget.distanceToSqr(this.entity)) {
 				return false;
 			} else {
-				this.path = this.navigation.pathfind(vec3d.x, vec3d.y, vec3d.z, 0);
+				this.path = this.navigation.createPath(vec3d.x, vec3d.y, vec3d.z, 0);
 				return this.path != null;
 			}
 		}
@@ -73,26 +73,26 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return !this.navigation.noPath();
+	public boolean canContinueToUse() {
+		return !this.navigation.isDone();
 	}
 
 	@Override
-	public void startExecuting() {
-		this.navigation.setPath(this.path, this.farSpeed);
+	public void start() {
+		this.navigation.moveTo(this.path, this.farSpeed);
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.avoidTarget = null;
 	}
 
 	@Override
 	public void tick() {
-		if (this.entity.getDistanceSq(this.avoidTarget) < 49.0D) {
-			this.entity.getNavigator().setSpeed(this.nearSpeed);
+		if (this.entity.distanceToSqr(this.avoidTarget) < 49.0D) {
+			this.entity.getNavigation().setSpeedModifier(this.nearSpeed);
 		} else {
-			this.entity.getNavigator().setSpeed(this.farSpeed);
+			this.entity.getNavigation().setSpeedModifier(this.farSpeed);
 		}
 	}
 }

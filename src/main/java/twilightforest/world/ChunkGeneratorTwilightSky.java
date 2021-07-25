@@ -2,70 +2,70 @@ package twilightforest.world;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.StructureFeatureManager;
 
 import java.util.function.Supplier;
 
 public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 	public static final Codec<ChunkGeneratorTwilightSky> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-			BiomeProvider.CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
+			BiomeSource.CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeSource),
 			Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
-			DimensionSettings.DIMENSION_SETTINGS_CODEC.fieldOf("settings").forGetter(ChunkGeneratorTwilightSky::getDimensionSettings)
+			NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(ChunkGeneratorTwilightSky::getDimensionSettings)
 	).apply(instance, instance.stable(ChunkGeneratorTwilightSky::new)));
 
 	//private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
 	private final long seed;
-	protected final Supplier<DimensionSettings> dimensionSettings;
+	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
 
-	public ChunkGeneratorTwilightSky(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
+	public ChunkGeneratorTwilightSky(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings) {
 		super(provider, seed, settings, false);
 		this.seed = seed;
 		this.dimensionSettings = settings;
 	}
 
 	@Override
-	protected Codec<? extends ChunkGenerator> func_230347_a_() {
+	protected Codec<? extends ChunkGenerator> codec() {
 		return CODEC;
 	}
 
 	@Override
-	public ChunkGenerator func_230349_a_(long l) {
-		return new ChunkGeneratorTwilightSky(this.biomeProvider.getBiomeProvider(l), l, this.dimensionSettings);
+	public ChunkGenerator withSeed(long l) {
+		return new ChunkGeneratorTwilightSky(this.biomeSource.withSeed(l), l, this.dimensionSettings);
 	}
 
-	private Supplier<DimensionSettings> getDimensionSettings() {
+	private Supplier<NoiseGeneratorSettings> getDimensionSettings() {
 		return this.dimensionSettings;
 	}
 
 	@Override
-	public void generateSurface(WorldGenRegion worldGenRegion, IChunk iChunk) {
+	public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, ChunkAccess iChunk) {
 
 	}
 
 	@Override
-	public void func_230354_a_(WorldGenRegion region) { //decorate?
-		int x = region.getMainChunkX();
-		int z = region.getMainChunkZ();
+	public void spawnOriginalMobs(WorldGenRegion region) { //decorate?
+		int x = region.getCenterX();
+		int z = region.getCenterZ();
 
 		//TODO: Is there a point to this?
 //		rand.setSeed(getSeed(x, z));
 
 		ChunkBitArray data = new ChunkBitArray();
-		//func_222529_a(x, z, data);
+		//getBaseHeight(x, z, data);
 		//squishTerrain(data); Not required anymore; noise config
 
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		//this.biomesForGeneration = getBiomeProvider().getBiomesInArea(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		ChunkPrimer primer = new DirectChunkPrimer(new ChunkPos(x, z));
+		ProtoChunk primer = new DirectChunkPrimer(new ChunkPos(x, z));
 		//initPrimer(primer, data); TODO : Should be do SurfaceBuilder
 
 		//deformTerrainForFeature(x, z, region);
@@ -80,8 +80,8 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 	}
 
 	@Override
-	public void func_230352_b_(IWorld world, StructureManager p_230352_2_, IChunk chunk) {
-		super.func_230352_b_(world, p_230352_2_, chunk);
+	public void fillFromNoise(LevelAccessor world, StructureFeatureManager p_230352_2_, ChunkAccess chunk) {
+		super.fillFromNoise(world, p_230352_2_, chunk);
 
 		if(!(world instanceof WorldGenRegion))
 			return;

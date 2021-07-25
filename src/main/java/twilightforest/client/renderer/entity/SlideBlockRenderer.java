@@ -1,69 +1,71 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RotatedPillarBlock;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import com.mojang.math.Vector3f;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.ForgeHooksClient;
 import twilightforest.entity.SlideBlockEntity;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+
 public class SlideBlockRenderer extends EntityRenderer<SlideBlockEntity> {
 
-	public SlideBlockRenderer(EntityRendererManager manager) {
+	public SlideBlockRenderer(EntityRenderDispatcher manager) {
 		super(manager);
-		shadowSize = 0.0f;
+		shadowRadius = 0.0f;
 	}
 
 	// [VanillaCopy] RenderFallingBlock, with spin
 	@Override
-	public void render(SlideBlockEntity entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(SlideBlockEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (entity.getBlockState() != null) {
 			BlockState blockstate = entity.getBlockState();
 
-			if (blockstate.getRenderType() == BlockRenderType.MODEL) {
-				World world = entity.world;
+			if (blockstate.getRenderShape() == RenderShape.MODEL) {
+				Level world = entity.level;
 
-				if (blockstate != world.getBlockState(entity.getPosition()) && blockstate.getRenderType() != BlockRenderType.INVISIBLE) {
-					stack.push();
-					BlockPos blockpos = new BlockPos(entity.getPosX(), entity.getBoundingBox().maxY, entity.getPosZ());
+				if (blockstate != world.getBlockState(entity.blockPosition()) && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
+					stack.pushPose();
+					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
 					// spin
 					if (blockstate.getProperties().contains(RotatedPillarBlock.AXIS)) {
-						Direction.Axis axis = blockstate.get(RotatedPillarBlock.AXIS);
-						float angle = (entity.ticksExisted + partialTicks) * 60F;
+						Direction.Axis axis = blockstate.getValue(RotatedPillarBlock.AXIS);
+						float angle = (entity.tickCount + partialTicks) * 60F;
 						stack.translate(0.0, 0.5, 0.0);
 						if (axis == Direction.Axis.Y) {
-							stack.rotate(Vector3f.YP.rotationDegrees(angle));
+							stack.mulPose(Vector3f.YP.rotationDegrees(angle));
 						} else if (axis == Direction.Axis.X) {
-							stack.rotate(Vector3f.XP.rotationDegrees(angle));
+							stack.mulPose(Vector3f.XP.rotationDegrees(angle));
 						} else if (axis == Direction.Axis.Z) {
-							stack.rotate(Vector3f.ZP.rotationDegrees(angle));
+							stack.mulPose(Vector3f.ZP.rotationDegrees(angle));
 						}
 						stack.translate(-0.5, -0.5, -0.5);
 					}
 
-					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-					for (RenderType type : RenderType.getBlockRenderTypes()) {
-						if (RenderTypeLookup.canRenderInLayer(blockstate, type)) {
+					BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
+					for (RenderType type : RenderType.chunkBufferLayers()) {
+						if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
 							ForgeHooksClient.setRenderLayer(type);
-							blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getPositionRandom(blockpos), OverlayTexture.NO_OVERLAY);
+							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
 						}
 					}
 					ForgeHooksClient.setRenderLayer(null);
 
-					stack.pop();
+					stack.popPose();
 					super.render(entity, yaw, partialTicks, stack, buffer, light);
 				}
 			}
@@ -71,7 +73,7 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlockEntity> {
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(SlideBlockEntity entity) {
-		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+	public ResourceLocation getTextureLocation(SlideBlockEntity entity) {
+		return TextureAtlas.LOCATION_BLOCKS;
 	}
 }

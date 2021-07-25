@@ -1,10 +1,10 @@
 package twilightforest.world.layer;
 
-import net.minecraft.world.gen.IExtendedNoiseRandom;
-import net.minecraft.world.gen.area.IArea;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
+import net.minecraft.world.level.newbiome.context.BigContext;
+import net.minecraft.world.level.newbiome.area.Area;
+import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer1;
 
-public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
+public enum GenLayerTFBiomeStabilize implements AreaTransformer1 {
 
 	INSTANCE;
 
@@ -16,12 +16,12 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 	GenLayerTFBiomeStabilize() { }
 
 	@Override
-	public int getOffsetX(int x) {
+	public int getParentX(int x) {
 		return x & 3;
 	}
 
 	@Override
-	public int getOffsetZ(int z) {
+	public int getParentY(int z) {
 		return z & 3;
 	}
 
@@ -65,9 +65,9 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 //	}
 
 	@Override
-	public int apply(IExtendedNoiseRandom<?> iExtendedNoiseRandom, IArea iArea, int x, int z) {
-		int offX = getOffsetX(x << 4);
-		int offZ = getOffsetZ(z << 4);
+	public int applyPixel(BigContext<?> iExtendedNoiseRandom, Area iArea, int x, int z) {
+		int offX = getParentX(x << 4);
+		int offZ = getParentY(z << 4);
 		int centerX = ((x + offX + 1) & -4) - offX;
 		int centerZ = ((z + offZ + 1) & -4) - offZ;
 
@@ -78,11 +78,11 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 //            	}
 //            	else
 		if (x <= centerX + 1 && x >= centerX - 1 && z <= centerZ + 1 && z >= centerZ - 1) {
-			return iArea.getValue(centerX, centerZ);
+			return iArea.get(centerX, centerZ);
 //            		output[dx + dz * width] = Biome.desert.biomeID;
 //            		output[dx + dz * width] = input[dx + 1 + (dz + 1) * nwidth];
 		} else {
-			return iArea.getValue(x, z);
+			return iArea.get(x, z);
 		}
 	}
 }

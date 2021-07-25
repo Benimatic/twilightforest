@@ -1,10 +1,10 @@
 package twilightforest.world.layer;
 
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.IExtendedNoiseRandom;
-import net.minecraft.world.gen.area.IArea;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.newbiome.context.BigContext;
+import net.minecraft.world.level.newbiome.area.Area;
+import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer1;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFDimensions;
@@ -16,7 +16,7 @@ import java.util.Random;
  *
  * @author Ben
  */
-public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
+public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	INSTANCE;
 
 	private Registry<Biome> registry;
@@ -30,17 +30,17 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 	}
 
 	@Override
-	public int getOffsetX(int x) {
+	public int getParentX(int x) {
 		return x | 3;
 	}
 
 	@Override
-	public int getOffsetZ(int z) {
+	public int getParentY(int z) {
 		return z | 3;
 	}
 
 	@Override
-	public int apply(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
+	public int applyPixel(BigContext<?> random, Area iArea, int x, int z) {
 		RANDOM.setSeed(TFDimensions.seed + (x & -4) * 25117 + (z & -4) * 151121);
 		int ox = RANDOM.nextInt(2) + 1;
 		int oz = RANDOM.nextInt(2) + 1;
@@ -63,7 +63,7 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 			}
 
 		} else {
-			return iArea.getValue(x, z);
+			return iArea.get(x, z);
 		}
 	}
 

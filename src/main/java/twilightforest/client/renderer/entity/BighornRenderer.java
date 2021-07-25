@@ -1,12 +1,12 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.SheepRenderer;
-import net.minecraft.client.renderer.entity.layers.SheepWoolLayer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.SheepModel;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.layers.SheepFurLayer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.SheepModel;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class BighornRenderer extends SheepRenderer {
@@ -14,15 +14,15 @@ public class BighornRenderer extends SheepRenderer {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("bighorn.png");
 
 	@SuppressWarnings("unchecked")
-	public BighornRenderer(EntityRendererManager manager, SheepModel<? extends SheepEntity> baseModel, EntityModel<?> coatModel, float shadowSize) {
+	public BighornRenderer(EntityRenderDispatcher manager, SheepModel<? extends Sheep> baseModel, EntityModel<?> coatModel, float shadowSize) {
 		super(manager);
-		this.shadowSize = shadowSize;
-		this.entityModel = (SheepModel<SheepEntity>) baseModel;
-		this.addLayer(new SheepWoolLayer(this));
+		this.shadowRadius = shadowSize;
+		this.model = (SheepModel<Sheep>) baseModel;
+		this.addLayer(new SheepFurLayer(this));
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(SheepEntity ent) {
+	public ResourceLocation getTextureLocation(Sheep ent) {
 		return textureLoc;
 	}
 }

@@ -1,8 +1,10 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 /**
  * Just a dummy subclass to register the extra blockstate property.
@@ -12,12 +14,12 @@ public class ReappearingBlock extends VanishingBlock {
 
 	public ReappearingBlock(Properties props) {
 		super(props);
-		this.setDefaultState(getDefaultState().with(VANISHED, false));
+		this.registerDefaultState(defaultBlockState().setValue(VANISHED, false));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(VANISHED);
 	}
 }

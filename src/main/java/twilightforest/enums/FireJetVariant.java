@@ -1,21 +1,21 @@
 package twilightforest.enums;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
 import java.util.Locale;
 
-public enum FireJetVariant implements IStringSerializable {
+public enum FireJetVariant implements StringRepresentable {
 	IDLE,
 	POPPING,
 	FLAME;
 
 	@Override
 	public String toString() {
-		return getString();
+		return getSerializedName();
 	}
 
 	@Override
-	public String getString() {
+	public String getSerializedName() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 }

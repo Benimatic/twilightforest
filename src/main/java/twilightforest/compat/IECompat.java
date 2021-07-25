@@ -4,13 +4,13 @@ import blusunrize.immersiveengineering.api.energy.ThermoelectricHandler;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.tool.RailgunHandler;
 import blusunrize.immersiveengineering.common.EventHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
@@ -60,14 +60,14 @@ public class IECompat extends TFCompat {
     @Override
     protected void init() {
         // Yeah, it's a thing! https://twitter.com/AtomicBlom/status/1004931868012056583
-        RailgunHandler.registerProjectile(() -> Ingredient.fromItems(TFBlocks.cicada.get().asItem()),
+        RailgunHandler.registerProjectile(() -> Ingredient.of(TFBlocks.cicada.get().asItem()),
                 (new RailgunHandler.StandardRailgunProjectile(2.0D, 0.25D) {
 
                     @Override
-                    public Entity getProjectile(@Nullable PlayerEntity shooter, ItemStack ammo, Entity projectile) {
-                        Vector3d look = shooter.getLookVec();
+                    public Entity getProjectile(@Nullable Player shooter, ItemStack ammo, Entity projectile) {
+                        Vec3 look = shooter.getLookAngle();
                         //FallingBlockEntity doesnt like cicadas, so custom entity it is
-                        return new CicadaShotEntity(shooter.getEntityWorld(), shooter, look.x * 20.0D, look.y * 20.0D, look.z * 20.0D);
+                        return new CicadaShotEntity(shooter.getCommandSenderWorld(), shooter, look.x * 20.0D, look.y * 20.0D, look.z * 20.0D);
                     }
 
                     @Override

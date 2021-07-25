@@ -1,33 +1,33 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public abstract class TFThrowableEntity extends ThrowableEntity implements ITFProjectile {
+public abstract class TFThrowableEntity extends ThrowableProjectile implements ITFProjectile {
 
-	public TFThrowableEntity(EntityType<? extends TFThrowableEntity> type, World worldIn) {
+	public TFThrowableEntity(EntityType<? extends TFThrowableEntity> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
-	public TFThrowableEntity(EntityType<? extends TFThrowableEntity> type, World worldIn, double x, double y, double z) {
+	public TFThrowableEntity(EntityType<? extends TFThrowableEntity> type, Level worldIn, double x, double y, double z) {
 		super(type, x, y, z, worldIn);
 	}
 
-	public TFThrowableEntity(EntityType<? extends TFThrowableEntity> type, World worldIn, LivingEntity throwerIn) {
+	public TFThrowableEntity(EntityType<? extends TFThrowableEntity> type, Level worldIn, LivingEntity throwerIn) {
 		super(type, throwerIn, worldIn);
 	}
 
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 		
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

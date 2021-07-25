@@ -1,35 +1,42 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public class ForceFieldBlock extends ConnectableRotatedPillarBlock implements IWaterLoggable {
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class ForceFieldBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	ForceFieldBlock(Block.Properties props) {
+	ForceFieldBlock(BlockBehaviour.Properties props) {
 		super(props, 2);
-		this.setDefaultState(getDefaultState().with(WATERLOGGED, false));
+		this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 
 	@Override
-	protected AxisAlignedBB getSidedAABBStraight(Direction facing, Direction.Axis axis) {
+	protected AABB getSidedAABBStraight(Direction facing, Direction.Axis axis) {
 		return makeQuickAABB(
 				facing == Direction.EAST  || axis == Direction.Axis.X ? 16 : this.boundingBoxWidthLower,
 				facing == Direction.UP    || axis == Direction.Axis.Y ? 16 : this.boundingBoxWidthLower,
@@ -40,65 +47,65 @@ public class ForceFieldBlock extends ConnectableRotatedPillarBlock implements IW
 	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
+	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
 		return false;
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (adjacentBlockState.matchesBlock(this)) {
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+		if (adjacentBlockState.is(this)) {
 			if (!side.getAxis().isHorizontal()) {
 				return true;
 			}
 
-			if (state.get(SixWayBlock.FACING_TO_PROPERTY_MAP.get(side)) && adjacentBlockState.get(SixWayBlock.FACING_TO_PROPERTY_MAP.get(side.getOpposite()))) {
+			if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(side)) && adjacentBlockState.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(side.getOpposite()))) {
 				return true;
 			}
 		}
 
-		return super.isSideInvisible(state, adjacentBlockState, side);
+		return super.skipRendering(state, adjacentBlockState, side);
 	}
 
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
 		return true;
 	}
 
 	public boolean canConnectTo(BlockState state, boolean solidSide) {
 		Block block = state.getBlock();
-		return !cannotAttach(block) && solidSide || block instanceof ForceFieldBlock || block instanceof PaneBlock || block.isIn(BlockTags.WALLS);
+		return !isExceptionForConnection(block) && solidSide || block instanceof ForceFieldBlock || block instanceof IronBarsBlock || block.is(BlockTags.WALLS);
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-		boolean flag = fluidstate.getFluid() == Fluids.WATER;
-		return super.getStateForPlacement(context).with(WATERLOGGED, Boolean.valueOf(flag));
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+		boolean flag = fluidstate.getType() == Fluids.WATER;
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.getValue(WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(WATERLOGGED);
 	}
 }

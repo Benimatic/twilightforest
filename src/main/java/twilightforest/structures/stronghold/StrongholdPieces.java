@@ -1,8 +1,8 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.util.Direction;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 
@@ -34,27 +34,27 @@ public class StrongholdPieces {
 
 	//public static final IStructurePieceType TFKSt = TFFeature.registerPiece("TFKSt", StructureStartKnightStronghold::new);
 
-	public static final IStructurePieceType TFSSH = TFFeature.registerPiece("TFSSH", StrongholdSmallHallwayComponent::new);
-	public static final IStructurePieceType TFSLT = TFFeature.registerPiece("TFSLT", StrongholdLeftTurnComponent::new);
-	public static final IStructurePieceType TFSCr = TFFeature.registerPiece("TFSCr", StrongholdCrossingComponent::new);
-	public static final IStructurePieceType TFSRT = TFFeature.registerPiece("TFSRT", StrongholdRightTurnComponent::new);
-	public static final IStructurePieceType TFSDE = TFFeature.registerPiece("TFSDE", StrongholdDeadEndComponent::new);
-	public static final IStructurePieceType TFSBalR = TFFeature.registerPiece("TFSBalR", StrongholdBalconyRoomComponent::new);
-	public static final IStructurePieceType TFSTR = TFFeature.registerPiece("TFSTR", StrongholdTrainingRoomComponent::new);
-	public static final IStructurePieceType TFSSS = TFFeature.registerPiece("TFSSS", StrongholdSmallStairsComponent::new);
-	public static final IStructurePieceType TFSTC = TFFeature.registerPiece("TFSTC", StrongholdTreasureCorridorComponent::new);
-	public static final IStructurePieceType TFSAt = TFFeature.registerPiece("TFSAt", StrongholdAtriumComponent::new);
-	public static final IStructurePieceType TFSFo = TFFeature.registerPiece("TFSFo", StrongholdFoundryComponent::new);
-	public static final IStructurePieceType TFTreaR = TFFeature.registerPiece("TFTreaR", StrongholdTreasureRoomComponent::new);
-	public static final IStructurePieceType TFSBR = TFFeature.registerPiece("TFSBR", StrongholdBossRoomComponent::new);
-	public static final IStructurePieceType TFSAC = TFFeature.registerPiece("TFSAC", StrongholdAccessChamberComponent::new);
-	public static final IStructurePieceType TFSEnter = TFFeature.registerPiece("TFSEnter", StrongholdEntranceComponent::new);
-	public static final IStructurePieceType TFSUA = TFFeature.registerPiece("TFSUA", StrongholdUpperAscenderComponent::new);
-	public static final IStructurePieceType TFSULT = TFFeature.registerPiece("TFSULT", StrongholdUpperLeftTurnComponent::new);
-	public static final IStructurePieceType TFSURT = TFFeature.registerPiece("TFSURT", StrongholdUpperRightTurnComponent::new);
-	public static final IStructurePieceType TFSUCo = TFFeature.registerPiece("TFSUCo", StrongholdUpperCorridorComponent::new);
-	public static final IStructurePieceType TFSUTI = TFFeature.registerPiece("TFSUTI", StrongholdUpperTIntersectionComponent::new);
-	public static final IStructurePieceType TFSShield = TFFeature.registerPiece("TFSShield", StrongholdShieldStructure::new);
+	public static final StructurePieceType TFSSH = TFFeature.registerPiece("TFSSH", StrongholdSmallHallwayComponent::new);
+	public static final StructurePieceType TFSLT = TFFeature.registerPiece("TFSLT", StrongholdLeftTurnComponent::new);
+	public static final StructurePieceType TFSCr = TFFeature.registerPiece("TFSCr", StrongholdCrossingComponent::new);
+	public static final StructurePieceType TFSRT = TFFeature.registerPiece("TFSRT", StrongholdRightTurnComponent::new);
+	public static final StructurePieceType TFSDE = TFFeature.registerPiece("TFSDE", StrongholdDeadEndComponent::new);
+	public static final StructurePieceType TFSBalR = TFFeature.registerPiece("TFSBalR", StrongholdBalconyRoomComponent::new);
+	public static final StructurePieceType TFSTR = TFFeature.registerPiece("TFSTR", StrongholdTrainingRoomComponent::new);
+	public static final StructurePieceType TFSSS = TFFeature.registerPiece("TFSSS", StrongholdSmallStairsComponent::new);
+	public static final StructurePieceType TFSTC = TFFeature.registerPiece("TFSTC", StrongholdTreasureCorridorComponent::new);
+	public static final StructurePieceType TFSAt = TFFeature.registerPiece("TFSAt", StrongholdAtriumComponent::new);
+	public static final StructurePieceType TFSFo = TFFeature.registerPiece("TFSFo", StrongholdFoundryComponent::new);
+	public static final StructurePieceType TFTreaR = TFFeature.registerPiece("TFTreaR", StrongholdTreasureRoomComponent::new);
+	public static final StructurePieceType TFSBR = TFFeature.registerPiece("TFSBR", StrongholdBossRoomComponent::new);
+	public static final StructurePieceType TFSAC = TFFeature.registerPiece("TFSAC", StrongholdAccessChamberComponent::new);
+	public static final StructurePieceType TFSEnter = TFFeature.registerPiece("TFSEnter", StrongholdEntranceComponent::new);
+	public static final StructurePieceType TFSUA = TFFeature.registerPiece("TFSUA", StrongholdUpperAscenderComponent::new);
+	public static final StructurePieceType TFSULT = TFFeature.registerPiece("TFSULT", StrongholdUpperLeftTurnComponent::new);
+	public static final StructurePieceType TFSURT = TFFeature.registerPiece("TFSURT", StrongholdUpperRightTurnComponent::new);
+	public static final StructurePieceType TFSUCo = TFFeature.registerPiece("TFSUCo", StrongholdUpperCorridorComponent::new);
+	public static final StructurePieceType TFSUTI = TFFeature.registerPiece("TFSUTI", StrongholdUpperTIntersectionComponent::new);
+	public static final StructurePieceType TFSShield = TFFeature.registerPiece("TFSShield", StrongholdShieldStructure::new);
 
 	/**
 	 * sets up Arrays with the Structure pieces and their weights
@@ -108,7 +108,7 @@ public class StrongholdPieces {
 						// we're here!
 						StructureTFStrongholdComponent component = piece.factory.newInstance(feature, index, facing, x, y, z);
 
-						if (StructurePiece.findIntersecting(list, component.getBoundingBox()) == null) {
+						if (StructurePiece.findCollisionPiece(list, component.getBoundingBox()) == null) {
 							++piece.instancesSpawned;
 
 							if (!piece.canSpawnMoreStructures()) {
@@ -127,7 +127,7 @@ public class StrongholdPieces {
 		// dead end?
 		StructureTFStrongholdComponent deadEnd = new StrongholdDeadEndComponent(parent instanceof TFStructureComponentOld ? ((TFStructureComponentOld) parent).getFeatureType() : TFFeature.NOTHING, index, facing, x, y, z);
 
-		if (StructurePiece.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
+		if (StructurePiece.findCollisionPiece(list, deadEnd.getBoundingBox()) == null) {
 			return deadEnd;
 		} else {
 			return null;

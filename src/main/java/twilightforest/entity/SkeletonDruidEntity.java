@@ -1,28 +1,32 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.*;
 import twilightforest.TFSounds;
 import twilightforest.entity.projectile.NatureBoltEntity;
 
 import java.util.Random;
 
-public class SkeletonDruidEntity extends SkeletonEntity {
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 
-	public SkeletonDruidEntity(EntityType<? extends SkeletonDruidEntity> type, World world) {
+public class SkeletonDruidEntity extends Skeleton {
+
+	public SkeletonDruidEntity(EntityType<? extends SkeletonDruidEntity> type, Level world) {
 		super(type, world);
 	}
 
@@ -54,44 +58,44 @@ public class SkeletonDruidEntity extends SkeletonEntity {
 
 
 	@Override
-	public void setCombatTask() {
-		if (!(this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof HoeItem)) {
-			super.setCombatTask();
+	public void reassessWeaponGoal() {
+		if (!(this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem)) {
+			super.reassessWeaponGoal();
 		}
 	}
 
 	@Override
-	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
+	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(LivingEntity attackTarget, float extraDamage) {
-		if (this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof HoeItem) {
-			NatureBoltEntity natureBolt = new NatureBoltEntity(this.world, this);
-			playSound(TFSounds.SKELETON_DRUID_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+	public void performRangedAttack(LivingEntity attackTarget, float extraDamage) {
+		if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem) {
+			NatureBoltEntity natureBolt = new NatureBoltEntity(this.level, this);
+			playSound(TFSounds.SKELETON_DRUID_SHOOT, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
 
-			double tx = attackTarget.getPosX() - this.getPosX();
-			double ty = attackTarget.getPosY() + attackTarget.getEyeHeight() - 2.699999988079071D - this.getPosY();
-			double tz = attackTarget.getPosZ() - this.getPosZ();
-			float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
+			double tx = attackTarget.getX() - this.getX();
+			double ty = attackTarget.getY() + attackTarget.getEyeHeight() - 2.699999988079071D - this.getY();
+			double tz = attackTarget.getZ() - this.getZ();
+			float heightOffset = Mth.sqrt(tx * tx + tz * tz) * 0.2F;
 			natureBolt.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-			this.world.addEntity(natureBolt);
+			this.level.addFreshEntity(natureBolt);
 		} else {
-			super.attackEntityWithRangedAttack(attackTarget, extraDamage);
+			super.performRangedAttack(attackTarget, extraDamage);
 		}
 	}
 
-	public static boolean skeletonDruidSpawnHandler(EntityType<? extends SkeletonDruidEntity> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
+	public static boolean skeletonDruidSpawnHandler(EntityType<? extends SkeletonDruidEntity> entity, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
 	// [VanillaCopy] of super. Edits noted.
-	public static boolean isValidLightLevel(IWorld world, BlockPos pos, Random random) {
-		if (world.getLightFor(LightType.SKY, pos) > random.nextInt(32)) {
+	public static boolean isValidLightLevel(LevelAccessor world, BlockPos pos, Random random) {
+		if (world.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
-			int i = world.getLight(pos);
+			int i = world.getMaxLocalRawBrightness(pos);
 
 			// TF - no thunder check
 			/*if (this.world.isThundering())

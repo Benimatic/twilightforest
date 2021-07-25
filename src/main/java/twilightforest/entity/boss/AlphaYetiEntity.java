@@ -1,34 +1,34 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.BossInfo;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -46,29 +46,37 @@ import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 
-public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, IHostileMount {
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-	private static final DataParameter<Byte> RAMPAGE_FLAG = EntityDataManager.createKey(AlphaYetiEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Byte> TIRED_FLAG = EntityDataManager.createKey(AlphaYetiEntity.class, DataSerializers.BYTE);
-	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
+public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostileMount {
+
+	private static final EntityDataAccessor<Byte> RAMPAGE_FLAG = SynchedEntityData.defineId(AlphaYetiEntity.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> TIRED_FLAG = SynchedEntityData.defineId(AlphaYetiEntity.class, EntityDataSerializers.BYTE);
+	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;
 
-	public AlphaYetiEntity(EntityType<? extends AlphaYetiEntity> type, World world) {
+	public AlphaYetiEntity(EntityType<? extends AlphaYetiEntity> type, Level world) {
 		super(type, world);
-		this.experienceValue = 317;
+		this.xpReward = 317;
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new YetiTiredGoal(this, 100));
 		this.goalSelector.addGoal(2, new StayNearHomeGoal(this, 2.0F));
 		this.goalSelector.addGoal(3, new YetiRampageGoal(this, 10, 180));
 		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.0D, 40, 40, 40.0F) {
 			@Override
-			public boolean shouldExecute() {
-				return getRNG().nextInt(50) > 0 && getAttackTarget() != null && getDistanceSq(getAttackTarget()) >= 16D && super.shouldExecute(); // Give us a chance to move to the next AI
+			public boolean canUse() {
+				return getRandom().nextInt(50) > 0 && getTarget() != null && distanceToSqr(getTarget()) >= 16D && super.canUse(); // Give us a chance to move to the next AI
 			}
 		});
 		this.goalSelector.addGoal(4, new ThrowRiderGoal(this, 1.0D, false) {
@@ -76,54 +84,54 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 			protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_GRAB, 4F, 0.75F + getRNG().nextFloat() * 0.25F);
+					playSound(TFSounds.ALPHAYETI_GRAB, 4F, 0.75F + getRandom().nextFloat() * 0.25F);
 			}
 
 			@Override
-			public void resetTask() {
+			public void stop() {
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_THROW, 4F, 0.75F + getRNG().nextFloat() * 0.25F);
-				super.resetTask();
+					playSound(TFSounds.ALPHAYETI_THROW, 4F, 0.75F + getRandom().nextFloat() * 0.25F);
+				super.stop();
 			}
 		});
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 2.0D));
-		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 2.0D));
+		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(RAMPAGE_FLAG, (byte) 0);
-		dataManager.register(TIRED_FLAG, (byte) 0);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(RAMPAGE_FLAG, (byte) 0);
+		entityData.define(TIRED_FLAG, (byte) 0);
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 200.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.38D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)
-				.createMutableAttribute(Attributes.FOLLOW_RANGE, 40.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, 200.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.38D)
+				.add(Attributes.ATTACK_DAMAGE, 1.0D)
+				.add(Attributes.FOLLOW_RANGE, 40.0D);
 	}
 
 	@Override
-	public void livingTick() {
-		if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isSneaking()) {
-			this.getPassengers().get(0).setSneaking(false);
+	public void aiStep() {
+		if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isShiftKeyDown()) {
+			this.getPassengers().get(0).setShiftKeyDown(false);
 		}
 
-		super.livingTick();
+		super.aiStep();
 
-		if (this.isBeingRidden()) {
-			this.getLookController().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
+		if (this.isVehicle()) {
+			this.getLookControl().setLookAt(getPassengers().get(0), 100F, 100F);
 		}
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 
-			if (this.collidedHorizontally || this.collidedVertically) { //collided does not exist, but this is an equal?
+			if (this.horizontalCollision || this.verticalCollision) { //collided does not exist, but this is an equal?
 				this.collisionCounter++;
 			}
 
@@ -133,19 +141,19 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 			}
 		} else {
 			if (this.isRampaging()) {
-				float rotation = this.ticksExisted / 10F;
+				float rotation = this.tickCount / 10F;
 
 				for (int i = 0; i < 20; i++) {
 					addSnowEffect(rotation + (i * 50), i + rotation);
 				}
 
 				// also swing limbs
-				this.limbSwingAmount += 0.6;
+				this.animationSpeed += 0.6;
 			}
 
 			if (this.isTired()) {
 				for (int i = 0; i < 20; i++) {
-					this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.getPosY() + this.getEyeHeight(), this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
+					this.level.addParticle(ParticleTypes.SPLASH, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.5, (random.nextFloat() - 0.5F) * 0.75F, 0, (random.nextFloat() - 0.5F) * 0.75F);
 				}
 			}
 		}
@@ -156,25 +164,25 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 		double py = hgt % 5F;
 		double pz = 3F * Math.sin(rotation);
 
-		world.addParticle(TFParticleType.SNOW.get(), this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+		level.addParticle(TFParticleType.SNOW.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 	}
 
 	@Override
-	public void setAttackTarget(@Nullable LivingEntity entity) {
-		if (entity != null && entity != getAttackTarget())
-			playSound(TFSounds.ALPHAYETI_ALERT, 4F, 0.5F + getRNG().nextFloat() * 0.5F);
-		super.setAttackTarget(entity);
+	public void setTarget(@Nullable LivingEntity entity) {
+		if (entity != null && entity != getTarget())
+			playSound(TFSounds.ALPHAYETI_ALERT, 4F, 0.5F + getRandom().nextFloat() * 0.5F);
+		super.setTarget(entity);
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean hurt(DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
 		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
 			return false;
 		}
 
 		this.canRampage = true;
-		return super.attackEntityFrom(source, amount);
+		return super.hurt(source, amount);
 	}
 
 	@Nullable
@@ -194,8 +202,8 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 	}
 
 	@Override
-	protected float getSoundPitch() {
-		return 0.5F + getRNG().nextFloat() * 0.5F;
+	protected float getVoicePitch() {
+		return 0.5F + getRandom().nextFloat() * 0.5F;
 	}
 
 	@Override
@@ -204,29 +212,29 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 	}
 
 	@Override
-	public void updatePassenger(Entity passenger) {
-		Vector3d riderPos = this.getRiderPosition();
-		passenger.setPosition(riderPos.x, riderPos.y, riderPos.z);
+	public void positionRider(Entity passenger) {
+		Vec3 riderPos = this.getRiderPosition();
+		passenger.setPos(riderPos.x, riderPos.y, riderPos.z);
 	}
 
 	@Override
-	public double getMountedYOffset() {
+	public double getPassengersRidingOffset() {
 		return 5.75D;
 	}
 
 	/**
 	 * Used to both get a rider position and to push out of blocks
 	 */
-	private Vector3d getRiderPosition() {
-		if (isBeingRidden()) {
+	private Vec3 getRiderPosition() {
+		if (isVehicle()) {
 			float distance = 0.4F;
 
-			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dx = Math.cos((this.yRot + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.yRot + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getPosZ() + dz);
+			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + this.getPassengers().get(0).getMyRidingOffset(), this.getZ() + dz);
 		} else {
-			return new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
+			return new Vec3(this.getX(), this.getY(), this.getZ());
 		}
 	}
 
@@ -235,11 +243,11 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 		return true;
 	}
 
-	public void destroyBlocksInAABB(AxisAlignedBB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
+	public void destroyBlocksInAABB(AABB box) {
+		if (ForgeEventFactory.getMobGriefingEvent(level, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				if (EntityUtil.canDestroyBlock(world, pos, this)) {
-					world.destroyBlock(pos, false);
+				if (EntityUtil.canDestroyBlock(level, pos, this)) {
+					level.destroyBlock(pos, false);
 				}
 			}
 		}
@@ -252,18 +260,18 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 
 	private void makeRandomBlockFall(int range) {
 		// find a block nearby
-		int bx = MathHelper.floor(this.getPosX()) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-		int bz = MathHelper.floor(this.getPosZ()) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-		int by = MathHelper.floor(this.getPosY() + this.getEyeHeight());
+		int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
+		int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
+		int by = Mth.floor(this.getY() + this.getEyeHeight());
 
 		makeBlockFallAbove(new BlockPos(bx, bz, by));
 	}
 
 	private void makeBlockFallAbove(BlockPos pos) {
-		if (world.isAirBlock(pos)) {
+		if (level.isEmptyBlock(pos)) {
 			for (int i = 1; i < 30; i++) {
-				BlockPos up = pos.up(i);
-				if (!world.isAirBlock(up)) {
+				BlockPos up = pos.above(i);
+				if (!level.isEmptyBlock(up)) {
 					makeBlockFall(up);
 					break;
 				}
@@ -276,11 +284,11 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 	}
 
 	public void makeBlockAboveTargetFall() {
-		if (this.getAttackTarget() != null) {
+		if (this.getTarget() != null) {
 
-			int bx = MathHelper.floor(this.getAttackTarget().getPosX());
-			int bz = MathHelper.floor(this.getAttackTarget().getPosZ());
-			int by = MathHelper.floor(this.getAttackTarget().getPosY() + this.getAttackTarget().getEyeHeight());
+			int bx = Mth.floor(this.getTarget().getX());
+			int bz = Mth.floor(this.getTarget().getZ());
+			int by = Mth.floor(this.getTarget().getY() + this.getTarget().getEyeHeight());
 
 			makeBlockFallAbove(new BlockPos(bx, bz, by));
 		}
@@ -288,40 +296,40 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 	}
 
 	private void makeBlockFall(BlockPos pos) {
-		world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState());
-		world.playEvent(2001, pos, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
+		level.setBlockAndUpdate(pos, Blocks.PACKED_ICE.defaultBlockState());
+		level.levelEvent(2001, pos, Block.getId(Blocks.PACKED_ICE.defaultBlockState()));
 
-		FallingIceEntity ice = new FallingIceEntity(world, pos.getX(), pos.getY() - 3, pos.getZ());
-		world.addEntity(ice);
+		FallingIceEntity ice = new FallingIceEntity(level, pos.getX(), pos.getY() - 3, pos.getZ());
+		level.addFreshEntity(ice);
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
+	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage) {
-			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, this.world, this);
+			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, this.level, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
-			double d0 = target.getPosX() - this.getPosX();
-			double d1 = target.getBoundingBox().minY + target.getHeight() / 3.0F - ice.getPosY();
-			double d2 = target.getPosZ() - this.getPosZ();
-			double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
-			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.world.getDifficulty().getId() * 4);
+			double d0 = target.getX() - this.getX();
+			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - ice.getY();
+			double d2 = target.getZ() - this.getZ();
+			double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.level.getDifficulty().getId() * 4);
 
-			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-			this.world.addEntity(ice);
+			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.level.addFreshEntity(ice);
 		}
 	}
 
 	@Override
-	public boolean canDespawn(double p_213397_1_) {
+	public boolean removeWhenFarAway(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
 	public void checkDespawn() {
-		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (!detachHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_alpha_yeti.get().getDefaultState());
+		if (level.getDifficulty() == Difficulty.PEACEFUL) {
+			if (!hasRestriction()) {
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_alpha_yeti.get().defaultBlockState());
 			}
 			remove();
 		} else {
@@ -334,89 +342,89 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 	}
 
 	public void setRampaging(boolean rampaging) {
-		dataManager.set(RAMPAGE_FLAG, (byte) (rampaging ? 1 : 0));
+		entityData.set(RAMPAGE_FLAG, (byte) (rampaging ? 1 : 0));
 	}
 
 	public boolean isRampaging() {
-		return dataManager.get(RAMPAGE_FLAG) == 1;
+		return entityData.get(RAMPAGE_FLAG) == 1;
 	}
 
 	public void setTired(boolean tired) {
-		dataManager.set(TIRED_FLAG, (byte) (tired ? 1 : 0));
+		entityData.set(TIRED_FLAG, (byte) (tired ? 1 : 0));
 		this.canRampage = false;
 	}
 
 	public boolean isTired() {
-		return dataManager.get(TIRED_FLAG) == 1;
+		return entityData.get(TIRED_FLAG) == 1;
 	}
 
 	@Override
-	public boolean onLivingFall(float distance, float multiplier) {
+	public boolean causeFallDamage(float distance, float multiplier) {
 
-		if (!this.world.isRemote && isRampaging()) {
-			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+		if (!this.level.isClientSide && isRampaging()) {
+			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			hitNearbyEntities();
 		}
 
 		//TODO: Return value?
-		return super.onLivingFall(distance, multiplier);
+		return super.causeFallDamage(distance, multiplier);
 	}
 
 	private void hitNearbyEntities() {
-		for (LivingEntity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(5, 0, 5))) {
-			if (entity != this && entity.attackEntityFrom(DamageSource.causeMobDamage(this), 5F)) {
-				entity.addVelocity(0, 0.4, 0);
+		for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5, 0, 5))) {
+			if (entity != this && entity.hurt(DamageSource.mobAttack(this), 5F)) {
+				entity.push(0, 0.4, 0);
 			}
 		}
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		super.onDeath(cause);
+	public void die(DamageSource cause) {
+		super.die(cause);
 		// mark the lair as defeated
-		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.YETI_CAVE);
+		if (!level.isClientSide) {
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.YETI_CAVE);
 		}
 	}
 
 	@Override
-	public void setCustomName(@Nullable ITextComponent name) {
+	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
-	public void addTrackingPlayer(ServerPlayerEntity player) {
-		super.addTrackingPlayer(player);
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(ServerPlayerEntity player) {
-		super.removeTrackingPlayer(player);
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		BlockPos home = this.getHomePosition();
-		compound.put("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
-		compound.putBoolean("HasHome", this.detachHome());
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		BlockPos home = this.getRestrictCenter();
+		compound.put("Home", newDoubleList(home.getX(), home.getY(), home.getZ()));
+		compound.putBoolean("HasHome", this.hasRestriction());
+		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		if (compound.contains("Home", 9)) {
-			ListNBT nbttaglist = compound.getList("Home", 6);
+			ListTag nbttaglist = compound.getList("Home", 6);
 			int hx = (int) nbttaglist.getDouble(0);
 			int hy = (int) nbttaglist.getDouble(1);
 			int hz = (int) nbttaglist.getDouble(2);
-			this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 30);
+			this.restrictTo(new BlockPos(hx, hy, hz), 30);
 		}
 		if (!compound.getBoolean("HasHome")) {
-			this.detachHome();
+			this.hasRestriction();
 		}
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
@@ -424,12 +432,12 @@ public class AlphaYetiEntity extends MonsterEntity implements IRangedAttackMob, 
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
 
 	@Override
-	public boolean canChangeDimension() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 }

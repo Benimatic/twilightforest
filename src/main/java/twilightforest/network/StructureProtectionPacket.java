@@ -1,8 +1,8 @@
 package twilightforest.network;
 
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.client.IWeatherRenderHandler;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
@@ -13,32 +13,32 @@ import java.util.function.Supplier;
 
 public class StructureProtectionPacket {
 
-	private final MutableBoundingBox sbb;
+	private final BoundingBox sbb;
 
-	public StructureProtectionPacket(MutableBoundingBox sbb) {
+	public StructureProtectionPacket(BoundingBox sbb) {
 		this.sbb = sbb;
 	}
 
-	public StructureProtectionPacket(PacketBuffer buf) {
-		sbb = new MutableBoundingBox(
+	public StructureProtectionPacket(FriendlyByteBuf buf) {
+		sbb = new BoundingBox(
 				buf.readInt(), buf.readInt(), buf.readInt(),
 				buf.readInt(), buf.readInt(), buf.readInt()
 		);
 	}
 
-	public void encode(PacketBuffer buf) {
-		buf.writeInt(sbb.minX);
-		buf.writeInt(sbb.minY);
-		buf.writeInt(sbb.minZ);
-		buf.writeInt(sbb.maxX);
-		buf.writeInt(sbb.maxY);
-		buf.writeInt(sbb.maxZ);
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeInt(sbb.x0);
+		buf.writeInt(sbb.y0);
+		buf.writeInt(sbb.z0);
+		buf.writeInt(sbb.x1);
+		buf.writeInt(sbb.y1);
+		buf.writeInt(sbb.z1);
 	}
 
 	public static class Handler {
 		public static boolean onMessage(StructureProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
 			ctx.get().enqueueWork(() -> {
-				DimensionRenderInfo info = DimensionRenderInfo.field_239208_a_.get(TwilightForestMod.prefix("renderer"));
+				DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 				// add weather box if needed
 				if (info instanceof TwilightForestRenderInfo) {

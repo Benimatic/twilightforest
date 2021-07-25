@@ -2,46 +2,46 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.structure.StructureStart;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
@@ -98,7 +98,7 @@ public class TFEventListener {
 			"inWall", "cramming", "drown", "starve", "fall", "flyIntoWall", "outOfWorld", "fallingBlock"
 	);
 
-	private static final Map<UUID, PlayerInventory> playerKeepsMap = new HashMap<>();
+	private static final Map<UUID, Inventory> playerKeepsMap = new HashMap<>();
 	//private static final Map<UUID, NonNullList<ItemStack>> playerKeepsMapBaubles = new HashMap<>();
 
 	private static boolean isBreakingWithGiantPick = false;
@@ -108,7 +108,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void addReach(ItemAttributeModifierEvent event) {
 		Item item = event.getItemStack().getItem();
-		if((item == TFItems.giant_pickaxe.get() || item == TFItems.giant_sword.get()) && event.getSlotType() == EquipmentSlotType.MAINHAND) {
+		if((item == TFItems.giant_pickaxe.get() || item == TFItems.giant_sword.get()) && event.getSlotType() == EquipmentSlot.MAINHAND) {
 			event.addModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Tool modifier", 2.5, AttributeModifier.Operation.ADDITION));
 		}
 	}
@@ -116,21 +116,21 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void onCrafting(PlayerEvent.ItemCraftedEvent event) {
 		ItemStack itemStack = event.getCrafting();
-		PlayerEntity player = event.getPlayer();
+		Player player = event.getPlayer();
 
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
 		//TODO: Can this be an Ingredient?
-		if (itemStack.getItem() == Item.getItemFromBlock(Blocks.OAK_PLANKS) && itemStack.getCount() == 64 && doesCraftMatrixHaveGiantLog(event.getInventory())) {
+		if (itemStack.getItem() == Item.byBlock(Blocks.OAK_PLANKS) && itemStack.getCount() == 64 && doesCraftMatrixHaveGiantLog(event.getInventory())) {
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
 		}
 	}
 
-	private static boolean doesCraftMatrixHaveGiantLog(IInventory inv) {
-		Item giantLogItem = Item.getItemFromBlock(TFBlocks.giant_log.get());
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i).getItem() == giantLogItem) {
+	private static boolean doesCraftMatrixHaveGiantLog(Container inv) {
+		Item giantLogItem = Item.byBlock(TFBlocks.giant_log.get());
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			if (inv.getItem(i).getItem() == giantLogItem) {
 				return true;
 			}
 		}
@@ -142,7 +142,7 @@ public class TFEventListener {
 	 */
 	public static class ManipulateDrops extends LootModifier {
 
-		protected ManipulateDrops(ILootCondition[] conditionsIn) {
+		protected ManipulateDrops(LootItemCondition[] conditionsIn) {
 			super(conditionsIn);
 		}
 
@@ -153,7 +153,7 @@ public class TFEventListener {
 			boolean flag = false;
 			if (shouldMakeGiantCobble && generatedLoot.size() > 0) {
 				// turn the next 64 cobblestone drops into one giant cobble
-				if (generatedLoot.get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
+				if (generatedLoot.get(0).getItem() == Item.byBlock(Blocks.COBBLESTONE)) {
 					generatedLoot.remove(0);
 					if (amountOfCobbleToReplace == 64) {
 						newLoot.add(new ItemStack(TFBlocks.giant_cobblestone.get()));
@@ -172,7 +172,7 @@ public class TFEventListener {
 	public static class Serializer extends GlobalLootModifierSerializer<ManipulateDrops> {
 
 		@Override
-		public ManipulateDrops read(ResourceLocation name, JsonObject json, ILootCondition[] conditionsIn) {
+		public ManipulateDrops read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
 			return new ManipulateDrops(conditionsIn);
 		}
 
@@ -187,35 +187,35 @@ public class TFEventListener {
 
 		LivingEntity living = event.getEntityLiving();
 		DamageSource damageSource = event.getSource();
-		String damageType = damageSource.getDamageType();
-		Entity trueSource = damageSource.getTrueSource();
+		String damageType = damageSource.getMsgId();
+		Entity trueSource = damageSource.getEntity();
 
 		// fire aura
-		if (living instanceof PlayerEntity && damageType.equals("mob") && trueSource != null) {
-			PlayerEntity player = (PlayerEntity) living;
+		if (living instanceof Player && damageType.equals("mob") && trueSource != null) {
+			Player player = (Player) living;
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, damageSource);
 
-			if (fireLevel > 0 && player.getRNG().nextInt(25) < fireLevel) {
-				trueSource.setFire(fireLevel / 2);
+			if (fireLevel > 0 && player.getRandom().nextInt(25) < fireLevel) {
+				trueSource.setSecondsOnFire(fireLevel / 2);
 			}
 		}
 
 		// chill aura
-		if (living instanceof PlayerEntity && damageType.equals("mob") && trueSource instanceof LivingEntity) {
-			PlayerEntity player = (PlayerEntity) living;
+		if (living instanceof Player && damageType.equals("mob") && trueSource instanceof LivingEntity) {
+			Player player = (Player) living;
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, damageSource);
 
 			if (chillLevel > 0) {
-				((LivingEntity) trueSource).addPotionEffect(new EffectInstance(TFPotions.frosty.get(), chillLevel * 5 + 5, chillLevel));
+				((LivingEntity) trueSource).addEffect(new MobEffectInstance(TFPotions.frosty.get(), chillLevel * 5 + 5, chillLevel));
 			}
 		}
 
 		// triple bow strips hurtResistantTime
-		if (damageType.equals("arrow") && trueSource instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity) trueSource;
+		if (damageType.equals("arrow") && trueSource instanceof Player) {
+			Player player = (Player) trueSource;
 
-			if (player.getHeldItemMainhand().getItem() == TFItems.triple_bow.get() || player.getHeldItemOffhand().getItem() == TFItems.triple_bow.get()) {
-				living.hurtResistantTime = 0;
+			if (player.getMainHandItem().getItem() == TFItems.triple_bow.get() || player.getOffhandItem().getItem() == TFItems.triple_bow.get()) {
+				living.invulnerableTime = 0;
 			}
 		}
 
@@ -223,17 +223,17 @@ public class TFEventListener {
 
 		// Smashing!
 		if (damageSource != DamageSource.FALL && damageSource != DamageSource.DROWN && damageSource != DamageSource.SWEET_BERRY_BUSH) {
-			ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
-			Block block = Block.getBlockFromItem(stack.getItem());
+			ItemStack stack = living.getItemBySlot(EquipmentSlot.HEAD);
+			Block block = Block.byItem(stack.getItem());
 			if (block instanceof CritterBlock) {
 				CritterBlock poorBug = (CritterBlock) block;
-				living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
-				living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.BUG_SQUISH, living.getSoundCategory(), 1, 1);
+				living.setItemSlot(EquipmentSlot.HEAD, poorBug.getSquishResult());
+				living.level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.BUG_SQUISH, living.getSoundSource(), 1, 1);
 			}
 		}
 
 		// lets not make the player take suffocation damage if riding something
-		if (living instanceof PlayerEntity && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
+		if (living instanceof Player && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
 			event.setCanceled(true);
 		}
 	}
@@ -243,13 +243,13 @@ public class TFEventListener {
 	public static void applyDeathItems(LivingDeathEvent event) {
 		LivingEntity living = event.getEntityLiving();
 
-		if (living.world.isRemote || !(living instanceof PlayerEntity) || living instanceof FakePlayer) return;
+		if (living.level.isClientSide || !(living instanceof Player) || living instanceof FakePlayer) return;
 
-		PlayerEntity player = (PlayerEntity) living; // To avoid triple-casting
+		Player player = (Player) living; // To avoid triple-casting
 
 		if (charmOfLife(player)) {
 			event.setCanceled(true); // Executes if the player had charms
-		} else if (!living.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
+		} else if (!living.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
 			// Did the player recover? No? Let's give them their stuff based on the keeping charms
 			charmOfKeeping(player);
 
@@ -259,17 +259,17 @@ public class TFEventListener {
 	}
 
 	private static boolean casketExpiration = false;
-	private static void keepsakeCasket(PlayerEntity player) {
+	private static void keepsakeCasket(Player player) {
 		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.keepsake_casket.get().asItem());
 
 		if (casketConsumed) {
-			World world = player.getEntityWorld();
-			BlockPos.Mutable pos = player.getPosition().toMutable();
+			Level world = player.getCommandSenderWorld();
+			BlockPos.MutableBlockPos pos = player.blockPosition().mutable();
 
 			if (pos.getY() < 2) {
 				pos.setY(2);
 			} else {
-				int logicalHeight = player.getEntityWorld().getDimensionType().getLogicalHeight();
+				int logicalHeight = player.getCommandSenderWorld().dimensionType().logicalHeight();
 
 				if (pos.getY() > logicalHeight) {
 					pos.setY(logicalHeight - 1);
@@ -277,11 +277,11 @@ public class TFEventListener {
 			}
 
 			// TODO determine if block was air or better yet make a tag list of blocks that are OK to place the casket in
-			BlockPos immutablePos = pos.toImmutable();
+			BlockPos immutablePos = pos.immutable();
 			FluidState fluidState = world.getFluidState(immutablePos);
 
-			if (world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())).with(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
-				TileEntity te = world.getTileEntity(immutablePos);
+			if (world.setBlockAndUpdate(immutablePos, TFBlocks.keepsake_casket.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
+				BlockEntity te = world.getBlockEntity(immutablePos);
 
 				if (te instanceof KeepsakeCasketTileEntity) {
 					KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
@@ -300,34 +300,34 @@ public class TFEventListener {
 					else modifiedName = player.getName().getString();
 					casket.name = player.getName().getString();
 					casket.casketname = modifiedName;
-					casket.setCustomName(new StringTextComponent(modifiedName + "'s " + (world.rand.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
-					int damage = world.getBlockState(immutablePos).get(KeepsakeCasketBlock.BREAKAGE);
-					if (world.rand.nextFloat() <= 0.15F) {
+					casket.setCustomName(new TextComponent(modifiedName + "'s " + (world.random.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
+					int damage = world.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
+					if (world.random.nextFloat() <= 0.15F) {
 						if (damage >= 2) {
-							player.inventory.dropAllItems();
-							world.setBlockState(immutablePos, Blocks.AIR.getDefaultState());
+							player.inventory.dropAll();
+							world.setBlockAndUpdate(immutablePos, Blocks.AIR.defaultBlockState());
 							casketExpiration = true;
 							TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and dropping extra items", player.getName().getString());
 						} else {
 							damage = damage + 1;
-							world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())).with(KeepsakeCasketBlock.BREAKAGE, damage));
+							world.setBlockAndUpdate(immutablePos, TFBlocks.keepsake_casket.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage));
 							TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
 						}
 					}
-					int casketCapacity = casket.getSizeInventory();
+					int casketCapacity = casket.getContainerSize();
 					List<ItemStack> list = new ArrayList<>(casketCapacity);
 					NonNullList<ItemStack> filler = NonNullList.withSize(4, ItemStack.EMPTY);
 
 					// lets add our inventory exactly how it was on us
 					list.addAll(TFItemStackUtils.sortArmorForCasket(player));
-					player.inventory.armorInventory.clear();
+					player.inventory.armor.clear();
 					list.addAll(filler);
-					list.addAll(player.inventory.offHandInventory);
-					player.inventory.offHandInventory.clear();
+					list.addAll(player.inventory.offhand);
+					player.inventory.offhand.clear();
 					list.addAll(TFItemStackUtils.sortInvForCasket(player));
-					player.inventory.mainInventory.clear();
+					player.inventory.items.clear();
 
-					casket.setItems(NonNullList.from(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
+					casket.setItems(NonNullList.of(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
 				}
 			} else {
 				TwilightForestMod.LOGGER.error("Could not place Keepsake Casket at " + pos.toString());
@@ -339,8 +339,8 @@ public class TFEventListener {
 	//if our casket is owned by someone and that player isnt the one breaking it, stop them
 	public static void onCasketBreak(BreakEvent event) {
 		Block block = event.getState().getBlock();
-		PlayerEntity player = event.getPlayer();
-		TileEntity te = event.getWorld().getTileEntity(event.getPos());
+		Player player = event.getPlayer();
+		BlockEntity te = event.getWorld().getBlockEntity(event.getPos());
 		UUID checker;
 		if(block == TFBlocks.keepsake_casket.get()) {
 			if(te instanceof KeepsakeCasketTileEntity) {
@@ -349,7 +349,7 @@ public class TFEventListener {
 			} else checker = null;
 			if(checker != null) {
 				if (!((KeepsakeCasketTileEntity) te).isEmpty()) {
-					if(!player.hasPermissionLevel(3) || !player.getGameProfile().getId().equals(checker)) {
+					if(!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
 						event.setCanceled(true);
 					}
 				}
@@ -357,33 +357,33 @@ public class TFEventListener {
 		}
 	}
 
-	private static boolean charmOfLife(PlayerEntity player) {
+	private static boolean charmOfLife(Player player) {
 		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_life_2.get());
 		boolean charm1 = !charm2 && TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_life_1.get());
 
 		if (charm2 || charm1) {
 			if (charm1) {
 				player.setHealth(8);
-				player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 0));
+				player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0));
 			}
 
 			if (charm2) {
 				player.setHealth((float) player.getAttribute(Attributes.MAX_HEALTH).getBaseValue()); //Max Health
 
-				player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 600, 3));
-				player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 600, 0));
-				player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 600, 0));
+				player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 600, 3));
+				player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600, 0));
+				player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 600, 0));
 			}
 
 			// spawn effect thingers
-			CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.world, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
-			player.world.addEntity(effect);
+			CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			player.level.addFreshEntity(effect);
 
-			CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.world, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
 			effect2.offset = (float) Math.PI;
-			player.world.addEntity(effect2);
+			player.level.addFreshEntity(effect2);
 
-			player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), TFSounds.CHARM_LIFE, player.getSoundCategory(), 1, 1);
+			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE, player.getSoundSource(), 1, 1);
 
 			return true;
 		}
@@ -391,7 +391,7 @@ public class TFEventListener {
 		return false;
 	}
 
-	private static void charmOfKeeping(PlayerEntity player) {
+	private static void charmOfKeeping(Player player) {
 		// drop any existing held items, just in case
 		dropStoredItems(player);
 
@@ -400,9 +400,9 @@ public class TFEventListener {
 		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_keeping_2.get());
 		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_keeping_1.get());
 
-		PlayerInventory keepInventory = new PlayerInventory(null);
+		Inventory keepInventory = new Inventory(null);
 
-		UUID playerUUID = player.getUniqueID();
+		UUID playerUUID = player.getUUID();
 
 
 		if (tier1) {
@@ -411,26 +411,26 @@ public class TFEventListener {
 		}
 
 		if (tier3) {
-			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-				keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			for (int i = 0; i < player.inventory.items.size(); i++) {
+				keepInventory.items.set(i, player.inventory.items.get(i).copy());
+				player.inventory.items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_3.get()));
+			keepInventory.setCarried(new ItemStack(TFItems.charm_of_keeping_3.get()));
 
 		} else if (tier2) {
 			for (int i = 0; i < 9; i++) {
-				keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+				keepInventory.items.set(i, player.inventory.items.get(i).copy());
+				player.inventory.items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_2.get()));
+			keepInventory.setCarried(new ItemStack(TFItems.charm_of_keeping_2.get()));
 
 		} else if (tier1) {
-			int i = player.inventory.currentItem;
-			if (PlayerInventory.isHotbar(i)) {
-				keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
-				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			int i = player.inventory.selected;
+			if (Inventory.isHotbarSlot(i)) {
+				keepInventory.items.set(i, player.inventory.items.get(i).copy());
+				player.inventory.items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_1.get()));
+			keepInventory.setCarried(new ItemStack(TFItems.charm_of_keeping_1.get()));
 		}
 
 		//TODO: Baubles is dead, replace with curios
@@ -439,24 +439,24 @@ public class TFEventListener {
 		}*/
 
 		// always keep tower keys and held phantom armor
-		for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-			ItemStack stack = player.inventory.mainInventory.get(i);
+		for (int i = 0; i < player.inventory.items.size(); i++) {
+			ItemStack stack = player.inventory.items.get(i);
 			if (stack.getItem() == TFItems.tower_key.get()) {
-				keepInventory.mainInventory.set(i, stack.copy());
-				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+				keepInventory.items.set(i, stack.copy());
+				player.inventory.items.set(i, ItemStack.EMPTY);
 			}
 			if (stack.getItem() instanceof PhantomArmorItem) {
-				keepInventory.mainInventory.set(i, stack.copy());
-				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+				keepInventory.items.set(i, stack.copy());
+				player.inventory.items.set(i, ItemStack.EMPTY);
 			}
 		}
 
 		// Keep phantom equipment
-		for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
-			ItemStack armor = player.inventory.armorInventory.get(i);
+		for (int i = 0; i < player.inventory.armor.size(); i++) {
+			ItemStack armor = player.inventory.armor.get(i);
 			if (armor.getItem() instanceof PhantomArmorItem) {
-				keepInventory.armorInventory.set(i, armor.copy());
-				player.inventory.armorInventory.set(i, ItemStack.EMPTY);
+				keepInventory.armor.set(i, armor.copy());
+				player.inventory.armor.set(i, ItemStack.EMPTY);
 			}
 		}
 
@@ -466,27 +466,27 @@ public class TFEventListener {
 	/**
 	 * Move the full armor inventory to the keep pile
 	 */
-	private static void keepAllArmor(PlayerEntity player, PlayerInventory keepInventory) {
-		for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
-			keepInventory.armorInventory.set(i, player.inventory.armorInventory.get(i).copy());
-			player.inventory.armorInventory.set(i, ItemStack.EMPTY);
+	private static void keepAllArmor(Player player, Inventory keepInventory) {
+		for (int i = 0; i < player.inventory.armor.size(); i++) {
+			keepInventory.armor.set(i, player.inventory.armor.get(i).copy());
+			player.inventory.armor.set(i, ItemStack.EMPTY);
 		}
 	}
 
-	private static void keepOffHand(PlayerEntity player, PlayerInventory keepInventory) {
-		for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
-			keepInventory.offHandInventory.set(i, player.inventory.offHandInventory.get(i).copy());
-			player.inventory.offHandInventory.set(i, ItemStack.EMPTY);
+	private static void keepOffHand(Player player, Inventory keepInventory) {
+		for (int i = 0; i < player.inventory.offhand.size(); i++) {
+			keepInventory.offhand.set(i, player.inventory.offhand.get(i).copy());
+			player.inventory.offhand.set(i, ItemStack.EMPTY);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 		if (event.isEndConquered()) {
-			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
+			updateCapabilities((ServerPlayer) event.getPlayer(), event.getPlayer());
 		} else {
 			if(casketExpiration) {
-				event.getPlayer().sendMessage(new TranslationTextComponent("block.twilightforest.casket.broken").mergeStyle(TextFormatting.DARK_RED), event.getPlayer().getUniqueID());
+				event.getPlayer().sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), event.getPlayer().getUUID());
 			}
 			returnStoredItems(event.getPlayer());
 		}
@@ -495,35 +495,35 @@ public class TFEventListener {
 	/**
 	 * Maybe we kept some stuff for the player!
 	 */
-	private static void returnStoredItems(PlayerEntity player) {
-		PlayerInventory keepInventory = playerKeepsMap.remove(player.getUniqueID());
+	private static void returnStoredItems(Player player) {
+		Inventory keepInventory = playerKeepsMap.remove(player.getUUID());
 		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUniqueID());
+			TwilightForestMod.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
 
 			NonNullList<ItemStack> displaced = NonNullList.create();
 
-			for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
-				ItemStack kept = keepInventory.armorInventory.get(i);
+			for (int i = 0; i < player.inventory.armor.size(); i++) {
+				ItemStack kept = keepInventory.armor.get(i);
 				if (!kept.isEmpty()) {
-					ItemStack existing = player.inventory.armorInventory.set(i, kept);
+					ItemStack existing = player.inventory.armor.set(i, kept);
 					if (!existing.isEmpty()) {
 						displaced.add(existing);
 					}
 				}
 			}
-			for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
-				ItemStack kept = keepInventory.offHandInventory.get(i);
+			for (int i = 0; i < player.inventory.offhand.size(); i++) {
+				ItemStack kept = keepInventory.offhand.get(i);
 				if (!kept.isEmpty()) {
-					ItemStack existing = player.inventory.offHandInventory.set(i, kept);
+					ItemStack existing = player.inventory.offhand.set(i, kept);
 					if (!existing.isEmpty()) {
 						displaced.add(existing);
 					}
 				}
 			}
-			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-				ItemStack kept = keepInventory.mainInventory.get(i);
+			for (int i = 0; i < player.inventory.items.size(); i++) {
+				ItemStack kept = keepInventory.items.get(i);
 				if (!kept.isEmpty()) {
-					ItemStack existing = player.inventory.mainInventory.set(i, kept);
+					ItemStack existing = player.inventory.items.set(i, kept);
 					if (!existing.isEmpty()) {
 						displaced.add(existing);
 					}
@@ -536,15 +536,15 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			if (!keepInventory.getItemStack().isEmpty()) {
-				CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.world, player, keepInventory.getItemStack().getItem());
-				player.world.addEntity(effect);
+			if (!keepInventory.getCarried().isEmpty()) {
+				CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getCarried().getItem());
+				player.level.addFreshEntity(effect);
 
-				CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.world, player, keepInventory.getItemStack().getItem());
+				CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getCarried().getItem());
 				effect2.offset = (float) Math.PI;
-				player.world.addEntity(effect2);
+				player.level.addFreshEntity(effect2);
 
-				player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), TFSounds.CHARM_KEEP, player.getSoundCategory(), 1.5F, 1.0F);
+				player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP, player.getSoundSource(), 1.5F, 1.0F);
 			}
 		}
 
@@ -566,12 +566,12 @@ public class TFEventListener {
 		dropStoredItems(event.getPlayer());
 	}
 
-	private static void dropStoredItems(PlayerEntity player) {
-		PlayerInventory keepInventory = playerKeepsMap.remove(player.getUniqueID());
+	private static void dropStoredItems(Player player) {
+		Inventory keepInventory = playerKeepsMap.remove(player.getUUID());
 		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {} ({})", player.getName().getString(), player.getUniqueID());
+			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {} ({})", player.getName().getString(), player.getUUID());
 			keepInventory.player = player;
-			keepInventory.dropAllItems();
+			keepInventory.dropAll();
 		}
 		//TODO: Baubles is dead, replace with curios
 		/*if (TFCompat.BAUBLES.isActivated()) {
@@ -594,13 +594,13 @@ public class TFEventListener {
 		living.getCapability(CapabilityList.SHIELDS).ifPresent(IShieldCapability::update);
 
 		// Stop the player from sneaking while riding an unfriendly creature
-		if (living instanceof PlayerEntity && living.isSneaking() && isRidingUnfriendly(living)) {
-			living.setSneaking(false);
+		if (living instanceof Player && living.isShiftKeyDown() && isRidingUnfriendly(living)) {
+			living.setShiftKeyDown(false);
 		}
 	}
 
 	public static boolean isRidingUnfriendly(LivingEntity entity) {
-		return entity.isPassenger() && entity.getRidingEntity() instanceof IHostileMount;
+		return entity.isPassenger() && entity.getVehicle() instanceof IHostileMount;
 	}
 
 	/**
@@ -609,13 +609,13 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void breakBlock(BreakEvent event) {
-		PlayerEntity player = event.getPlayer();
+		Player player = event.getPlayer();
 		BlockPos pos = event.getPos();
 		BlockState state = event.getState();
 
-		if (!(event.getWorld() instanceof World) || ((World) event.getWorld()).isRemote) return;
+		if (!(event.getWorld() instanceof Level) || ((Level) event.getWorld()).isClientSide) return;
 
-		World world = (World) event.getWorld();
+		Level world = (Level) event.getWorld();
 
 		if (isBlockProtectedFromBreaking(world, pos) && isAreaProtected(world, player, pos)) {
 			event.setCanceled(true);
@@ -642,7 +642,7 @@ public class TFEventListener {
 				}
 			}
 
-			if (allCobble && !player.abilities.isCreativeMode) {
+			if (allCobble && !player.abilities.instabuild) {
 				shouldMakeGiantCobble = true;
 				amountOfCobbleToReplace = 64;
 			} else {
@@ -651,12 +651,12 @@ public class TFEventListener {
 			}
 
 			// break all nearby blocks
-			if (player instanceof ServerPlayerEntity) {
-				ServerPlayerEntity playerMP = (ServerPlayerEntity) player;
+			if (player instanceof ServerPlayer) {
+				ServerPlayer playerMP = (ServerPlayer) player;
 				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
 					if (!dPos.equals(pos) && state == world.getBlockState(dPos)) {
 						// try to break that block too!
-						playerMP.interactionManager.tryHarvestBlock(dPos);
+						playerMP.gameMode.destroyBlock(dPos);
 					}
 				}
 			}
@@ -665,8 +665,8 @@ public class TFEventListener {
 		}
 	}
 
-	private static boolean canHarvestWithGiantPick(PlayerEntity player, BlockState state) {
-		ItemStack heldStack = player.getHeldItemMainhand();
+	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
+		ItemStack heldStack = player.getMainHandItem();
 		Item heldItem = heldStack.getItem();
 		return heldItem == TFItems.giant_pickaxe.get() && heldItem.canHarvestBlock(heldStack, state);
 	}
@@ -674,10 +674,10 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
 
-		PlayerEntity player = event.getPlayer();
-		World world = player.world;
+		Player player = event.getPlayer();
+		Level world = player.level;
 
-		if (!world.isRemote && isBlockProtectedFromInteraction(world, event.getPos()) && isAreaProtected(world, player, event.getPos())) {
+		if (!world.isClientSide && isBlockProtectedFromInteraction(world, event.getPos()) && isAreaProtected(world, player, event.getPos())) {
 			event.setUseBlock(Event.Result.DENY);
 		}
 	}
@@ -685,23 +685,23 @@ public class TFEventListener {
 	/**
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
 	 */
-	private static boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
+	private static boolean isBlockProtectedFromInteraction(Level world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
-		return block.isIn(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
+		return block.is(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
 	}
 
-	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
+	private static boolean isBlockProtectedFromBreaking(Level world, BlockPos pos) {
 		// todo improve
-		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave") || !world.getBlockState(pos).getBlock().matchesBlock(TFBlocks.keepsake_casket.get());
+		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave") || !world.getBlockState(pos).getBlock().is(TFBlocks.keepsake_casket.get());
 	}
 
 	/**
 	 * Return if the area at the coordinates is considered protected for that player.
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
-	private static boolean isAreaProtected(World world, PlayerEntity player, BlockPos pos) {
+	private static boolean isAreaProtected(Level world, Player player, BlockPos pos) {
 
-		if (player.abilities.isCreativeMode || !TFGenerationSettings.isProgressionEnforced(world) || player instanceof FakePlayer) {
+		if (player.abilities.instabuild || !TFGenerationSettings.isProgressionEnforced(world) || player instanceof FakePlayer) {
 			return false;
 		}
 
@@ -709,12 +709,12 @@ public class TFEventListener {
 
 
 		if (chunkGenerator != null) {
-			Optional<StructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 0);
+			Optional<StructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0);
 			if(struct.isPresent()) {
 				StructureStart<?> structure = struct.get();
-				if(structure.getBoundingBox().isVecInside(pos)) {
+				if(structure.getBoundingBox().isInside(pos)) {
 					// what feature is nearby?  is it one the player has not unlocked?
-					TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerWorld) world);
+					TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world);
 
 					if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
 
@@ -723,7 +723,7 @@ public class TFEventListener {
 							return false;
 
 						// send protection packet
-						MutableBoundingBox bb = structure.getBoundingBox();//new MutableBoundingBox(pos, pos.add(16, 16, 16)); // todo 1.15 get from structure
+						BoundingBox bb = structure.getBoundingBox();//new MutableBoundingBox(pos, pos.add(16, 16, 16)); // todo 1.15 get from structure
 						sendAreaProtectionPacket(world, pos, bb);
 
 						// send a hint monster?
@@ -737,8 +737,8 @@ public class TFEventListener {
 		return false;
 	}
 
-	private static void sendAreaProtectionPacket(World world, BlockPos pos, MutableBoundingBox sbb) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimensionKey());
+	private static void sendAreaProtectionPacket(Level world, BlockPos pos, BoundingBox sbb) {
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.dimension());
 		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));
 	}
 
@@ -746,14 +746,14 @@ public class TFEventListener {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntityLiving();
 		// cancel attacks in protected areas
-		if (!living.world.isRemote && living instanceof IMob && event.getSource().getTrueSource() instanceof PlayerEntity
-				&& isAreaProtected(living.world, (PlayerEntity) event.getSource().getTrueSource(), new BlockPos(living.getPosition()))) {
+		if (!living.level.isClientSide && living instanceof Enemy && event.getSource().getEntity() instanceof Player
+				&& isAreaProtected(living.level, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);
 			return;
 		}
 		// shields
-		if (!living.world.isRemote && !SHIELD_DAMAGE_BLACKLIST.contains(event.getSource().damageType)) {
+		if (!living.level.isClientSide && !SHIELD_DAMAGE_BLACKLIST.contains(event.getSource().msgId)) {
 			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {
 					cap.breakShield();
@@ -768,9 +768,9 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
-			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
+		if (!event.getPlayer().level.isClientSide && event.getPlayer() instanceof ServerPlayer) {
+			sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().level));
+			updateCapabilities((ServerPlayer) event.getPlayer(), event.getPlayer());
 			banishNewbieToTwilightZone(event.getPlayer());
 		}
 	}
@@ -780,22 +780,22 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			if (event.getTo().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) {
-				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
+		if (!event.getPlayer().level.isClientSide && event.getPlayer() instanceof ServerPlayer) {
+			if (event.getTo().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) {
+				sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().level));
 			}
 
-			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
+			updateCapabilities((ServerPlayer) event.getPlayer(), event.getPlayer());
 		}
 	}
 
 	@SubscribeEvent
 	public static void onStartTracking(PlayerEvent.StartTracking event) {
-		updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getTarget());
+		updateCapabilities((ServerPlayer) event.getPlayer(), event.getTarget());
 	}
 
 	// send any capabilities that are needed client-side
-	private static void updateCapabilities(ServerPlayerEntity player, Entity entity) {
+	private static void updateCapabilities(ServerPlayer player, Entity entity) {
 		entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 			if (cap.shieldsLeft() > 0) {
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new UpdateShieldPacket(entity, cap));
@@ -803,11 +803,11 @@ public class TFEventListener {
 		});
 	}
 
-	private static void sendEnforcedProgressionStatus(ServerPlayerEntity player, boolean isEnforced) {
+	private static void sendEnforcedProgressionStatus(ServerPlayer player, boolean isEnforced) {
 		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
 	}
 
-	private static void sendSkylightEnabled(ServerPlayerEntity player, boolean skylightEnabled) {
+	private static void sendSkylightEnabled(ServerPlayer player, boolean skylightEnabled) {
 		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SetSkylightEnabledPacket(skylightEnabled));
 	}
 
@@ -816,7 +816,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void onClientConnect(PlayerEvent.PlayerLoggedInEvent event) {
 		// This event is only ever fired on the server side
-		ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+		ServerPlayer player = (ServerPlayer) event.getPlayer();
 //		sendSkylightEnabled(player, TwilightForestDimension.isSkylightEnabled(TFGenerationSettings.getDimensionData(player.world)));
 	}
 
@@ -825,11 +825,11 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void worldLoaded(WorldEvent.Load event) {
-		IWorld world = event.getWorld();
+		LevelAccessor world = event.getWorld();
 
-		if (!world.isRemote() && world instanceof World && !((World) world).getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).get()) {
+		if (!world.isClientSide() && world instanceof Level && !((Level) world).getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).get()) {
 			TwilightForestMod.LOGGER.info("Loaded a world with the {} game rule not defined. Defining it.", TwilightForestMod.ENFORCED_PROGRESSION_RULE);
-			((World) world).getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(TFConfig.COMMON_CONFIG.progressionRuleDefault.get(), ((World) world).getServer());
+			((Level) world).getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(TFConfig.COMMON_CONFIG.progressionRuleDefault.get(), ((Level) world).getServer());
 		}
 	}
 
@@ -837,15 +837,15 @@ public class TFEventListener {
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 
-	private static void banishNewbieToTwilightZone(PlayerEntity player) {
-		CompoundNBT tagCompound = player.getPersistentData();
-		CompoundNBT playerData = tagCompound.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+	private static void banishNewbieToTwilightZone(Player player) {
+		CompoundTag tagCompound = player.getPersistentData();
+		CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
 
 		// getBoolean returns false, if false or didn't exist
 		boolean shouldBanishPlayer = TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && !playerData.getBoolean(NBT_TAG_TWILIGHT);
 
 		playerData.putBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
-		tagCompound.put(PlayerEntity.PERSISTED_NBT_TAG, playerData); // commit
+		tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
 
 		if (shouldBanishPlayer) TFPortalBlock.attemptSendPlayer(player, true); // See ya hate to be ya
 	}
@@ -853,17 +853,17 @@ public class TFEventListener {
 	// Advancement Trigger
 	@SubscribeEvent
 	public static void onAdvancementGet(AdvancementEvent event) {
-		PlayerEntity player = event.getPlayer();
-		if (player instanceof ServerPlayerEntity) {
-			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((ServerPlayerEntity) player, event.getAdvancement());
+		Player player = event.getPlayer();
+		if (player instanceof ServerPlayer) {
+			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((ServerPlayer) player, event.getAdvancement());
 		}
 	}
 
 	@SubscribeEvent
 	public static void armorChanged(LivingEquipmentChangeEvent event) {
 		LivingEntity living = event.getEntityLiving();
-		if (!living.world.isRemote && living instanceof ServerPlayerEntity) {
-			TFAdvancements.ARMOR_CHANGED.trigger((ServerPlayerEntity) living, event.getFrom(), event.getTo());
+		if (!living.level.isClientSide && living instanceof ServerPlayer) {
+			TFAdvancements.ARMOR_CHANGED.trigger((ServerPlayer) living, event.getFrom(), event.getTo());
 		}
 	}
 
@@ -873,29 +873,29 @@ public class TFEventListener {
 
 	@SubscribeEvent
 	public static void arrowParry(ProjectileImpactEvent.Arrow event) {
-		final AbstractArrowEntity projectile = event.getArrow();
+		final AbstractArrow projectile = event.getArrow();
 
-		if (!projectile.getEntityWorld().isRemote && globalParry &&
+		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
-			if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
-				Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
+			if (event.getRayTraceResult() instanceof EntityHitResult) {
+				Entity entity = ((EntityHitResult) event.getRayTraceResult()).getEntity();
 
 				if (event.getEntity() != null && entity instanceof LivingEntity) {
 					LivingEntity entityBlocking = (LivingEntity) entity;
 
-					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					if (entityBlocking.isDamageSourceBlocked(new DamageSource("parry_this") {
 						@Override
-						public Vector3d getDamageLocation() {
-							return projectile.getPositionVec();
+						public Vec3 getSourcePosition() {
+							return projectile.position();
 						}
-					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksArrow.get()) {
-						Vector3d playerVec3 = entityBlocking.getLookVec();
+					}) && (entityBlocking.getUseItem().getItem().getUseDuration(entityBlocking.getUseItem()) - entityBlocking.getUseItemRemainingTicks()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksArrow.get()) {
+						Vec3 playerVec3 = entityBlocking.getLookAngle();
 
 						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
-						projectile.setShooter(entityBlocking); //TODO: Verify
+						projectile.setOwner(entityBlocking); //TODO: Verify
 
 						event.setCanceled(true);
 					}
@@ -906,32 +906,32 @@ public class TFEventListener {
 
 	@SubscribeEvent
 	public static void fireballParry(ProjectileImpactEvent.Fireball event) {
-		final DamagingProjectileEntity projectile = event.getFireball();
+		final AbstractHurtingProjectile projectile = event.getFireball();
 
-		if (!projectile.getEntityWorld().isRemote && globalParry &&
+		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
-			if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
-				Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
+			if (event.getRayTraceResult() instanceof EntityHitResult) {
+				Entity entity = ((EntityHitResult) event.getRayTraceResult()).getEntity();
 
 				if (event.getEntity() != null && entity instanceof LivingEntity) {
 					LivingEntity entityBlocking = (LivingEntity) entity;
 
-					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					if (entityBlocking.isDamageSourceBlocked(new DamageSource("parry_this") {
 						@Override
-						public Vector3d getDamageLocation() {
-							return projectile.getPositionVec();
+						public Vec3 getSourcePosition() {
+							return projectile.position();
 						}
-					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksFireball.get()) {
-						Vector3d playerVec3 = entityBlocking.getLookVec();
+					}) && (entityBlocking.getUseItem().getItem().getUseDuration(entityBlocking.getUseItem()) - entityBlocking.getUseItemRemainingTicks()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksFireball.get()) {
+						Vec3 playerVec3 = entityBlocking.getLookAngle();
 
-						projectile.setMotion(new Vector3d(playerVec3.x, playerVec3.y, playerVec3.z));
-						projectile.accelerationX = projectile.getMotion().getX() * 0.1D;
-						projectile.accelerationY = projectile.getMotion().getY() * 0.1D;
-						projectile.accelerationZ = projectile.getMotion().getZ() * 0.1D;
+						projectile.setDeltaMovement(new Vec3(playerVec3.x, playerVec3.y, playerVec3.z));
+						projectile.xPower = projectile.getDeltaMovement().x() * 0.1D;
+						projectile.yPower = projectile.getDeltaMovement().y() * 0.1D;
+						projectile.zPower = projectile.getDeltaMovement().z() * 0.1D;
 
-						projectile.setShooter(entityBlocking); //TODO: Verify
+						projectile.setOwner(entityBlocking); //TODO: Verify
 
 						event.setCanceled(true);
 					}
@@ -942,30 +942,30 @@ public class TFEventListener {
 
 	@SubscribeEvent
 	public static void throwableParry(ProjectileImpactEvent.Throwable event) {
-		final ThrowableEntity projectile = event.getThrowable();
+		final ThrowableProjectile projectile = event.getThrowable();
 
-		if (!projectile.getEntityWorld().isRemote && globalParry &&
+		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
-			if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
-				Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
+			if (event.getRayTraceResult() instanceof EntityHitResult) {
+				Entity entity = ((EntityHitResult) event.getRayTraceResult()).getEntity();
 
 
 				if (event.getEntity() != null && entity instanceof LivingEntity) {
 					LivingEntity entityBlocking = (LivingEntity) entity;
 
-					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					if (entityBlocking.isDamageSourceBlocked(new DamageSource("parry_this") {
 						@Override
-						public Vector3d getDamageLocation() {
-							return projectile.getPositionVec();
+						public Vec3 getSourcePosition() {
+							return projectile.position();
 						}
-					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksThrowable.get()) {
-						Vector3d playerVec3 = entityBlocking.getLookVec();
+					}) && (entityBlocking.getUseItem().getItem().getUseDuration(entityBlocking.getUseItem()) - entityBlocking.getUseItemRemainingTicks()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksThrowable.get()) {
+						Vec3 playerVec3 = entityBlocking.getLookAngle();
 
 						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
-						projectile.setShooter(entityBlocking); //TODO: Verify
+						projectile.setOwner(entityBlocking); //TODO: Verify
 
 						event.setCanceled(true);
 					}

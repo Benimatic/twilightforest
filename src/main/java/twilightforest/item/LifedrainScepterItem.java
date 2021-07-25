@@ -1,28 +1,28 @@
 package twilightforest.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.potion.Effects;
-import net.minecraft.item.UseAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
@@ -31,6 +31,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class LifedrainScepterItem extends Item {
 
 	protected LifedrainScepterItem(Properties props) {
@@ -38,14 +40,14 @@ public class LifedrainScepterItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage()) {
-			return ActionResult.resultFail(player.getHeldItem(hand));
+		if (stack.getDamageValue() == stack.getMaxDamage()) {
+			return InteractionResultHolder.fail(player.getItemInHand(hand));
 		} else {
-			player.setActiveHand(hand);
-			return ActionResult.resultSuccess(player.getHeldItem(hand));
+			player.startUsingItem(hand);
+			return InteractionResultHolder.success(player.getItemInHand(hand));
 		}
 	}
 
@@ -57,14 +59,14 @@ public class LifedrainScepterItem extends Item {
 	/**
 	 * Animates the target falling apart into a rain of shatter particles
 	 */
-	private static void animateTargetShatter(World world, LivingEntity target) {
+	private static void animateTargetShatter(Level world, LivingEntity target) {
 		ItemStack itemId = new ItemStack(getTargetDropItem());
 		for (int i = 0; i < 50; ++i) {
 			double gaussX = random.nextGaussian() * 0.02D;
 			double gaussY = random.nextGaussian() * 0.02D;
 			double gaussZ = random.nextGaussian() * 0.02D;
 			double gaussFactor = 10.0D;
-			world.addParticle(new ItemParticleData(ParticleTypes.ITEM, itemId), target.getPosX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussX * gaussFactor, target.getPosY() + random.nextFloat() * target.getHeight() - gaussY * gaussFactor, target.getPosZ() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussZ * gaussFactor, gaussX, gaussY, gaussZ);
+			world.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemId), target.getX() + random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth() - gaussX * gaussFactor, target.getY() + random.nextFloat() * target.getBbHeight() - gaussY * gaussFactor, target.getZ() + random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth() - gaussZ * gaussFactor, gaussX, gaussY, gaussZ);
 		}
 	}
 
@@ -76,22 +78,22 @@ public class LifedrainScepterItem extends Item {
 	 * What, if anything, is the player currently looking at?
 	 */
 	@Nullable
-	private Entity getPlayerLookTarget(World world, LivingEntity living) {
+	private Entity getPlayerLookTarget(Level world, LivingEntity living) {
 		Entity pointedEntity = null;
 		double range = 20.0D;
-		Vector3d srcVec = new Vector3d(living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ());
-		Vector3d lookVec = living.getLook(1.0F);
-		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3 srcVec = new Vec3(living.getX(), living.getY() + living.getEyeHeight(), living.getZ());
+		Vec3 lookVec = living.getViewVector(1.0F);
+		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 1.0F;
-		List<Entity> possibleList = world.getEntitiesWithinAABBExcludingEntity(living, living.getBoundingBox().expand(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
+		List<Entity> possibleList = world.getEntities(living, living.getBoundingBox().expandTowards(lookVec.x * range, lookVec.y * range, lookVec.z * range).inflate(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
 
-			if (possibleEntity.canBeCollidedWith()) {
-				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
-				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
+			if (possibleEntity.isPickable()) {
+				float borderSize = possibleEntity.getPickRadius();
+				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
+				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -113,11 +115,11 @@ public class LifedrainScepterItem extends Item {
 
 	@Override
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
-		World world = living.world;
+		Level world = living.level;
 
-		if (stack.getDamage() == this.getMaxDamage(stack)) {
+		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
 			// do not use
-			living.resetActiveHand();
+			living.stopUsingItem();
 			return;
 		}
 
@@ -129,64 +131,64 @@ public class LifedrainScepterItem extends Item {
 			if (pointedEntity instanceof LivingEntity) {
 				LivingEntity target = (LivingEntity) pointedEntity;
 
-				if (target.getActivePotionEffect(Effects.SLOWNESS) != null || target.getHealth() < 1) {
+				if (target.getEffect(MobEffects.MOVEMENT_SLOWDOWN) != null || target.getHealth() < 1) {
 
 					if (target.getHealth() <= 3) {
 						// make it explode
 
-						makeRedMagicTrail(world, living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ(), target.getPosX(), target.getPosY() + target.getEyeHeight(), target.getPosZ());
-						if (target instanceof MobEntity) {
-							((MobEntity) target).spawnExplosionParticle();
+						makeRedMagicTrail(world, living.getX(), living.getY() + living.getEyeHeight(), living.getZ(), target.getX(), target.getY() + target.getEyeHeight(), target.getZ());
+						if (target instanceof Mob) {
+							((Mob) target).spawnAnim();
 						}
 						target.playSound(TFSounds.SCEPTER_DRAIN, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						animateTargetShatter(world, target);
-						if (!world.isRemote) {
-							target.entityDropItem(new ItemStack(getTargetDropItem(), random.nextInt(3)));
-							target.onDeath(DamageSource.causeIndirectMagicDamage(living, living));
+						if (!world.isClientSide) {
+							target.spawnAtLocation(new ItemStack(getTargetDropItem(), random.nextInt(3)));
+							target.die(DamageSource.indirectMagic(living, living));
 							target.remove();
 						}
-						living.resetActiveHand();
+						living.stopUsingItem();
 					} else {
 						// we have hit this creature recently
-						if (!world.isRemote) {
-							target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living), 3);
+						if (!world.isClientSide) {
+							target.hurt(DamageSource.indirectMagic(living, living), 3);
 
 							// only do lifting effect on creatures weaker than the player
 							if (getMaxHealth(target) <= getMaxHealth(living)) {
-								target.setMotion(0, 0.2, 0);
+								target.setDeltaMovement(0, 0.2, 0);
 							}
 
-							target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20, 2));
+							target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
 
 							if (count % 10 == 0) {
 								// heal the player
 								living.heal(1);
 								// and give foods
-								if (living instanceof PlayerEntity)
-									((PlayerEntity) living).getFoodStats().addStats(1, 0.1F);
+								if (living instanceof Player)
+									((Player) living).getFoodData().eat(1, 0.1F);
 							}
 						}
 					}
 				} else {
 					// this is a new creature to start draining
-					makeRedMagicTrail(world, living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ(), target.getPosX(), target.getPosY() + target.getEyeHeight(), target.getPosZ());
+					makeRedMagicTrail(world, living.getX(), living.getY() + living.getEyeHeight(), living.getZ(), target.getX(), target.getY() + target.getEyeHeight(), target.getZ());
 
-					living.playSound(TFSounds.SCEPTER_USE, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+					living.playSound(TFSounds.SCEPTER_USE, 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
 
-					if (!world.isRemote) {
-						target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living), 1);
+					if (!world.isClientSide) {
+						target.hurt(DamageSource.indirectMagic(living, living), 1);
 
 						// only do lifting effect on creatures weaker than the player
 						if (getMaxHealth(target) <= getMaxHealth(living)) {
-							target.setMotion(0, 0.2, 0);
+							target.setDeltaMovement(0, 0.2, 0);
 						}
 
-						target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20, 2));
+						target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
 					}
 				}
 
-				if (!world.isRemote && living instanceof PlayerEntity && !((PlayerEntity)living).isCreative()) {
-					stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
+				if (!world.isClientSide && living instanceof Player && !((Player)living).isCreative()) {
+					stack.hurt(1, random, (ServerPlayer) null);
 				}
 			}
 		}
@@ -196,7 +198,7 @@ public class LifedrainScepterItem extends Item {
 		return (float) target.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
 	}
 
-	private void makeRedMagicTrail(World world, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	private void makeRedMagicTrail(Level world, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
 		int particles = 32;
 		for (int i = 0; i < particles; i++) {
@@ -204,9 +206,9 @@ public class LifedrainScepterItem extends Item {
 			float f = 1.0F;
 			float f1 = 0.5F;
 			float f2 = 0.5F;
-			double tx = srcX + (destX - srcX) * trailFactor + world.rand.nextGaussian() * 0.005;
-			double ty = srcY + (destY - srcY) * trailFactor + world.rand.nextGaussian() * 0.005;
-			double tz = srcZ + (destZ - srcZ) * trailFactor + world.rand.nextGaussian() * 0.005;
+			double tx = srcX + (destX - srcX) * trailFactor + world.random.nextGaussian() * 0.005;
+			double ty = srcY + (destY - srcY) * trailFactor + world.random.nextGaussian() * 0.005;
+			double tz = srcZ + (destZ - srcZ) * trailFactor + world.random.nextGaussian() * 0.005;
 			world.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
@@ -217,8 +219,8 @@ public class LifedrainScepterItem extends Item {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BOW;
+	public UseAnim getUseAnimation(ItemStack stack) {
+		return UseAnim.BOW;
 	}
 
 	@Override
@@ -233,8 +235,8 @@ public class LifedrainScepterItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
-		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(new TranslationTextComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamage()));
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, world, tooltip, flags);
+		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()));
 	}
 }

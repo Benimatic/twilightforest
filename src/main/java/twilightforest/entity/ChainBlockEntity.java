@@ -1,25 +1,25 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -29,12 +29,12 @@ import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 
-public class ChainBlockEntity extends ThrowableEntity implements IEntityAdditionalSpawnData {
+public class ChainBlockEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
-	private static DataParameter<Boolean> HAND = EntityDataManager.createKey(ChainBlockEntity.class, DataSerializers.BOOLEAN);
+	private static EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlockEntity.class, EntityDataSerializers.BOOLEAN);
 	private boolean isReturning = false;
 	private int blocksSmashed = 0;
 	private double velX;
@@ -48,7 +48,7 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 	public final ChainEntity chain5;
 	private BlockChainGoblinEntity.MultipartGenericsAreDumb[] partsArray;
 
-	public ChainBlockEntity(EntityType<? extends ChainBlockEntity> type, World world) {
+	public ChainBlockEntity(EntityType<? extends ChainBlockEntity> type, Level world) {
 		super(type, world);
 
 		chain1 = new ChainEntity(this);
@@ -59,7 +59,7 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 		partsArray =  new BlockChainGoblinEntity.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
 	}
 
-	public ChainBlockEntity(EntityType<? extends ChainBlockEntity> type, World world, LivingEntity thrower, Hand hand) {
+	public ChainBlockEntity(EntityType<? extends ChainBlockEntity> type, Level world, LivingEntity thrower, InteractionHand hand) {
 		super(type, thrower, world);
 		this.isReturning = false;
 		this.setHand(hand);
@@ -69,15 +69,15 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 		chain4 = new ChainEntity(this);
 		chain5 = new ChainEntity(this);
 		partsArray =  new BlockChainGoblinEntity.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
-		this.setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.shootFromRotation(thrower, thrower.xRot, thrower.yRot, 0F, 1.5F, 1F);
 	}
 
-	private void setHand(Hand hand) {
-		dataManager.set(HAND, hand == Hand.MAIN_HAND);
+	private void setHand(InteractionHand hand) {
+		entityData.set(HAND, hand == InteractionHand.MAIN_HAND);
 	}
 
-	public Hand getHand() {
-		return dataManager.get(HAND) ? Hand.MAIN_HAND : Hand.OFF_HAND;
+	public InteractionHand getHand() {
+		return entityData.get(HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 	}
 
 	@Override
@@ -85,44 +85,44 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 		super.shoot(x, y, z, speed, accuracy);
 
 		// save velocity
-		this.velX = this.getMotion().getX();
-		this.velY = this.getMotion().getY();
-		this.velZ = this.getMotion().getZ();
+		this.velX = this.getDeltaMovement().x();
+		this.velY = this.getDeltaMovement().y();
+		this.velZ = this.getDeltaMovement().z();
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return 0.05F;
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult ray) {
-		if (world.isRemote) {
+	protected void onHit(HitResult ray) {
+		if (level.isClientSide) {
 			return;
 		}
 
-		if (ray instanceof EntityRayTraceResult) {
-			EntityRayTraceResult entityRay = (EntityRayTraceResult) ray;
+		if (ray instanceof EntityHitResult) {
+			EntityHitResult entityRay = (EntityHitResult) ray;
 
 			// only hit living things
-			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getShooter()) {
-				if (entityRay.getEntity().attackEntityFrom(TFDamageSources.SPIKED(this, (LivingEntity)this.getShooter()), 10)) {
+			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getOwner()) {
+				if (entityRay.getEntity().hurt(TFDamageSources.SPIKED(this, (LivingEntity)this.getOwner()), 10)) {
 					// age when we hit a monster so that we go back to the player faster
-					this.ticksExisted += 60;
+					this.tickCount += 60;
 				}
 			}
 		}
 
-		if (ray instanceof BlockRayTraceResult) {
-			BlockRayTraceResult blockRay = (BlockRayTraceResult) ray;
+		if (ray instanceof BlockHitResult) {
+			BlockHitResult blockRay = (BlockHitResult) ray;
 
-			if (blockRay.getPos() != null && !this.world.isAirBlock(blockRay.getPos())) {
+			if (blockRay.getBlockPos() != null && !this.level.isEmptyBlock(blockRay.getBlockPos())) {
 				if (!this.isReturning) {
-					playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.125f, this.rand.nextFloat());
+					playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.125f, this.random.nextFloat());
 				}
 
 				if (this.blocksSmashed < MAX_SMASH) {
-					if (this.world.getBlockState(blockRay.getPos()).getBlockHardness(world, blockRay.getPos()) > 0.3F) {
+					if (this.level.getBlockState(blockRay.getBlockPos()).getDestroySpeed(level, blockRay.getBlockPos()) > 0.3F) {
 						// riccochet
 						double bounce = 0.6;
 						this.velX *= bounce;
@@ -130,7 +130,7 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 						this.velZ *= bounce;
 
 
-						switch (blockRay.getFace()) {
+						switch (blockRay.getDirection()) {
 							case DOWN:
 								if (this.velY > 0) {
 									this.velY *= -bounce;
@@ -171,29 +171,29 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 				this.isReturning = true;
 
 				// if we have smashed enough, add to ticks so that we go back faster
-				if (this.blocksSmashed > MAX_SMASH && this.ticksExisted < 60) {
-					this.ticksExisted += 60;
+				if (this.blocksSmashed > MAX_SMASH && this.tickCount < 60) {
+					this.tickCount += 60;
 				}
 			}
 		}
 	}
 
-	private void affectBlocksInAABB(AxisAlignedBB box) {
+	private void affectBlocksInAABB(AABB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			BlockState state = world.getBlockState(pos);
+			BlockState state = level.getBlockState(pos);
 			Block block = state.getBlock();
 
 			// TODO: The "explosion" parameter can't actually be null
-			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, null) < 7F
-					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
+			if (!block.isAir(state, level, pos) && block.getExplosionResistance(state, level, pos, null) < 7F
+					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this)) {
 
-				if (getShooter() instanceof PlayerEntity) {
-					PlayerEntity player = (PlayerEntity) getShooter();
-					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
-						if (block.canHarvestBlock(state, world, pos, player)) {
-							block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(getHand()));
+				if (getOwner() instanceof Player) {
+					Player player = (Player) getOwner();
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
+						if (block.canHarvestBlock(state, level, pos, player)) {
+							block.playerDestroy(level, player, pos, state, level.getBlockEntity(pos), player.getItemInHand(getHand()));
 
-							world.destroyBlock(pos, false);
+							level.destroyBlock(pos, false);
 							this.blocksSmashed++;
 						}
 					}
@@ -206,7 +206,7 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 	public void tick() {
 		super.tick();
 
-		if (world.isRemote) {
+		if (level.isClientSide) {
 
 			chain1.tick();
 			chain2.tick();
@@ -215,29 +215,29 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 			chain5.tick();
 
 			// set chain positions
-			if (this.getShooter() != null) {
+			if (this.getOwner() != null) {
 				// interpolate chain position
-				Vector3d handVec = this.getShooter().getLookVec().rotateYaw(getHand() == Hand.MAIN_HAND ? -0.4F : 0.4F);
+				Vec3 handVec = this.getOwner().getLookAngle().yRot(getHand() == InteractionHand.MAIN_HAND ? -0.4F : 0.4F);
 
-				double sx = this.getShooter().getPosX() + handVec.x;
-				double sy = this.getShooter().getPosY() + handVec.y - 0.4F + this.getShooter().getEyeHeight();
-				double sz = this.getShooter().getPosZ() + handVec.z;
+				double sx = this.getOwner().getX() + handVec.x;
+				double sy = this.getOwner().getY() + handVec.y - 0.4F + this.getOwner().getEyeHeight();
+				double sz = this.getOwner().getZ() + handVec.z;
 
-				double ox = sx - this.getPosX();
-				double oy = sy - this.getPosY() - 0.25F;
-				double oz = sz - this.getPosZ();
+				double ox = sx - this.getX();
+				double oy = sy - this.getY() - 0.25F;
+				double oz = sz - this.getZ();
 
-				this.chain1.setPosition(sx - ox * 0.05, sy - oy * 0.05, sz - oz * 0.05);
-				this.chain2.setPosition(sx - ox * 0.25, sy - oy * 0.25, sz - oz * 0.25);
-				this.chain3.setPosition(sx - ox * 0.45, sy - oy * 0.45, sz - oz * 0.45);
-				this.chain4.setPosition(sx - ox * 0.65, sy - oy * 0.65, sz - oz * 0.65);
-				this.chain5.setPosition(sx - ox * 0.85, sy - oy * 0.85, sz - oz * 0.85);
+				this.chain1.setPos(sx - ox * 0.05, sy - oy * 0.05, sz - oz * 0.05);
+				this.chain2.setPos(sx - ox * 0.25, sy - oy * 0.25, sz - oz * 0.25);
+				this.chain3.setPos(sx - ox * 0.45, sy - oy * 0.45, sz - oz * 0.45);
+				this.chain4.setPos(sx - ox * 0.65, sy - oy * 0.65, sz - oz * 0.65);
+				this.chain5.setPos(sx - ox * 0.85, sy - oy * 0.85, sz - oz * 0.85);
 			}
 		} else {
-			if (getShooter() == null) {
+			if (getOwner() == null) {
 				remove();
 			} else {
-				double distToPlayer = this.getDistance(this.getShooter());
+				double distToPlayer = this.distanceTo(this.getOwner());
 				// return if far enough away
 				if (!this.isReturning && distToPlayer > MAX_CHAIN) {
 					this.isReturning = true;
@@ -249,15 +249,15 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 						this.remove();
 					}
 
-					LivingEntity returnTo = (LivingEntity) this.getShooter();
+					LivingEntity returnTo = (LivingEntity) this.getOwner();
 
-					Vector3d back = new Vector3d(returnTo.getPosX(), returnTo.getPosY() + returnTo.getEyeHeight(), returnTo.getPosZ()).subtract(this.getPositionVec()).normalize();
-					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
+					Vec3 back = new Vec3(returnTo.getX(), returnTo.getY() + returnTo.getEyeHeight(), returnTo.getZ()).subtract(this.position()).normalize();
+					float age = Math.min(this.tickCount * 0.03F, 1.0F);
 
 					// separate the return velocity from the normal bouncy velocity
-					this.setMotion(new Vector3d(
+					this.setDeltaMovement(new Vec3(
 							this.velX * (1.0 - age) + (back.x * 2F * age),
-							this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity(),
+							this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravity(),
 							this.velZ * (1.0 - age) + (back.z * 2F * age)
 					));
 				}
@@ -266,36 +266,36 @@ public class ChainBlockEntity extends ThrowableEntity implements IEntityAddition
 	}
 
 	@Override
-	protected void registerData() {
-		dataManager.register(HAND, true);
+	protected void defineSynchedData() {
+		entityData.define(HAND, true);
 	}
 
 	@Override
 	public void remove() {
 		super.remove();
-		LivingEntity thrower = (LivingEntity) this.getShooter();
-		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain.get()) {
-			thrower.resetActiveHand();
+		LivingEntity thrower = (LivingEntity) this.getOwner();
+		if (thrower != null && thrower.getUseItem().getItem() == TFItems.block_and_chain.get()) {
+			thrower.stopUsingItem();
 		}
 	}
 
 	@Override
-	public void writeSpawnData(PacketBuffer buffer) {
-		buffer.writeInt(getShooter() != null ? getShooter().getEntityId() : -1);
-		buffer.writeBoolean(getHand() == Hand.MAIN_HAND);
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		buffer.writeInt(getOwner() != null ? getOwner().getId() : -1);
+		buffer.writeBoolean(getHand() == InteractionHand.MAIN_HAND);
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer additionalData) {
-		Entity e = world.getEntityByID(additionalData.readInt());
+	public void readSpawnData(FriendlyByteBuf additionalData) {
+		Entity e = level.getEntity(additionalData.readInt());
 		if (e instanceof LivingEntity) {
-			setShooter(e);
+			setOwner(e);
 		}
-		setHand(additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND);
+		setHand(additionalData.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

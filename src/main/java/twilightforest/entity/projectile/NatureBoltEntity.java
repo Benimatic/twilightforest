@@ -1,37 +1,37 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BoneMealItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.TFDamageSources;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public class NatureBoltEntity extends TFThrowableEntity implements ITFProjectile, IRendersAsItem {
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+public class NatureBoltEntity extends TFThrowableEntity implements ITFProjectile, ItemSupplier {
 
-	public NatureBoltEntity(EntityType<? extends NatureBoltEntity> type, World world) {
+	public NatureBoltEntity(EntityType<? extends NatureBoltEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public NatureBoltEntity(World world, LivingEntity owner) {
+	public NatureBoltEntity(Level world, LivingEntity owner) {
 		super(TFEntities.nature_bolt, world, owner);
 	}
 
@@ -42,67 +42,67 @@ public class NatureBoltEntity extends TFThrowableEntity implements ITFProjectile
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return 0.003F;
 	}
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			world.addParticle(ParticleTypes.HAPPY_VILLAGER, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			double dx = getX() + 0.5 * (random.nextDouble() - random.nextDouble());
+			double dy = getY() + 0.5 * (random.nextDouble() - random.nextDouble());
+			double dz = getZ() + 0.5 * (random.nextDouble() - random.nextDouble());
+			level.addParticle(ParticleTypes.HAPPY_VILLAGER, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.OAK_LEAVES.getDefaultState()), false, this.getPosX(), this.getPosY(), this.getPosZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.OAK_LEAVES.defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
-			super.handleStatusUpdate(id);
+			super.handleEntityEvent(id);
 		}
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult ray) {
-		if (!this.world.isRemote) {
-			if (ray.getType() == RayTraceResult.Type.BLOCK) {
-				BlockPos blockPosHit = ((BlockRayTraceResult) ray).getPos();
-				Material materialHit = world.getBlockState(blockPosHit).getMaterial();
+	protected void onHit(HitResult ray) {
+		if (!this.level.isClientSide) {
+			if (ray.getType() == HitResult.Type.BLOCK) {
+				BlockPos blockPosHit = ((BlockHitResult) ray).getBlockPos();
+				Material materialHit = level.getBlockState(blockPosHit).getMaterial();
 
-				if (materialHit == Material.ORGANIC) {
+				if (materialHit == Material.GRASS) {
 					ItemStack dummy = new ItemStack(Items.BONE_MEAL, 1);
-					if (BoneMealItem.applyBonemeal(dummy, world, blockPosHit)) {
-						world.playEvent(2005, blockPosHit, 0);
+					if (BoneMealItem.growCrop(dummy, level, blockPosHit)) {
+						level.levelEvent(2005, blockPosHit, 0);
 					}
-				} else if (materialHit.isSolid() && canReplaceBlock(world, blockPosHit)) {
-					world.setBlockState(blockPosHit, Blocks.BIRCH_LEAVES.getDefaultState());
+				} else if (materialHit.isSolid() && canReplaceBlock(level, blockPosHit)) {
+					level.setBlockAndUpdate(blockPosHit, Blocks.BIRCH_LEAVES.defaultBlockState());
 				}
 			}
 
-			if (ray instanceof EntityRayTraceResult) {
-				Entity owner = getShooter();
-				Entity entityHit = ((EntityRayTraceResult) ray).getEntity();
-				if (entityHit instanceof LivingEntity && (owner == null || (entityHit != owner && entityHit != owner.getRidingEntity()))) {
-					if (entityHit.attackEntityFrom(TFDamageSources.LEAF_BRAIN(this, (LivingEntity)this.getShooter()), 2)
-							&& world.getDifficulty() != Difficulty.PEACEFUL) {
-						int poisonTime = world.getDifficulty() == Difficulty.HARD ? 7 : 3;
-						((LivingEntity) entityHit).addPotionEffect(new EffectInstance(Effects.POISON, poisonTime * 20, 0));
+			if (ray instanceof EntityHitResult) {
+				Entity owner = getOwner();
+				Entity entityHit = ((EntityHitResult) ray).getEntity();
+				if (entityHit instanceof LivingEntity && (owner == null || (entityHit != owner && entityHit != owner.getVehicle()))) {
+					if (entityHit.hurt(TFDamageSources.LEAF_BRAIN(this, (LivingEntity)this.getOwner()), 2)
+							&& level.getDifficulty() != Difficulty.PEACEFUL) {
+						int poisonTime = level.getDifficulty() == Difficulty.HARD ? 7 : 3;
+						((LivingEntity) entityHit).addEffect(new MobEffectInstance(MobEffects.POISON, poisonTime * 20, 0));
 					}
 				}
 			}
 
-			this.world.setEntityState(this, (byte) 3);
+			this.level.broadcastEntityEvent(this, (byte) 3);
 			this.remove();
 		}
 	}
 
-	private boolean canReplaceBlock(World world, BlockPos pos) {
-		float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
+	private boolean canReplaceBlock(Level world, BlockPos pos) {
+		float hardness = world.getBlockState(pos).getDestroySpeed(world, pos);
 		return hardness >= 0 && hardness < 50F;
 	}
 

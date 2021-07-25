@@ -3,21 +3,21 @@ package twilightforest.world.feature;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.block.DirectionalBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.shapes.BitSetVoxelShapePart;
-import net.minecraft.util.math.shapes.VoxelShapePart;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
+import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 import net.minecraft.world.*;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.TreeFeature;
-import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -25,6 +25,11 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LevelWriter;
+import net.minecraft.world.level.WorldGenLevel;
 
 public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Feature<T> {
 
@@ -58,7 +63,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 //		return TFGenHollowTree.canGrowInto(blockType);
 //	}
 
-	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, MutableBoundingBox mbb, T config) {
+	protected boolean generate(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, BoundingBox mbb, T config) {
 		Set<BlockPos> branchSet = Sets.newHashSet();
 		Set<BlockPos> rootSet = Sets.newHashSet();
 		return generate(world, random, pos, logpos, leavespos, branchSet, rootSet, mbb, config);
@@ -66,14 +71,14 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 
 	//AbstractTreeFeature.place from 1.15, modified for us
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
 		Set<BlockPos> logs = Sets.newHashSet();
 		Set<BlockPos> leaves = Sets.newHashSet();
-		MutableBoundingBox mutableboundingbox = MutableBoundingBox.getNewBoundingBox();
+		BoundingBox mutableboundingbox = BoundingBox.getUnknownBox();
 		boolean flag = this.generate(world, random, pos, logs, leaves, mutableboundingbox, config);
-		if (mutableboundingbox.minX <= mutableboundingbox.maxX && flag && !logs.isEmpty()) {
-			VoxelShapePart voxelshapepart = this.getVoxelShapePart(world, mutableboundingbox, logs);
-			Template.updatePostProcessing(world, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
+		if (mutableboundingbox.x0 <= mutableboundingbox.x1 && flag && !logs.isEmpty()) {
+			DiscreteVoxelShape voxelshapepart = this.getVoxelShapePart(world, mutableboundingbox, logs);
+			StructureTemplate.updateShapeAtEdge(world, 3, voxelshapepart, mutableboundingbox.x0, mutableboundingbox.y0, mutableboundingbox.z0);
 			return true;
 		} else {
 			return false;
@@ -81,30 +86,30 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	}
 
 	//TreeFeature.func_227214_a_ copy, modified to remove decorations
-	private VoxelShapePart getVoxelShapePart(IWorld world, MutableBoundingBox mbb, Set<BlockPos> logPosSet) {
+	private DiscreteVoxelShape getVoxelShapePart(LevelAccessor world, BoundingBox mbb, Set<BlockPos> logPosSet) {
 		List<Set<BlockPos>> list = Lists.newArrayList();
-		VoxelShapePart voxelshapepart = new BitSetVoxelShapePart(mbb.getXSize(), mbb.getYSize(), mbb.getZSize());
+		DiscreteVoxelShape voxelshapepart = new BitSetDiscreteVoxelShape(mbb.getXSpan(), mbb.getYSpan(), mbb.getZSpan());
 
 		for(int j = 0; j < 6; ++j) {
 			list.add(Sets.newHashSet());
 		}
 
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
 		for(BlockPos logPos : Lists.newArrayList(logPosSet)) {
-			if (mbb.isVecInside(logPos)) {
-				voxelshapepart.setFilled(logPos.getX() - mbb.minX, logPos.getY() - mbb.minY, logPos.getZ() - mbb.minZ, true, true);
+			if (mbb.isInside(logPos)) {
+				voxelshapepart.setFull(logPos.getX() - mbb.x0, logPos.getY() - mbb.y0, logPos.getZ() - mbb.z0, true, true);
 			}
 
 			for(Direction direction : Direction.values()) {
-				mutable.setAndMove(logPos, direction);
+				mutable.setWithOffset(logPos, direction);
 				if (!logPosSet.contains(mutable)) {
 					BlockState blockstate = world.getBlockState(mutable);
-					if (blockstate.hasProperty(BlockStateProperties.DISTANCE_1_7)) {
-						list.get(0).add(mutable.toImmutable());
-						TreeFeature.setBlockStateWithoutUpdate(world, mutable, blockstate.with(BlockStateProperties.DISTANCE_1_7, 1));
-						if (mbb.isVecInside(mutable)) {
-							voxelshapepart.setFilled(mutable.getX() - mbb.minX, mutable.getY() - mbb.minY, mutable.getZ() - mbb.minZ, true, true);
+					if (blockstate.hasProperty(BlockStateProperties.DISTANCE)) {
+						list.get(0).add(mutable.immutable());
+						TreeFeature.setBlockKnownShape(world, mutable, blockstate.setValue(BlockStateProperties.DISTANCE, 1));
+						if (mbb.isInside(mutable)) {
+							voxelshapepart.setFull(mutable.getX() - mbb.x0, mutable.getY() - mbb.y0, mutable.getZ() - mbb.z0, true, true);
 						}
 					}
 				}
@@ -116,24 +121,24 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 			Set<BlockPos> set1 = list.get(l);
 
 			for(BlockPos blockpos2 : set) {
-				if (mbb.isVecInside(blockpos2)) {
-					voxelshapepart.setFilled(blockpos2.getX() - mbb.minX, blockpos2.getY() - mbb.minY, blockpos2.getZ() - mbb.minZ, true, true);
+				if (mbb.isInside(blockpos2)) {
+					voxelshapepart.setFull(blockpos2.getX() - mbb.x0, blockpos2.getY() - mbb.y0, blockpos2.getZ() - mbb.z0, true, true);
 				}
 
 				for(Direction direction1 : Direction.values()) {
-					mutable.setAndMove(blockpos2, direction1);
+					mutable.setWithOffset(blockpos2, direction1);
 					if (!set.contains(mutable) && !set1.contains(mutable)) {
 						BlockState blockstate1 = world.getBlockState(mutable);
-						if (blockstate1.hasProperty(BlockStateProperties.DISTANCE_1_7)) {
-							int k = blockstate1.get(BlockStateProperties.DISTANCE_1_7);
+						if (blockstate1.hasProperty(BlockStateProperties.DISTANCE)) {
+							int k = blockstate1.getValue(BlockStateProperties.DISTANCE);
 							if (k > l + 1) {
-								BlockState blockstate2 = blockstate1.with(BlockStateProperties.DISTANCE_1_7, l + 1);
-								TreeFeature.setBlockStateWithoutUpdate(world, mutable, blockstate2);
-								if (mbb.isVecInside(mutable)) {
-									voxelshapepart.setFilled(mutable.getX() - mbb.minX, mutable.getY() - mbb.minY, mutable.getZ() - mbb.minZ, true, true);
+								BlockState blockstate2 = blockstate1.setValue(BlockStateProperties.DISTANCE, l + 1);
+								TreeFeature.setBlockKnownShape(world, mutable, blockstate2);
+								if (mbb.isInside(mutable)) {
+									voxelshapepart.setFull(mutable.getX() - mbb.x0, mutable.getY() - mbb.y0, mutable.getZ() - mbb.z0, true, true);
 								}
 
-								set1.add(mutable.toImmutable());
+								set1.add(mutable.immutable());
 							}
 						}
 					}
@@ -147,13 +152,13 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	/**
 	 * This works akin to the AbstractTreeFeature.generate, but put our branches and roots here
 	 */
-	protected abstract boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, MutableBoundingBox mbb, T config);
+	protected abstract boolean generate(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, BoundingBox mbb, T config);
 
-	//AbstractTrunkPlacer.func_236911_a_ copy - Use that one instead when extending that Abstract
-	protected boolean setLogBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> logPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		if (TreeFeature.isReplaceableAt(world, pos)) {
-			this.setBlockState(world, pos, config.trunkProvider.getBlockState(random, pos), mbb);
-			logPos.add(pos.toImmutable());
+	//AbstractTrunkPlacer.placeLog copy - Use that one instead when extending that Abstract
+	protected boolean setLogBlockState(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> logPos, BoundingBox mbb, TFTreeFeatureConfig config) {
+		if (TreeFeature.validTreePos(world, pos)) {
+			this.setBlockState(world, pos, config.trunkProvider.getState(random, pos), mbb);
+			logPos.add(pos.immutable());
 			return true;
 		} else {
 			return false;
@@ -161,58 +166,58 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	}
 
 	//We aren't actually using this, but it is here just in case
-	protected boolean setLeavesBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> leavesPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		if (TreeFeature.isReplaceableAt(world, pos)) {
-			this.setBlockState(world, pos, config.leavesProvider.getBlockState(random, pos), mbb);
-			leavesPos.add(pos.toImmutable());
+	protected boolean setLeavesBlockState(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> leavesPos, BoundingBox mbb, TFTreeFeatureConfig config) {
+		if (TreeFeature.validTreePos(world, pos)) {
+			this.setBlockState(world, pos, config.leavesProvider.getState(random, pos), mbb);
+			leavesPos.add(pos.immutable());
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public boolean setBranchBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		if (TreeFeature.isReplaceableAt(world, pos)) {
-			this.setBlockState(world, pos, config.branchProvider.getBlockState(random, pos), mbb);
-			branchpos.add(pos.toImmutable());
+	public boolean setBranchBlockState(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> branchpos, BoundingBox mbb, TFTreeFeatureConfig config) {
+		if (TreeFeature.validTreePos(world, pos)) {
+			this.setBlockState(world, pos, config.branchProvider.getState(random, pos), mbb);
+			branchpos.add(pos.immutable());
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	protected boolean setRootsBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected boolean setRootsBlockState(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> branchpos, BoundingBox mbb, TFTreeFeatureConfig config) {
 		// XXX: This was originally an IWorld in AbstractTreeFeature.place, so it should be ok to cast it back.
 		// If you're here investigating after it blew up, then the above assumption is no longer true.
 		if (canRootGrowIn(world, pos)) {
-			this.setBlockState(world, pos, config.rootsProvider.getBlockState(random, pos), mbb);
-			branchpos.add(pos.toImmutable());
+			this.setBlockState(world, pos, config.rootsProvider.getState(random, pos), mbb);
+			branchpos.add(pos.immutable());
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	protected final void setBlockState(IWorldWriter world, BlockPos pos, BlockState state, MutableBoundingBox mbb) {
-		world.setBlockState(pos, state, 19);
-		mbb.expandTo(new MutableBoundingBox(pos, pos));
+	protected final void setBlockState(LevelWriter world, BlockPos pos, BlockState state, BoundingBox mbb) {
+		world.setBlock(pos, state, 19);
+		mbb.expand(new BoundingBox(pos, pos));
 	}
 
 	/**
 	 * Build a root, but don't let it stick out too far into thin air because that's weird
 	 */
-	protected void buildRoot(IWorld world, Random rand, BlockPos pos, Set<BlockPos> setpos, double offset, int b, MutableBoundingBox mbb, T config) {
-		BlockPos dest = FeatureUtil.translate(pos.down(b + 2), 5, 0.3 * b + offset, 0.8);
+	protected void buildRoot(LevelAccessor world, Random rand, BlockPos pos, Set<BlockPos> setpos, double offset, int b, BoundingBox mbb, T config) {
+		BlockPos dest = FeatureUtil.translate(pos.below(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
-		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.down(), dest);
+		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
 		for (BlockPos coord : lineArray) {
 			this.setRootsBlockState(world, rand, coord, setpos, mbb, config);
 		}
 	}
 
 	// TODO should move to FeatureUtil
-	public static boolean canRootGrowIn(IWorldReader world, BlockPos pos) {
+	public static boolean canRootGrowIn(LevelReader world, BlockPos pos) {
 		BlockState blockState = world.getBlockState(pos);
 		Block blockID = blockState.getBlock();
 
@@ -220,7 +225,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 			// roots can grow through air if they are near a solid block
 			return FeatureUtil.isNearSolid(world, pos);
 		} else {
-			return (blockState.getBlockHardness(world, pos) >= 0)
+			return (blockState.getDestroySpeed(world, pos) >= 0)
 					&& blockID != TFBlocks.stronghold_shield.get()
 					&& blockID != TFBlocks.trophy_pedestal.get()
 					&& blockID != TFBlocks.boss_spawner_naga.get()
@@ -231,7 +236,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 					&& blockID != TFBlocks.boss_spawner_snow_queen.get()
 					&& blockID != TFBlocks.boss_spawner_minoshroom.get()
 					&& blockID != TFBlocks.boss_spawner_alpha_yeti.get()
-					&& (blockState.getMaterial() == Material.ORGANIC || blockState.getMaterial() == Material.EARTH || blockState.getMaterial() == Material.ROCK || blockState.getMaterial() == Material.WATER);
+					&& (blockState.getMaterial() == Material.GRASS || blockState.getMaterial() == Material.DIRT || blockState.getMaterial() == Material.STONE || blockState.getMaterial() == Material.WATER);
 		}
 	}
 
@@ -241,22 +246,22 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	 * @param height how far up the tree
 	 * @param angle  from 0 - 1 rotation around the tree
 	 */
-	protected void addFirefly(IWorld world, BlockPos pos, int height, double angle) {
+	protected void addFirefly(LevelAccessor world, BlockPos pos, int height, double angle) {
 		int iAngle = (int) (angle * 4.0);
 		if (iAngle == 0) {
-			setIfEmpty(world, pos.add( 1, height,  0), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.EAST));
+			setIfEmpty(world, pos.offset( 1, height,  0), TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST));
 		} else if (iAngle == 1) {
-			setIfEmpty(world, pos.add(-1, height,  0), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.WEST));
+			setIfEmpty(world, pos.offset(-1, height,  0), TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST));
 		} else if (iAngle == 2) {
-			setIfEmpty(world, pos.add( 0, height,  1), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.SOUTH));
+			setIfEmpty(world, pos.offset( 0, height,  1), TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH));
 		} else if (iAngle == 3) {
-			setIfEmpty(world, pos.add( 0, height, -1), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH));
+			setIfEmpty(world, pos.offset( 0, height, -1), TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH));
 		}
 	}
 
-	private void setIfEmpty(IWorld world, BlockPos pos, BlockState state) {
-		if (world.isAirBlock(pos)) {
-			world.setBlockState(pos, state,3);
+	private void setIfEmpty(LevelAccessor world, BlockPos pos, BlockState state) {
+		if (world.isEmptyBlock(pos)) {
+			world.setBlock(pos, state,3);
 		}
 	}
 }

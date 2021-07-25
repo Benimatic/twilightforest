@@ -1,34 +1,34 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.entity.SlideBlockEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.TFDamageSources;
@@ -37,7 +37,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class SliderBlock extends RotatedPillarBlock implements IWaterLoggable {
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+public class SliderBlock extends RotatedPillarBlock implements SimpleWaterloggedBlock {
 
 	public static final IntegerProperty DELAY = IntegerProperty.create("delay", 0, 3);
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -46,47 +48,47 @@ public class SliderBlock extends RotatedPillarBlock implements IWaterLoggable {
 	private static final int OFFSET_TIME = 20;
 	private static final int PLAYER_RANGE = 32;
 	private static final float BLOCK_DAMAGE = 5;
-	private static final VoxelShape Y_BB = VoxelShapes.create(new AxisAlignedBB(0.3125, 0, 0.3125, 0.6875, 1F, 0.6875));
-	private static final VoxelShape Z_BB = VoxelShapes.create(new AxisAlignedBB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
-	private static final VoxelShape X_BB = VoxelShapes.create(new AxisAlignedBB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
+	private static final VoxelShape Y_BB = Shapes.create(new AABB(0.3125, 0, 0.3125, 0.6875, 1F, 0.6875));
+	private static final VoxelShape Z_BB = Shapes.create(new AABB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
+	private static final VoxelShape X_BB = Shapes.create(new AABB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
 	protected SliderBlock() {
-		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly().notSolid());
-		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0).with(WATERLOGGED, false));
+		super(Properties.of(Material.METAL, MaterialColor.DIRT).strength(2.0F, 10.0F).randomTicks().noOcclusion());
+		this.registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.Y).setValue(DELAY, 0).setValue(WATERLOGGED, false));
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-		boolean flag = fluidstate.getFluid() == Fluids.WATER;
-		return super.getStateForPlacement(context).with(WATERLOGGED, Boolean.valueOf(flag));
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+		boolean flag = fluidstate.getType() == Fluids.WATER;
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.getValue(WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(DELAY, WATERLOGGED);
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(AXIS)) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+		switch (state.getValue(AXIS)) {
 			case Y:
 			default:
 				return Y_BB;
@@ -99,13 +101,13 @@ public class SliderBlock extends RotatedPillarBlock implements IWaterLoggable {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+		if (!world.isClientSide && this.isConnectedInRange(world, pos)) {
 			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
 			//world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.SLIDER, SoundCategory.BLOCKS, 0.75F, 1.5F);
 
 			SlideBlockEntity slideBlock = new SlideBlockEntity(TFEntities.slider, world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
-			world.addEntity(slideBlock);
+			world.addFreshEntity(slideBlock);
 		}
 
 		scheduleBlockUpdate(world, pos);
@@ -114,8 +116,8 @@ public class SliderBlock extends RotatedPillarBlock implements IWaterLoggable {
 	/**
 	 * Check if there is any players in range, and also recursively check connected blocks
 	 */
-	public boolean isConnectedInRange(World world, BlockPos pos) {
-		Direction.Axis axis = world.getBlockState(pos).get(AXIS);
+	public boolean isConnectedInRange(Level world, BlockPos pos) {
+		Direction.Axis axis = world.getBlockState(pos).getValue(AXIS);
 
 		switch (axis) {
 			case Y:
@@ -129,8 +131,8 @@ public class SliderBlock extends RotatedPillarBlock implements IWaterLoggable {
 		}
 	}
 
-	private boolean isConnectedInRangeRecursive(World world, BlockPos pos, Direction dir) {
-		BlockPos dPos = pos.offset(dir);
+	private boolean isConnectedInRangeRecursive(Level world, BlockPos pos, Direction dir) {
+		BlockPos dPos = pos.relative(dir);
 
 		if (world.getBlockState(pos) == world.getBlockState(dPos)) {
 			return this.anyPlayerInRange(world, dPos) || this.isConnectedInRangeRecursive(world, dPos, dir);
@@ -139,37 +141,37 @@ public class SliderBlock extends RotatedPillarBlock implements IWaterLoggable {
 		}
 	}
 
-	private boolean anyPlayerInRange(World world, BlockPos pos) {
-		return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, PLAYER_RANGE, false) != null;
+	private boolean anyPlayerInRange(Level world, BlockPos pos) {
+		return world.getNearestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, PLAYER_RANGE, false) != null;
 	}
 
-	public void scheduleBlockUpdate(World world, BlockPos pos) {
-		int offset = world.getBlockState(pos).get(DELAY);
+	public void scheduleBlockUpdate(Level world, BlockPos pos) {
+		int offset = world.getBlockState(pos).getValue(DELAY);
 		int update = TICK_TIME - ((int) (world.getGameTime() - (offset * OFFSET_TIME)) % TICK_TIME);
-		world.getPendingBlockTicks().scheduleTick(pos, this, update);
+		world.getBlockTicks().scheduleTick(pos, this, update);
 	}
 
 	@Override
 	@Deprecated
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
 		scheduleBlockUpdate(world, pos);
 	}
 
 	@Override
 	@Deprecated
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
-		entity.attackEntityFrom(TFDamageSources.SLIDER, BLOCK_DAMAGE);
+	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
+		entity.hurt(TFDamageSources.SLIDER, BLOCK_DAMAGE);
 		if (entity instanceof LivingEntity) {
-			double kx = (pos.getX() + 0.5 - entity.getPosX()) * 2.0;
-			double kz = (pos.getZ() + 0.5 - entity.getPosZ()) * 2.0;
+			double kx = (pos.getX() + 0.5 - entity.getX()) * 2.0;
+			double kz = (pos.getZ() + 0.5 - entity.getZ()) * 2.0;
 
-			((LivingEntity) entity).applyKnockback(2, kx, kz);
+			((LivingEntity) entity).knockback(2, kx, kz);
 		}
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("twilightforest.misc.nyi"));
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 }

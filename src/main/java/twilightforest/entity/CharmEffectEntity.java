@@ -1,21 +1,21 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -25,11 +25,11 @@ import javax.annotation.Nullable;
 
 @OnlyIn(
 				value = Dist.CLIENT,
-				_interface = IRendersAsItem.class
+				_interface = ItemSupplier.class
 )
-public class CharmEffectEntity extends Entity implements IRendersAsItem {
-	private static final DataParameter<Integer> DATA_OWNER = EntityDataManager.createKey(CharmEffectEntity.class, DataSerializers.VARINT);
-	private static final DataParameter<ItemStack> DATA_ITEMID = EntityDataManager.createKey(CharmEffectEntity.class, DataSerializers.ITEMSTACK);
+public class CharmEffectEntity extends Entity implements ItemSupplier {
+	private static final EntityDataAccessor<Integer> DATA_OWNER = SynchedEntityData.defineId(CharmEffectEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<ItemStack> DATA_ITEMID = SynchedEntityData.defineId(CharmEffectEntity.class, EntityDataSerializers.ITEM_STACK);
 	private static final double DISTANCE = 0.75;
 	private double interpTargetX;
 	private double interpTargetY;
@@ -40,70 +40,70 @@ public class CharmEffectEntity extends Entity implements IRendersAsItem {
 
 	public float offset;
 
-	public CharmEffectEntity(EntityType<? extends CharmEffectEntity> type, World world) {
+	public CharmEffectEntity(EntityType<? extends CharmEffectEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public CharmEffectEntity(EntityType<? extends CharmEffectEntity> type, World world, LivingEntity owner, Item item) {
+	public CharmEffectEntity(EntityType<? extends CharmEffectEntity> type, Level world, LivingEntity owner, Item item) {
 		this(type, world);
 
 		this.setOwner(owner);
 		this.setItemID(item);
 
-		this.setLocationAndAngles(owner.getPosX(), owner.getPosY() + owner.getEyeHeight(), owner.getPosZ(), owner.rotationYaw, owner.rotationPitch);
+		this.moveTo(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.yRot, owner.xRot);
 
-		Vector3d look = new Vector3d(DISTANCE, 0, 0);
-		double x = getPosX() + (look.x * DISTANCE);
-		double z = getPosZ() + (look.z * DISTANCE);
-		this.setPosition(x, this.getPosY(), z);
+		Vec3 look = new Vec3(DISTANCE, 0, 0);
+		double x = getX() + (look.x * DISTANCE);
+		double z = getZ() + (look.z * DISTANCE);
+		this.setPos(x, this.getY(), z);
 	}
 
 	@Override
 	public void tick() {
-		this.lastTickPosX = this.getPosX();
-		this.lastTickPosY = this.getPosY();
-		this.lastTickPosZ = this.getPosZ();
+		this.xOld = this.getX();
+		this.yOld = this.getY();
+		this.zOld = this.getZ();
 		super.tick();
 
 		//[VanillaCopy] Beginning of LivingEntity.livingTick
 		if (this.newPosRotationIncrements > 0) {
-			double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / this.newPosRotationIncrements;
-			double d1 = this.getPosY() + (this.interpTargetY - this.getPosY()) / this.newPosRotationIncrements;
-			double d2 = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / this.newPosRotationIncrements;
-			double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - this.rotationYaw);
-			this.rotationYaw = (float) (this.rotationYaw + d3 / this.newPosRotationIncrements);
-			this.rotationPitch = (float) (this.rotationPitch + (this.interpTargetPitch - this.rotationPitch) / this.newPosRotationIncrements);
+			double d0 = this.getX() + (this.interpTargetX - this.getX()) / this.newPosRotationIncrements;
+			double d1 = this.getY() + (this.interpTargetY - this.getY()) / this.newPosRotationIncrements;
+			double d2 = this.getZ() + (this.interpTargetZ - this.getZ()) / this.newPosRotationIncrements;
+			double d3 = Mth.wrapDegrees(this.interpTargetYaw - this.yRot);
+			this.yRot = (float) (this.yRot + d3 / this.newPosRotationIncrements);
+			this.xRot = (float) (this.xRot + (this.interpTargetPitch - this.xRot) / this.newPosRotationIncrements);
 			--this.newPosRotationIncrements;
-			this.setPosition(d0, d1, d2);
-			this.setRotation(this.rotationYaw, this.rotationPitch);
+			this.setPos(d0, d1, d2);
+			this.setRot(this.yRot, this.xRot);
 		}
 
 		LivingEntity orbiting = getOwner();
 
 		if (orbiting != null) {
-			float rotation = this.ticksExisted / 10.0F + offset;
-			Vector3d look = new Vector3d(DISTANCE, 0, 0).rotateYaw(rotation);
-			this.setLocationAndAngles(orbiting.getPosX() + look.x, orbiting.getPosY() + orbiting.getEyeHeight(), orbiting.getPosZ() + look.z, orbiting.rotationYaw, orbiting.rotationPitch);
+			float rotation = this.tickCount / 10.0F + offset;
+			Vec3 look = new Vec3(DISTANCE, 0, 0).yRot(rotation);
+			this.moveTo(orbiting.getX() + look.x, orbiting.getY() + orbiting.getEyeHeight(), orbiting.getZ() + look.z, orbiting.yRot, orbiting.xRot);
 		}
 
 		if (!this.getItemID().isEmpty()) {
 			for (int i = 0; i < 2; i++) {
-				double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-				double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-				double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+				double dx = getX() + 0.5 * (random.nextDouble() - random.nextDouble());
+				double dy = getY() + 0.5 * (random.nextDouble() - random.nextDouble());
+				double dz = getZ() + 0.5 * (random.nextDouble() - random.nextDouble());
 
-				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
+				level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
 			}
 		}
 
-		if (!this.world.isRemote
-				&& (this.ticksExisted > 200 || (orbiting != null && !orbiting.isAlive()))) {
+		if (!this.level.isClientSide
+				&& (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
 			this.remove();
 		}
 	}
 
 	@Override
-	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
 		this.interpTargetX = x;
 		this.interpTargetY = y;
 		this.interpTargetZ = z;
@@ -114,41 +114,41 @@ public class CharmEffectEntity extends Entity implements IRendersAsItem {
 
 	@Nonnull
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
-	protected void registerData() {
-		dataManager.register(DATA_ITEMID, ItemStack.EMPTY);
-		dataManager.register(DATA_OWNER, -1);
+	protected void defineSynchedData() {
+		entityData.define(DATA_ITEMID, ItemStack.EMPTY);
+		entityData.define(DATA_OWNER, -1);
 	}
 
 	public void setOwner(LivingEntity owner) {
-		dataManager.set(DATA_OWNER, owner.getEntityId());
+		entityData.set(DATA_OWNER, owner.getId());
 	}
 
 	@Nullable
 	public LivingEntity getOwner() {
-		Entity e = this.world.getEntityByID(dataManager.get(DATA_OWNER));
+		Entity e = this.level.getEntity(entityData.get(DATA_OWNER));
 		if (e instanceof LivingEntity)
 			return (LivingEntity) e;
 		else return null;
 	}
 
 	public ItemStack getItemID() {
-		return dataManager.get(DATA_ITEMID);
+		return entityData.get(DATA_ITEMID);
 	}
 
 	public void setItemID(Item item) {
-		dataManager.set(DATA_ITEMID, new ItemStack(item));
+		entityData.set(DATA_ITEMID, new ItemStack(item));
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT cmp) {}
+	protected void readAdditionalSaveData(CompoundTag cmp) {}
 
 	@Override
-	protected void writeAdditional(CompoundNBT cmp) {}
+	protected void addAdditionalSaveData(CompoundTag cmp) {}
 
 	@Nonnull
 	@Override

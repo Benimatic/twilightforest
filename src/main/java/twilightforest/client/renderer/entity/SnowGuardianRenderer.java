@@ -1,23 +1,23 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.util.Mth;
 import twilightforest.client.model.entity.NoopModel;
 import twilightforest.entity.SnowGuardianEntity;
 
 public class SnowGuardianRenderer extends TFBipedRenderer<SnowGuardianEntity, NoopModel<SnowGuardianEntity>> {
 
-	public SnowGuardianRenderer(EntityRendererManager manager, NoopModel<SnowGuardianEntity> model) {
+	public SnowGuardianRenderer(EntityRenderDispatcher manager, NoopModel<SnowGuardianEntity> model) {
 		super(manager, model, new NoopModel<>(), new NoopModel<>(), 0.25F, "textures/entity/zombie/zombie.png");
-		this.addLayer(new BipedArmorLayer<>(this, new BipedModel<>(0.5F), new BipedModel<>(1.0F)));
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(0.5F), new HumanoidModel<>(1.0F)));
 	}
 
 	@Override
-	protected void preRenderCallback(SnowGuardianEntity entity, MatrixStack stack, float partialTicks) {
-		float bounce = entity.ticksExisted + partialTicks;
-		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+	protected void scale(SnowGuardianEntity entity, PoseStack stack, float partialTicks) {
+		float bounce = entity.tickCount + partialTicks;
+		stack.translate(0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}
 }

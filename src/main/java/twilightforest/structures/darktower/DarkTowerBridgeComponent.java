@@ -1,17 +1,17 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.structures.lichtower.TowerWingComponent;
@@ -21,18 +21,18 @@ import java.util.Random;
 
 public class DarkTowerBridgeComponent extends TowerWingComponent {
 
-	public DarkTowerBridgeComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public DarkTowerBridgeComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public DarkTowerBridgeComponent(TemplateManager manager, CompoundNBT nbt) {
+	public DarkTowerBridgeComponent(StructureManager manager, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBri, nbt);
 	}
 
 	private int dSize;
 	private int dHeight;
 
-	protected DarkTowerBridgeComponent(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected DarkTowerBridgeComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(type, feature, i, x, y, z, 5, 5, direction);
 
 		this.dSize = pSize;
@@ -40,11 +40,11 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
-		makeTowerWing(list, rand, this.getComponentType(), 4, 1, 2, dSize, dHeight, Rotation.NONE);
+		makeTowerWing(list, rand, this.getGenDepth(), 4, 1, 2, dSize, dHeight, Rotation.NONE);
 	}
 
 	@Override
@@ -64,10 +64,10 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 
 		TowerWingComponent wing = new DarkTowerWingComponent(DarkTowerPieces.TFDTWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.getBoundingBox());
+		StructurePiece intersect = StructurePiece.findCollisionPiece(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.add(wing);
-			wing.buildComponent(this, list, rand);
+			wing.addChildren(this, list, rand);
 			addOpening(x, y, z, rotation);
 			return true;
 		} else {
@@ -76,23 +76,23 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
-		fillWithBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockState, deco.blockState, false);
+		generateBox(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockState, deco.blockState, false);
 
 		// accents
 		for (int x = 0; x < size; x++) {
-			this.setBlockState(world, deco.accentState, x, 0, 0, sbb);
-			this.setBlockState(world, deco.accentState, x, height - 1, 0, sbb);
-			this.setBlockState(world, deco.accentState, x, 0, size - 1, sbb);
-			this.setBlockState(world, deco.accentState, x, height - 1, size - 1, sbb);
+			this.placeBlock(world, deco.accentState, x, 0, 0, sbb);
+			this.placeBlock(world, deco.accentState, x, height - 1, 0, sbb);
+			this.placeBlock(world, deco.accentState, x, 0, size - 1, sbb);
+			this.placeBlock(world, deco.accentState, x, height - 1, size - 1, sbb);
 		}
 
 		// nullify sky light
 //		nullifySkyLightForBoundingBox(world.getWorld());
 
 		// clear inside
-		fillWithAir(world, sbb, 0, 1, 1, size - 1, height - 2, size - 2);
+		generateAirBox(world, sbb, 0, 1, 1, size - 1, height - 2, size - 2);
 
 		return true;
 	}
@@ -101,8 +101,8 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	 * Gets the bounding box of the tower wing we would like to make.
 	 *
      */
-	public MutableBoundingBox getWingBB() {
-		int[] dest = offsetTowerCoords(4, 1, 2, dSize, this.getCoordBaseMode());
-		return feature.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
+	public BoundingBox getWingBB() {
+		int[] dest = offsetTowerCoords(4, 1, 2, dSize, this.getOrientation());
+		return feature.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation());
 	}
 }

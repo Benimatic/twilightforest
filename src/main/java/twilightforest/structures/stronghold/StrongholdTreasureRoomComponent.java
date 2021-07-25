@@ -1,17 +1,17 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -23,7 +23,7 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 
 	private boolean enterBottom;
 
-	public StrongholdTreasureRoomComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdTreasureRoomComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFTreaR, nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
@@ -33,19 +33,19 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putBoolean("enterBottom", this.enterBottom);
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+		return BoundingBox.orientBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		this.addDoor(4, 1, 0);
 	}
@@ -54,7 +54,7 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 	 * Generate the blocks that go here
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 17, rand, deco.randomBlocks);
 
 		// statues
@@ -64,8 +64,8 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 		this.placeWallStatue(world, 7, 1, 13, Rotation.COUNTERCLOCKWISE_90, sbb);
 		this.placeWallStatue(world, 4, 1, 16, Rotation.NONE, sbb);
 
-		this.fillWithRandomizedBlocks(world, sbb, 1, 1, 8, 7, 5, 9, false, rand, deco.randomBlocks);
-		this.fillWithBlocks(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
+		this.generateBox(world, sbb, 1, 1, 8, 7, 5, 9, false, rand, deco.randomBlocks);
+		this.generateBox(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.defaultBlockState(), Blocks.IRON_BARS.defaultBlockState(), false);
 
 		// spawnwers
 		this.setSpawner(world, 4, 1, 4, sbb, TFEntities.helmet_crab);
@@ -86,11 +86,11 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 	 * Make a doorway
 	 */
 	@Override
-	protected void placeDoorwayAt(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeDoorwayAt(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
 		if (x == 0 || x == getXSize()) {
-			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
+			this.generateBox(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS.defaultBlockState(), Blocks.AIR.defaultBlockState(), false);
 		} else {
-			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
+			this.generateBox(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.IRON_BARS.defaultBlockState(), Blocks.AIR.defaultBlockState(), false);
 		}
 	}
 }

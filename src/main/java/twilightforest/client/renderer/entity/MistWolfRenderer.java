@@ -1,11 +1,11 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.WolfRenderer;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 
@@ -13,13 +13,13 @@ public class MistWolfRenderer extends WolfRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mistwolf.png");
 
-	public MistWolfRenderer(EntityRendererManager manager) {
+	public MistWolfRenderer(EntityRenderDispatcher manager) {
 		super(manager);
-		this.shadowSize = 1.0F;
+		this.shadowRadius = 1.0F;
 	}
 
 	@Override
-	protected void preRenderCallback(WolfEntity entity, MatrixStack stack, float partialTicks) {
+	protected void scale(Wolf entity, PoseStack stack, float partialTicks) {
 		float wolfScale = 1.9F;
 		stack.scale(wolfScale, wolfScale, wolfScale);
 
@@ -42,7 +42,7 @@ public class MistWolfRenderer extends WolfRenderer {
 	 */
 
     @Override
-	public ResourceLocation getEntityTexture(WolfEntity entity) {
+	public ResourceLocation getTextureLocation(Wolf entity) {
 		return textureLoc;
 	}
 }

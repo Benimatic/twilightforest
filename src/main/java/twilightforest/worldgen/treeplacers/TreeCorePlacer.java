@@ -7,12 +7,12 @@ import java.util.Set;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
-import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.worldgen.TwilightFeatures;
 
 public class TreeCorePlacer extends TreeDecorator {
@@ -32,21 +32,21 @@ public class TreeCorePlacer extends TreeDecorator {
 	}
 
 	@Override
-	protected TreeDecoratorType<TreeCorePlacer> getDecoratorType() {
+	protected TreeDecoratorType<TreeCorePlacer> type() {
 		return TwilightFeatures.CORE_PLACER;
 	}
 
 	@Override
-	public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks,
-			Set<BlockPos> decorations, MutableBoundingBox mutableBoundingBox) {
+	public void place(WorldGenLevel world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks,
+			Set<BlockPos> decorations, BoundingBox mutableBoundingBox) {
 		BlockPos pos = trunkBlocks.get(0);
-		BlockPos position = pos.add(0, this.corePos, 0);
+		BlockPos position = pos.offset(0, this.corePos, 0);
 		placeCore(world, random, position, decorations, 0, corePos, 0, mutableBoundingBox, core);
 	}
 	
-	public void placeCore(ISeedReader world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, MutableBoundingBox mutableBoundingBox, BlockStateProvider coreType) {
-		BlockPos position = pos.add(0, this.corePos, 0);
-		func_227423_a_(world, pos, coreType.getBlockState(random, position), decorations, mutableBoundingBox);
+	public void placeCore(WorldGenLevel world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, BoundingBox mutableBoundingBox, BlockStateProvider coreType) {
+		BlockPos position = pos.offset(0, this.corePos, 0);
+		setBlock(world, pos, coreType.getState(random, position), decorations, mutableBoundingBox);
 	}
 
 }

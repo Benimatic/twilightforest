@@ -1,7 +1,7 @@
 package twilightforest.client;
 
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ISkyRenderHandler;
 import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -9,12 +9,14 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 
 import javax.annotation.Nullable;
 
-public class TwilightForestRenderInfo extends DimensionRenderInfo {
+import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
+
+public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
     private ISkyRenderHandler skyRenderer;
     private IWeatherRenderHandler weatherRenderer;
 
-    public TwilightForestRenderInfo(float cloudHeight, boolean placebo, FogType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
+    public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
         super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
     }
 
@@ -23,7 +25,7 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
 
     @Nullable
     @Override
-    public float[] func_230492_a_(float daycycle, float partialTicks) { // Fog color
+    public float[] getSunriseColor(float daycycle, float partialTicks) { // Fog color
         // TODO Vanilla copy, I just name a few stuff. Decide if we want to keep and cook our own thing, or we ditch it
         // Likely that we will need to ditch this. It only controls the colour of the fog based on celestial angle
         /*float f1 = MathHelper.cos(daycycle * ((float)Math.PI * 2F)) - 0.0F;
@@ -43,12 +45,12 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
     }
 
     @Override
-    public Vector3d func_230494_a_(Vector3d biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
-        return /*biomeFogColor;*/biomeFogColor.mul(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
+    public Vec3 getBrightnessDependentFogColor(Vec3 biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
+        return /*biomeFogColor;*/biomeFogColor.multiply(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
     }
 
     @Override
-    public boolean func_230493_a_(int x, int y) { // true = nearFog
+    public boolean isFoggyAt(int x, int y) { // true = nearFog
         return false;
 
         /*//TODO enable if the fog is fixed to smoothly transition. Otherwise the fog nearness just snaps and it's pretty janky tbh

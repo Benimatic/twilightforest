@@ -7,72 +7,72 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import twilightforest.entity.passive.BunnyEntity;
 
-public class BunnyModel extends SegmentedModel<BunnyEntity> {
+public class BunnyModel extends ListModel<BunnyEntity> {
 	//fields
-	ModelRenderer tail;
-	ModelRenderer body;
-	ModelRenderer leg1;
-	ModelRenderer leg2;
-	ModelRenderer leg3;
-	ModelRenderer leg4;
-	ModelRenderer head;
+	ModelPart tail;
+	ModelPart body;
+	ModelPart leg1;
+	ModelPart leg2;
+	ModelPart leg3;
+	ModelPart leg4;
+	ModelPart head;
 
 	public BunnyModel() {
-		textureWidth = 32;
-		textureHeight = 32;
+		texWidth = 32;
+		texHeight = 32;
 
-		tail = new ModelRenderer(this, 0, 18);
+		tail = new ModelPart(this, 0, 18);
 		tail.addBox(-1F, -1F, 0F, 2, 2, 2);
-		tail.setRotationPoint(0F, 20F, 3F);
-		tail.setTextureSize(32, 32);
+		tail.setPos(0F, 20F, 3F);
+		tail.setTexSize(32, 32);
 		tail.mirror = true;
 		setRotation(tail, 0F, 0F, 0F);
-		body = new ModelRenderer(this, 0, 8);
+		body = new ModelPart(this, 0, 8);
 		body.addBox(-2F, -1F, -2F, 4, 3, 5);
-		body.setRotationPoint(0F, 21F, 0F);
-		body.setTextureSize(32, 32);
+		body.setPos(0F, 21F, 0F);
+		body.setTexSize(32, 32);
 		body.mirror = true;
 		setRotation(body, 0F, 0F, 0F);
-		leg1 = new ModelRenderer(this, 0, 16);
+		leg1 = new ModelPart(this, 0, 16);
 		leg1.addBox(0F, 0F, 0F, 1, 1, 1);
-		leg1.setRotationPoint(-2F, 23F, 2F);
-		leg1.setTextureSize(32, 32);
+		leg1.setPos(-2F, 23F, 2F);
+		leg1.setTexSize(32, 32);
 		leg1.mirror = true;
 		setRotation(leg1, 0F, 0F, 0F);
-		leg2 = new ModelRenderer(this, 0, 16);
+		leg2 = new ModelPart(this, 0, 16);
 		leg2.addBox(0F, 0F, 0F, 1, 1, 1);
-		leg2.setRotationPoint(1F, 23F, 2F);
-		leg2.setTextureSize(32, 32);
+		leg2.setPos(1F, 23F, 2F);
+		leg2.setTexSize(32, 32);
 		leg2.mirror = true;
 		setRotation(leg2, 0F, 0F, 0F);
-		leg3 = new ModelRenderer(this, 0, 16);
+		leg3 = new ModelPart(this, 0, 16);
 		leg3.addBox(0F, 0F, 0F, 1, 1, 1);
-		leg3.setRotationPoint(-2F, 23F, -2F);
-		leg3.setTextureSize(32, 32);
+		leg3.setPos(-2F, 23F, -2F);
+		leg3.setTexSize(32, 32);
 		leg3.mirror = true;
 		setRotation(leg3, 0F, 0F, 0F);
-		leg4 = new ModelRenderer(this, 0, 16);
+		leg4 = new ModelPart(this, 0, 16);
 		leg4.addBox(0F, 0F, 0F, 1, 1, 1);
-		leg4.setRotationPoint(1F, 23F, -2F);
-		leg4.setTextureSize(32, 32);
+		leg4.setPos(1F, 23F, -2F);
+		leg4.setTexSize(32, 32);
 		leg4.mirror = true;
 		setRotation(leg4, 0F, 0F, 0F);
-		head = new ModelRenderer(this/*, "head"*/);
-		head.setRotationPoint(0F, 22F, -1F);
+		head = new ModelPart(this/*, "head"*/);
+		head.setPos(0F, 22F, -1F);
 		setRotation(head, 0F, 0F, 0F);
 		head.mirror = true;
-        head.setTextureOffset(0, 0).addBox(-2F, -4F, -3F, 4, 4, 4);
-		head.setTextureOffset(16, 0).addBox(-2.5F, -8F, -0.5F, 2, 4, 1);
-		head.setTextureOffset(16, 0).addBox(0.5F, -8F, -0.5F, 2, 4, 1);
+        head.texOffs(0, 0).addBox(-2F, -4F, -3F, 4, 4, 4);
+		head.texOffs(16, 0).addBox(-2.5F, -8F, -0.5F, 2, 4, 1);
+		head.texOffs(16, 0).addBox(0.5F, -8F, -0.5F, 2, 4, 1);
 	}
 
     @Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(
 				tail,
 				body,
@@ -84,19 +84,19 @@ public class BunnyModel extends SegmentedModel<BunnyEntity> {
 		);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
+	private void setRotation(ModelPart model, float x, float y, float z) {
+		model.xRot = x;
+		model.yRot = y;
+		model.zRot = z;
 	}
 
 	@Override
-	public void setRotationAngles(BunnyEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
-		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
-		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+	public void setupAnim(BunnyEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.xRot = headPitch / (180F / (float) Math.PI);
+		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		this.leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leg3.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leg4.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 	}
 }

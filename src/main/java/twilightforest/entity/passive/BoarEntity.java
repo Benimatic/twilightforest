@@ -1,25 +1,25 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
 
-public class BoarEntity extends PigEntity {
+public class BoarEntity extends Pig {
 
-	public BoarEntity(EntityType<? extends BoarEntity> type, World world) {
+	public BoarEntity(EntityType<? extends BoarEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
-	public PigEntity createChild(ServerWorld world, AgeableEntity entityanimal) {
+	public Pig getBreedOffspring(ServerLevel world, AgableMob entityanimal) {
 		return TFEntities.wild_boar.create(world);
 	}
 	

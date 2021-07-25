@@ -1,17 +1,17 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -23,7 +23,7 @@ import java.util.Random;
  */
 public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 
-	public TowerRoofSlabForwardsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerRoofSlabForwardsComponent(StructureManager manager, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRSF, nbt);
 	}
 
@@ -31,7 +31,7 @@ public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 		super(LichTowerPieces.TFLTRSF, feature, i, wing);
 
 		// same alignment
-		this.setCoordBaseMode(wing.getCoordBaseMode());
+		this.setOrientation(wing.getOrientation());
 		// the overhang roof is like a cap roof that's 2 sizes bigger
 		this.size = wing.size + 2; // assuming only square towers and roofs right now.
 		this.height = size / 2;
@@ -44,9 +44,9 @@ public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 	 * Makes flat hip roof
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		BlockState birchSlab = Blocks.BIRCH_SLAB.getDefaultState();
-		BlockState birchDoubleSlab = Blocks.BIRCH_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE);
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState();
+		BlockState birchDoubleSlab = Blocks.BIRCH_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE);
 
 		for (int y = 0; y <= height; y++) {
 			int min = 2 * y;
@@ -54,9 +54,9 @@ public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 			for (int x = 0; x <= max - 1; x++) {
 				for (int z = min; z <= max; z++) {
 					if (x == max - 1 || z == min || z == max) {
-						setBlockState(world, birchSlab, x, y, z, sbb);
+						placeBlock(world, birchSlab, x, y, z, sbb);
 					} else {
-						setBlockState(world, birchDoubleSlab, x, y, z, sbb);
+						placeBlock(world, birchDoubleSlab, x, y, z, sbb);
 					}
 				}
 			}

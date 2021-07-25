@@ -1,10 +1,10 @@
 package twilightforest.enums;
 
 import net.minecraft.block.*;
-import net.minecraft.state.Property;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
@@ -14,7 +14,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public enum StructureWoodVariant implements IStringSerializable {
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
+
+public enum StructureWoodVariant implements StringRepresentable {
 
 	OAK(Blocks.OAK_PLANKS, Blocks.OAK_STAIRS, Blocks.OAK_SLAB, Blocks.OAK_BUTTON, Blocks.OAK_FENCE, Blocks.OAK_FENCE_GATE, Blocks.OAK_PRESSURE_PLATE),
 	SPRUCE(Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_STAIRS, Blocks.SPRUCE_SLAB, Blocks.SPRUCE_BUTTON, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_FENCE_GATE, Blocks.SPRUCE_PRESSURE_PLATE),
@@ -55,7 +66,7 @@ public enum StructureWoodVariant implements IStringSerializable {
 
 	StructureWoodVariant(
 			Supplier<Block> planks,
-			Supplier<StairsBlock> stairs,
+			Supplier<StairBlock> stairs,
 			Supplier<Block> slab,
 			Supplier<Block> button,
 			Supplier<Block> fence,
@@ -73,7 +84,7 @@ public enum StructureWoodVariant implements IStringSerializable {
 	}
 
 	@Override
-	public String getString() {
+	public String getSerializedName() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 
@@ -128,21 +139,21 @@ public enum StructureWoodVariant implements IStringSerializable {
 
 		switch (shape) {
 			case BLOCK:
-				return target.planks.getDefaultState();
+				return target.planks.defaultBlockState();
 			case STAIRS:
-				return transferStateKeys(stateIn, target.stairs.getDefaultState(), StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE);
+				return transferStateKeys(stateIn, target.stairs.defaultBlockState(), StairBlock.FACING, StairBlock.HALF, StairBlock.SHAPE);
 			case SLAB:
-				return transferStateKey(stateIn, target.slab.getDefaultState(), SlabBlock.TYPE);
+				return transferStateKey(stateIn, target.slab.defaultBlockState(), SlabBlock.TYPE);
 			case DOUBLESLAB:
-				return target.slab.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE);
+				return target.slab.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE);
 			case FENCE:
-				return transferStateKeys(stateIn, target.fence.getDefaultState(), FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.WEST, FenceBlock.SOUTH);
+				return transferStateKeys(stateIn, target.fence.defaultBlockState(), FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.WEST, FenceBlock.SOUTH);
 			case GATE:
-				return transferStateKeys(stateIn, target.gate.getDefaultState(), FenceGateBlock.HORIZONTAL_FACING, FenceGateBlock.OPEN, FenceGateBlock.POWERED, FenceGateBlock.IN_WALL);
+				return transferStateKeys(stateIn, target.gate.defaultBlockState(), FenceGateBlock.FACING, FenceGateBlock.OPEN, FenceGateBlock.POWERED, FenceGateBlock.IN_WALL);
 			case BUTTON:
-				return transferStateKeys(stateIn, target.button.getDefaultState(), HorizontalFaceBlock.FACE, AbstractButtonBlock.POWERED);
+				return transferStateKeys(stateIn, target.button.defaultBlockState(), FaceAttachedHorizontalDirectionalBlock.FACE, ButtonBlock.POWERED);
 			case PLATE:
-				return transferStateKey(stateIn, target.plate.getDefaultState(), PressurePlateBlock.POWERED);
+				return transferStateKey(stateIn, target.plate.defaultBlockState(), PressurePlateBlock.POWERED);
 			default:
 				return stateIn; // Can't deal with this.
 		}
@@ -156,19 +167,19 @@ public enum StructureWoodVariant implements IStringSerializable {
 	}
 
 	public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, Property<T> property) {
-		return stateOut.with(property, stateIn.get(property));
+		return stateOut.setValue(property, stateIn.getValue(property));
 	}
 
 	public static WoodShapes getWoodShapeFromBlock(Block b) {
 		if (isPlanks(b)) {
 			return WoodShapes.BLOCK;
 		}
-		if (b instanceof StairsBlock) return WoodShapes.STAIRS;
+		if (b instanceof StairBlock) return WoodShapes.STAIRS;
 		if (b instanceof SlabBlock) {
-			if (b.getDefaultState().get(SlabBlock.TYPE) == SlabType.DOUBLE) return WoodShapes.DOUBLESLAB;
+			if (b.defaultBlockState().getValue(SlabBlock.TYPE) == SlabType.DOUBLE) return WoodShapes.DOUBLESLAB;
 			else return WoodShapes.SLAB;
 		}
-		if (b instanceof AbstractButtonBlock) return WoodShapes.BUTTON;
+		if (b instanceof ButtonBlock) return WoodShapes.BUTTON;
 		if (b instanceof FenceBlock) return WoodShapes.FENCE;
 		if (b instanceof FenceGateBlock) return WoodShapes.GATE;
 		if (b instanceof PressurePlateBlock) return WoodShapes.PLATE;

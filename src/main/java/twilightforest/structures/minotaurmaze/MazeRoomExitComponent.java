@@ -1,14 +1,14 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class MazeRoomExitComponent extends MazeRoomComponent {
 
-	public MazeRoomExitComponent(TemplateManager manager, CompoundNBT nbt) {
+	public MazeRoomExitComponent(StructureManager manager, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMRE, nbt);
 	}
 
@@ -25,15 +25,15 @@ public class MazeRoomExitComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// shaft down
-		this.fillWithBlocks(world, sbb, 5, -5, 5, 10, 0, 10, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, false);
-		this.fillWithBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
-		this.fillWithBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS.getDefaultState(), AIR, false);
-		this.fillWithBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
-		this.fillWithAir(world, sbb, 6, -5, 6, 9, 4, 9);
+		this.generateBox(world, sbb, 5, -5, 5, 10, 0, 10, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS.defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateAirBox(world, sbb, 6, -5, 6, 9, 4, 9);
 
 		return true;
 	}

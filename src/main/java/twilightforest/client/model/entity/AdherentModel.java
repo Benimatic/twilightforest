@@ -1,66 +1,66 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import twilightforest.entity.AdherentEntity;
 
-public class AdherentModel extends BipedModel<AdherentEntity> {
+public class AdherentModel extends HumanoidModel<AdherentEntity> {
 
-	ModelRenderer leftSleeve;
-	ModelRenderer rightSleeve;
+	ModelPart leftSleeve;
+	ModelPart rightSleeve;
 
 	public AdherentModel() {
 		super(0.0F);
 
-		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
-		this.bipedLeftLeg = new ModelRenderer(this, 0, 0);
-		this.bipedRightLeg = new ModelRenderer(this, 0, 0);
+		this.hat = new ModelPart(this, 0, 0);
+		this.leftLeg = new ModelPart(this, 0, 0);
+		this.rightLeg = new ModelPart(this, 0, 0);
 
-		this.bipedHead = new ModelRenderer(this, 0, 0);
-		this.bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8);
-		this.bipedHead.setRotationPoint(0F, 0F, 0F);
+		this.head = new ModelPart(this, 0, 0);
+		this.head.addBox(-4F, -8F, -4F, 8, 8, 8);
+		this.head.setPos(0F, 0F, 0F);
 
-		this.bipedBody = new ModelRenderer(this, 32, 0);
-		this.bipedBody.addBox(-4F, 0F, -2F, 8, 24, 4);
-		this.bipedBody.setRotationPoint(0F, 0F, 0F);
+		this.body = new ModelPart(this, 32, 0);
+		this.body.addBox(-4F, 0F, -2F, 8, 24, 4);
+		this.body.setPos(0F, 0F, 0F);
 
-		this.bipedRightArm = new ModelRenderer(this, 0, 16);
-		this.bipedRightArm.addBox(-3F, -2F, -2F, 4, 12, 4);
-		this.bipedRightArm.setRotationPoint(-5F, 2F, 0F);
+		this.rightArm = new ModelPart(this, 0, 16);
+		this.rightArm.addBox(-3F, -2F, -2F, 4, 12, 4);
+		this.rightArm.setPos(-5F, 2F, 0F);
 
-		this.bipedLeftArm = new ModelRenderer(this, 0, 16);
-		this.bipedLeftArm.addBox(-1F, -2F, -2F, 4, 12, 4);
-		this.bipedLeftArm.setRotationPoint(5F, 2F, 0F);
+		this.leftArm = new ModelPart(this, 0, 16);
+		this.leftArm.addBox(-1F, -2F, -2F, 4, 12, 4);
+		this.leftArm.setPos(5F, 2F, 0F);
 
-		this.leftSleeve = new ModelRenderer(this, 16, 16);
+		this.leftSleeve = new ModelPart(this, 16, 16);
 		this.leftSleeve.addBox(-1F, -2F, 2F, 4, 12, 4);
-		this.leftSleeve.setRotationPoint(0F, 0F, 0F);
+		this.leftSleeve.setPos(0F, 0F, 0F);
 
-		this.bipedLeftArm.addChild(this.leftSleeve);
+		this.leftArm.addChild(this.leftSleeve);
 
-		this.rightSleeve = new ModelRenderer(this, 16, 16);
+		this.rightSleeve = new ModelPart(this, 16, 16);
 		this.rightSleeve.addBox(-3F, -2F, 2F, 4, 12, 4);
-		this.rightSleeve.setRotationPoint(0F, 0F, 0F);
+		this.rightSleeve.setPos(0F, 0F, 0F);
 
-		this.bipedRightArm.addChild(this.rightSleeve);
+		this.rightArm.addChild(this.rightSleeve);
 
 	}
 
 	@Override
-	public void setRotationAngles(AdherentEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(AdherentEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// rotate head normally
-		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
-		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
+		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		this.head.xRot = headPitch / (180F / (float) Math.PI);
 
-		this.bipedRightArm.rotateAngleX = 0.0F;
-		this.bipedLeftArm.rotateAngleX = 0.0F;
-		this.bipedRightArm.rotateAngleZ = 0.0F;
-		this.bipedLeftArm.rotateAngleZ = 0.0F;
+		this.rightArm.xRot = 0.0F;
+		this.leftArm.xRot = 0.0F;
+		this.rightArm.zRot = 0.0F;
+		this.leftArm.zRot = 0.0F;
 
-		this.bipedRightArm.rotateAngleZ += MathHelper.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
-		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
-		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+		this.rightArm.zRot += Mth.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
+		this.leftArm.zRot -= Mth.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
+		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 	}
 }

@@ -1,15 +1,15 @@
 package twilightforest.structures;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class HydraLairComponent extends HollowHillComponent {
 
-	public HydraLairComponent(TemplateManager manager, CompoundNBT nbt) {
+	public HydraLairComponent(StructureManager manager, CompoundTag nbt) {
 		super(TFFeature.TFHydra, nbt);
 	}
 
@@ -27,12 +27,12 @@ public class HydraLairComponent extends HollowHillComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		// NO-OP
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int stalacts = 64;
 		int stalags = 8;
 
@@ -54,7 +54,7 @@ public class HydraLairComponent extends HollowHillComponent {
 		}
 
 		// boss spawner seems important
-		setBlockState(world, TFBlocks.boss_spawner_hydra.get().getDefaultState(), 27, 3, 27, sbb);
+		placeBlock(world, TFBlocks.boss_spawner_hydra.get().defaultBlockState(), 27, 3, 27, sbb);
 
 		return true;
 	}

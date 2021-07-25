@@ -1,20 +1,20 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.Property;
-import net.minecraft.state.StateContainer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.projectile.MoonwormShotEntity;
@@ -22,6 +22,20 @@ import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 
 public class MoonwormQueenItem extends Item {
 
@@ -32,57 +46,57 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
-		if (stack.getDamage() >= stack.getMaxDamage() - 1) {
-			return ActionResult.resultFail(stack);
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (stack.getDamageValue() >= stack.getMaxDamage() - 1) {
+			return InteractionResultHolder.fail(stack);
 		} else {
-			player.setActiveHand(hand);
-			return ActionResult.resultSuccess(player.getHeldItem(hand));
+			player.startUsingItem(hand);
+			return InteractionResultHolder.success(player.getItemInHand(hand));
 		}
 	}
 
 	//	[VanillaCopy] ItemBlock.onItemUse, harcoding the block
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		World worldIn = context.getWorld();
-		BlockPos pos = context.getPos();
+	public InteractionResult useOn(UseOnContext context) {
+		Level worldIn = context.getLevel();
+		BlockPos pos = context.getClickedPos();
 		BlockState iblockstate = worldIn.getBlockState(pos);
-		PlayerEntity player = context.getPlayer();
-		BlockItemUseContext blockItemUseContext = new BlockItemUseContext(context);
+		Player player = context.getPlayer();
+		BlockPlaceContext blockItemUseContext = new BlockPlaceContext(context);
 
 		if (!iblockstate.getMaterial().isReplaceable()) {
-			pos = pos.offset(context.getFace());
+			pos = pos.relative(context.getClickedFace());
 		}
 
-		ItemStack itemstack = player.getHeldItem(context.getHand());
+		ItemStack itemstack = player.getItemInHand(context.getHand());
 
-		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.placedBlockCollides(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
-			if (this.tryPlace(blockItemUseContext).isSuccess()) {
+		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && worldIn.isUnobstructed(TFBlocks.moonworm.get().defaultBlockState(), pos, CollisionContext.empty())) {
+			if (this.tryPlace(blockItemUseContext).shouldSwing()) {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
-				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
-				player.resetActiveHand();
+				player.stopUsingItem();
 			}
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		} else {
-			return ActionResultType.FAIL;
+			return InteractionResult.FAIL;
 		}
 	}
 
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity living, int useRemaining) {
+	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (!world.isRemote && useTime > FIRING_TIME && (stack.getDamage() + 1) < stack.getMaxDamage()) {
-			boolean fired = world.addEntity(new MoonwormShotEntity(TFEntities.moonworm_shot, world, living));
+		if (!world.isClientSide && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
+			boolean fired = world.addFreshEntity(new MoonwormShotEntity(TFEntities.moonworm_shot, world, living));
 
 			if (fired) {
-				stack.damageItem(2, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
+				stack.hurtAndBreak(2, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
 
-				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.MOONWORM_SQUISH, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
+				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH, living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1, 1);
 			}
 		}
 
@@ -90,8 +104,8 @@ public class MoonwormQueenItem extends Item {
 
 	@Nonnull
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BOW;
+	public UseAnim getUseAnimation(ItemStack stack) {
+		return UseAnim.BOW;
 	}
 
 	@Override
@@ -100,102 +114,102 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	//everything from this point on is a [VanillaCopy] of BlockItem, since extending the class doesnt work for this
-	public ActionResultType tryPlace(BlockItemUseContext context) {
+	public InteractionResult tryPlace(BlockPlaceContext context) {
 		if (!context.canPlace()) {
-			return ActionResultType.FAIL;
+			return InteractionResult.FAIL;
 		} else {
-			BlockItemUseContext blockitemusecontext = this.getBlockItemUseContext(context);
+			BlockPlaceContext blockitemusecontext = this.getBlockItemUseContext(context);
 			if (blockitemusecontext == null) {
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			} else {
 				BlockState blockstate = this.getStateForPlacement(blockitemusecontext);
 				if (blockstate == null) {
-					return ActionResultType.FAIL;
+					return InteractionResult.FAIL;
 				} else if (!this.placeBlock(blockitemusecontext, blockstate)) {
-					return ActionResultType.FAIL;
+					return InteractionResult.FAIL;
 				} else {
-					BlockPos blockpos = blockitemusecontext.getPos();
-					World world = blockitemusecontext.getWorld();
-					PlayerEntity playerentity = blockitemusecontext.getPlayer();
-					ItemStack itemstack = blockitemusecontext.getItem();
+					BlockPos blockpos = blockitemusecontext.getClickedPos();
+					Level world = blockitemusecontext.getLevel();
+					Player playerentity = blockitemusecontext.getPlayer();
+					ItemStack itemstack = blockitemusecontext.getItemInHand();
 					BlockState blockstate1 = world.getBlockState(blockpos);
 					Block block = blockstate1.getBlock();
 					if (block == blockstate.getBlock()) {
-						blockstate1 = this.func_219985_a(blockpos, world, itemstack, blockstate1);
+						blockstate1 = this.updateBlockStateFromTag(blockpos, world, itemstack, blockstate1);
 						this.onBlockPlaced(blockpos, world, playerentity, itemstack);
-						block.onBlockPlacedBy(world, blockpos, blockstate1, playerentity, itemstack);
-						if (playerentity instanceof ServerPlayerEntity) {
-							CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerentity, blockpos, itemstack);
+						block.setPlacedBy(world, blockpos, blockstate1, playerentity, itemstack);
+						if (playerentity instanceof ServerPlayer) {
+							CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)playerentity, blockpos, itemstack);
 						}
 					}
 
 					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
-					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, context.getPlayer()), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-					if (playerentity == null || !playerentity.abilities.isCreativeMode) {
-						itemstack.damageItem(1, playerentity, (user) -> user.sendBreakAnimation(playerentity.getActiveHand()));
+					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, context.getPlayer()), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+					if (playerentity == null || !playerentity.abilities.instabuild) {
+						itemstack.hurtAndBreak(1, playerentity, (user) -> user.broadcastBreakEvent(playerentity.getUsedItemHand()));
 					}
 
-					return ActionResultType.SUCCESS;
+					return InteractionResult.SUCCESS;
 				}
 			}
 		}
 	}
 
-	protected SoundEvent getPlaceSound(BlockState state, World world, BlockPos pos, PlayerEntity entity) {
+	protected SoundEvent getPlaceSound(BlockState state, Level world, BlockPos pos, Player entity) {
 		return state.getSoundType(world, pos, entity).getPlaceSound();
 	}
 
 	@Nullable
-	public BlockItemUseContext getBlockItemUseContext(BlockItemUseContext context) {
+	public BlockPlaceContext getBlockItemUseContext(BlockPlaceContext context) {
 		return context;
 	}
 
-	protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack) {
-		return BlockItem.setTileEntityNBT(worldIn, player, pos, stack);
+	protected boolean onBlockPlaced(BlockPos pos, Level worldIn, @Nullable Player player, ItemStack stack) {
+		return BlockItem.updateCustomBlockEntityTag(worldIn, player, pos, stack);
 	}
 
 	@Nullable
-	protected BlockState getStateForPlacement(BlockItemUseContext context) {
+	protected BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState blockstate = TFBlocks.moonworm.get().getStateForPlacement(context);
 		return blockstate != null && this.canPlace(context, blockstate) ? blockstate : null;
 	}
 
-	protected boolean canPlace(BlockItemUseContext p_195944_1_, BlockState p_195944_2_) {
-		PlayerEntity playerentity = p_195944_1_.getPlayer();
-		ISelectionContext iselectioncontext = playerentity == null ? ISelectionContext.dummy() : ISelectionContext.forEntity(playerentity);
-		return (p_195944_2_.isValidPosition(p_195944_1_.getWorld(), p_195944_1_.getPos())) && p_195944_1_.getWorld().placedBlockCollides(p_195944_2_, p_195944_1_.getPos(), iselectioncontext);
+	protected boolean canPlace(BlockPlaceContext p_195944_1_, BlockState p_195944_2_) {
+		Player playerentity = p_195944_1_.getPlayer();
+		CollisionContext iselectioncontext = playerentity == null ? CollisionContext.empty() : CollisionContext.of(playerentity);
+		return (p_195944_2_.canSurvive(p_195944_1_.getLevel(), p_195944_1_.getClickedPos())) && p_195944_1_.getLevel().isUnobstructed(p_195944_2_, p_195944_1_.getClickedPos(), iselectioncontext);
 	}
 
-	private BlockState func_219985_a(BlockPos p_219985_1_, World p_219985_2_, ItemStack p_219985_3_, BlockState p_219985_4_) {
+	private BlockState updateBlockStateFromTag(BlockPos p_219985_1_, Level p_219985_2_, ItemStack p_219985_3_, BlockState p_219985_4_) {
 		BlockState blockstate = p_219985_4_;
-		CompoundNBT compoundnbt = p_219985_3_.getTag();
+		CompoundTag compoundnbt = p_219985_3_.getTag();
 		if (compoundnbt != null) {
-			CompoundNBT compoundnbt1 = compoundnbt.getCompound("BlockStateTag");
-			StateContainer<Block, BlockState> statecontainer = p_219985_4_.getBlock().getStateContainer();
+			CompoundTag compoundnbt1 = compoundnbt.getCompound("BlockStateTag");
+			StateDefinition<Block, BlockState> statecontainer = p_219985_4_.getBlock().getStateDefinition();
 
-			for(String s : compoundnbt1.keySet()) {
+			for(String s : compoundnbt1.getAllKeys()) {
 				Property<?> property = statecontainer.getProperty(s);
 				if (property != null) {
-					String s1 = compoundnbt1.get(s).getString();
-					blockstate = func_219988_a(blockstate, property, s1);
+					String s1 = compoundnbt1.get(s).getAsString();
+					blockstate = updateState(blockstate, property, s1);
 				}
 			}
 		}
 
 		if (blockstate != p_219985_4_) {
-			p_219985_2_.setBlockState(p_219985_1_, blockstate, 2);
+			p_219985_2_.setBlock(p_219985_1_, blockstate, 2);
 		}
 
 		return blockstate;
 	}
 
-	private static <T extends Comparable<T>> BlockState func_219988_a(BlockState p_219988_0_, Property<T> p_219988_1_, String p_219988_2_) {
-		return p_219988_1_.parseValue(p_219988_2_).map((p_219986_2_) -> {
-			return p_219988_0_.with(p_219988_1_, p_219986_2_);
+	private static <T extends Comparable<T>> BlockState updateState(BlockState p_219988_0_, Property<T> p_219988_1_, String p_219988_2_) {
+		return p_219988_1_.getValue(p_219988_2_).map((p_219986_2_) -> {
+			return p_219988_0_.setValue(p_219988_1_, p_219986_2_);
 		}).orElse(p_219988_0_);
 	}
 
-	protected boolean placeBlock(BlockItemUseContext context, BlockState state) {
-		return context.getWorld().setBlockState(context.getPos(), state, 11);
+	protected boolean placeBlock(BlockPlaceContext context, BlockState state) {
+		return context.getLevel().setBlock(context.getClickedPos(), state, 11);
 	}
 }

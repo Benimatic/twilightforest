@@ -9,11 +9,11 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.ARBShaderObjects;
@@ -65,12 +65,12 @@ public class IEShaderRegister {
 		if (pre) {
 			ShaderManager.useShader(ShaderManager.twilightSkyShader, shaderCallback);
 			ARBShaderObjects.glCreateShaderObjectARB(ARBShaderObjects.GL_INT_VEC2_ARB);
-			Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE_STARS);
+			Minecraft.getInstance().getTextureManager().bind(TEXTURE_STARS);
 		} else {
 			ShaderManager.releaseShader();
 		}
 		ARBShaderObjects.glCreateShaderObjectARB(ARBShaderObjects.GL_OBJECT_SHADER_SOURCE_LENGTH_ARB);
-		Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+		Minecraft.getInstance().getTextureManager().bind(TextureAtlas.LOCATION_BLOCKS);
 	};
 
 	// TODO There's got to be a better way!
@@ -91,11 +91,11 @@ public class IEShaderRegister {
 
 	private static final BiConsumer<IntConsumer, Boolean> DEVICE_YELLOW_ENERGY_TRICONSUMER = (shaderCallback, pre) -> {
 		if (pre) {
-			GlStateManager.getTexLevelParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			GlStateManager._getTexLevelParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			ShaderManager.useShader(ShaderManager.yellowCircuitShader, shaderCallback);
 		} else {
 			ShaderManager.releaseShader();
-			GlStateManager.getTexLevelParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+			GlStateManager._getTexLevelParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		}
 	};
 
@@ -105,8 +105,8 @@ public class IEShaderRegister {
 	};
 
 	private static final BiConsumer<IntConsumer, Boolean> RAM_TRICONSUMER = (shaderCallback, pre) -> {
-		if(pre) Minecraft.getInstance().gameRenderer.getLightTexture().disableLightmap();
-		else Minecraft.getInstance().gameRenderer.getLightTexture().enableLightmap();
+		if(pre) Minecraft.getInstance().gameRenderer.lightTexture().turnOffLightLayer();
+		else Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
 	};
 
 	//private static final BiConsumer<IntConsumer, Boolean> OUTLINE_TRICONSUMER = (shaderCallback, pre) -> {
@@ -227,7 +227,7 @@ public class IEShaderRegister {
 			} else {
 				return new RenderType(
 						"shader_" + baseType + render,
-						DefaultVertexFormats.BLOCK,
+						DefaultVertexFormat.BLOCK,
 						GL11.GL_QUADS,
 						256,
 						false,
@@ -267,7 +267,7 @@ public class IEShaderRegister {
 			method.apply(modName, overlayType, rarity, gripColor, bodyColor, colorSecondary, colorBlade, null, 0);
 		}
 
-		return ShaderRegistry.shaderRegistry.get(modName).setCrateLoot(false).setBagLoot(false).setInLowerBags(false).setReplicationCost(() -> new IngredientWithSize(Ingredient.fromItems(TFItems.ore_meter.get())));
+		return ShaderRegistry.shaderRegistry.get(modName).setCrateLoot(false).setBagLoot(false).setInLowerBags(false).setReplicationCost(() -> new IngredientWithSize(Ingredient.of(TFItems.ore_meter.get())));
 	}
 
 	@SafeVarargs

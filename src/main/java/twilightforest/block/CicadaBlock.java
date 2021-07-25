@@ -1,15 +1,15 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
@@ -19,15 +19,17 @@ import twilightforest.tileentity.TFTileEntities;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraft.world.level.block.state.BlockBehaviour;
+
 public class CicadaBlock extends CritterBlock {
 
-	protected CicadaBlock(Block.Properties props) {
+	protected CicadaBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return TFTileEntities.CICADA.get().create();
 	}
 
@@ -38,13 +40,13 @@ public class CicadaBlock extends CritterBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-		super.addInformation(stack, world, tooltip, flag);
+	public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, world, tooltip, flag);
 
 		if (ModList.get().isLoaded("immersiveengineering")) {
-			tooltip.add(new TranslationTextComponent("block.twilightforest.cicada.desc")
-					.mergeStyle(TwilightForestMod.getRarity().color)
-					.mergeStyle(TextFormatting.ITALIC));
+			tooltip.add(new TranslatableComponent("block.twilightforest.cicada.desc")
+					.withStyle(TwilightForestMod.getRarity().color)
+					.withStyle(ChatFormatting.ITALIC));
 		}
 	}
 }

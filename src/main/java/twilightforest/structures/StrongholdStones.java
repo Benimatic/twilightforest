@@ -1,27 +1,27 @@
 package twilightforest.structures;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 
 import java.util.Random;
 
 public class StrongholdStones extends StructurePiece.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random random, int x, int y, int z, boolean wall) {
+	public void next(Random random, int x, int y, int z, boolean wall) {
 		if (!wall) {
-			blockstate = Blocks.AIR.getDefaultState();
+			next = Blocks.AIR.defaultBlockState();
 		} else {
 			float f = random.nextFloat();
 
 			if (f < 0.2F) {
-				blockstate = Blocks.CRACKED_STONE_BRICKS.getDefaultState();
+				next = Blocks.CRACKED_STONE_BRICKS.defaultBlockState();
 			} else if (f < 0.5F) {
-				blockstate = Blocks.MOSSY_STONE_BRICKS.getDefaultState();
+				next = Blocks.MOSSY_STONE_BRICKS.defaultBlockState();
 			} else if (f < 0.55F) {
-				blockstate = Blocks.INFESTED_STONE_BRICKS.getDefaultState();
+				next = Blocks.INFESTED_STONE_BRICKS.defaultBlockState();
 			} else {
-				blockstate = Blocks.STONE_BRICKS.getDefaultState();
+				next = Blocks.STONE_BRICKS.defaultBlockState();
 			}
 		}
 	}

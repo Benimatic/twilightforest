@@ -2,18 +2,18 @@ package twilightforest.loot.functions;
 
 import com.google.common.collect.Maps;
 import com.google.gson.*;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootFunction;
-import net.minecraft.loot.LootFunctionType;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.functions.ILootFunction;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IRegistryDelegate;
 import twilightforest.loot.TFTreasure;
@@ -22,27 +22,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Similar to EnchantRandomly but applies everything and with exact levels
-public class Enchant extends LootFunction {
+public class Enchant extends LootItemConditionalFunction {
 
 	private final Map<IRegistryDelegate<Enchantment>, Short> enchantments;
 
-	protected Enchant(ILootCondition[] conditions, Map<IRegistryDelegate<Enchantment>, Short> enchantments) {
+	protected Enchant(LootItemCondition[] conditions, Map<IRegistryDelegate<Enchantment>, Short> enchantments) {
 		super(conditions);
 		this.enchantments = enchantments;
 	}
 
 	@Override
-	public LootFunctionType getFunctionType() {
+	public LootItemFunctionType getType() {
 		return TFTreasure.ENCHANT;
 	}
 
 	@Override
-	public ItemStack doApply(ItemStack stack, LootContext context) {
+	public ItemStack run(ItemStack stack, LootContext context) {
 		for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : enchantments.entrySet()) {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
-				EnchantedBookItem.addEnchantment(stack, new EnchantmentData(e.getKey().get(), e.getValue()));
+				EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(e.getKey().get(), e.getValue()));
 			} else {
-				stack.addEnchantment(e.getKey().get(), e.getValue());
+				stack.enchant(e.getKey().get(), e.getValue());
 			}
 		}
 		return stack;
@@ -52,10 +52,10 @@ public class Enchant extends LootFunction {
 		return new Enchant.Builder();
 	}
 
-	public static class Builder extends LootFunction.Builder<Enchant.Builder> {
+	public static class Builder extends LootItemConditionalFunction.Builder<Enchant.Builder> {
 		private final Map<IRegistryDelegate<Enchantment>, Short> enchants = Maps.newHashMap();
 
-		protected Enchant.Builder doCast() {
+		protected Enchant.Builder getThis() {
 			return this;
 		}
 
@@ -64,12 +64,12 @@ public class Enchant extends LootFunction {
 			return this;
 		}
 
-		public ILootFunction build() {
+		public LootItemFunction build() {
 			return new Enchant(this.getConditions(), this.enchants);
 		}
 	}
 
-	public static class Serializer extends LootFunction.Serializer<Enchant> {
+	public static class Serializer extends LootItemConditionalFunction.Serializer<Enchant> {
 
 		@Override
 		public void serialize(JsonObject object, Enchant function, JsonSerializationContext ctx) {
@@ -85,11 +85,11 @@ public class Enchant extends LootFunction {
 		}
 
 		@Override
-		public Enchant deserialize(JsonObject object, JsonDeserializationContext ctx, ILootCondition[] conditions) {
+		public Enchant deserialize(JsonObject object, JsonDeserializationContext ctx, LootItemCondition[] conditions) {
 			Map<IRegistryDelegate<Enchantment>, Short> enchantments = new HashMap<>();
 
 			if (object.has("enchantments")) {
-				JsonObject enchantObj = JSONUtils.getJsonObject(object, "enchantments");
+				JsonObject enchantObj = GsonHelper.getAsJsonObject(object, "enchantments");
 
 				for (Map.Entry<String, JsonElement> e : enchantObj.entrySet()) {
 					ResourceLocation id = new ResourceLocation(e.getKey());

@@ -1,34 +1,34 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BushBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-public class TFGenFallenLeaves extends Feature<NoFeatureConfig> {
+public class TFGenFallenLeaves extends Feature<NoneFeatureConfiguration> {
 
-	public TFGenFallenLeaves(Codec<NoFeatureConfig> config) {
+	public TFGenFallenLeaves(Codec<NoneFeatureConfiguration> config) {
 		super(config);
 	}
 
-	private final BlockState state = TFBlocks.fallen_leaves.get().getDefaultState();
+	private final BlockState state = TFBlocks.fallen_leaves.get().defaultBlockState();
 
 	@Override
-	public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos position, NoFeatureConfig config) {
+	public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos position, NoneFeatureConfiguration config) {
 		do {
-			BlockState state = worldIn.getBlockState(position.down());
-			if (worldIn.isAirBlock(position) && (state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.EARTH))
+			BlockState state = worldIn.getBlockState(position.below());
+			if (worldIn.isEmptyBlock(position) && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT))
 				break;
-			position = position.down();
-		} while (position.getY() > generator.getGroundHeight());
+			position = position.below();
+		} while (position.getY() > generator.getSpawnHeight());
 
 		for (int x = 0; x < 5; x++)
 			for (int z = 0; z < 5; z++) {
@@ -37,8 +37,8 @@ public class TFGenFallenLeaves extends Feature<NoFeatureConfig> {
 				boolean flag = false;
 				int y = 2;
 				do {
-					BlockState state = worldIn.getBlockState(position.add(x, y, z).down());
-					if (worldIn.isAirBlock(position.add(x, y, z)) && (state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.EARTH)) {
+					BlockState state = worldIn.getBlockState(position.offset(x, y, z).below());
+					if (worldIn.isEmptyBlock(position.offset(x, y, z)) && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT)) {
 						flag = true;
 						break;
 					}
@@ -46,9 +46,9 @@ public class TFGenFallenLeaves extends Feature<NoFeatureConfig> {
 				} while (y >= -2);
 				if (!flag)
 					continue;
-				BlockPos pos = position.add(x, y, z);
-				if (((BushBlock) state.getBlock()).isValidPosition(state, worldIn, pos))
-					worldIn.setBlockState(pos, state, 16 | 2);
+				BlockPos pos = position.offset(x, y, z);
+				if (((BushBlock) state.getBlock()).canSurvive(state, worldIn, pos))
+					worldIn.setBlock(pos, state, 16 | 2);
 			}
 
 		return true;

@@ -1,16 +1,16 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.structures.lichtower.TowerWingComponent;
@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class DarkTowerBalconyComponent extends TowerWingComponent {
 
-	public DarkTowerBalconyComponent(TemplateManager manager, CompoundNBT nbt) {
+	public DarkTowerBalconyComponent(StructureManager manager, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBal, nbt);
 	}
 
@@ -29,25 +29,25 @@ public class DarkTowerBalconyComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make floor
-		fillWithBlocks(world, sbb, 0, 0, 0, 2, 0, 4, deco.accentState, Blocks.AIR.getDefaultState(), false);
-		fillWithBlocks(world, sbb, 0, 0, 1, 1, 0, 3, deco.blockState, Blocks.AIR.getDefaultState(), false);
+		generateBox(world, sbb, 0, 0, 0, 2, 0, 4, deco.accentState, Blocks.AIR.defaultBlockState(), false);
+		generateBox(world, sbb, 0, 0, 1, 1, 0, 3, deco.blockState, Blocks.AIR.defaultBlockState(), false);
 
-		fillWithBlocks(world, sbb, 0, 1, 0, 2, 1, 4, deco.fenceState, Blocks.AIR.getDefaultState(), false);
+		generateBox(world, sbb, 0, 1, 0, 2, 1, 4, deco.fenceState, Blocks.AIR.defaultBlockState(), false);
 
-		this.setBlockState(world, deco.accentState, 2, 1, 0, sbb);
-		this.setBlockState(world, deco.accentState, 2, 1, 4, sbb);
+		this.placeBlock(world, deco.accentState, 2, 1, 0, sbb);
+		this.placeBlock(world, deco.accentState, 2, 1, 4, sbb);
 
 		// clear inside
-		fillWithAir(world, sbb, 0, 1, 1, 1, 1, 3);
+		generateAirBox(world, sbb, 0, 1, 1, 1, 1, 3);
 
 		return true;
 	}

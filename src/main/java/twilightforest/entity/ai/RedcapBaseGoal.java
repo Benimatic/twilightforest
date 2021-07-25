@@ -1,12 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.TNTEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.PrimedTnt;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import twilightforest.entity.RedcapEntity;
 
 public abstract class RedcapBaseGoal extends Goal {
@@ -22,23 +22,23 @@ public abstract class RedcapBaseGoal extends Goal {
 	 */
 	public boolean isTargetLookingAtMe(LivingEntity attackTarget) {
 		// find angle of approach
-		double dx = redcap.getPosX() - attackTarget.getPosX();
-		double dz = redcap.getPosZ() - attackTarget.getPosZ();
+		double dx = redcap.getX() - attackTarget.getX();
+		double dz = redcap.getZ() - attackTarget.getZ();
 		float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
-		float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);
+		float difference = Mth.abs((attackTarget.yRot - angle) % 360);
 
 		return difference < 60 || difference > 300;
 	}
 
 	public BlockPos findBlockTNTNearby(int range) {
-		BlockPos entityPos = new BlockPos(redcap.getPosition());
+		BlockPos entityPos = new BlockPos(redcap.blockPosition());
 
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
-					if (redcap.world.getBlockState(entityPos.add(x, y, z)).getBlock() == Blocks.TNT) {
-						return entityPos.add(x, y, z);
+					if (redcap.level.getBlockState(entityPos.offset(x, y, z)).getBlock() == Blocks.TNT) {
+						return entityPos.offset(x, y, z);
 					}
 				}
 			}
@@ -48,7 +48,7 @@ public abstract class RedcapBaseGoal extends Goal {
 	}
 
 	public boolean isLitTNTNearby(int range) {
-		AxisAlignedBB expandedBox = redcap.getBoundingBox().grow(range, range, range);
-		return !redcap.world.getEntitiesWithinAABB(TNTEntity.class, expandedBox).isEmpty();
+		AABB expandedBox = redcap.getBoundingBox().inflate(range, range, range);
+		return !redcap.level.getEntitiesOfClass(PrimedTnt.class, expandedBox).isEmpty();
 	}
 }

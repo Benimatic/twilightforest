@@ -1,32 +1,32 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.util.DamageSource;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.projectile.TFThrowableEntity;
 import twilightforest.util.TFDamageSources;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public class LichBoltEntity extends TFThrowableEntity implements IRendersAsItem {
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+public class LichBoltEntity extends TFThrowableEntity implements ItemSupplier {
 
 	@SuppressWarnings("unused")
-	public LichBoltEntity(EntityType<? extends LichBoltEntity> type, World world) {
+	public LichBoltEntity(EntityType<? extends LichBoltEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public LichBoltEntity(EntityType<? extends LichBoltEntity> type, World world, LivingEntity owner) {
+	public LichBoltEntity(EntityType<? extends LichBoltEntity> type, Level world, LivingEntity owner) {
 		super(type, world, owner);
 	}
 
@@ -38,39 +38,39 @@ public class LichBoltEntity extends TFThrowableEntity implements IRendersAsItem 
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getX() + 0.5 * (random.nextDouble() - random.nextDouble());
+			double dy = getY() + 0.5 * (random.nextDouble() - random.nextDouble());
+			double dz = getZ() + 0.5 * (random.nextDouble() - random.nextDouble());
 
-			double s1 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.17F;
-			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
-			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;
+			double s1 = ((random.nextFloat() * 0.5F) + 0.5F) * 0.17F;
+			double s2 = ((random.nextFloat() * 0.5F) + 0.5F) * 0.80F;
+			double s3 = ((random.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 
-			world.addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
+			level.addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return true;
 	}
 
 	@Override
-	public float getCollisionBorderSize() {
+	public float getPickRadius() {
 		return 1.0F;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float amount) {
-		super.attackEntityFrom(damagesource, amount);
+	public boolean hurt(DamageSource damagesource, float amount) {
+		super.hurt(damagesource, amount);
 
-		if (!this.world.isRemote && damagesource.getTrueSource() != null) {
-			Vector3d vec3d = damagesource.getTrueSource().getLookVec();
+		if (!this.level.isClientSide && damagesource.getEntity() != null) {
+			Vec3 vec3d = damagesource.getEntity().getLookAngle();
 			// reflect faster and more accurately
 			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 
-			if (damagesource.getImmediateSource() instanceof LivingEntity)
-				this.setShooter(damagesource.getImmediateSource());
+			if (damagesource.getDirectEntity() instanceof LivingEntity)
+				this.setOwner(damagesource.getDirectEntity());
 
 			return true;
 		}
@@ -79,38 +79,38 @@ public class LichBoltEntity extends TFThrowableEntity implements IRendersAsItem 
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected float getGravity() {
 		return 0.001F;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			ItemStack itemId = new ItemStack(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, itemId), this.getPosX(), this.getPosY(), this.getPosZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemId), this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
-			super.handleStatusUpdate(id);
+			super.handleEntityEvent(id);
 		}
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		if (result instanceof EntityRayTraceResult) {
-			Entity entityHit = ((EntityRayTraceResult)result).getEntity();
+	protected void onHit(HitResult result) {
+		if (result instanceof EntityHitResult) {
+			Entity entityHit = ((EntityHitResult)result).getEntity();
 			if (entityHit instanceof LichBoltEntity
 					|| entityHit instanceof LichBombEntity
 					|| (entityHit instanceof LichEntity && ((LichEntity) entityHit).isShadowClone())) {
 				return;
 			}
 
-			if (!this.world.isRemote) {
+			if (!this.level.isClientSide) {
 				if (entityHit instanceof LivingEntity) {
-					entityHit.attackEntityFrom(TFDamageSources.LICH_BOLT, 6);
+					entityHit.hurt(TFDamageSources.LICH_BOLT, 6);
 				}
-				this.world.setEntityState(this, (byte) 3);
+				this.level.broadcastEntityEvent(this, (byte) 3);
 				this.remove();
 			}
 		}

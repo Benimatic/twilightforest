@@ -1,10 +1,10 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.HydraNeckModel;
 import twilightforest.entity.boss.HydraNeckEntity;
@@ -15,30 +15,30 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeckEntity, HydraNeck
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
 
-	public HydraNeckRenderer(EntityRendererManager manager) {
+	public HydraNeckRenderer(EntityRenderDispatcher manager) {
 		super(manager, new HydraNeckModel());
 	}
 
 	@Override
-	public void render(HydraNeckEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int light) {
+	public void render(HydraNeckEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int light) {
 		HydraHeadContainer headCon = HydraHeadRenderer.getHeadObject(entityIn.head);
 		if (headCon != null)
 			if (headCon.shouldRenderHead()) {
-				float yawDiff = entityIn.rotationYaw - entityIn.prevRotationYaw;
+				float yawDiff = entityIn.yRot - entityIn.yRotO;
 				if (yawDiff > 180) {
 					yawDiff -= 360;
 				} else if (yawDiff < -180) {
 					yawDiff += 360;
 				}
-				float yaw2 = entityIn.prevRotationYaw + yawDiff * partialTicks;
+				float yaw2 = entityIn.yRotO + yawDiff * partialTicks;
 
-				matrixStackIn.rotate(Vector3f.YN.rotationDegrees(yaw2 + 180));
+				matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(yaw2 + 180));
 				super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, light);
 			}
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(HydraNeckEntity entity) {
+	public ResourceLocation getTextureLocation(HydraNeckEntity entity) {
 		return textureLoc;
 	}
 }

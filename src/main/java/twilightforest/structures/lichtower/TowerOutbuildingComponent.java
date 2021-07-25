@@ -1,18 +1,18 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class TowerOutbuildingComponent extends TowerWingComponent {
 
-	public TowerOutbuildingComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerOutbuildingComponent(StructureManager manager, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTOut, nbt);
 	}
 
@@ -48,13 +48,13 @@ public class TowerOutbuildingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		final BlockState cobblestone = Blocks.COBBLESTONE.getDefaultState();
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		final BlockState cobblestone = Blocks.COBBLESTONE.defaultBlockState();
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
-				this.replaceAirAndLiquidDownwards(world, cobblestone, x, -1, z, sbb);
+				this.fillColumnDown(world, cobblestone, x, -1, z, sbb);
 			}
 		}
-		return super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
+		return super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 	}
 }

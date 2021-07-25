@@ -1,9 +1,11 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import twilightforest.entity.RovingCubeEntity;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 /**
  * This is a task that runs when we are near a symbol and have stopped pathfinding, but are not centered on the symbol.
@@ -26,17 +28,17 @@ public class CubeCenterOnSymbolGoal extends Goal {
 		this.yPosition = this.myCube.symbolY;
 		this.zPosition = this.myCube.symbolZ;
 		this.speed = d;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE));
+		this.setFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		this.xPosition = this.myCube.symbolX;
 		this.yPosition = this.myCube.symbolY;
 		this.zPosition = this.myCube.symbolZ;
 
 
-		if (!this.myCube.getNavigator().noPath()) {
+		if (!this.myCube.getNavigation().isDone()) {
 			return false;
 		} else {
 			return isCloseToSymbol();
@@ -44,9 +46,9 @@ public class CubeCenterOnSymbolGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		// inch towards it
-		this.myCube.getMoveHelper().setMoveTo(this.xPosition + 0.5F, this.yPosition, this.zPosition + 0.5F, this.speed);
+		this.myCube.getMoveControl().setWantedPosition(this.xPosition + 0.5F, this.yPosition, this.zPosition + 0.5F, this.speed);
 		return this.distanceFromSymbol() > 0.1F && this.isCourseTraversable();
 	}
 
@@ -60,9 +62,9 @@ public class CubeCenterOnSymbolGoal extends Goal {
 	}
 
 	private double distanceFromSymbol() {
-		double dx = this.xPosition - this.myCube.getPosX() + 0.5F;
-		double dy = this.yPosition - this.myCube.getPosY();
-		double dz = this.zPosition - this.myCube.getPosZ() + 0.5F;
+		double dx = this.xPosition - this.myCube.getX() + 0.5F;
+		double dy = this.yPosition - this.myCube.getY();
+		double dz = this.zPosition - this.myCube.getZ() + 0.5F;
 		return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 

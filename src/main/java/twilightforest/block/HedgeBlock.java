@@ -1,116 +1,118 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.world.level.block.state.BlockBehaviour;
+
 public class HedgeBlock extends Block {
 
-	private static final VoxelShape HEDGE_BB = VoxelShapes.create(new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1));
+	private static final VoxelShape HEDGE_BB = Shapes.create(new AABB(0, 0, 0, 1, 0.9375, 1));
 
 	private static final int DAMAGE = 3;
 
-	protected HedgeBlock(Block.Properties props) {
+	protected HedgeBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return HEDGE_BB;
 	}
 
 	@Nullable
 	@Override
-	public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, @Nullable MobEntity entity) {
-		return entity != null && shouldDamage(entity) ? PathNodeType.DAMAGE_CACTUS : null;
+	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
+		return entity != null && shouldDamage(entity) ? BlockPathTypes.DAMAGE_CACTUS : null;
 	}
 
 	@Override
 	@Deprecated
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
 		if (shouldDamage(entity)) {
-			entity.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
+			entity.hurt(DamageSource.CACTUS, DAMAGE);
 		}
 	}
 
 	@Override
-	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+	public void stepOn(Level world, BlockPos pos, Entity entity) {
 		if (shouldDamage(entity)) {
-			entity.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
+			entity.hurt(DamageSource.CACTUS, DAMAGE);
 		}
 	}
 
 	@Override
-	public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		if (!world.isRemote) {
-			world.getPendingBlockTicks().scheduleTick(pos, this, 10);
+	public void attack(BlockState state, Level world, BlockPos pos, Player player) {
+		if (!world.isClientSide) {
+			world.getBlockTicks().scheduleTick(pos, this, 10);
 		}
 	}
 
 	@Override
-	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		super.harvestBlock(world, player, pos, state, te, stack);
-		player.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
+	public void playerDestroy(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
+		super.playerDestroy(world, player, pos, state, te, stack);
+		player.hurt(DamageSource.CACTUS, DAMAGE);
 	}
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
 		// find players within range
-		List<PlayerEntity> nearbyPlayers = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(8.0));
+		List<Player> nearbyPlayers = world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(8.0));
 
-		for (PlayerEntity player : nearbyPlayers) {
+		for (Player player : nearbyPlayers) {
 			// are they swinging?
-			if (player.isSwingInProgress) {
-				BlockRayTraceResult ray = EntityUtil.rayTrace(player);
+			if (player.swinging) {
+				BlockHitResult ray = EntityUtil.rayTrace(player);
 				// are they pointing at this block?
-				if (ray.getType() == RayTraceResult.Type.BLOCK && pos.equals(ray.getPos())) {
+				if (ray.getType() == HitResult.Type.BLOCK && pos.equals(ray.getBlockPos())) {
 					// prick them!  prick them hard!
-					player.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
+					player.hurt(DamageSource.CACTUS, DAMAGE);
 
 					// trigger this again!
-					world.getPendingBlockTicks().scheduleTick(pos, this, 10);
+					world.getBlockTicks().scheduleTick(pos, this, 10);
 				}
 			}
 		}
 	}
 
 	private boolean shouldDamage(Entity entity) {
-		return !(entity instanceof SpiderEntity || entity instanceof ItemEntity || entity.doesEntityNotTriggerPressurePlate());
+		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers());
 	}
 
 	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return 0;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return 0;
 	}
 }

@@ -1,16 +1,18 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFSounds;
 
 import java.util.Random;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TranslucentBuiltBlock extends Block {
 
@@ -18,24 +20,24 @@ public class TranslucentBuiltBlock extends Block {
 
 	public TranslucentBuiltBlock(Properties props) {
 		super(props);
-		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
+		this.registerDefaultState(stateDefinition.any().setValue(ACTIVE, false));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> container) {
-		super.fillStateContainer(container);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> container) {
+		super.createBlockStateDefinition(container);
 		container.add(ACTIVE);
 	}
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (state.get(ACTIVE)) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+		if (state.getValue(ACTIVE)) {
 			world.removeBlock(pos, false);
-			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundCategory.BLOCKS, 0.3F, 0.5F);
+			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundSource.BLOCKS, 0.3F, 0.5F);
 
 			for (Direction e : Direction.values()) {
-				BuilderBlock.activateBuiltBlocks(world, pos.offset(e));
+				BuilderBlock.activateBuiltBlocks(world, pos.relative(e));
 			}
 		}
 	}

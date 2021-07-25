@@ -1,15 +1,15 @@
 package twilightforest.structures.trollcave;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
@@ -19,13 +19,13 @@ import java.util.Random;
 
 public class TrollVaultComponent extends TFStructureComponentOld {
 
-	public TrollVaultComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TrollVaultComponent(StructureManager manager, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCVa, nbt);
 	}
 
 	public TrollVaultComponent(TFFeature feature, int index, int x, int y, int z) {
 		super(TrollCavePieces.TFTCVa, feature, index);
-		this.setCoordBaseMode(Direction.SOUTH);
+		this.setOrientation(Direction.SOUTH);
 
 		// adjust x, y, z
 		x = (x >> 2) << 2;
@@ -39,19 +39,19 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
-		this.fillWithBlocks(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.get().getDefaultState(), TFBlocks.giant_obsidian.get().getDefaultState(), false);
+		this.generateBox(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.get().defaultBlockState(), TFBlocks.giant_obsidian.get().defaultBlockState(), false);
 
 		// clear inside
-		this.fillWithAir(world, sbb, 4, 4, 4, 7, 7, 7);
+		this.generateAirBox(world, sbb, 4, 4, 4, 7, 7, 7);
 
 		// cobblestone platform
-		this.fillWithBlocks(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
+		this.generateBox(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE.defaultBlockState(), Blocks.COBBLESTONE.defaultBlockState(), false);
 
 		// chests
-		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getCoordBaseMode().rotateY(), TFTreasure.troll_vault, sbb, false);
-		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getCoordBaseMode().rotateY(), TFTreasure.troll_garden, sbb, false);
+		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getOrientation().getClockWise(), TFTreasure.troll_vault, sbb, false);
+		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getOrientation().getClockWise(), TFTreasure.troll_garden, sbb, false);
 
 		return true;
 	}

@@ -1,19 +1,19 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.renderer.entity.HydraHeadRenderer;
 
 public class HydraHeadEntity extends HydraPartEntity {
 
-	private static final DataParameter<Float> DATA_MOUTH_POSITION = EntityDataManager.createKey(HydraHeadEntity.class, DataSerializers.FLOAT);
-	private static final DataParameter<Float> DATA_MOUTH_POSITION_LAST = EntityDataManager.createKey(HydraHeadEntity.class, DataSerializers.FLOAT);
-	private static final DataParameter<Byte> DATA_STATE = EntityDataManager.createKey(HydraHeadEntity.class, DataSerializers.BYTE);
+	private static final EntityDataAccessor<Float> DATA_MOUTH_POSITION = SynchedEntityData.defineId(HydraHeadEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_MOUTH_POSITION_LAST = SynchedEntityData.defineId(HydraHeadEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Byte> DATA_STATE = SynchedEntityData.defineId(HydraHeadEntity.class, EntityDataSerializers.BYTE);
 
 	public HydraHeadEntity(HydraEntity hydra) {
 		super(hydra, 4F, 4F);
@@ -21,36 +21,36 @@ public class HydraHeadEntity extends HydraPartEntity {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRendererManager manager) {
+	public EntityRenderer<?> renderer(EntityRenderDispatcher manager) {
 		return new HydraHeadRenderer(manager);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(DATA_MOUTH_POSITION, 0F);
-		dataManager.register(DATA_MOUTH_POSITION_LAST, 0F);
-		dataManager.register(DATA_STATE, (byte) 0);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(DATA_MOUTH_POSITION, 0F);
+		entityData.define(DATA_MOUTH_POSITION_LAST, 0F);
+		entityData.define(DATA_STATE, (byte) 0);
 	}
 
 	public float getMouthOpen() {
-		return dataManager.get(DATA_MOUTH_POSITION);
+		return entityData.get(DATA_MOUTH_POSITION);
 	}
 
 	public float getMouthOpenLast() {
-		return dataManager.get(DATA_MOUTH_POSITION_LAST);
+		return entityData.get(DATA_MOUTH_POSITION_LAST);
 	}
 
 	public HydraHeadContainer.State getState() {
-		return HydraHeadContainer.State.values()[dataManager.get(DATA_STATE)];
+		return HydraHeadContainer.State.values()[entityData.get(DATA_STATE)];
 	}
 
 	public void setMouthOpen(float openness) {
-		dataManager.set(DATA_MOUTH_POSITION_LAST, getMouthOpen());
-		dataManager.set(DATA_MOUTH_POSITION, openness);
+		entityData.set(DATA_MOUTH_POSITION_LAST, getMouthOpen());
+		entityData.set(DATA_MOUTH_POSITION, openness);
 	}
 
 	public void setState(HydraHeadContainer.State state) {
-		dataManager.set(DATA_STATE, (byte) state.ordinal());
+		entityData.set(DATA_STATE, (byte) state.ordinal());
 	}
 }

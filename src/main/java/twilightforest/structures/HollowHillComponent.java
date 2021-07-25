@@ -1,18 +1,18 @@
 package twilightforest.structures;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -27,20 +27,20 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	int hillSize;
 	int radius;
 
-	public HollowHillComponent(TemplateManager manager, CompoundNBT nbt) {
+	public HollowHillComponent(StructureManager manager, CompoundTag nbt) {
 		this(TFFeature.TFHill, nbt);
 	}
 
-	public HollowHillComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public HollowHillComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 		hillSize = nbt.getInt("hillSize");
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 	}
 
-	public HollowHillComponent(IStructurePieceType piece, TFFeature feature, int i, int size, int x, int y, int z) {
+	public HollowHillComponent(StructurePieceType piece, TFFeature feature, int i, int size, int x, int y, int z) {
 		super(piece, feature, i);
 
-		this.setCoordBaseMode(Direction.SOUTH);
+		this.setOrientation(Direction.SOUTH);
 
 		// get the size of this hill?
 		this.hillSize = size;
@@ -51,8 +51,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putInt("hillSize", hillSize);
 	}
 
@@ -60,7 +60,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int[] sna = {0, 128, 256, 512};
 
 		int sn = sna[hillSize]; // number of stalactites mga = {0, 3, 9, 18}
@@ -111,7 +111,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * Make an RNG and attempt to use it to place a treasure chest
 	 */
-	protected void generateTreasureChest(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateTreasureChest(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
 		// generate an RNG for this chest
 		//TODO: MOAR RANDOM!
 		Random chestRNG = new Random(world.getSeed() + x * z);
@@ -120,39 +120,39 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
 
 		// make something for it to stand on, if necessary
-		setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y - 1, z, sbb);
+		placeBlock(world, Blocks.COBBLESTONE.defaultBlockState(), x, y - 1, z, sbb);
 	}
 
 	/**
 	 * Generate a random ore stalactite
 	 */
-	protected void generateOreStalactite(ISeedReader world, ChunkGenerator generator, StructureManager manager, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateOreStalactite(WorldGenLevel world, ChunkGenerator generator, StructureFeatureManager manager, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
+		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
 			//TODO: MOAR RANDOM!
 			Random stalRNG = new Random(world.getSeed() + dx * dz);
 
 			// make the actual stalactite
 			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).generate(world, generator, stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().configured(stalag).place(world, generator, stalRNG, pos);
 		}
 	}
 
 	/**
 	 * Make a random stone stalactite
 	 */
-	protected void generateBlockStalactite(ISeedReader world, ChunkGenerator generator, StructureManager manager, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateBlockStalactite(WorldGenLevel world, ChunkGenerator generator, StructureFeatureManager manager, Block blockToGenerate, float length, boolean up, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
+		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
 			//TODO: MOAR RANDOM!
 			Random stalRNG = new Random(world.getSeed() + dx * dz);
@@ -162,7 +162,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			}
 
 			// make the actual stalactite
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).generate(world, generator, stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().configured(new CaveStalactiteConfig(blockToGenerate.defaultBlockState(), length, -1, -1, up)).place(world, generator, stalRNG, pos);
 		}
 	}
 
@@ -184,9 +184,9 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * TODO: Unused. Remove?
 	 */
 	boolean isInHill(int mapX, int mapY, int mapZ) {
-		int dx = boundingBox.minX + radius - mapX;
-		int dy = (boundingBox.minY - mapY) * 2; // hill is half as high as it is wide, thus we just double y distance from center.  I *think* that math works!
-		int dz = boundingBox.minZ + radius - mapZ;
+		int dx = boundingBox.x0 + radius - mapX;
+		int dy = (boundingBox.y0 - mapY) * 2; // hill is half as high as it is wide, thus we just double y distance from center.  I *think* that math works!
+		int dz = boundingBox.z0 + radius - mapZ;
 		int dist = dx * dx + dy * dy + dz * dz;
 		return dist < radius * radius;
 	}

@@ -1,13 +1,13 @@
 package twilightforest.tileentity;
 
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.sounds.SoundSource;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 
-public class CicadaTileEntity extends TileEntity implements ITickableTileEntity {
+public class CicadaTileEntity extends BlockEntity implements TickableBlockEntity {
 	private int yawDelay;
 	public int currentYaw;
 	private int desiredYaw;
@@ -22,14 +22,14 @@ public class CicadaTileEntity extends TileEntity implements ITickableTileEntity 
 
 	@Override
 	public void tick() {
-		if (world.isRemote) {
+		if (level.isClientSide) {
 			if (yawDelay > 0) {
 				yawDelay--;
 			} else {
 				if (currentYaw == 0 && desiredYaw == 0) {
 					// make it rotate!
-					yawDelay = 200 + world.rand.nextInt(200);
-					desiredYaw = world.rand.nextInt(15) - world.rand.nextInt(15);
+					yawDelay = 200 + level.random.nextInt(200);
+					desiredYaw = level.random.nextInt(15) - level.random.nextInt(15);
 				}
 
 				if (currentYaw < desiredYaw) {
@@ -59,24 +59,24 @@ public class CicadaTileEntity extends TileEntity implements ITickableTileEntity 
 				}
 				if (!singing && singDuration <= 0) {
 					singing = true;
-					singDelay = 100 + world.rand.nextInt(100);
+					singDelay = 100 + level.random.nextInt(100);
 				}
 			}
 		}
 	}
 
 	private void doSingAnimation() {
-		if (world.rand.nextInt(5) == 0) {
-			double rx = pos.getX() + world.rand.nextFloat();
-			double ry = pos.getY() + world.rand.nextFloat();
-			double rz = pos.getZ() + world.rand.nextFloat();
-			world.addParticle(ParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+		if (level.random.nextInt(5) == 0) {
+			double rx = worldPosition.getX() + level.random.nextFloat();
+			double ry = worldPosition.getY() + level.random.nextFloat();
+			double rz = worldPosition.getZ() + level.random.nextFloat();
+			level.addParticle(ParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	private void playSong() {
 		if (!TFConfig.CLIENT_CONFIG.silentCicadas.get()) {
-			world.playSound(pos.getX(), pos.getY(), pos.getZ(), TFSounds.CICADA, SoundCategory.NEUTRAL, 1.0f, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F, false);
+			level.playLocalSound(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), TFSounds.CICADA, SoundSource.NEUTRAL, 1.0f, (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F, false);
 		}
 	}
 }

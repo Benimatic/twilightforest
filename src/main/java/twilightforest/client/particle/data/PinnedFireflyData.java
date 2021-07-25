@@ -3,12 +3,12 @@ package twilightforest.client.particle.data;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import twilightforest.client.particle.TFParticleType;
 
-public class PinnedFireflyData implements IParticleData {
+public class PinnedFireflyData implements ParticleOptions {
 
 	public final int follow;
 
@@ -26,24 +26,24 @@ public class PinnedFireflyData implements IParticleData {
 	}
 
 	@Override
-	public void write(PacketBuffer buf) {
+	public void writeToNetwork(FriendlyByteBuf buf) {
 		buf.writeVarInt(follow);
 	}
 
 	@Override
-	public String getParameters() {
+	public String writeToString() {
 		return Integer.toString(follow);
 	}
 
-	public static class Deserializer implements IParticleData.IDeserializer<PinnedFireflyData> {
+	public static class Deserializer implements ParticleOptions.Deserializer<PinnedFireflyData> {
 		@Override
-		public PinnedFireflyData deserialize(ParticleType<PinnedFireflyData> type, StringReader rdr) throws CommandSyntaxException {
+		public PinnedFireflyData fromCommand(ParticleType<PinnedFireflyData> type, StringReader rdr) throws CommandSyntaxException {
 			rdr.skipWhitespace();
 			return new PinnedFireflyData(rdr.readInt());
 		}
 
 		@Override
-		public PinnedFireflyData read(ParticleType<PinnedFireflyData> type, PacketBuffer buf) {
+		public PinnedFireflyData fromNetwork(ParticleType<PinnedFireflyData> type, FriendlyByteBuf buf) {
 			return new PinnedFireflyData(buf.readVarInt());
 		}
 	}

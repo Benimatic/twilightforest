@@ -1,41 +1,41 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
 
-public class TFGenStoneCircle extends Feature<NoFeatureConfig> {
+public class TFGenStoneCircle extends Feature<NoneFeatureConfiguration> {
 
-	public TFGenStoneCircle(Codec<NoFeatureConfig> configIn) {
+	public TFGenStoneCircle(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-		if (!FeatureUtil.isAreaSuitable(world, pos.add(-3, 0, -3), 6, 4, 6)) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+		if (!FeatureUtil.isAreaSuitable(world, pos.offset(-3, 0, -3), 6, 4, 6)) {
 			return false;
 		}
 
-		BlockState mossyCobble = Blocks.MOSSY_COBBLESTONE.getDefaultState();
+		BlockState mossyCobble = Blocks.MOSSY_COBBLESTONE.defaultBlockState();
 
 		// okay!  circle!
 		for (int cy = 0; cy <= 2; cy++) {
-			world.setBlockState(pos.add(-3, cy, 0), mossyCobble, 3);
-			world.setBlockState(pos.add(3, cy, 0), mossyCobble, 3);
-			world.setBlockState(pos.add(0, cy, -3), mossyCobble, 3);
-			world.setBlockState(pos.add(0, cy, 3), mossyCobble, 3);
-			world.setBlockState(pos.add(-2, cy, -2), mossyCobble, 3);
-			world.setBlockState(pos.add(2, cy, -2), mossyCobble, 3);
-			world.setBlockState(pos.add(-2, cy, 2), mossyCobble, 3);
-			world.setBlockState(pos.add(2, cy, 2), mossyCobble, 3);
+			world.setBlock(pos.offset(-3, cy, 0), mossyCobble, 3);
+			world.setBlock(pos.offset(3, cy, 0), mossyCobble, 3);
+			world.setBlock(pos.offset(0, cy, -3), mossyCobble, 3);
+			world.setBlock(pos.offset(0, cy, 3), mossyCobble, 3);
+			world.setBlock(pos.offset(-2, cy, -2), mossyCobble, 3);
+			world.setBlock(pos.offset(2, cy, -2), mossyCobble, 3);
+			world.setBlock(pos.offset(-2, cy, 2), mossyCobble, 3);
+			world.setBlock(pos.offset(2, cy, 2), mossyCobble, 3);
 		}
 
 		return true;

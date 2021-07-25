@@ -1,19 +1,19 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.ArrowRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.resources.ResourceLocation;
 
-public class DefaultArrowRenderer<T extends AbstractArrowEntity> extends ArrowRenderer<T> {
+public class DefaultArrowRenderer<T extends AbstractArrow> extends ArrowRenderer<T> {
 	public static final ResourceLocation RES_ARROW = new ResourceLocation("textures/entity/projectiles/arrow.png");
 
-	public DefaultArrowRenderer(EntityRendererManager manager) {
+	public DefaultArrowRenderer(EntityRenderDispatcher manager) {
 		super(manager);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getTextureLocation(T entity) {
 		return RES_ARROW;
 	}
 }

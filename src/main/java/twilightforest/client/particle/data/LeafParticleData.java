@@ -4,14 +4,14 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import twilightforest.client.particle.TFParticleType;
 
 import javax.annotation.Nonnull;
 
-public class LeafParticleData implements IParticleData {
+public class LeafParticleData implements ParticleOptions {
 	public final int r;
 	public final int g;
 	public final int b;
@@ -37,7 +37,7 @@ public class LeafParticleData implements IParticleData {
 	}
 
 	@Override
-	public void write(@Nonnull PacketBuffer buf) {
+	public void writeToNetwork(@Nonnull FriendlyByteBuf buf) {
 		buf.writeVarInt(r);
 		buf.writeVarInt(g);
 		buf.writeVarInt(b);
@@ -45,14 +45,14 @@ public class LeafParticleData implements IParticleData {
 
 	@Nonnull
 	@Override
-	public String getParameters() {
+	public String writeToString() {
 		return String.format("%d %d %d", r, g, b);
 	}
 
-	public static class Deserializer implements IParticleData.IDeserializer<LeafParticleData> {
+	public static class Deserializer implements ParticleOptions.Deserializer<LeafParticleData> {
 		@Nonnull
 		@Override
-		public LeafParticleData deserialize(@Nonnull ParticleType<LeafParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
+		public LeafParticleData fromCommand(@Nonnull ParticleType<LeafParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
 			reader.skipWhitespace();
 			int r = reader.readInt();
 			reader.skipWhitespace();
@@ -64,7 +64,7 @@ public class LeafParticleData implements IParticleData {
 
 		@Nonnull
 		@Override
-		public LeafParticleData read(@Nonnull ParticleType<LeafParticleData> type, PacketBuffer buf) {
+		public LeafParticleData fromNetwork(@Nonnull ParticleType<LeafParticleData> type, FriendlyByteBuf buf) {
 			return new LeafParticleData(buf.readVarInt(), buf.readVarInt(), buf.readVarInt());
 		}
 	}

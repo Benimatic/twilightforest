@@ -2,14 +2,14 @@ package twilightforest.worldgen.treeplacers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
-import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import twilightforest.util.FeatureUtil;
 import twilightforest.worldgen.TwilightFeatures;
 
@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class HollowTrunkPlacer extends AbstractTrunkPlacer {
+public class HollowTrunkPlacer extends TrunkPlacer {
     public static final Codec<HollowTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
-            getAbstractTrunkCodec(instance).and(instance.group(
+            trunkPlacerParts(instance).and(instance.group(
                     Codec.floatRange(1, 16).fieldOf("outside_radius").forGetter(o -> o.outerRadius),
                     Codec.intRange(0, 8).fieldOf("random_add_radius").forGetter(o -> o.randomAddRadius),
                     BranchesConfig.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfig),
@@ -42,12 +42,12 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
     }
 
     @Override
-    protected TrunkPlacerType<HollowTrunkPlacer> getPlacerType() {
+    protected TrunkPlacerType<HollowTrunkPlacer> type() {
         return TwilightFeatures.HOLLOW_TRUNK;
     }
 
     @Override
-    public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader world, Random random, int height, BlockPos pos, Set<BlockPos> trunkBlocks, MutableBoundingBox mutableBoundingBox, BaseTreeFeatureConfig baseTreeFeatureConfig) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedRW world, Random random, int height, BlockPos pos, Set<BlockPos> trunkBlocks, BoundingBox mutableBoundingBox, TreeConfiguration baseTreeFeatureConfig) {
         final float additionalRadius = random.nextInt(randomAddRadius + 1);
         final float outerRadius = this.outerRadius + additionalRadius;
         final float hollowRadius = outerRadius / 2f;
@@ -55,7 +55,7 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
         final float outerRadiusSquared = outerRadius * outerRadius;
         final float hollowRadiusSquared = hollowRadius * hollowRadius;
 
-        ArrayList<FoliagePlacer.Foliage> leaves = new ArrayList<>();
+        ArrayList<FoliagePlacer.FoliageAttachment> leaves = new ArrayList<>();
 
         buildTrunk(world, random, height, pos, trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig, outerRadius, outerRadiusSquared, hollowRadiusSquared);
 
@@ -64,7 +64,7 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
         return leaves;
     }
 
-    private void buildTrunk(IWorldGenerationReader world, Random random, int height, BlockPos startPos, Set<BlockPos> trunkBlocks, MutableBoundingBox mutableBoundingBox, BaseTreeFeatureConfig baseTreeFeatureConfig, float outerRadius, float outerRadiusSquared, float hollowRadiusSquared) {
+    private void buildTrunk(LevelSimulatedRW world, Random random, int height, BlockPos startPos, Set<BlockPos> trunkBlocks, BoundingBox mutableBoundingBox, TreeConfiguration baseTreeFeatureConfig, float outerRadius, float outerRadiusSquared, float hollowRadiusSquared) {
         int dist;
         boolean trunkDelta;
         boolean notHollow = false;
@@ -79,23 +79,23 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
                     notHollow = dist >= hollowRadiusSquared;
 
                     for (int y = 0; y <= height; y++) {
-                        BlockPos dPos = startPos.add(x, y, z);
+                        BlockPos dPos = startPos.offset(x, y, z);
 
                         if (trunkDelta && !notHollow) {
-                            world.setBlockState(dPos, ladder.getBlockState(random, dPos), 3);
+                            world.setBlock(dPos, ladder.getState(random, dPos), 3);
 
-                            BlockPos opposite = startPos.add(x, y, -z);
+                            BlockPos opposite = startPos.offset(x, y, -z);
 
                             if (!dPos.equals(opposite)) {
-                                world.setBlockState(opposite, ladder.getBlockState(random, opposite), 3);
+                                world.setBlock(opposite, ladder.getState(random, opposite), 3);
                             }
                         }
 
                         if (notHollow) {
-                            func_236911_a_(world, random, dPos, trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig);
-                            func_236911_a_(world, random, startPos.add( -x, y, -z), trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig);
-                            func_236911_a_(world, random, startPos.add( -z, y,  x), trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig);
-                            func_236911_a_(world, random, startPos.add(  z, y, -x), trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig);
+                            placeLog(world, random, dPos, trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig);
+                            placeLog(world, random, startPos.offset( -x, y, -z), trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig);
+                            placeLog(world, random, startPos.offset( -z, y,  x), trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig);
+                            placeLog(world, random, startPos.offset(  z, y, -x), trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig);
                         }
                     }
                 }
@@ -103,7 +103,7 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
         }
     }
 
-    protected void buildFullCrown(IWorldGenerationReader world, Random random, BlockPos pos, List<FoliagePlacer.Foliage> leaves, Set<BlockPos> branch, float diameter, int height, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+    protected void buildFullCrown(LevelSimulatedRW world, Random random, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leaves, Set<BlockPos> branch, float diameter, int height, BoundingBox mbb, TreeConfiguration config) {
         int crownRadius = (int) (diameter * 4f + 4f);
         int bvar = (int) (diameter + 2f);
 
@@ -127,7 +127,7 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
      * Build a ring of branches around the tree
      * size 0 = small, 1 = med, 2 = large, 3 = root
      */
-    protected void buildBranchRing(IWorldGenerationReader world, Random random, BlockPos pos, List<FoliagePlacer.Foliage> leaves, Set<BlockPos> branch, float diameter, int branchHeight, int heightVar, float length, double tilt, int minBranches, int maxBranches, int size, boolean leafy, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+    protected void buildBranchRing(LevelSimulatedRW world, Random random, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leaves, Set<BlockPos> branch, float diameter, int branchHeight, int heightVar, float length, double tilt, int minBranches, int maxBranches, int size, boolean leafy, BoundingBox mbb, TreeConfiguration config) {
         //let's do this!
         int numBranches = random.nextInt(maxBranches - minBranches) + minBranches;
 
@@ -157,8 +157,8 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
     /**
      * Make a large, branching "base" branch off of the tree
      */
-    protected void makeLargeBranch(IWorldGenerationReader world, Random random, BlockPos pos, List<FoliagePlacer.Foliage> leaves, Set<BlockPos> branch, float diameter, int branchHeight, float length, double angle, double tilt, boolean leafy, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
-        BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
+    protected void makeLargeBranch(LevelSimulatedRW world, Random random, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leaves, Set<BlockPos> branch, float diameter, int branchHeight, float length, double angle, double tilt, boolean leafy, BoundingBox mbb, TreeConfiguration config) {
+        BlockPos src = FeatureUtil.translate(pos.above(branchHeight), diameter, angle, 0.5);
         makeLargeBranch(world, random, src, leaves, branch, length, angle, tilt, leafy, mbb, config);
     }
 
@@ -167,7 +167,7 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
      * <p>
      * The large branch will have 1-4 medium branches and several small branches too
      */
-    protected void makeLargeBranch(IWorldGenerationReader world, Random random, BlockPos src, List<FoliagePlacer.Foliage> leaves, Set<BlockPos> branch, float length, double angle, double tilt, boolean leafy, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+    protected void makeLargeBranch(LevelSimulatedRW world, Random random, BlockPos src, List<FoliagePlacer.FoliageAttachment> leaves, Set<BlockPos> branch, float length, double angle, double tilt, boolean leafy, BoundingBox mbb, TreeConfiguration config) {
         BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
         // draw the main branch
@@ -180,13 +180,13 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
             int vx = (i & 2) == 0 ? 1 : 0;
             int vy = (i & 1) == 0 ? 1 : -1;
             int vz = (i & 2) == 0 ? 0 : 1;
-            FeatureUtil.drawBresenhamBranch(world, random, src.add(vx, vy, vz), dest, branch, mbb, config);
+            FeatureUtil.drawBresenhamBranch(world, random, src.offset(vx, vy, vz), dest, branch, mbb, config);
         }
 
         if (leafy) {
             // add a leaf blob at the end
             //FeatureUtil.drawLeafBlob(world, dest.up(), 3, config.leavesProvider.getBlockState(random, dest.up()), leaves);
-            leaves.add(new FoliagePlacer.Foliage(dest.up(), 3, false));
+            leaves.add(new FoliagePlacer.FoliageAttachment(dest.above(), 3, false));
         }
 
         // go about halfway out and make a few medium branches.
@@ -222,15 +222,15 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
     /**
      * Make a branch!
      */
-    protected void makeMedBranch(IWorldGenerationReader world, Random random, BlockPos pos, List<FoliagePlacer.Foliage> leaves, Set<BlockPos> branch, float diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
-        BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
+    protected void makeMedBranch(LevelSimulatedRW world, Random random, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leaves, Set<BlockPos> branch, float diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, BoundingBox mbb, TreeConfiguration config) {
+        BlockPos src = FeatureUtil.translate(pos.above(branchHeight), diameter, angle, 0.5);
         makeMedBranch(world, random, src, leaves, branch, length, angle, tilt, leafy, mbb, config);
     }
 
     /**
      * Make a branch!
      */
-    protected void makeMedBranch(IWorldGenerationReader world, Random random, BlockPos src, List<FoliagePlacer.Foliage> leaves, Set<BlockPos> branch, double length, double angle, double tilt, boolean leafy, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+    protected void makeMedBranch(LevelSimulatedRW world, Random random, BlockPos src, List<FoliagePlacer.FoliageAttachment> leaves, Set<BlockPos> branch, double length, double angle, double tilt, boolean leafy, BoundingBox mbb, TreeConfiguration config) {
         BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
         FeatureUtil.drawBresenhamBranch(world, random, src, dest, branch, mbb, config);
@@ -251,7 +251,7 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
 
             // and a blob at the end
             // FeatureUtil.drawLeafBlob(world, dest, 2, config.leavesProvider.getBlockState(random, dest), leaves);
-            leaves.add(new FoliagePlacer.Foliage(dest, 2, false));
+            leaves.add(new FoliagePlacer.FoliageAttachment(dest, 2, false));
         }
 
         // and several small branches
@@ -277,42 +277,42 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
     /**
      * Make a small branch with a leaf blob at the end
      */
-    protected void makeSmallBranch(IWorldGenerationReader world, Random random, BlockPos src, List<FoliagePlacer.Foliage> leaves, Set<BlockPos> branch, double length, double angle, double tilt, boolean leafy, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+    protected void makeSmallBranch(LevelSimulatedRW world, Random random, BlockPos src, List<FoliagePlacer.FoliageAttachment> leaves, Set<BlockPos> branch, double length, double angle, double tilt, boolean leafy, BoundingBox mbb, TreeConfiguration config) {
         BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
         FeatureUtil.drawBresenhamBranch(world, random, src, dest, branch, mbb, config);
 
         if (leafy) {
             //FeatureUtil.makeLeafSpheroid(world, dest, (byte) (random.nextInt(2) + 1), config.leavesProvider.getBlockState(random, dest), leaves);
-            leaves.add(new FoliagePlacer.Foliage(dest, random.nextInt(2) + 1, false));
+            leaves.add(new FoliagePlacer.FoliageAttachment(dest, random.nextInt(2) + 1, false));
         }
     }
 
     /**
      * Make a small branch at a certain height
      */
-    protected void makeSmallBranch(IWorldGenerationReader world, Random random, BlockPos pos, List<FoliagePlacer.Foliage> leaves, Set<BlockPos> branch, float diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
-        BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
+    protected void makeSmallBranch(LevelSimulatedRW world, Random random, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leaves, Set<BlockPos> branch, float diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, BoundingBox mbb, TreeConfiguration config) {
+        BlockPos src = FeatureUtil.translate(pos.above(branchHeight), diameter, angle, 0.5);
         makeSmallBranch(world, random, src, leaves, branch, length, angle, tilt, leafy, mbb, config);
     }
 
     /**
      * Make a root
      */
-    protected void makeRoot(IWorldGenerationReader world, Random random, BlockPos pos, float diameter, int branchHeight, double length, double angle, double tilt, BaseTreeFeatureConfig config) {
-        BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
+    protected void makeRoot(LevelSimulatedRW world, Random random, BlockPos pos, float diameter, int branchHeight, double length, double angle, double tilt, TreeConfiguration config) {
+        BlockPos src = FeatureUtil.translate(pos.above(branchHeight), diameter, angle, 0.5);
         BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
         BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(src, dest);
         boolean stillAboveGround = true;
         for (BlockPos coord : lineArray) {
             if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {
-                world.setBlockState(coord, config.trunkProvider.getBlockState(random, coord), 3);
-                world.setBlockState(coord.down(), config.trunkProvider.getBlockState(random, coord.down()), 3);
+                world.setBlock(coord, config.trunkProvider.getState(random, coord), 3);
+                world.setBlock(coord.below(), config.trunkProvider.getState(random, coord.below()), 3);
             } else {
                 // TODO Hook in Root Decor
-                world.setBlockState(coord, config.trunkProvider.getBlockState(random, coord), 3);
-                world.setBlockState(coord.down(), config.trunkProvider.getBlockState(random, coord.down()), 3);
+                world.setBlock(coord, config.trunkProvider.getState(random, coord), 3);
+                world.setBlock(coord.below(), config.trunkProvider.getState(random, coord.below()), 3);
                 stillAboveGround = false;
             }
         }

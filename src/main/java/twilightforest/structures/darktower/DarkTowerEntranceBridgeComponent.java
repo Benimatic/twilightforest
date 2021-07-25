@@ -1,10 +1,10 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class DarkTowerEntranceBridgeComponent extends DarkTowerBridgeComponent {
 
-	public DarkTowerEntranceBridgeComponent(TemplateManager manager, CompoundNBT nbt) {
+	public DarkTowerEntranceBridgeComponent(StructureManager manager, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTEB, nbt);
 	}
 
@@ -29,7 +29,7 @@ public class DarkTowerEntranceBridgeComponent extends DarkTowerBridgeComponent {
 		DarkTowerWingComponent wing = new DarkTowerEntranceComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
 		list.add(wing);
-		wing.buildComponent(this, list, rand);
+		wing.addChildren(this, list, rand);
 		addOpening(x, y, z, rotation);
 		return true;
 	}

@@ -1,11 +1,13 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.core.BlockPos;
 import twilightforest.entity.boss.KnightPhantomEntity;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class PhantomAttackStartGoal extends Goal {
 
@@ -13,24 +15,24 @@ public class PhantomAttackStartGoal extends Goal {
 
 	public PhantomAttackStartGoal(KnightPhantomEntity entity) {
 		boss = entity;
-		setMutexFlags(EnumSet.of(Flag.LOOK));
+		setFlags(EnumSet.of(Flag.LOOK));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return boss.getAttackTarget() != null && boss.getCurrentFormation() == KnightPhantomEntity.Formation.ATTACK_PLAYER_START;
+	public boolean canUse() {
+		return boss.getTarget() != null && boss.getCurrentFormation() == KnightPhantomEntity.Formation.ATTACK_PLAYER_START;
 	}
 
 	@Override
 	public void tick() {
-		LivingEntity target = boss.getAttackTarget();
+		LivingEntity target = boss.getTarget();
 		if (target != null) {
-			BlockPos targetPos = new BlockPos(target.lastTickPosX, target.lastTickPosY, target.lastTickPosZ);
+			BlockPos targetPos = new BlockPos(target.xOld, target.yOld, target.zOld);
 
-			if (boss.isWithinHomeDistanceFromPosition(targetPos)) {
+			if (boss.isWithinRestriction(targetPos)) {
 				boss.setChargePos(targetPos);
 			} else {
-				boss.setChargePos(boss.getHomePosition());
+				boss.setChargePos(boss.getRestrictCenter());
 			}
 		}
 	}

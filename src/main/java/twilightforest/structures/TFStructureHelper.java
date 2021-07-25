@@ -1,10 +1,10 @@
 package twilightforest.structures;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.state.properties.SlabType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.properties.SlabType;
 
 /**
  * Created by Joseph on 7/16/2017.
@@ -13,15 +13,15 @@ public class TFStructureHelper {
 
     public static final BlockState stoneSlab = getSlab(Blocks.SMOOTH_STONE_SLAB);
     public static final BlockState stoneSlabTop = getSlabTop(Blocks.SMOOTH_STONE_SLAB);
-    public static final BlockState stoneSlabDouble = Blocks.SMOOTH_STONE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE);
+    public static final BlockState stoneSlabDouble = Blocks.SMOOTH_STONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE);
 
     public static final BlockState birchSlab = getSlab(Blocks.BIRCH_SLAB);
     public static final BlockState birchSlabTop = getSlabTop(Blocks.BIRCH_SLAB);
-    public static final BlockState birchPlanks = Blocks.BIRCH_PLANKS.getDefaultState();
+    public static final BlockState birchPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 
 
     private static BlockState getSlabType(Block type, SlabType side) {
-        return type.getDefaultState().with(SlabBlock.TYPE, side);
+        return type.defaultBlockState().setValue(SlabBlock.TYPE, side);
     }
 
     public static BlockState getSlab(Block type) {
@@ -41,18 +41,18 @@ public class TFStructureHelper {
         switch (i) {
 			case 0:
 			default:
-				return Blocks.OAK_SAPLING.getDefaultState();
+				return Blocks.OAK_SAPLING.defaultBlockState();
 			case 1:
-				return Blocks.SPRUCE_SAPLING.getDefaultState();
+				return Blocks.SPRUCE_SAPLING.defaultBlockState();
 			case 2:
-				return Blocks.BIRCH_SAPLING.getDefaultState();
+				return Blocks.BIRCH_SAPLING.defaultBlockState();
 			case 3:
-				return Blocks.JUNGLE_SAPLING.getDefaultState();
+				return Blocks.JUNGLE_SAPLING.defaultBlockState();
         }
     }
 
     public static BlockState randomMushroom(int i) {
-        if(i == 0) return Blocks.RED_MUSHROOM.getDefaultState();
-        else return Blocks.BROWN_MUSHROOM.getDefaultState();
+        if(i == 0) return Blocks.RED_MUSHROOM.defaultBlockState();
+        else return Blocks.BROWN_MUSHROOM.defaultBlockState();
     }
 }

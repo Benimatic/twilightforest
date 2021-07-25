@@ -1,22 +1,22 @@
 package twilightforest.client.model.entity.legacy;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
 import twilightforest.entity.boss.HydraNeckEntity;
 
-public class HydraNeckLegacyModel extends SegmentedModel<HydraNeckEntity> {
+public class HydraNeckLegacyModel extends ListModel<HydraNeckEntity> {
 
-    ModelRenderer neck;
+    ModelPart neck;
 
     public HydraNeckLegacyModel() {
-        textureWidth = 512;
-        textureHeight = 256;
+        texWidth = 512;
+        texHeight = 256;
 
-        neck = new ModelRenderer(this/*, "neck"*/);
-        neck.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
-        neck.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
-        neck.setRotationPoint(0F, 0F, 0F);
+        neck = new ModelPart(this/*, "neck"*/);
+        neck.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+        neck.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
+        neck.setPos(0F, 0F, 0F);
     }
 
 //	@Override
@@ -26,13 +26,13 @@ public class HydraNeckLegacyModel extends SegmentedModel<HydraNeckEntity> {
 //	}
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(neck);
     }
 
     @Override
-    public void setRotationAngles(HydraNeckEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        neck.rotateAngleY = netHeadYaw / 57.29578F;
-        neck.rotateAngleX = headPitch / 57.29578F;
+    public void setupAnim(HydraNeckEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        neck.yRot = netHeadYaw / 57.29578F;
+        neck.xRot = headPitch / 57.29578F;
     }
 }

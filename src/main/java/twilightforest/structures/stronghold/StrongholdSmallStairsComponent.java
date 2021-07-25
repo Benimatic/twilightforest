@@ -1,18 +1,18 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 
@@ -25,7 +25,7 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 	public boolean hasTreasure;
 	public boolean chestTrapped;
 
-	public StrongholdSmallStairsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public StrongholdSmallStairsComponent(StructureManager manager, CompoundTag nbt) {
 		super(StrongholdPieces.TFSSS, nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 		this.hasTreasure = nbt.getBoolean("hasTreasure");
@@ -37,15 +37,15 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putBoolean("enterBottom", this.enterBottom);
 		tagCompound.putBoolean("hasTreasure", this.hasTreasure);
 		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
 	}
 
 	@Override
-	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 
 		if (y > 17) {
 			this.enterBottom = false;
@@ -56,16 +56,16 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 		}
 
 		if (enterBottom) {
-			return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 14, 9, facing);
+			return BoundingBox.orientBox(x, y, z, -4, -1, 0, 9, 14, 9, facing);
 		} else {
 			// enter on the top
-			return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -4, -8, 0, 9, 14, 9, facing);
+			return BoundingBox.orientBox(x, y, z, -4, -8, 0, 9, 14, 9, facing);
 		}
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.buildComponent(parent, list, random);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+		super.addChildren(parent, list, random);
 
 		if (this.enterBottom) {
 			this.addDoor(4, 1, 0);
@@ -80,40 +80,40 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 13, 8, rand, deco.randomBlocks);
 
 		// railing
-		this.fillWithBlocks(world, sbb, 1, 7, 1, 7, 7, 7, deco.platformState, Blocks.AIR.getDefaultState(), false);
-		this.fillWithAir(world, sbb, 2, 7, 2, 6, 7, 6);
+		this.generateBox(world, sbb, 1, 7, 1, 7, 7, 7, deco.platformState, Blocks.AIR.defaultBlockState(), false);
+		this.generateAirBox(world, sbb, 2, 7, 2, 6, 7, 6);
 
 		Rotation rotation = this.enterBottom ? Rotation.NONE : Rotation.CLOCKWISE_180;
 
 		// stairs
 		for (int y = 1; y < 8; y++) {
 			for (int x = 3; x < 6; x++) {
-				this.setBlockStateRotated(world, Blocks.AIR.getDefaultState(), x, y + 1, y, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.NORTH), x, y, y, rotation, sbb);
+				this.setBlockStateRotated(world, Blocks.AIR.defaultBlockState(), x, y + 1, y, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.NORTH), x, y, y, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, x, y - 1, y, rotation, sbb);
 			}
 		}
 
 		// treasure
 		if (this.hasTreasure) {
-			this.placeTreasureRotated(world, 4, 1, 6, getCoordBaseMode().getOpposite(), rotation, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
+			this.placeTreasureRotated(world, 4, 1, 6, getOrientation().getOpposite(), rotation, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
 
 			if (this.chestTrapped) {
-				this.setBlockStateRotated(world, Blocks.TNT.getDefaultState(), 4, 0, 6, rotation, sbb);
+				this.setBlockStateRotated(world, Blocks.TNT.defaultBlockState(), 4, 0, 6, rotation, sbb);
 			}
 
 			for (int z = 5; z < 8; z++) {
-				this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.WEST), 3, 1, z, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.EAST), 5, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.WEST), 3, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.EAST), 5, 1, z, rotation, sbb);
 			}
 
-			this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.NORTH), 4, 1, 5, rotation, sbb);
-			this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.SOUTH), 4, 1, 7, rotation, sbb);
-			this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.NORTH), 4, 2, 6, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.NORTH), 4, 1, 5, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.SOUTH), 4, 1, 7, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.setValue(StairBlock.FACING, Direction.NORTH), 4, 2, 6, rotation, sbb);
 		}
 
 		if (enterBottom) {

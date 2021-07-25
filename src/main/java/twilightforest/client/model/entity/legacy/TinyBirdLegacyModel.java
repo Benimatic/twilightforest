@@ -7,86 +7,86 @@
 package twilightforest.client.model.entity.legacy;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.AgeableModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.AgeableListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import twilightforest.entity.passive.TinyBirdEntity;
 
-public class TinyBirdLegacyModel extends AgeableModel<TinyBirdEntity> {
+public class TinyBirdLegacyModel extends AgeableListModel<TinyBirdEntity> {
 	//fields
-	ModelRenderer beak;
-	ModelRenderer head;
-	ModelRenderer body;
-	ModelRenderer rightarm;
-	ModelRenderer leftarm;
-	ModelRenderer rightleg;
-	ModelRenderer leftleg;
-	ModelRenderer tail;
+	ModelPart beak;
+	ModelPart head;
+	ModelPart body;
+	ModelPart rightarm;
+	ModelPart leftarm;
+	ModelPart rightleg;
+	ModelPart leftleg;
+	ModelPart tail;
 
 	public TinyBirdLegacyModel() {
-		textureWidth = 32;
-		textureHeight = 32;
+		texWidth = 32;
+		texHeight = 32;
 
-		head = new ModelRenderer(this, 0, 0);
+		head = new ModelPart(this, 0, 0);
 		head.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-		head.setRotationPoint(0F, 20.5F, -0.5F);
-		head.setTextureSize(32, 32);
+		head.setPos(0F, 20.5F, -0.5F);
+		head.setTexSize(32, 32);
 		head.mirror = true;
 		setRotation(head, 0F, 0F, 0F);
 
-		beak = new ModelRenderer(this, 12, 0);
+		beak = new ModelPart(this, 12, 0);
 		beak.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1);
-		beak.setRotationPoint(0F, 0.5F, -2F);
+		beak.setPos(0F, 0.5F, -2F);
 
 		head.addChild(beak);
 
-		body = new ModelRenderer(this, 0, 6);
+		body = new ModelPart(this, 0, 6);
 		body.addBox(-1.5F, 0F, -1F, 3, 3, 3);
-		body.setRotationPoint(0F, 20F, 0F);
-		body.setTextureSize(32, 32);
+		body.setPos(0F, 20F, 0F);
+		body.setTexSize(32, 32);
 		body.mirror = true;
 		setRotation(body, 0F, 0F, 0F);
-		rightarm = new ModelRenderer(this, 12, 2);
+		rightarm = new ModelPart(this, 12, 2);
 		rightarm.addBox(-1F, 0F, -1.5F, 1, 2, 3);
-		rightarm.setRotationPoint(-1.5F, 20.5F, 1F);
-		rightarm.setTextureSize(32, 32);
+		rightarm.setPos(-1.5F, 20.5F, 1F);
+		rightarm.setTexSize(32, 32);
 		rightarm.mirror = true;
 		setRotation(rightarm, 0F, 0F, 0F);
-		leftarm = new ModelRenderer(this, 12, 2);
+		leftarm = new ModelPart(this, 12, 2);
 		leftarm.addBox(0F, 0F, -1.5F, 1, 2, 3);
-		leftarm.setRotationPoint(1.5F, 20.5F, 1F);
-		leftarm.setTextureSize(32, 32);
+		leftarm.setPos(1.5F, 20.5F, 1F);
+		leftarm.setTexSize(32, 32);
 		leftarm.mirror = true;
 		setRotation(leftarm, 0F, 0F, 0F);
-		rightleg = new ModelRenderer(this, 0, 12);
+		rightleg = new ModelPart(this, 0, 12);
 		rightleg.addBox(0F, 0F, 0F, 1, 1, 1);
-		rightleg.setRotationPoint(-1.5F, 23F, 0F);
-		rightleg.setTextureSize(32, 32);
+		rightleg.setPos(-1.5F, 23F, 0F);
+		rightleg.setTexSize(32, 32);
 		rightleg.mirror = true;
 		setRotation(rightleg, 0F, 0F, 0F);
-		leftleg = new ModelRenderer(this, 0, 12);
+		leftleg = new ModelPart(this, 0, 12);
 		leftleg.addBox(0.5F, 0F, 0F, 1, 1, 1);
-		leftleg.setRotationPoint(0F, 23F, 0F);
-		leftleg.setTextureSize(32, 32);
+		leftleg.setPos(0F, 23F, 0F);
+		leftleg.setTexSize(32, 32);
 		leftleg.mirror = true;
 		setRotation(leftleg, 0F, 0F, 0F);
-		tail = new ModelRenderer(this, 0, 14);
+		tail = new ModelPart(this, 0, 14);
 		tail.addBox(-1.5F, -0.5F, 0F, 3, 1, 2);
-		tail.setRotationPoint(0F, 22F, 2F);
-		tail.setTextureSize(32, 32);
+		tail.setPos(0F, 22F, 2F);
+		tail.setTexSize(32, 32);
 		tail.mirror = true;
 		setRotation(tail, 0F, 0F, 0F);
 	}
 
 	@Override
-	protected Iterable<ModelRenderer> getHeadParts() {
+	protected Iterable<ModelPart> headParts() {
 		return ImmutableList.of(this.head);
 	}
 
 	@Override
-	protected Iterable<ModelRenderer> getBodyParts() {
+	protected Iterable<ModelPart> bodyParts() {
 		return ImmutableList.of(
 				head,
 				body,
@@ -99,50 +99,50 @@ public class TinyBirdLegacyModel extends AgeableModel<TinyBirdEntity> {
 	}
 
 	@Override
-	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		if (isChild) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+		if (young) {
 			float f = 2.0F;
-			stack.push();
+			stack.pushPose();
 			stack.translate(0.0F, 5F * scale, 0.75F * scale);
-			this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			stack.pop();
-			stack.push();
+			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.popPose();
+			stack.pushPose();
 			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
 			stack.translate(0.0F, 24F * scale, 0.0F);
-			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			stack.pop();
+			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.popPose();
 		} else {
-			this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 		}
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
+	private void setRotation(ModelPart model, float x, float y, float z) {
+		model.xRot = x;
+		model.yRot = y;
+		model.zRot = z;
 	}
 
 	/**
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(TinyBirdEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
-		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+	public void setupAnim(TinyBirdEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		head.xRot = headPitch / (180F / (float) Math.PI);
+		head.yRot = netHeadYaw / (180F / (float) Math.PI);
 
-		rightleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		leftleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		rightleg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		leftleg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 
-		rightarm.rotateAngleZ = ageInTicks;
-		leftarm.rotateAngleZ = -ageInTicks;
+		rightarm.zRot = ageInTicks;
+		leftarm.zRot = -ageInTicks;
 
 		if (entity.isBirdLanded()) {
-			rightleg.rotationPointY = 23;
-			leftleg.rotationPointY = 23;
+			rightleg.y = 23;
+			leftleg.y = 23;
 		} else {
-			rightleg.rotationPointY = 22.5F;
-			leftleg.rotationPointY = 22.5F;
+			rightleg.y = 22.5F;
+			leftleg.y = 22.5F;
 		}
 	}
 }

@@ -1,12 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.pathfinding.FlyingPathNavigator;
-import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -14,30 +14,30 @@ import java.util.List;
 
 // [VanillaCopy] TemptGoal, but attracted to item entities instead of players
 public class FindLooseGoal extends Goal {
-	protected final CreatureEntity creature;
+	protected final PathfinderMob creature;
 	private final double speed;
 	protected ItemEntity closestItem;
 	private int delayTemptCounter;
 	private final Ingredient temptItem;
 
-	public FindLooseGoal(CreatureEntity creature, double speed, Ingredient temptItem) {
+	public FindLooseGoal(PathfinderMob creature, double speed, Ingredient temptItem) {
 		this.creature = creature;
 		this.speed = speed;
 		this.temptItem = temptItem;
-		this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-		if (!(creature.getNavigator() instanceof GroundPathNavigator) && !(creature.getNavigator() instanceof FlyingPathNavigator)) {
+		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		if (!(creature.getNavigation() instanceof GroundPathNavigation) && !(creature.getNavigation() instanceof FlyingPathNavigation)) {
 			throw new IllegalArgumentException("Unsupported mob type for TemptGoal");
 		}
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		if (this.delayTemptCounter > 0) {
 			--this.delayTemptCounter;
 			return false;
 		} else {
-			List<ItemEntity> items = this.creature.world.getEntitiesWithinAABB(ItemEntity.class, creature.getBoundingBox().grow(16, 4, 16), e -> e.isAlive() && !e.getItem().isEmpty());
-			items.sort(Comparator.comparingDouble(i -> i.getDistanceSq(creature.getPositionVec())));
+			List<ItemEntity> items = this.creature.level.getEntitiesOfClass(ItemEntity.class, creature.getBoundingBox().inflate(16, 4, 16), e -> e.isAlive() && !e.getItem().isEmpty());
+			items.sort(Comparator.comparingDouble(i -> i.distanceToSqr(creature.position())));
 			this.closestItem = items.isEmpty() ? null : items.get(0);
 			if (this.closestItem == null) {
 				return false;
@@ -52,23 +52,23 @@ public class FindLooseGoal extends Goal {
 	}
 
 	@Override
-	public void startExecuting() {
+	public void start() {
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.closestItem = null;
-		this.creature.getNavigator().clearPath();
+		this.creature.getNavigation().stop();
 		this.delayTemptCounter = 100;
 	}
 
 	@Override
 	public void tick() {
-		this.creature.getLookController().setLookPositionWithEntity(this.closestItem, this.creature.getHorizontalFaceSpeed() + 20, this.creature.getVerticalFaceSpeed());
-		if (this.creature.getDistanceSq(this.closestItem) < 6.25D) {
-			this.creature.getNavigator().clearPath();
+		this.creature.getLookControl().setLookAt(this.closestItem, this.creature.getMaxHeadYRot() + 20, this.creature.getMaxHeadXRot());
+		if (this.creature.distanceToSqr(this.closestItem) < 6.25D) {
+			this.creature.getNavigation().stop();
 		} else {
-			this.creature.getNavigator().tryMoveToEntityLiving(this.closestItem, this.speed);
+			this.creature.getNavigation().moveTo(this.closestItem, this.speed);
 		}
 
 	}

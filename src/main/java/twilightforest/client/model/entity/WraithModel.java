@@ -2,56 +2,56 @@ package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import twilightforest.entity.WraithEntity;
 
-public class WraithModel extends BipedModel<WraithEntity> {
+public class WraithModel extends HumanoidModel<WraithEntity> {
 
-	public ModelRenderer dress;
+	public ModelPart dress;
 
 	public WraithModel() {
-		super(RenderType::getEntityTranslucent, 0.0F, 0.0F, 64, 32);
+		super(RenderType::entityTranslucent, 0.0F, 0.0F, 64, 32);
 
 		float f = 0.0F;
-		dress = new ModelRenderer(this, 40, 16);
+		dress = new ModelPart(this, 40, 16);
 		dress.addBox(-4F, 12.0F, -2F, 8, 12, 4, f);
-		dress.setRotationPoint(0.0F, 0.0F, 0.0F);
+		dress.setPos(0.0F, 0.0F, 0.0F);
 	}
 
 	@Override
-	protected Iterable<ModelRenderer> getHeadParts() {
-		return ImmutableList.of(bipedHead, bipedHeadwear);
+	protected Iterable<ModelPart> headParts() {
+		return ImmutableList.of(head, hat);
 	}
 
 	@Override
-	protected Iterable<ModelRenderer> getBodyParts() {
+	protected Iterable<ModelPart> bodyParts() {
 		return ImmutableList.of(
-				bipedBody,
-				bipedRightArm,
-				bipedLeftArm,
+				body,
+				rightArm,
+				leftArm,
 				dress
 		);
 	}
 
 	@Override
-	public void setRotationAngles(WraithEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setupAnim(WraithEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-		float var8 = MathHelper.sin(this.swingProgress * (float) Math.PI);
-		float var9 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
-		this.bipedRightArm.rotateAngleZ = 0.0F;
-		this.bipedLeftArm.rotateAngleZ = 0.0F;
-		this.bipedRightArm.rotateAngleY = -(0.1F - var8 * 0.6F);
-		this.bipedLeftArm.rotateAngleY = 0.1F - var8 * 0.6F;
-		this.bipedRightArm.rotateAngleX = -((float) Math.PI / 2F);
-		this.bipedLeftArm.rotateAngleX = -((float) Math.PI / 2F);
-		this.bipedRightArm.rotateAngleX -= var8 * 1.2F - var9 * 0.4F;
-		this.bipedLeftArm.rotateAngleX -= var8 * 1.2F - var9 * 0.4F;
-		this.bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+		float var8 = Mth.sin(this.attackTime * (float) Math.PI);
+		float var9 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * (float) Math.PI);
+		this.rightArm.zRot = 0.0F;
+		this.leftArm.zRot = 0.0F;
+		this.rightArm.yRot = -(0.1F - var8 * 0.6F);
+		this.leftArm.yRot = 0.1F - var8 * 0.6F;
+		this.rightArm.xRot = -((float) Math.PI / 2F);
+		this.leftArm.xRot = -((float) Math.PI / 2F);
+		this.rightArm.xRot -= var8 * 1.2F - var9 * 0.4F;
+		this.leftArm.xRot -= var8 * 1.2F - var9 * 0.4F;
+		this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 	}
 }

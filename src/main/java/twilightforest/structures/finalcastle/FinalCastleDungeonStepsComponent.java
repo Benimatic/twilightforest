@@ -1,18 +1,18 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 
@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 
-	public FinalCastleDungeonStepsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public FinalCastleDungeonStepsComponent(StructureManager manager, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCDunSt, nbt);
 	}
 
@@ -29,12 +29,12 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 		super(FinalCastlePieces.TFFCDunSt, feature, i);
 		this.spawnListIndex = 2; // dungeon monsters
 
-		this.setCoordBaseMode(rotation);
+		this.setOrientation(rotation);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, -2, -15, -3, 5, 15, 20, rotation);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -67,15 +67,15 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 		}
 
 		// find center of landing
-		int dx = this.getXWithOffset(sx, sz);
-		int dy = this.getYWithOffset(sy);
-		int dz = this.getZWithOffset(sx, sz);
+		int dx = this.getWorldX(sx, sz);
+		int dy = this.getWorldY(sy);
+		int dz = this.getWorldZ(sx, sz);
 
 
 		// build a new stairway there
-		FinalCastleDungeonStepsComponent steps = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, this.componentType + 1, dx, dy, dz, direction);
+		FinalCastleDungeonStepsComponent steps = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, this.genDepth + 1, dx, dy, dz, direction);
 		list.add(steps);
-		steps.buildComponent(this, list, rand);
+		steps.addChildren(this, list, rand);
 
 		return steps;
 	}
@@ -85,14 +85,14 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	 */
 	public FinalCastleDungeonEntranceComponent buildLevelUnder(StructurePiece parent, List<StructurePiece> list, Random rand, int level) {
 		// find center of landing
-		int dx = this.getXWithOffset(2, 19);
-		int dy = this.getYWithOffset(-7);
-		int dz = this.getZWithOffset(2, 19);
+		int dx = this.getWorldX(2, 19);
+		int dy = this.getWorldY(-7);
+		int dz = this.getWorldZ(2, 19);
 
 		// build a new dungeon level under there
-		FinalCastleDungeonEntranceComponent room = new FinalCastleDungeonEntranceComponent(getFeatureType(), rand, 8, dx, dy, dz, getCoordBaseMode(), level);
+		FinalCastleDungeonEntranceComponent room = new FinalCastleDungeonEntranceComponent(getFeatureType(), rand, 8, dx, dy, dz, getOrientation(), level);
 		list.add(room);
-		room.buildComponent(this, list, rand);
+		room.addChildren(this, list, rand);
 
 		return room;
 	}
@@ -102,28 +102,28 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	 */
 	public FinalCastleDungeonForgeRoomComponent buildBossRoomUnder(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// find center of landing
-		int dx = this.getXWithOffset(2, 19);
-		int dy = this.getYWithOffset(-31);
-		int dz = this.getZWithOffset(2, 19);
+		int dx = this.getWorldX(2, 19);
+		int dy = this.getWorldY(-31);
+		int dz = this.getWorldZ(2, 19);
 
 		// build a new dungeon level under there
-		FinalCastleDungeonForgeRoomComponent room = new FinalCastleDungeonForgeRoomComponent(getFeatureType(), rand, 8, dx, dy, dz, this.getCoordBaseMode());
+		FinalCastleDungeonForgeRoomComponent room = new FinalCastleDungeonForgeRoomComponent(getFeatureType(), rand, 8, dx, dy, dz, this.getOrientation());
 		list.add(room);
-		room.buildComponent(this, list, rand);
+		room.addChildren(this, list, rand);
 
 		return room;
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		final BlockState stairState = deco.stairState.with(StairsBlock.FACING, Direction.SOUTH);
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		final BlockState stairState = deco.stairState.setValue(StairBlock.FACING, Direction.SOUTH);
 		for (int z = 0; z < 15; z++) {
 			int y = 14 - z;
 
-			this.fillWithBlocks(world, sbb, 0, y, z, 4, y, z, stairState, stairState, false);
-			this.fillWithAir(world, sbb, 0, y + 1, z, 4, y + 6, z);
+			this.generateBox(world, sbb, 0, y, z, 4, y, z, stairState, stairState, false);
+			this.generateAirBox(world, sbb, 0, y + 1, z, 4, y + 6, z);
 		}
-		this.fillWithAir(world, sbb, 0, 0, 15, 4, 5, 19);
+		this.generateAirBox(world, sbb, 0, 0, 15, 4, 5, 19);
 
 		return true;
 	}

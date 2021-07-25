@@ -1,13 +1,13 @@
 package twilightforest.world.layer;
 
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.ICastleTransformer;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.newbiome.context.Context;
+import net.minecraft.world.level.newbiome.layer.traits.CastleTransformer;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.TFBiomeProvider;
 
-public enum GenLayerTFStream implements ICastleTransformer {
+public enum GenLayerTFStream implements CastleTransformer {
 
 	INSTANCE;
 
@@ -21,7 +21,7 @@ public enum GenLayerTFStream implements ICastleTransformer {
 	}
 	
 	@Override
-	public int apply(INoiseRandom iNoiseRandom, int up, int left, int down, int right, int mid) {
+	public int apply(Context iNoiseRandom, int up, int left, int down, int right, int mid) {
 		if (shouldStream(mid, left) || shouldStream(mid, right) || shouldStream(mid, down) || shouldStream(mid, up)) {
 			return TFBiomeProvider.getBiomeId(BiomeKeys.STREAM, registry);
 		} else {

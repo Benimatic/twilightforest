@@ -2,12 +2,12 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTUtil;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -56,8 +56,8 @@ public class IMCHandler {
 	public static void onIMC(InterModProcessEvent event) {
 		InterModComms.getMessages(TwilightForestMod.ID).forEach(message-> {
 			Object thing = message.getMessageSupplier().get();
-			if (thing instanceof CompoundNBT) {
-				CompoundNBT imcCompound = ((CompoundNBT) thing);
+			if (thing instanceof CompoundTag) {
+				CompoundTag imcCompound = ((CompoundTag) thing);
 
 				readFromTagList(imcCompound.getList("Ore_Blocks", Constants.NBT.TAG_COMPOUND), IMCHandler::handleOre);
 				readFromTagList(imcCompound.getList("Crumbling",  Constants.NBT.TAG_COMPOUND), IMCHandler::handleCrumble);
@@ -69,36 +69,36 @@ public class IMCHandler {
 		});
 	}
 
-	private static void readFromTagList(ListNBT list, Consumer<CompoundNBT> consumer) {
+	private static void readFromTagList(ListTag list, Consumer<CompoundTag> consumer) {
 		for (int i = 0; i < list.size(); i++) {
 			consumer.accept(list.getCompound(i));
 		}
 	}
 
-	private static void readStatesFromTagList(ListNBT list, Consumer<BlockState> consumer) {
+	private static void readStatesFromTagList(ListTag list, Consumer<BlockState> consumer) {
 		for (int i = 0; i < list.size(); i++) {
-			BlockState state = NBTUtil.readBlockState(list.getCompound(i));
+			BlockState state = NbtUtils.readBlockState(list.getCompound(i));
 			if (state.getBlock() != Blocks.AIR) {
 				consumer.accept(state);
 			}
 		}
 	}
 
-	private static void handleCrumble(CompoundNBT nbt) {
-		BlockState key = NBTUtil.readBlockState(nbt);
+	private static void handleCrumble(CompoundTag nbt) {
+		BlockState key = NbtUtils.readBlockState(nbt);
 		if (key.getBlock() != Blocks.AIR) {
 			readStatesFromTagList(nbt.getList("Crumbling", Constants.NBT.TAG_COMPOUND), value -> CRUMBLE_BLOCKS_BUILDER.put(key, value));
 		}
 	}
 
-	private static void handleOre(CompoundNBT nbt) {
-		BlockState nbtState = NBTUtil.readBlockState(nbt);
+	private static void handleOre(CompoundTag nbt) {
+		BlockState nbtState = NbtUtils.readBlockState(nbt);
 
 		if (nbtState.getBlock() != Blocks.AIR) {
 			ORE_BLOCKS_BUILDER.add(nbtState);
 
 			if (nbt.contains("Stalactite_Settings", Constants.NBT.TAG_COMPOUND)) {
-				CompoundNBT settings = nbt.getCompound("Stalactite_Settings");
+				CompoundTag settings = nbt.getCompound("Stalactite_Settings");
 				int weight    = readInt(settings, "Weight", 15);
 				int hillSize  = readInt(settings, "Hill_Size", 3);
 				float size    = readFloat(settings, "Size", 0.7f);
@@ -109,11 +109,11 @@ public class IMCHandler {
 		}
 	}
 
-	private static int readInt(CompoundNBT tag, String key, int defaultValue) {
+	private static int readInt(CompoundTag tag, String key, int defaultValue) {
 		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getInt(key) : defaultValue;
 	}
 
-	private static float readFloat(CompoundNBT tag, String key, float defaultValue) {
+	private static float readFloat(CompoundTag tag, String key, float defaultValue) {
 		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
 	}
 

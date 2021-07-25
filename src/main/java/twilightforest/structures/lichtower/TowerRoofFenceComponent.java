@@ -1,21 +1,21 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
 
 public class TowerRoofFenceComponent extends TowerRoofComponent {
 
-	public TowerRoofFenceComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerRoofFenceComponent(StructureManager manager, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRF, nbt);
 	}
 
@@ -23,7 +23,7 @@ public class TowerRoofFenceComponent extends TowerRoofComponent {
 		super(LichTowerPieces.TFLTRF, feature, i);
 
 		// same alignment
-		this.setCoordBaseMode(wing.getCoordBaseMode());
+		this.setOrientation(wing.getOrientation());
 		// same size
 		this.size = wing.size; // assuming only square towers and roofs right now.
 		this.height = 0;
@@ -36,12 +36,12 @@ public class TowerRoofFenceComponent extends TowerRoofComponent {
 	 * A fence around the roof!
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int y = height + 1;
 		for (int x = 0; x <= size - 1; x++) {
 			for (int z = 0; z <= size - 1; z++) {
 				if (x == 0 || x == size - 1 || z == 0 || z == size - 1) {
-					setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y, z, sbb);
+					placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), x, y, z, sbb);
 				}
 			}
 		}

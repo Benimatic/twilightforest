@@ -1,12 +1,12 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Random;
 public class IceTowerMainComponent extends IceTowerWingComponent {
 	public boolean hasBossWing = false;
 
-	public IceTowerMainComponent(TemplateManager manager, CompoundNBT nbt) {
+	public IceTowerMainComponent(StructureManager manager, CompoundTag nbt) {
 		super(IceTowerPieces.TFITMai, nbt);
 		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
@@ -34,20 +34,20 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putBoolean("hasBossWing", this.hasBossWing);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
-		super.buildComponent(parent, list, rand);
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+		super.addChildren(parent, list, rand);
 
 		// add entrance tower
-		MutableBoundingBox towerBB = MutableBoundingBox.getNewBoundingBox();
+		BoundingBox towerBB = BoundingBox.getUnknownBox();
 
 		for (StructurePiece structurecomponent : list) {
-			towerBB.expandTo(structurecomponent.getBoundingBox());
+			towerBB.expand(structurecomponent.getBoundingBox());
 		}
 
 		// TODO: make this more general
@@ -56,24 +56,24 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 
 
 		if (myDoor.getX() == 0) {
-			int length = this.getBoundingBox().minX - towerBB.minX;
+			int length = this.getBoundingBox().x0 - towerBB.x0;
 			if (length >= 0) {
 				entranceDoor = entranceDoor.west(length);
-				makeEntranceBridge(list, rand, this.getComponentType() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);
+				makeEntranceBridge(list, rand, this.getGenDepth() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);
 			}
 		}
 		if (myDoor.getX() == this.size - 1) {
-			entranceDoor = entranceDoor.east(towerBB.maxX - this.getBoundingBox().maxX);
+			entranceDoor = entranceDoor.east(towerBB.x1 - this.getBoundingBox().x1);
 		}
 		if (myDoor.getZ() == 0) {
-			entranceDoor = entranceDoor.south(towerBB.minZ - this.getBoundingBox().minZ);
+			entranceDoor = entranceDoor.south(towerBB.z0 - this.getBoundingBox().z0);
 		}
 		//FIXME: AtomicBlom I don't get it, should this not be getZ, and entranceDoor.north?
 		if (myDoor.getX() == this.size - 1) {
-			entranceDoor = entranceDoor.south(towerBB.maxZ - this.getBoundingBox().maxZ);
+			entranceDoor = entranceDoor.south(towerBB.z1 - this.getBoundingBox().z1);
 		}
 
-		makeEntranceTower(list, rand, this.getComponentType() + 1, entranceDoor.getX(), entranceDoor.getY(), entranceDoor.getZ(), SIZE, 11, this.rotation);
+		makeEntranceTower(list, rand, this.getGenDepth() + 1, entranceDoor.getX(), entranceDoor.getY(), entranceDoor.getZ(), SIZE, 11, this.rotation);
 	}
 
 	private void makeEntranceBridge(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int length, Rotation rotation) {
@@ -83,7 +83,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
 
 		list.add(bridge);
-		bridge.buildComponent(list.get(0), list, rand);
+		bridge.addChildren(list.get(0), list, rand);
 	}
 
 	public boolean makeEntranceTower(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
@@ -93,7 +93,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		IceTowerWingComponent entrance = new IceTowerEntranceComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
 		list.add(entrance);
-		entrance.buildComponent(list.get(0), list, rand);
+		entrance.addChildren(list.get(0), list, rand);
 		addOpening(x, y, z, rotation);
 		return true;
 	}

@@ -1,15 +1,17 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.RedcapEntity;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
@@ -20,12 +22,12 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 	public RedcapLightTNTGoal(RedcapEntity hostEntity, float speed) {
 		super(hostEntity);
 		this.pursueSpeed = speed;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		if (!ForgeEventFactory.getMobGriefingEvent(redcap.world, redcap)) {
+	public boolean canUse() {
+		if (!ForgeEventFactory.getMobGriefingEvent(redcap.level, redcap)) {
 			return false;
 		}
 
@@ -44,36 +46,36 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return redcap.world.getBlockState(tntPos).getBlock() == Blocks.TNT;
+	public boolean canContinueToUse() {
+		return redcap.level.getBlockState(tntPos).getBlock() == Blocks.TNT;
 	}
 
 	@Override
-	public void startExecuting() {
-		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldFlint);
+	public void start() {
+		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, redcap.heldFlint);
 	}
 
 	@Override
-	public void resetTask() {
-		this.redcap.getNavigator().clearPath();
-		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldPick);
+	public void stop() {
+		this.redcap.getNavigation().stop();
+		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, redcap.heldPick);
 		this.delay = 20;
 		this.tntPos = null;
 	}
 
 	@Override
 	public void tick() {
-		this.redcap.getLookController().setLookPosition(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.redcap.getVerticalFaceSpeed());
+		this.redcap.getLookControl().setLookAt(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.redcap.getMaxHeadXRot());
 
-		if (this.redcap.getDistanceSq(Vector3d.copy(tntPos)) < 2.4D * 2.4D) {
+		if (this.redcap.distanceToSqr(Vec3.atLowerCornerOf(tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
-			Blocks.TNT.catchFire(Blocks.TNT.getDefaultState(), redcap.world, tntPos, Direction.UP, redcap);
-			redcap.swingArm(Hand.MAIN_HAND);
-			redcap.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
-			this.redcap.getNavigator().clearPath();
+			Blocks.TNT.catchFire(Blocks.TNT.defaultBlockState(), redcap.level, tntPos, Direction.UP, redcap);
+			redcap.swing(InteractionHand.MAIN_HAND);
+			redcap.level.setBlock(tntPos, Blocks.AIR.defaultBlockState(), 2);
+			this.redcap.getNavigation().stop();
 		} else {
-			this.redcap.getNavigator().tryMoveToXYZ(tntPos.getX(), tntPos.getY(), tntPos.getZ(), this.pursueSpeed);
+			this.redcap.getNavigation().moveTo(tntPos.getX(), tntPos.getY(), tntPos.getZ(), this.pursueSpeed);
 		}
 	}
 }

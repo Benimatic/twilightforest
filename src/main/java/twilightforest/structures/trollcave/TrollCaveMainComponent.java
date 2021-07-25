@@ -1,25 +1,25 @@
 package twilightforest.structures.trollcave;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.gen.placement.DepthAverageConfig;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.placement.DepthAverageConfigation;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
@@ -33,30 +33,34 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
+import net.minecraft.util.UniformInt;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
+
 public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 	protected int size;
 	protected int height;
 
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.UBEROUS_SOIL, FeatureSpread.create(5, 6), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(60, 10)));
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(5, 6), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(60, 10)));
 
-	public TrollCaveMainComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TrollCaveMainComponent(StructureManager manager, CompoundTag nbt) {
 		this(TrollCavePieces.TFTCMai, nbt);
 	}
 
-	public TrollCaveMainComponent(IStructurePieceType piece, CompoundNBT nbt) {
+	public TrollCaveMainComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 		this.size = nbt.getInt("size");
 		this.height = nbt.getInt("height");
 	}
 
-	public TrollCaveMainComponent(IStructurePieceType type, TFFeature feature, int index) {
+	public TrollCaveMainComponent(StructurePieceType type, TFFeature feature, int index) {
 		super(type, feature, index);
 	}
 
-	public TrollCaveMainComponent(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+	public TrollCaveMainComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
 		this(type, feature, i);
-		this.setCoordBaseMode(Direction.SOUTH);
+		this.setOrientation(Direction.SOUTH);
 
 		// adjust y
 		y += 10;
@@ -69,29 +73,29 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT tagCompound) {
-		super.readAdditional(tagCompound);
+	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+		super.addAdditionalSaveData(tagCompound);
 		tagCompound.putInt("size", this.size);
 		tagCompound.putInt("height", this.height);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// make 4 caves
 		for (final Rotation caveRotation : RotationUtil.ROTATIONS) {
 			BlockPos dest = getValidOpening(rand, caveRotation);
-			makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 18, 15, caveRotation);
+			makeSmallerCave(list, rand, this.getGenDepth() + 1, dest.getX(), dest.getY(), dest.getZ(), 18, 15, caveRotation);
 		}
 
 		// add cloud castle
-		CloudCastleComponent castle = new CloudCastleComponent(getFeatureType(), this.getComponentType() + 1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), 168, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
+		CloudCastleComponent castle = new CloudCastleComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.x0 + ((boundingBox.x1 - boundingBox.x0) / 2), 168, boundingBox.z0 + ((boundingBox.z1 - boundingBox.z0) / 2));
 		list.add(castle);
-		castle.buildComponent(this, list, rand);
+		castle.addChildren(this, list, rand);
 
 		// add vault
-		TrollVaultComponent vault = new TrollVaultComponent(getFeatureType(), this.getComponentType() + 1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), boundingBox.minY, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
+		TrollVaultComponent vault = new TrollVaultComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.x0 + ((boundingBox.x1 - boundingBox.x0) / 2), boundingBox.y0, boundingBox.z0 + ((boundingBox.z1 - boundingBox.z0) / 2));
 		list.add(vault);
-		vault.buildComponent(this, list, rand);
+		vault.addChildren(this, list, rand);
 	}
 
 	protected boolean makeSmallerCave(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
@@ -100,10 +104,10 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 		TrollCaveConnectComponent cave = new TrollCaveConnectComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findIntersecting(list, cave.getBoundingBox());
+		StructurePiece intersect = StructurePiece.findCollisionPiece(list, cave.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.add(cave);
-			cave.buildComponent(list.get(0), list, rand);
+			cave.addChildren(list.get(0), list, rand);
 			//addOpening(x, y, z, rotation);
 			return true;
 		}
@@ -111,8 +115,8 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
 
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
@@ -145,7 +149,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		return new BlockPos(this.size - rand.nextInt(this.size / 2), rand.nextInt(this.height - 1), this.size - rand.nextInt(this.size / 2));
 	}
 
-	protected void hollowCaveMiddle(ISeedReader world, MutableBoundingBox boundingBox, Random rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	protected void hollowCaveMiddle(WorldGenLevel world, BoundingBox boundingBox, Random rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		int threshold = this.size / 5;
 
 		for (int y = minY; y <= maxY; ++y) {
@@ -159,9 +163,9 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 					double dist = Math.sqrt(ex * ey * ez);
 
 					if (dist > threshold) {
-						this.setBlockState(world, Blocks.AIR.getDefaultState(), x, y, z, boundingBox);
-					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlockStateFromPos(world, x, y, z, boundingBox).getBlock().isIn(BlockTags.BASE_STONE_OVERWORLD)) {
-						this.setBlockState(world, TFBlocks.trollsteinn.get().getDefaultState(), x, y, z, boundingBox);
+						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, boundingBox);
+					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlock(world, x, y, z, boundingBox).getBlock().is(BlockTags.BASE_STONE_OVERWORLD)) {
+						this.placeBlock(world, TFBlocks.trollsteinn.get().defaultBlockState(), x, y, z, boundingBox);
 					}
 				}
 			}
@@ -203,9 +207,9 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	@Override
 	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, Direction direction) {
 
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 
 		if (direction == Direction.SOUTH) {
 			return new BlockPos(dx - 1, dy - 1, dz - towerSize / 2);
@@ -226,47 +230,47 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	/**
 	 * Make a random stone stalactite
 	 */
-	protected void generateBlockStalactite(ISeedReader world, ChunkGenerator generator, Random rand, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateBlockStalactite(WorldGenLevel world, ChunkGenerator generator, Random rand, Block blockToGenerate, float length, boolean up, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos)) {
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).generate(world, generator, rand, pos);
+		if (sbb.isInside(pos)) {
+			TFBiomeFeatures.CAVE_STALACTITE.get().configured(new CaveStalactiteConfig(blockToGenerate.defaultBlockState(), length, -1, -1, up)).place(world, generator, rand, pos);
 		}
 	}
 
 	/**
 	 * Use the generator at the surface above specified coords
 	 */
-	protected void generateAtSurface(ISeedReader world, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateAtSurface(WorldGenLevel world, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
-		int dx = getXWithOffset(x, z);
+		int dx = getWorldX(x, z);
 		int dy = y;
-		int dz = getZWithOffset(x, z);
+		int dz = getWorldZ(x, z);
 
-		BlockPos.Mutable pos = new BlockPos.Mutable(dx, dy, dz);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, dy, dz);
 
-		if (sbb.isVecInside(pos)) {
+		if (sbb.isInside(pos)) {
 			// find surface above the listed coords
 			for (dy = y; dy < y + 32; dy++) {
 				pos.setY(dy);
-				if (world.isAirBlock(pos)) {
+				if (world.isEmptyBlock(pos)) {
 					break;
 				}
 			}
 
-			feature.generate(world, generator, rand, pos.toImmutable());
+			feature.place(world, generator, rand, pos.immutable());
 		}
 	}
 
-	protected void makeTreasureCrate(ISeedReader world, MutableBoundingBox sbb) {
+	protected void makeTreasureCrate(WorldGenLevel world, BoundingBox sbb) {
 		// treasure!
 		int mid = this.size / 2;
-		this.fillWithBlocks(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);
-		this.fillWithAir(world, sbb, mid - 1, 1, mid - 1, mid, 2, mid);
+		this.generateBox(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.defaultBlockState(), Blocks.OBSIDIAN.defaultBlockState(), false);
+		this.generateAirBox(world, sbb, mid - 1, 1, mid - 1, mid, 2, mid);
 		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFTreasure.troll_garden, false, sbb);
 	}
 }

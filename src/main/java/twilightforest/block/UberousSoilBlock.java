@@ -1,26 +1,34 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.BoneMealItem;
-import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.Random;
 
-public class UberousSoilBlock extends Block implements IGrowable {
-	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F));
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class UberousSoilBlock extends Block implements BonemealableBlock {
+	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F));
 
 	protected UberousSoilBlock(Properties props) {
 		super(props);
@@ -28,65 +36,65 @@ public class UberousSoilBlock extends Block implements IGrowable {
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction direction, IPlantable plantable) {
+	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction direction, IPlantable plantable) {
 		if (direction != Direction.UP)
 			return false;
-		PlantType plantType = plantable.getPlantType(world, pos.offset(direction));
+		PlantType plantType = plantable.getPlantType(world, pos.relative(direction));
 		return plantType == PlantType.CROP || plantType == PlantType.PLAINS || plantType == PlantType.CAVE;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockState above = world.getBlockState(pos.up());
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		BlockState above = world.getBlockState(pos.above());
 		Material aboveMaterial = above.getMaterial();
 
 		if (aboveMaterial.isSolid()) {
-			world.setBlockState(pos, Blocks.DIRT.getDefaultState());
+			world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
 		}
 
 		// todo should probably use IGrowable and loop until it can't grow anymore
 		if (above.getBlock() instanceof IPlantable) {
 			IPlantable plant = (IPlantable) above.getBlock();
 			// revert to farmland or grass
-			if (plant.getPlantType(world, pos.up()) == PlantType.CROP) {
-				world.setBlockState(pos, Blocks.FARMLAND.getDefaultState().with(FarmlandBlock.MOISTURE, 2));
-			} else if (plant.getPlantType(world, pos.up()) == PlantType.PLAINS) {
-				world.setBlockState(pos, Blocks.GRASS_BLOCK.getDefaultState());
+			if (plant.getPlantType(world, pos.above()) == PlantType.CROP) {
+				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 2));
+			} else if (plant.getPlantType(world, pos.above()) == PlantType.PLAINS) {
+				world.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
 			} else {
-				world.setBlockState(pos, Blocks.DIRT.getDefaultState());
+				world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
 			}
 			// apply bonemeal
-			BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), world, pos.up());
-			BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), world, pos.up());
-			BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), world, pos.up());
-			BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), world, pos.up());
+			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
 			// green sparkles
-			world.playEvent(2005, pos.up(), 0);
+			world.levelEvent(2005, pos.above(), 0);
 		}
 	}
 
 	@Override
-	public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(BlockGetter world, BlockPos pos, BlockState state, boolean isClient) {
 		return true;
 	}
 
 	@Override
-	public boolean canUseBonemeal(World world, Random rand, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level world, Random rand, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void grow(ServerWorld world, Random rand, BlockPos pos, BlockState state) {
-		pos = pos.offset(Direction.Plane.HORIZONTAL.random(rand));
+	public void performBonemeal(ServerLevel world, Random rand, BlockPos pos, BlockState state) {
+		pos = pos.relative(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
 		Block blockAt = world.getBlockState(pos).getBlock();
-		if (world.isAirBlock(pos.up()) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS_BLOCK || blockAt == Blocks.FARMLAND)) {
-			world.setBlockState(pos, this.getDefaultState());
+		if (world.isEmptyBlock(pos.above()) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS_BLOCK || blockAt == Blocks.FARMLAND)) {
+			world.setBlockAndUpdate(pos, this.defaultBlockState());
 		}
 	}
 }

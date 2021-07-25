@@ -1,15 +1,15 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.structures.lichtower.TowerWingComponent;
@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class IceTowerStairsComponent extends TowerWingComponent {
 
-	public IceTowerStairsComponent(TemplateManager manager, CompoundNBT nbt) {
+	public IceTowerStairsComponent(StructureManager manager, CompoundTag nbt) {
 		super(IceTowerPieces.TFITSt, nbt);
 	}
 
@@ -28,14 +28,14 @@ public class IceTowerStairsComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		for (int x = 1; x < this.size; x++) {
 
 			this.placeStairs(world, sbb, x, 1 - x, 5);
@@ -54,15 +54,15 @@ public class IceTowerStairsComponent extends TowerWingComponent {
 			}
 		}
 
-		this.setBlockState(world, deco.blockState, 0, 0, 5, sbb);
+		this.placeBlock(world, deco.blockState, 0, 0, 5, sbb);
 
 		return true;
 	}
 
-	private void placeStairs(ISeedReader world, MutableBoundingBox sbb, int x, int y, int z) {
-		if (this.getBlockStateFromPos(world, x, y, z, sbb).getMaterial().isReplaceable()) {
-			this.setBlockState(world, deco.blockState, x, y, z, sbb);
-			this.setBlockState(world, deco.blockState, x, y - 1, z, sbb);
+	private void placeStairs(WorldGenLevel world, BoundingBox sbb, int x, int y, int z) {
+		if (this.getBlock(world, x, y, z, sbb).getMaterial().isReplaceable()) {
+			this.placeBlock(world, deco.blockState, x, y, z, sbb);
+			this.placeBlock(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}
 }

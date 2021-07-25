@@ -1,21 +1,21 @@
 package twilightforest.item;
 
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
+import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,6 +33,14 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class OreMagnetItem extends Item {
 
@@ -44,16 +52,16 @@ public class OreMagnetItem extends Item {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
-		player.setActiveHand(hand);
-		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
+		player.startUsingItem(hand);
+		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity living, int useRemaining) {
+	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (!world.isRemote && useTime > 10) {
+		if (!world.isClientSide && useTime > 10) {
 			int moved = doMagnet(world, living, 0, 0);
 
 			if (moved == 0) {
@@ -82,8 +90,8 @@ public class OreMagnetItem extends Item {
 			}
 
 			if (moved > 0) {
-				stack.damageItem(moved, living, user -> user.sendBreakAnimation(living.getActiveHand()));
-				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.MAGNET_GRAB, living.getSoundCategory(), 1.0F, 1.0F);
+				stack.hurtAndBreak(moved, living, user -> user.broadcastBreakEvent(living.getUsedItemHand()));
+				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB, living.getSoundSource(), 1.0F, 1.0F);
 			}
 		}
 	}
@@ -95,8 +103,8 @@ public class OreMagnetItem extends Item {
 
 	@Nonnull
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BOW;
+	public UseAnim getUseAnimation(ItemStack stack) {
+		return UseAnim.BOW;
 	}
 
 	@Override
@@ -107,17 +115,17 @@ public class OreMagnetItem extends Item {
 	/**
 	 * Magnet from the player's position and facing to the specified offset
 	 */
-	private int doMagnet(World world, LivingEntity living, float yawOffset, float pitchOffset) {
+	private int doMagnet(Level world, LivingEntity living, float yawOffset, float pitchOffset) {
 		// find vector 32 blocks from look
 		double range = 32.0D;
-		Vector3d srcVec = new Vector3d(living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ());
-		Vector3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
-		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3 srcVec = new Vec3(living.getX(), living.getY() + living.getEyeHeight(), living.getZ());
+		Vec3 lookVec = getOffsetLook(living, yawOffset, pitchOffset);
+		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 
 		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
 	}
 
-	public static int doMagnet(World world, BlockPos usePos, BlockPos destPos) {
+	public static int doMagnet(Level world, BlockPos usePos, BlockPos destPos) {
 		// FIXME Find a better place to invoke this!
 		initOre2BlockMap();
 
@@ -126,8 +134,8 @@ public class OreMagnetItem extends Item {
 		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(usePos, destPos);
 
 		// find some ore?
-		BlockState attactedOreBlock = Blocks.AIR.getDefaultState();
-		BlockState replacementBlock = Blocks.AIR.getDefaultState();
+		BlockState attactedOreBlock = Blocks.AIR.defaultBlockState();
+		BlockState replacementBlock = Blocks.AIR.defaultBlockState();
 		BlockPos foundPos = null;
         BlockPos basePos = null;
 
@@ -140,9 +148,9 @@ public class OreMagnetItem extends Item {
 					basePos = coord;
 				}
 				// This ordering is so that the base pos is found first before we pull ores - pushing ores away is a baaaaad idea!
-			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && isOre(searchState.getBlock()) && world.getTileEntity(coord) == null) {
+			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && isOre(searchState.getBlock()) && world.getBlockEntity(coord) == null) {
 				attactedOreBlock = searchState;
-				replacementBlock = ORE_TO_BLOCK_REPLACEMENTS.getOrDefault(attactedOreBlock.getBlock(), Blocks.STONE).getDefaultState();
+				replacementBlock = ORE_TO_BLOCK_REPLACEMENTS.getOrDefault(attactedOreBlock.getBlock(), Blocks.STONE).defaultBlockState();
 				foundPos = coord;
 			}
 		}
@@ -158,14 +166,14 @@ public class OreMagnetItem extends Item {
 			int offZ = basePos.getZ() - foundPos.getZ();
 
 			for (BlockPos coord : veinBlocks) {
-				BlockPos replacePos = coord.add(offX, offY, offZ);
+				BlockPos replacePos = coord.offset(offX, offY, offZ);
 				BlockState replaceState = world.getBlockState(replacePos);
 
 				if (isReplaceable(replaceState) || replaceState.getBlock() instanceof AirBlock) {
-					world.setBlockState(coord, replacementBlock, 2);
+					world.setBlock(coord, replacementBlock, 2);
 
 					// set close to ore material
-					world.setBlockState(replacePos, attactedOreBlock, 2);
+					world.setBlock(replacePos, attactedOreBlock, 2);
 					blocksMoved++;
 				}
 			}
@@ -178,12 +186,12 @@ public class OreMagnetItem extends Item {
 	 * Get the player look vector, but offset by the specified parameters.  We use to scan the area around where the player is looking
 	 * in the likely case there's no ore in the exact look direction.
 	 */
-	private Vector3d getOffsetLook(LivingEntity living, float yawOffset, float pitchOffset) {
-		float var2 = MathHelper.cos(-(living.rotationYaw + yawOffset) * 0.017453292F - (float) Math.PI);
-		float var3 = MathHelper.sin(-(living.rotationYaw + yawOffset) * 0.017453292F - (float) Math.PI);
-		float var4 = -MathHelper.cos(-(living.rotationPitch + pitchOffset) * 0.017453292F);
-		float var5 = MathHelper.sin(-(living.rotationPitch + pitchOffset) * 0.017453292F);
-		return new Vector3d(var3 * var4, var5, var2 * var4);
+	private Vec3 getOffsetLook(LivingEntity living, float yawOffset, float pitchOffset) {
+		float var2 = Mth.cos(-(living.yRot + yawOffset) * 0.017453292F - (float) Math.PI);
+		float var3 = Mth.sin(-(living.yRot + yawOffset) * 0.017453292F - (float) Math.PI);
+		float var4 = -Mth.cos(-(living.xRot + pitchOffset) * 0.017453292F);
+		float var5 = Mth.sin(-(living.xRot + pitchOffset) * 0.017453292F);
+		return new Vec3(var3 * var4, var5, var2 * var4);
 	}
 
 	@Deprecated
@@ -193,7 +201,7 @@ public class OreMagnetItem extends Item {
 		return BlockTagGenerator.ORE_MAGNET_SAFE_REPLACE_BLOCK.contains(block);
 	}
 
-	private static boolean findVein(World world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
+	private static boolean findVein(Level world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
 		// is this already on the list?
 		if (veinBlocks.contains(here)) {
 			return false;
@@ -210,7 +218,7 @@ public class OreMagnetItem extends Item {
 
 			// recurse in 6 directions
 			for (Direction e : Direction.values()) {
-				findVein(world, here.offset(e), oreState, veinBlocks);
+				findVein(world, here.relative(e), oreState, veinBlocks);
 			}
 
 			return true;
@@ -236,16 +244,16 @@ public class OreMagnetItem extends Item {
 
 		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
 
-		for (Block blockReplaceOre : BlockTagGenerator.ORE_MAGNET_BLOCK_REPLACE_ORE.getAllElements()) {
+		for (Block blockReplaceOre : BlockTagGenerator.ORE_MAGNET_BLOCK_REPLACE_ORE.getValues()) {
 			ResourceLocation rl = blockReplaceOre.getRegistryName();
-			ITag<Block> tag = BlockTags.getCollection().getTagByID(TwilightForestMod.prefix("ore_magnet/" + rl.getNamespace() + "/" + rl.getPath()));
+			Tag<Block> tag = BlockTags.getAllTags().getTagOrEmpty(TwilightForestMod.prefix("ore_magnet/" + rl.getNamespace() + "/" + rl.getPath()));
 
-			for (Block oreBlock : tag.getAllElements()) {
+			for (Block oreBlock : tag.getValues()) {
 				ORE_TO_BLOCK_REPLACEMENTS.put(oreBlock, blockReplaceOre);
 			}
 		}
 
-		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getAllElements());
+		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getValues());
 		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
 		remainingOres.removeIf(b -> "minecraft".equals(b.getRegistryName().getNamespace()));
 		if (!remainingOres.isEmpty()) {
@@ -272,7 +280,7 @@ public class OreMagnetItem extends Item {
 				cacheNeedsBuild = true;
 			}
 
-			return stage.markCompleteAwaitingOthers(null).thenRun(() -> {}); // Nothing to do here
+			return stage.wait(null).thenRun(() -> {}); // Nothing to do here
 		});
 	}
 }

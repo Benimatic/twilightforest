@@ -1,42 +1,42 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.potion.Effects;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 
 import java.util.List;
 
-public class LichMinionEntity extends ZombieEntity {
+public class LichMinionEntity extends Zombie {
 
 	LichEntity master;
 
-	public LichMinionEntity(EntityType<? extends LichMinionEntity> type, World world) {
+	public LichMinionEntity(EntityType<? extends LichMinionEntity> type, Level world) {
 		super(type, world);
 		this.master = null;
 	}
 
-	public LichMinionEntity(World world, LichEntity entityTFLich) {
+	public LichMinionEntity(Level world, LichEntity entityTFLich) {
 		super(world);
 		this.master = entityTFLich;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
-		LivingEntity prevTarget = getAttackTarget();
+	public boolean hurt(DamageSource source, float amount) {
+		LivingEntity prevTarget = getTarget();
 
-		if (super.attackEntityFrom(source, amount)) {
-			if (source.getTrueSource() instanceof LichEntity) {
+		if (super.hurt(source, amount)) {
+			if (source.getEntity() instanceof LichEntity) {
 				// return to previous target but speed up
-				setRevengeTarget(prevTarget);
-				addPotionEffect(new EffectInstance(Effects.SPEED, 200, 4));
-				addPotionEffect(new EffectInstance(Effects.STRENGTH, 200, 1));
+				setLastHurtByMob(prevTarget);
+				addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 4));
+				addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1));
 			}
 			return true;
 		} else {
@@ -65,7 +65,7 @@ public class LichMinionEntity extends ZombieEntity {
 	}
 
 	@Override
-	public void livingTick() {
+	public void aiStep() {
 		if (master == null) {
 			findNewMaster();
 		}
@@ -73,21 +73,21 @@ public class LichMinionEntity extends ZombieEntity {
 		if (master == null || !master.isAlive()) {
 			this.setHealth(0);
 		}
-		super.livingTick();
+		super.aiStep();
 	}
 
 	private void findNewMaster() {
-		List<LichEntity> nearbyLiches = world.getEntitiesWithinAABB(LichEntity.class, new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX() + 1, getPosY() + 1, getPosZ() + 1).grow(32.0D, 16.0D, 32.0D));
+		List<LichEntity> nearbyLiches = level.getEntitiesOfClass(LichEntity.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
 
 		for (LichEntity nearbyLich : nearbyLiches) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewMinion()) {
 				this.master = nearbyLich;
 
 				// animate our new linkage!
-				master.makeBlackMagicTrail(getPosX(), getPosY() + this.getEyeHeight(), getPosZ(), master.getPosX(), master.getPosY() + master.getEyeHeight(), master.getPosZ());
+				master.makeBlackMagicTrail(getX(), getY() + this.getEyeHeight(), getZ(), master.getX(), master.getY() + master.getEyeHeight(), master.getZ());
 
 				// become angry at our masters target
-				setAttackTarget(master.getAttackTarget());
+				setTarget(master.getTarget());
 
 				// quit looking
 				break;

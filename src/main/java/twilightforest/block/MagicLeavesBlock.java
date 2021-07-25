@@ -1,30 +1,32 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import twilightforest.TFConfig;
 import twilightforest.client.particle.TFParticleType;
 
 import java.util.Random;
 
+import net.minecraft.world.level.block.state.BlockBehaviour;
+
 public class MagicLeavesBlock extends LeavesBlock {
 
-	protected MagicLeavesBlock(Block.Properties props) {
+	protected MagicLeavesBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 
 	@Override
-	public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		return TFConfig.COMMON_CONFIG.PERFORMANCE.leavesLightOpacity.get();
 	}
 
 	@Override
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
 		if (state.getBlock() == TFBlocks.transformation_leaves.get()) {
 			for (int i = 0; i < 1; ++i) {
 				this.sparkleRunes(world, pos, random);
@@ -32,35 +34,35 @@ public class MagicLeavesBlock extends LeavesBlock {
 		}
 	}
 
-	private void sparkleRunes(World world, BlockPos pos, Random rand) {
+	private void sparkleRunes(Level world, BlockPos pos, Random rand) {
 		double offset = 0.0625D;
 
-		Direction side = Direction.getRandomDirection(rand); //random?
+		Direction side = Direction.getRandom(rand); //random?
 		double rx = pos.getX() + rand.nextFloat();
 		double ry = pos.getY() + rand.nextFloat();
 		double rz = pos.getZ() + rand.nextFloat();
 
-		if (side == Direction.DOWN && world.isAirBlock(pos.up())) {
+		if (side == Direction.DOWN && world.isEmptyBlock(pos.above())) {
 			ry = pos.getY() + 1 + offset;
 		}
 
-		if (side == Direction.UP && world.isAirBlock(pos.down())) {
+		if (side == Direction.UP && world.isEmptyBlock(pos.below())) {
 			ry = pos.getY() - offset;
 		}
 
-		if (side == Direction.NORTH && world.isAirBlock(pos.south())) {
+		if (side == Direction.NORTH && world.isEmptyBlock(pos.south())) {
 			rz = pos.getZ() + 1 + offset;
 		}
 
-		if (side == Direction.SOUTH && world.isAirBlock(pos.north())) {
+		if (side == Direction.SOUTH && world.isEmptyBlock(pos.north())) {
 			rz = pos.getZ() - offset;
 		}
 
-		if (side == Direction.WEST && world.isAirBlock(pos.east())) {
+		if (side == Direction.WEST && world.isEmptyBlock(pos.east())) {
 			rx = pos.getX() + 1 + offset;
 		}
 
-		if (side == Direction.EAST && world.isAirBlock(pos.west())) {
+		if (side == Direction.EAST && world.isEmptyBlock(pos.west())) {
 			rx = pos.getX() - offset;
 		}
 

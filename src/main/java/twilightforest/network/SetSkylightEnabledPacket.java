@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -13,11 +13,11 @@ public class SetSkylightEnabledPacket {
         this.enabled = enabled;
     }
 
-    public SetSkylightEnabledPacket(PacketBuffer buf) {
+    public SetSkylightEnabledPacket(FriendlyByteBuf buf) {
         enabled = buf.readBoolean();
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
         buf.writeBoolean(enabled);
     }
 

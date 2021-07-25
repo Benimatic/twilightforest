@@ -1,63 +1,72 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.entity.TFEntities;
 
 import java.util.Random;
 
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+
 public class PenguinEntity extends BirdEntity {
-	public PenguinEntity(EntityType<? extends PenguinEntity> type, World world) {
+	public PenguinEntity(EntityType<? extends PenguinEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
 	protected void registerGoals() {
-		goalSelector.addGoal(0, new SwimGoal(this));
+		goalSelector.addGoal(0, new FloatGoal(this));
 		goalSelector.addGoal(1, new PanicGoal(this, 1.75F));
 		goalSelector.addGoal(2, new BreedGoal(this, 1.0F));
-		goalSelector.addGoal(3, new TemptGoal(this, 0.75F, Ingredient.fromItems(Items.COD), false));
+		goalSelector.addGoal(3, new TemptGoal(this, 0.75F, Ingredient.of(Items.COD), false));
 		goalSelector.addGoal(4, new FollowParentGoal(this, 1.15F));
-		goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.0F));
-		goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6F));
-		goalSelector.addGoal(7, new LookAtGoal(this, PenguinEntity.class, 5F, 0.02F));
-		goalSelector.addGoal(8, new LookRandomlyGoal(this));
+		goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0F));
+		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
+		goalSelector.addGoal(7, new LookAtPlayerGoal(this, PenguinEntity.class, 5F, 0.02F));
+		goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 	}
 
 	@Override
-	public AnimalEntity createChild(ServerWorld world, AgeableEntity entityanimal) {
+	public Animal getBreedOffspring(ServerLevel world, AgableMob entityanimal) {
 		return TFEntities.penguin.create(world);
 	}
 
 	@Override
-	public boolean isBreedingItem(ItemStack stack) {
+	public boolean isFood(ItemStack stack) {
 		return stack.getItem() == Items.COD;
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 10.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 
-	public static boolean canSpawn(EntityType<? extends PenguinEntity> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-		BlockPos blockpos = pos.down();
-		return MobEntity.canSpawnOn(type, world, reason, pos, rand)
+	public static boolean canSpawn(EntityType<? extends PenguinEntity> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
+		BlockPos blockpos = pos.below();
+		return Mob.checkMobSpawnRules(type, world, reason, pos, rand)
 				|| (world.getBlockState(blockpos).getBlock() == Blocks.ICE)
 				|| (world.getBlockState(blockpos).getBlock() == Blocks.PACKED_ICE);
 	}

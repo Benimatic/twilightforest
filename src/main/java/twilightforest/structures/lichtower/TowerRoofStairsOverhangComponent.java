@@ -1,24 +1,24 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
 
 public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 
-	public TowerRoofStairsOverhangComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerRoofStairsOverhangComponent(StructureManager manager, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRStO, nbt);
 	}
 
@@ -26,27 +26,27 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 		super(LichTowerPieces.TFLTRStO, feature, i);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
-		this.setCoordBaseMode(Direction.SOUTH);
+		this.setOrientation(Direction.SOUTH);
 
 		this.size = wing.size + 2; // assuming only square towers and roofs right now.
 		this.height = size / 2;
 
 		// just hang out at the very top of the tower
-		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 - 1, wing.getBoundingBox().y1, wing.getBoundingBox().z0 - 1, wing.getBoundingBox().x1 + 1, wing.getBoundingBox().y1 + this.height - 1, wing.getBoundingBox().z1 + 1);
 	}
 
 	/**
 	 * Makes a pyramid-shaped roof out of stairs
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		BlockState woodenSlab = Blocks.BIRCH_SLAB.getDefaultState();
-		BlockState woodenPlanks = Blocks.BIRCH_PLANKS.getDefaultState();
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		BlockState woodenSlab = Blocks.BIRCH_SLAB.defaultBlockState();
+		BlockState woodenPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 
-		BlockState birchStairsNorth = Blocks.BIRCH_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.NORTH);
-		BlockState birchStairsSouth = Blocks.BIRCH_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.SOUTH);
-		BlockState birchStairsEast = Blocks.BIRCH_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.EAST);
-		BlockState birchStairsWest = Blocks.BIRCH_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.WEST);
+		BlockState birchStairsNorth = Blocks.BIRCH_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.NORTH);
+		BlockState birchStairsSouth = Blocks.BIRCH_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.SOUTH);
+		BlockState birchStairsEast = Blocks.BIRCH_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.EAST);
+		BlockState birchStairsWest = Blocks.BIRCH_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.WEST);
 
 		for (int y = 0; y <= height; y++) {
 			int min = y;
@@ -55,22 +55,22 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 				for (int z = min; z <= max; z++) {
 					if (x == min) {
 						if (z == min || z == max) {
-							setBlockState(world, woodenSlab, x, y, z, sbb);
+							placeBlock(world, woodenSlab, x, y, z, sbb);
 						} else {
-							setBlockState(world, birchStairsWest, x, y, z, sbb);
+							placeBlock(world, birchStairsWest, x, y, z, sbb);
 						}
 					} else if (x == max) {
 						if (z == min || z == max) {
-							setBlockState(world, woodenSlab, x, y, z, sbb);
+							placeBlock(world, woodenSlab, x, y, z, sbb);
 						} else {
-							setBlockState(world, birchStairsEast, x, y, z, sbb);
+							placeBlock(world, birchStairsEast, x, y, z, sbb);
 						}
 					} else if (z == max) {
-						setBlockState(world, birchStairsSouth, x, y, z, sbb);
+						placeBlock(world, birchStairsSouth, x, y, z, sbb);
 					} else if (z == min) {
-						setBlockState(world, birchStairsNorth, x, y, z, sbb);
+						placeBlock(world, birchStairsNorth, x, y, z, sbb);
 					} else {
-						setBlockState(world, woodenPlanks, x, y, z, sbb);
+						placeBlock(world, woodenPlanks, x, y, z, sbb);
 					}
 				}
 			}

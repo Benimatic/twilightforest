@@ -1,11 +1,13 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.Mth;
 import twilightforest.entity.boss.SnowQueenEntity;
 import twilightforest.entity.boss.SnowQueenEntity.Phase;
 
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 
@@ -22,7 +24,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 	public HoverThenDropGoal(SnowQueenEntity snowQueen, int hoverTime, int dropTime) {
 		super(snowQueen, 6F, 0F);
 
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 		this.maxHoverTime = hoverTime;
 		this.maxSeekTime = hoverTime;
 		this.maxDropTime = dropTime;
@@ -31,8 +33,8 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		LivingEntity target = this.attacker.getAttackTarget();
+	public boolean canUse() {
+		LivingEntity target = this.attacker.getTarget();
 
 		if (target == null) {
 			return false;
@@ -46,8 +48,8 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		LivingEntity target = this.attacker.getAttackTarget();
+	public boolean canContinueToUse() {
+		LivingEntity target = this.attacker.getTarget();
 
 		if (target == null || !target.isAlive()) {
 			return false;
@@ -55,7 +57,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 			return false;
 		} else if (this.seekTimer > this.maxSeekTime) {
 			return false;
-		} else if (this.attacker.getDistanceSq(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
+		} else if (this.attacker.distanceToSqr(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
 			// are we there yet?
 			this.hoverTimer++;
 			return true;
@@ -69,7 +71,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		this.hoverTimer = 0;
 		this.dropTimer = 0;
 	}
@@ -87,13 +89,13 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 		if (this.hoverTimer < this.maxHoverTime) {
 
 			// check if we are at our waypoint target
-			double offsetX = this.hoverPosX - this.attacker.getPosX();
-			double offsetY = this.hoverPosY - this.attacker.getPosY();
-			double offsetZ = this.hoverPosZ - this.attacker.getPosZ();
+			double offsetX = this.hoverPosX - this.attacker.getX();
+			double offsetY = this.hoverPosY - this.attacker.getY();
+			double offsetZ = this.hoverPosZ - this.attacker.getZ();
 
 			double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
-			distanceDesired = MathHelper.sqrt(distanceDesired);
+			distanceDesired = Mth.sqrt(distanceDesired);
 
 			// add velocity
 			double velX = offsetX / distanceDesired * 0.05D;
@@ -103,20 +105,20 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 			// gravity offset
 			velY += 0.05F;
 
-			this.attacker.addVelocity(velX, velY, velZ);
+			this.attacker.push(velX, velY, velZ);
 
 			// look at target
-			LivingEntity target = this.attacker.getAttackTarget();
+			LivingEntity target = this.attacker.getTarget();
 			if (target != null) {
-				this.attacker.faceEntity(target, 30.0F, 30.0F);
-				this.attacker.getLookController().setLookPositionWithEntity(target, 30.0F, 30.0F);
+				this.attacker.lookAt(target, 30.0F, 30.0F);
+				this.attacker.getLookControl().setLookAt(target, 30.0F, 30.0F);
 			}
 		} else {
 			// drop!
 			this.dropTimer++;
 
-			if (this.attacker.getPosY() > this.dropY) {
-				this.attacker.destroyBlocksInAABB(this.attacker.getBoundingBox().grow(1, 0.5F, 1));
+			if (this.attacker.getY() > this.dropY) {
+				this.attacker.destroyBlocksInAABB(this.attacker.getBoundingBox().inflate(1, 0.5F, 1));
 			}
 		}
 	}
@@ -124,7 +126,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 	@Override
 	protected void makeNewHoverSpot(LivingEntity target) {
 		super.makeNewHoverSpot(target);
-		this.dropY = target.getPosY() - 1F;
+		this.dropY = target.getY() - 1F;
 		this.seekTimer = 0;
 	}
 }

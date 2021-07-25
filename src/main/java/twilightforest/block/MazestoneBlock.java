@@ -1,28 +1,30 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import twilightforest.item.MazebreakerPickItem;
+
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class MazestoneBlock extends Block {
 
-	public MazestoneBlock(Block.Properties props) {
+	public MazestoneBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 
 	@Override
-	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		super.onBlockHarvested(world, pos, state, player);
-		ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
+	public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+		super.playerWillDestroy(world, pos, state, player);
+		ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
 
 		// damage the player's pickaxe
-		if (!world.isRemote && !stack.isEmpty() && stack.getItem().isDamageable() && !(stack.getItem() instanceof MazebreakerPickItem)) {
-			stack.damageItem(16, player, (user) -> user.sendBreakAnimation(Hand.MAIN_HAND));
+		if (!world.isClientSide && !stack.isEmpty() && stack.getItem().canBeDepleted() && !(stack.getItem() instanceof MazebreakerPickItem)) {
+			stack.hurtAndBreak(16, player, (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 		}
 	}
 }

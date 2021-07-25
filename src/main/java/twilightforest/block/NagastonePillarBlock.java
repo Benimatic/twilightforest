@@ -1,8 +1,10 @@
 package twilightforest.block;
 
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.Direction;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.core.Direction;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 /**
  * Created by Drullkus on 12/12/17.
@@ -10,7 +12,7 @@ import net.minecraft.util.Direction;
 public class NagastonePillarBlock extends DirectionalRotatedPillarBlock {
 
     protected NagastonePillarBlock() {
-        super(Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
-        this.setDefaultState(this.stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(REVERSED, false));
+        super(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE));
+        this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y).setValue(REVERSED, false));
     }
 }

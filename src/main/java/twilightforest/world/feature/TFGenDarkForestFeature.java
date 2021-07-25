@@ -1,38 +1,38 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 
 //Places single block features in patches around the dark forest
-public class TFGenDarkForestFeature extends Feature<BlockClusterFeatureConfig> {
-    public TFGenDarkForestFeature(Codec<BlockClusterFeatureConfig> codec) {
+public class TFGenDarkForestFeature extends Feature<RandomPatchConfiguration> {
+    public TFGenDarkForestFeature(Codec<RandomPatchConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, BlockClusterFeatureConfig config) {
+    public boolean place(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos, RandomPatchConfiguration config) {
         boolean foundDirt = false;
         Material materialUnder;
 
         if(pos.getY() <= 40) {
             for (int dy = pos.getY(); dy >= TFGenerationSettings.SEALEVEL; dy--) {
                 materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
-                if ((materialUnder == Material.ORGANIC || materialUnder == Material.EARTH) && reader.getBlockState(pos) == Blocks.AIR.getDefaultState()) {
+                if ((materialUnder == Material.GRASS || materialUnder == Material.DIRT) && reader.getBlockState(pos) == Blocks.AIR.defaultBlockState()) {
                     foundDirt = true;
                     pos = new BlockPos(pos.getX(), dy, pos.getZ());
                     break;
-                } else if (materialUnder == Material.ROCK || materialUnder == Material.SAND) {
+                } else if (materialUnder == Material.STONE || materialUnder == Material.SAND) {
                     break;
                 }
             }
@@ -43,14 +43,14 @@ public class TFGenDarkForestFeature extends Feature<BlockClusterFeatureConfig> {
         }
 
         //RandomPatchFeature placement logic
-        BlockState blockstate = config.stateProvider.getBlockState(rand, pos);
+        BlockState blockstate = config.stateProvider.getState(rand, pos);
         int i = 0;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
-        for(int j = 0; j < config.tryCount; ++j) {
-            blockpos$mutable.setAndOffset(pos, rand.nextInt(config.xSpread + 1) - rand.nextInt(config.xSpread + 1), rand.nextInt(config.ySpread + 1) - rand.nextInt(config.ySpread + 1), rand.nextInt(config.zSpread + 1) - rand.nextInt(config.zSpread + 1));
-            BlockPos blockpos1 = blockpos$mutable.down();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
+        for(int j = 0; j < config.tries; ++j) {
+            blockpos$mutable.setWithOffset(pos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), rand.nextInt(config.yspread + 1) - rand.nextInt(config.yspread + 1), rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
+            BlockPos blockpos1 = blockpos$mutable.below();
             BlockState blockstate1 = reader.getBlockState(blockpos1);
-            if ((reader.isAirBlock(blockpos$mutable) || config.isReplaceable && reader.getBlockState(blockpos$mutable).getMaterial().isReplaceable()) && blockstate.isValidPosition(reader, blockpos$mutable) && (config.whitelist.isEmpty() || config.whitelist.contains(blockstate1.getBlock())) && !config.blacklist.contains(blockstate1) && (!config.requiresWater || reader.getFluidState(blockpos1.west()).isTagged(FluidTags.WATER) || reader.getFluidState(blockpos1.east()).isTagged(FluidTags.WATER) || reader.getFluidState(blockpos1.north()).isTagged(FluidTags.WATER) || reader.getFluidState(blockpos1.south()).isTagged(FluidTags.WATER))) {
+            if ((reader.isEmptyBlock(blockpos$mutable) || config.canReplace && reader.getBlockState(blockpos$mutable).getMaterial().isReplaceable()) && blockstate.canSurvive(reader, blockpos$mutable) && (config.whitelist.isEmpty() || config.whitelist.contains(blockstate1.getBlock())) && !config.blacklist.contains(blockstate1) && (!config.needWater || reader.getFluidState(blockpos1.west()).is(FluidTags.WATER) || reader.getFluidState(blockpos1.east()).is(FluidTags.WATER) || reader.getFluidState(blockpos1.north()).is(FluidTags.WATER) || reader.getFluidState(blockpos1.south()).is(FluidTags.WATER))) {
                 config.blockPlacer.place(reader, blockpos$mutable, blockstate, rand);
                 ++i;
             }

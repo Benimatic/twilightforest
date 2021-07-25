@@ -1,10 +1,10 @@
 package twilightforest.enums;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
 import java.util.Locale;
 
-public enum PlantVariant implements IStringSerializable {
+public enum PlantVariant implements StringRepresentable {
 	MOSSPATCH(),
 	MAYAPPLE(),
 	CLOVERPATCH(),
@@ -31,7 +31,7 @@ public enum PlantVariant implements IStringSerializable {
 	}
 
 	@Override
-	public String getString() {
+	public String getSerializedName() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 }

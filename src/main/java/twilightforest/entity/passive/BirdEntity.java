@@ -1,21 +1,21 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nonnull;
 
-public abstract class BirdEntity extends AnimalEntity {
+public abstract class BirdEntity extends Animal {
 
-	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
+	protected static final Ingredient SEEDS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public float flapLength = 0.0F;
 	public float flapIntensity = 0.0F;
@@ -23,13 +23,13 @@ public abstract class BirdEntity extends AnimalEntity {
 	public float lastFlapLength;
 	public float flapSpeed = 1.0F;
 
-	public BirdEntity(EntityType<? extends BirdEntity> entity, World world) {
+	public BirdEntity(EntityType<? extends BirdEntity> entity, Level world) {
 		super(entity, world);
 	}
 
 	@Override
-	public void livingTick() {
-		super.livingTick();
+	public void aiStep() {
+		super.aiStep();
 		this.lastFlapLength = this.flapLength;
 		this.lastFlapIntensity = this.flapIntensity;
 		this.flapIntensity = (float) (this.flapIntensity + (this.onGround ? -1 : 4) * 0.3D);
@@ -49,8 +49,8 @@ public abstract class BirdEntity extends AnimalEntity {
 		this.flapSpeed = (float) (this.flapSpeed * 0.9D);
 
 		// don't fall as fast
-		if (!this.onGround && this.getMotion().getY() < 0.0D) {
-			this.setMotion(new Vector3d(getMotion().getX(), getMotion().getY() * 0.6D, getMotion().getZ()));
+		if (!this.onGround && this.getDeltaMovement().y() < 0.0D) {
+			this.setDeltaMovement(new Vec3(getDeltaMovement().x(), getDeltaMovement().y() * 0.6D, getDeltaMovement().z()));
 		}
 
 		this.flapLength += this.flapSpeed * 2.0F;
@@ -58,11 +58,11 @@ public abstract class BirdEntity extends AnimalEntity {
 	}
 
 	@Override
-	protected void updateFallState(double y, boolean onGroundIn, @Nonnull BlockState state, @Nonnull BlockPos pos) {
+	protected void checkFallDamage(double y, boolean onGroundIn, @Nonnull BlockState state, @Nonnull BlockPos pos) {
 	}
 
 	@Override
-	public boolean onLivingFall(float dist, float damageMultiplier) {
+	public boolean causeFallDamage(float dist, float damageMultiplier) {
 		return false;
 	}
 
@@ -72,7 +72,7 @@ public abstract class BirdEntity extends AnimalEntity {
 	}
 
 	@Override
-	public AnimalEntity createChild(ServerWorld world, AgeableEntity entityanimal) {
+	public Animal getBreedOffspring(ServerLevel world, AgableMob entityanimal) {
 		return null;
 	}
 

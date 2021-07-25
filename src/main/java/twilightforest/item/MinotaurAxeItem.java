@@ -1,14 +1,14 @@
 package twilightforest.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.item.*;
-import net.minecraft.network.play.server.SAnimateHandPacket;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,38 +19,45 @@ import twilightforest.TwilightForestMod;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
+
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class MinotaurAxeItem extends AxeItem {
 
 	private static final int BONUS_CHARGING_DAMAGE = 7;
 
-	protected MinotaurAxeItem(IItemTier material, Properties props) {
-		super(material, 6F, material.getEfficiency() * 0.05f - 3.4f, props);
+	protected MinotaurAxeItem(Tier material, Properties props) {
+		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, props);
 	}
 
 	@SubscribeEvent
 	public static void onAttack(LivingHurtEvent evt) {
 		LivingEntity target = evt.getEntityLiving();
-		Entity source = evt.getSource().getImmediateSource();
-		if (!target.world.isRemote && source instanceof LivingEntity && source.isSprinting() && (evt.getSource().getDamageType().equals("player") || evt.getSource().getDamageType().equals("mob"))) {
-			ItemStack weapon = ((LivingEntity) evt.getSource().getImmediateSource()).getHeldItemMainhand();
+		Entity source = evt.getSource().getDirectEntity();
+		if (!target.level.isClientSide && source instanceof LivingEntity && source.isSprinting() && (evt.getSource().getMsgId().equals("player") || evt.getSource().getMsgId().equals("mob"))) {
+			ItemStack weapon = ((LivingEntity) evt.getSource().getDirectEntity()).getMainHandItem();
 			if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
 				evt.setAmount(evt.getAmount() + BONUS_CHARGING_DAMAGE);
 				// enchantment attack sparkles
-				((ServerWorld) target.world).getChunkProvider().sendToTrackingAndSelf(target, new SAnimateHandPacket(target, 5));
+				((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 			}
 		}
 	}
 
 	@Override
-	public int getItemEnchantability() {
-		return ItemTier.GOLD.getEnchantability();
+	public int getEnchantmentValue() {
+		return Tiers.GOLD.getEnchantmentValue();
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
-		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, world, tooltip, flags);
+		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
 	}
 }

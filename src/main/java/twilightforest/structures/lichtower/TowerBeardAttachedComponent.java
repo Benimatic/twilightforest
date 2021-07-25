@@ -1,13 +1,13 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 
@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class TowerBeardAttachedComponent extends TowerBeardComponent {
 
-	public TowerBeardAttachedComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TowerBeardAttachedComponent(StructureManager manager, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTBA, nbt);
 	}
 
@@ -23,23 +23,23 @@ public class TowerBeardAttachedComponent extends TowerBeardComponent {
 		super(LichTowerPieces.TFLTBA, feature, i, wing);
 
 		// just hang out at the very bottom of the tower
-		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height - 1, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY - 1, wing.getBoundingBox().maxZ);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0, wing.getBoundingBox().y0 - this.height - 1, wing.getBoundingBox().z0, wing.getBoundingBox().x1, wing.getBoundingBox().y0 - 1, wing.getBoundingBox().z1);
 	}
 
 	/**
 	 * Makes a pyramid-shaped beard
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		return makeAttachedBeard(world, rand, sbb);
 	}
 
-	private boolean makeAttachedBeard(ISeedReader world, Random rand, MutableBoundingBox sbb) {
+	private boolean makeAttachedBeard(WorldGenLevel world, Random rand, BoundingBox sbb) {
 		for (int y = 0; y <= height; y++) {
 			int min = y + 1;
 			int max = size - y;
 
-			fillWithRandomizedBlocks(world, sbb, 0, height - y, min, max, height - y, max, false, rand, TFStructureComponentOld.getStrongholdStones());
+			generateBox(world, sbb, 0, height - y, min, max, height - y, max, false, rand, TFStructureComponentOld.getStrongholdStones());
 		}
 		return true;
 	}

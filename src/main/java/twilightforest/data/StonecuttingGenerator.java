@@ -2,14 +2,14 @@ package twilightforest.data;
 
 import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.SingleItemRecipeBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
@@ -23,7 +23,7 @@ public class StonecuttingGenerator extends RecipeProvider {
 	}
 
 	@Override
-	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
+	protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
 		consumer.accept(stonecutting(TFBlocks.castle_brick.get(), TFBlocks.castle_brick_frame.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_brick_frame.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_brick_worn.get(), TFBlocks.castle_brick_frame.get()));
@@ -89,12 +89,12 @@ public class StonecuttingGenerator extends RecipeProvider {
 		return "Twilight Forest stonecutting recipes";
 	}
 
-	private static Wrapper stonecutting(IItemProvider input, IItemProvider output) {
+	private static Wrapper stonecutting(ItemLike input, ItemLike output) {
 		return stonecutting(input, output, 1);
 	}
 
-	private static Wrapper stonecutting(IItemProvider input, IItemProvider output, int count) {
-		return new Wrapper(getIdFor(input.asItem(), output.asItem()), Ingredient.fromItems(input), output.asItem(), count);
+	private static Wrapper stonecutting(ItemLike input, ItemLike output, int count) {
+		return new Wrapper(getIdFor(input.asItem(), output.asItem()), Ingredient.of(input), output.asItem(), count);
 	}
 
 	private static ResourceLocation getIdFor(Item input, Item output) {
@@ -105,18 +105,18 @@ public class StonecuttingGenerator extends RecipeProvider {
 	// Wrapper that allows you to not have an advancement
 	public static class Wrapper extends SingleItemRecipeBuilder.Result {
 		public Wrapper(ResourceLocation id, Ingredient input, Item output, int count) {
-			super(id, IRecipeSerializer.STONECUTTING, "", input, output, count, null, null);
+			super(id, RecipeSerializer.STONECUTTER, "", input, output, count, null, null);
 		}
 
 		@Nullable
 		@Override
-		public JsonObject getAdvancementJson() {
+		public JsonObject serializeAdvancement() {
 			return null;
 		}
 
 		@Nullable
 		@Override
-		public ResourceLocation getAdvancementID() {
+		public ResourceLocation getAdvancementId() {
 			return null;
 		}
 	}

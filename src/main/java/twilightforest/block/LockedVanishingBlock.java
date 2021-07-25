@@ -1,20 +1,26 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 
 public class LockedVanishingBlock extends VanishingBlock {
 
@@ -22,36 +28,36 @@ public class LockedVanishingBlock extends VanishingBlock {
 
 	public LockedVanishingBlock(Properties props) {
 		super(props);
-		this.setDefaultState(getDefaultState().with(LOCKED, true));
+		this.registerDefaultState(defaultBlockState().setValue(LOCKED, true));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(LOCKED);
 	}
 
 	@Override
-	public float getExplosionResistance(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
-		return state.get(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, world, pos, explosion);
+	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
+		return state.getValue(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, world, pos, explosion);
 	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
-		return !state.get(LOCKED) && super.canEntityDestroy(state, world, pos, entity);
+	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
+		return !state.getValue(LOCKED) && super.canEntityDestroy(state, world, pos, entity);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		ItemStack stack = player.getHeldItem(hand);
-		if (!stack.isEmpty() && stack.getItem() == TFItems.tower_key.get() && state.get(LOCKED)) {
-			if (!world.isRemote) {
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (!stack.isEmpty() && stack.getItem() == TFItems.tower_key.get() && state.getValue(LOCKED)) {
+			if (!world.isClientSide) {
 				stack.shrink(1);
-				world.setBlockState(pos, state.with(LOCKED, false));
-				world.playSound(null, pos, TFSounds.UNLOCK_VANISHING_BLOCK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+				world.setBlockAndUpdate(pos, state.setValue(LOCKED, false));
+				world.playSound(null, pos, TFSounds.UNLOCK_VANISHING_BLOCK, SoundSource.BLOCKS, 0.3F, 0.6F);
 			}
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
-		return super.onBlockActivated(state, world, pos, player, hand, hit);
+		return super.use(state, world, pos, player, hand, hit);
 	}
 }

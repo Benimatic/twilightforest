@@ -2,12 +2,12 @@ package twilightforest.world.feature.config;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SaplingBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.Random;
@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * Follows similar structure to HugeTreeFeatureConfig
  */
-public class TFTreeFeatureConfig implements IFeatureConfig {
+public class TFTreeFeatureConfig implements FeatureConfiguration {
 	public static final Codec<TFTreeFeatureConfig> codecTFTreeConfig = RecordCodecBuilder.create((instance) ->
 			instance.group(
 					BlockStateProvider.CODEC.fieldOf("trunk_provider").forGetter((obj) -> obj.trunkProvider),
@@ -27,7 +27,7 @@ public class TFTreeFeatureConfig implements IFeatureConfig {
 					Codec.INT.fieldOf("add_second_five_chance").orElse(1).forGetter((obj) -> obj.chanceAddFiveSecond),
 					Codec.BOOL.fieldOf("has_leaves").orElse(true).forGetter((obj) -> obj.hasLeaves),
 					Codec.BOOL.fieldOf("check_water").orElse(false).forGetter((obj) -> obj.checkWater),
-					BlockStateProvider.CODEC.fieldOf("sapling").orElse(new SimpleBlockStateProvider(Blocks.OAK_SAPLING.getDefaultState())).forGetter((obj) -> obj.sapling))
+					BlockStateProvider.CODEC.fieldOf("sapling").orElse(new SimpleStateProvider(Blocks.OAK_SAPLING.defaultBlockState())).forGetter((obj) -> obj.sapling))
 					.apply(instance, TFTreeFeatureConfig::new));
 
 	public final BlockStateProvider trunkProvider;
@@ -61,7 +61,7 @@ public class TFTreeFeatureConfig implements IFeatureConfig {
 	}
 
 	public IPlantable getSapling(Random rand, BlockPos pos) {
-		return (IPlantable) sapling.getBlockState(rand, pos).getBlock();
+		return (IPlantable) sapling.getState(rand, pos).getBlock();
 	}
 
 	public static class Builder {
@@ -109,7 +109,7 @@ public class TFTreeFeatureConfig implements IFeatureConfig {
 		}
 
 		public TFTreeFeatureConfig.Builder setSapling(SaplingBlock plant) {
-			this.sapling = new SimpleBlockStateProvider(plant.getDefaultState());
+			this.sapling = new SimpleStateProvider(plant.defaultBlockState());
 			return this;
 		}
 

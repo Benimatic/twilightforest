@@ -2,11 +2,11 @@ package twilightforest.world.feature;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelAccessor;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -31,7 +31,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected boolean generate(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, BoundingBox mbb, TFTreeFeatureConfig config) {
 		// determine a height
 		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
@@ -46,8 +46,8 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			return false;
 		}
 
-		BlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling(random, pos))) {
+		BlockState state = world.getBlockState(pos.below());
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
 			return false;
 		}
 
@@ -70,10 +70,10 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			}
 
 		// root bulb
-		if (FeatureUtil.hasAirAround(world, pos.down())) {
-			this.setLogBlockState(world, random, pos.down(), trunk, mbb, config);
+		if (FeatureUtil.hasAirAround(world, pos.below())) {
+			this.setLogBlockState(world, random, pos.below(), trunk, mbb, config);
 		} else {
-			this.setRootsBlockState(world, random, pos.down(), root, mbb, config);
+			this.setRootsBlockState(world, random, pos.below(), root, mbb, config);
 		}
 
 		// roots!
@@ -86,17 +86,17 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	private void makeLeafBlob(IWorld world, Random random, BlockPos leafPos, Set<BlockPos> setLeaves, TFTreeFeatureConfig config) {
-		FeatureUtil.makeLeafCircle(world, leafPos.down(), 3, config.leavesProvider.getBlockState(random, leafPos.down()), setLeaves, true);
-		FeatureUtil.makeLeafCircle(world, leafPos, 4, config.leavesProvider.getBlockState(random, leafPos), setLeaves, true);
-		FeatureUtil.makeLeafCircle(world, leafPos.up(), 2, config.leavesProvider.getBlockState(random, leafPos.up()), setLeaves, true);
+	private void makeLeafBlob(LevelAccessor world, Random random, BlockPos leafPos, Set<BlockPos> setLeaves, TFTreeFeatureConfig config) {
+		FeatureUtil.makeLeafCircle(world, leafPos.below(), 3, config.leavesProvider.getState(random, leafPos.below()), setLeaves, true);
+		FeatureUtil.makeLeafCircle(world, leafPos, 4, config.leavesProvider.getState(random, leafPos), setLeaves, true);
+		FeatureUtil.makeLeafCircle(world, leafPos.above(), 2, config.leavesProvider.getState(random, leafPos.above()), setLeaves, true);
 	}
 
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	void buildBranch(IWorld world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		BlockPos src = pos.up(height);
+	void buildBranch(LevelAccessor world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, BoundingBox mbb, TFTreeFeatureConfig config) {
+		BlockPos src = pos.above(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// only actually draw the branch if it's not going to load new chunks
@@ -104,7 +104,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 			if (trunk) {
 				// Oooouch! This is EXTREMELY expensive for a straight trunk! D:
-				FeatureUtil.drawBresenhamTree(world, src, dest, config.trunkProvider.getBlockState(treeRNG, src), logpos);
+				FeatureUtil.drawBresenhamTree(world, src, dest, config.trunkProvider.getState(treeRNG, src), logpos);
 			} else {
 				FeatureUtil.drawBresenhamBranch(this, world, treeRNG, src, dest, branchpos, mbb, config);
 			}

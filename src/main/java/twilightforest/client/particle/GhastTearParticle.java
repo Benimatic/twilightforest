@@ -2,61 +2,61 @@ package twilightforest.client.particle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.item.Item;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.world.item.Item;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
 
 @OnlyIn(Dist.CLIENT)
-public class GhastTearParticle extends SpriteTexturedParticle {
+public class GhastTearParticle extends TextureSheetParticle {
 
-	GhastTearParticle(ClientWorld world, double x, double y, double z, Item item) {
+	GhastTearParticle(ClientLevel world, double x, double y, double z, Item item) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getParticleIcon(item);
-		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-		this.particleScale = 2.0F;
-		this.particleGravity = 0.6F;
+		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getParticleIcon(item);
+		this.rCol = this.gCol = this.bCol = 1.0F;
+		this.quadSize = 2.0F;
+		this.gravity = 0.6F;
 
-		this.maxAge = 20 + rand.nextInt(40);
-		this.canCollide = true;
+		this.lifetime = 20 + random.nextInt(40);
+		this.hasPhysics = true;
 	}
 
 	@Override
-	public IParticleRenderType getRenderType() {
-		return IParticleRenderType.TERRAIN_SHEET;
+	public ParticleRenderType getRenderType() {
+		return ParticleRenderType.TERRAIN_SHEET;
 	}
 
 	@Override
 	public void tick() {
-		if (this.onGround && rand.nextBoolean()) {
-			world.playSound(null, this.posX, this.posY + 1D, this.posZ, TFSounds.TEAR_BREAK, SoundCategory.HOSTILE, 0.5F, 1.0F);
+		if (this.onGround && random.nextBoolean()) {
+			level.playSound(null, this.x, this.y + 1D, this.z, TFSounds.TEAR_BREAK, SoundSource.HOSTILE, 0.5F, 1.0F);
 
 			ItemStack itemID = new ItemStack(Items.GHAST_TEAR);
 			for (int i = 0; i < 20; ++i) {
-				double gaussX = rand.nextGaussian() * 0.1D;
-				double gaussY = rand.nextGaussian() * 0.2D;
-				double gaussZ = rand.nextGaussian() * 0.1D;
+				double gaussX = random.nextGaussian() * 0.1D;
+				double gaussY = random.nextGaussian() * 0.2D;
+				double gaussZ = random.nextGaussian() * 0.1D;
 
-				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, itemID), this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ);
-				world.addParticle(ParticleTypes.EXPLOSION, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+				level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemID), this.x + random.nextFloat() - random.nextFloat(), this.y + 0.5F, this.z + random.nextFloat(), gaussX, gaussY, gaussZ);
+				level.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 0.0D, 0.0D, 0.0D);
 
 			}
-			this.setExpired();
+			this.remove();
 		}
 		super.tick();
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements IParticleFactory<BasicParticleType> {
+	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			return new GhastTearParticle(worldIn, x, y, z, Items.GHAST_TEAR);
 		}
 	}

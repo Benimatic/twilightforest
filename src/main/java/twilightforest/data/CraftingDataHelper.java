@@ -1,15 +1,15 @@
 package twilightforest.data;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.data.*;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.common.crafting.NBTIngredient;
@@ -21,19 +21,24 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+
 public abstract class CraftingDataHelper extends RecipeProvider {
 	public CraftingDataHelper(DataGenerator generator) {
 		super(generator);
 	}
 
-	protected final Ingredient itemWithNBT(RegistryObject<? extends IItemProvider> item, Consumer<CompoundNBT> nbtSetter) {
+	protected final Ingredient itemWithNBT(RegistryObject<? extends ItemLike> item, Consumer<CompoundTag> nbtSetter) {
 		return itemWithNBT(item.get(), nbtSetter);
 	}
 
-	protected final Ingredient itemWithNBT(IItemProvider item, Consumer<CompoundNBT> nbtSetter) {
+	protected final Ingredient itemWithNBT(ItemLike item, Consumer<CompoundTag> nbtSetter) {
 		ItemStack stack = new ItemStack(item);
 
-		CompoundNBT nbt = new CompoundNBT();
+		CompoundTag nbt = new CompoundTag();
 		nbtSetter.accept(nbt);
 		stack.setTag(nbt);
 
@@ -49,7 +54,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
 		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return Ingredient.fromStacks(stack);
+		return Ingredient.of(stack);
 	}
 
 	protected final Ingredient multipleIngredients(Ingredient... ingredientArray) {
@@ -70,244 +75,244 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 		return Ingredient.merge(ingredientList);
 	}
 
-	protected final void charmRecipe(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Item> item) {
-		ShapelessRecipeBuilder.shapelessRecipe(result.get())
-				.addIngredient(item.get(), 4)
-				.addCriterion("has_item", hasItem(item.get()))
-				.build(consumer, TwilightForestMod.prefix(name));
+	protected final void charmRecipe(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Item> item) {
+		ShapelessRecipeBuilder.shapeless(result.get())
+				.requires(item.get(), 4)
+				.unlockedBy("has_item", has(item.get()))
+				.save(consumer, TwilightForestMod.prefix(name));
 	}
 
-	protected final void castleBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> criteria, IItemProvider... ingredients) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(), 4)
-				.patternLine("##")
-				.patternLine("##")
-				.key('#', Ingredient.fromItems(ingredients))
-				.addCriterion("has_item", hasItem(criteria.get()))
-				.build(consumer, locCastle(name));
+	protected final void castleBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
+		ShapedRecipeBuilder.shaped(result.get(), 4)
+				.pattern("##")
+				.pattern("##")
+				.define('#', Ingredient.of(ingredients))
+				.unlockedBy("has_item", has(criteria.get()))
+				.save(consumer, locCastle(name));
 	}
 
-	protected final void stairsBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, IItemProvider... ingredients) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(),  8)
-				.patternLine("#  ")
-				.patternLine("## ")
-				.patternLine("###")
-				.key('#', Ingredient.fromItems(ingredients))
-				.addCriterion("has_item", hasItem(criteria.get()))
-				.build(consumer, loc);
+	protected final void stairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
+		ShapedRecipeBuilder.shaped(result.get(),  8)
+				.pattern("#  ")
+				.pattern("## ")
+				.pattern("###")
+				.define('#', Ingredient.of(ingredients))
+				.unlockedBy("has_item", has(criteria.get()))
+				.save(consumer, loc);
 	}
 
-	protected final void stairsRightBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, IItemProvider... ingredients) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(),  8)
-				.patternLine("###")
-				.patternLine(" ##")
-				.patternLine("  #")
-				.key('#', Ingredient.fromItems(ingredients))
-				.addCriterion("has_item", hasItem(criteria.get()))
-				.build(consumer, loc);
+	protected final void stairsRightBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
+		ShapedRecipeBuilder.shaped(result.get(),  8)
+				.pattern("###")
+				.pattern(" ##")
+				.pattern("  #")
+				.define('#', Ingredient.of(ingredients))
+				.unlockedBy("has_item", has(criteria.get()))
+				.save(consumer, loc);
 	}
 
-	protected final void reverseStairsBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, IItemProvider ingredient) {
-		ShapelessRecipeBuilder.shapelessRecipe(result.get(),  3)
-				.addIngredient(ingredient)
-				.addIngredient(ingredient)
-				.addIngredient(ingredient)
-				.addIngredient(ingredient)
-				.addCriterion("has_item", hasItem(criteria.get()))
-				.build(consumer, loc);
+	protected final void reverseStairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike ingredient) {
+		ShapelessRecipeBuilder.shapeless(result.get(),  3)
+				.requires(ingredient)
+				.requires(ingredient)
+				.requires(ingredient)
+				.requires(ingredient)
+				.unlockedBy("has_item", has(criteria.get()))
+				.save(consumer, loc);
 	}
 
-	protected final void compressedBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, ITag.INamedTag<Item> ingredient) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("###")
-				.patternLine("###")
-				.patternLine("###")
-				.key('#', ingredient)
-				.addCriterion("has_item", hasItem(ingredient))
-				.build(consumer, TwilightForestMod.prefix("compressed_blocks/" + name));
+	protected final void compressedBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Tag.Named<Item> ingredient) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("###")
+				.pattern("###")
+				.pattern("###")
+				.define('#', ingredient)
+				.unlockedBy("has_item", has(ingredient))
+				.save(consumer, TwilightForestMod.prefix("compressed_blocks/" + name));
 	}
 
-	protected final void reverseCompressBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> ingredient) {
-		ShapelessRecipeBuilder.shapelessRecipe(result.get(), 9)
-				.addIngredient(ingredient)
-				.addCriterion("has_item", hasItem(ingredient))
-				.build(consumer, TwilightForestMod.prefix("compressed_blocks/reversed/" + name));
+	protected final void reverseCompressBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> ingredient) {
+		ShapelessRecipeBuilder.shapeless(result.get(), 9)
+				.requires(ingredient)
+				.unlockedBy("has_item", has(ingredient))
+				.save(consumer, TwilightForestMod.prefix("compressed_blocks/reversed/" + name));
 	}
 
-	protected final void helmetItem(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("###")
-				.patternLine("# #")
-				.key('#', material)
-				.addCriterion("has_item", hasItem(material))
-				.build(consumer, locEquip(name));
+	protected final void helmetItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("###")
+				.pattern("# #")
+				.define('#', material)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locEquip(name));
 	}
 
-	protected final void chestplateItem(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("# #")
-				.patternLine("###")
-				.patternLine("###")
-				.key('#', material)
-				.addCriterion("has_item", hasItem(material))
-				.build(consumer, locEquip(name));
+	protected final void chestplateItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("# #")
+				.pattern("###")
+				.pattern("###")
+				.define('#', material)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locEquip(name));
 	}
 
-	protected final void leggingsItem(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("###")
-				.patternLine("# #")
-				.patternLine("# #")
-				.key('#', material)
-				.addCriterion("has_item", hasItem(material))
-				.build(consumer, locEquip(name));
+	protected final void leggingsItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("###")
+				.pattern("# #")
+				.pattern("# #")
+				.define('#', material)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locEquip(name));
 	}
 
-	protected final void bootsItem(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("# #")
-				.patternLine("# #")
-				.key('#', material)
-				.addCriterion("has_item", hasItem(material))
-				.build(consumer, locEquip(name));
+	protected final void bootsItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("# #")
+				.pattern("# #")
+				.define('#', material)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locEquip(name));
 	}
 
-	protected final void pickaxeItem(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> material, ITag.INamedTag<Item> handle) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("###")
-				.patternLine(" X ")
-				.patternLine(" X ")
-				.key('#', material)
-				.key('X', handle)
-				.addCriterion("has_item", hasItem(material))
-				.build(consumer, locEquip(name));
+	protected final void pickaxeItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material, Tag.Named<Item> handle) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("###")
+				.pattern(" X ")
+				.pattern(" X ")
+				.define('#', material)
+				.define('X', handle)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locEquip(name));
 	}
 
-	protected final void swordItem(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> material, ITag.INamedTag<Item> handle) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("#")
-				.patternLine("#")
-				.patternLine("X")
-				.key('#', material)
-				.key('X', handle)
-				.addCriterion("has_item", hasItem(material))
-				.build(consumer, locEquip(name));
+	protected final void swordItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material, Tag.Named<Item> handle) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("#")
+				.pattern("#")
+				.pattern("X")
+				.define('#', material)
+				.define('X', handle)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locEquip(name));
 	}
 
-	protected final void axeItem(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> material, ITag.INamedTag<Item> handle) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("##")
-				.patternLine("#X")
-				.patternLine(" X")
-				.key('#', material)
-				.key('X', handle)
-				.addCriterion("has_item", hasItem(material))
-				.build(consumer, locEquip(name));
+	protected final void axeItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material, Tag.Named<Item> handle) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("##")
+				.pattern("#X")
+				.pattern(" X")
+				.define('#', material)
+				.define('X', handle)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locEquip(name));
 	}
 
-	protected final void buttonBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapelessRecipeBuilder.shapelessRecipe(result.get())
-				.addIngredient(material.get())
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_button"));
+	protected final void buttonBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapelessRecipeBuilder.shapeless(result.get())
+				.requires(material.get())
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_button"));
 	}
 
-	protected final void doorBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
-				.patternLine("##")
-				.patternLine("##")
-				.patternLine("##")
-				.key('#', material.get())
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_door"));
+	protected final void doorBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get(), 3)
+				.pattern("##")
+				.pattern("##")
+				.pattern("##")
+				.define('#', material.get())
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_door"));
 	}
 
-	protected final void fenceBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
-				.patternLine("#S#")
-				.patternLine("#S#")
-				.key('#', material.get())
-				.key('S', Tags.Items.RODS_WOODEN)
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_fence"));
+	protected final void fenceBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get(), 3)
+				.pattern("#S#")
+				.pattern("#S#")
+				.define('#', material.get())
+				.define('S', Tags.Items.RODS_WOODEN)
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_fence"));
 	}
 
-	protected final void gateBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("S#S")
-				.patternLine("S#S")
-				.key('#', material.get())
-				.key('S', Tags.Items.RODS_WOODEN)
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_gate"));
+	protected final void gateBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("S#S")
+				.pattern("S#S")
+				.define('#', material.get())
+				.define('S', Tags.Items.RODS_WOODEN)
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_gate"));
 	}
 
-	protected final void planksBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapelessRecipeBuilder.shapelessRecipe(result.get(), 4)
-				.addIngredient(material.get())
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_planks"));
+	protected final void planksBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapelessRecipeBuilder.shapeless(result.get(), 4)
+				.requires(material.get())
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_planks"));
 	}
 
-	protected final void plateBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get())
-				.patternLine("##")
-				.key('#', material.get())
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_plate"));
+	protected final void plateBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get())
+				.pattern("##")
+				.define('#', material.get())
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_plate"));
 	}
 
-	protected final void slabBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(), 6)
-				.patternLine("###")
-				.key('#', material.get())
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_slab"));
+	protected final void slabBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get(), 6)
+				.pattern("###")
+				.define('#', material.get())
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_slab"));
 	}
 
-	protected final void trapdoorBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(), 6)
-				.patternLine("###")
-				.patternLine("###")
-				.key('#', material.get())
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_trapdoor"));
+	protected final void trapdoorBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get(), 6)
+				.pattern("###")
+				.pattern("###")
+				.define('#', material.get())
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_trapdoor"));
 	}
 	
-	protected final void woodBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
-				.patternLine("##")
-				.patternLine("##")
-				.key('#', material.get())
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_wood"));
+	protected final void woodBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get(), 3)
+				.pattern("##")
+				.pattern("##")
+				.define('#', material.get())
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_wood"));
 	}
 
-	protected final void strippedWoodBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
-				.patternLine("##")
-				.patternLine("##")
-				.key('#', material.get())
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_stripped_wood"));
+	protected final void strippedWoodBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get(), 3)
+				.pattern("##")
+				.pattern("##")
+				.define('#', material.get())
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_stripped_wood"));
 	}
 
-	protected final void signBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
-				.patternLine("###")
-				.patternLine("###")
-				.patternLine(" - ")
-				.key('#', material.get())
-				.key('-', Tags.Items.RODS_WOODEN)
-				.addCriterion("has_item", hasItem(material.get()))
-				.build(consumer, locWood(name + "_wood"));
+	protected final void signBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get(), 3)
+				.pattern("###")
+				.pattern("###")
+				.pattern(" - ")
+				.define('#', material.get())
+				.define('-', Tags.Items.RODS_WOODEN)
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_wood"));
 	}
 
-	protected final void fieryConversion(Consumer<IFinishedRecipe> consumer, Supplier<? extends Item> result, Item armor, int vials) {
-		ShapelessRecipeBuilder.shapelessRecipe(result.get())
-				.addIngredient(armor)
-				.addIngredient(Ingredient.fromTag(ItemTagGenerator.FIERY_VIAL), vials)
-				.addCriterion("has_item", hasItem(ItemTagGenerator.FIERY_VIAL))
-				.build(consumer, locEquip("fiery_" + armor.getRegistryName().getPath()));
+	protected final void fieryConversion(Consumer<FinishedRecipe> consumer, Supplier<? extends Item> result, Item armor, int vials) {
+		ShapelessRecipeBuilder.shapeless(result.get())
+				.requires(armor)
+				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), vials)
+				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
+				.save(consumer, locEquip("fiery_" + armor.getRegistryName().getPath()));
 	}
 
 	protected final ResourceLocation locCastle(String name) {

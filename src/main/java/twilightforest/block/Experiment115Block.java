@@ -1,57 +1,59 @@
 package twilightforest.block;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class Experiment115Block extends Block {
 
     public static final IntegerProperty BITES_TAKEN = IntegerProperty.create("omnomnom", 0, 7);
     public static final BooleanProperty REGENERATE = BooleanProperty.create("regenerate");
 
-    private static final VoxelShape QUARTER_SHAPE = makeCuboidShape(1, 0, 1, 8, 8, 8);
-    private static final VoxelShape HALF_SHAPE = makeCuboidShape(1, 0, 1, 8, 8, 15);
-    private static final VoxelShape THREE_QUARTER_SHAPE = VoxelShapes.combineAndSimplify(HALF_SHAPE, makeCuboidShape(8, 0, 8, 15, 8, 15), IBooleanFunction.OR);
-    private static final VoxelShape FULL_SHAPE = makeCuboidShape(1, 0, 1, 15, 8, 15);
+    private static final VoxelShape QUARTER_SHAPE = box(1, 0, 1, 8, 8, 8);
+    private static final VoxelShape HALF_SHAPE = box(1, 0, 1, 8, 8, 15);
+    private static final VoxelShape THREE_QUARTER_SHAPE = Shapes.join(HALF_SHAPE, box(8, 0, 8, 15, 8, 15), BooleanOp.OR);
+    private static final VoxelShape FULL_SHAPE = box(1, 0, 1, 15, 8, 15);
 
     public Experiment115Block() {
-        super(Properties.create(Material.CAKE, MaterialColor.IRON).hardnessAndResistance(0.5F).sound(SoundType.CLOTH).tickRandomly());
-        this.setDefaultState(this.stateContainer.getBaseState().with(BITES_TAKEN, 7).with(REGENERATE, false));
+        super(Properties.of(Material.CAKE, MaterialColor.METAL).strength(0.5F).sound(SoundType.WOOL).randomTicks());
+        this.registerDefaultState(this.stateDefinition.any().setValue(BITES_TAKEN, 7).setValue(REGENERATE, false));
     }
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(BITES_TAKEN)) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+		switch (state.getValue(BITES_TAKEN)) {
 			default:
 				return FULL_SHAPE;
 			case 2:
@@ -68,94 +70,94 @@ public class Experiment115Block extends Block {
 
 	@Override
 	@Deprecated
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		int bitesTaken = state.get(BITES_TAKEN);
-		ItemStack stack = player.getHeldItem(hand);
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		int bitesTaken = state.getValue(BITES_TAKEN);
+		ItemStack stack = player.getItemInHand(hand);
 
-		if (!player.isSneaking()) {
+		if (!player.isShiftKeyDown()) {
 			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115.get()) {
-				worldIn.setBlockState(pos, state.with(BITES_TAKEN, bitesTaken - 1));
+				worldIn.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				if (!player.isCreative()) stack.shrink(1);
-				if (player instanceof ServerPlayerEntity) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
-				return ActionResultType.SUCCESS;
-			} else if (((!state.get(REGENERATE)) && stack.getItem() == Items.REDSTONE) && (player.isCreative() || bitesTaken == 0)) {
-				worldIn.setBlockState(pos, state.with(REGENERATE,true));
+				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
+				return InteractionResult.SUCCESS;
+			} else if (((!state.getValue(REGENERATE)) && stack.getItem() == Items.REDSTONE) && (player.isCreative() || bitesTaken == 0)) {
+				worldIn.setBlockAndUpdate(pos, state.setValue(REGENERATE,true));
 				if (!player.isCreative()) stack.shrink(1);
-				if (player instanceof ServerPlayerEntity) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
-				return ActionResultType.SUCCESS;
+				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
+				return InteractionResult.SUCCESS;
 			}
 		}
 		return this.eatCake(worldIn, pos, state, player);
 	}
 
-	private ActionResultType eatCake(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!player.canEat(false)) return ActionResultType.PASS;
+	private InteractionResult eatCake(Level world, BlockPos pos, BlockState state, Player player) {
+        if (!player.canEat(false)) return InteractionResult.PASS;
         else {
-            player.addStat(Stats.EAT_CAKE_SLICE);
-            player.getFoodStats().addStats(4, 0.3F);
-            int i = state.get(BITES_TAKEN);
+            player.awardStat(Stats.EAT_CAKE_SLICE);
+            player.getFoodData().eat(4, 0.3F);
+            int i = state.getValue(BITES_TAKEN);
 
             if (i < 7) {
-            	world.setBlockState(pos, state.with(BITES_TAKEN, Integer.valueOf(i + 1)), 3);
+            	world.setBlock(pos, state.setValue(BITES_TAKEN, Integer.valueOf(i + 1)), 3);
             } else {
             	world.removeBlock(pos, false);
             }
 
-            if (player instanceof ServerPlayerEntity)
-                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
+            if (player instanceof ServerPlayer)
+                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
 
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
     }
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
-		if (state.get(REGENERATE) && state.get(BITES_TAKEN) != 0) {
-			worldIn.setBlockState(pos, state.with(BITES_TAKEN, state.get(BITES_TAKEN) - 1));
+	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+		if (state.getValue(REGENERATE) && state.getValue(BITES_TAKEN) != 0) {
+			worldIn.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, state.getValue(BITES_TAKEN) - 1));
 		}
 	}
 
 	@Override
 	@Deprecated
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
+	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos.below()).getMaterial().isSolid();
 	}
 
 	@Override
 	@Deprecated
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(BITES_TAKEN, REGENERATE);
 	}
 
     @Override
     @Deprecated
-    public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
-        return 15-(state.get(BITES_TAKEN)*2);
+    public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
+        return 15-(state.getValue(BITES_TAKEN)*2);
     }
 
     @Override
 	@Deprecated
-    public boolean hasComparatorInputOverride(BlockState state)
+    public boolean hasAnalogOutputSignal(BlockState state)
     {
         return true;
     }
 
     @Override
 	@Deprecated
-    public boolean canProvidePower(BlockState state) {
-        return state.get(REGENERATE);
+    public boolean isSignalSource(BlockState state) {
+        return state.getValue(REGENERATE);
     }
 
 	@Override
 	@Deprecated
-	public int getWeakPower(BlockState state, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return state.get(REGENERATE) ? 15-(state.get(BITES_TAKEN)*2) : 0;
+	public int getSignal(BlockState state, BlockGetter blockAccess, BlockPos pos, Direction side) {
+		return state.getValue(REGENERATE) ? 15-(state.getValue(BITES_TAKEN)*2) : 0;
 	}
 }

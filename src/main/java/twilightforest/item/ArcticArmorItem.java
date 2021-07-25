@@ -1,19 +1,19 @@
 package twilightforest.item;
 
-import net.minecraft.block.CauldronBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.level.block.CauldronBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
@@ -24,17 +24,25 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public class ArcticArmorItem extends ArmorItem implements IDyeableArmorItem {
+import net.minecraft.world.item.Item.Properties;
 
-	private static final Map<EquipmentSlotType, BipedModel<?>> arcticArmorModel = new EnumMap<>(EquipmentSlotType.class);
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 
-	public ArcticArmorItem(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
+public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
+
+	private static final Map<EquipmentSlot, HumanoidModel<?>> arcticArmorModel = new EnumMap<>(EquipmentSlot.class);
+
+	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
 		super(armorMaterial, armorType, props);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlotType slot, String layer) {
-		if (slot == EquipmentSlotType.LEGS) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + (layer == null ? "_dyed" : "_overlay") + ".png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "arcticarmor_1" + (layer == null ? "_dyed" : "_overlay") + ".png";
@@ -44,21 +52,21 @@ public class ArcticArmorItem extends ArmorItem implements IDyeableArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	@SuppressWarnings("unchecked")
-	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A oldM) {
+	public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A oldM) {
 		return (A) arcticArmorModel.get(armorSlot);
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public static void initArmorModel() {
-		arcticArmorModel.put(EquipmentSlotType.HEAD, new ArcticArmorModel(0.75F));
-		arcticArmorModel.put(EquipmentSlotType.CHEST, new ArcticArmorModel(1.0F));
-		arcticArmorModel.put(EquipmentSlotType.LEGS, new ArcticArmorModel(0.5F));
-		arcticArmorModel.put(EquipmentSlotType.FEET, new ArcticArmorModel(1.0F));
+		arcticArmorModel.put(EquipmentSlot.HEAD, new ArcticArmorModel(0.75F));
+		arcticArmorModel.put(EquipmentSlot.CHEST, new ArcticArmorModel(1.0F));
+		arcticArmorModel.put(EquipmentSlot.LEGS, new ArcticArmorModel(0.5F));
+		arcticArmorModel.put(EquipmentSlot.FEET, new ArcticArmorModel(1.0F));
 	}
 
 	@Override
-	public boolean hasColor(ItemStack stack) {
-		CompoundNBT CompoundNBT = stack.getTag();
+	public boolean hasCustomColor(ItemStack stack) {
+		CompoundTag CompoundNBT = stack.getTag();
 		return (CompoundNBT != null && CompoundNBT.contains("display", 10)) && CompoundNBT.getCompound("display").contains("color", 3);
 	}
 
@@ -68,7 +76,7 @@ public class ArcticArmorItem extends ArmorItem implements IDyeableArmorItem {
 	}
 
 	@Override
-	public void removeColor(ItemStack stack) {
+	public void clearColor(ItemStack stack) {
 		this.removeColor(stack, 1);
 	}
 
@@ -79,12 +87,12 @@ public class ArcticArmorItem extends ArmorItem implements IDyeableArmorItem {
 
 	public int getColor(ItemStack stack, int type) {
 		String string = "";//type == 0 ? "" : ("" + type);
-		CompoundNBT stackTagCompound = stack.getTag();
+		CompoundTag stackTagCompound = stack.getTag();
 
 		int color = 0xBDCFD9;
 
 		if (stackTagCompound != null) {
-			CompoundNBT displayCompound = stackTagCompound.getCompound("display");
+			CompoundTag displayCompound = stackTagCompound.getCompound("display");
 
 			if (displayCompound.contains("color" + string, 3))
 				color = displayCompound.getInt("color" + string);
@@ -100,10 +108,10 @@ public class ArcticArmorItem extends ArmorItem implements IDyeableArmorItem {
 
 	public void removeColor(ItemStack stack, int type) {
 		String string = "";
-		CompoundNBT stackTagCompound = stack.getTag();
+		CompoundTag stackTagCompound = stack.getTag();
 
 		if (stackTagCompound != null) {
-			CompoundNBT displayCompound = stackTagCompound.getCompound("display");
+			CompoundTag displayCompound = stackTagCompound.getCompound("display");
 
 			if (displayCompound.contains("color" + string))
 				displayCompound.remove("color" + string);
@@ -115,14 +123,14 @@ public class ArcticArmorItem extends ArmorItem implements IDyeableArmorItem {
 
 	public void setColor(ItemStack stack, int color, int type) {
 		String string = "";
-		CompoundNBT stackTagCompound = stack.getTag();
+		CompoundTag stackTagCompound = stack.getTag();
 
 		if (stackTagCompound == null) {
-			stackTagCompound = new CompoundNBT();
+			stackTagCompound = new CompoundTag();
 			stack.setTag(stackTagCompound);
 		}
 
-		CompoundNBT displayCompound = stackTagCompound.getCompound("display");
+		CompoundTag displayCompound = stackTagCompound.getCompound("display");
 
 		if (!stackTagCompound.contains("display", 10))
 			stackTagCompound.put("display", displayCompound);
@@ -132,27 +140,27 @@ public class ArcticArmorItem extends ArmorItem implements IDyeableArmorItem {
 	}
 
 	@Override
-	public ActionResultType onItemUseFirst(ItemStack itemstack, ItemUseContext context) {
+	public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
 
-		if (this.hasColor(itemstack)) {
-			BlockState blockAt = context.getWorld().getBlockState(context.getPos());
+		if (this.hasCustomColor(itemstack)) {
+			BlockState blockAt = context.getLevel().getBlockState(context.getClickedPos());
 
-			if (blockAt.getBlock() instanceof CauldronBlock && blockAt.get(CauldronBlock.LEVEL) > 0) {
-				removeColor(itemstack);
-				context.getPlayer().addStat(Stats.CLEAN_ARMOR);
+			if (blockAt.getBlock() instanceof CauldronBlock && blockAt.getValue(CauldronBlock.LEVEL) > 0) {
+				clearColor(itemstack);
+				context.getPlayer().awardStat(Stats.CLEAN_ARMOR);
 
-				((CauldronBlock) blockAt.getBlock()).setWaterLevel(context.getWorld(), context.getPos(), blockAt, blockAt.get(CauldronBlock.LEVEL) - 1);
-				return ActionResultType.SUCCESS;
+				((CauldronBlock) blockAt.getBlock()).setWaterLevel(context.getLevel(), context.getClickedPos(), blockAt, blockAt.getValue(CauldronBlock.LEVEL) - 1);
+				return InteractionResult.SUCCESS;
 			}
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TranslationTextComponent("item.twilightforest.arctic_armor.tooltip"));
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add(new TranslatableComponent("item.twilightforest.arctic_armor.tooltip"));
 	}
 }

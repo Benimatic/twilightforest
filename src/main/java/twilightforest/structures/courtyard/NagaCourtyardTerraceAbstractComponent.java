@@ -1,16 +1,16 @@
 package twilightforest.structures.courtyard;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentTemplate;
 
@@ -20,25 +20,25 @@ public abstract class NagaCourtyardTerraceAbstractComponent extends TFStructureC
 
     private final ResourceLocation TERRACE;
 
-    public NagaCourtyardTerraceAbstractComponent(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt, ResourceLocation terrace) {
+    public NagaCourtyardTerraceAbstractComponent(StructureManager manager, StructurePieceType piece, CompoundTag nbt, ResourceLocation terrace) {
         super(manager, piece, nbt);
         TERRACE = terrace;
     }
 
-    public NagaCourtyardTerraceAbstractComponent(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation terrace) {
+    public NagaCourtyardTerraceAbstractComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation terrace) {
         super(type, feature, i, x, y, z, rotation);
         TERRACE = terrace;
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager) {
-        TEMPLATE = templateManager.getTemplate(TERRACE);
+    protected void loadTemplates(StructureManager templateManager) {
+        TEMPLATE = templateManager.get(TERRACE);
     }
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random random, BoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeSettings.setBoundingBox(structureBoundingBox).clearProcessors().addProcessor(new CourtyardTerraceTemplateProcessor(0.0F));
-		TEMPLATE.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings, random, 18);
+		TEMPLATE.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings, random, 18);
 		return true;
 	}
 }

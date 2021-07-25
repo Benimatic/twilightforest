@@ -1,27 +1,27 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.AbstractSphereReplaceConfig;
-import net.minecraft.world.gen.feature.SphereReplaceConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.BaseDiskFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 
 import java.util.Random;
 
-public class TFGenMyceliumBlob extends AbstractSphereReplaceConfig {
+public class TFGenMyceliumBlob extends BaseDiskFeature {
 
-	public TFGenMyceliumBlob(Codec<SphereReplaceConfig> configIn) {
+	public TFGenMyceliumBlob(Codec<DiskConfiguration> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, DiskConfiguration config) {
 
 		boolean flag = false;
-		int i = config.radius.getSpread(random);
+		int i = config.radius.sample(random);
 
 		for(int j = pos.getX() - i; j <= pos.getX() + i; ++j) {
 			for(int k = pos.getZ() - i; k <= pos.getZ() + i; ++k) {
@@ -33,8 +33,8 @@ public class TFGenMyceliumBlob extends AbstractSphereReplaceConfig {
 						Block block = world.getBlockState(blockpos).getBlock();
 
 						for(BlockState blockstate : config.targets) {
-							if (blockstate.matchesBlock(block) && world.isAirBlock(pos.up())) {
-								world.setBlockState(blockpos, config.state, 2);
+							if (blockstate.is(block) && world.isEmptyBlock(pos.above())) {
+								world.setBlock(blockpos, config.state, 2);
 								flag = true;
 								break;
 							}

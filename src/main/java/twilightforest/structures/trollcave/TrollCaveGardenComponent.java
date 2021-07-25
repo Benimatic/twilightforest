@@ -1,20 +1,20 @@
 package twilightforest.structures.trollcave;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.gen.placement.DepthAverageConfig;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.placement.DepthAverageConfigation;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import twilightforest.TFFeature;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.worldgen.BlockConstants;
@@ -22,16 +22,22 @@ import twilightforest.worldgen.BlockConstants;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.data.worldgen.Features;
+import net.minecraft.util.UniformInt;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+
 public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
-	private final ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.MYCELIUM, FeatureSpread.create(5, 2), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK))).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
-	private final ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.DIRT, FeatureSpread.create(5, 2), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK))).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
-	private final ConfiguredFeature<?,?> smallUberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.UBEROUS_SOIL, FeatureSpread.create(4, 3), 0, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(60, 10)));
-	private final ConfiguredFeature<?,?> bigRedMushroomGen = Features.HUGE_RED_MUSHROOM.withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
-	private final ConfiguredFeature<?,?> bigBrownMushroomGen = Features.HUGE_BROWN_MUSHROOM.withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
-	private final ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
+	private final ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.MYCELIUM, UniformInt.of(5, 2), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK))).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(15, 10)));
+	private final ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.DIRT, UniformInt.of(5, 2), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK))).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(15, 10)));
+	private final ConfiguredFeature<?,?> smallUberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(4, 3), 0, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(60, 10)));
+	private final ConfiguredFeature<?,?> bigRedMushroomGen = Features.HUGE_RED_MUSHROOM.decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(15, 10)));
+	private final ConfiguredFeature<?,?> bigBrownMushroomGen = Features.HUGE_BROWN_MUSHROOM.decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(15, 10)));
+	private final ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().configured(FeatureConfiguration.NONE).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(15, 10)));
 
-	public TrollCaveGardenComponent(TemplateManager manager, CompoundNBT nbt) {
+	public TrollCaveGardenComponent(StructureManager manager, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCGard, nbt);
 	}
 
@@ -39,24 +45,24 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		super(TrollCavePieces.TFTCGard, feature, index);
 		this.size = caveSize;
 		this.height = caveHeight;
-		this.setCoordBaseMode(direction);
+		this.setOrientation(direction);
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
 	@Override
-	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// add a cloud
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 //		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
 //			return false;
 //		}
 
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
 
 		// treasure!
 		makeTreasureCrate(world, sbb);
@@ -102,15 +108,15 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		return true;
 	}
 
-	protected void generate(ISeedReader world, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generate(WorldGenLevel world, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
+		int dx = getWorldX(x, z);
+		int dy = getWorldY(y);
+		int dz = getWorldZ(x, z);
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos)) {
-			feature.generate(world, generator, rand, pos);
+		if (sbb.isInside(pos)) {
+			feature.place(world, generator, rand, pos);
 		}
 	}
 }

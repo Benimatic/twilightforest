@@ -1,12 +1,12 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.world.level.ServerLevelAccessor;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.KnightPhantomEntity;
 import twilightforest.item.TFItems;
@@ -24,12 +24,12 @@ public class KnightPhantomSpawnerTileEntity extends BossSpawnerTileEntity<Knight
 
 	@Override
 	public boolean anyPlayerInRange() {
-		PlayerEntity closestPlayer = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.getPosY() > pos.getY() - 2;
+		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);
+		return closestPlayer != null && closestPlayer.getY() > worldPosition.getY() - 2;
 	}
 
 	@Override
-	protected boolean spawnMyBoss(IServerWorld world) {
+	protected boolean spawnMyBoss(ServerLevelAccessor world) {
 		for (int i = spawned; i < COUNT; i++) {
 			// create creature
 			KnightPhantomEntity myCreature = makeMyCreature();
@@ -37,15 +37,15 @@ public class KnightPhantomSpawnerTileEntity extends BossSpawnerTileEntity<Knight
 			float angle = (360F / COUNT) * i;
 			final float distance = 4F;
 
-			double rx = pos.getX() + 0.5D + Math.cos(angle * Math.PI / 180.0D) * distance;
-			double ry = pos.getY();
-			double rz = pos.getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
+			double rx = worldPosition.getX() + 0.5D + Math.cos(angle * Math.PI / 180.0D) * distance;
+			double ry = worldPosition.getY();
+			double rz = worldPosition.getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
 
-			myCreature.setLocationAndAngles(rx, ry, rz, world.getWorld().rand.nextFloat() * 360F, 0.0F);
-			myCreature.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(myCreature.getPosition())), SpawnReason.SPAWNER, null, null);
+			myCreature.moveTo(rx, ry, rz, world.getLevel().random.nextFloat() * 360F, 0.0F);
+			myCreature.finalizeSpawn(world, world.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), MobSpawnType.SPAWNER, null, null);
 
 			if(i == 5 && world.getDifficulty() == Difficulty.HARD){
-				myCreature.setItemStackToSlot(EquipmentSlotType.OFFHAND,new ItemStack(TFItems.knightmetal_shield.get()));
+				myCreature.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(TFItems.knightmetal_shield.get()));
 			}
 
 			// set creature's home to this
@@ -54,7 +54,7 @@ public class KnightPhantomSpawnerTileEntity extends BossSpawnerTileEntity<Knight
 			myCreature.setNumber(i);
 
 			// spawn it
-			if (world.addEntity(myCreature)) {
+			if (world.addFreshEntity(myCreature)) {
 				spawned++;
 			}
 		}

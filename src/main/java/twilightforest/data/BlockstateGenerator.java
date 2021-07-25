@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.properties.*;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
@@ -25,6 +25,29 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;
+
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.HugeMushroomBlock;
+import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 
 public class BlockstateGenerator extends BlockStateProvider {
 	public BlockstateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
@@ -56,10 +79,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(portalOverlayModel).addModel().condition(TFPortalBlock.DISALLOW_RETURN, true).end();
 
 		getVariantBuilder(TFBlocks.experiment_115.get()).forAllStates(state -> {
-			int bitesTaken = state.get(Experiment115Block.BITES_TAKEN);
+			int bitesTaken = state.getValue(Experiment115Block.BITES_TAKEN);
 			String basePath = String.format("block/experiment115_%d_8", 8 - bitesTaken);
 			ModelFile model;
-			if (state.get(Experiment115Block.REGENERATE)) {
+			if (state.getValue(Experiment115Block.REGENERATE)) {
 				model = models().withExistingParent(basePath + "_regenerating", prefix(basePath))
 								.texture("top_2", "block/experiment115/experiment115_sprinkle");
 			} else {
@@ -120,12 +143,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile shieldModel = models().cubeTop(TFBlocks.stronghold_shield.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
 		getVariantBuilder(TFBlocks.stronghold_shield.get())
 						.forAllStates(state -> {
-							Direction dir = state.get(BlockStateProperties.FACING);
+							Direction dir = state.getValue(BlockStateProperties.FACING);
 							return ConfiguredModel.builder()
 											.uvLock(true)
 											.modelFile(shieldModel)
 											.rotationX(dir == Direction.DOWN ? 180 : dir.getAxis().isHorizontal() ? 90 : 0)
-											.rotationY(dir.getAxis().isVertical() ? 0 : (int) dir.getHorizontalAngle() % 360)
+											.rotationY(dir.getAxis().isVertical() ? 0 : (int) dir.toYRot() % 360)
 											.build();
 						});
 
@@ -217,7 +240,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.cinder_wood.get(), models().cubeAll(TFBlocks.cinder_wood.getId().getPath(), prefix("block/" + TFBlocks.cinder_log.getId().getPath())));
 		ModelFile furnaceOff = models().getExistingFile(new ResourceLocation("block/furnace"));
 		ModelFile furnaceOn = models().getExistingFile(new ResourceLocation("block/furnace_on"));
-		horizontalBlock(TFBlocks.cinder_furnace.get(), state -> state.get(AbstractFurnaceBlock.LIT) ? furnaceOn : furnaceOff);
+		horizontalBlock(TFBlocks.cinder_furnace.get(), state -> state.getValue(AbstractFurnaceBlock.LIT) ? furnaceOn : furnaceOff);
 
 		castleDoor(TFBlocks.castle_door_yellow.get());
 		castleDoor(TFBlocks.castle_door_purple.get());
@@ -333,14 +356,14 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 			getMultipartBuilder(block.get())
 					.part().modelFile(post).uvLock(true).addModel().end()
-					.part().modelFile(side).uvLock(true).addModel().condition(SixWayBlock.NORTH, true).end()
-					.part().modelFile(noside).uvLock(true).addModel().condition(SixWayBlock.NORTH, false).end()
-					.part().modelFile(side).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.EAST, true).end()
-					.part().modelFile(nosidealt).uvLock(true).addModel().condition(SixWayBlock.EAST, false).end()
-					.part().modelFile(sidealt).uvLock(true).addModel().condition(SixWayBlock.SOUTH, true).end()
-					.part().modelFile(nosidealt).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.SOUTH, false).end()
-					.part().modelFile(sidealt).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.WEST, true).end()
-					.part().modelFile(noside).uvLock(true).rotationY(270).addModel().condition(SixWayBlock.WEST, false).end();
+					.part().modelFile(side).uvLock(true).addModel().condition(PipeBlock.NORTH, true).end()
+					.part().modelFile(noside).uvLock(true).addModel().condition(PipeBlock.NORTH, false).end()
+					.part().modelFile(side).uvLock(true).rotationY(90).addModel().condition(PipeBlock.EAST, true).end()
+					.part().modelFile(nosidealt).uvLock(true).addModel().condition(PipeBlock.EAST, false).end()
+					.part().modelFile(sidealt).uvLock(true).addModel().condition(PipeBlock.SOUTH, true).end()
+					.part().modelFile(nosidealt).uvLock(true).rotationY(90).addModel().condition(PipeBlock.SOUTH, false).end()
+					.part().modelFile(sidealt).uvLock(true).rotationY(90).addModel().condition(PipeBlock.WEST, true).end()
+					.part().modelFile(noside).uvLock(true).rotationY(270).addModel().condition(PipeBlock.WEST, false).end();
 		}
 
 	}
@@ -354,7 +377,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile horizontal = models().getExistingFile(prefix("block/naga_segment/horizontal"));
 		ModelFile vertical = models().getExistingFile(prefix("block/naga_segment/vertical"));
 		getVariantBuilder(TFBlocks.naga_stone.get()).forAllStates(s -> {
-			switch (s.get(NagastoneBlock.VARIANT)) {
+			switch (s.getValue(NagastoneBlock.VARIANT)) {
 			case NORTH_DOWN:
 				return ConfiguredModel.builder().modelFile(down).rotationY(270).build();
 			case SOUTH_DOWN:
@@ -406,7 +429,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile reversed = models().cubeColumn(b.getRegistryName().getPath() + "_reversed", alt, end);
 		getVariantBuilder(b).forAllStates(state -> {
 			int rotX = 0, rotY = 0;
-			switch (state.get(RotatedPillarBlock.AXIS)) {
+			switch (state.getValue(RotatedPillarBlock.AXIS)) {
 			default:
 			case X:
 				rotX = rotY = 270;
@@ -417,7 +440,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 				rotX = 270;
 				break;
 			}
-			ModelFile m = state.get(DirectionalRotatedPillarBlock.REVERSED) ? reversed : model;
+			ModelFile m = state.getValue(DirectionalRotatedPillarBlock.REVERSED) ? reversed : model;
 			return ConfiguredModel.builder().rotationX(rotX).rotationY(rotY).modelFile(m).build();
 		});
 	}
@@ -584,8 +607,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile off = models().cubeColumn(b.getRegistryName().getPath(), blockTexture(b), topTex);
 		ModelFile on = models().cubeColumn(b.getRegistryName().getPath() + "_on", prefix("block/" + b.getRegistryName().getPath() + "_on"), topTex);
 		getVariantBuilder(b).forAllStates(s -> {
-			ModelFile f = s.get(SpecialMagicLogBlock.ACTIVE) ? on : off;
-			Direction.Axis axis = s.get(RotatedPillarBlock.AXIS);
+			ModelFile f = s.getValue(SpecialMagicLogBlock.ACTIVE) ? on : off;
+			Direction.Axis axis = s.getValue(RotatedPillarBlock.AXIS);
 			int rotX = axis == Direction.Axis.X || axis == Direction.Axis.Z ? 90 : 0;
 			int rotY = axis == Direction.Axis.X ? 90 : 0;
 			return ConfiguredModel.builder()
@@ -683,7 +706,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(sapling, models().cross(sapling.getRegistryName().getPath(), saplingTex));
 	}
 
-	private void plankBlocks(String variant, Block plank, Block slab, StairsBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor) {
+	private void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor) {
 		String plankTexName = "planks_" + variant;
 		ResourceLocation tex0 = prefix("block/wood/" + plankTexName + "_0");
 		ResourceLocation tex1 = prefix("block/wood/" + plankTexName + "_1");
@@ -748,13 +771,13 @@ public class BlockstateGenerator extends BlockStateProvider {
 			ModelFile model1 = gate1;
 			ModelFile model2 = gate2;
 			ModelFile model3 = gate3;
-			if (state.get(FenceGateBlock.IN_WALL)) {
+			if (state.getValue(FenceGateBlock.IN_WALL)) {
 				model0 = wall0;
 				model1 = wall1;
 				model2 = wall2;
 				model3 = wall3;
 			}
-			if (state.get(FenceGateBlock.OPEN)) {
+			if (state.getValue(FenceGateBlock.OPEN)) {
 				model0 = model0 == wall0 ? wallOpen0 : open0;
 				model1 = model1 == wall1 ? wallOpen1 : open1;
 				model2 = model2 == wall2 ? wallOpen2 : open2;
@@ -762,19 +785,19 @@ public class BlockstateGenerator extends BlockStateProvider {
 			}
 			return ConfiguredModel.builder()
 							.weight(10).modelFile(model0)
-							.rotationY((int) state.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle())
+							.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
 							.uvLock(true).nextModel()
 
 							.weight(10).modelFile(model1)
-							.rotationY((int) state.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle())
+							.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
 							.uvLock(true).nextModel()
 
 							.weight(1).modelFile(model2)
-							.rotationY((int) state.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle())
+							.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
 							.uvLock(true).nextModel()
 
 							.weight(1).modelFile(model3)
-							.rotationY((int) state.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle())
+							.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
 							.uvLock(true)
 							.build();
 		}, FenceGateBlock.POWERED);
@@ -801,13 +824,13 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.weight(10).modelFile(post1).nextModel()
 						.weight(1).modelFile(post2).nextModel()
 						.weight(1).modelFile(post3).addModel().end();
-		SixWayBlock.FACING_TO_PROPERTY_MAP.forEach((dir, value) -> {
+		PipeBlock.PROPERTY_BY_DIRECTION.forEach((dir, value) -> {
 			if (dir.getAxis().isHorizontal()) {
 				builder.part()
-						.weight(10).modelFile(side0).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
-						.weight(10).modelFile(side1).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
-						.weight(1).modelFile(side2).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
-						.weight(1).modelFile(side3).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true)
+						.weight(10).modelFile(side0).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
+						.weight(10).modelFile(side1).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
+						.weight(1).modelFile(side2).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
+						.weight(1).modelFile(side3).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true)
 						.addModel()
 						.condition(value, true);
 			}
@@ -849,12 +872,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile pressed3 = models().withExistingParent(button.getRegistryName().getPath() + "_pressed_3", "button_pressed").texture("texture", tex3);
 
 		getVariantBuilder(button).forAllStates(state -> {
-			ModelFile model0 = state.get(AbstractButtonBlock.POWERED) ? pressed0 : unpressed0;
-			ModelFile model1 = state.get(AbstractButtonBlock.POWERED) ? pressed1 : unpressed1;
-			ModelFile model2 = state.get(AbstractButtonBlock.POWERED) ? pressed2 : unpressed2;
-			ModelFile model3 = state.get(AbstractButtonBlock.POWERED) ? pressed3 : unpressed3;
+			ModelFile model0 = state.getValue(ButtonBlock.POWERED) ? pressed0 : unpressed0;
+			ModelFile model1 = state.getValue(ButtonBlock.POWERED) ? pressed1 : unpressed1;
+			ModelFile model2 = state.getValue(ButtonBlock.POWERED) ? pressed2 : unpressed2;
+			ModelFile model3 = state.getValue(ButtonBlock.POWERED) ? pressed3 : unpressed3;
 			int rotX = 0;
-			switch (state.get(HorizontalFaceBlock.FACE)) {
+			switch (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE)) {
 			case WALL:
 				rotX = 90;
 				break;
@@ -866,22 +889,22 @@ public class BlockstateGenerator extends BlockStateProvider {
 				break;
 			}
 			int rotY = 0;
-			if (state.get(HorizontalFaceBlock.FACE) == AttachFace.CEILING)  {
-				switch (state.get(HorizontalBlock.HORIZONTAL_FACING)) {
+			if (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.CEILING)  {
+				switch (state.getValue(HorizontalDirectionalBlock.FACING)) {
 				case NORTH: rotY = 180; break;
 				case SOUTH: rotY = 0; break;
 				case WEST: rotY = 90; break;
 				case EAST: rotY = 270; break;
 				}
 			} else {
-				switch (state.get(HorizontalBlock.HORIZONTAL_FACING)) {
+				switch (state.getValue(HorizontalDirectionalBlock.FACING)) {
 				case NORTH: rotY = 0; break;
 				case SOUTH: rotY = 180; break;
 				case WEST: rotY = 270; break;
 				case EAST: rotY = 90; break;
 				}
 			}
-			boolean uvlock = state.get(HorizontalFaceBlock.FACE) == AttachFace.WALL;
+			boolean uvlock = state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.WALL;
 
 			return ConfiguredModel.builder()
 							.weight(10).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model0).nextModel()
@@ -892,7 +915,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		});
 	}
 
-	private void woodStairs(StairsBlock block, String texName) {
+	private void woodStairs(StairBlock block, String texName) {
 		ResourceLocation tex0 = prefix("block/wood/" + texName + "_0");
 		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
 		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
@@ -912,10 +935,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 		// [VanillaCopy] super.stairsBlock, but multiple files returned each time
 		getVariantBuilder(block)
 						.forAllStatesExcept(state -> {
-							Direction facing = state.get(StairsBlock.FACING);
-							Half half = state.get(StairsBlock.HALF);
-							StairsShape shape = state.get(StairsBlock.SHAPE);
-							int yRot = (int) facing.rotateY().getHorizontalAngle(); // Stairs model is rotated 90 degrees clockwise for some reason
+							Direction facing = state.getValue(StairBlock.FACING);
+							Half half = state.getValue(StairBlock.HALF);
+							StairsShape shape = state.getValue(StairBlock.SHAPE);
+							int yRot = (int) facing.getClockWise().toYRot(); // Stairs model is rotated 90 degrees clockwise for some reason
 							if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT) {
 								yRot += 270; // Left facing stairs are rotated 90 degrees clockwise
 							}
@@ -944,7 +967,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 											.modelFile(shape == StairsShape.STRAIGHT ? main3 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner3 : outer3)
 											.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
 											.build();
-						}, StairsBlock.WATERLOGGED);
+						}, StairBlock.WATERLOGGED);
 	}
 
 	/*private void terrorcotta() {
@@ -1018,23 +1041,23 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile top_z = models().withExistingParent("pillar_top_z", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_z"));
 		getMultipartBuilder(TFBlocks.stone_twist_thin.get())
 				.part().modelFile(main_x).uvLock(true).rotationX(90).rotationY(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.X).end()
-				.part().modelFile(top_x).rotationX(90).rotationY(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.X).condition(SixWayBlock.EAST, false).end()
-				.part().modelFile(bottom_x).rotationX(90).rotationY(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.X).condition(SixWayBlock.WEST, false).end()
+				.part().modelFile(top_x).rotationX(90).rotationY(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.X).condition(PipeBlock.EAST, false).end()
+				.part().modelFile(bottom_x).rotationX(90).rotationY(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.X).condition(PipeBlock.WEST, false).end()
 				.part().modelFile(main_y).uvLock(true).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Y).end()
-				.part().modelFile(top_y).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Y).condition(SixWayBlock.UP, false).end()
-				.part().modelFile(bottom_y).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Y).condition(SixWayBlock.DOWN, false).end()
+				.part().modelFile(top_y).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Y).condition(PipeBlock.UP, false).end()
+				.part().modelFile(bottom_y).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Y).condition(PipeBlock.DOWN, false).end()
 				.part().modelFile(main_z).uvLock(true).rotationX(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Z).end()
-				.part().modelFile(top_z).rotationX(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Z).condition(SixWayBlock.NORTH, false).end()
-				.part().modelFile(bottom_z).rotationX(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Z).condition(SixWayBlock.SOUTH, false).end();
+				.part().modelFile(top_z).rotationX(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Z).condition(PipeBlock.NORTH, false).end()
+				.part().modelFile(bottom_z).rotationX(90).addModel().condition(WallPillarBlock.AXIS, Direction.Axis.Z).condition(PipeBlock.SOUTH, false).end();
 	}
 
 	private void slider() {
 		ModelFile slider = models().getExistingFile(TwilightForestMod.prefix("block/slider"));
 		ModelFile horizSlider = models().getExistingFile(TwilightForestMod.prefix("block/slider_horiz"));
 		getVariantBuilder(TFBlocks.slider.get()).forAllStates(state -> {
-			switch (state.get(SliderBlock.AXIS)) {
+			switch (state.getValue(SliderBlock.AXIS)) {
 				case X:
-					switch(state.get(SliderBlock.DELAY)) {
+					switch(state.getValue(SliderBlock.DELAY)) {
 						case 0:
 						case 1:
 						case 2:
@@ -1043,7 +1066,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 					}
 				case Y:
 				default:
-					switch(state.get(SliderBlock.DELAY)) {
+					switch(state.getValue(SliderBlock.DELAY)) {
 						case 0:
 						case 1:
 						case 2:
@@ -1051,7 +1074,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 							return ConfiguredModel.builder().modelFile(slider).build();
 					}
 				case Z:
-					switch(state.get(SliderBlock.DELAY)) {
+					switch(state.getValue(SliderBlock.DELAY)) {
 						case 0:
 						case 1:
 						case 2:
@@ -1083,10 +1106,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("all", prefix("block/towerdev_reappearing_trace_on"));
 		getVariantBuilder(TFBlocks.reappearing_block.get()).forAllStates(s -> {
 			ModelFile model;
-			if (s.get(VanishingBlock.VANISHED)) {
-				model = s.get(VanishingBlock.ACTIVE) ? reappearVanishedActive : reappearVanished;
+			if (s.getValue(VanishingBlock.VANISHED)) {
+				model = s.getValue(VanishingBlock.ACTIVE) ? reappearVanishedActive : reappearVanished;
 			} else {
-				model = s.get(VanishingBlock.ACTIVE) ? reappearActive : reappear;
+				model = s.getValue(VanishingBlock.ACTIVE) ? reappearActive : reappear;
 			}
 			return ConfiguredModel.builder().modelFile(model).build();
 		});
@@ -1263,12 +1286,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(green).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
 						.part().modelFile(green).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
 						.part().modelFile(green).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
-						.part().modelFile(greenTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
-						.part().modelFile(greenBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
-						.part().modelFile(greenTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
-						.part().modelFile(greenBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(fixer ? greenBottom : greenTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(fixer ? greenTop : greenBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(greenTop).rotationX(90).addModel().condition(PipeBlock.UP, true).end()
+						.part().modelFile(greenBottom).rotationX(90).addModel().condition(PipeBlock.DOWN, true).end()
+						.part().modelFile(greenTop).rotationY(270).addModel().condition(PipeBlock.EAST, true).end()
+						.part().modelFile(greenBottom).rotationY(270).addModel().condition(PipeBlock.WEST, true).end()
+						.part().modelFile(fixer ? greenBottom : greenTop).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? greenTop : greenBottom).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.NORTH, true).end();
 
 		ModelFile brown = models().withExistingParent(TFBlocks.brown_thorns.getId().getPath(), prefix("block/thorns_main"))
 						.texture("side", prefix("block/brown_thorns_side"))
@@ -1283,12 +1306,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(brown).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
 						.part().modelFile(brown).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
 						.part().modelFile(brown).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
-						.part().modelFile(brownTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
-						.part().modelFile(brownBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
-						.part().modelFile(brownTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
-						.part().modelFile(brownBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(fixer ? brownBottom : brownTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(fixer ? brownTop : brownBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(brownTop).rotationX(90).addModel().condition(PipeBlock.UP, true).end()
+						.part().modelFile(brownBottom).rotationX(90).addModel().condition(PipeBlock.DOWN, true).end()
+						.part().modelFile(brownTop).rotationY(270).addModel().condition(PipeBlock.EAST, true).end()
+						.part().modelFile(brownBottom).rotationY(270).addModel().condition(PipeBlock.WEST, true).end()
+						.part().modelFile(fixer ? brownBottom : brownTop).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? brownTop : brownBottom).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.NORTH, true).end();
 
 		ModelFile burnt = models().withExistingParent(TFBlocks.burnt_thorns.getId().getPath(), prefix("block/thorns_main"))
 						.texture("side", prefix("block/burnt_thorns_side"))
@@ -1303,12 +1326,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(burnt).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
 						.part().modelFile(burnt).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
 						.part().modelFile(burnt).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
-						.part().modelFile(burntTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
-						.part().modelFile(burntBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
-						.part().modelFile(burntTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
-						.part().modelFile(burntBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(fixer ? burntBottom : burntTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(fixer ? burntTop : burntBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(burntTop).rotationX(90).addModel().condition(PipeBlock.UP, true).end()
+						.part().modelFile(burntBottom).rotationX(90).addModel().condition(PipeBlock.DOWN, true).end()
+						.part().modelFile(burntTop).rotationY(270).addModel().condition(PipeBlock.EAST, true).end()
+						.part().modelFile(burntBottom).rotationY(270).addModel().condition(PipeBlock.WEST, true).end()
+						.part().modelFile(fixer ? burntBottom : burntTop).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? burntTop : burntBottom).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.NORTH, true).end();
 	}
 
 	private void auroraBlocks() {
@@ -1398,7 +1421,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getVariantBuilder(b).forAllStates(state -> {
 			int rotY;
 			Map<HugeLilypadPiece, ModelFile> m;
-			switch (state.get(HugeLilyPadBlock.FACING)) {
+			switch (state.getValue(HugeLilyPadBlock.FACING)) {
 			default:
 			case NORTH:
 				rotY = 0;
@@ -1418,7 +1441,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 				break;
 			}
 
-			ModelFile model = m.get(state.get(HugeLilyPadBlock.PIECE));
+			ModelFile model = m.get(state.getValue(HugeLilyPadBlock.PIECE));
 			return ConfiguredModel.builder().rotationY(rotY).modelFile(model).build();
 		});
 	}

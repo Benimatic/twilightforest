@@ -1,21 +1,21 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.boss.IceBombEntity;
@@ -23,15 +23,31 @@ import twilightforest.util.WorldUtil;
 
 import java.util.Random;
 
-public class TrollEntity extends MonsterEntity implements IRangedAttackMob {
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.FleeSunGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 
-	private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(TrollEntity.class, DataSerializers.BOOLEAN);
+public class TrollEntity extends Monster implements RangedAttackMob {
+
+	private static final EntityDataAccessor<Boolean> ROCK_FLAG = SynchedEntityData.defineId(TrollEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, AttributeModifier.Operation.ADDITION);
 
 	private RangedAttackGoal aiArrowAttack;
 	private MeleeAttackGoal aiAttackOnCollide;
 
-	public TrollEntity(EntityType<? extends TrollEntity> type, World world) {
+	public TrollEntity(EntityType<? extends TrollEntity> type, Level world) {
 		super(type, world);
 	}
 
@@ -40,44 +56,44 @@ public class TrollEntity extends MonsterEntity implements IRangedAttackMob {
 		aiArrowAttack = new RangedAttackGoal(this, 1.0D, 20, 60, 15.0F);
 		aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false);
 
-		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new RestrictSunGoal(this));
 		this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 
-		if (world != null && !world.isRemote) {
+		if (level != null && !level.isClientSide) {
 			this.setCombatTask();
 		}
 	}
 
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D);
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, 30.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.28D)
+				.add(Attributes.ATTACK_DAMAGE, 7.0D);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(ROCK_FLAG, false);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(ROCK_FLAG, false);
 	}
 
 	public boolean hasRock() {
-		return dataManager.get(ROCK_FLAG);
+		return entityData.get(ROCK_FLAG);
 	}
 
 	public void setHasRock(boolean rock) {
-		dataManager.set(ROCK_FLAG, rock);
+		entityData.set(ROCK_FLAG, rock);
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			if (rock) {
 				if (!getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
-					this.getAttribute(Attributes.FOLLOW_RANGE).applyNonPersistentModifier(ROCK_MODIFIER);
+					this.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(ROCK_MODIFIER);
 				}
 			} else {
 				this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
@@ -87,20 +103,20 @@ public class TrollEntity extends MonsterEntity implements IRangedAttackMob {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entity) {
-		swingArm(Hand.MAIN_HAND);
-		return super.attackEntityAsMob(entity);
+	public boolean doHurtTarget(Entity entity) {
+		swing(InteractionHand.MAIN_HAND);
+		return super.doHurtTarget(entity);
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putBoolean("HasRock", this.hasRock());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		this.setHasRock(compound.getBoolean("HasRock"));
 	}
 
@@ -116,8 +132,8 @@ public class TrollEntity extends MonsterEntity implements IRangedAttackMob {
 	}
 
 	@Override
-	protected void onDeathUpdate() {
-		super.onDeathUpdate();
+	protected void tickDeath() {
+		super.tickDeath();
 
 		if (this.deathTime % 5 == 0) {
 			this.ripenTrollBerNearby(this.deathTime / 5);
@@ -126,37 +142,37 @@ public class TrollEntity extends MonsterEntity implements IRangedAttackMob {
 
 	private void ripenTrollBerNearby(int offset) {
 		int range = 12;
-		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this.getPosition()), range)) {
+		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this.blockPosition()), range)) {
 			ripenBer(offset, pos);
 		}
 	}
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber.get() && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.world.setBlockState(pos, TFBlocks.trollber.get().getDefaultState());
-			world.playEvent(2004, pos, 0);
+		if (this.level.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber.get() && this.random.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.level.setBlockAndUpdate(pos, TFBlocks.trollber.get().defaultBlockState());
+			level.levelEvent(2004, pos, 0);
 		}
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
+	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.hasRock()) {
-			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, this.world, this);
+			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, this.level, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
-			double d0 = target.getPosX() - this.getPosX();
-			double d1 = target.getBoundingBox().minY + target.getHeight() / 3.0F - ice.getPosY();
-			double d2 = target.getPosZ() - this.getPosZ();
-			double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
-			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.world.getDifficulty().getId() * 4);
+			double d0 = target.getX() - this.getX();
+			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - ice.getY();
+			double d2 = target.getZ() - this.getZ();
+			double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.level.getDifficulty().getId() * 4);
 
-			this.playSound(TFSounds.ICEBOMB_FIRED, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-			this.world.addEntity(ice);
+			this.playSound(TFSounds.ICEBOMB_FIRED, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.level.addFreshEntity(ice);
 		}
 	}
 
-	public static boolean canSpawn(EntityType<? extends TrollEntity> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-		BlockPos blockpos = pos.down();
+	public static boolean canSpawn(EntityType<? extends TrollEntity> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
+		BlockPos blockpos = pos.below();
 		return !(world.getBlockState(blockpos).getBlock() == TFBlocks.giant_obsidian.get()) && !world.canSeeSky(pos) && pos.getY() < 60;
 	}
 }

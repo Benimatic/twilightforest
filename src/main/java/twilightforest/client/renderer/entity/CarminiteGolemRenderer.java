@@ -1,10 +1,10 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.CarminiteGolemModel;
 import twilightforest.entity.CarminiteGolemEntity;
@@ -13,7 +13,7 @@ public class CarminiteGolemRenderer<T extends CarminiteGolemEntity, M extends Ca
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("carminitegolem.png");
 
-	public CarminiteGolemRenderer(EntityRendererManager manager, M model, float shadowSize) {
+	public CarminiteGolemRenderer(EntityRenderDispatcher manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 
@@ -21,19 +21,19 @@ public class CarminiteGolemRenderer<T extends CarminiteGolemEntity, M extends Ca
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.IronGolemRenderer}
 	 */
 	@Override
-	protected void applyRotations(T entity, MatrixStack ms, float ageInTicks, float rotationYaw, float partialTicks) {
-		super.applyRotations(entity, ms, ageInTicks, rotationYaw, partialTicks);
+	protected void setupRotations(T entity, PoseStack ms, float ageInTicks, float rotationYaw, float partialTicks) {
+		super.setupRotations(entity, ms, ageInTicks, rotationYaw, partialTicks);
 
-		if (!(entity.limbSwingAmount < 0.01D)) {
+		if (!(entity.animationSpeed < 0.01D)) {
 			float f = 13.0F;
-			float f1 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks) + 6.0F;
+			float f1 = entity.animationPosition - entity.animationSpeed * (1.0F - partialTicks) + 6.0F;
 			float f2 = (Math.abs(f1 % 13.0F - 6.5F) - 3.25F) / 3.25F;
-			ms.rotate(Vector3f.ZP.rotationDegrees(6.5F * f2));
+			ms.mulPose(Vector3f.ZP.rotationDegrees(6.5F * f2));
 		}
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getTextureLocation(T entity) {
 		return textureLoc;
 	}
 }
