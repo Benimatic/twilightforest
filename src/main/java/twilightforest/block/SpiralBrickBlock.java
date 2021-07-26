@@ -36,11 +36,6 @@ public class SpiralBrickBlock extends Block {
 		builder.add(AXIS_FACING, DIAGONAL);
 	}
 
-	@Override
-	public int getLightValue(BlockState state, BlockGetter world, BlockPos pos) {
-		return super.getLightValue(state, world, pos);
-	}
-
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {

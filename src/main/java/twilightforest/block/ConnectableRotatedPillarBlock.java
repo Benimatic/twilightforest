@@ -1,24 +1,20 @@
 package twilightforest.block;
 
-import net.minecraft.block.*;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 	private static final BooleanProperty NORTH = PipeBlock.NORTH;
@@ -75,8 +71,7 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 	}
 
 	public boolean canConnectTo(BlockState state, boolean solidSide) {
-		Block block = state.getBlock();
-		return !isExceptionForConnection(block) && solidSide;
+		return !isExceptionForConnection(state) && solidSide;
 	}
 
 	@Override

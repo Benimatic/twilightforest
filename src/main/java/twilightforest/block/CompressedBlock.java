@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.TooltipFlag;
@@ -46,7 +47,7 @@ public class CompressedBlock extends Block {
 	}
 
 	@Override
-	public void stepOn(Level worldIn, BlockPos pos, Entity entityIn) {
+	public void stepOn(Level worldIn, BlockPos pos, BlockState state, Entity entityIn) {
 		if ((!entityIn.fireImmune())
 				&& entityIn instanceof LivingEntity
 				&& (!EnchantmentHelper.hasFrostWalker((LivingEntity) entityIn))
@@ -54,15 +55,15 @@ public class CompressedBlock extends Block {
 			entityIn.hurt(TFDamageSources.FIERY, 1.0F);
 		}
 
-		super.stepOn(worldIn, pos, entityIn);
+		super.stepOn(worldIn, pos, state, entityIn);
 	}
 
 	@Override
-	public void fallOn(Level worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
+	public void fallOn(Level worldIn, BlockState state, BlockPos pos, Entity entityIn, float fallDistance) {
 		if (this == TFBlocks.steeleaf_block.get()) {
-			entityIn.causeFallDamage(fallDistance, 0.75F);
+			entityIn.causeFallDamage(fallDistance, 0.75F, DamageSource.FALL);
 		} else if (this == TFBlocks.arctic_fur_block.get()) {
-			entityIn.causeFallDamage(fallDistance, 0.1F);
+			entityIn.causeFallDamage(fallDistance, 0.1F, DamageSource.FALL);
 		}
 	}
 

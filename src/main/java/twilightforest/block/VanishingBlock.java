@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
@@ -214,7 +215,7 @@ public class VanishingBlock extends Block {
 			float f2 = Math.max(0.0F, 1.0F * 1.0F * 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 1.0F * 1.0F * 0.6F - 0.7F);
 			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
-				worldIn.addParticle(new DustParticleOptions(f1, f2, f3, 1.0F), d1, d2, d3, 0.0D, 0.0D, 0.0D);
+				worldIn.addParticle(new DustParticleOptions(new Vector3f(f1, f2, f3), 1.0F), d1, d2, d3, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

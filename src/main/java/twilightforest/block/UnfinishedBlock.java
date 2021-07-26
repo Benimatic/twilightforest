@@ -13,7 +13,7 @@ import java.util.List;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class UnfinishedBlock extends Block {
-    private boolean nyi;
+    private final boolean nyi;
 
     public UnfinishedBlock(Properties properties, boolean nyi) {
         super(properties);

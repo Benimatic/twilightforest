@@ -1,25 +1,25 @@
 package twilightforest.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
@@ -27,8 +27,6 @@ import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class JarBlock extends Block {
 
@@ -48,10 +46,10 @@ public class JarBlock extends Block {
 
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		ItemEntity jarStuff = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ());
+		ItemEntity jarStuff = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), this == TFBlocks.firefly_jar.get() ? TFBlocks.firefly.get().asItem().getDefaultInstance() : TFBlocks.cicada.get().asItem().getDefaultInstance());
 		if(player.isShiftKeyDown()) {
 			worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-			jarStuff.spawnAtLocation(this == TFBlocks.firefly_jar.get() ? TFBlocks.firefly.get() : TFBlocks.cicada.get());
+			jarStuff.spawnAtLocation(jarStuff.getItem());
 			jarStuff.spawnAtLocation(Items.GLASS_BOTTLE);
 			return InteractionResult.SUCCESS;
 		}

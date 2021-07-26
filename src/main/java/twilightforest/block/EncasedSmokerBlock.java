@@ -1,17 +1,13 @@
 package twilightforest.block;
 
-import net.minecraft.block.*;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import twilightforest.TFSounds;
 
 public class EncasedSmokerBlock extends TFSmokerBlock {
 
@@ -46,9 +42,10 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 		}
 	}
 
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return state.getValue(ACTIVE);
-	}
+	//TODO whats the new method for this?
+//	@Override
+//	public boolean hasTileEntity(BlockState state) {
+//		return state.getValue(ACTIVE);
+//	}
 
 }

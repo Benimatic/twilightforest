@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.math.Vector3f;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -111,7 +112,7 @@ public class TrollsteinnBlock extends Block {
 			}
 
 			if (rx < pos.getX() || rx > pos.getX() + 1 || ry < 0.0D || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
-				world.addParticle(new DustParticleOptions(0.0F, random.nextFloat(), 1.0F, 1.0F), rx, ry, rz, 0.25D, -1.0D, 0.5D);
+				world.addParticle(new DustParticleOptions(new Vector3f(0.0F, random.nextFloat(), 1.0F), 1.0F), rx, ry, rz, 0.25D, -1.0D, 0.5D);
 			}
 		}
 	}

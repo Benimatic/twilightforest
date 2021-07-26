@@ -28,7 +28,7 @@ public class TrollRootBlock extends Block {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		return block.is(BlockTags.BASE_STONE_OVERWORLD) || block == TFBlocks.trollvidr.get() || block == TFBlocks.trollber.get() || block == TFBlocks.unripe_trollber.get();
+		return state.is(BlockTags.BASE_STONE_OVERWORLD) || block == TFBlocks.trollvidr.get() || block == TFBlocks.trollber.get() || block == TFBlocks.unripe_trollber.get();
 	}
 
 	@Override

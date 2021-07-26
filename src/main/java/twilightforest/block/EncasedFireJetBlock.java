@@ -1,17 +1,13 @@
 package twilightforest.block;
 
-import net.minecraft.block.*;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-import twilightforest.enums.FireJetVariant;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import twilightforest.TFSounds;
+import twilightforest.enums.FireJetVariant;
 
 public class EncasedFireJetBlock extends FireJetBlock {
 

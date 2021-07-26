@@ -59,14 +59,13 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, Entity entity) {
-		BlockState state = world.getBlockState(pos);
+	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
 
 		if (state.getBlock() instanceof ThornsBlock && state.getValue(AXIS) == Direction.Axis.Y) {
 			entityInside(state, world, pos, entity);
 		}
 
-		super.stepOn(world, pos, entity);
+		super.stepOn(world, pos, state, entity);
 	}
 
 	@Override

@@ -61,7 +61,7 @@ public class HedgeBlock extends Block {
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, Entity entity) {
+	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
 		if (shouldDamage(entity)) {
 			entity.hurt(DamageSource.CACTUS, DAMAGE);
 		}

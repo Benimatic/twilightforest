@@ -1,25 +1,19 @@
 package twilightforest.block;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import twilightforest.enums.BossVariant;
+import twilightforest.tileentity.spawner.BossSpawnerTileEntity;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import twilightforest.tileentity.TFTileEntities;
-import twilightforest.tileentity.TrophyTileEntity;
-import twilightforest.tileentity.spawner.BossSpawnerTileEntity;
 
 public class BossSpawnerBlock extends BaseEntityBlock {
 
