@@ -316,8 +316,7 @@ public class CarminiteGhastguardEntity extends Ghast {
 		double d2 = getTarget().getX() - (this.getX() + vec3d.x * 4.0D);
 		double d3 = getTarget().getBoundingBox().minY + getTarget().getBbHeight() / 2.0F - (0.5D + this.getY() + this.getBbHeight() / 2.0F);
 		double d4 = getTarget().getZ() - (this.getZ() + vec3d.z * 4.0D);
-		LargeFireball entitylargefireball = new LargeFireball(level, this, d2, d3, d4);
-		entitylargefireball.explosionPower = this.getExplosionPower();
+		LargeFireball entitylargefireball = new LargeFireball(level, this, d2, d3, d4, this.getExplosionPower());
 		entitylargefireball.setPos(this.getX() + vec3d.x * 4.0D, this.getY() + this.getBbHeight() / 2.0F + 0.5D, this.getZ() + vec3d.z * 4.0D);
 		level.addFreshEntity(entitylargefireball);
 

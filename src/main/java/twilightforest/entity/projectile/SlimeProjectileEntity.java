@@ -87,7 +87,7 @@ public class SlimeProjectileEntity extends TFThrowableEntity implements ItemSupp
 	private void die() {
 		if (!this.level.isClientSide) {
 			this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
-			this.kill();
+			this.discard();
 			this.level.broadcastEntityEvent(this, (byte) 3);
 		}
 	}

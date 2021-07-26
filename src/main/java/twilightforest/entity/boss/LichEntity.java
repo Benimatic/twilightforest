@@ -369,7 +369,7 @@ public class LichEntity extends Monster {
 		for (Mob mob : nearbyMobs) {
 			if (getSensing().hasLineOfSight(mob)) {
 				mob.spawnAnim();
-				mob.kill();
+				mob.discard();
 				// play death sound
 //					world.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 

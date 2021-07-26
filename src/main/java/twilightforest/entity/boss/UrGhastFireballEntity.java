@@ -15,8 +15,10 @@ import twilightforest.entity.projectile.ITFProjectile;
 
 public class UrGhastFireballEntity extends LargeFireball implements ITFProjectile {
 
-	public UrGhastFireballEntity(Level world, UrGhastEntity entityTFTowerBoss, double x, double y, double z) {
-		super(world, entityTFTowerBoss, x, y, z);
+	private int power;
+	public UrGhastFireballEntity(Level world, UrGhastEntity entityTFTowerBoss, double x, double y, double z, int power) {
+		super(world, entityTFTowerBoss, x, y, z, power);
+		this.power = power;
 	}
 
 	// [VanillaCopy] super, edits noted
@@ -32,8 +34,8 @@ public class UrGhastFireballEntity extends LargeFireball implements ITFProjectil
 				}
 
 				boolean flag = ForgeEventFactory.getMobGriefingEvent(this.level, this.getOwner());
-				this.level.explode(null, this.getX(), this.getY(), this.getZ(), this.explosionPower, flag, flag ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE);
-				this.remove();
+				this.level.explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, flag ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE);
+				this.discard();
 			}
 		}
 	}
@@ -45,12 +47,10 @@ public class UrGhastFireballEntity extends LargeFireball implements ITFProjectil
 				.add(this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist)
 				.scale(scale);
 		this.setDeltaMovement(vec3d);
-		float f = Mth.sqrt(getHorizontalDistanceSqr(vec3d));
+		float f = Mth.sqrt((float) distanceToSqr(vec3d));
 		this.yRot = (float) (Mth.atan2(vec3d.x, z) * (180F / (float) Math.PI));
 		this.xRot = (float) (Mth.atan2(vec3d.y, f) * (180F / (float) Math.PI));
 		this.yRotO = this.yRot;
 		this.xRotO = this.xRot;
 	}
-
-	//TODO: Are these used at all?
 }

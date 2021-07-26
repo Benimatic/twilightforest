@@ -107,7 +107,7 @@ public class CicadaShotEntity extends TFThrowableEntity {
             }
 
             this.level.broadcastEntityEvent(this, (byte) 3);
-            this.kill();
+            this.discard();
         }
     }
 }

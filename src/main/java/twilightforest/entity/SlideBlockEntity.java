@@ -112,7 +112,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 	@Override
 	public void tick() {
 		if (this.myState == null || this.myState.getMaterial() == Material.AIR) {
-			this.kill();
+			this.discard();
 		} else {
 			this.xo = this.getX();
 			this.yo = this.getY();
@@ -136,7 +136,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 
 				if (this.slideTime == 1) {
 					if (this.level.getBlockState(pos) != this.myState) {
-						this.kill();
+						this.discard();
 						return;
 					}
 
@@ -152,7 +152,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 				if (this.verticalCollision || this.horizontalCollision) {
 					this.setDeltaMovement(this.getDeltaMovement().multiply(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
 
-					this.kill();
+					this.discard();
 
 					if (this.level.isUnobstructed(myState, pos, CollisionContext.empty())) {
 						level.setBlockAndUpdate(pos, myState);
@@ -162,7 +162,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 					}
 				} else if (this.slideTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600) {
 					this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
-					this.kill();
+					this.discard();
 				}
 
 				// push things out and damage them

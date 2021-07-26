@@ -747,7 +747,7 @@ public class HydraEntity extends Mob implements Enemy {
 				}
 			}
 
-			this.kill();
+			this.discard();
 		}
 
 		for (int i = 0; i < 20; ++i) {

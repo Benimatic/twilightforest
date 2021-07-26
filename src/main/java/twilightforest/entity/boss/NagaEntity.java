@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -152,7 +153,7 @@ public class NagaEntity extends Monster {
 
 			@Override
 			protected Vec3 getPosition() {
-				return RandomPos.getPos(this.mob, 30, 7);
+				return DefaultRandomPos.getPos(this.mob, 30, 7);
 			}
 		});
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -798,7 +799,7 @@ public class NagaEntity extends Monster {
 
 			bodySegments[i].setPos(destX, destY, destZ);
 
-			double distance = Mth.sqrt(diff.x * diff.x + diff.z * diff.z);
+			double distance = Mth.sqrt((float) (diff.x * diff.x + diff.z * diff.z));
 
 			if (i == 0) {
 				// tilt segment next to head up towards head

@@ -97,7 +97,7 @@ public class IceBombEntity extends TFThrowableEntity {
 
 			if (!level.isClientSide && this.zoneTimer <= 0) {
 				level.levelEvent(2001, new BlockPos(this.blockPosition()), Block.getId(Blocks.ICE.defaultBlockState()));
-				remove();
+				discard();
 			}
 		} else {
 			makeTrail();
@@ -144,7 +144,7 @@ public class IceBombEntity extends TFThrowableEntity {
 					level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
 					level.setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 
-					entity.kill();
+					entity.discard();
 				} else {
 					entity.hurt(TFDamageSources.FROZEN(this, (LivingEntity)this.getOwner()), 1);
 					entity.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 5, 2));

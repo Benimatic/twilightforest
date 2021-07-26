@@ -124,7 +124,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 			}
 		}
 
-		this.remove();
+		this.discard();
 	}
 
 	@Override

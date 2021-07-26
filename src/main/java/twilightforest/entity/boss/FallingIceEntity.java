@@ -47,7 +47,7 @@ public class FallingIceEntity extends FallingBlockEntity {
 			for (FallingIceEntity entity : nearby) {
 				if (entity != this) {
 					if (entity.time < this.time) {
-						entity.kill();
+						entity.discard();
 					}
 				}
 			}

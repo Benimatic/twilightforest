@@ -76,7 +76,7 @@ public class TomeBoltEntity extends TFThrowableEntity implements ItemSupplier {
 			}
 
 			this.level.broadcastEntityEvent(this, (byte) 3);
-			this.kill();
+			this.discard();
 		}
 	}
 

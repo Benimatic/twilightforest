@@ -97,7 +97,7 @@ public class NatureBoltEntity extends TFThrowableEntity implements ITFProjectile
 			}
 
 			this.level.broadcastEntityEvent(this, (byte) 3);
-			this.kill();
+			this.discard();
 		}
 	}
 

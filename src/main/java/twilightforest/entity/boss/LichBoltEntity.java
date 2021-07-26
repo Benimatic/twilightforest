@@ -111,7 +111,7 @@ public class LichBoltEntity extends TFThrowableEntity implements ItemSupplier {
 					entityHit.hurt(TFDamageSources.LICH_BOLT, 6);
 				}
 				this.level.broadcastEntityEvent(this, (byte) 3);
-				this.kill();
+				this.discard();
 			}
 		}
 	}

@@ -47,7 +47,7 @@ public class ProtectionBoxEntity extends Entity {
 		super.tick();
 
 		if (lifeTime <= 1) {
-			kill();
+			discard();
 		} else {
 			lifeTime--;
 		}

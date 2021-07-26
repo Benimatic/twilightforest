@@ -98,7 +98,7 @@ public class CharmEffectEntity extends Entity implements ItemSupplier {
 
 		if (!this.level.isClientSide
 				&& (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
-			this.kill();
+			this.discard();
 		}
 	}
 

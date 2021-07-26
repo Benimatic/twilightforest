@@ -78,7 +78,7 @@ public class LichBombEntity extends TFThrowableEntity implements ItemSupplier {
 	private void explode() {
 		if (!this.level.isClientSide) {
 			this.level.explode(this, TFDamageSources.LICH_BOMB, null, this.getX(), this.getY(), this.getZ(), 2F, false, Explosion.BlockInteraction.NONE);
-			this.kill();
+			this.discard();
 		}
 	}
 

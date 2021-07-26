@@ -80,7 +80,7 @@ public class ThrownWepEntity extends TFThrowableEntity {
 					((EntityHitResult)result).getEntity().hurt(this.getItem().getItem() == TFItems.knightmetal_pickaxe.get() ? TFDamageSources.THROWN_PICKAXE : TFDamageSources.THROWN_AXE, projectileDamage);
 				}
 				level.broadcastEntityEvent(this, (byte) 3);
-				kill();
+				discard();
 			}
 		}
 	}

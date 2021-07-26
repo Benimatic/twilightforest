@@ -391,7 +391,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 		// despawn mini ghasts that are in our AABB
 		for (CarminiteGhastlingEntity ghast : level.getEntitiesOfClass(CarminiteGhastlingEntity.class, this.getBoundingBox().inflate(1, 1, 1))) {
 			ghast.spawnAnim();
-			ghast.kill();
+			ghast.discard();
 			this.heal(2);
 		}
 
@@ -460,8 +460,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 		double offsetY = this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F - (this.getY() + this.getBbHeight() / 2.0F);
 		double offsetZ = this.getTarget().getZ() - this.getZ();
 
-		UrGhastFireballEntity entityFireball = new UrGhastFireballEntity(this.level, this, offsetX, offsetY, offsetZ);
-		entityFireball.explosionPower = 1;
+		UrGhastFireballEntity entityFireball = new UrGhastFireballEntity(this.level, this, offsetX, offsetY, offsetZ, 1);
 		double shotSpawnDistance = 8.5D;
 		Vec3 lookVec = this.getViewVector(1.0F);
 		entityFireball.setPos(
@@ -472,8 +471,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 		this.level.addFreshEntity(entityFireball);
 
 		for (int i = 0; i < 2; i++) {
-			entityFireball = new UrGhastFireballEntity(this.level, this, offsetX + (random.nextFloat() - random.nextFloat()) * 8, offsetY, offsetZ + (random.nextFloat() - random.nextFloat()) * 8);
-			entityFireball.explosionPower = 1;
+			entityFireball = new UrGhastFireballEntity(this.level, this, offsetX + (random.nextFloat() - random.nextFloat()) * 8, offsetY, offsetZ + (random.nextFloat() - random.nextFloat()) * 8, 1);
 			entityFireball.setPos(
 					this.getX() + lookVec.x * shotSpawnDistance,
 					this.getY() + this.getBbHeight() / 2.0F + lookVec.y * shotSpawnDistance,

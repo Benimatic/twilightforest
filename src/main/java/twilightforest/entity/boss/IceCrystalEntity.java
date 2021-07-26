@@ -82,7 +82,7 @@ public class IceCrystalEntity extends IceMobEntity {
 		if (!level.isClientSide) {
 			this.crystalAge++;
 			if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge) {
-				this.kill();
+				this.discard();
 			}
 		}
 	}
