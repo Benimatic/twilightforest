@@ -9,7 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -56,7 +56,7 @@ public class ChangeBiomePacket {
 						chunkAt.getBiomes().biomes[y << WIDTH_BITS + WIDTH_BITS | z << WIDTH_BITS | x] = targetBiome;
 					}
 
-					world.onChunkLoaded(message.pos.getX() >> 4, message.pos.getZ() >> 4);
+					world.getChunk(message.pos.getX() >> 4, message.pos.getZ() >> 4);
 					for (int k = 0; k < 16; ++k)
 						world.setSectionDirtyWithNeighbors(message.pos.getX() >> 4, k, message.pos.getZ() >> 4);
 

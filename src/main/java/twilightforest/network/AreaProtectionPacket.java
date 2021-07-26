@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ProtectionBoxEntity;
 
@@ -31,12 +31,12 @@ public class AreaProtectionPacket {
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(sbb.x0);
-		buf.writeInt(sbb.y0);
-		buf.writeInt(sbb.z0);
-		buf.writeInt(sbb.x1);
-		buf.writeInt(sbb.y1);
-		buf.writeInt(sbb.z1);
+		buf.writeInt(sbb.minX());
+		buf.writeInt(sbb.minY());
+		buf.writeInt(sbb.minZ());
+		buf.writeInt(sbb.maxX());
+		buf.writeInt(sbb.maxY());
+		buf.writeInt(sbb.maxZ());
 		buf.writeLong(pos.asLong());
 	}
 
