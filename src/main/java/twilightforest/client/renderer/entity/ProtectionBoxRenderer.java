@@ -3,7 +3,8 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ProtectionBoxModel;
@@ -14,7 +15,7 @@ public class ProtectionBoxRenderer<T extends ProtectionBoxEntity> extends Entity
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("protectionbox.png");
 	private final ProtectionBoxModel<T> boxModel = new ProtectionBoxModel<>();
 
-	public ProtectionBoxRenderer(EntityRenderDispatcher manager) {
+	public ProtectionBoxRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 		this.shadowRadius = 0.5F;
 	}

@@ -1,12 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,7 @@ import java.util.Random;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 
 public class FallingIceRenderer extends EntityRenderer<FallingIceEntity> {
-	public FallingIceRenderer(EntityRenderDispatcher renderManagerIn) {
+	public FallingIceRenderer(EntityRendererProvider.Context renderManagerIn) {
 		super(renderManagerIn);
 		this.shadowRadius = 0.5F;
 	}

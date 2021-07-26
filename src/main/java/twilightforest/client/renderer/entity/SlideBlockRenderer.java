@@ -1,12 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.RenderShape;
@@ -24,7 +25,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 
 public class SlideBlockRenderer extends EntityRenderer<SlideBlockEntity> {
 
-	public SlideBlockRenderer(EntityRenderDispatcher manager) {
+	public SlideBlockRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 		shadowRadius = 0.0f;
 	}

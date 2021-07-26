@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -13,7 +14,7 @@ public class TFGhastRenderer<T extends CarminiteGhastguardEntity, M extends TFGh
 	private static final ResourceLocation textureLocOpen = TwilightForestMod.getModelTexture("towerghast_openeyes.png");
 	private static final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerghast_fire.png");
 
-	public TFGhastRenderer(EntityRenderDispatcher manager, M model, float shadowSize) {
+	public TFGhastRenderer(EntityRendererProvider.Context manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 

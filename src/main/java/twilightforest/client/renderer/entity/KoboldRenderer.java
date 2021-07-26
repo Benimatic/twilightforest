@@ -3,7 +3,8 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.model.ArmedModel;
@@ -17,7 +18,7 @@ import twilightforest.entity.KoboldEntity;
 
 public class KoboldRenderer extends TFBipedRenderer<KoboldEntity, KoboldModel> {
 
-	public KoboldRenderer(EntityRenderDispatcher manager, KoboldModel modelBiped, float shadowSize, String textureName) {
+	public KoboldRenderer(EntityRendererProvider.Context manager, KoboldModel modelBiped, float shadowSize, String textureName) {
 		super(manager, modelBiped, shadowSize, textureName);
 
 		this.layers.removeIf(r -> r instanceof net.minecraft.client.renderer.entity.layers.ItemInHandLayer);
@@ -25,7 +26,7 @@ public class KoboldRenderer extends TFBipedRenderer<KoboldEntity, KoboldModel> {
 	}
 
 	/**
-	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.HeldItemLayer} with additional transforms
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.ItemInHandLayer} with additional transforms
 	 */
 	private static class HeldItemLayer extends RenderLayer<KoboldEntity, KoboldModel> {
 		public HeldItemLayer(RenderLayerParent<KoboldEntity, KoboldModel> renderer) {

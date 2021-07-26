@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.finalcastle.CastleGuardianModel;
@@ -11,7 +12,7 @@ public class CastleGuardianRenderer extends LivingEntityRenderer<CastleGuardianE
 
 	private final ResourceLocation textureLoc;
 
-	public CastleGuardianRenderer(EntityRenderDispatcher manager, CastleGuardianModel model, float shadowSize, String textureName) {
+	public CastleGuardianRenderer(EntityRendererProvider.Context manager, CastleGuardianModel model, float shadowSize, String textureName) {
 		super(manager, model, shadowSize);
 
 		if (textureName.startsWith("textures"))

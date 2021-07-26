@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.SheepRenderer;
 import net.minecraft.client.renderer.entity.layers.SheepFurLayer;
 import net.minecraft.client.model.EntityModel;
@@ -14,7 +15,7 @@ public class BighornRenderer extends SheepRenderer {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("bighorn.png");
 
 	@SuppressWarnings("unchecked")
-	public BighornRenderer(EntityRenderDispatcher manager, SheepModel<? extends Sheep> baseModel, EntityModel<?> coatModel, float shadowSize) {
+	public BighornRenderer(EntityRendererProvider.Context manager, SheepModel<? extends Sheep> baseModel, EntityModel<?> coatModel, float shadowSize) {
 		super(manager);
 		this.shadowRadius = shadowSize;
 		this.model = (SheepModel<Sheep>) baseModel;

@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.LichModel;
@@ -11,7 +12,7 @@ public class LichRenderer extends HumanoidMobRenderer<LichEntity, LichModel> {
 
 	private static final ResourceLocation LICH_TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
 
-	public LichRenderer(EntityRenderDispatcher manager, LichModel modelbiped, float shadowSize) {
+	public LichRenderer(EntityRendererProvider.Context manager, LichModel modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
 		addLayer(new ShieldLayer<>(this));
 	}

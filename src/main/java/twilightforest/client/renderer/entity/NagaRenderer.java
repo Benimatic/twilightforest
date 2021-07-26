@@ -3,7 +3,8 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +21,7 @@ public class NagaRenderer<M extends NagaModel<NagaEntity>> extends MobRenderer<N
 	private static final ResourceLocation textureLocDazed = TwilightForestMod.getModelTexture("nagahead_dazed.png");
 	private static final ResourceLocation textureLocCharging = TwilightForestMod.getModelTexture("nagahead_charge.png");
 
-	public NagaRenderer(EntityRenderDispatcher manager, M modelbase, float shadowSize) {
+	public NagaRenderer(EntityRendererProvider.Context manager, M modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);
 	}
 

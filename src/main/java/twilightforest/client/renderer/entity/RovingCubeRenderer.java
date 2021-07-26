@@ -4,7 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,7 @@ public class RovingCubeRenderer<T extends RovingCubeEntity> extends EntityRender
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
 	private final Model model = new CubeOfAnnihilationModel();
 
-	public RovingCubeRenderer(EntityRenderDispatcher manager) {
+	public RovingCubeRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 	}
 

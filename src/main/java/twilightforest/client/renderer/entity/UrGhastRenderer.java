@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.UrGhastModel;
@@ -12,7 +13,7 @@ public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhastEntity, UrGha
 	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
 	private final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerboss_fire.png");
 
-	public UrGhastRenderer(EntityRenderDispatcher manager, UrGhastModel modelTFGhast, float shadowSize, float scale) {
+	public UrGhastRenderer(EntityRendererProvider.Context manager, UrGhastModel modelTFGhast, float shadowSize, float scale) {
 		super(manager, modelTFGhast, shadowSize, scale);
 	}
 

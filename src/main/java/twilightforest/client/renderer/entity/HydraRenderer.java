@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -11,7 +12,7 @@ public class HydraRenderer extends MobRenderer<HydraEntity, HydraModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
-	public HydraRenderer(EntityRenderDispatcher manager, HydraModel modelbase, float shadowSize) {
+	public HydraRenderer(EntityRendererProvider.Context manager, HydraModel modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);
 	}
 

@@ -4,8 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -17,7 +18,7 @@ public class TFGiantRenderer<T extends GiantMinerEntity> extends HumanoidMobRend
 	private final PlayerModel<T> normalModel;
 	private final PlayerModel<T> slimModel;
 
-	public TFGiantRenderer(EntityRenderDispatcher manager) {
+	public TFGiantRenderer(EntityRendererProvider.Context manager) {
 		super(manager, new PlayerModel<>(0, false), 1.8F);
 		normalModel = getModel();
 		slimModel = new PlayerModel<>(0, true);

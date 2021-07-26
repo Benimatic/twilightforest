@@ -4,7 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -19,7 +20,7 @@ public class QuestRamRenderer extends MobRenderer<QuestRamEntity, QuestRamModel>
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
-	public QuestRamRenderer(EntityRenderDispatcher manager, QuestRamModel model) {
+	public QuestRamRenderer(EntityRendererProvider.Context manager, QuestRamModel model) {
 		super(manager, model, 1.0F);
 		addLayer(new LayerGlowingLines(this));
 	}

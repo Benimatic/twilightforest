@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +13,7 @@ public class BirdRenderer<T extends BirdEntity, M extends EntityModel<T>> extend
 
 	private final ResourceLocation textureLoc;
 
-	public BirdRenderer(EntityRenderDispatcher manager, M model, float shadowSize, String textureName) {
+	public BirdRenderer(EntityRendererProvider.Context manager, M model, float shadowSize, String textureName) {
 		super(manager, model, shadowSize);
 		textureLoc = TwilightForestMod.getModelTexture(textureName);
 	}

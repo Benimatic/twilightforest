@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -13,7 +14,7 @@ public class IceCrystalRenderer extends MobRenderer<IceCrystalEntity, IceCrystal
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("icecrystal.png");
 
-	public IceCrystalRenderer(EntityRenderDispatcher manager) {
+	public IceCrystalRenderer(EntityRendererProvider.Context manager) {
 		super(manager, new IceCrystalModel(), 0.25F);
 	}
 

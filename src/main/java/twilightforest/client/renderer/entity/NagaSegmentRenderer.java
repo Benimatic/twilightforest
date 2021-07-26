@@ -2,7 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -13,7 +14,7 @@ import twilightforest.entity.boss.NagaSegmentEntity;
 public class NagaSegmentRenderer<T extends NagaSegmentEntity> extends TFPartRenderer<T, NagaModel<T>> {
 	private static final ResourceLocation part_TextureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
 
-	public NagaSegmentRenderer(EntityRenderDispatcher m) {
+	public NagaSegmentRenderer(EntityRendererProvider.Context m) {
 		super(m, new NagaModel<>());
 	}
 

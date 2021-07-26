@@ -2,7 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -18,7 +19,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHeadEntity, HydraHead
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
 
-	public HydraHeadRenderer(EntityRenderDispatcher manager) {
+	public HydraHeadRenderer(EntityRendererProvider.Context manager) {
 		super(manager, new HydraHeadModel());
 	}
 

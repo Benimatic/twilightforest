@@ -2,7 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +14,7 @@ public class MistWolfRenderer extends WolfRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mistwolf.png");
 
-	public MistWolfRenderer(EntityRenderDispatcher manager) {
+	public MistWolfRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 		this.shadowRadius = 1.0F;
 	}
@@ -34,7 +35,7 @@ public class MistWolfRenderer extends WolfRenderer {
 
 		float smoky = entity.getBrightness() * 2F + 0.6F;
 
-		RenderSystem.color4f(misty, misty, misty, smoky);
+		RenderSystem.setShaderColor(misty, misty, misty, smoky);
 	}
 
 	/**

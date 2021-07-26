@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.TinyBirdModel;
@@ -13,7 +14,7 @@ public class TinyBirdRenderer extends BirdRenderer<TinyBirdEntity, TinyBirdModel
 	private static final ResourceLocation textureLocCardinal = TwilightForestMod.getModelTexture("tinybirdred.png");
 	private static final ResourceLocation textureLocBluebird = TwilightForestMod.getModelTexture("tinybirdblue.png");
 
-	public TinyBirdRenderer(EntityRenderDispatcher manager, TinyBirdModel model, float shadowSize) {
+	public TinyBirdRenderer(EntityRendererProvider.Context manager, TinyBirdModel model, float shadowSize) {
 		super(manager, model, shadowSize, "");
 	}
 

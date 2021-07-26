@@ -7,8 +7,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +31,7 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblinEntity, M extend
 	private final Model model = new SpikeBlockModel();
 	private final Model chainModel = new ChainModel();
 
-	public BlockChainGoblinRenderer(EntityRenderDispatcher manager, M model, float shadowSize) {
+	public BlockChainGoblinRenderer(EntityRendererProvider.Context manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 

@@ -4,7 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -15,7 +16,7 @@ import twilightforest.entity.boss.ThrownWepEntity;
 
 public class ThrownWepRenderer extends EntityRenderer<ThrownWepEntity> {
 
-	public ThrownWepRenderer(EntityRenderDispatcher manager) {
+	public ThrownWepRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 	}
 

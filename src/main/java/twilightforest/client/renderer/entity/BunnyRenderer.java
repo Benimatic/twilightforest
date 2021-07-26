@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -13,7 +14,7 @@ public class BunnyRenderer extends MobRenderer<BunnyEntity, BunnyModel> {
 	private final ResourceLocation textureLocWhite = TwilightForestMod.getModelTexture("bunnywhite.png");
 	private final ResourceLocation textureLocBrown = TwilightForestMod.getModelTexture("bunnybrown.png");
 
-	public BunnyRenderer(EntityRenderDispatcher manager, BunnyModel model, float shadowSize) {
+	public BunnyRenderer(EntityRendererProvider.Context manager, BunnyModel model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 

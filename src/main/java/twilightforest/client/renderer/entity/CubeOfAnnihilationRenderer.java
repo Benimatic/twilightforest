@@ -4,7 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -18,7 +19,7 @@ public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilatio
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
 	private final Model model = new CubeOfAnnihilationModel();
 
-	public CubeOfAnnihilationRenderer(EntityRenderDispatcher manager) {
+	public CubeOfAnnihilationRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 	}
 

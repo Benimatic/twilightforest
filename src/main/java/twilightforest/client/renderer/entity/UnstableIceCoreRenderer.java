@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
@@ -9,7 +10,7 @@ import twilightforest.entity.UnstableIceCoreEntity;
 
 public class UnstableIceCoreRenderer<T extends UnstableIceCoreEntity, M extends UnstableIceCoreModel<T>> extends TFBipedRenderer<T, M> {
 
-	public UnstableIceCoreRenderer(EntityRenderDispatcher manager, M model) {
+	public UnstableIceCoreRenderer(EntityRendererProvider.Context manager, M model) {
 		super(manager, model, 0.4F, "iceexploder.png");
 	}
 

@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.Mob;
@@ -11,7 +12,7 @@ public class TFGenericMobRenderer<T extends Mob, M extends EntityModel<T>> exten
 
 	private final ResourceLocation textureLoc;
 
-	public TFGenericMobRenderer(EntityRenderDispatcher manager, M model, float shadowSize, String textureName) {
+	public TFGenericMobRenderer(EntityRendererProvider.Context manager, M model, float shadowSize, String textureName) {
 		super(manager, model, shadowSize);
 
 		if (textureName.startsWith("textures")) {

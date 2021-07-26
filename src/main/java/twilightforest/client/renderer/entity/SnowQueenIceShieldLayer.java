@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +21,7 @@ import twilightforest.entity.boss.SnowQueenIceShieldEntity;
 import java.util.Random;
 
 public class SnowQueenIceShieldLayer<T extends SnowQueenIceShieldEntity> extends EntityRenderer<T> {
-	public SnowQueenIceShieldLayer(EntityRenderDispatcher renderManager) {
+	public SnowQueenIceShieldLayer(EntityRendererProvider.Context renderManager) {
 		super(renderManager);
 	}
 

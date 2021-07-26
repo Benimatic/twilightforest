@@ -1,12 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -22,7 +23,7 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<MinoshroomEntity, Mi
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
-	public MinoshroomRenderer(EntityRenderDispatcher manager, MinoshroomModel model, float shadowSize) {
+	public MinoshroomRenderer(EntityRendererProvider.Context manager, MinoshroomModel model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new LayerMinoshroomMushroom(this));
 	}

@@ -2,7 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -12,7 +13,7 @@ public class SwarmSpiderRenderer extends SpiderRenderer<SwarmSpiderEntity> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("swarmspider.png");
 
-	public SwarmSpiderRenderer(EntityRenderDispatcher manager) {
+	public SwarmSpiderRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 	}
 

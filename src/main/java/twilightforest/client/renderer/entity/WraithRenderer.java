@@ -1,8 +1,9 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.WraithModel;
@@ -14,7 +15,7 @@ public class WraithRenderer extends HumanoidMobRenderer<WraithEntity, WraithMode
 
 	private static final ResourceLocation textureWraith = TwilightForestMod.getModelTexture("ghost.png");
 
-	public WraithRenderer(EntityRenderDispatcher manager, WraithModel modelbiped, float shadowSize) {
+	public WraithRenderer(EntityRendererProvider.Context manager, WraithModel modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
 	}
 

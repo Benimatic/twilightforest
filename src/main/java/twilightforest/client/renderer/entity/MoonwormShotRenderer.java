@@ -4,7 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -18,7 +19,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel wormModel = new MoonwormModel();
 
-	public MoonwormShotRenderer(EntityRenderDispatcher manager) {
+	public MoonwormShotRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 		this.shadowRadius = 0.25F;
 	}

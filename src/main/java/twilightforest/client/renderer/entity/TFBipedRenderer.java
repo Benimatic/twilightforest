@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.Mob;
@@ -12,7 +13,7 @@ public class TFBipedRenderer<T extends Mob, M extends HumanoidModel<T>> extends 
 
 	private final ResourceLocation textureLoc;
 
-	public TFBipedRenderer(EntityRenderDispatcher manager, M modelBiped, float shadowSize, String textureName) {
+	public TFBipedRenderer(EntityRendererProvider.Context manager, M modelBiped, float shadowSize, String textureName) {
 		super(manager, modelBiped, shadowSize);
 
 		if (textureName.startsWith("textures")) {
@@ -22,7 +23,7 @@ public class TFBipedRenderer<T extends Mob, M extends HumanoidModel<T>> extends 
 		}
 	}
 
-	public TFBipedRenderer(EntityRenderDispatcher manager, M modelBiped, M armorModel1, M armorModel2, float shadowSize, String textureName) {
+	public TFBipedRenderer(EntityRendererProvider.Context manager, M modelBiped, M armorModel1, M armorModel2, float shadowSize, String textureName) {
 		this(manager, modelBiped, shadowSize, textureName);
 		this.addLayer(new HumanoidArmorLayer<>(this, armorModel1, armorModel2));
 	}

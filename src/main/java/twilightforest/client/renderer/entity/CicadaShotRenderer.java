@@ -4,7 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -18,7 +19,7 @@ public class CicadaShotRenderer extends EntityRenderer<CicadaShotEntity> {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
 	private final CicadaModel cicadaModel = new CicadaModel();
 
-	public CicadaShotRenderer(EntityRenderDispatcher manager) {
+	public CicadaShotRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 		this.shadowRadius = 0.25F;
 	}

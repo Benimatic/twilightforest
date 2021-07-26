@@ -49,7 +49,7 @@ public class TrophyTileEntityRenderer extends BlockEntityRenderer<TrophyTileEnti
 	private static final PhantomArmorTrophyModel phantomArmorModel = new PhantomArmorTrophyModel();
 	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
 
-	private static final ModelTFYetiAlphaTrophy yetiHead = new ModelTFYetiAlphaTrophy();
+	private static final AlphaYetiTrophyModel yetiHead = new AlphaYetiTrophyModel();
 	private static final ResourceLocation textureLocYeti = TwilightForestMod.getModelTexture("yetialpha.png");
 
 	private static final QuestRamTrophyModel ramHead = new QuestRamTrophyModel();

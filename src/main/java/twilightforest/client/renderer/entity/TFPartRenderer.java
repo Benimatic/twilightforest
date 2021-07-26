@@ -6,7 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +22,7 @@ public abstract class TFPartRenderer<T extends TFPartEntity<?>, M extends ListMo
 
 	protected final M entityModel;
 
-	public TFPartRenderer(EntityRenderDispatcher renderManager, M model) {
+	public TFPartRenderer(EntityRendererProvider.Context renderManager, M model) {
 		super(renderManager);
 		this.entityModel = model;
 	}

@@ -5,7 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -18,7 +19,7 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortarHead> {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
 	private final HydraMortarModel mortarModel = new HydraMortarModel();
 
-	public HydraMortarRenderer(EntityRenderDispatcher manager) {
+	public HydraMortarRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 		this.shadowRadius = 0.5F;
 	}

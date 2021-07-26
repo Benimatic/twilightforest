@@ -2,7 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +13,7 @@ public class MazeSlimeRenderer extends SlimeRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mazeslime.png");
 
-	public MazeSlimeRenderer(EntityRenderDispatcher manager, float shadowSize) {
+	public MazeSlimeRenderer(EntityRendererProvider.Context manager, float shadowSize) {
 		super(manager);
 		this.shadowRadius = shadowSize;
 	}

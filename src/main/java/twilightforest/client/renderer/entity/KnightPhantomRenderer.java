@@ -1,8 +1,9 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +15,7 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantomEnti
 
 	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
-	public KnightPhantomRenderer(EntityRenderDispatcher manager, KnightPhantomModel model, float shadowSize) {
+	public KnightPhantomRenderer(EntityRendererProvider.Context manager, KnightPhantomModel model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new ItemInHandLayer<>(this));
 		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(), new KnightPhantomModel()));
