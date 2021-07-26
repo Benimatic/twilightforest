@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 
 public class HydraTrophyModel extends GenericTrophyModel {
 
@@ -11,36 +13,37 @@ public class HydraTrophyModel extends GenericTrophyModel {
 	public ModelPart plate;
 	public ModelPart mouth;
 
-	public HydraTrophyModel() {
-		texWidth = 512;
-		texHeight = 256;
+	public HydraTrophyModel(ModelPart part) {
+		super(part);
 
-		this.head = new ModelPart(this, 0, 0);
-		this.head.setPos(0F, 0F, 0F);
-		this.head.texOffs(260, 64).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-		this.head.texOffs(236, 128).addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F, 0.0F, 0.0F, 0.0F);
-		this.head.texOffs(356, 70).addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F, 0.0F, 0.0F, 0.0F);
-
-
-		this.plate = new ModelPart(this, 0, 0);
-		this.plate.setPos(0.0F, 0.0F, 0.0F);
-		this.plate.texOffs(388, 0).addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-		this.plate.texOffs(220, 0).addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(plate, -0.7853981633974483F, 0.0F, 0.0F);
-
-		head.addChild(plate);
-
-		this.mouth = new ModelPart(this, 0, 0);
-		this.mouth.setPos(0.0F, 10.0F, -14.0F);
-		this.mouth.texOffs(240, 162).addBox(-15.0F, -2.0F, -24.0F, 30.0F, 8.0F, 24.0F, 0.0F, 0.0F, 0.0F);
-
-		head.addChild(mouth);
+		this.plate = head.getChild("plate");
+		this.mouth = head.getChild("mouth");
 	}
-	
-	private void setRotateAngle(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
+
+	public static LayerDefinition createHead() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(260, 64).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
+						.texOffs(236, 128).addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F)
+						.texOffs(356, 70).addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
+				PartPose.ZERO);
+
+		partdefinition.addOrReplaceChild("plate",
+				CubeListBuilder.create()
+						.texOffs(388, 0).addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
+						.texOffs(220, 0).addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
+				PartPose.rotation(-0.7853981633974483F, 0.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("mouth",
+				CubeListBuilder.create()
+						.texOffs(240, 162)
+						.addBox(-15.0F, -2.0F, -24.0F, 30.0F, 8.0F, 24.0F),
+				PartPose.offset(0.0F, 10.0F, -14.0F));
+
+		return LayerDefinition.create(meshdefinition, 512, 256);
 	}
 	
 	@Override

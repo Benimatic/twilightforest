@@ -8,13 +8,11 @@ import net.minecraft.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.armor.KnightlyArmorModel;
+import twilightforest.client.model.armor.KnightmetalArmorModel;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.Map;
-
-import net.minecraft.world.item.Item.Properties;
 
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -47,9 +45,9 @@ public class KnightmetalArmorItem extends ArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void initArmorModel() {
-		knightlyArmorModel.put(EquipmentSlot.HEAD, new KnightlyArmorModel(0.75F));
-		knightlyArmorModel.put(EquipmentSlot.CHEST, new KnightlyArmorModel(1.0F));
-		knightlyArmorModel.put(EquipmentSlot.LEGS, new KnightlyArmorModel(0.5F));
-		knightlyArmorModel.put(EquipmentSlot.FEET, new KnightlyArmorModel(1.0F));
+		knightlyArmorModel.put(EquipmentSlot.HEAD, new KnightmetalArmorModel(0.75F));
+		knightlyArmorModel.put(EquipmentSlot.CHEST, new KnightmetalArmorModel(1.0F));
+		knightlyArmorModel.put(EquipmentSlot.LEGS, new KnightmetalArmorModel(0.5F));
+		knightlyArmorModel.put(EquipmentSlot.FEET, new KnightmetalArmorModel(1.0F));
 	}
 }

@@ -2,10 +2,11 @@ package twilightforest.client.model.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class FieryArmorModel extends TFArmorModel {
 
-	public FieryArmorModel(float expand) {
+	public FieryArmorModel(ModelPart expand) {
 		super(expand);
 	}
 

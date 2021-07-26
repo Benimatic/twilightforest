@@ -27,11 +27,6 @@ public class FullbrightBakedModel implements BakedModel {
 		this.delegate = delegate;
 	}
 
-	@Override
-	public BakedModel getBakedModel() {
-		return delegate;
-	}
-
 	@Nonnull
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {

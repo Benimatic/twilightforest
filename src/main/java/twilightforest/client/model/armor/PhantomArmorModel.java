@@ -1,10 +1,11 @@
 package twilightforest.client.model.armor;
 
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.client.model.geom.ModelPart;
 
-public class PhantomArmorModel extends KnightlyArmorModel {
+public class PhantomArmorModel extends KnightmetalArmorModel {
 
-	public PhantomArmorModel(EquipmentSlot part, float expand) {
+	//TODO will this work?
+	public PhantomArmorModel(ModelPart expand) {
 		super(expand);
 
 		this.righthorn1.yRot = -25F / (180F / (float) Math.PI);

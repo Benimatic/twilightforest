@@ -6,6 +6,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
 public class UrGhastTrophyModel extends GenericTrophyModel {
@@ -15,22 +20,30 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 	protected ModelPart[][] subTentacles;
 	protected ModelPart[][] smallTentacles;
 	
-	public UrGhastTrophyModel() {
-		texWidth = 64;
-		texHeight = 32;
-		
-		byte yOffset = -16;
-		this.body = new ModelPart(this, 0, 0);
-		this.body.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16);
-		this.body.y += 24 + yOffset;
-		Random rand = new Random(1660L);
-
-		for (int i = 0; i < this.tentacles.length; ++i) {
-			makeTentacle(yOffset, rand, i);
-		}
+	public UrGhastTrophyModel(ModelPart part) {
+		super(part);
 	}
 
-	protected void makeTentacle(byte yOffset, Random random, int num) {
+	public static LayerDefinition createHead() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+		byte yOffset = -16;
+		partdefinition.addOrReplaceChild("body",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+				PartPose.offset(0.0F, 24 + yOffset, 0.0F));
+
+		Random rand = new Random(1660L);
+		for (int i = 0; i < 9; ++i) {
+			makeTentacle(yOffset, rand, i);
+		}
+
+		return LayerDefinition.create(meshdefinition, 64, 32);
+	}
+
+	//FIXME porting madness
+	protected static void makeTentacle(byte yOffset, Random random, int num) {
 		this.tentacles[num] = new ModelPart(this, 0, 0);
 
 		float length = 5.333F;

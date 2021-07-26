@@ -4,23 +4,39 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
 //This model doesnt require a legacy as the tongue will only show up in newer versions
 public class NagaTrophyModel extends GenericTrophyModel {
 
-	public final ModelPart head;
-	public final ModelPart tongue;
+	public ModelPart tongue;
 
-	public NagaTrophyModel() {
-		this.texWidth = 64;
-		this.texHeight = 32;
-		this.head = new ModelPart(this, 0, 0);
-		this.head.addBox(-8F, -16F, -8F, 16, 16, 16, 0.0F);
-		this.head.setPos(0F, -4F, 0F);
-		this.tongue = new ModelPart(this, 0, 0);
-		this.tongue.setPos(0.0F, 0.0F, 0.0F);
-		this.tongue.texOffs(42, 0).addBox(-3.0F, -3.0F, -14.0F, 6.0F, 0.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-		this.head.addChild(this.tongue);
+	public NagaTrophyModel(ModelPart part) {
+		super(part);
+		this.tongue = this.head.getChild("tongue");
+	}
+
+	public static LayerDefinition createHead() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-8.0F, -16.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+		PartPose.offset(0.0F, -4.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("tongue",
+				CubeListBuilder.create()
+						.texOffs(42, 0)
+						.addBox(-3.0F, -3.0F, -14.0F, 6.0F, 0.0F, 6.0F),
+				PartPose.ZERO);
+
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	@Override

@@ -4,26 +4,36 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 
 public class LichTrophyModel extends GenericTrophyModel {
 
-	public final ModelPart head;
-	public final ModelPart crown;
+	public ModelPart head;
+	public ModelPart crown;
 
-	public LichTrophyModel() {
-		this(0, 0, 64, 64);
+	public LichTrophyModel(ModelPart part) {
+		super(part);
+		this.crown = this.head.getChild("crown");
 	}
 
-	public LichTrophyModel(int offsetX, int offsetY, int width, int height) {
-		this.texWidth = width;
-		this.texHeight = height;
-		this.head = new ModelPart(this, 0, 0);
-		this.head.addBox(-4F, -8F, -4F, 8, 8, 8);
-		this.head.setPos(0F, -4F, 0F);
-		this.crown = new ModelPart(this, 32, 0);
-		this.crown.addBox(-4F, -8F, -4F, 8, 8, 8, 0.5F);
-		this.crown.setPos(0.0F, -4.0F, 0.0F);
-		this.head.addChild(crown);
+	public static LayerDefinition createHead() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4F, -8F, -4F, 8, 8, 8),
+		PartPose.offset(0F, -4F, 0F));
+
+		partdefinition.addOrReplaceChild("crown",
+				CubeListBuilder.create()
+						.texOffs(32, 0)
+						.addBox(-4F, -8F, -4F, 8, 8, 8, new CubeDeformation(0.5F)),
+		PartPose.offset(0.0F, -4.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 	
 	@Override

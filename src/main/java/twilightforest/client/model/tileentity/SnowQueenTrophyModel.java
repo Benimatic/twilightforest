@@ -4,45 +4,56 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class SnowQueenTrophyModel extends GenericTrophyModel {
 
-	public ModelPart head;
 	public ModelPart crownFront;
 	public ModelPart crownBack;
 	public ModelPart crownRight;
 	public ModelPart crownLeft;
 
-	public SnowQueenTrophyModel() {
-		texWidth = 64;
-		texHeight = 64;
+	public SnowQueenTrophyModel(ModelPart part) {
+		super(part);
+		this.crownRight = this.head.getChild("crown_right");
+		this.crownBack = this.head.getChild("crown_back");
+		this.crownLeft = this.head.getChild("crown_left");
+		this.crownFront = this.head.getChild("crown_front");
 
-		this.head = new ModelPart(this, 0, 0);
-		this.head.setPos(0.0F, 0.0F, 0.0F);
-		this.head.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+	}
 
-		this.crownRight = new ModelPart(this, 0, 0);
-		this.crownRight.setPos(-4.0F, -6.0F, 0.0F);
-		this.crownRight.texOffs(24, 4).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(crownRight, 0.39269908169872414F, 1.5707963267948966F, 0.0F);
-		this.crownBack = new ModelPart(this, 0, 0);
-		this.crownBack.setPos(0.0F, -6.0F, 4.0F);
-		this.crownBack.texOffs(44, 0).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(crownBack, -0.39269908169872414F, 0.0F, 0.0F);
-		this.crownLeft = new ModelPart(this, 0, 0);
-		this.crownLeft.setPos(4.0F, -6.0F, 0.0F);
-		this.crownLeft.texOffs(44, 4).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(crownLeft, -0.39269908169872414F, 1.5707963267948966F, 0.0F);
-		this.crownFront = new ModelPart(this, 0, 0);
-		this.crownFront.setPos(0.0F, -6.0F, -4.0F);
-		this.crownFront.texOffs(24, 0).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(crownFront, 0.39269908169872414F, 0.0F, 0.0F);
+	public static LayerDefinition createHead() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		this.head.addChild(this.crownRight);
-		this.head.addChild(this.crownBack);
-		this.head.addChild(this.crownLeft);
-		this.head.addChild(this.crownFront);
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("crown_right",
+				CubeListBuilder.create()
+						.texOffs(24, 4).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
+				PartPose.offsetAndRotation(-4.0F, -6.0F, 0.0F, 0.39269908169872414F, 1.5707963267948966F, 0.0F));
+		partdefinition.addOrReplaceChild("crown_back",
+				CubeListBuilder.create()
+						.texOffs(44, 0).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
+				PartPose.offsetAndRotation(0.0F, -6.0F, 4.0F, -0.39269908169872414F, 0.0F, 0.0F)
+				);
+		partdefinition.addOrReplaceChild("crown_left",
+				CubeListBuilder.create()
+						.texOffs(44, 4).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
+				PartPose.offsetAndRotation(4.0F, -6.0F, 0.0F, -0.39269908169872414F, 1.5707963267948966F, 0.0F));
+		partdefinition.addOrReplaceChild("crown_front",
+				CubeListBuilder.create()
+						.texOffs(24, 0).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
+				PartPose.offsetAndRotation(0.0F, -6.0F, -4.0F, 0.39269908169872414F, 0.0F, 0.0F));
 
+		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
