@@ -3,7 +3,6 @@ package twilightforest.entity.boss;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -143,7 +142,7 @@ public class KnightPhantomEntity extends FlyingMob implements Enemy {
 			if (hasHome() && getNumber() == 0) {
 				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_knight_phantom.get().defaultBlockState());
 			}
-			remove();
+			discard();
 		} else {
 			super.checkDespawn();
 		}
@@ -257,9 +256,9 @@ public class KnightPhantomEntity extends FlyingMob implements Enemy {
 	}
 
 	@Override
-	public void knockback(float damage, double xRatio, double zRatio) {
+	public void knockback(double damage, double xRatio, double zRatio) {
 		hasImpulse = true;
-		float f = Mth.sqrt(xRatio * xRatio + zRatio * zRatio);
+		float f = Mth.sqrt((float) (xRatio * xRatio + zRatio * zRatio));
 		float distance = 0.2F;
 		setDeltaMovement(new Vec3(getDeltaMovement().x() / 2.0D, getDeltaMovement().y() / 2.0D, getDeltaMovement().z() / 2.0D));
 		setDeltaMovement(new Vec3(

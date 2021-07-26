@@ -1,7 +1,8 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,7 +21,7 @@ public class SnowQueenIceShieldEntity extends TFPartEntity<SnowQueenEntity> {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRenderDispatcher manager) {
+	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
 		return new SnowQueenIceShieldLayer<>(manager);
 	}
 

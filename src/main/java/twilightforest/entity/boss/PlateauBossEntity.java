@@ -40,7 +40,7 @@ public class PlateauBossEntity extends Monster {
 	@Override
 	public void aiStep() {
 		if (!level.isClientSide) {
-			bossInfo.setPercent(getHealth() / getMaxHealth());
+			bossInfo.setProgress(getHealth() / getMaxHealth());
 		}
 	}
 
@@ -55,7 +55,7 @@ public class PlateauBossEntity extends Monster {
 			if (!hasRestriction()) {
 				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_final_boss.get().defaultBlockState());
 			}
-			remove();
+			discard();
 		} else {
 			super.checkDespawn();
 		}

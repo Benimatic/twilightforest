@@ -3,7 +3,6 @@ package twilightforest.entity.boss;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.damagesource.DamageSource;
@@ -83,7 +82,7 @@ public class IceCrystalEntity extends IceMobEntity {
 		if (!level.isClientSide) {
 			this.crystalAge++;
 			if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge) {
-				this.remove();
+				this.kill();
 			}
 		}
 	}

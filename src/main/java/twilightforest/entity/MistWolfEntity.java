@@ -82,7 +82,7 @@ public class MistWolfEntity extends HostileWolfEntity {
 	}
 
 	@Override
-	protected float getVoicePitch() {
+	public float getVoicePitch() {
 		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.6F;
 	}
 }

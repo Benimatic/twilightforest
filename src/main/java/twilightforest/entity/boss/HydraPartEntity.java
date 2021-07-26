@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.ClipContext;

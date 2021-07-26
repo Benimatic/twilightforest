@@ -43,13 +43,6 @@ public class CastleGuardianEntity extends PathfinderMob { // Not exactly living 
         return p_110146_2_;
     }
 
-    /* FIXME
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox() {
-        return this.getBoundingBox();
-    }*/
-
-    // To go with the fix me above. I think this is the solution?
     @Override
     public boolean canBeCollidedWith() {
         return true;

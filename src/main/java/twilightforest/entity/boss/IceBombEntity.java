@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,7 +74,7 @@ public class IceBombEntity extends TFThrowableEntity {
 		if (state.getMaterial() == Material.WATER) {
 			this.level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
 		}
-		if (state.getBlockState() == Blocks.LAVA.defaultBlockState()) {
+		if (state == Blocks.LAVA.defaultBlockState()) {
 			this.level.setBlockAndUpdate(pos, Blocks.OBSIDIAN.defaultBlockState());
 		}
 		if (this.level.isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos)) {
@@ -145,7 +144,7 @@ public class IceBombEntity extends TFThrowableEntity {
 					level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
 					level.setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 
-					entity.remove();
+					entity.kill();
 				} else {
 					entity.hurt(TFDamageSources.FROZEN(this, (LivingEntity)this.getOwner()), 1);
 					entity.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 5, 2));

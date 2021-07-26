@@ -1,7 +1,13 @@
 package twilightforest.entity;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -9,26 +15,13 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 
 import java.util.Random;
-
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
 
 public class SwarmSpiderEntity extends Spider {
 
@@ -127,7 +120,7 @@ public class SwarmSpiderEntity extends Spider {
 		double sz = getZ() + (random.nextBoolean() ? 0.9 : -0.9);
 		another.moveTo(sx, sy, sz, random.nextFloat() * 360F, 0.0F);
 		if (!another.checkSpawnRules(level, MobSpawnType.MOB_SUMMONED)) {
-			another.remove();
+			another.discard();
 			return false;
 		}
 		level.addFreshEntity(another);
@@ -168,7 +161,7 @@ public class SwarmSpiderEntity extends Spider {
 	}
 
 	@Override
-	protected float getVoicePitch() {
+	public float getVoicePitch() {
 		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.5F;
 	}
 

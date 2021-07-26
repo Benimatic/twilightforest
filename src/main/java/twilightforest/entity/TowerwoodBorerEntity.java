@@ -175,7 +175,7 @@ public class TowerwoodBorerEntity extends Monster {
 					// TF - Change block type
 					world.setBlock(blockpos, TFBlocks.tower_wood_infested.get().defaultBlockState(), 3);
 					this.mob.spawnAnim();
-					this.mob.remove();
+					this.mob.kill();
 				}
 			}
 		}

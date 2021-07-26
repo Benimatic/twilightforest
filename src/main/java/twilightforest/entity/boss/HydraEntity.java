@@ -122,10 +122,10 @@ public class HydraEntity extends Mob implements Enemy {
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			level.setBlockAndUpdate(blockPosition().offset(0, 2, 0), TFBlocks.boss_spawner_hydra.get().defaultBlockState());
-			remove();
+			discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
-					container.headEntity.remove();
+					container.headEntity.discard();
 				}
 			}
 		} else {
@@ -237,7 +237,7 @@ public class HydraEntity extends Mob implements Enemy {
 				}
 			}
 
-			bossInfo.setPercent(getHealth() / getMaxHealth());
+			bossInfo.setProgress(getHealth() / getMaxHealth());
 		}
 	}
 
@@ -306,7 +306,7 @@ public class HydraEntity extends Mob implements Enemy {
 			if (this.getTarget().isAlive()) {
 				float distance = this.getTarget().distanceTo(this);
 
-				if (this.getSensing().canSee(this.getTarget())) {
+				if (this.getSensing().hasLineOfSight(this.getTarget())) {
 					this.attackEntity(this.getTarget(), distance);
 				}
 			}
@@ -500,7 +500,7 @@ public class HydraEntity extends Mob implements Enemy {
 		return this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof HydraEntity))
-				.filter(e -> e != getTarget() && !isAnyHeadTargeting(e) && getSensing().canSee(e) && EntitySelector.ATTACK_ALLOWED.test(e))
+				.filter(e -> e != getTarget() && !isAnyHeadTargeting(e) && getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
 				.min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
 	}
 
@@ -668,7 +668,7 @@ public class HydraEntity extends Mob implements Enemy {
 	protected void doPush(Entity entity) {}
 
 	@Override
-	public void knockback(float strength, double xRatio, double zRatio) {
+	public void knockback(double strength, double xRatio, double zRatio) {
 	}
 
 	@Override
@@ -747,7 +747,7 @@ public class HydraEntity extends Mob implements Enemy {
 				}
 			}
 
-			this.remove();
+			this.kill();
 		}
 
 		for (int i = 0; i < 20; ++i) {

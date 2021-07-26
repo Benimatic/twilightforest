@@ -1,11 +1,11 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public abstract class TFThrowableEntity extends ThrowableProjectile implements ITFProjectile {
 

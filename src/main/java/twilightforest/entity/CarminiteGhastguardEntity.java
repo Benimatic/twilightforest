@@ -207,7 +207,7 @@ public class CarminiteGhastguardEntity extends Ghast {
 		public void tick() {
 			LivingEntity entitylivingbase = this.parentEntity.getTarget();
 
-			if (entitylivingbase.distanceToSqr(this.parentEntity) < 4096.0D && this.parentEntity.getSensing().canSee(entitylivingbase)) {
+			if (entitylivingbase.distanceToSqr(this.parentEntity) < 4096.0D && this.parentEntity.getSensing().hasLineOfSight(entitylivingbase)) {
 				this.prevAttackTimer = attackTimer;
 				++this.attackTimer;
 

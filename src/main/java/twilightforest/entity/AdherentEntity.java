@@ -6,7 +6,6 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -70,7 +69,7 @@ public class AdherentEntity extends Monster implements RangedAttackMob, ITFCharg
 		double d1 = attackTarget.getX() - this.getX();
 		double d2 = d0 - natureBolt.getY();
 		double d3 = attackTarget.getZ() - this.getZ();
-		float f = Mth.sqrt(d1 * d1 + d3 * d3) * 0.2F;
+		float f = Mth.sqrt((float) (d1 * d1 + d3 * d3)) * 0.2F;
 		natureBolt.shoot(d1, d2 + f, d3, 0.6F, 10 - this.level.getDifficulty().getId() * 4);
 
 		this.level.addFreshEntity(natureBolt);

@@ -57,7 +57,7 @@ public class TowerBroodlingEntity extends SwarmSpiderEntity {
 		double sz = getZ() + (random.nextBoolean() ? 0.9 : -0.9);
 		another.moveTo(sx, sy, sz, random.nextFloat() * 360F, 0.0F);
 		if (!another.checkSpawnRules(level, MobSpawnType.MOB_SUMMONED)) {
-			another.remove();
+			another.discard();
 			return false;
 		}
 		level.addFreshEntity(another);

@@ -1,38 +1,31 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.TinyBirdFlyGoal;
-
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.PanicGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 
 public class TinyBirdEntity extends BirdEntity {
 
@@ -55,7 +48,7 @@ public class TinyBirdEntity extends BirdEntity {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5F));
 		this.goalSelector.addGoal(2, new TinyBirdFlyGoal(this));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, true, SEEDS));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, SEEDS, true));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -212,9 +205,8 @@ public class TinyBirdEntity extends BirdEntity {
 
 	public boolean isLandableBlock(BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		Block block = state.getBlock();
-		return !block.isAir(state, level, pos)
-				&& (block.is(BlockTags.LEAVES) || state.isFaceSturdy(level, pos, Direction.UP));
+		return !state.isAir()
+				&& (state.is(BlockTags.LEAVES) || state.isFaceSturdy(level, pos, Direction.UP));
 	}
 
 	@Override

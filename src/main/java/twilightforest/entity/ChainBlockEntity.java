@@ -1,29 +1,25 @@
 package twilightforest.entity;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
@@ -184,7 +180,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 			Block block = state.getBlock();
 
 			// TODO: The "explosion" parameter can't actually be null
-			if (!block.isAir(state, level, pos) && block.getExplosionResistance(state, level, pos, null) < 7F
+			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < 7F
 					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this)) {
 
 				if (getOwner() instanceof Player) {
@@ -235,7 +231,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 			}
 		} else {
 			if (getOwner() == null) {
-				remove();
+				remove(RemovalReason.KILLED);
 			} else {
 				double distToPlayer = this.distanceTo(this.getOwner());
 				// return if far enough away
@@ -246,7 +242,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 				if (this.isReturning) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
-						this.remove();
+						this.remove(RemovalReason.KILLED);
 					}
 
 					LivingEntity returnTo = (LivingEntity) this.getOwner();
@@ -271,8 +267,8 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 	}
 
 	@Override
-	public void remove() {
-		super.remove();
+	public void remove(RemovalReason reason) {
+		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
 		if (thrower != null && thrower.getUseItem().getItem() == TFItems.block_and_chain.get()) {
 			thrower.stopUsingItem();

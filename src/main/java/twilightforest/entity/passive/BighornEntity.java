@@ -1,11 +1,11 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.AgableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
@@ -93,7 +93,7 @@ public class BighornEntity extends Sheep {
     }
 
     @Override
-	public Sheep getBreedOffspring(ServerLevel world, AgableMob ageable) {
+	public Sheep getBreedOffspring(ServerLevel world, AgeableMob ageable) {
 		if (!(ageable instanceof BighornEntity)) {
 			TwilightForestMod.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
 			return null;

@@ -29,9 +29,9 @@ public class ProtectionBoxEntity extends Entity {
 	public ProtectionBoxEntity(Level world, BoundingBox sbb) {
 		super(TFEntities.protection_box, world);
 
-		this.sbb = new BoundingBox(sbb);
+		this.sbb = new BoundingBox(sbb.getCenter());
 
-		this.moveTo(sbb.x0, sbb.y0, sbb.z0, 0.0F, 0.0F);
+		this.moveTo(sbb.minX(), sbb.minY(), sbb.minZ(), 0.0F, 0.0F);
 
 		sizeX = sbb.getXSpan();
 		sizeY = sbb.getYSpan();
@@ -47,15 +47,15 @@ public class ProtectionBoxEntity extends Entity {
 		super.tick();
 
 		if (lifeTime <= 1) {
-			remove();
+			kill();
 		} else {
 			lifeTime--;
 		}
 	}
 
 	public boolean matches(BoundingBox sbb) {
-		return this.sbb.x0 == sbb.x0 && this.sbb.y0 == sbb.y0 && this.sbb.z0 == sbb.z0
-				&& this.sbb.x1 == sbb.x1 && this.sbb.y1 == sbb.y1 && this.sbb.z1 == sbb.z1;
+		return this.sbb.minX() == sbb.minX() && this.sbb.minY() == sbb.minY() && this.sbb.minZ() == sbb.minZ()
+				&& this.sbb.maxX() == sbb.maxX() && this.sbb.maxY() == sbb.maxY() && this.sbb.maxZ() == sbb.maxZ();
 	}
 
 	public void resetLifetime() {

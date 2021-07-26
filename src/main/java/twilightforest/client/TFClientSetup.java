@@ -68,7 +68,6 @@ public class TFClientSetup {
         FieryArmorItem.initArmorModel();
         MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         RenderLayerRegistration.init();
-        TFEntities.registerEntityRenderer();
         TFTileEntities.registerTileEntityRenders();
         TFContainers.renderScreens();
 

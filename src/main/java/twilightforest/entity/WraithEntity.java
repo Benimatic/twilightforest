@@ -1,7 +1,11 @@
 package twilightforest.entity;
 
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -13,27 +17,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import twilightforest.TFSounds;
 import twilightforest.util.TFDamageSources;
 
 import java.util.EnumSet;
 import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.FlyingMob;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 
 public class WraithEntity extends FlyingMob implements Enemy {
 
@@ -245,7 +236,7 @@ public class WraithEntity extends FlyingMob implements Enemy {
 
 	private void despawnIfPeaceful() {
 		if (!level.isClientSide && level.getDifficulty() == Difficulty.PEACEFUL)
-			remove();
+			discard();
 	}
 
 	@Override

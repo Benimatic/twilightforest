@@ -1,32 +1,25 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.material.Material;
 
 import javax.annotation.Nullable;
 
 // TODO: See Bunny
-import net.minecraft.world.entity.AgableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.PanicGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 
 public class SquirrelEntity extends Animal {
 
@@ -43,7 +36,7 @@ public class SquirrelEntity extends Animal {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, true, SEEDS));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, SEEDS, true));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 2.0F, 0.8F, 1.4F));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.25F));
@@ -58,7 +51,7 @@ public class SquirrelEntity extends Animal {
 	}
 
 	@Override
-	public boolean causeFallDamage(float distance, float multiplier) {
+	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
 		return false;
 	}
 
@@ -86,7 +79,7 @@ public class SquirrelEntity extends Animal {
 
 	@Nullable
 	@Override
-	public AgableMob getBreedOffspring(ServerLevel world, AgableMob ageableEntity) {
+	public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableEntity) {
 		return null;
 	}
 }

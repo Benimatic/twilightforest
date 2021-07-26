@@ -1,8 +1,9 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +37,7 @@ public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRenderDispatcher manager) {
+	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
 		return new NagaSegmentRenderer<>(manager);
 	}
 

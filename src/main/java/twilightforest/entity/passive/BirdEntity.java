@@ -1,7 +1,8 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.AgableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Items;
@@ -60,9 +61,8 @@ public abstract class BirdEntity extends Animal {
 	@Override
 	protected void checkFallDamage(double y, boolean onGroundIn, @Nonnull BlockState state, @Nonnull BlockPos pos) {
 	}
-
 	@Override
-	public boolean causeFallDamage(float dist, float damageMultiplier) {
+	public boolean causeFallDamage(float dist, float damageMultiplier, DamageSource source) {
 		return false;
 	}
 
@@ -72,7 +72,7 @@ public abstract class BirdEntity extends Animal {
 	}
 
 	@Override
-	public Animal getBreedOffspring(ServerLevel world, AgableMob entityanimal) {
+	public Animal getBreedOffspring(ServerLevel world, AgeableMob entityanimal) {
 		return null;
 	}
 

@@ -1,7 +1,8 @@
 package twilightforest.entity;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
@@ -34,7 +35,7 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRenderDispatcher manager) {
+	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
 		return new NoopRenderer<>(manager);
 	}
 
@@ -75,7 +76,7 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 	}
 
 	public final void updateLastPos() {
-		setPosAndOldPos(getX(), getY(), getZ());
+		setPosRaw(getX(), getY(), getZ());
 		yRotO = yRot;
 		xRotO = xRot;
 		tickCount++;

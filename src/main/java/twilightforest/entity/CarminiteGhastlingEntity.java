@@ -1,30 +1,23 @@
 package twilightforest.entity;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 
 import java.util.Random;
-
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
 
 public class CarminiteGhastlingEntity extends CarminiteGhastguardEntity {
 
@@ -73,14 +66,14 @@ public class CarminiteGhastlingEntity extends CarminiteGhastguardEntity {
 		if (!helmet.isEmpty() && helmet.getItem() == Item.byBlock(Blocks.PUMPKIN)) {
 			return false;
 		} else if (living.distanceTo(this) <= 3.5F) {
-			return living.canSee(this);
+			return living.hasLineOfSight(this);
 		} else {
 			Vec3 vec3d = living.getViewVector(1.0F).normalize();
 			Vec3 vec3d1 = new Vec3(this.getX() - living.getX(), this.getBoundingBox().minY + this.getEyeHeight() - (living.getY() + living.getEyeHeight()), this.getZ() - living.getZ());
 			double d0 = vec3d1.length();
 			vec3d1 = vec3d1.normalize();
 			double d1 = vec3d.dot(vec3d1);
-			return d1 > 1.0D - 0.025D / d0 ? living.canSee(this) : false;
+			return d1 > 1.0D - 0.025D / d0 && living.hasLineOfSight(this);
 		}
 	}
 

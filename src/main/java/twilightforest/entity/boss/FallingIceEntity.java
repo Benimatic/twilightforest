@@ -27,9 +27,9 @@ public class FallingIceEntity extends FallingBlockEntity {
 
 	public FallingIceEntity(Level world, int x, int y, int z) {
 		super(world, x, y, z, Blocks.PACKED_ICE.defaultBlockState());
-		this.fallDamageAmount = 10.0F;
+		this.fallDamagePerDistance = 10.0F;
 		this.fallDamageMax = 30;
-		this.setHurtsEntities(true);
+		this.hurtEntities = true;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class FallingIceEntity extends FallingBlockEntity {
 			for (FallingIceEntity entity : nearby) {
 				if (entity != this) {
 					if (entity.time < this.time) {
-						entity.remove();
+						entity.kill();
 					}
 				}
 			}
@@ -70,7 +70,7 @@ public class FallingIceEntity extends FallingBlockEntity {
 
 	// [VanillaCopy] Like super, but without anvil cases and with extra stuff
 	@Override
-	public boolean causeFallDamage(float distance, float multiplier) {
+	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
 		if (this.hurtEntities) {
 			int i = Mth.ceil(distance - 1.0F);
 
@@ -80,7 +80,7 @@ public class FallingIceEntity extends FallingBlockEntity {
 
 				for (Entity entity : list) {
 					if (!(entity instanceof AlphaYetiEntity)) {
-						entity.hurt(damagesource, Math.min(Mth.floor(i * this.fallDamageAmount), this.fallDamageMax));
+						entity.hurt(damagesource, Math.min(Mth.floor(i * this.fallDamagePerDistance), this.fallDamageMax));
 					}
 				}
 			}

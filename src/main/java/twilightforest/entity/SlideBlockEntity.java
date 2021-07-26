@@ -1,29 +1,29 @@
 package twilightforest.entity;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import twilightforest.TFSounds;
 import twilightforest.util.TFDamageSources;
 
@@ -41,7 +41,8 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 	public SlideBlockEntity(EntityType<? extends SlideBlockEntity> type, Level world) {
 		super(type, world);
 		this.blocksBuilding = true;
-		this.pushthrough = 1F;
+		//TODO unsure if this is the right name for it
+		this.flyDist = 1F;
 	}
 
 	public SlideBlockEntity(EntityType<? extends SlideBlockEntity> type, Level world, double x, double y, double z, BlockState state) {
@@ -49,7 +50,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 
 		this.myState = state;
 		this.blocksBuilding = true;
-		this.pushthrough = 1F;
+		this.flyDist = 1F;
 		this.setPos(x, y, z);
 		this.setDeltaMovement(new Vec3(0, 0, 0));
 		this.xo = x;
@@ -111,7 +112,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 	@Override
 	public void tick() {
 		if (this.myState == null || this.myState.getMaterial() == Material.AIR) {
-			this.remove();
+			this.kill();
 		} else {
 			this.xo = this.getX();
 			this.yo = this.getY();
@@ -135,7 +136,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 
 				if (this.slideTime == 1) {
 					if (this.level.getBlockState(pos) != this.myState) {
-						this.remove();
+						this.kill();
 						return;
 					}
 
@@ -151,7 +152,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 				if (this.verticalCollision || this.horizontalCollision) {
 					this.setDeltaMovement(this.getDeltaMovement().multiply(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
 
-					this.remove();
+					this.kill();
 
 					if (this.level.isUnobstructed(myState, pos, CollisionContext.empty())) {
 						level.setBlockAndUpdate(pos, myState);
@@ -161,7 +162,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 					}
 				} else if (this.slideTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600) {
 					this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
-					this.remove();
+					this.kill();
 				}
 
 				// push things out and damage them

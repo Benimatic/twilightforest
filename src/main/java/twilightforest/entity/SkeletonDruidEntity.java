@@ -78,7 +78,7 @@ public class SkeletonDruidEntity extends Skeleton {
 			double tx = attackTarget.getX() - this.getX();
 			double ty = attackTarget.getY() + attackTarget.getEyeHeight() - 2.699999988079071D - this.getY();
 			double tz = attackTarget.getZ() - this.getZ();
-			float heightOffset = Mth.sqrt(tx * tx + tz * tz) * 0.2F;
+			float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.2F;
 			natureBolt.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 			this.level.addFreshEntity(natureBolt);
 		} else {

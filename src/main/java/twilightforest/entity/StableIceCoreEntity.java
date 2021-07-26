@@ -1,28 +1,22 @@
 package twilightforest.entity;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.entity.projectile.IceSnowballEntity;
-
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
 public class StableIceCoreEntity extends IceMobEntity implements RangedAttackMob {
 
@@ -82,7 +76,7 @@ public class StableIceCoreEntity extends IceMobEntity implements RangedAttackMob
 		double d1 = target.getX() - this.getX();
 		double d2 = d0 - snowball.getY();
 		double d3 = target.getZ() - this.getZ();
-		float f = Mth.sqrt(d1 * d1 + d3 * d3) * 0.2F;
+		float f = Mth.sqrt((float) (d1 * d1 + d3 * d3)) * 0.2F;
 		//accuracy of a normal difficulty skeleton
 		snowball.shoot(d1, d2 + f, d3, 1.6F, 6.0F);
 

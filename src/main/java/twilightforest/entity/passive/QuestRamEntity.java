@@ -1,56 +1,49 @@
 package twilightforest.entity.passive;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.*;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import twilightforest.advancements.TFAdvancements;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.ai.EatLooseGoal;
 import twilightforest.entity.ai.FindLooseGoal;
 import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
 import java.util.List;
-
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.PanicGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 
 public class QuestRamEntity extends Animal {
 
@@ -77,7 +70,7 @@ public class QuestRamEntity extends Animal {
 
 	@Nullable
 	@Override
-	public Animal getBreedOffspring(ServerLevel world, AgableMob mate) {
+	public Animal getBreedOffspring(ServerLevel world, AgeableMob mate) {
 		return null;
 	}
 
@@ -158,7 +151,7 @@ public class QuestRamEntity extends Animal {
 	}
 
 	public boolean tryAccept(ItemStack stack) {
-		if (stack.getItem().is(ItemTags.WOOL)) {
+		if (stack.is(ItemTags.WOOL)) {
 			DyeColor color = guessColor(stack);
 			if (color != null && !isColorPresent(color)) {
 				setColorPresent(color);
@@ -252,7 +245,7 @@ public class QuestRamEntity extends Animal {
 	}
 
 	@Override
-	protected float getVoicePitch() {
+	public float getVoicePitch() {
 		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.7F;
 	}
 

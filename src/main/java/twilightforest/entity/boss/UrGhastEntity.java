@@ -196,7 +196,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 			if (hasHome()) {
 				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_ur_ghast.get().defaultBlockState());
 			}
-			remove();
+			discard();
 		} else {
 			super.checkDespawn();
 		}
@@ -222,7 +222,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 		super.aiStep();
 
 		if (!level.isClientSide) {
-			bossInfo.setPercent(getHealth() / getMaxHealth());
+			bossInfo.setProgress(getHealth() / getMaxHealth());
 		} else {
 			if (this.isInTantrum()) {
 				level.addParticle(TFParticleType.BOSS_TEAR.get(),
@@ -258,7 +258,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 	}
 
 	@Override
-	public void knockback(float strength, double xRatio, double zRatio) {
+	public void knockback(double strength, double xRatio, double zRatio) {
 		// Don't take knockback
 	}
 
@@ -391,7 +391,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 		// despawn mini ghasts that are in our AABB
 		for (CarminiteGhastlingEntity ghast : level.getEntitiesOfClass(CarminiteGhastlingEntity.class, this.getBoundingBox().inflate(1, 1, 1))) {
 			ghast.spawnAnim();
-			ghast.remove();
+			ghast.kill();
 			this.heal(2);
 		}
 
@@ -567,7 +567,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 	}
 
 	@Override
-	protected float getVoicePitch() {
+	public float getVoicePitch() {
 		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.5F;
 	}
 

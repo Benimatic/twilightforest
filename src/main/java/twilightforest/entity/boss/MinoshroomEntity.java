@@ -160,7 +160,7 @@ public class MinoshroomEntity extends MinotaurEntity {
 			if (hasRestriction()) {
 				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_minoshroom.get().defaultBlockState());
 			}
-			remove();
+			discard();
 		} else {
 			super.checkDespawn();
 		}

@@ -1,34 +1,28 @@
 package twilightforest.entity;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.math.*;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
 import java.util.Random;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 
 public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 
@@ -87,7 +81,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 	private void affectBlocksInAABB(AABB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			BlockState state = level.getBlockState(pos);
-			if (!state.getBlock().isAir(state, level, pos)) {
+			if (!state.isAir()) {
 				if (getOwner() instanceof Player) {
 					Player player = (Player) getOwner();
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
@@ -109,7 +103,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return block.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(level, pos) >= 0;
+		return state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(level, pos) >= 0;
 	}
 
 	private void annihilateParticles(Level world, BlockPos pos) {
@@ -138,7 +132,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 
 		if (!this.level.isClientSide) {
 			if (this.getOwner() == null) {
-				this.remove();
+				this.remove(RemovalReason.KILLED);
 				return;
 			}
 
@@ -150,7 +144,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
 				if (distToPlayer < 2F) {
-					this.remove();
+					this.remove(RemovalReason.KILLED);
 				}
 			} else {
 				destPoint = destPoint.add(getOwner().getLookAngle().scale(16F));
@@ -162,7 +156,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 			setDeltaMovement(-velocity.x(), -velocity.y(), -velocity.z());
 
 			// normalize speed
-			float currentSpeed = Mth.sqrt(this.getDeltaMovement().x() * this.getDeltaMovement().x() + this.getDeltaMovement().y() * this.getDeltaMovement().y() + this.getDeltaMovement().z() * this.getDeltaMovement().z());
+			float currentSpeed = Mth.sqrt((float) (this.getDeltaMovement().x() * this.getDeltaMovement().x() + this.getDeltaMovement().y() * this.getDeltaMovement().y() + this.getDeltaMovement().z() * this.getDeltaMovement().z()));
 
 			float maxSpeed = 0.5F;
 
@@ -182,8 +176,8 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 	}
 
 	@Override
-	public void remove() {
-		super.remove();
+	public void remove(RemovalReason reason) {
+		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
 		if (thrower != null && thrower.getUseItem().getItem() == TFItems.cube_of_annihilation.get()) {
 			thrower.stopUsingItem();

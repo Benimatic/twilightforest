@@ -8,7 +8,6 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -129,7 +128,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 		}
 
 		if (!level.isClientSide) {
-			bossInfo.setPercent(getHealth() / getMaxHealth());
+			bossInfo.setProgress(getHealth() / getMaxHealth());
 
 			if (this.horizontalCollision || this.verticalCollision) { //collided does not exist, but this is an equal?
 				this.collisionCounter++;
@@ -202,7 +201,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 	}
 
 	@Override
-	protected float getVoicePitch() {
+	public float getVoicePitch() {
 		return 0.5F + getRandom().nextFloat() * 0.5F;
 	}
 
@@ -312,7 +311,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 			double d0 = target.getX() - this.getX();
 			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - ice.getY();
 			double d2 = target.getZ() - this.getZ();
-			double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
 			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.level.getDifficulty().getId() * 4);
 
 			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -331,7 +330,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 			if (!hasRestriction()) {
 				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_alpha_yeti.get().defaultBlockState());
 			}
-			remove();
+			remove(true);
 		} else {
 			super.checkDespawn();
 		}
@@ -359,7 +358,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 	}
 
 	@Override
-	public boolean causeFallDamage(float distance, float multiplier) {
+	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
 
 		if (!this.level.isClientSide && isRampaging()) {
 			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -367,7 +366,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 		}
 
 		//TODO: Return value?
-		return super.causeFallDamage(distance, multiplier);
+		return super.causeFallDamage(distance, multiplier, source);
 	}
 
 	private void hitNearbyEntities() {

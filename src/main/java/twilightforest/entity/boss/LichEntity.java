@@ -1,14 +1,12 @@
 package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.entity.monster.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Items;
@@ -173,7 +171,7 @@ public class LichEntity extends Monster {
 			if (hasRestriction()) {
 				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_lich.get().defaultBlockState());
 			}
-			remove();
+			discard();
 		} else {
 			super.checkDespawn();
 		}
@@ -240,10 +238,10 @@ public class LichEntity extends Monster {
 
 		if (!level.isClientSide) {
 			if (this.getPhase() == 1) {
-				bossInfo.setPercent((float) (getShieldStrength() + 1) / (float) (INITIAL_SHIELD_STRENGTH + 1));
+				bossInfo.setProgress((float) (getShieldStrength() + 1) / (float) (INITIAL_SHIELD_STRENGTH + 1));
 			} else {
 				bossInfo.setOverlay(BossEvent.BossBarOverlay.PROGRESS);
-				bossInfo.setPercent(getHealth() / getMaxHealth());
+				bossInfo.setProgress(getHealth() / getMaxHealth());
 				if (this.getPhase() == 2)
 					bossInfo.setColor(BossEvent.BossBarColor.PURPLE);
 				else
@@ -369,9 +367,9 @@ public class LichEntity extends Monster {
 		List<Mob> nearbyMobs = level.getEntitiesOfClass(Mob.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
 
 		for (Mob mob : nearbyMobs) {
-			if (getSensing().canSee(mob)) {
+			if (getSensing().hasLineOfSight(mob)) {
 				mob.spawnAnim();
-				mob.remove();
+				mob.kill();
 				// play death sound
 //					world.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
@@ -404,7 +402,7 @@ public class LichEntity extends Monster {
 		return count;
 	}
 
-	public List<LichEntity> getNearbyLiches() {
+	public List<? extends LichEntity> getNearbyLiches() {
 		return level.getEntitiesOfClass(getClass(), new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
 	}
 
@@ -430,7 +428,7 @@ public class LichEntity extends Monster {
 			this.getLookControl().setLookAt(entity, 100F, 100F);
 			this.yBodyRot = this.yRot;
 
-			if (!this.getSensing().canSee(entity)) {
+			if (!this.getSensing().hasLineOfSight(entity)) {
 				teleportToNoChecks(srcX, srcY, srcZ);
 			}
 		}
@@ -455,7 +453,7 @@ public class LichEntity extends Monster {
 			double tz = targetEntity.getZ() + random.nextGaussian() * 16D;
 
 			boolean destClear = randomTeleport(tx, ty, tz, true);
-			boolean canSeeTargetAtDest = canSee(targetEntity); // Don't use senses cache because we're in a temporary position
+			boolean canSeeTargetAtDest = hasLineOfSight(targetEntity); // Don't use senses cache because we're in a temporary position
 			teleportTo(origX, origY, origZ);
 
 			if (destClear && canSeeTargetAtDest) {

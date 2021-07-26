@@ -89,7 +89,7 @@ public class IceSnowballEntity extends TFThrowableEntity implements ItemSupplier
 	private void die() {
 		if (!this.level.isClientSide) {
 			this.level.broadcastEntityEvent(this, (byte) 3);
-			this.remove();
+			this.kill();
 		}
 	}
 

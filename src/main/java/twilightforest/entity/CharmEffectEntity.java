@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -98,7 +98,7 @@ public class CharmEffectEntity extends Entity implements ItemSupplier {
 
 		if (!this.level.isClientSide
 				&& (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
-			this.remove();
+			this.kill();
 		}
 	}
 

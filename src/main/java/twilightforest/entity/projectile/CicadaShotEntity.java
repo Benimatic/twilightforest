@@ -95,8 +95,8 @@ public class CicadaShotEntity extends TFThrowableEntity {
                 if (currentState.canBeReplaced(context)) {
                     level.setBlockAndUpdate(pos, TFBlocks.cicada.get().defaultBlockState().setValue(DirectionalBlock.FACING, ((BlockHitResult) ray).getDirection()));
                 } else {
-                    ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ());
-                    squish.spawnAtLocation(Items.GRAY_DYE);
+                    ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), Items.GRAY_DYE.getDefaultInstance());
+                    squish.spawnAtLocation(squish.getItem());
                 }
             }
 
@@ -107,7 +107,7 @@ public class CicadaShotEntity extends TFThrowableEntity {
             }
 
             this.level.broadcastEntityEvent(this, (byte) 3);
-            this.remove();
+            this.kill();
         }
     }
 }

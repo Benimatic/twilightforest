@@ -101,8 +101,8 @@ public class MoonwormShotEntity extends TFThrowableEntity {
 					level.setBlockAndUpdate(pos, TFBlocks.moonworm.get().defaultBlockState().setValue(DirectionalBlock.FACING, ((BlockHitResult) ray).getDirection()));
 					// todo sound
 				} else {
-					ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ());
-					squish.spawnAtLocation(Items.LIME_DYE);
+					ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), Items.LIME_DYE.getDefaultInstance());
+					squish.spawnAtLocation(squish.getItem());
 				}
 			}
 
@@ -113,7 +113,7 @@ public class MoonwormShotEntity extends TFThrowableEntity {
 			}
 
 			this.level.broadcastEntityEvent(this, (byte) 3);
-			this.remove();
+			this.kill();
 		}
 	}
 }

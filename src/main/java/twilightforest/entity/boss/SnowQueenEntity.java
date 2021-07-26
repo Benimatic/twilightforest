@@ -6,7 +6,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -131,7 +130,7 @@ public class SnowQueenEntity extends Monster implements IBreathAttacker {
 	public void aiStep() {
 		super.aiStep();
 		if (!level.isClientSide) {
-			bossInfo.setPercent(getHealth() / getMaxHealth());
+			bossInfo.setProgress(getHealth() / getMaxHealth());
 		} else {
 			spawnParticles();
 		}
@@ -233,7 +232,7 @@ public class SnowQueenEntity extends Monster implements IBreathAttacker {
 			if (getRestrictCenter() != BlockPos.ZERO) {
 				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_snow_queen.get().defaultBlockState());
 			}
-			remove();
+			discard();
 		} else {
 			super.checkDespawn();
 		}
@@ -320,7 +319,7 @@ public class SnowQueenEntity extends Monster implements IBreathAttacker {
 	}
 
 	@Override
-	public boolean causeFallDamage(float distance, float damageMultiplier) {
+	public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource cause) {
 		return false;
 	}
 

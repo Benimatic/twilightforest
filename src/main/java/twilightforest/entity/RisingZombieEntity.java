@@ -40,7 +40,7 @@ public class RisingZombieEntity extends Zombie {
 		setDeltaMovement(new Vec3(0, 0, 0));
 		super.aiStep();
 		if (!level.isClientSide && tickCount % 130 == 0) {
-			remove();
+			kill();
 			Zombie zombie = new Zombie(level);
 			zombie.teleportTo(getX(), getY(), getZ());
 			zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getMaxHealth());
@@ -57,7 +57,7 @@ public class RisingZombieEntity extends Zombie {
 	}
 
 	@Override
-	public void knockback(float strength, double xRatio, double zRatio) {
+	public void knockback(double strength, double xRatio, double zRatio) {
 		//NO-OP
 	}
 

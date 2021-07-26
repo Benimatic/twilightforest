@@ -1,7 +1,8 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.renderer.entity.HydraNeckRenderer;
@@ -17,7 +18,7 @@ public class HydraNeckEntity extends HydraPartEntity {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRenderDispatcher manager) {
+	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
 		return new HydraNeckRenderer(manager);
 	}
 }

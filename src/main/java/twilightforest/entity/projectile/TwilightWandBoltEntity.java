@@ -81,7 +81,7 @@ public class TwilightWandBoltEntity extends TFThrowableEntity implements ItemSup
 			}
 
 			this.level.broadcastEntityEvent(this, (byte) 3);
-			this.remove();
+			this.kill();
 		}
 	}
 
