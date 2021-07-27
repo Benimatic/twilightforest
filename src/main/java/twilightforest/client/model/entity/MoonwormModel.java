@@ -8,6 +8,11 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
@@ -25,24 +30,33 @@ public class MoonwormModel extends Model {
 
 	public MoonwormModel() {
 		super(RenderType::entityCutoutNoCull);
-		texWidth = 32;
-		texHeight = 32;
+	}
 
-		shape1 = new ModelPart(this, 0, 4);
-		shape1.addBox(-1F, -1F, -1F, 4, 2, 2);
-		shape1.setPos(-1F, 7F, 3F);
+	public static LayerDefinition create() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+		partdefinition.addOrReplaceChild("shape1",
+				CubeListBuilder.create()
+						.texOffs(0, 4)
+						.addBox(-1.0F, -1.0F, -1.0F, 4.0F, 2.0F, 2.0F),
+				PartPose.offset(-1.0F, 7.0F, 3.0F));
+		partdefinition.addOrReplaceChild("shape2",
+				CubeListBuilder.create()
+						.texOffs(0, 8)
+						.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 4.0F),
+				PartPose.offset(3.0F, 7.0F, 0.0F));
+		partdefinition.addOrReplaceChild("shape3",
+				CubeListBuilder.create()
+						.texOffs(0, 14)
+						.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F),
+				PartPose.offset(2.0F, 7.0F, -2.0F));
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F),
+				PartPose.offset(-3.0F, 7.0F, 2.0F));
 
-		shape2 = new ModelPart(this, 0, 8);
-		shape2.addBox(-1F, -1F, -1F, 2, 2, 4);
-		shape2.setPos(3F, 7F, 0F);
-
-		shape3 = new ModelPart(this, 0, 14);
-		shape3.addBox(-1F, -1F, -1F, 2, 2, 2);
-		shape3.setPos(2F, 7F, -2F);
-
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-1F, -1F, -1F, 2, 2, 2);
-		head.setPos(-3F, 7F, 2F);
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	public void setRotationAngles(@Nullable MoonwormTileEntity moonworm, float partialTime) {

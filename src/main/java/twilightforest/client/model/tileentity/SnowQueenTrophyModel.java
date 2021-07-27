@@ -12,13 +12,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class SnowQueenTrophyModel extends GenericTrophyModel {
 
+	public ModelPart head;
 	public ModelPart crownFront;
 	public ModelPart crownBack;
 	public ModelPart crownRight;
 	public ModelPart crownLeft;
 
 	public SnowQueenTrophyModel(ModelPart part) {
-		super(part);
+		this.head = part.getChild("head");
 		this.crownRight = this.head.getChild("crown_right");
 		this.crownBack = this.head.getChild("crown_back");
 		this.crownLeft = this.head.getChild("crown_left");
@@ -64,7 +65,6 @@ public class SnowQueenTrophyModel extends GenericTrophyModel {
 	
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = x * ((float) Math.PI / 180F);
 	}

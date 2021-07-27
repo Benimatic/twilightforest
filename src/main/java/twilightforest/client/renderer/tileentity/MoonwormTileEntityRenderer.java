@@ -2,6 +2,7 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,18 +14,19 @@ import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
 import twilightforest.tileentity.MoonwormTileEntity;
 
 import javax.annotation.Nullable;
 
-public class MoonwormTileEntityRenderer extends BlockEntityRenderer<MoonwormTileEntity> {
+public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormTileEntity> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel = new MoonwormModel();
 
-	public MoonwormTileEntityRenderer(BlockEntityRenderDispatcher dispatch) {
-		super(dispatch);
+	public MoonwormTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
+		renderer.bakeLayer(TFModelLayers.MOONWORM);
 	}
 
 	@Override

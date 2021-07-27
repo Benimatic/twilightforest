@@ -3,26 +3,40 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 
 public class FireflyModel extends ListModel<Entity> {
-	public FireflyModel() {
-		legs = new ModelPart(this, 0, 21);
-		legs.addBox(-4F, 7.9F, -5F, 8, 1, 10, 0F);
-		//legs.setRotationPoint(0F, 16F, 0F);
 
-		fatbody = new ModelPart(this, 0, 11);
-		fatbody.addBox(-2F, 6F, -4F, 4, 2, 6, 0F);
-		//fatbody.setRotationPoint(0F, 16F, 0F);
+	public static LayerDefinition create() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+		partdefinition.addOrReplaceChild("legs",
+				CubeListBuilder.create()
+						.texOffs(0, 21)
+						.addBox(-4.0F, 7.9F, -5.0F, 8.0F, 1.0F, 10.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("fat_body",
+				CubeListBuilder.create()
+						.texOffs(0, 11)
+						.addBox(-2.0F, 6.0F, -4.0F, 4.0F, 2.0F, 6.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("skinny_body",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-1.0F, 7.0F, -5.0F, 2.0F, 1.0F, 8.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("glow",
+				CubeListBuilder.create()
+						.texOffs(20, 0)
+						.addBox(-5.0F, 5.9F, -9.0F, 10.0F, 0.0F, 10.0F),
+				PartPose.ZERO);
 
-		skinnybody = new ModelPart(this, 0, 0);
-		skinnybody.addBox(-1F, 7F, -5F, 2, 1, 8, 0F);
-		//skinnybody.setRotationPoint(0F, 16F, 0F);
-
-		glow = new ModelPart(this, 20, 0);
-		glow.addBox(-5F, 5.9F, -9F, 10, 0, 10, 0F);
-		//glow.setRotationPoint(0F, 16F, 0F);
-
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	@Override

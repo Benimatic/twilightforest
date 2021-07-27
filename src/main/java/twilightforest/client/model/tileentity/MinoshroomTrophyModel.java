@@ -12,8 +12,10 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class MinoshroomTrophyModel extends GenericTrophyModel {
 
+	public ModelPart head;
+
 	public MinoshroomTrophyModel(ModelPart part) {
-		super(part);
+		this.head = part.getChild("head");
 	}
 
 	public static LayerDefinition createHead() {
@@ -35,7 +37,6 @@ public class MinoshroomTrophyModel extends GenericTrophyModel {
 	
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = x * ((float) Math.PI / 180F);
 	}

@@ -21,7 +21,7 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 	protected ModelPart[][] smallTentacles;
 	
 	public UrGhastTrophyModel(ModelPart part) {
-		super(part);
+		this.body = part.getChild("head");
 	}
 
 	public static LayerDefinition createHead() {
@@ -133,7 +133,6 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 	
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
 		this.body.yRot = y * ((float) Math.PI / 180F);
 		this.body.xRot = z * ((float) Math.PI / 180F);
 		for (int i = 0; i < this.subTentacles.length; ++i) {

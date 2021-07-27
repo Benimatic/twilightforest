@@ -16,7 +16,7 @@ public class QuestRamTrophyModel extends GenericTrophyModel {
 	public ModelPart head;
 	
 	public QuestRamTrophyModel(ModelPart part) {
-		super(part);
+		this.head = part.getChild("head");
 		this.horns = this.head.getChild("horns");
 	}
 
@@ -43,7 +43,6 @@ public class QuestRamTrophyModel extends GenericTrophyModel {
 	
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = x * ((float) Math.PI / 180F);
 	}

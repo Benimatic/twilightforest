@@ -3,6 +3,7 @@ package twilightforest.client.renderer.tileentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -17,12 +18,13 @@ import com.mojang.math.Vector3f;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.FireflyModel;
 import twilightforest.tileentity.FireflyTileEntity;
 
 import javax.annotation.Nullable;
 
-public class FireflyTileEntityRenderer extends BlockEntityRenderer<FireflyTileEntity> {
+public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyTileEntity> {
 
 	private final FireflyModel fireflyModel = new FireflyModel();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
@@ -46,8 +48,8 @@ public class FireflyTileEntityRenderer extends BlockEntityRenderer<FireflyTileEn
 		GLOW_LAYER = RenderType.create(TwilightForestMod.ID + ":firefly_glow", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 256, true, true, rendertype$state);
 	}
 
-	public FireflyTileEntityRenderer(BlockEntityRenderDispatcher dispatch) {
-		super(dispatch);
+	public FireflyTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
+		renderer.bakeLayer(TFModelLayers.FIREFLY);
 	}
 
 	@Override

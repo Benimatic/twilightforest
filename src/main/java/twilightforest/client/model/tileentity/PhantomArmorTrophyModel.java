@@ -12,14 +12,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class PhantomArmorTrophyModel extends GenericTrophyModel {
 
+	public ModelPart head;
 	public ModelPart righthorn1;
 	public ModelPart righthorn2;
 	public ModelPart lefthorn1;
 	public ModelPart lefthorn2;
 
 	public PhantomArmorTrophyModel(ModelPart part) {
-		super(part);
-
+		this.head = part.getChild("head");
 		this.righthorn1 = this.head.getChild("right_horn_1");
 		this.righthorn2 = this.righthorn1.getChild("right_horn_2");
 		this.lefthorn1 = this.head.getChild("left_horn_1");
@@ -69,7 +69,6 @@ public class PhantomArmorTrophyModel extends GenericTrophyModel {
 	
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = x * ((float) Math.PI / 180F);
 		

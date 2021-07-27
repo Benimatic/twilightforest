@@ -13,11 +13,9 @@ import twilightforest.client.model.armor.ArcticArmorModel;
 import twilightforest.client.model.armor.FieryArmorModel;
 import twilightforest.client.model.armor.KnightmetalArmorModel;
 import twilightforest.client.model.armor.YetiArmorModel;
-import twilightforest.client.model.entity.AdherentModel;
-import twilightforest.client.model.entity.AlphaYetiModel;
-import twilightforest.client.model.entity.BighornFurLayer;
-import twilightforest.client.model.entity.BighornModel;
+import twilightforest.client.model.entity.*;
 import twilightforest.client.model.tileentity.*;
+import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFLayerDefinitions {
@@ -49,5 +47,10 @@ public class TFLayerDefinitions {
 
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.7F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.7F), 64, 32));
+
+		event.registerLayerDefinition(TFModelLayers.CICADA, CicadaModel::create);
+		event.registerLayerDefinition(TFModelLayers.FIREFLY, FireflyModel::create);
+		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, CasketTileEntityRenderer::create);
+		event.registerLayerDefinition(TFModelLayers.MOONWORM, MoonwormModel::create);
 	}
 }

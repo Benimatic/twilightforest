@@ -13,10 +13,11 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 //This model doesnt require a legacy as the tongue will only show up in newer versions
 public class NagaTrophyModel extends GenericTrophyModel {
 
+	public ModelPart head;
 	public ModelPart tongue;
 
 	public NagaTrophyModel(ModelPart part) {
-		super(part);
+		this.head = part.getChild("head");
 		this.tongue = this.head.getChild("tongue");
 	}
 
@@ -41,7 +42,6 @@ public class NagaTrophyModel extends GenericTrophyModel {
 
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = x * ((float) Math.PI / 180F);
 	}

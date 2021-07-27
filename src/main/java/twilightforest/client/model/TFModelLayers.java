@@ -104,6 +104,12 @@ public class TFModelLayers {
 	public static final ModelLayerLocation TOME_BOLT = register("tome_bolt");
 	public static final ModelLayerLocation WAND_BOLT = register("wand_bolt");
 
+	public static final ModelLayerLocation CICADA = register("cicada");
+	public static final ModelLayerLocation FIREFLY = register("firefly");
+	public static final ModelLayerLocation KEEPSAKE_CASKET = register("keepsake_casket");
+	public static final ModelLayerLocation MOONWORM = register("moonworm");
+	public static final ModelLayerLocation TROPHY = register("trophy");
+
 	private static ModelLayerLocation register(String p_171294_) {
 		return register(p_171294_, "main");
 	}

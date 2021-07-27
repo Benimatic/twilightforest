@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class AlphaYetiTrophyModel extends GenericTrophyModel {
-	public final ModelPart main;
+	public final ModelPart head;
 	
 	public final ModelPart leftHorn1;
 	public final ModelPart leftHorn1Top;
@@ -27,22 +27,20 @@ public class AlphaYetiTrophyModel extends GenericTrophyModel {
 	public final ModelPart rightHorn3Top;
 
 	public AlphaYetiTrophyModel(ModelPart part) {
-		super(part);
-		this.main = part.getChild("main");
-		this.head = main.getChild("head");
+		this.head = part.getChild("head");
 
-		this.leftHorn1 = main.getChild("left_horn_1");
+		this.leftHorn1 = head.getChild("left_horn_1");
 		this.leftHorn1Top = leftHorn1.getChild("left_horn_1_top");
-		this.leftHorn2 = main.getChild("left_horn_2");
+		this.leftHorn2 = head.getChild("left_horn_2");
 		this.leftHorn2Top = leftHorn2.getChild("left_horn_2_top");
-		this.leftHorn3 = main.getChild("left_horn_3");
+		this.leftHorn3 = head.getChild("left_horn_3");
 		this.leftHorn3Top = leftHorn3.getChild("left_horn_3_top");
 
-		this.rightHorn1 = main.getChild("right_horn_1");
+		this.rightHorn1 = head.getChild("right_horn_1");
 		this.rightHorn1Top = rightHorn1.getChild("right_horn_1_top");
-		this.rightHorn2 = main.getChild("right_horn_2");
+		this.rightHorn2 = head.getChild("right_horn_2");
 		this.rightHorn2Top = rightHorn2.getChild("right_horn_2_top");
-		this.rightHorn3 = main.getChild("right_horn_3");
+		this.rightHorn3 = head.getChild("right_horn_3");
 		this.rightHorn3Top = rightHorn3.getChild("right_horn_3_top");
 	}
 
@@ -111,14 +109,13 @@ public class AlphaYetiTrophyModel extends GenericTrophyModel {
 
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
-		main.yRot = y * ((float) Math.PI / 180F);
-		main.xRot = x * ((float) Math.PI / 180F);
+		head.yRot = y * ((float) Math.PI / 180F);
+		head.xRot = x * ((float) Math.PI / 180F);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-		main.render(matrixStack, buffer, packedLight, packedOverlay);
+		head.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
 	public void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {

@@ -14,8 +14,7 @@ public class HydraTrophyModel extends GenericTrophyModel {
 	public ModelPart mouth;
 
 	public HydraTrophyModel(ModelPart part) {
-		super(part);
-
+		this.head = part.getChild("head");
 		this.plate = head.getChild("plate");
 		this.mouth = head.getChild("mouth");
 	}
@@ -48,7 +47,6 @@ public class HydraTrophyModel extends GenericTrophyModel {
 	
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = x * ((float) Math.PI / 180F);
 	}
