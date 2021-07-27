@@ -2,6 +2,8 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.AdherentEntity;
 
@@ -10,41 +12,61 @@ public class AdherentModel extends HumanoidModel<AdherentEntity> {
 	ModelPart leftSleeve;
 	ModelPart rightSleeve;
 
-	public AdherentModel() {
-		super(0.0F);
+	public AdherentModel(ModelPart part) {
+		super(part);
+		this.leftSleeve = this.leftArm.getChild("left_sleeve");
+		this.rightSleeve = this.rightArm.getChild("right_sleeve");
+	}
 
-		this.hat = new ModelPart(this, 0, 0);
-		this.leftLeg = new ModelPart(this, 0, 0);
-		this.rightLeg = new ModelPart(this, 0, 0);
-
-		this.head = new ModelPart(this, 0, 0);
-		this.head.addBox(-4F, -8F, -4F, 8, 8, 8);
-		this.head.setPos(0F, 0F, 0F);
-
-		this.body = new ModelPart(this, 32, 0);
-		this.body.addBox(-4F, 0F, -2F, 8, 24, 4);
-		this.body.setPos(0F, 0F, 0F);
-
-		this.rightArm = new ModelPart(this, 0, 16);
-		this.rightArm.addBox(-3F, -2F, -2F, 4, 12, 4);
-		this.rightArm.setPos(-5F, 2F, 0F);
-
-		this.leftArm = new ModelPart(this, 0, 16);
-		this.leftArm.addBox(-1F, -2F, -2F, 4, 12, 4);
-		this.leftArm.setPos(5F, 2F, 0F);
-
-		this.leftSleeve = new ModelPart(this, 16, 16);
-		this.leftSleeve.addBox(-1F, -2F, 2F, 4, 12, 4);
-		this.leftSleeve.setPos(0F, 0F, 0F);
-
-		this.leftArm.addChild(this.leftSleeve);
-
-		this.rightSleeve = new ModelPart(this, 16, 16);
-		this.rightSleeve.addBox(-3F, -2F, 2F, 4, 12, 4);
-		this.rightSleeve.setPos(0F, 0F, 0F);
-
-		this.rightArm.addChild(this.rightSleeve);
-
+	public static LayerDefinition create() {
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partdefinition = meshdefinition.getRoot();
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("hat",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("body",
+				CubeListBuilder.create()
+						.texOffs(32, 0)
+						.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("left_arm",
+				CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.offset(5.0F, 2.0F, 0.0F));
+		partdefinition.addOrReplaceChild("left_sleeve",
+				CubeListBuilder.create()
+						.texOffs(16, 16)
+						.addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("right_arm",
+				CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.offset(-5.0F, 2.0F, 0.0F));
+		partdefinition.addOrReplaceChild("right_sleeve",
+				CubeListBuilder.create()
+						.texOffs(16, 16)
+						.addBox(-3.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("left_leg",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("right_leg",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+				PartPose.ZERO);
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	@Override

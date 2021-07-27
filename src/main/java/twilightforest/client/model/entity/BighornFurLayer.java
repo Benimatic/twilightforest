@@ -2,30 +2,40 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.SheepFurModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import twilightforest.entity.passive.BighornEntity;
 
 public class BighornFurLayer extends SheepFurModel<BighornEntity> {
 
-	public BighornFurLayer() {
-		super();
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-3F, -4F, -4F, 6, 6, 6, 0.6F);
-		head.setPos(0.0F, 6F, -8F);
-		body = new ModelPart(this, 28, 8);
-		body.addBox(-4F, -9F, -7F, 8, 15, 6, 0.5F);
-		body.setPos(0.0F, 5F, 2.0F);
-		float f = 0.4F;
-		leg0 = new ModelPart(this, 0, 16);
-		leg0.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
-		leg0.setPos(-3F, 12F, 7F);
-		leg1 = new ModelPart(this, 0, 16);
-		leg1.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
-		leg1.setPos(3F, 12F, 7F);
-		leg2 = new ModelPart(this, 0, 16);
-		leg2.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
-		leg2.setPos(-3F, 12F, -5F);
-		leg3 = new ModelPart(this, 0, 16);
-		leg3.addBox(-2F, 0.0F, -2F, 4, 6, 4, f);
-		leg3.setPos(3F, 12F, -5F);
+	public BighornFurLayer(ModelPart part) {
+		super(part);
+
+	}
+
+	public static LayerDefinition create() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-3.0F, -4.0F, -4.0F, 6.0F, 6.0F, 6.0F, new CubeDeformation(0.6F)),
+				PartPose.offset(0.0F, 6.0F, -8.0F));
+		partdefinition.addOrReplaceChild("body",
+				CubeListBuilder.create()
+						.texOffs(28, 8)
+						.addBox(-4.0F, -9.0F, -7.0F, 8.0F, 15.0F, 6.0F, new CubeDeformation(0.5F)),
+				PartPose.offset(0.0F, 5F, 2.0F));
+
+		CubeListBuilder legOffset = CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.4F));
+
+		partdefinition.addOrReplaceChild("right_hind_leg", legOffset, PartPose.offset(-3.0F, 12.0F, 7.0F));
+		partdefinition.addOrReplaceChild("left_hind_leg", legOffset, PartPose.offset(3.0F, 12.0F, 7.0F));
+		partdefinition.addOrReplaceChild("right_front_leg", legOffset, PartPose.offset(-3.0F, 12.0F, -5.0F));
+		partdefinition.addOrReplaceChild("left_front_leg", legOffset, PartPose.offset(3.0F, 12.0F, -5.0F));
+
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 }

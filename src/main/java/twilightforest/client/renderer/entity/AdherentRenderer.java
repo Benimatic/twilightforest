@@ -4,12 +4,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.util.Mth;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.AdherentModel;
 import twilightforest.entity.AdherentEntity;
 
 public class AdherentRenderer extends TFBipedRenderer<AdherentEntity, AdherentModel> {
 	public AdherentRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new AdherentModel(), new AdherentModel(), new AdherentModel(), 0.625F, "adherent.png");
+		super(manager, new AdherentModel(manager.bakeLayer(TFModelLayers.ADHERENT)), 0.625F, "adherent.png");
 	}
 
 	@Override

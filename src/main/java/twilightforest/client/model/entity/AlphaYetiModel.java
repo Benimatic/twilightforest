@@ -3,6 +3,8 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.boss.AlphaYetiEntity;
 
@@ -12,98 +14,135 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiEntity> {
 	public ModelPart leftEye;
 	public ModelPart rightEye;
 
-	public AlphaYetiModel() {
-		super(0.0F, 0.0F, 256, 128);
+	public ModelPart rightHorn1;
+	public ModelPart rightHorn1Top;
+	public ModelPart rightHorn2;
+	public ModelPart rightHorn2Top;
+	public ModelPart rightHorn3;
+	public ModelPart rightHorn3Top;
 
-		this.head = new ModelPart(this, 0, 0);
-		this.head.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);
+	public ModelPart leftHorn1;
+	public ModelPart leftHorn1Top;
+	public ModelPart leftHorn2;
+	public ModelPart leftHorn2Top;
+	public ModelPart leftHorn3;
+	public ModelPart leftHorn3Top;
+	
 
-		this.hat = new ModelPart(this, 32, 0);
-		this.hat.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);
+	public AlphaYetiModel(ModelPart part) {
+		super(part);
+		this.mouth = this.body.getChild("mouth");
+		this.rightEye = this.body.getChild("right_eye");
+		this.leftEye = this.body.getChild("left_eye");
 
-		this.body = new ModelPart(this, 80, 0);
-		this.body.addBox(-24.0F, -60.0F, -18.0F, 48, 72, 36);
-		this.body.setPos(0.0F, -6.0F, 0.0F);
+		this.rightHorn1 = this.body.getChild("right_horn_1");
+		this.rightHorn1Top = this.rightHorn1.getChild("right_horn_1_top");
+		this.rightHorn2 = this.body.getChild("right_horn_2");
+		this.rightHorn2Top = this.rightHorn1.getChild("right_horn_2_top");
+		this.rightHorn3 = this.body.getChild("right_horn_3");
+		this.rightHorn3Top = this.rightHorn1.getChild("right_horn_3_top");
 
-		this.mouth = new ModelPart(this, 121, 50);
-		this.mouth.addBox(-17.0F, -7.0F, -1.5F, 34, 29, 2);
-		this.mouth.setPos(0.0F, -37.0F, -18.0F);
-		this.body.addChild(mouth);
+		this.leftHorn1 = this.body.getChild("left_horn_1");
+		this.leftHorn1Top = this.leftHorn1.getChild("left_horn_1_top");
+		this.leftHorn2 = this.body.getChild("left_horn_2");
+		this.leftHorn2Top = this.leftHorn1.getChild("left_horn_2_top");
+		this.leftHorn3 = this.body.getChild("left_horn_3");
+		this.leftHorn3Top = this.leftHorn1.getChild("left_horn_3_top");
+	}
 
-		this.rightEye = new ModelPart(this, 64, 0);
-		this.rightEye.addBox(-6.0F, -6.0F, -1.5F, 12, 12, 2);
-		this.rightEye.setPos(-14.0F, -50.0F, -18.0F);
-		this.body.addChild(rightEye);
+	public static LayerDefinition create() {
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partdefinition = meshdefinition.getRoot();
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("hat",
+				CubeListBuilder.create()
+						.texOffs(32, 0)
+						.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
+				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("body",
+				CubeListBuilder.create()
+						.texOffs(80, 0)
+						.addBox(-24.0F, -60.0F, -18.0F, 48.0F, 72.0F, 36.0F),
+				PartPose.offset(0.0F, -6.0F, 0.0F));
+		partdefinition.addOrReplaceChild("mouth",
+				CubeListBuilder.create()
+						.texOffs(121, 50)
+						.addBox(-17.0F, -7.0F, -1.5F, 34.0F, 29.0F, 2.0F),
+				PartPose.offset(0.0F, -37.0F, -18.0F));
+		partdefinition.addOrReplaceChild("right_eye",
+				CubeListBuilder.create()
+						.texOffs(64, 0)
+						.addBox(-6.0F, -6.0F, -1.5F, 12.0F, 12.0F, 2.0F),
+				PartPose.offset(-14.0F, -50.0F, -18.0F));
+		partdefinition.addOrReplaceChild("left_eye",
+				CubeListBuilder.create()
+						.texOffs(64, 0)
+						.addBox(-6.0F, -6.0F, -1.5F, 12.0F, 12.0F, 2.0F),
+				PartPose.offset(14.0F, -50.0F, -18.0F));
+		partdefinition.addOrReplaceChild("right_arm",
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-15.0F, -6.0F, -8.0F, 16.0F, 48.0F, 16.0F),
+				PartPose.offset(-25.0F, -26.0F, 0.0F));
+		partdefinition.addOrReplaceChild("left_arm",
+				CubeListBuilder.create().mirror()
+						.texOffs(0, 0)
+						.addBox(-1.0F, -6.0F, -8.0F, 16.0F, 48.0F, 16.0F),
+				PartPose.offset(25.0F, -26.0F, 0.0F));
+		partdefinition.addOrReplaceChild("right_leg",
+				CubeListBuilder.create()
+						.texOffs(0, 66)
+						.addBox(-10.0F, 0.0F, -10.0F, 20.0F, 20.0F, 20.0F),
+				PartPose.offset(-13.5F, 4.0F, 0.0F));
+		partdefinition.addOrReplaceChild("right_leg",
+				CubeListBuilder.create().mirror()
+						.texOffs(0, 66)
+						.addBox(-10.0F, 0.0F, -10.0F, 20.0F, 20.0F, 20.0F),
+				PartPose.offset(13.5F, 4.0F, 0.0F));
 
-		this.leftEye = new ModelPart(this, 64, 0);
-		this.leftEye.addBox(-6.0F, -6.0F, -1.5F, 12, 12, 2);
-		this.leftEye.setPos(14.0F, -50.0F, -18.0F);
-		this.body.addChild(leftEye);
+		addPairHorns(partdefinition, -58.0F, 35F, 1);
+		addPairHorns(partdefinition, -46.0F, 15F, 2);
+		addPairHorns(partdefinition, -36.0F, -5F, 3);
 
-		this.rightArm = new ModelPart(this, 0, 0);
-		this.rightArm.addBox(-15.0F, -6.0F, -8.0F, 16, 48, 16);
-		this.rightArm.setPos(-25.0F, -26.0F, 0.0F);
-
-		this.body.addChild(this.rightArm);
-
-		this.leftArm = new ModelPart(this, 0, 0);
-		this.leftArm.mirror = true;
-		this.leftArm.addBox(-1.0F, -6.0F, -8.0F, 16, 48, 16);
-		this.leftArm.setPos(25.0F, -26.0F, 0.0F);
-
-		this.body.addChild(this.leftArm);
-
-		this.rightLeg = new ModelPart(this, 0, 66);
-		this.rightLeg.addBox(-10.0F, 0.0F, -10.0F, 20, 20, 20);
-		this.rightLeg.setPos(-13.5F, 4.0F, 0.0F);
-
-		this.leftLeg = new ModelPart(this, 0, 66);
-		this.leftLeg.mirror = true;
-		this.leftLeg.addBox(-10.0F, 0.0F, -10.0F, 20, 20, 20);
-		this.leftLeg.setPos(13.5F, 4.0F, 0.0F);
-
-		addPairHorns(-58.0F, 35F);
-		addPairHorns(-46.0F, 15F);
-		addPairHorns(-36.0F, -5F);
+		return LayerDefinition.create(meshdefinition, 256, 128);
 	}
 
 	/**
 	 * Add a pair of horns
 	 */
-	private void addPairHorns(float height, float zangle) {
-		ModelPart horn1a;
-		ModelPart horn1b;
+	private static void addPairHorns(PartDefinition partdefinition, float height, float zangle, int set) {
+		
+		partdefinition.addOrReplaceChild("left_horn_" + set,
+				CubeListBuilder.create()
+						.texOffs(0, 108)
+						.addBox(-9.0F, -5.0F, -5.0F, 10.0F, 10.0F, 10.0F),
+		PartPose.offsetAndRotation(-24.0F, height, -8.0F,
+				0.0F, -30F / (180F / (float) Math.PI), zangle / (180F / (float) Math.PI)));
 
-		horn1a = new ModelPart(this, 0, 108);
-		horn1a.addBox(-9.0F, -5.0F, -5.0F, 10, 10, 10);
-		horn1a.setPos(-24.0F, height, -8.0F);
-		horn1a.yRot = -30F / (180F / (float) Math.PI);
-		horn1a.zRot = zangle / (180F / (float) Math.PI);
-		this.body.addChild(horn1a);
+		partdefinition.addOrReplaceChild("left_horn_" + set + "_top",
+				CubeListBuilder.create()
+						.texOffs(40, 108)
+						.addBox(-14.0F, -4.0F, -4.0F, 18.0F, 8.0F, 8.0F),
+				PartPose.offsetAndRotation(-8.0F, 0.0F, 0.0F,
+						0.0F, -20F / (180F / (float) Math.PI), zangle / (180F / (float) Math.PI)));
 
-		horn1b = new ModelPart(this, 40, 108);
-		horn1b.addBox(-14.0F, -4.0F, -4.0F, 18, 8, 8);
-		horn1b.setPos(-8.0F, 0.0F, 0.0F);
-		horn1b.yRot = -20F / (180F / (float) Math.PI);
-		horn1b.zRot = zangle / (180F / (float) Math.PI);
-		horn1a.addChild(horn1b);
+		partdefinition.addOrReplaceChild("right_horn_" + set,
+				CubeListBuilder.create()
+						.texOffs(0, 108)
+						.addBox(-1.0F, -5.0F, -5.0F, 10, 10, 10),
+				PartPose.offsetAndRotation(24.0F, height, 0.0F,
+						0.0F, 30F / (180F / (float) Math.PI), -zangle / (180F / (float) Math.PI)));
 
-		ModelPart horn2a;
-		ModelPart horn2b;
-
-		horn2a = new ModelPart(this, 0, 108);
-		horn2a.addBox(-1.0F, -5.0F, -5.0F, 10, 10, 10);
-		horn2a.setPos(24.0F, height, 0.0F);
-		horn2a.yRot = 30F / (180F / (float) Math.PI);
-		horn2a.zRot = -zangle / (180F / (float) Math.PI);
-		this.body.addChild(horn2a);
-
-		horn2b = new ModelPart(this, 40, 108);
-		horn2b.addBox(-2.0F, -4.0F, -4.0F, 18, 8, 8);
-		horn2b.setPos(8.0F, 0.0F, 0.0F);
-		horn2b.yRot = 20F / (180F / (float) Math.PI);
-		horn2b.zRot = -zangle / (180F / (float) Math.PI);
-		horn2a.addChild(horn2b);
+		partdefinition.addOrReplaceChild("right_horn_" + set + "_top",
+				CubeListBuilder.create()
+						.texOffs(40, 108)
+						.addBox(-2.0F, -4.0F, -4.0F, 18, 8, 8),
+		PartPose.offsetAndRotation(8.0F, 0.0F, 0.0F,
+				0.0F, 20F / (180F / (float) Math.PI), -zangle / (180F / (float) Math.PI)));
 	}
 
 
