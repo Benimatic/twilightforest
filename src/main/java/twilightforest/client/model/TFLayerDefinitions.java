@@ -1,6 +1,7 @@
 package twilightforest.client.model;
 
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,6 +13,10 @@ import twilightforest.client.model.armor.ArcticArmorModel;
 import twilightforest.client.model.armor.FieryArmorModel;
 import twilightforest.client.model.armor.KnightmetalArmorModel;
 import twilightforest.client.model.armor.YetiArmorModel;
+import twilightforest.client.model.entity.AdherentModel;
+import twilightforest.client.model.entity.AlphaYetiModel;
+import twilightforest.client.model.entity.BighornFurLayer;
+import twilightforest.client.model.entity.BighornModel;
 import twilightforest.client.model.tileentity.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -36,5 +41,13 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.QUEST_RAM_TROPHY, QuestRamTrophyModel::createHead);
 		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN_TROPHY, SnowQueenTrophyModel::createHead);
 		event.registerLayerDefinition(TFModelLayers.UR_GHAST_TROPHY, UrGhastTrophyModel::createHead);
+
+		event.registerLayerDefinition(TFModelLayers.ADHERENT, AdherentModel::create);
+		event.registerLayerDefinition(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
+		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP, BighornModel::create);
+		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP_FUR, BighornFurLayer::create);
+
+		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.7F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.7F), 64, 32));
 	}
 }

@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -33,6 +34,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.entity.boss.*;
@@ -183,7 +185,7 @@ public class TFEntities {
 				setShouldReceiveVelocityUpdates(true);
 	}
 
-	private static Item spawnEgg(EntityType<?> type, int color, int color2) {
+	private static Item spawnEgg(EntityType<? extends Mob> type, int color, int color2) {
 		ResourceLocation eggId = new ResourceLocation(type.getRegistryName().getNamespace(), type.getRegistryName().getPath() + "_spawn_egg");
 		return new SpawnEggItem(type, color, color2, TFItems.defaultBuilder()).setRegistryName(eggId);
 	}
@@ -383,9 +385,9 @@ public class TFEntities {
 	@SubscribeEvent
 	public static void registerEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(wild_boar, m -> new BoarRenderer(m, new BoarModel<>()));
-		event.registerEntityRenderer(bighorn_sheep, m -> new BighornRenderer(m, new BighornModel<>(), new BighornFurLayer(), 0.7F));
+		event.registerEntityRenderer(bighorn_sheep, m -> new BighornRenderer(m, new BighornModel<>(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP)), new BighornFurLayer(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP_FUR)), 0.7F));
 		event.registerEntityRenderer(deer, m -> new TFGenericMobRenderer<>(m, new DeerModel(), 0.7F, "wilddeer.png"));
-		event.registerEntityRenderer(redcap, m -> new TFBipedRenderer<>(m, new RedcapModel<>(0.0F), new HumanoidModel<>(0.7F), new HumanoidModel<>(0.7F), 0.4F, "redcap.png"));
+		event.registerEntityRenderer(redcap, m -> new TFBipedRenderer<>(m, new RedcapModel<>(0.0F), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_INNER)), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_OUTER)), 0.4F, "redcap.png"));
 		event.registerEntityRenderer(skeleton_druid, m -> new TFBipedRenderer<>(m, new SkeletonDruidModel(), new SkeletonDruidModel(), new SkeletonDruidModel(), 0.5F, "skeletondruid.png"));
 		event.registerEntityRenderer(hostile_wolf, WolfRenderer::new);
 		event.registerEntityRenderer(wraith, m -> new WraithRenderer(m, new WraithModel(), 0.5F));
@@ -411,7 +413,7 @@ public class TFEntities {
 		event.registerEntityRenderer(mist_wolf, MistWolfRenderer::new);
 		event.registerEntityRenderer(mini_ghast, m -> new TFGhastRenderer<>(m, new TFGhastModel<>(), 0.625F));
 		event.registerEntityRenderer(tower_golem, m -> new CarminiteGolemRenderer<>(m, new CarminiteGolemModel<>(), 0.75F));
-		event.registerEntityRenderer(tower_termite, m -> new TFGenericMobRenderer<>(m, new SilverfishModel<>(), 0.3F, "towertermite.png"));
+		event.registerEntityRenderer(tower_termite, m -> new TFGenericMobRenderer<>(m, new SilverfishModel<>(m.bakeLayer(ModelLayers.SILVERFISH)), 0.3F, "towertermite.png"));
 		event.registerEntityRenderer(tower_ghast, m -> new CarminiteGhastRenderer<>(m, new TFGhastModel<>(), 3.0F));
 		event.registerEntityRenderer(ur_ghast, m -> new UrGhastRenderer(m, new UrGhastModel(), 8.0F, 24F));
 		event.registerEntityRenderer(blockchain_goblin, m -> new BlockChainGoblinRenderer<>(m, new BlockChainGoblinModel<>(), 0.4F));
@@ -424,11 +426,11 @@ public class TFEntities {
 		event.registerEntityRenderer(king_spider, KingSpiderRenderer::new);
 		event.registerEntityRenderer(tower_broodling, CarminiteBroodlingRenderer::new);
 		event.registerEntityRenderer(hedge_spider, HedgeSpiderRenderer::new);
-		event.registerEntityRenderer(redcap_sapper, m -> new TFBipedRenderer<>(m, new RedcapModel<>(0.0F), new HumanoidModel<>(0.75F), new HumanoidModel<>(0.75F), 0.4F, "redcapsapper.png"));
+		event.registerEntityRenderer(redcap_sapper, m -> new TFBipedRenderer<>(m, new RedcapModel<>(0.0F), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_INNER)), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_OUTER)), 0.4F, "redcapsapper.png"));
 		event.registerEntityRenderer(maze_slime, m -> new MazeSlimeRenderer(m, 0.625F));
 		event.registerEntityRenderer(yeti, m -> new TFBipedRenderer<>(m, new YetiModel<>(), 0.625F, "yeti2.png"));
 		event.registerEntityRenderer(protection_box, ProtectionBoxRenderer::new);
-		event.registerEntityRenderer(yeti_alpha, m -> new TFBipedRenderer<>(m, new AlphaYetiModel(), 1.75F, "yetialpha.png"));
+		event.registerEntityRenderer(yeti_alpha, m -> new TFBipedRenderer<>(m, new AlphaYetiModel(m.bakeLayer(TFModelLayers.ALPHA_YETI)), 1.75F, "yetialpha.png"));
 		event.registerEntityRenderer(winter_wolf, WinterWolfRenderer::new);
 		event.registerEntityRenderer(snow_guardian, m -> new SnowGuardianRenderer(m, new NoopModel<>()));
 		event.registerEntityRenderer(stable_ice_core, m -> new StableIceCoreRenderer(m, new StableIceCoreModel()));
@@ -448,20 +450,20 @@ public class TFEntities {
 		event.registerEntityRenderer(plateau_boss, NoopRenderer::new);
 
 		// projectiles
-		event.registerEntityRenderer(nature_bolt, m -> new ThrownItemRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
-		event.registerEntityRenderer(lich_bolt, m -> new ThrownItemRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
-		event.registerEntityRenderer(wand_bolt, m -> new ThrownItemRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
-		event.registerEntityRenderer(tome_bolt, m -> new ThrownItemRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
+		event.registerEntityRenderer(nature_bolt, ThrownItemRenderer::new);
+		event.registerEntityRenderer(lich_bolt, ThrownItemRenderer::new);
+		event.registerEntityRenderer(wand_bolt, ThrownItemRenderer::new);
+		event.registerEntityRenderer(tome_bolt, ThrownItemRenderer::new);
 		event.registerEntityRenderer(hydra_mortar, HydraMortarRenderer::new);
-		event.registerEntityRenderer(slime_blob, m -> new ThrownItemRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
+		event.registerEntityRenderer(slime_blob, ThrownItemRenderer::new);
 		event.registerEntityRenderer(cicada_shot, CicadaShotRenderer::new);
 		event.registerEntityRenderer(moonworm_shot, MoonwormShotRenderer::new);
-		event.registerEntityRenderer(charm_effect, m -> new ThrownItemRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
-		event.registerEntityRenderer(lich_bomb, m -> new ThrownItemRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
+		event.registerEntityRenderer(charm_effect, ThrownItemRenderer::new);
+		event.registerEntityRenderer(lich_bomb, ThrownItemRenderer::new);
 		event.registerEntityRenderer(thrown_wep, ThrownWepRenderer::new);
 		event.registerEntityRenderer(falling_ice, FallingIceRenderer::new);
 		event.registerEntityRenderer(thrown_ice, ThrownIceRenderer::new);
-		event.registerEntityRenderer(ice_snowball, m -> new ThrownItemRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
+		event.registerEntityRenderer(ice_snowball, ThrownItemRenderer::new);
 		event.registerEntityRenderer(slider, SlideBlockRenderer::new);
 		event.registerEntityRenderer(seeker_arrow, DefaultArrowRenderer::new);
 		event.registerEntityRenderer(ice_arrow, DefaultArrowRenderer::new);
