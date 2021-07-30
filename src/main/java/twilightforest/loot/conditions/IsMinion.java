@@ -14,10 +14,7 @@ import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition.Builder;
-
 public class IsMinion implements LootItemCondition {
-
 	private final boolean inverse;
 
 	public IsMinion(boolean inverse) {
@@ -38,8 +35,7 @@ public class IsMinion implements LootItemCondition {
 		return () -> new IsMinion(inverse);
 	}
 
-	public static class Serializer implements Serializer<IsMinion> {
-
+	public static class ConditionSerializer implements Serializer<IsMinion> {
 		@Override
 		public void serialize(JsonObject json, IsMinion value, JsonSerializationContext context) {
 			json.addProperty("inverse", value.inverse);

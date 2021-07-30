@@ -90,8 +90,8 @@ public class TFTreasure {
 		ENCHANT = registerFunction("enchant", new LootItemFunctionType(new Enchant.Serializer()));
 		ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootItemFunctionType(new ModItemSwap.Serializer()));
 
-		IS_MINION = registerCondition("is_minion", new LootItemConditionType(new IsMinion.Serializer()));
-		MOD_EXISTS = registerCondition("mod_exists", new LootItemConditionType(new ModExists.Serializer()));
+		IS_MINION = registerCondition("is_minion", new LootItemConditionType(new IsMinion.ConditionSerializer()));
+		MOD_EXISTS = registerCondition("mod_exists", new LootItemConditionType(new ModExists.ConditionSerializer()));
 	}
 
 	public void generateChest(LevelAccessor world, BlockPos pos, Direction dir, boolean trapped) {

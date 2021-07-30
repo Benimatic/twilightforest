@@ -36,8 +36,7 @@ public class ModExists implements LootItemCondition {
         return () -> new ModExists(modid);
     }
 
-    public static class Serializer implements Serializer<ModExists> {
-
+    public static class ConditionSerializer implements Serializer<ModExists> {
 		@Override
 		public void serialize(JsonObject json, ModExists value, JsonSerializationContext context) {
 			json.addProperty("mod_id", value.modID);
