@@ -67,8 +67,8 @@ public class AdherentModel extends HumanoidModel<AdherentEntity> {
 	@Override
 	public void setupAnim(AdherentEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// rotate head normally
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
+		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
 
 		this.rightArm.xRot = 0.0F;
 		this.leftArm.xRot = 0.0F;

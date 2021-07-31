@@ -386,7 +386,7 @@ public class TFEntities {
 	public static void registerEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(wild_boar, m -> new BoarRenderer(m, new BoarModel<>(m.bakeLayer(TFModelLayers.BOAR))));
 		event.registerEntityRenderer(bighorn_sheep, m -> new BighornRenderer(m, new BighornModel<>(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP)), new BighornFurLayer(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP_FUR)), 0.7F));
-		event.registerEntityRenderer(deer, m -> new TFGenericMobRenderer<>(m, new DeerModel(), 0.7F, "wilddeer.png"));
+		event.registerEntityRenderer(deer, m -> new TFGenericMobRenderer<>(m, new DeerModel(m.bakeLayer(TFModelLayers.DEER)), 0.7F, "wilddeer.png"));
 		event.registerEntityRenderer(redcap, m -> new TFBipedRenderer<>(m, new RedcapModel<>(0.0F), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_INNER)), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_OUTER)), 0.4F, "redcap.png"));
 		event.registerEntityRenderer(skeleton_druid, m -> new TFBipedRenderer<>(m, new SkeletonDruidModel(), new SkeletonDruidModel(), new SkeletonDruidModel(), 0.5F, "skeletondruid.png"));
 		event.registerEntityRenderer(hostile_wolf, WolfRenderer::new);
@@ -407,7 +407,7 @@ public class TFEntities {
 		event.registerEntityRenderer(death_tome, m -> new TFGenericMobRenderer<>(m, new DeathTomeModel(m.bakeLayer(TFModelLayers.DEATH_TOME)), 0.3F, "textures/entity/enchanting_table_book.png"));
 		event.registerEntityRenderer(minotaur, m -> new TFBipedRenderer<>(m, new MinotaurModel(), 0.625F, "minotaur.png"));
 		event.registerEntityRenderer(minoshroom, m -> new MinoshroomRenderer(m, new MinoshroomModel(), 0.625F));
-		event.registerEntityRenderer(fire_beetle, m -> new TFGenericMobRenderer<>(m, new FireBeetleModel(), 0.8F, "firebeetle.png"));
+		event.registerEntityRenderer(fire_beetle, m -> new TFGenericMobRenderer<>(m, new FireBeetleModel(m.bakeLayer(TFModelLayers.FIRE_BEETLE)), 0.8F, "firebeetle.png"));
 		event.registerEntityRenderer(slime_beetle, m -> new SlimeBeetleRenderer(m, new SlimeBeetleModel(), 0.6F));
 		event.registerEntityRenderer(pinch_beetle, m -> new TFGenericMobRenderer<>(m, new PinchBeetleModel(), 0.6F, "pinchbeetle.png"));
 		event.registerEntityRenderer(mist_wolf, MistWolfRenderer::new);

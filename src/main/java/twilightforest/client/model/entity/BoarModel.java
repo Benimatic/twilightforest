@@ -1,6 +1,5 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PigModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;

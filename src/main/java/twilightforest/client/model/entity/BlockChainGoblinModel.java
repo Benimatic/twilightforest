@@ -4,6 +4,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.BlockChainGoblinEntity;
@@ -14,13 +15,12 @@ import twilightforest.entity.BlockChainGoblinEntity;
  */
 @OnlyIn(Dist.CLIENT)
 public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends HumanoidModel<T> {
-    public ModelPart helmet, horns, block;
+    private final ModelPart block;
 
     public BlockChainGoblinModel(ModelPart root) {
         super(root);
 
-        this.helmet = this.getHead().getChild("hat").getChild("helmet");
-        this.horns = this.helmet.getChild("horns");
+        this.block = root.getChild("block");
     }
 
     public static LayerDefinition create() {
@@ -73,9 +73,9 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
                 PartPose.ZERO);
 
         // Rotation constants
-        final float QUARTER_PI = (float) (Math.PI / 4F);
-        final float ANGLE_MINOR = -35F / (180F / (float) Math.PI);
-        final float ANGLE_MAJOR = -55F / (180F / (float) Math.PI);
+        final float QUARTER_PI = 0.25F * Mth.PI;
+        final float ANGLE_MINOR = -35F * Mth.DEG_TO_RAD;
+        final float ANGLE_MAJOR = -55F * Mth.DEG_TO_RAD;
 
         block.addOrReplaceChild("spikes_0", CubeListBuilder.create()
                         .texOffs(56, 36)
@@ -227,16 +227,16 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
         this.leftLeg.y = 18F;
 
         this.rightArm.setPos(-3.5F, 12F, 0F);
-        this.rightArm.xRot += Math.PI;
+        this.rightArm.xRot += Mth.PI;
 
         this.leftArm.setPos(3.5F, 12F, 0F);
-        this.leftArm.xRot += Math.PI;
+        this.leftArm.xRot += Mth.PI;
 
         float angle = ageInTicks / 4F;
         float length = 0;//16F;
 
-        this.block.x = (float) Math.sin(angle) * length;
-        this.block.z = (float) -Math.cos(angle) * length;
+        this.block.x = Mth.sin(angle) * length;
+        this.block.z = -Mth.cos(angle) * length;
 
         this.block.yRot = -angle;
     }

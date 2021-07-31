@@ -1,7 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,12 +12,9 @@ import twilightforest.entity.DeathTomeEntity;
 
 public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
     private final ModelPart root, paperStorm;
-    private final ModelPart coverRight;
-    private final ModelPart coverLeft;
-    private final ModelPart pagesRight;
-    private final ModelPart pagesLeft;
-    private final ModelPart flippingPageRight;
-    private final ModelPart flippingPageLeft;
+    private final ModelPart pagesRight, pagesLeft;
+    private final ModelPart flippingPageRight, flippingPageLeft;
+    private final ModelPart coverRight, coverLeft;
     private final ModelPart loosePage0, loosePage1, loosePage2, loosePage3;
 
     public DeathTomeModel(ModelPart root) {
@@ -27,8 +22,10 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
 
         this.pagesRight = this.root.getChild("pages_right");
         this.pagesLeft = this.root.getChild("pages_left");
+
         this.flippingPageRight = this.root.getChild("flipping_page_right");
         this.flippingPageLeft = this.root.getChild("flipping_page_left");
+
         this.coverRight = this.root.getChild("cover_right");
         this.coverLeft = this.root.getChild("cover_left");
 
