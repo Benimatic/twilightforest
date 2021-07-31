@@ -3,8 +3,14 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -16,28 +22,40 @@ import twilightforest.entity.boss.NagaSegmentEntity;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class NagaModel<T extends Entity> extends ListModel<T> {
+public class NagaModel<T extends Entity> extends HierarchicalModel<T> {
+
+    public ModelPart root;
     public ModelPart head;
-    public ModelPart tongue;
     public ModelPart body;
     private T entity;
 
-    public NagaModel() {
-        this.texWidth = 128;
-        this.texHeight = 64;
-        this.tongue = new ModelPart(this, 0, 0);
-        this.tongue.setPos(0.0F, 10.0F, -16.0F);
-        this.tongue.texOffs(84, 0).addBox(-6.0F, 0.0F, -12.0F, 12.0F, 0.0F, 12.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(tongue, 0.4363323129985824F, 0.0F, 0.0F);
-        this.head = new ModelPart(this, 0, 0);
-        this.head.setPos(0.0F, 8.0F, 0.0F);
-        this.head.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-        this.head.addChild(this.tongue);
+    public NagaModel(ModelPart root) {
+        this.root = root;
 
-        this.body = new ModelPart(this, 0, 0);
-        this.body.setPos(0.0F, 8.0F, 0.0F);
-        this.body.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
+        this.head = root.getChild("head");
+        this.body = root.getChild("body");
+    }
 
+    public static LayerDefinition create() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
+                PartPose.offset(0.0F, 8.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("tongue", CubeListBuilder.create()
+                        .texOffs(84, 0)
+                        .addBox(-6.0F, 0.0F, -12.0F, 12.0F, 0.0F, 12.0F),
+                PartPose.offsetAndRotation(0.0F, 10.0F, -16.0F, 0.4363323129985824F, 0.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
+                PartPose.offset(0.0F, 8.0F, 0.0F));
+
+        return LayerDefinition.create(mesh, 128, 64);
     }
 
     @Override
@@ -52,19 +70,11 @@ public class NagaModel<T extends Entity> extends ListModel<T> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(head, body);
+    public ModelPart root() {
+        return this.root;
     }
 
     @Override
-    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
+    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 }

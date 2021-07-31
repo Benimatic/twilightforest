@@ -69,11 +69,20 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.KNIGHT_PHANTOM, KnightPhantomModel::create);
 		event.registerLayerDefinition(TFModelLayers.KOBOLD, KoboldModel::create);
 		event.registerLayerDefinition(TFModelLayers.LICH_MINION, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
-		event.registerLayerDefinition(TFModelLayers.LICH_MINION_ARMOR, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.5F), 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.LICH, LichModel::create);
 		event.registerLayerDefinition(TFModelLayers.LOWER_GOBLIN_KNIGHT, LowerGoblinKnightModel::create);
+		event.registerLayerDefinition(TFModelLayers.LOYAL_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME, SlimeModel::createInnerBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, MinoshroomModel::create);
+		event.registerLayerDefinition(TFModelLayers.MINOTAUR, MinotaurModel::create);
+		event.registerLayerDefinition(TFModelLayers.NAGA, NagaModel::create);
+		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NagaModel::create);
+		event.registerLayerDefinition(TFModelLayers.NOOP, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 0, 0));
+		event.registerLayerDefinition(TFModelLayers.PENGUIN, PenguinModel::create);
+		event.registerLayerDefinition(TFModelLayers.PROTECTION_BOX, () -> LayerDefinition.create(ProtectionBoxModel.createMesh(), 16, 16));
+		event.registerLayerDefinition(TFModelLayers.QUEST_RAM, QuestRamModel::create);
+		event.registerLayerDefinition(TFModelLayers.RAVEN, RavenModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.7F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.7F), 64, 32));

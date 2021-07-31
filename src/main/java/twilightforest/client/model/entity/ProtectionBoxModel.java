@@ -5,6 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import twilightforest.entity.ProtectionBoxEntity;
 
 public class ProtectionBoxModel<T extends ProtectionBoxEntity> extends ListModel<T> {
@@ -16,12 +21,20 @@ public class ProtectionBoxModel<T extends ProtectionBoxEntity> extends ListModel
 	private int lastPixelsY;
 	private int lastPixelsZ;
 
-	public ProtectionBoxModel() {
-		texWidth = 16;
-		texHeight = 16;
-		box = new ModelPart(this, 0, 0);
-		box.addBox(0F, 0F, 0F, 16, 16, 16, 0F);
-		box.setPos(0F, 0F, 0F);
+	public ProtectionBoxModel(ModelPart root) {
+		this.box = root.getChild("box");
+	}
+
+	public static MeshDefinition createMesh() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
+
+		partRoot.addOrReplaceChild("box", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 16.0F),
+				PartPose.ZERO);
+
+		return mesh;
 	}
 
 	@Override
@@ -55,9 +68,14 @@ public class ProtectionBoxModel<T extends ProtectionBoxEntity> extends ListModel
 	}
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {
-		box = new ModelPart(this, 0, 0);
-		box.addBox(-1F, -1F, -1F, pixelsX, pixelsY, pixelsZ, 0F);
-		box.setPos(0F, 0F, 0F);
+
+		MeshDefinition mesh = createMesh();
+		PartDefinition partRoot = mesh.getRoot();
+
+		partRoot.addOrReplaceChild("box", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-1.0F, -1.0F, -1.0F, pixelsX, pixelsY, pixelsZ),
+				PartPose.ZERO);
 
 		this.lastPixelsX = pixelsX;
 		this.lastPixelsY = pixelsY;

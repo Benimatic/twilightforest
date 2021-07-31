@@ -35,7 +35,7 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystalEntity> {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition partRoot = mesh.getRoot();
 
-		for (int i = 1; i < 16; i++) {
+		for (int i = 0; i < 16; i++) {
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 

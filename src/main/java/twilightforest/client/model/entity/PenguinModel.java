@@ -11,6 +11,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.passive.PenguinEntity;
 
@@ -24,48 +29,61 @@ public class PenguinModel extends AgeableListModel<PenguinEntity> {
 	ModelPart head;
 	ModelPart beak;
 
-	public PenguinModel() {
-		texWidth = 64;
-		texHeight = 32;
+	public PenguinModel(ModelPart root) {
+		this.body = root.getChild("body");
+		this.rightarm = root.getChild("right_arm");
+		this.leftarm = root.getChild("left_arm");
+		this.rightleg = root.getChild("right_leg");
+		this.leftleg = root.getChild("left_leg");
+		this.head = root.getChild("head");
+		this.beak = root.getChild("beak");
+	}
 
-		body = new ModelPart(this, 32, 0);
-		body.addBox(-4F, 0F, -4F, 8, 9, 8);
-		body.setPos(0F, 14F, 0F);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-		rightarm = new ModelPart(this, 34, 18);
-		rightarm.addBox(-1F, -1F, -2F, 1, 8, 4);
-		rightarm.setPos(-4F, 15F, 0F);
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-3.5F, -4.0F, -3.5F, 7.0F, 5.0F, 7.0F),
+				PartPose.offset(0.0F, 13.0F, 0.0F));
 
-		leftarm = new ModelPart(this, 24, 18);
-		leftarm.addBox(0F, -1F, -2F, 1, 8, 4);
-		leftarm.setPos(4F, 15F, 0F);
+		partRoot.addOrReplaceChild("beak", CubeListBuilder.create()
+						.texOffs(0, 13)
+						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 2.0F),
+				PartPose.offset(0.0F, -1.0F, -4.0F));
 
-		leftarm.mirror = true;
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(32, 0)
+						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 9.0F, 8.0F),
+				PartPose.offset(0.0F, 14.0F, 0.0F));
 
-		rightleg = new ModelPart(this, 0, 16);
-		rightleg.addBox(-2F, 0F, -5F, 4, 1, 8);
-		rightleg.setPos(-2F, 23F, 0F);
-		rightleg.setTexSize(64, 32);
+		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(34, 18)
+						.addBox(-1.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
+				PartPose.offset(-4.0F, 15.0F, 0.0F));
 
-		leftleg = new ModelPart(this, 0, 16);
-		leftleg.addBox(-2F, 0F, -5F, 4, 1, 8);
-		leftleg.setPos(2F, 23F, 0F);
+		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+						.texOffs(24, 18)
+						.addBox(0.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
+				PartPose.offset(4.0F, 15.0F, 0.0F));
 
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
+				PartPose.offset(-2.0F, 23.0F, 0.0F));
 
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-3.5F, -4F, -3.5F, 7, 5, 7);
-		head.setPos(0F, 13F, 0F);
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
+				PartPose.offset(2.0F, 23.0F, 0.0F));
 
-		beak = new ModelPart(this, 0, 13);
-		beak.addBox(-1F, 0F, -1F, 2, 1, 2);
-		beak.setPos(0F, -1F, -4F);
-
-		head.addChild(beak);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	@Override
 	protected Iterable<ModelPart> headParts() {
-		return ImmutableList.of(this.head);
+		return ImmutableList.of(head, beak);
 	}
 
 	@Override
@@ -107,6 +125,7 @@ public class PenguinModel extends AgeableListModel<PenguinEntity> {
 	public void setupAnim(PenguinEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.xRot = headPitch / (180F / (float) Math.PI);
 		head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		beak.copyFrom(head);
 
 		rightleg.xRot = Mth.cos(limbSwing) * 0.7F * limbSwingAmount;
 		leftleg.xRot = Mth.cos(limbSwing + (float) Math.PI) * 0.7F * limbSwingAmount;

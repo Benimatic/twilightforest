@@ -54,8 +54,8 @@ public class TFModelLayers {
 	public static final ModelLayerLocation KOBOLD = register("kobold");
 	public static final ModelLayerLocation LICH = register("lich");
 	public static final ModelLayerLocation LICH_MINION = register("lich_minion");
-	public static final ModelLayerLocation LICH_MINION_ARMOR = register("lich_minion", "armor");
 	public static final ModelLayerLocation LOWER_GOBLIN_KNIGHT = register("lower_goblin_knight");
+	public static final ModelLayerLocation LOYAL_ZOMBIE = register("loyal_zombie");
 	public static final ModelLayerLocation MAZE_SLIME = register("maze_slime");
 	public static final ModelLayerLocation MAZE_SLIME_OUTER = register("maze_slime", "outer");
 	public static final ModelLayerLocation MINOSHROOM = register("minoshroom");
@@ -63,6 +63,8 @@ public class TFModelLayers {
 	public static final ModelLayerLocation MIST_WOLF = register("mist_wolf");
 	public static final ModelLayerLocation MOSQUITO_SWARM = register("mosquito_swarm");
 	public static final ModelLayerLocation NAGA = register("naga");
+	public static final ModelLayerLocation NAGA_BODY = register("naga_body");
+	public static final ModelLayerLocation NOOP = register("noop");
 	public static final ModelLayerLocation PENGUIN = register("penguin");
 	public static final ModelLayerLocation PINCH_BEETLE = register("pinch_beetle");
 	public static final ModelLayerLocation QUEST_RAM = register("quest_ram");

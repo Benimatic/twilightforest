@@ -3,8 +3,14 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,88 +21,93 @@ import twilightforest.entity.PinchBeetleEntity;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class PinchBeetleModel extends ListModel<PinchBeetleEntity> {
-    public ModelPart Head;
-    public ModelPart body;
-    public ModelPart rightLeg1;
-    public ModelPart rightLeg2;
-    public ModelPart rightLeg3;
-    public ModelPart leftLeg1;
-    public ModelPart leftLeg2;
-    public ModelPart leftLeg3;
-    public ModelPart rightPincer;
-    public ModelPart leftPincer;
-    public ModelPart rightAntenna;
-    public ModelPart leftAntenna;
+public class PinchBeetleModel extends HierarchicalModel<PinchBeetleEntity> {
+    public ModelPart root, head;
+    public ModelPart rightLeg1, rightLeg2, rightLeg3;
+    public ModelPart leftLeg1, leftLeg2, leftLeg3;
+    public ModelPart rightPincer, leftPincer;
 
-    public PinchBeetleModel() {
-        this.texWidth = 64;
-        this.texHeight = 64;
-        this.leftLeg2 = new ModelPart(this, 0, 0);
-        this.leftLeg2.setPos(2.0F, 21.0F, 4.0F);
-        this.leftLeg2.texOffs(40, 46).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftLeg2, 0.0F, -0.20943951023931953F, 0.17453292519943295F);
-        this.leftAntenna = new ModelPart(this, 0, 0);
-        this.leftAntenna.setPos(1.0F, -3.0F, -6.0F);
-        this.leftAntenna.texOffs(52, 0).addBox(0.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftAntenna, -0.4363323129985824F, -0.4363323129985824F, 0.0F);
-        this.rightLeg3 = new ModelPart(this, 0, 0);
-        this.rightLeg3.setPos(-2.0F, 21.0F, 2.0F);
-        this.rightLeg3.texOffs(40, 36).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightLeg3, 0.0F, -0.20943951023931953F, -0.17453292519943295F);
-        this.rightLeg2 = new ModelPart(this, 0, 0);
-        this.rightLeg2.setPos(-2.0F, 21.0F, 4.0F);
-        this.rightLeg2.texOffs(40, 32).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightLeg2, 0.0F, 0.20943951023931953F, -0.17453292519943295F);
-        this.rightLeg1 = new ModelPart(this, 0, 0);
-        this.rightLeg1.setPos(-2.0F, 21.0F, 6.0F);
-        this.rightLeg1.texOffs(40, 28).addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightLeg1, 0.0F, 0.6108652381980153F, -0.17453292519943295F);
-        this.leftPincer = new ModelPart(this, 0, 0);
-        this.leftPincer.setPos(4.0F, 2.0F, -4.0F);
-        this.leftPincer.texOffs(16, 14).addBox(0.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftPincer, 0.08726646259971647F, 0.6108652381980153F, 0.0F);
-        this.leftLeg1 = new ModelPart(this, 0, 0);
-        this.leftLeg1.setPos(2.0F, 21.0F, 6.0F);
-        this.leftLeg1.texOffs(40, 42).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftLeg1, 0.0F, -0.6108652381980153F, 0.17453292519943295F);
-        this.Head = new ModelPart(this, 0, 0);
-        this.Head.setPos(0.0F, 19.0F, 0.0F);
-        this.Head.addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.body = new ModelPart(this, 0, 0);
-        this.body.setPos(0.0F, 19.0F, 8.0F);
-        this.body.texOffs(0, 28).addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 7.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(body, 1.5707963267948966F, 0.0F, 0.0F);
-        this.leftLeg3 = new ModelPart(this, 0, 0);
-        this.leftLeg3.setPos(2.0F, 21.0F, 2.0F);
-        this.leftLeg3.texOffs(40, 50).addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftLeg3, 0.0F, 0.20943951023931953F, 0.17453292519943295F);
-        this.rightPincer = new ModelPart(this, 0, 0);
-        this.rightPincer.setPos(-4.0F, 2.0F, -4.0F);
-        this.rightPincer.texOffs(16, 0).addBox(-12.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightPincer, 0.08726646259971647F, -0.6108652381980153F, 0.0F);
-        this.rightAntenna = new ModelPart(this, 0, 0);
-        this.rightAntenna.setPos(-1.0F, -3.0F, -6.0F);
-        this.rightAntenna.texOffs(48, 0).addBox(-1.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightAntenna, -0.4363323129985824F, 0.4363323129985824F, 0.0F);
-        this.Head.addChild(this.leftAntenna);
-        this.Head.addChild(this.leftPincer);
-        this.Head.addChild(this.rightPincer);
-        this.Head.addChild(this.rightAntenna);
+    public PinchBeetleModel(ModelPart root) {
+        this.root = root;
+
+        this.head = root.getChild("head");
+        
+        this.leftPincer = root.getChild("left_pincher");
+        this.rightPincer = root.getChild("right_pincher");
+
+        this.rightLeg1 = root.getChild("right_leg_1");
+        this.rightLeg2 = root.getChild("right_leg_2");
+        this.rightLeg3 = root.getChild("right_leg_3");
+
+        this.leftLeg1 = root.getChild("left_leg_1");
+        this.leftLeg2 = root.getChild("left_leg_2");
+        this.leftLeg3 = root.getChild("left_leg_3");
     }
 
-    @Override
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(
-                Head,
-                body,
-                leftLeg1,
-                leftLeg2,
-                leftLeg3,
-                rightLeg1,
-                rightLeg2,
-                rightLeg3
-        );
+    public static LayerDefinition create() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 6.0F),
+                PartPose.offset(0.0F, 19.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("left_antenna", CubeListBuilder.create()
+                        .texOffs(52, 0)
+                        .addBox(0.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F),
+                PartPose.offsetAndRotation(1.0F, -3.0F, -6.0F, -0.4363323129985824F, -0.4363323129985824F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_antenna", CubeListBuilder.create()
+                        .texOffs(48, 0).addBox(-1.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F),
+                PartPose.offsetAndRotation(-1.0F, -3.0F, -6.0F, -0.4363323129985824F, 0.4363323129985824F, 0.0F));
+
+        partRoot.addOrReplaceChild("left_pincher", CubeListBuilder.create()
+                        .texOffs(16, 14)
+                        .addBox(0.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F),
+                PartPose.offsetAndRotation(4.0F, 2.0F, -4.0F, 0.08726646259971647F, 0.6108652381980153F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_pincher", CubeListBuilder.create()
+                        .texOffs(16, 0)
+                        .addBox(-12.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F),
+                PartPose.offsetAndRotation(-4.0F, 2.0F, -4.0F, 0.08726646259971647F, -0.6108652381980153F, 0.0F));
+
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(0, 28)
+                        .addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 7.0F),
+                PartPose.offsetAndRotation(0.0F, 19.0F, 8.0F, 1.5707963267948966F, 0.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
+                        .texOffs(40, 28)
+                        .addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 21.0F, 6.0F, 0.0F, 0.6108652381980153F, -0.17453292519943295F));
+
+        partRoot.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
+                        .texOffs(40, 32)
+                        .addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 21.0F, 4.0F, 0.0F, 0.20943951023931953F, -0.17453292519943295F));
+
+        partRoot.addOrReplaceChild("right_leg_3", CubeListBuilder.create()
+                        .texOffs(40, 36)
+                        .addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 21.0F, 2.0F, 0.0F, -0.20943951023931953F, -0.17453292519943295F));
+
+        partRoot.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
+                        .texOffs(40, 42)
+                        .addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(2.0F, 21.0F, 6.0F, 0.0F, -0.6108652381980153F, 0.17453292519943295F));
+
+        partRoot.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
+                        .texOffs(40, 46)
+                        .addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(2.0F, 21.0F, 4.0F, 0.0F, -0.20943951023931953F, 0.17453292519943295F));
+
+        partRoot.addOrReplaceChild("left_leg_3", CubeListBuilder.create()
+                        .texOffs(40, 50)
+                        .addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(2.0F, 21.0F, 2.0F, 0.0F, 0.20943951023931953F, 0.17453292519943295F));
+
+        return LayerDefinition.create(mesh, 64, 64);
     }
 
     @Override
@@ -106,9 +117,14 @@ public class PinchBeetleModel extends ListModel<PinchBeetleEntity> {
     }
 
     @Override
+    public ModelPart root() {
+        return this.root;
+    }
+
+    @Override
     public void setupAnim(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.Head.yRot = netHeadYaw / (180F / (float) Math.PI);
-        this.Head.xRot = headPitch / (180F / (float) Math.PI);
+        this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+        this.head.xRot = headPitch / (180F / (float) Math.PI);
 
         float legZ = ((float) Math.PI / 11F);
         this.leftLeg1.zRot = legZ;
@@ -163,14 +179,5 @@ public class PinchBeetleModel extends ListModel<PinchBeetleEntity> {
             this.rightPincer.yRot = -0.7853981633974483F;
             this.leftPincer.yRot = 0.7853981633974483F;
         }
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

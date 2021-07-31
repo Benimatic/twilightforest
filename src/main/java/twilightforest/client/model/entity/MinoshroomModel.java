@@ -3,6 +3,8 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,44 +25,77 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomEntity> {
     public ModelPart rightBackLeg;
     public ModelPart leftBackLeg;
 
-    public MinoshroomModel() {
-        super(0, 0, 64, 64);
-        this.texWidth = 64;
-        this.texHeight = 64;
-        this.rightFrontLeg = new ModelPart(this, 0, 0);
-        this.rightFrontLeg.setPos(-4.0F, 12.0F, -6.0F);
-        this.rightFrontLeg.texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.body = new ModelPart(this, 0, 0);
-        this.body.setPos(0.0F, -6.0F, -9.0F);
-        this.body.texOffs(0, 29).addBox(-5.0F, -3.0F, 0.0F, 10.0F, 12.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.leftArm = new ModelPart(this, 0, 0);
-        this.leftArm.setPos(5.0F, -6.0F, -9.0F);
-        this.leftArm.texOffs(46, 15).addBox(0.0F, -3.0F, -0.0F, 4.0F, 14.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.head = new ModelPart(this, 0, 0);
-        this.head.setPos(0.0F, -6.0F, -7.0F);
-        this.head.addBox(-4.0F, -11.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(0, 16).addBox(-3.0F, -6.0F, -5.0F, 6.0F, 3.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(32, 0).addBox(-8.0F, -10.0F, -1.0F, 4.0F, 2.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(32, 5).addBox(-8.0F, -13.0F, -1.0F, 2.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(46, 0).addBox(4.0F, -10.0F, -1.0F, 4.0F, 2.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(46, 5).addBox(6.0F, -13.0F, -1.0F, 2.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.rightArm = new ModelPart(this, 0, 0);
-        this.rightArm.setPos(-5.0F, -6.0F, -9.0F);
-        this.rightArm.texOffs(28, 15).addBox(-4.0F, -3.0F, -0.0F, 4.0F, 14.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.leftBackLeg = new ModelPart(this, 0, 0);
-        this.leftBackLeg.setPos(4.0F, 12.0F, 7.0F);
-        this.leftBackLeg.texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.cowTorso = new ModelPart(this, 0, 0);
-        this.cowTorso.setPos(0.0F, 10.0F, 6.0F);
-        this.cowTorso.texOffs(20, 36).addBox(-6.0F, -14.0F, -2.0F, 12.0F, 18.0F, 10.0F, 0.0F, 0.0F, 0.0F);
-        this.cowTorso.texOffs(0, 20).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 6.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(cowTorso, 1.5707963267948966F, 0.0F, 0.0F);
-        this.leftFrontLeg = new ModelPart(this, 0, 0);
-        this.leftFrontLeg.setPos(4.0F, 12.0F, -6.0F);
-        this.leftFrontLeg.texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.rightBackLeg = new ModelPart(this, 0, 0);
-        this.rightBackLeg.setPos(-4.0F, 12.0F, 7.0F);
-        this.rightBackLeg.texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+    public MinoshroomModel(ModelPart root) {
+        super(root);
+        this.cowTorso = root.getChild("cow_torso");
+        this.rightFrontLeg = root.getChild("right_front_leg");
+        this.leftFrontLeg = root.getChild("left_front_leg");
+        this.rightBackLeg = root.getChild("right_back_leg");
+        this.leftBackLeg = root.getChild("left_back_leg");
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-4.0F, -11.0F, -4.0F, 8.0F, 8.0F, 8.0F)
+                        .texOffs(0, 16)
+                        .addBox(-3.0F, -6.0F, -5.0F, 6.0F, 3.0F, 1.0F)
+                        .texOffs(32, 0)
+                        .addBox(-8.0F, -10.0F, -1.0F, 4.0F, 2.0F, 3.0F)
+                        .texOffs(32, 5)
+                        .addBox(-8.0F, -13.0F, -1.0F, 2.0F, 3.0F, 3.0F)
+                        .texOffs(46, 0)
+                        .addBox(4.0F, -10.0F, -1.0F, 4.0F, 2.0F, 3.0F)
+                        .texOffs(46, 5)
+                        .addBox(6.0F, -13.0F, -1.0F, 2.0F, 3.0F, 3.0F),
+                PartPose.offset(0.0F, -6.0F, -7.0F));
+
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(0, 29)
+                .addBox(-5.0F, -3.0F, 0.0F, 10.0F, 12.0F, 5.0F),
+                PartPose.offset(0.0F, -6.0F, -9.0F));
+
+        partRoot.addOrReplaceChild("leftArm", CubeListBuilder.create()
+                        .texOffs(46, 15)
+                        .addBox(0.0F, -3.0F, -0.0F, 4.0F, 14.0F, 5.0F),
+                PartPose.offset(5.0F, -6.0F, -9.0F));
+
+        partRoot.addOrReplaceChild("rightArm", CubeListBuilder.create()
+                        .texOffs(28, 15)
+                        .addBox(-4.0F, -3.0F, -0.0F, 4.0F, 14.0F, 5.0F),
+                PartPose.offset(-5.0F, -6.0F, -9.0F));
+
+        partRoot.addOrReplaceChild("cow_torso", CubeListBuilder.create()
+                        .texOffs(20, 36)
+                        .addBox(-6.0F, -14.0F, -2.0F, 12.0F, 18.0F, 10.0F)
+                        .texOffs(0, 20)
+                        .addBox(-2.0F, -2.0F, -3.0F, 4.0F, 6.0F, 1.0F),
+                PartPose.offsetAndRotation(0.0F, 10.0F, 6.0F, 1.5707963267948966F, 0.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+                        .texOffs(0, 48)
+                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offset(-4.0F, 12.0F, -6.0F));
+
+        partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+                        .texOffs(0, 48)
+                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offset(4.0F, 12.0F, -6.0F));
+
+        partRoot.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
+                        .texOffs(0, 48)
+                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offset(-4.0F, 12.0F, 7.0F));
+
+        partRoot.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
+                        .texOffs(0, 48)
+                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offset(4.0F, 12.0F, 7.0F));
+
+        return LayerDefinition.create(mesh, 64, 64);
     }
 
     @Override

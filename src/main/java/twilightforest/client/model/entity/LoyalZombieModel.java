@@ -3,16 +3,17 @@ package twilightforest.client.model.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import twilightforest.entity.LoyalZombieEntity;
 
 /**
- * [VanillaCopy] {@link net.minecraft.client.renderer.entity.model.AbstractZombieModel} due to generic restrictions
+ * [VanillaCopy] {@link net.minecraft.client.model.AbstractZombieModel} due to generic restrictions
  */
 public class LoyalZombieModel extends HumanoidModel<LoyalZombieEntity> {
 
-	public LoyalZombieModel(boolean armor) {
-		super(0.0F, 0.0F, 64, armor ? 32 : 64);
+	public LoyalZombieModel(ModelPart part) {
+		super(part);
 	}
 
 	@Override
