@@ -17,16 +17,16 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.passive.BunnyEntity;
 
 public class BunnyModel extends QuadrupedModel<BunnyEntity> {
-	public BunnyModel(ModelPart part) {
+	public BunnyModel(ModelPart root) {
 		// FIXME if the baby model looks weird, you're gonna want to tweak these values
-		super(part, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
+		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
 	}
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition part = mesh.getRoot();
+		PartDefinition partRoot = mesh.getRoot();
 
-		part.addOrReplaceChild("body", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 8)
 						.addBox(-2F, -1F, -2F, 4, 3, 5)
 						.texOffs(0, 18) // Tail
@@ -35,37 +35,37 @@ public class BunnyModel extends QuadrupedModel<BunnyEntity> {
 				PartPose.offset(0F, 21F, 0F));
 
 		// FIXME If the tail is broken, then use this
-		/*part.addOrReplaceChild("tail", CubeListBuilder.create()
+		/*partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
 						.texOffs(0, 18)
 						.addBox(-1F, -1F, 0F, 2, 2, 2)
 						.mirror(),
 				PartPose.offset(0F, 20F, 3F));*/
 
-		part.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1)
 						.mirror(),
 				PartPose.offset(-2F, 23F, 2F));
 
-		part.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1)
 						.mirror(),
 				PartPose.offset(1F, 23F, 2F));
 
-		part.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1)
 						.mirror(),
 				PartPose.offset(-2F, 23F, -2F));
 
-		part.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1)
 						.mirror(),
 				PartPose.offset(1F, 23F, -2F));
 
-		part.addOrReplaceChild("head", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-2F, -4F, -3F, 4, 4, 4)
 						.texOffs(16, 0)

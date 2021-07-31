@@ -14,50 +14,47 @@ import twilightforest.entity.BlockChainGoblinEntity;
  */
 @OnlyIn(Dist.CLIENT)
 public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends HumanoidModel<T> {
-    public ModelPart helmet;
-    public ModelPart horns;
+    public ModelPart helmet, horns, block;
 
-    ModelPart block;
+    public BlockChainGoblinModel(ModelPart root) {
+        super(root);
 
-    public BlockChainGoblinModel(ModelPart part) {
-        super(part);
-
-        helmet = this.getHead().getChild("hat").getChild("helmet");
-        horns = helmet.getChild("horns");
+        this.helmet = this.getHead().getChild("hat").getChild("helmet");
+        this.horns = this.helmet.getChild("horns");
     }
 
     public static LayerDefinition create() {
         MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-        PartDefinition part = mesh.getRoot();
+        PartDefinition partRoot = mesh.getRoot();
 
-        part.addOrReplaceChild("right_arm", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
                         .texOffs(52, 2)
                         .addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F),
                 PartPose.offsetAndRotation(-5.0F, 12.0F, 0.0F, 0.0F, 0.0F, 3.0543261909900767F));
 
-        part.addOrReplaceChild("left_arm", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
                         .texOffs(52, 17)
                         .addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F),
                 PartPose.offsetAndRotation(5.0F, 12.0F, 0.0F, 0.0F, 0.0F, -3.0543261909900767F));
 
-        part.addOrReplaceChild("right_leg", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
                         .texOffs(0, 33)
                         .addBox(-1.4F, 0.0F, -1.5F, 3.0F, 6.0F, 3.0F),
                 PartPose.offset(-2.0F, 18.0F, 0.0F));
 
-        part.addOrReplaceChild("left_leg", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
                         .texOffs(12, 33)
                         .addBox(-1.6F, 0.0F, -1.5F, 3.0F, 6.0F, 3.0F),
                 PartPose.offset(2.0F, 18.0F, 0.0F));
 
-        part.addOrReplaceChild("body", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(28, 6)
                         .addBox(-3.5F, 1.0F, -2.0F, 7.0F, 6.0F, 4.0F),
                 PartPose.offset(0.0F, 12.0F, 0.0F));
 
         //kill the head and headwear to prevent issues
-        part.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
-        var hat = part.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
+        var hat = partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
         //TODO Probably make the Helmet the head instead?
 
         var helmet = hat.addOrReplaceChild("helmet", CubeListBuilder.create()
@@ -70,7 +67,7 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
                         .addBox(-7.5F, -9.0F, -2.03F, 15.0F, 10.0F, 2.0F),
                 PartPose.rotation(0.0F, -0.7853981633974483F, 0.0F));
 
-        var block = part.addOrReplaceChild("block", CubeListBuilder.create()
+        var block = partRoot.addOrReplaceChild("block", CubeListBuilder.create()
                         .texOffs(32, 32)
                         .addBox(-4F, -8F, -4F, 8, 8, 8),
                 PartPose.ZERO);
@@ -222,25 +219,25 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-        head.y = 11.0F;
-        hat.y = 11.0F;
-        body.y = 11F;
+        this.head.y = 11.0F;
+        this.hat.y = 11.0F;
+        this.body.y = 11F;
 
-        rightLeg.y = 18F;
-        leftLeg.y = 18F;
+        this.rightLeg.y = 18F;
+        this.leftLeg.y = 18F;
 
-        rightArm.setPos(-3.5F, 12F, 0F);
-        rightArm.xRot += Math.PI;
+        this.rightArm.setPos(-3.5F, 12F, 0F);
+        this.rightArm.xRot += Math.PI;
 
-        leftArm.setPos(3.5F, 12F, 0F);
-        leftArm.xRot += Math.PI;
+        this.leftArm.setPos(3.5F, 12F, 0F);
+        this.leftArm.xRot += Math.PI;
 
         float angle = ageInTicks / 4F;
         float length = 0;//16F;
 
-        block.x = (float) Math.sin(angle) * length;
-        block.z = (float) -Math.cos(angle) * length;
+        this.block.x = (float) Math.sin(angle) * length;
+        this.block.z = (float) -Math.cos(angle) * length;
 
-        block.yRot = -angle;
+        this.block.yRot = -angle;
     }
 }

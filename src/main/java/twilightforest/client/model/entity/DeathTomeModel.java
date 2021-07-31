@@ -2,72 +2,118 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.DeathTomeEntity;
 
-public class DeathTomeModel extends EntityModel<DeathTomeEntity> {
-    private final ModelPart everything;
-
-    private final ModelPart book;
-    private final ModelPart loosePage1;
-    private final ModelPart loosePage2;
-    private final ModelPart loosePage3;
-    private final ModelPart loosePage4;
-    // Book render
-    private final ModelPart coverRight = (new ModelPart(64, 32, 0, 0)).addBox(-6.0F, -5.0F, -0.005F, 6.0F, 10.0F, 0.005F);
-    private final ModelPart coverLeft = (new ModelPart(64, 32, 16, 0)).addBox(0.0F, -5.0F, -0.005F, 6.0F, 10.0F, 0.005F);
+public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
+    private final ModelPart root, paperStorm;
+    private final ModelPart coverRight;
+    private final ModelPart coverLeft;
     private final ModelPart pagesRight;
     private final ModelPart pagesLeft;
     private final ModelPart flippingPageRight;
     private final ModelPart flippingPageLeft;
+    private final ModelPart loosePage0, loosePage1, loosePage2, loosePage3;
 
-    public DeathTomeModel() {
-        everything = (new ModelPart(this)).texOffs(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
+    public DeathTomeModel(ModelPart root) {
+        this.root = root;
 
-        book = (new ModelPart(this)).texOffs(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
+        this.pagesRight = this.root.getChild("pages_right");
+        this.pagesLeft = this.root.getChild("pages_left");
+        this.flippingPageRight = this.root.getChild("flipping_page_right");
+        this.flippingPageLeft = this.root.getChild("flipping_page_left");
+        this.coverRight = this.root.getChild("cover_right");
+        this.coverLeft = this.root.getChild("cover_left");
 
-        this.pagesRight = (new ModelPart(64, 32, 0, 10)).addBox(0.0F, -4.0F, -0.99F, 5.0F, 8.0F, 1.0F);
-        this.pagesLeft = (new ModelPart(64, 32, 12, 10)).addBox(0.0F, -4.0F, -0.01F, 5.0F, 8.0F, 1.0F);
-        this.flippingPageRight = (new ModelPart(64, 32, 24, 10)).addBox(0.0F, -4.0F, 0.0F, 5.0F, 8.0F, 0.005F);
-        this.flippingPageLeft = (new ModelPart(64, 32, 24, 10)).addBox(0.0F, -4.0F, 0.0F, 5.0F, 8.0F, 0.005F);
-        this.coverRight.setPos(0.0F, 0.0F, -1.0F);
-        this.coverLeft.setPos(0.0F, 0.0F, 1.0F);
-        ModelPart bookSpine = (new ModelPart(64, 32, 12, 0)).addBox(-1.0F, -5.0F, 0.0F, 2.0F, 10.0F, 0.005F);
-        bookSpine.yRot = ((float) Math.PI / 2F);
+        this.paperStorm = this.root.getChild("paper_storm");
 
-        book.addChild(coverRight);
-        book.addChild(coverLeft);
-        book.addChild(bookSpine);
-        book.addChild(pagesRight);
-        book.addChild(pagesLeft);
-        book.addChild(flippingPageRight);
-        book.addChild(flippingPageLeft);
+        this.loosePage0 = this.paperStorm.getChild("loose_page_0");
+        this.loosePage1 = this.paperStorm.getChild("loose_page_1");
+        this.loosePage2 = this.paperStorm.getChild("loose_page_2");
+        this.loosePage3 = this.paperStorm.getChild("loose_page_3");
+    }
 
-        loosePage1 = (new ModelPart(this)).texOffs(24, 10).addBox(0F, -4F, -8F, 5, 8, 0.005F);
-        loosePage2 = (new ModelPart(this)).texOffs(24, 10).addBox(0F, -4F, 9F, 5, 8, 0.005F);
-        loosePage3 = (new ModelPart(this)).texOffs(24, 10).addBox(0F, -4F, 11F, 5, 8, 0.005F);
-        loosePage4 = (new ModelPart(this)).texOffs(24, 10).addBox(0F, -4F, 7F, 5, 8, 0.005F);
+    public static LayerDefinition create() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition partRoot = mesh.getRoot();
 
-        //everything.addChild(book);
-        everything.addChild(loosePage1);
-        everything.addChild(loosePage2);
-        everything.addChild(loosePage3);
-        everything.addChild(loosePage4);
+        partRoot.addOrReplaceChild("pages_right", CubeListBuilder.create()
+                        .texOffs(0, 10)
+                        .addBox(0.0F, -4.0F, -0.99F, 5.0F, 8.0F, 1.0F),
+                PartPose.ZERO);
+
+        partRoot.addOrReplaceChild("pages_left", CubeListBuilder.create()
+                        .texOffs(12, 10)
+                        .addBox(0.0F, -4.0F, -0.01F, 5.0F, 8.0F, 1.0F),
+                PartPose.ZERO);
+
+        partRoot.addOrReplaceChild("flipping_page_right", CubeListBuilder.create()
+                        .texOffs(24, 10)
+                        .addBox(0.0F, -4.0F, 0.0F, 5.0F, 8.0F, 0.005F),
+                PartPose.ZERO);
+
+        partRoot.addOrReplaceChild("flipping_page_left", CubeListBuilder.create()
+                        .texOffs(24, 10)
+                        .addBox(0.0F, -4.0F, 0.0F, 5.0F, 8.0F, 0.005F),
+                PartPose.ZERO);
+
+        partRoot.addOrReplaceChild("cover_right", CubeListBuilder.create()
+                        .addBox(-6.0F, -5.0F, -0.005F, 6.0F, 10.0F, 0.005F),
+                PartPose.offset(0.0F, 0.0F, -1.0F));
+
+        partRoot.addOrReplaceChild("cover_left", CubeListBuilder.create()
+                        .texOffs(16, 0)
+                        .addBox(0.0F, -5.0F, -0.005F, 6.0F, 10.0F, 0.005F),
+                PartPose.offset(0.0F, 0.0F, 1.0F));
+
+        partRoot.addOrReplaceChild("book_spine", CubeListBuilder.create()
+                        .texOffs(12, 0)
+                        .addBox(-1.0F, -5.0F, 0.0F, 2.0F, 10.0F, 0.005F),
+                PartPose.rotation(0, Mth.HALF_PI, 0));
+
+        var paperStorm = partRoot.addOrReplaceChild("paper_storm", CubeListBuilder.create(), PartPose.ZERO);
+
+        paperStorm.addOrReplaceChild("loose_page_0", CubeListBuilder.create()
+                        .texOffs(24, 10)
+                        .addBox(0F, -4F, -8F, 5, 8, 0.005F),
+                PartPose.ZERO);
+
+        paperStorm.addOrReplaceChild("loose_page_1", CubeListBuilder.create()
+                        .texOffs(24, 10)
+                        .addBox(0F, -4F, 9F, 5, 8, 0.005F),
+                PartPose.ZERO);
+
+        paperStorm.addOrReplaceChild("loose_page_2", CubeListBuilder.create()
+                        .texOffs(24, 10)
+                        .addBox(0F, -4F, 11F, 5, 8, 0.005F),
+                PartPose.ZERO);
+
+        paperStorm.addOrReplaceChild("loose_page_3", CubeListBuilder.create()
+                        .texOffs(24, 10)
+                        .addBox(0F, -4F, 7F, 5, 8, 0.005F),
+                PartPose.ZERO);
+
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override
-    public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
-        this.everything.render(stack, builder, light, overlay);
-        this.book.render(stack, builder, light, overlay);
+    public ModelPart root() {
+        return this.root;
     }
 
     @Override
     public void setupAnim(DeathTomeEntity entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
-        book.zRot = -0.8726646259971647F;
+        this.root.zRot = -0.8726646259971647F;
 
-        this.everything.yRot = customAngle / (180F / (float) Math.PI) + (float) Math.PI / 2.0F;
+        this.paperStorm.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;
+        this.paperStorm.zRot = 0.8726646259971647F;
     }
 
     @Override
@@ -78,11 +124,11 @@ public class DeathTomeModel extends EntityModel<DeathTomeEntity> {
         float flipLeft = 0.6f;
 
         // hoveriness
-        book.setPos(0, 4 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
+        this.root.setPos(0, 4 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
 
         // book openness
         float openAngle = (Mth.sin(bounce * 0.4F) * 0.3F + 1.25F) * open;
-        this.coverRight.yRot = (float) Math.PI + openAngle;
+        this.coverRight.yRot = Mth.PI + openAngle;
         this.coverLeft.yRot = -openAngle;
         this.pagesRight.yRot = openAngle;
         this.pagesLeft.yRot = -openAngle;
@@ -94,20 +140,20 @@ public class DeathTomeModel extends EntityModel<DeathTomeEntity> {
         this.flippingPageLeft.x = Mth.sin(openAngle);
 
         // page rotations
-        loosePage1.yRot = (bounce) / 4.0F;
-        loosePage1.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
-        loosePage1.zRot = Mth.cos((bounce) / 5.0F) / 5.0F;
+        this.loosePage0.yRot = (bounce) / 4.0F;
+        this.loosePage0.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
+        this.loosePage0.zRot = Mth.cos((bounce) / 5.0F) / 5.0F;
 
-        loosePage2.yRot = (bounce) / 3.0F;
-        loosePage2.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
-        loosePage2.zRot = Mth.cos((bounce) / 5.0F) / 4.0F + 2;
+        this.loosePage1.yRot = (bounce) / 3.0F;
+        this.loosePage1.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
+        this.loosePage1.zRot = Mth.cos((bounce) / 5.0F) / 4.0F + 2;
 
-        loosePage3.yRot = (bounce) / 4.0F;
-        loosePage3.xRot = -Mth.sin((bounce) / 5.0F) / 3.0F;
-        loosePage3.zRot = Mth.cos((bounce) / 5.0F) / 5.0F - 1.0F;
+        this.loosePage2.yRot = (bounce) / 4.0F;
+        this.loosePage2.xRot = -Mth.sin((bounce) / 5.0F) / 3.0F;
+        this.loosePage2.zRot = Mth.cos((bounce) / 5.0F) / 5.0F - 1.0F;
 
-        loosePage4.yRot = (bounce) / 4.0F;
-        loosePage4.xRot = -Mth.sin((bounce) / 2.0F) / 4.0F;
-        loosePage4.zRot = Mth.cos((bounce) / 7.0F) / 5.0F;
+        this.loosePage3.yRot = (bounce) / 4.0F;
+        this.loosePage3.xRot = -Mth.sin((bounce) / 2.0F) / 4.0F;
+        this.loosePage3.zRot = Mth.cos((bounce) / 7.0F) / 5.0F;
     }
 }

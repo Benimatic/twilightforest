@@ -9,106 +9,70 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.boss.AlphaYetiEntity;
 
 public class AlphaYetiModel extends HumanoidModel<AlphaYetiEntity> {
-
-	public ModelPart mouth;
-	public ModelPart leftEye;
-	public ModelPart rightEye;
-
-	public ModelPart rightHorn1;
-	public ModelPart rightHorn1Top;
-	public ModelPart rightHorn2;
-	public ModelPart rightHorn2Top;
-	public ModelPart rightHorn3;
-	public ModelPart rightHorn3Top;
-
-	public ModelPart leftHorn1;
-	public ModelPart leftHorn1Top;
-	public ModelPart leftHorn2;
-	public ModelPart leftHorn2Top;
-	public ModelPart leftHorn3;
-	public ModelPart leftHorn3Top;
-	
-
-	public AlphaYetiModel(ModelPart part) {
-		super(part);
-		this.mouth = this.body.getChild("mouth");
-		this.rightEye = this.body.getChild("right_eye");
-		this.leftEye = this.body.getChild("left_eye");
-
-		this.rightHorn1 = this.body.getChild("right_horn_1");
-		this.rightHorn1Top = this.rightHorn1.getChild("right_horn_1_top");
-		this.rightHorn2 = this.body.getChild("right_horn_2");
-		this.rightHorn2Top = this.rightHorn1.getChild("right_horn_2_top");
-		this.rightHorn3 = this.body.getChild("right_horn_3");
-		this.rightHorn3Top = this.rightHorn1.getChild("right_horn_3_top");
-
-		this.leftHorn1 = this.body.getChild("left_horn_1");
-		this.leftHorn1Top = this.leftHorn1.getChild("left_horn_1_top");
-		this.leftHorn2 = this.body.getChild("left_horn_2");
-		this.leftHorn2Top = this.leftHorn1.getChild("left_horn_2_top");
-		this.leftHorn3 = this.body.getChild("left_horn_3");
-		this.leftHorn3Top = this.leftHorn1.getChild("left_horn_3_top");
+	public AlphaYetiModel(ModelPart root) {
+		super(root);
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partdefinition = meshdefinition.getRoot();
-		partdefinition.addOrReplaceChild("head",
+		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partRoot = mesh.getRoot();
+
+		partRoot.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("hat",
+		partRoot.addOrReplaceChild("hat",
 				CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("body",
+		partRoot.addOrReplaceChild("body",
 				CubeListBuilder.create()
 						.texOffs(80, 0)
 						.addBox(-24.0F, -60.0F, -18.0F, 48.0F, 72.0F, 36.0F),
 				PartPose.offset(0.0F, -6.0F, 0.0F));
-		partdefinition.addOrReplaceChild("mouth",
+		partRoot.addOrReplaceChild("mouth",
 				CubeListBuilder.create()
 						.texOffs(121, 50)
 						.addBox(-17.0F, -7.0F, -1.5F, 34.0F, 29.0F, 2.0F),
 				PartPose.offset(0.0F, -37.0F, -18.0F));
-		partdefinition.addOrReplaceChild("right_eye",
+		partRoot.addOrReplaceChild("right_eye",
 				CubeListBuilder.create()
 						.texOffs(64, 0)
 						.addBox(-6.0F, -6.0F, -1.5F, 12.0F, 12.0F, 2.0F),
 				PartPose.offset(-14.0F, -50.0F, -18.0F));
-		partdefinition.addOrReplaceChild("left_eye",
+		partRoot.addOrReplaceChild("left_eye",
 				CubeListBuilder.create()
 						.texOffs(64, 0)
 						.addBox(-6.0F, -6.0F, -1.5F, 12.0F, 12.0F, 2.0F),
 				PartPose.offset(14.0F, -50.0F, -18.0F));
-		partdefinition.addOrReplaceChild("right_arm",
+		partRoot.addOrReplaceChild("right_arm",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-15.0F, -6.0F, -8.0F, 16.0F, 48.0F, 16.0F),
 				PartPose.offset(-25.0F, -26.0F, 0.0F));
-		partdefinition.addOrReplaceChild("left_arm",
+		partRoot.addOrReplaceChild("left_arm",
 				CubeListBuilder.create().mirror()
 						.texOffs(0, 0)
 						.addBox(-1.0F, -6.0F, -8.0F, 16.0F, 48.0F, 16.0F),
 				PartPose.offset(25.0F, -26.0F, 0.0F));
-		partdefinition.addOrReplaceChild("right_leg",
+		partRoot.addOrReplaceChild("right_leg",
 				CubeListBuilder.create()
 						.texOffs(0, 66)
 						.addBox(-10.0F, 0.0F, -10.0F, 20.0F, 20.0F, 20.0F),
 				PartPose.offset(-13.5F, 4.0F, 0.0F));
-		partdefinition.addOrReplaceChild("right_leg",
+		partRoot.addOrReplaceChild("right_leg",
 				CubeListBuilder.create().mirror()
 						.texOffs(0, 66)
 						.addBox(-10.0F, 0.0F, -10.0F, 20.0F, 20.0F, 20.0F),
 				PartPose.offset(13.5F, 4.0F, 0.0F));
 
-		addPairHorns(partdefinition, -58.0F, 35F, 1);
-		addPairHorns(partdefinition, -46.0F, 15F, 2);
-		addPairHorns(partdefinition, -36.0F, -5F, 3);
+		addPairHorns(partRoot, -58.0F, 35F, 1);
+		addPairHorns(partRoot, -46.0F, 15F, 2);
+		addPairHorns(partRoot, -36.0F, -5F, 3);
 
-		return LayerDefinition.create(meshdefinition, 256, 128);
+		return LayerDefinition.create(mesh, 256, 128);
 	}
 
 	/**

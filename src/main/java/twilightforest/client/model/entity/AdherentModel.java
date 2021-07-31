@@ -8,65 +8,60 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.AdherentEntity;
 
 public class AdherentModel extends HumanoidModel<AdherentEntity> {
-
-	ModelPart leftSleeve;
-	ModelPart rightSleeve;
-
-	public AdherentModel(ModelPart part) {
-		super(part);
-		this.leftSleeve = this.leftArm.getChild("left_sleeve");
-		this.rightSleeve = this.rightArm.getChild("right_sleeve");
+	public AdherentModel(ModelPart root) {
+		super(root);
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partdefinition = meshdefinition.getRoot();
-		partdefinition.addOrReplaceChild("head",
+		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partRoot = mesh.getRoot();
+
+		partRoot.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("hat",
+		partRoot.addOrReplaceChild("hat",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("body",
+		partRoot.addOrReplaceChild("body",
 				CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("left_arm",
+		partRoot.addOrReplaceChild("left_arm",
 				CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
 				PartPose.offset(5.0F, 2.0F, 0.0F));
-		partdefinition.addOrReplaceChild("left_sleeve",
+		partRoot.addOrReplaceChild("left_sleeve",
 				CubeListBuilder.create()
 						.texOffs(16, 16)
 						.addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("right_arm",
+		partRoot.addOrReplaceChild("right_arm",
 				CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
 				PartPose.offset(-5.0F, 2.0F, 0.0F));
-		partdefinition.addOrReplaceChild("right_sleeve",
+		partRoot.addOrReplaceChild("right_sleeve",
 				CubeListBuilder.create()
 						.texOffs(16, 16)
 						.addBox(-3.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("left_leg",
+		partRoot.addOrReplaceChild("left_leg",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("right_leg",
+		partRoot.addOrReplaceChild("right_leg",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
-		return LayerDefinition.create(meshdefinition, 64, 32);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	@Override

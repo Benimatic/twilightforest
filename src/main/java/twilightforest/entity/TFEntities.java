@@ -404,7 +404,7 @@ public class TFEntities {
 		event.registerEntityRenderer(kobold, m -> new KoboldRenderer(m, new KoboldModel(), 0.4F, "kobold.png"));
 		//event.registerEntityRenderer(boggard, m -> new RenderTFBiped<>(m, new BipedModel<>(0), 0.625F, "kobold.png"));
 		event.registerEntityRenderer(mosquito_swarm, m -> new TFGenericMobRenderer<>(m, new MosquitoSwarmModel(), 0.0F, "mosquitoswarm.png"));
-		event.registerEntityRenderer(death_tome, m -> new TFGenericMobRenderer<>(m, new DeathTomeModel(), 0.3F, "textures/entity/enchanting_table_book.png"));
+		event.registerEntityRenderer(death_tome, m -> new TFGenericMobRenderer<>(m, new DeathTomeModel(m.bakeLayer(TFModelLayers.DEATH_TOME)), 0.3F, "textures/entity/enchanting_table_book.png"));
 		event.registerEntityRenderer(minotaur, m -> new TFBipedRenderer<>(m, new MinotaurModel(), 0.625F, "minotaur.png"));
 		event.registerEntityRenderer(minoshroom, m -> new MinoshroomRenderer(m, new MinoshroomModel(), 0.625F));
 		event.registerEntityRenderer(fire_beetle, m -> new TFGenericMobRenderer<>(m, new FireBeetleModel(), 0.8F, "firebeetle.png"));
@@ -412,7 +412,7 @@ public class TFEntities {
 		event.registerEntityRenderer(pinch_beetle, m -> new TFGenericMobRenderer<>(m, new PinchBeetleModel(), 0.6F, "pinchbeetle.png"));
 		event.registerEntityRenderer(mist_wolf, MistWolfRenderer::new);
 		event.registerEntityRenderer(mini_ghast, m -> new TFGhastRenderer<>(m, new TFGhastModel<>(), 0.625F));
-		event.registerEntityRenderer(tower_golem, m -> new CarminiteGolemRenderer<>(m, new CarminiteGolemModel<>(), 0.75F));
+		event.registerEntityRenderer(tower_golem, m -> new CarminiteGolemRenderer<>(m, new CarminiteGolemModel<>(m.bakeLayer(TFModelLayers.CARMINITE_GOLEM)), 0.75F));
 		event.registerEntityRenderer(tower_termite, m -> new TFGenericMobRenderer<>(m, new SilverfishModel<>(m.bakeLayer(ModelLayers.SILVERFISH)), 0.3F, "towertermite.png"));
 		event.registerEntityRenderer(tower_ghast, m -> new CarminiteGhastRenderer<>(m, new TFGhastModel<>(), 3.0F));
 		event.registerEntityRenderer(ur_ghast, m -> new UrGhastRenderer(m, new UrGhastModel(), 8.0F, 24F));
