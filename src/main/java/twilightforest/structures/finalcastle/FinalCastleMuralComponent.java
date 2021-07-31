@@ -28,8 +28,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		super(FinalCastlePieces.TFFCMur, nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleMuralComponent(TFFeature feature, Random rand, int i, int x, int y, int z, int width, int height, Direction direction) {
+	public FinalCastleMuralComponent(TFFeature feature, int i, int x, int y, int z, int width, int height, Direction direction) {
 		super(FinalCastlePieces.TFFCMur, feature, i);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
@@ -40,7 +39,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		this.height = this.boundingBox.getYSpan();
 		this.width = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.getZSpan() : this.boundingBox.getXSpan();
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		if (mural == null) {
 			// only make it once

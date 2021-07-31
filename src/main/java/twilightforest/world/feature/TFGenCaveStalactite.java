@@ -1,6 +1,7 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -69,21 +70,27 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 	 */
 	public static CaveStalactiteConfig makeRandomOreStalactite(Random rand, int hillSize) {
 		if (hillSize >= 3 || (hillSize >= 2 && rand.nextInt(5) == 0)) {
-			return WeighedRandom.getRandomItem(rand, largeHillStalactites).stalactite;
+			return WeighedRandom.getRandomItem(rand, largeHillStalactites).get().stalactite;
 		}
 		if (hillSize >= 2 || (hillSize >= 1 && rand.nextInt(5) == 0)) {
-			return WeighedRandom.getRandomItem(rand, mediumHillStalactites).stalactite;
+			return WeighedRandom.getRandomItem(rand, mediumHillStalactites).get().stalactite;
 		}
-		return WeighedRandom.getRandomItem(rand, smallHillStalactites).stalactite;
+		return WeighedRandom.getRandomItem(rand, smallHillStalactites).get().stalactite;
 	}
 
 	/**
 	 * Generates a stalactite at the specified location.
 	 * The coordinates should be inside a cave.
 	 * This will return false if it can't find a valid ceiling and floor, or if there are other errors.
+	 * @param ctx
 	 */
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, CaveStalactiteConfig config) {
+	public boolean place(FeaturePlaceContext<CaveStalactiteConfig> ctx) {
+		WorldGenLevel world = ctx.level();
+		BlockPos pos = ctx.origin();
+		Random random = ctx.random();
+		CaveStalactiteConfig config = ctx.config();
+
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
 

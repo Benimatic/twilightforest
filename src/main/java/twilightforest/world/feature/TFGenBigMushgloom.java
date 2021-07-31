@@ -9,10 +9,12 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.util.MushroomUtil;
+import twilightforest.world.feature.config.CaveStalactiteConfig;
 
 import java.util.Random;
 
@@ -23,7 +25,11 @@ public class TFGenBigMushgloom extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+		WorldGenLevel world = ctx.level();
+		BlockPos pos = ctx.origin();
+		Random rand = ctx.random();
+
 		int height = 3 + rand.nextInt(2) + rand.nextInt(2);
 
 		if (!FeatureUtil.isAreaSuitable(world, pos.offset(-1, 0, -1), 3, height, 3)) {

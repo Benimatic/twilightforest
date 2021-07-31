@@ -35,7 +35,7 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 		this.height = size / 2;
 
 		// just hang out at the very bottom of the tower
-		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0, wing.getBoundingBox().y0 - this.height, wing.getBoundingBox().z0, wing.getBoundingBox().x1, wing.getBoundingBox().y0, wing.getBoundingBox().z1);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().minY() - this.height, wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY(), wing.getBoundingBox().maxZ());
 	}
 
 	@Override

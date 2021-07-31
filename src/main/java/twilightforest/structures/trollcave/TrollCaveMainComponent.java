@@ -1,25 +1,27 @@
 package twilightforest.structures.trollcave;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.StructureFeatureManager;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.minecraft.world.level.levelgen.placement.DepthAverageConfigation;
+import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
@@ -29,13 +31,8 @@ import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.worldgen.BlockConstants;
 
-import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
-
-import net.minecraft.util.UniformInt;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 
 public class TrollCaveMainComponent extends TFStructureComponentOld {
 
@@ -80,7 +77,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		// make 4 caves
 		for (final Rotation caveRotation : RotationUtil.ROTATIONS) {
 			BlockPos dest = getValidOpening(rand, caveRotation);
@@ -88,26 +85,26 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		}
 
 		// add cloud castle
-		CloudCastleComponent castle = new CloudCastleComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.x0 + ((boundingBox.x1 - boundingBox.x0) / 2), 168, boundingBox.z0 + ((boundingBox.z1 - boundingBox.z0) / 2));
-		list.add(castle);
+		CloudCastleComponent castle = new CloudCastleComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), 168, boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
+		list.addPiece(castle);
 		castle.addChildren(this, list, rand);
 
 		// add vault
-		TrollVaultComponent vault = new TrollVaultComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.x0 + ((boundingBox.x1 - boundingBox.x0) / 2), boundingBox.y0, boundingBox.z0 + ((boundingBox.z1 - boundingBox.z0) / 2));
-		list.add(vault);
+		TrollVaultComponent vault = new TrollVaultComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), boundingBox.minY(), boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
+		list.addPiece(vault);
 		vault.addChildren(this, list, rand);
 	}
 
-	protected boolean makeSmallerCave(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeSmallerCave(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
 		TrollCaveConnectComponent cave = new TrollCaveConnectComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findCollisionPiece(list, cave.getBoundingBox());
+		StructurePiece intersect = list.findCollisionPiece(cave.getBoundingBox());
 		if (intersect == null || intersect == this) {
-			list.add(cave);
-			cave.addChildren(list.get(0), list, rand);
+			list.addPiece(cave);
+			cave.addChildren(this, list, rand);
 			//addOpening(x, y, z, rotation);
 			return true;
 		}
@@ -116,7 +113,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
@@ -164,7 +161,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 					if (dist > threshold) {
 						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, boundingBox);
-					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlock(world, x, y, z, boundingBox).getBlock().is(BlockTags.BASE_STONE_OVERWORLD)) {
+					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlock(world, x, y, z, boundingBox).is(BlockTags.BASE_STONE_OVERWORLD)) {
 						this.placeBlock(world, TFBlocks.trollsteinn.get().defaultBlockState(), x, y, z, boundingBox);
 					}
 				}

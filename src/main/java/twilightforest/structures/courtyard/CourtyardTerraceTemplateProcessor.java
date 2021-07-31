@@ -1,7 +1,6 @@
 package twilightforest.structures.courtyard;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.core.BlockPos;

@@ -33,13 +33,13 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 	public FinalCastleFoundation13ComponentThorns(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
 		super(FinalCastlePieces.TFFCFTh21, feature, rand, i, sideTower);
 
-		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().x0 - 5, sideTower.getBoundingBox().y1 - 1, sideTower.getBoundingBox().z0 - 5, sideTower.getBoundingBox().x1 + 5, sideTower.getBoundingBox().y1, sideTower.getBoundingBox().z1 + 5);
+		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 5, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 5, sideTower.getBoundingBox().maxX() + 5, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 5);
 	}
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// thorns
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		for (Rotation i : RotationUtil.ROTATIONS) {
 			this.makeThornVine(world, decoRNG, i, sbb);

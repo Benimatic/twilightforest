@@ -1,6 +1,7 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
@@ -21,8 +22,12 @@ public class TFGenWebs extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
-		while (pos.getY() > generator.getSpawnHeight() && world.isEmptyBlock(pos))
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> config) {
+		WorldGenLevel world = config.level();
+		ChunkGenerator generator = config.chunkGenerator();
+		BlockPos pos = config.origin();
+
+		while (pos.getY() > generator.getSpawnHeight(world) && world.isEmptyBlock(pos))
 			pos = pos.below();
 
 		if (!isValidMaterial(world.getBlockState(pos).getMaterial()))
@@ -34,7 +39,7 @@ public class TFGenWebs extends Feature<NoneFeatureConfiguration> {
 				return true;
 			}
 			pos = pos.below();
-		} while (pos.getY() > generator.getSpawnHeight() && isValidMaterial(world.getBlockState(pos).getMaterial()));
+		} while (pos.getY() > generator.getSpawnHeight(world) && isValidMaterial(world.getBlockState(pos).getMaterial()));
 
 		return false;
 	}

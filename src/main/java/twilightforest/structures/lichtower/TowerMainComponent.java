@@ -4,6 +4,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +41,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		// add a roof?
 		makeARoof(parent, list, rand);
 
@@ -142,14 +143,14 @@ public class TowerMainComponent extends TowerWingComponent {
 		return new int[]{rx, ry, rz};
 	}
 
-	public boolean makeTowerOutbuilding(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerOutbuilding(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		TowerOutbuildingComponent outbuilding = new TowerOutbuildingComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findCollisionPiece(list, outbuilding.getBoundingBox());
+		StructurePiece intersect = list.findCollisionPiece(outbuilding.getBoundingBox());
 		if (intersect == null) {
-			list.add(outbuilding);
+			list.addPiece(outbuilding);
 			outbuilding.addChildren(this, list, rand);
 			addOpening(x, y, z, rotation);
 			return true;

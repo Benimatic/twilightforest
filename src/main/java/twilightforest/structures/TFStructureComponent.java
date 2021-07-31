@@ -102,10 +102,10 @@ public abstract class TFStructureComponent extends StructurePiece {
 		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
 			int i = rotation.ordinal() * 4;
 			DyeColor[] colors = DyeColor.values();
-			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().x0, this.getBoundingBox().y1 + i    , this.getBoundingBox().z0), ColorUtil.WOOL.getColor(colors[i]));
-			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().x1, this.getBoundingBox().y1 + i + 1, this.getBoundingBox().z0), ColorUtil.WOOL.getColor(colors[1 + i]));
-			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().x0, this.getBoundingBox().y1 + i + 2, this.getBoundingBox().z1), ColorUtil.WOOL.getColor(colors[2 + i]));
-			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().x1, this.getBoundingBox().y1 + i + 3, this.getBoundingBox().z1), ColorUtil.WOOL.getColor(colors[3 + i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().minX(), this.getBoundingBox().maxY() + i    , this.getBoundingBox().minZ()), ColorUtil.WOOL.getColor(colors[i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().maxX(), this.getBoundingBox().maxY() + i + 1, this.getBoundingBox().minZ()), ColorUtil.WOOL.getColor(colors[1 + i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().minX(), this.getBoundingBox().maxY() + i + 2, this.getBoundingBox().maxZ()), ColorUtil.WOOL.getColor(colors[2 + i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().maxX(), this.getBoundingBox().maxY() + i + 3, this.getBoundingBox().maxZ()), ColorUtil.WOOL.getColor(colors[3 + i]));
 		}
 	}
 

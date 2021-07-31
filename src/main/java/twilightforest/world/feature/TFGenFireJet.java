@@ -1,6 +1,8 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
@@ -19,7 +21,11 @@ public class TFGenFireJet extends Feature<BlockStateConfiguration> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config) {
+	public boolean place(FeaturePlaceContext<BlockStateConfiguration> ctx) {
+		WorldGenLevel world = ctx.level();
+		BlockPos pos = ctx.origin();
+		Random rand = ctx.random();
+		BlockStateConfiguration config = ctx.config();
 
 		if(!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5)) return false;
 

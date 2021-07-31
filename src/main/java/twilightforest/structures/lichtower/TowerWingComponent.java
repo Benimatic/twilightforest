@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -154,7 +155,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		// we should have a door where we started
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 
@@ -179,7 +180,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		}
 	}
 
-	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 6) {
 			return false;
@@ -196,9 +197,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		TowerWingComponent wing = new TowerWingComponent(LichTowerPieces.TFLTWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findCollisionPiece(list, wing.boundingBox);
+		StructurePiece intersect = list.findCollisionPiece(wing.boundingBox);
 		if (intersect == null || intersect == this) {
-			list.add(wing);
+			list.addPiece(wing);
 			wing.addChildren(this, list, rand);
 			addOpening(x, y, z, rotation);
 			return true;
@@ -213,7 +214,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 
-	protected boolean makeBridge(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	protected boolean makeBridge(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// bridges are size 3 always
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
@@ -223,15 +224,15 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		}
 		TowerBridgeComponent bridge = new TowerBridgeComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findCollisionPiece(list, bridge.boundingBox);
+		StructurePiece intersect = list.findCollisionPiece(bridge.boundingBox);
 		if (intersect == null || intersect == this) {
-			intersect = StructurePiece.findCollisionPiece(list, bridge.getWingBB());
+			intersect = list.findCollisionPiece(bridge.getWingBB());
 		} else {
 			return false;
 		}
 		// okay, I think we can actually make one, as long as we're not still intersecting something.
 		if (intersect == null || intersect == this) {
-			list.add(bridge);
+			list.addPiece(bridge);
 			bridge.addChildren(this, list, rand);
 			addOpening(x, y, z, rotation);
 			return true;
@@ -261,9 +262,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
-	public void makeABeard(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 
-		boolean attached = parent.getBoundingBox().y0 < this.boundingBox.y0;
+		boolean attached = parent.getBoundingBox().minY() < this.boundingBox.minY();
 
 		int index = this.getGenDepth();
 		TowerBeardComponent beard;
@@ -272,7 +273,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		} else {
 			beard = new TowerBeardComponent(LichTowerPieces.TFLTBea, getFeatureType(), index + 1, this);
 		}
-		list.add(beard);
+		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
 	}
 
@@ -282,10 +283,10 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * <p>
 	 * This function keeps trying roofs starting with the largest and fanciest, and then keeps trying smaller and plainer ones
 	 */
-	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 
 		// we are attached if our parent is taller than we are
-		boolean attached = parent.getBoundingBox().y1 > this.boundingBox.y1;
+		boolean attached = parent.getBoundingBox().maxY() > this.boundingBox.maxY();
 
 		if (attached) {
 			makeAttachedRoof(list, rand);
@@ -296,7 +297,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 
-	protected void makeAttachedRoof(List<StructurePiece> list, Random rand) {
+	protected void makeAttachedRoof(StructurePieceAccessor list, Random rand) {
 		int index = this.getGenDepth();
 		TowerRoofComponent roof;
 
@@ -330,15 +331,15 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Check to see if this roof fits.  If it does:
 	 * Add the specified roof to this tower and set the roofType variable.
 	 */
-	protected void tryToFitRoof(List<StructurePiece> list, Random rand, TowerRoofComponent roof) {
+	protected void tryToFitRoof(StructurePieceAccessor list, Random rand, TowerRoofComponent roof) {
 		if (roof.fits(this, list)) {
-			list.add(roof);
+			list.addPiece(roof);
 			roof.addChildren(this, list, rand);
 			roofType = roof.getClass();
 		}
 	}
 
-	protected void makeFreestandingRoof(List<StructurePiece> list, Random rand) {
+	protected void makeFreestandingRoof(StructurePieceAccessor list, Random rand) {
 		int index = this.getGenDepth();
 		TowerRoofComponent roof;
 
@@ -444,7 +445,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Add some appropriate decorations to this tower
 	 */
 	protected void decorateThisTower(WorldGenLevel world, BoundingBox sbb) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) * (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) * (this.boundingBox.minZ() * 756839L));
 
 		if (size > 3) {
 			// only decorate towers with more than one available square inside.
@@ -1981,32 +1982,32 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * This returns the real-world coordinates of a possible painting or torch spot on the specified wall of this tower.
 	 */
 	protected BlockPos getRandomWallSpot(Random rand, int floorLevel, Direction direction, BoundingBox sbb) {
-		int minX = this.boundingBox.x0 + 2;
-		int maxX = this.boundingBox.x1 - 2;
+		int minX = this.boundingBox.minX() + 2;
+		int maxX = this.boundingBox.maxX() - 2;
 
-		int minY = this.boundingBox.y0 + floorLevel + 2;
-		int maxY = this.boundingBox.y1 - 2;
+		int minY = this.boundingBox.minY() + floorLevel + 2;
+		int maxY = this.boundingBox.maxY() - 2;
 
-		int minZ = this.boundingBox.z0 + 2;
-		int maxZ = this.boundingBox.z1 - 2;
+		int minZ = this.boundingBox.minZ() + 2;
+		int maxZ = this.boundingBox.maxZ() - 2;
 
 		// constrain the paintings to one wall
 		// these directions correspond to painting facing directions, not necessarily to the structure orienting directions
 		if (direction == Direction.SOUTH) {
-			minZ = this.boundingBox.z0;
-			maxZ = this.boundingBox.z0;
+			minZ = this.boundingBox.minZ();
+			maxZ = this.boundingBox.minZ();
 		}
 		else if (direction == Direction.WEST) {
-			maxX = this.boundingBox.x1;
-			minX = this.boundingBox.x1;
+			maxX = this.boundingBox.maxX();
+			minX = this.boundingBox.maxX();
 		}
 		else if (direction == Direction.NORTH) {
-			maxZ = this.boundingBox.z1;
-			minZ = this.boundingBox.z1;
+			maxZ = this.boundingBox.maxZ();
+			minZ = this.boundingBox.maxZ();
 		}
 		else if (direction == Direction.EAST) {
-			minX = this.boundingBox.x0;
-			maxX = this.boundingBox.x0;
+			minX = this.boundingBox.minX();
+			maxX = this.boundingBox.minX();
 		}
 
 		// try 30 times to get a proper result
@@ -2043,7 +2044,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		// make a line all the way down to the foundation
 		int dx = this.getXWithOffsetRotated(0, startZ, rotation);
 		int dz = this.getZWithOffsetRotated(0, startZ, rotation);
-		if (sbb.isInside(new BlockPos(dx, this.boundingBox.y0 + 1, dz))) {
+		if (sbb.isInside(new BlockPos(dx, this.boundingBox.minY() + 1, dz))) {
 			for (int dy = this.getWorldY(startHeight); dy > 0; dy--) {
 				final BlockPos pos = new BlockPos(dx, dy, dz);
 				if (world.getBlockState(pos).getBlock() instanceof CastleBlock) {

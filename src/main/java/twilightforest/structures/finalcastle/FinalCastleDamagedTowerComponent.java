@@ -10,6 +10,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -34,19 +35,19 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 
 		// add foundation
 		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(FinalCastlePieces.TFFCToF13, getFeatureType(), rand, 0, this);
-		list.add(foundation);
+		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add thorns
 		FinalCastleFoundation13Component thorns = new FinalCastleFoundation13ComponentThorns(getFeatureType(), rand, 0, this);
-		list.add(thorns);
+		list.addPiece(thorns);
 		thorns.addChildren(this, list, rand);
 
 //    		// add roof
@@ -67,7 +68,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		this.destroyTower(world, decoRNG, sbb);
 
@@ -84,9 +85,9 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 		// go down from the top of the tower to the ground, taking out rectangular chunks
 		//for (int y = this.boundingBox.maxY; y > this.boundingBox.minY; y--) {
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		for (int y = this.boundingBox.y1; !hitDeadRock && y > 64; y--) {
-			for (int x = this.boundingBox.x0 - 2; x <= this.boundingBox.x1 + 2; x++) {
-				for (int z = this.boundingBox.z0 - 2; z <= this.boundingBox.z1 + 2; z++) {
+		for (int y = this.boundingBox.maxY(); !hitDeadRock && y > 64; y--) {
+			for (int x = this.boundingBox.minX() - 2; x <= this.boundingBox.maxX() + 2; x++) {
+				for (int z = this.boundingBox.minZ() - 2; z <= this.boundingBox.maxZ() + 2; z++) {
 					pos.set(x, y, z);
 					if (sbb.isInside(pos)) {
 						if (world.getBlockState(pos).getBlock() == TFBlocks.deadrock.get()) {
@@ -117,9 +118,9 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 	protected ArrayList<DestroyArea> makeInitialDestroyList(Random rand) {
 		ArrayList<DestroyArea> areas = new ArrayList<DestroyArea>(2);
 
-		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().y1 - 1, areas));
-		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().y1 - 1, areas));
-		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().y1 - 1, areas));
+		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY() - 1, areas));
+		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY() - 1, areas));
+		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY() - 1, areas));
 		return areas;
 	}
 

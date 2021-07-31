@@ -1,7 +1,8 @@
 package twilightforest.world.feature;
 
-import net.minecraft.world.gen.feature.*;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.*;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
@@ -13,12 +14,6 @@ import twilightforest.worldgen.structures.GenDruidHut;
 import twilightforest.worldgen.structures.TFGenGraveyard;
 
 //I'd call this TFFeatures, but that'd be confused with TFFeature.
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 
 public class TFBiomeFeatures {
 

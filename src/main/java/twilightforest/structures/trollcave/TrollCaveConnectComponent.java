@@ -13,6 +13,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -53,7 +54,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		// make 4 caves
 		if (this.getGenDepth() < 3) {
 			for (final Rotation rotation : RotationUtil.ROTATIONS) {
@@ -75,7 +76,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// wall decorations
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
@@ -84,7 +85,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 			}
 		}
 
-		decoRNG.setSeed(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
@@ -97,7 +98,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		}
 
 		// possible treasure
-		decoRNG.setSeed(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 		if (this.countExits() == 1 && decoRNG.nextInt(3) == 0) {
 			// treasure!
 			makeTreasureCrate(world, sbb);
@@ -237,17 +238,17 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		return MushroomUtil.getState(defaultRotation, mushroomBlockState);
 	}
 
-	protected boolean makeGardenCave(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeGardenCave(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
 		TrollCaveMainComponent cave = new TrollCaveGardenComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findCollisionPiece(list, cave.getBoundingBox());
+		StructurePiece intersect = list.findCollisionPiece(cave.getBoundingBox());
 		StructurePiece otherGarden = findNearbyGarden(list, cave.getBoundingBox());
 		if ((intersect == null || intersect == this) && otherGarden == null) {
-			list.add(cave);
-			cave.addChildren(list.get(0), list, rand);
+			list.addPiece(cave);
+			cave.addChildren(this, list, rand);
 			//addOpening(x, y, z, rotation);
 
 			this.openingTowards[rotation.ordinal()] = true;
@@ -257,15 +258,15 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		return false;
 	}
 
-	private StructurePiece findNearbyGarden(List<StructurePiece> list, BoundingBox boundingBox) {
+	private StructurePiece findNearbyGarden(StructurePieceAccessor list, BoundingBox boundingBox) {
 
-		BoundingBox largeBox = new BoundingBox(boundingBox);
-		largeBox.x0 -= 30;
-		largeBox.y0 -= 30;
-		largeBox.z0 -= 30;
-		largeBox.x1 += 30;
-		largeBox.y1 += 30;
-		largeBox.z1 += 30;
+		BoundingBox largeBox = new BoundingBox(boundingBox.getCenter());
+		largeBox.minX() -= 30;
+		largeBox.minY() -= 30;
+		largeBox.minZ() -= 30;
+		largeBox.maxX() += 30;
+		largeBox.maxY() += 30;
+		largeBox.maxZ() += 30;
 
 		for (StructurePiece component : list) {
 			if (component instanceof TrollCaveGardenComponent && component.getBoundingBox().intersects(largeBox)) {
@@ -277,7 +278,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	protected boolean makeSmallerCave(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeSmallerCave(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		if (super.makeSmallerCave(list, rand, index, x, y, z, caveSize, caveHeight, rotation)) {
 			this.openingTowards[rotation.ordinal()] = true;
 			return true;

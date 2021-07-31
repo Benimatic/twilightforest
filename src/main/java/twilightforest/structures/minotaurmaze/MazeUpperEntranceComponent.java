@@ -11,6 +11,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -36,7 +37,7 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, Random random) {
 		// NO-OP
 	}
 
@@ -85,13 +86,13 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 		int yTotal = 0;
 		int count = 0;
 
-		for (int z = this.boundingBox.z0; z <= this.boundingBox.z1; ++z) {
-			for (int x = this.boundingBox.x0; x <= this.boundingBox.x1; ++x) {
+		for (int z = this.boundingBox.minZ(); z <= this.boundingBox.maxZ(); ++z) {
+			for (int x = this.boundingBox.minX(); x <= this.boundingBox.maxX(); ++x) {
 				BlockPos pos = new BlockPos(x, 64, z);
 
 				if (boundingBox.isInside(pos)) {
 					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
-					yTotal += Math.max(topPos.getY(), generator.getSpawnHeight());
+					yTotal += Math.max(topPos.getY(), generator.getSpawnHeight(world));
 					++count;
 				}
 			}

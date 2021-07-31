@@ -10,6 +10,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
@@ -27,7 +28,7 @@ public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		super.addChildren(parent, list, rand);
 
 		// a few more openings
@@ -36,11 +37,11 @@ public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public void makeABeard(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 	}
 
 	@Override
-	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 	}
 
 	@Override

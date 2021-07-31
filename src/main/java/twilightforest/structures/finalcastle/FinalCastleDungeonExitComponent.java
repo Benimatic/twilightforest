@@ -40,9 +40,9 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		// no need for additional rooms, we're along the outside anyways
 
 		// add stairway down
-		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().x0, parent.getBoundingBox().z0);
+		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX(), parent.getBoundingBox().minZ());
 
-		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, 5, boundingBox.x0 + 15, boundingBox.y0, boundingBox.z0 + 15, bestDir.rotate(Direction.SOUTH));
+		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, 5, boundingBox.minZ() + 15, boundingBox.minY(), boundingBox.minZ() + 15, bestDir.rotate(Direction.SOUTH));
 		list.add(steps0);
 		steps0.addChildren(this, list, rand);
 

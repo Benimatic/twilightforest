@@ -11,6 +11,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -37,11 +38,11 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 		super(type, feature, i);
 
 		this.setOrientation(sideTower.getOrientation());
-		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().x0 - 2, sideTower.getBoundingBox().y0 - 1, sideTower.getBoundingBox().z0 - 2, sideTower.getBoundingBox().x1 + 2, sideTower.getBoundingBox().y0, sideTower.getBoundingBox().z1 + 2);
+		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().minY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().minX() + 2, sideTower.getBoundingBox().minY(), sideTower.getBoundingBox().maxZ() + 2);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -59,11 +60,11 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 		}
 
 		// how tall are we
-		int height = this.boundingBox.y1 - this.groundLevel;
+		int height = this.boundingBox.maxY() - this.groundLevel;
 		int mid = height / 2;
 
 		// assume square
-		int size = this.boundingBox.x1 - this.boundingBox.x0;
+		int size = this.boundingBox.maxX() - this.boundingBox.minX();
 
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			// do corner

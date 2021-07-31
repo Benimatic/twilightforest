@@ -10,6 +10,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
@@ -31,11 +32,11 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 		int overhang = (int) (height * pHang);
 		this.size = height + (overhang * 2);
 		this.setOrientation(Direction.SOUTH);
-		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 - overhang, wing.getBoundingBox().y1 + 2, wing.getBoundingBox().z0 - overhang, wing.getBoundingBox().x1 + overhang, wing.getBoundingBox().y1 + this.height + 1, wing.getBoundingBox().z1 + overhang);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - overhang, wing.getBoundingBox().maxY() + 2, wing.getBoundingBox().minZ() - overhang, wing.getBoundingBox().maxX() + overhang, wing.getBoundingBox().maxY() + this.height + 1, wing.getBoundingBox().maxZ() + overhang);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}

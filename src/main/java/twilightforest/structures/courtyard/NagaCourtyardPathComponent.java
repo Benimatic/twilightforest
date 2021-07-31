@@ -30,7 +30,7 @@ public class NagaCourtyardPathComponent extends TFStructureComponentTemplate {
 
     @Override
     protected void loadTemplates(StructureManager templateManager) {
-        TEMPLATE = templateManager.get(PATH);
+        TEMPLATE = templateManager.getOrCreate(PATH);
     }
 
 	@Override

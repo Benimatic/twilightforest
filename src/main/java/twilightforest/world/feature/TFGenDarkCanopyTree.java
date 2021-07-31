@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.core.Direction;
@@ -23,7 +25,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
-import twilightforest.world.TFGenerationSettings;
 
 import java.util.*;
 
@@ -44,7 +45,12 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos, TreeConfiguration config) {
+	public boolean place(FeaturePlaceContext<TreeConfiguration> ctx) {
+		WorldGenLevel reader = ctx.level();
+		BlockPos pos = ctx.origin();
+		Random rand = ctx.random();
+		TreeConfiguration config = ctx.config();
+
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
 		Material materialUnder;
@@ -76,11 +82,11 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 		Set<BlockPos> set = Sets.newHashSet();
 		Set<BlockPos> set1 = Sets.newHashSet();
 		Set<BlockPos> set2 = Sets.newHashSet();
-		BoundingBox mutableboundingbox = BoundingBox.getUnknownBox();
+		BoundingBox mutableboundingbox = BoundingBox.infinite();
 		boolean flag = place(reader, rand, pos, set, set1, mutableboundingbox, config);
-		difference = mutableboundingbox.y0 - pos.getY();
-		mutableboundingbox.y0 = pos.getY();
-		mutableboundingbox.y1 = mutableboundingbox.y1 - difference;
+		difference = mutableboundingbox.minY() - pos.getY();
+		mutableboundingbox.minY() = pos.getY();
+		mutableboundingbox.maxY() = mutableboundingbox.maxY() - difference;
 		if(flag && !set.isEmpty()) {
 			if (!config.decorators.isEmpty()) {
 				List<BlockPos> list = Lists.newArrayList(set);
@@ -176,13 +182,13 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 
 		for(BlockPos blockpos : Lists.newArrayList(p_236403_4_)) {
 			if (p_236403_2_.isInside(blockpos)) {
-				voxelshapepart.setFull(blockpos.getX() - p_236403_2_.x0, blockpos.getY() - p_236403_2_.y0, blockpos.getZ() - p_236403_2_.z0, true, true);
+				voxelshapepart.setFull(blockpos.getX() - p_236403_2_.minX(), blockpos.getY() - p_236403_2_.minY(), blockpos.getZ() - p_236403_2_.minZ(), true, true);
 			}
 		}
 
 		for(BlockPos blockpos1 : Lists.newArrayList(p_236403_3_)) {
 			if (p_236403_2_.isInside(blockpos1)) {
-				voxelshapepart.setFull(blockpos1.getX() - p_236403_2_.x0, blockpos1.getY() - p_236403_2_.y0, blockpos1.getZ() - p_236403_2_.z0, true, true);
+				voxelshapepart.setFull(blockpos1.getX() - p_236403_2_.minX(), blockpos1.getY() - p_236403_2_.minY(), blockpos1.getZ() - p_236403_2_.minZ(), true, true);
 			}
 
 			for(Direction direction : Direction.values()) {
@@ -193,7 +199,7 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 						list.get(0).add(blockpos$mutable.immutable());
 						setBlockKnownShape(p_236403_1_, blockpos$mutable, blockstate.setValue(BlockStateProperties.DISTANCE, Integer.valueOf(1)));
 						if (p_236403_2_.isInside(blockpos$mutable)) {
-							voxelshapepart.setFull(blockpos$mutable.getX() - p_236403_2_.x0, blockpos$mutable.getY() - p_236403_2_.y0, blockpos$mutable.getZ() - p_236403_2_.z0, true, true);
+							voxelshapepart.setFull(blockpos$mutable.getX() - p_236403_2_.minX(), blockpos$mutable.getY() - p_236403_2_.minY(), blockpos$mutable.getZ() - p_236403_2_.minZ(), true, true);
 						}
 					}
 				}
@@ -206,7 +212,7 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 
 			for(BlockPos blockpos2 : set) {
 				if (p_236403_2_.isInside(blockpos2)) {
-					voxelshapepart.setFull(blockpos2.getX() - p_236403_2_.x0, blockpos2.getY() - p_236403_2_.y0, blockpos2.getZ() - p_236403_2_.z0, true, true);
+					voxelshapepart.setFull(blockpos2.getX() - p_236403_2_.minX(), blockpos2.getY() - p_236403_2_.minY(), blockpos2.getZ() - p_236403_2_.minZ(), true, true);
 				}
 
 				for(Direction direction1 : Direction.values()) {
@@ -219,7 +225,7 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 								BlockState blockstate2 = blockstate1.setValue(BlockStateProperties.DISTANCE, Integer.valueOf(l + 1));
 								setBlockKnownShape(p_236403_1_, blockpos$mutable, blockstate2);
 								if (p_236403_2_.isInside(blockpos$mutable)) {
-									voxelshapepart.setFull(blockpos$mutable.getX() - p_236403_2_.x0, blockpos$mutable.getY() - p_236403_2_.y0, blockpos$mutable.getZ() - p_236403_2_.z0, true, true);
+									voxelshapepart.setFull(blockpos$mutable.getX() - p_236403_2_.minX(), blockpos$mutable.getY() - p_236403_2_.minY(), blockpos$mutable.getZ() - p_236403_2_.minZ(), true, true);
 								}
 
 								set1.add(blockpos$mutable.immutable());

@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
@@ -32,7 +33,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -55,7 +56,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	/**
 	 * Add some stairs leading to this tower
 	 */
-	private boolean addStairs(List<StructurePiece> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean addStairs(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, Rotation rotation) {
 		// add door
 		this.addOpening(x, y, z, rotation);
 
@@ -64,8 +65,8 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 
 		IceTowerStairsComponent entrance = new IceTowerStairsComponent(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), this.size, this.height, direction);
 
-		list.add(entrance);
-		entrance.addChildren(list.get(0), list, rand);
+		list.addPiece(entrance);
+		entrance.addChildren(this, list, rand);
 		return true;
 	}
 

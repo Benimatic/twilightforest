@@ -1,6 +1,8 @@
 package twilightforest.world;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.MobCategory;
@@ -13,6 +15,7 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraftforge.common.world.StructureSpawnManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.start.TFStructure;
@@ -40,7 +43,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	}
 
 	@Override
-	public int getSpawnHeight() {
+	public int getSpawnHeight(LevelHeightAccessor accessor) {
 		return 32;
 	}
 
@@ -380,7 +383,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	}
 	
 	protected final ChunkPos getPos(WorldGenRegion primer) {
-		return new ChunkPos(primer.getCenterX(), primer.getCenterZ());
+		return primer.getCenter();
 	}
 
 	protected final BlockPos withY(BlockPos old, int y) {
@@ -388,14 +391,14 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	}
 
 	@Override
-	public List<MobSpawnSettings.SpawnerData> getMobsAt(Biome biome, StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
+	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Biome biome, StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
 		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructure.gatherPotentialSpawns(structureManager, classification, pos);
 		if (potentialStructureSpawns != null)
-			return potentialStructureSpawns;
-		List<MobSpawnSettings.SpawnerData> spawns = net.minecraftforge.common.world.StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);
+			return WeightedRandomList.create(potentialStructureSpawns);
+		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);
 		if (spawns != null)
 			return spawns;
-		return classification == MobCategory.MONSTER && pos.getY() >= TFGenerationSettings.SEALEVEL ? ImmutableList.of() : super.getMobsAt(biome, structureManager, classification, pos);
+		return classification == MobCategory.MONSTER && pos.getY() >= TFGenerationSettings.SEALEVEL ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, classification, pos);
 	}
 
 }

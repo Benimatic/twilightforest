@@ -9,6 +9,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
@@ -39,22 +40,22 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, Random random) {
 		super.addChildren(structurecomponent, list, random);
 
 		// add a maze
-		MinotaurMazeComponent maze = new MinotaurMazeComponent(getFeatureType(), 1, boundingBox.x0, boundingBox.y0 - 14, boundingBox.z0, 1);
-		list.add(maze);
+		MinotaurMazeComponent maze = new MinotaurMazeComponent(getFeatureType(), 1, boundingBox.minX(), boundingBox.minY() - 14, boundingBox.minZ(), 1);
+		list.addPiece(maze);
 		maze.addChildren(this, list, random);
 
 		// add maze entrance shaft
-		MazeEntranceShaftComponent mazeEnter = new MazeEntranceShaftComponent(getFeatureType(), 2, random, boundingBox.x0 + 1, boundingBox.y0, boundingBox.z0 + 1);
-		list.add(mazeEnter);
+		MazeEntranceShaftComponent mazeEnter = new MazeEntranceShaftComponent(getFeatureType(), 2, random, boundingBox.minX() + 1, boundingBox.minY(), boundingBox.minZ() + 1);
+		list.addPiece(mazeEnter);
 		mazeEnter.addChildren(this, list, random);
 
 		// add aboveground maze entrance building
-		MazeMoundComponent mazeAbove = new MazeMoundComponent(getFeatureType(), 2, random, boundingBox.x0 - 14, boundingBox.y0, boundingBox.z0 - 14);
-		list.add(mazeAbove);
+		MazeMoundComponent mazeAbove = new MazeMoundComponent(getFeatureType(), 2, random, boundingBox.minX() - 14, boundingBox.minY(), boundingBox.minZ() - 14);
+		list.addPiece(mazeAbove);
 		mazeAbove.addChildren(this, list, random);
 	}
 

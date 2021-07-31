@@ -9,6 +9,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
@@ -28,11 +29,11 @@ public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 		super(FinalCastlePieces.TFFCToF48, feature, i);
 
 		this.setOrientation(sideTower.getOrientation());
-		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().x0, sideTower.getBoundingBox().y0, sideTower.getBoundingBox().z0, sideTower.getBoundingBox().x1, sideTower.getBoundingBox().y0 - 1, sideTower.getBoundingBox().z1);
+		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX(), sideTower.getBoundingBox().minY(), sideTower.getBoundingBox().minZ(), sideTower.getBoundingBox().maxX(), sideTower.getBoundingBox().minY() - 1, sideTower.getBoundingBox().maxZ());
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}

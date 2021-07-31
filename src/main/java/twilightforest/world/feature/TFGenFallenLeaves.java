@@ -2,6 +2,7 @@ package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
@@ -22,13 +23,18 @@ public class TFGenFallenLeaves extends Feature<NoneFeatureConfiguration> {
 	private final BlockState state = TFBlocks.fallen_leaves.get().defaultBlockState();
 
 	@Override
-	public boolean place(WorldGenLevel worldIn, ChunkGenerator generator, Random rand, BlockPos position, NoneFeatureConfiguration config) {
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+		WorldGenLevel worldIn = ctx.level();
+		ChunkGenerator generator = ctx.chunkGenerator();
+		BlockPos position = ctx.origin();
+		Random rand = ctx.random();
+
 		do {
 			BlockState state = worldIn.getBlockState(position.below());
 			if (worldIn.isEmptyBlock(position) && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT))
 				break;
 			position = position.below();
-		} while (position.getY() > generator.getSpawnHeight());
+		} while (position.getY() > generator.getSpawnHeight(worldIn));
 
 		for (int x = 0; x < 5; x++)
 			for (int z = 0; z < 5; z++) {

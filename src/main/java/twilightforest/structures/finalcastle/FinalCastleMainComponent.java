@@ -11,6 +11,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -53,53 +54,53 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		// add foundation
 		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(getFeatureType(), rand, 4, this);
-		list.add(foundation);
+		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = new FinalCastleRoof48CrenellatedComponent(getFeatureType(), rand, 4, this);
-		list.add(roof);
+		TFStructureComponentOld roof = new FinalCastleRoof48CrenellatedComponent(getFeatureType(), 4, this);
+		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
 		// boss gazebo on roof
 		TFStructureComponentOld gazebo = new FinalCastleBossGazeboComponent(getFeatureType(), rand, 5, this);
-		list.add(gazebo);
+		list.addPiece(gazebo);
 		gazebo.addChildren(this, list, rand);
 
 
 		// build 4 towers on sides
-		FinalCastleStairTowerComponent tower0 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.x0, boundingBox.y0 + 3, boundingBox.z0, Direction.NORTH);
-		list.add(tower0);
+		FinalCastleStairTowerComponent tower0 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.NORTH);
+		list.addPiece(tower0);
 		tower0.addChildren(this, list, rand);
 
-		FinalCastleLargeTowerComponent tower1 = new FinalCastleLargeTowerComponent(getFeatureType(), rand, 3, boundingBox.x1, boundingBox.y0 + 3, boundingBox.z0, Direction.EAST);
-		list.add(tower1);
+		FinalCastleLargeTowerComponent tower1 = new FinalCastleLargeTowerComponent(getFeatureType(), rand, 3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.EAST);
+		list.addPiece(tower1);
 		tower1.addChildren(this, list, rand);
 
-		FinalCastleStairTowerComponent tower2 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.x0, boundingBox.y0 + 3, boundingBox.z1, Direction.WEST);
-		list.add(tower2);
+		FinalCastleStairTowerComponent tower2 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.WEST);
+		list.addPiece(tower2);
 		tower2.addChildren(this, list, rand);
 
-		FinalCastleStairTowerComponent tower3 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.x1, boundingBox.y0 + 3, boundingBox.z1, Direction.SOUTH);
-		list.add(tower3);
+		FinalCastleStairTowerComponent tower3 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.SOUTH);
+		list.addPiece(tower3);
 		tower3.addChildren(this, list, rand);
 
 		// tower maze towards entrance
-		BlockPos dest = new BlockPos(boundingBox.x0 - 4, boundingBox.y1, boundingBox.z0 - 24);
+		BlockPos dest = new BlockPos(boundingBox.minX() - 4, boundingBox.maxY(), boundingBox.minZ() - 24);
 		buildTowerMaze(list, rand, 48, 0, 24, 60, Direction.SOUTH, TFBlocks.castle_rune_brick_pink.get().defaultBlockState(), dest);
 
 
 		// another tower/bridge maze towards the clock tower
-		dest = new BlockPos(boundingBox.x1 + 4, boundingBox.y0, boundingBox.z1 + 24);
+		dest = new BlockPos(boundingBox.maxX() + 4, boundingBox.minY(), boundingBox.maxZ() + 24);
 		buildTowerMaze(list, rand, 0, 30, 24, 60, Direction.NORTH, TFBlocks.castle_rune_brick_blue.get().defaultBlockState(), dest);
 
 
 		// initial stairs down towards dungeon
-		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, 5, boundingBox.x0 + 18, boundingBox.y0 + 1, boundingBox.z0 + 18, Direction.SOUTH);
-		list.add(steps0);
+		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, 5, boundingBox.minX() + 18, boundingBox.minY() + 1, boundingBox.minZ() + 18, Direction.SOUTH);
+		list.addPiece(steps0);
 		steps0.addChildren(this, list, rand);
 
 		// continued steps
@@ -112,14 +113,14 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 		// mural on front
 		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, Direction.SOUTH);
-		FinalCastleMuralComponent mural0 = new FinalCastleMuralComponent(getFeatureType(), rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, Direction.SOUTH);
-		list.add(mural0);
+		FinalCastleMuralComponent mural0 = new FinalCastleMuralComponent(getFeatureType(), 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, Direction.SOUTH);
+		list.addPiece(mural0);
 		mural0.addChildren(this, list, rand);
 
 		// mural inside
 		BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, Direction.SOUTH);
-		FinalCastleMuralComponent mural1 = new FinalCastleMuralComponent(getFeatureType(), rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, Direction.NORTH);
-		list.add(mural1);
+		FinalCastleMuralComponent mural1 = new FinalCastleMuralComponent(getFeatureType(), 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, Direction.NORTH);
+		list.addPiece(mural1);
 		mural1.addChildren(this, list, rand);
 
 	}
@@ -127,7 +128,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	/**
 	 * Build a side tower, then tell it to start building towards the destination
 	 */
-	private void buildTowerMaze(List<StructurePiece> list, Random rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
+	private void buildTowerMaze(StructurePieceAccessor list, Random rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
 		boolean complete = false;
 		int iterations = 0;
 		while (!complete && iterations < 15) {
@@ -143,11 +144,11 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 			BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
 			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 
-			list.add(bridge);
+			list.addPiece(bridge);
 			bridge.addChildren(this, list, rand);
 
 			// don't check if the bounding box is clear, there's either nothing there or we've made a terrible mistake
-			list.add(sTower);
+			list.addPiece(sTower);
 			sTower.buildTowards(this, list, rand, dest);
 
 			// check if we've successfully built the end tower
@@ -165,15 +166,15 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		}
 	}
 
-	private boolean isMazeComplete(List<StructurePiece> list, BlockState type) {
+	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
 		if (list.size() > 60) {
 			TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
 		}
 		for (StructurePiece structurecomponent : list) {
 			BoundingBox boundingBox = structurecomponent.getBoundingBox();
-			int x = (boundingBox.x1 - boundingBox.x0 / 2) + boundingBox.x0;
-			int y = (boundingBox.y1 - boundingBox.y0 / 2) + boundingBox.y0;
-			int z = (boundingBox.z1 - boundingBox.z0 / 2) + boundingBox.z0;
+			int x = (boundingBox.maxX() - boundingBox.minX() / 2) + boundingBox.minX();
+			int y = (boundingBox.maxY() - boundingBox.minY() / 2) + boundingBox.minY();
+			int z = (boundingBox.maxZ() - boundingBox.minZ() / 2) + boundingBox.minZ();
 			//TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
 			if (type == TFBlocks.castle_rune_brick_pink.get().defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
 				return true;

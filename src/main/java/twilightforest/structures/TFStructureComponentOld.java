@@ -1,26 +1,25 @@
 package twilightforest.structures;
 
-import net.minecraft.block.*;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -32,14 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
-
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.StandingSignBlock;
-import net.minecraft.world.level.block.TripWireHookBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
 @Deprecated
 public abstract class TFStructureComponentOld extends TFStructureComponent {
@@ -336,13 +327,13 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		} else {
 			switch (enumfacing) {
 				case SOUTH:
-					return this.boundingBox.x0 + x;
+					return this.boundingBox.minX() + x;
 				case WEST:
-					return this.boundingBox.x1 - z;
+					return this.boundingBox.maxX() - z;
 				case NORTH:
-					return this.boundingBox.x1 - x; // TF - Add case for NORTH todo 1.9 is this correct?
+					return this.boundingBox.maxX() - x; // TF - Add case for NORTH todo 1.9 is this correct?
 				case EAST:
-					return this.boundingBox.x0 + z;
+					return this.boundingBox.minX() + z;
 				default:
 					return x;
 			}
@@ -360,13 +351,13 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		} else {
 			switch (enumfacing) {
 				case SOUTH:
-					return this.boundingBox.z0 + z;
+					return this.boundingBox.minZ() + z;
 				case WEST:
-					return this.boundingBox.z0 + x;
+					return this.boundingBox.minZ() + x;
 				case NORTH:
-					return this.boundingBox.z1 - z;
+					return this.boundingBox.maxZ() - z;
 				case EAST:
-					return this.boundingBox.z1 - x;
+					return this.boundingBox.maxZ() - x;
 				default:
 					return z;
 			}
@@ -499,11 +490,11 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		int totalHeight = 0;
 		int heightCount = 0;
 
-		for (int bz = this.boundingBox.z0; bz <= this.boundingBox.z1; ++bz) {
-			for (int by = this.boundingBox.x0; by <= this.boundingBox.x1; ++by) {
+		for (int bz = this.boundingBox.minZ(); bz <= this.boundingBox.maxZ(); ++bz) {
+			for (int by = this.boundingBox.minX(); by <= this.boundingBox.maxX(); ++by) {
 				BlockPos pos = new BlockPos(by, 64, bz);
 				if (sbb.isInside(pos)) {
-					totalHeight += Math.max(world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).getY(), generator.getSpawnHeight());
+					totalHeight += Math.max(world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).getY(), generator.getSpawnHeight(world));
 					++heightCount;
 				}
 			}
@@ -536,10 +527,10 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	protected boolean isBoundingBoxOutsideBiomes(WorldGenLevel world, Predicate<Biome> predicate) {
 
-		int minX = this.boundingBox.x0 - 1;
-		int minZ = this.boundingBox.z0 - 1;
-		int maxX = this.boundingBox.x1 + 1;
-		int maxZ = this.boundingBox.z1 + 1;
+		int minX = this.boundingBox.minX() - 1;
+		int minZ = this.boundingBox.minZ() - 1;
+		int maxX = this.boundingBox.maxX() + 1;
+		int maxZ = this.boundingBox.maxZ() + 1;
 
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 

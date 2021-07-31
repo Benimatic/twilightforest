@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -49,7 +50,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -91,24 +92,24 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		}
 	}
 
-	protected boolean addDungeonRoom(StructurePiece parent, List<StructurePiece> list, Random rand, Rotation rotation, int level) {
+	protected boolean addDungeonRoom(StructurePiece parent, StructurePieceAccessor list, Random rand, Rotation rotation, int level) {
 		rotation = rotation.getRotated(this.rotation);
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
 		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(FinalCastlePieces.TFFCDunR31, getFeatureType(), rand, this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
-		BoundingBox largerBB = new BoundingBox(dRoom.getBoundingBox());
+		BoundingBox largerBB = new BoundingBox(dRoom.getBoundingBox().getCenter());
 
 		int expand = 0;
-		largerBB.x0 -= expand;
-		largerBB.z0 -= expand;
-		largerBB.x1 += expand;
-		largerBB.z1 += expand;
+		largerBB.minX() -= expand;
+		largerBB.minZ() -= expand;
+		largerBB.maxX() += expand;
+		largerBB.maxZ() += expand;
 
 		StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(list, largerBB, this);
 		if (intersect == null) {
-			list.add(dRoom);
+			list.addPiece(dRoom);
 			dRoom.addChildren(parent, list, rand);
 			return true;
 		}
@@ -116,7 +117,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	//TODO: Parameter "parent" is unused. Remove?
-	protected boolean addDungeonExit(StructurePiece parent, List<StructurePiece> list, Random rand, Rotation rotation) {
+	protected boolean addDungeonExit(StructurePiece parent, StructurePieceAccessor list, Random rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
 
@@ -125,7 +126,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		FinalCastleDungeonExitComponent dRoom = new FinalCastleDungeonExitComponent(getFeatureType(), rand, this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
 		StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(list, dRoom.getBoundingBox(), this);
 		if (intersect == null) {
-			list.add(dRoom);
+			list.addPiece(dRoom);
 			dRoom.addChildren(this, list, rand);
 			return true;
 		}
@@ -142,13 +143,13 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		switch (rotation) {
 			default:
 			case NONE:
-				return new BlockPos(this.boundingBox.x1 + 9, this.boundingBox.y0, this.boundingBox.z0 + offset);
+				return new BlockPos(this.boundingBox.maxX() + 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
 			case CLOCKWISE_90:
-				return new BlockPos(this.boundingBox.x0 + offset, this.boundingBox.y0, this.boundingBox.z1 + 9);
+				return new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.maxZ() + 9);
 			case CLOCKWISE_180:
-				return new BlockPos(this.boundingBox.x0 - 9, this.boundingBox.y0, this.boundingBox.z0 + offset);
+				return new BlockPos(this.boundingBox.minX() - 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
 			case COUNTERCLOCKWISE_90:
-				return new BlockPos(this.boundingBox.x0 + offset, this.boundingBox.y0, this.boundingBox.z0 - 9);
+				return new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.minZ() - 9);
 		}
 	}
 
@@ -158,7 +159,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			return false;
 		}
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.STONE);
 

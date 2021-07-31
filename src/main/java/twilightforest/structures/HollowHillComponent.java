@@ -184,9 +184,9 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * TODO: Unused. Remove?
 	 */
 	boolean isInHill(int mapX, int mapY, int mapZ) {
-		int dx = boundingBox.x0 + radius - mapX;
-		int dy = (boundingBox.y0 - mapY) * 2; // hill is half as high as it is wide, thus we just double y distance from center.  I *think* that math works!
-		int dz = boundingBox.z0 + radius - mapZ;
+		int dx = boundingBox.minX() + radius - mapX;
+		int dy = (boundingBox.minY() - mapY) * 2; // hill is half as high as it is wide, thus we just double y distance from center.  I *think* that math works!
+		int dz = boundingBox.minZ() + radius - mapZ;
 		int dist = dx * dx + dy * dy + dz * dz;
 		return dist < radius * radius;
 	}

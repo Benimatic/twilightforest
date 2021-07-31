@@ -10,6 +10,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -55,20 +56,20 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		// up to two trees
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
 		int offset = rand.nextInt(5) - rand.nextInt(5);
-		CloudTreeComponent treeX = new CloudTreeComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.x0 + 8 + (plus ? 32 : -16), 168, boundingBox.z0 + (offset * 4));
-		list.add(treeX);
+		CloudTreeComponent treeX = new CloudTreeComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.minX() + 8 + (plus ? 32 : -16), 168, boundingBox.minZ() + (offset * 4));
+		list.addPiece(treeX);
 		treeX.addChildren(this, list, rand);
 
 		// tree in z direction
 		plus = rand.nextBoolean();
 		offset = rand.nextInt(5) - rand.nextInt(5);
-		CloudTreeComponent treeZ = new CloudTreeComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.x0 + (offset * 4), 168, boundingBox.z0 + 8 + (plus ? 32 : -16));
-		list.add(treeZ);
+		CloudTreeComponent treeZ = new CloudTreeComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.minX() + (offset * 4), 168, boundingBox.minZ() + 8 + (plus ? 32 : -16));
+		list.addPiece(treeZ);
 		treeZ.addChildren(this, list, rand);
 
 	}

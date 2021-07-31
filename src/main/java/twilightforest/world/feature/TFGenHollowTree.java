@@ -1,7 +1,6 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.*;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;

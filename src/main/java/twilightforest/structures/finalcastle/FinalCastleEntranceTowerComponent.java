@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -26,23 +27,23 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 
 		// add foundation
 		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(FinalCastlePieces.TFFCToF13, getFeatureType(), rand, 4, this);
-		list.add(foundation);
+		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
 		TFStructureComponentOld roof = new FinalCastleRoof13PeakedComponent(getFeatureType(), rand, 4, this);
-		list.add(roof);
+		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
 		// how many floors until the bottom?
-		int missingFloors = (this.boundingBox.y0 - 127) / 8;
+		int missingFloors = (this.boundingBox.minY() - 127) / 8;
 
 		// place half on the bottom
 		int bottomFloors = missingFloors / 2;
@@ -63,8 +64,8 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		}
 
 		// add bottom tower
-		FinalCastleEntranceBottomTowerComponent eTower = new FinalCastleEntranceBottomTowerComponent(getFeatureType(), rand, this.getGenDepth() + 1, this.boundingBox.x0 + 6, this.boundingBox.y0 - (middleFloors) * 8, this.boundingBox.z0 + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
-		list.add(eTower);
+		FinalCastleEntranceBottomTowerComponent eTower = new FinalCastleEntranceBottomTowerComponent(getFeatureType(), rand, this.getGenDepth() + 1, this.boundingBox.minX() + 6, this.boundingBox.minY() - (middleFloors) * 8, this.boundingBox.minZ() + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
+		list.addPiece(eTower);
 		eTower.addChildren(this, list, rand);
 
 		// add bridge to bottom
@@ -73,11 +74,11 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 
 		BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
 		FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
-		list.add(bridge);
+		list.addPiece(bridge);
 		bridge.addChildren(this, list, rand);
 	}
 
-	private boolean buildSideTower(List<StructurePiece> list, Random rand, int middleFloors, Direction facing, int howFar) {
+	private boolean buildSideTower(StructurePieceAccessor list, Random rand, int middleFloors, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// build towards
@@ -85,22 +86,22 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 
 		FinalCastleEntranceSideTowerComponent eTower = new FinalCastleEntranceSideTowerComponent(getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
 
-		BoundingBox largerBB = new BoundingBox(eTower.getBoundingBox());
+		BoundingBox largerBB = new BoundingBox(eTower.getBoundingBox().getCenter());
 
-		largerBB.x0 -= 6;
-		largerBB.z0 -= 6;
-		largerBB.x1 += 6;
-		largerBB.z1 += 6;
+		largerBB.minX() -= 6;
+		largerBB.minZ() -= 6;
+		largerBB.maxX() += 6;
+		largerBB.maxZ() += 6;
 
-		StructurePiece intersect = StructurePiece.findCollisionPiece(list, largerBB);
+		StructurePiece intersect = list.findCollisionPiece(largerBB);
 
 		if (intersect == null) {
-			list.add(eTower);
+			list.addPiece(eTower);
 			eTower.addChildren(this, list, rand);
 			// add bridge
 			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
 			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
-			list.add(bridge);
+			list.addPiece(bridge);
 			bridge.addChildren(this, list, rand);
 
 			// opening

@@ -37,7 +37,7 @@ public class TowerBeardComponent extends TFStructureComponentOld {
 		this.height = size / 2;
 
 		// just hang out at the very bottom of the tower
-		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 + 1, wing.getBoundingBox().y0 - this.height - 1, wing.getBoundingBox().z0 + 1, wing.getBoundingBox().x1 - 1, wing.getBoundingBox().y0 - 1, wing.getBoundingBox().z1 - 1);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() + 1, wing.getBoundingBox().minY() - this.height - 1, wing.getBoundingBox().minZ() + 1, wing.getBoundingBox().maxX() - 1, wing.getBoundingBox().minY() - 1, wing.getBoundingBox().maxZ() - 1);
 	}
 
 	@Override

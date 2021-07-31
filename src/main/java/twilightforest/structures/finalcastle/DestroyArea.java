@@ -16,14 +16,14 @@ public class DestroyArea {
 	public DestroyArea(BoundingBox tower, Random rand, int y) {
 		// make a 4x4 area that's entirely within the tower bounding box
 
-		int bx = tower.x0 - 2 + rand.nextInt(tower.getXSpan());
-		int bz = tower.z0 - 2 + rand.nextInt(tower.getZSpan());
+		int bx = tower.minX() - 2 + rand.nextInt(tower.getXSpan());
+		int bz = tower.minZ() - 2 + rand.nextInt(tower.getZSpan());
 
 		this.destroyBox = new BoundingBox(bx, y - 10, bz, bx + 4, y, bz + 4);
 	}
 
 	public boolean isEntirelyAbove(int y) {
-		return this.destroyBox.y0 > y;
+		return this.destroyBox.minY() > y;
 	}
 
 	public boolean isVecInside(BlockPos pos) {
@@ -57,6 +57,6 @@ public class DestroyArea {
 	 * We check if the box would intersect even if it was one block larger in the x and z directions
 	 */
 	private boolean intersectsWith(DestroyArea otherArea) {
-		return this.destroyBox.intersects(otherArea.destroyBox.x0 - 1, otherArea.destroyBox.z0 - 1, otherArea.destroyBox.x1 + 1, otherArea.destroyBox.x1 + 1);
+		return this.destroyBox.intersects(otherArea.destroyBox.maxX() + 1, otherArea.destroyBox.minX() - 1, otherArea.destroyBox.maxZ() + 1, otherArea.destroyBox.minZ() - 1);
 	}
 }

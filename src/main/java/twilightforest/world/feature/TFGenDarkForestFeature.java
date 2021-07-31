@@ -3,6 +3,8 @@ package twilightforest.world.feature;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
@@ -21,7 +23,12 @@ public class TFGenDarkForestFeature extends Feature<RandomPatchConfiguration> {
     }
 
     @Override
-    public boolean place(WorldGenLevel reader, ChunkGenerator generator, Random rand, BlockPos pos, RandomPatchConfiguration config) {
+    public boolean place(FeaturePlaceContext<RandomPatchConfiguration> ctx) {
+        WorldGenLevel reader = ctx.level();
+        BlockPos pos = ctx.origin();
+        Random rand = ctx.random();
+        RandomPatchConfiguration config = ctx.config();
+
         boolean foundDirt = false;
         Material materialUnder;
 

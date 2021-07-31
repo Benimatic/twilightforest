@@ -9,6 +9,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
@@ -55,16 +56,16 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 		// just hang out at the very top of the tower
 		switch (getOrientation()) {
 			case SOUTH:
-				this.boundingBox = new BoundingBox(wing.getBoundingBox().x0, wing.getBoundingBox().y1, wing.getBoundingBox().z0 - 1, wing.getBoundingBox().x1 + 1, wing.getBoundingBox().y1 + this.height - 1, wing.getBoundingBox().z1 + 1);
+				this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
 				break;
 			case WEST:
-				this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 - 1, wing.getBoundingBox().y1, wing.getBoundingBox().z0, wing.getBoundingBox().x1 + 1, wing.getBoundingBox().y1 + this.height - 1, wing.getBoundingBox().z1 + 1);
+				this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
 				break;
 			case EAST:
-				this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 - 1, wing.getBoundingBox().y1, wing.getBoundingBox().z0 - 1, wing.getBoundingBox().x1, wing.getBoundingBox().y1 + this.height - 1, wing.getBoundingBox().z1 + 1);
+				this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
 				break;
 			case NORTH:
-				this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 - 1, wing.getBoundingBox().y1, wing.getBoundingBox().z0 - 1, wing.getBoundingBox().x1 + 1, wing.getBoundingBox().y1 + this.height - 1, wing.getBoundingBox().z1);
+				this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ());
 				break;
 			default:
 				break;
@@ -77,7 +78,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	 * @param wing
 	 */
 	protected void makeCapBB(TowerWingComponent wing) {
-		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0, wing.getBoundingBox().y1, wing.getBoundingBox().z0, wing.getBoundingBox().x1, wing.getBoundingBox().y1 + this.height, wing.getBoundingBox().z1);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY() + this.height, wing.getBoundingBox().maxZ());
 	}
 
 	/**
@@ -86,7 +87,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	 * @param wing
 	 */
 	protected void makeOverhangBB(TowerWingComponent wing) {
-		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 - 1, wing.getBoundingBox().y1, wing.getBoundingBox().z0 - 1, wing.getBoundingBox().x1 + 1, wing.getBoundingBox().y1 + this.height - 1, wing.getBoundingBox().z1 + 1);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxX() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	/**
 	 * Does this roof intersect anything except the parent tower?
 	 */
-	public boolean fits(TowerWingComponent parent, List<StructurePiece> list) {
-		return StructurePiece.findCollisionPiece(list, this.boundingBox) == parent;
+	public boolean fits(TowerWingComponent parent, StructurePieceAccessor list) {
+		return list.findCollisionPiece(this.boundingBox) == parent;
 	}
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -27,7 +28,7 @@ public class HydraLairComponent extends HollowHillComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor accessor, Random random) {
 		// NO-OP
 	}
 

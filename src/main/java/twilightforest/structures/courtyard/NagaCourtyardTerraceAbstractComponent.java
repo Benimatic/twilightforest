@@ -32,7 +32,7 @@ public abstract class NagaCourtyardTerraceAbstractComponent extends TFStructureC
 
     @Override
     protected void loadTemplates(StructureManager templateManager) {
-        TEMPLATE = templateManager.get(TERRACE);
+        TEMPLATE = templateManager.getOrCreate(TERRACE);
     }
 
 	@Override

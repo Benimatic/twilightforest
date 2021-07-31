@@ -29,7 +29,7 @@ public class FinalCastleBellFoundation21Component extends FinalCastleFoundation1
 	public FinalCastleBellFoundation21Component(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
 		super(FinalCastlePieces.TFFCBeF21, feature, rand, i, sideTower);
 
-		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().x0 - 2, sideTower.getBoundingBox().y1 - 1, sideTower.getBoundingBox().z0 - 2, sideTower.getBoundingBox().x1 + 2, sideTower.getBoundingBox().y1, sideTower.getBoundingBox().z1 + 2);
+		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().minX() + 2, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 2);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class FinalCastleBellFoundation21Component extends FinalCastleFoundation1
 		int low = 32;
 
 		// assume square
-		int size = this.boundingBox.x1 - this.boundingBox.x0;
+		int size = this.boundingBox.maxX() - this.boundingBox.minX();
 
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			// do corner

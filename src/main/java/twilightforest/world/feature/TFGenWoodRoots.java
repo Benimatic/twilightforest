@@ -8,6 +8,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
@@ -16,15 +17,19 @@ import java.util.Random;
 
 public class TFGenWoodRoots extends Feature<NoneFeatureConfiguration> {
 
-	private BlockState rootBlock = TFBlocks.root.get().defaultBlockState();
-	private BlockState oreBlock = TFBlocks.liveroot_block.get().defaultBlockState();
+	private final BlockState rootBlock = TFBlocks.root.get().defaultBlockState();
+	private final BlockState oreBlock = TFBlocks.liveroot_block.get().defaultBlockState();
 
 	public TFGenWoodRoots(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+		WorldGenLevel world = ctx.level();
+		BlockPos pos = ctx.origin();
+		Random rand = ctx.random();
+
 		// start must be in stone
 		if (world.getBlockState(pos).getBlock() != Blocks.STONE) {
 			return false;

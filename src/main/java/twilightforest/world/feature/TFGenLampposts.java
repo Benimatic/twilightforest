@@ -7,8 +7,10 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -23,7 +25,12 @@ public class TFGenLampposts extends Feature<BlockStateConfiguration> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateConfiguration config) {
+	public boolean place(FeaturePlaceContext<BlockStateConfiguration> ctx) {
+		WorldGenLevel world = ctx.level();
+		BlockPos pos = ctx.origin();
+		Random rand = ctx.random();
+		BlockStateConfiguration config = ctx.config();
+
 		// we should start on a grass block
 		if (world.getBlockState(pos.below()).getBlock() != Blocks.GRASS_BLOCK) {
 			return false;
@@ -35,7 +42,7 @@ public class TFGenLampposts extends Feature<BlockStateConfiguration> {
 		// is it air or replaceable above our grass block
 		for (int dy = 0; dy <= height; dy++) {
 			BlockState state = world.getBlockState(pos.above(dy));
-			if (!state.getBlock().isAir(state, world, pos.above(dy)) && !state.getMaterial().isReplaceable()) {
+			if (!state.isAir() && !state.getMaterial().isReplaceable()) {
 				return false;
 			}
 		}

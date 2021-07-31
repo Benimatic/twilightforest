@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
@@ -40,11 +41,11 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		super.addChildren(parent, list, rand);
 
 		// add entrance tower
-		BoundingBox towerBB = BoundingBox.getUnknownBox();
+		BoundingBox towerBB = BoundingBox.infinite();
 
 		for (StructurePiece structurecomponent : list) {
 			towerBB.expand(structurecomponent.getBoundingBox());
@@ -56,43 +57,43 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 
 
 		if (myDoor.getX() == 0) {
-			int length = this.getBoundingBox().x0 - towerBB.x0;
+			int length = this.getBoundingBox().minX() - towerBB.minX();
 			if (length >= 0) {
 				entranceDoor = entranceDoor.west(length);
 				makeEntranceBridge(list, rand, this.getGenDepth() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);
 			}
 		}
 		if (myDoor.getX() == this.size - 1) {
-			entranceDoor = entranceDoor.east(towerBB.x1 - this.getBoundingBox().x1);
+			entranceDoor = entranceDoor.east(towerBB.maxX() - this.getBoundingBox().maxX());
 		}
 		if (myDoor.getZ() == 0) {
-			entranceDoor = entranceDoor.south(towerBB.z0 - this.getBoundingBox().z0);
+			entranceDoor = entranceDoor.south(towerBB.minZ() - this.getBoundingBox().minZ());
 		}
 		//FIXME: AtomicBlom I don't get it, should this not be getZ, and entranceDoor.north?
 		if (myDoor.getX() == this.size - 1) {
-			entranceDoor = entranceDoor.south(towerBB.z1 - this.getBoundingBox().z1);
+			entranceDoor = entranceDoor.south(towerBB.maxZ() - this.getBoundingBox().maxZ());
 		}
 
 		makeEntranceTower(list, rand, this.getGenDepth() + 1, entranceDoor.getX(), entranceDoor.getY(), entranceDoor.getZ(), SIZE, 11, this.rotation);
 	}
 
-	private void makeEntranceBridge(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int length, Rotation rotation) {
+	private void makeEntranceBridge(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int length, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
 		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
 
-		list.add(bridge);
+		list.addPiece(bridge);
 		bridge.addChildren(list.get(0), list, rand);
 	}
 
-	public boolean makeEntranceTower(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeEntranceTower(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		IceTowerWingComponent entrance = new IceTowerEntranceComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
-		list.add(entrance);
+		list.addPiece(entrance);
 		entrance.addChildren(list.get(0), list, rand);
 		addOpening(x, y, z, rotation);
 		return true;

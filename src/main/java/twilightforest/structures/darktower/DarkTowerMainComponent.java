@@ -1,27 +1,28 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.block.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.data.worldgen.Features;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ItemFrame;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.data.worldgen.Features;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -30,30 +31,15 @@ import twilightforest.data.BlockTagGenerator;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
+import twilightforest.structures.TFMaze;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.structures.TFStructureDecorator;
-import twilightforest.structures.TFMaze;
 import twilightforest.util.RotationUtil;
 import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static net.minecraft.util.Direction.EAST;
-import staticnet.minecraft.core.Directionn.WEST;
-
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.AnvilBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CauldronBlock;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	private boolean placedKeys = false;
@@ -70,13 +56,13 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		super(DarkTowerPieces.TFDTMai, feature, index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
 
 		// check to make sure we can build the whole tower
-		if (this.boundingBox.y1 > 245) {
-			int amtToLower = (((this.boundingBox.y1 - 245) / 5) * 5) + 5;
+		if (this.boundingBox.maxY() > 245) {
+			int amtToLower = (((this.boundingBox.maxY() - 245) / 5) * 5) + 5;
 
 			TwilightForestMod.LOGGER.info("Lowering Dark Tower max height by {} to be within world bounds", amtToLower);
 
 			this.height -= amtToLower;
-			this.boundingBox.y1 -= amtToLower;
+			this.boundingBox.maxY() -= amtToLower;
 		}
 
 		// decorator
@@ -86,7 +72,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -198,13 +184,13 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	/**
 	 * Make a bridge that leads to an entrance tower
 	 */
-	private boolean makeEntranceTower(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int childSize, int childHeight, Rotation rotation) {
+	private boolean makeEntranceTower(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int childSize, int childHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
 		DarkTowerBridgeComponent bridge = new DarkTowerEntranceBridgeComponent(getFeatureType(), index, dx[0], dx[1], dx[2], childSize, childHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
-		list.add(bridge);
+		list.addPiece(bridge);
 		bridge.addChildren(this, list, rand);
 		addOpening(x, y, z, rotation);
 		return true;
@@ -213,7 +199,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	/**
 	 * Make a bridge that leads to a new large-size tower
 	 */
-	private boolean makeNewLargeTower(List<StructurePiece> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean makeNewLargeTower(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, Rotation rotation) {
 
 		int wingSize = 15;
 		int wingHeight = 56;
@@ -223,7 +209,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 		DarkTowerMainBridgeComponent bridge = new DarkTowerMainBridgeComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
-		list.add(bridge);
+		list.addPiece(bridge);
 		bridge.addChildren(this, list, rand);
 		// lock the door!
 		addOpening(x, y, z, rotation, EnumDarkTowerDoor.LOCKED);
@@ -233,7 +219,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	/**
 	 * Make a bridge that leads to a boss trap tower
 	 */
-	private boolean makeBossTrapWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean makeBossTrapWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, Rotation rotation) {
 
 		int wingSize = 11;
 		int wingHeight = 9;
@@ -243,7 +229,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 		DarkTowerBossBridgeComponent bridge = new DarkTowerBossBridgeComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
-		list.add(bridge);
+		list.addPiece(bridge);
 		bridge.addChildren(this, list, rand);
 		// lock the door!
 		addOpening(x, y, z, rotation);
@@ -254,7 +240,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	 * Attach a roof to this tower.
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (this.getGenDepth() < 2) {
 			super.makeARoof(parent, list, rand);
 		}
@@ -262,7 +248,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
@@ -333,7 +319,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	protected void addThreeQuarterFloors(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random decoRNG, BoundingBox sbb, int bottom, int top) {
 
 		int spacing = 5;
-		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.y0 + bottom) % 4];
+		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY() + bottom) % 4];
 		if (bottom == 0) {
 			makeLargeStairsUp(world, sbb, rotation, 0);
 			rotation = rotation.getRotated(Rotation.COUNTERCLOCKWISE_90);
@@ -366,7 +352,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	 */
 	protected void addThreeQuarterFloorsDecorateBoss(WorldGenLevel world, Random decoRNG, BoundingBox sbb, int bottom, int top) {
 		int spacing = 5;
-		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.y0 + bottom) % 4];
+		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY() + bottom) % 4];
 		if (bottom == 0) {
 			makeLargeStairsUp(world, sbb, rotation, 0);
 			rotation = rotation.getRotated(Rotation.COUNTERCLOCKWISE_90);
@@ -420,7 +406,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 					decorateBotanical(world, generator, decoRNG, sbb, rotation, y);
 					break;
 				case 2:
-					if (y + this.boundingBox.y0 > 64) {
+					if (y + this.boundingBox.minY() > 64) {
 						decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
 						break;
 					}
@@ -446,7 +432,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 					decorateBotanical(world, generator, decoRNG, sbb, rotation, y);
 					break;
 				case 5:
-					if (y + this.boundingBox.y0 > 64) {
+					if (y + this.boundingBox.minY() > 64) {
 						decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
 						break;
 					}
@@ -518,7 +504,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		TFMaze maze = new TFMaze(mazeSize, mazeSize);
 
 		// set the seed to a fixed value based on this maze's x and z
-		maze.setSeed(world.getSeed() + this.boundingBox.x0 * 90342903 + y * 90342903 ^ this.boundingBox.z0);
+		maze.setSeed(world.getSeed() + this.boundingBox.minX() * 90342903L + y * 90342903L ^ this.boundingBox.minZ());
 
 		// tell it not to make outside walls by making them "ROOMS"
 		for (int i = 0; i < 13; i++) {
@@ -728,7 +714,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 		// cauldron and brewing stand
 		this.setBlockStateRotated(world, Blocks.BREWING_STAND.defaultBlockState(), 13, y + 2, 5, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.CAULDRON.defaultBlockState().setValue(CauldronBlock.LEVEL, 3), 15, y + 2, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), 15, y + 2, 3, rotation, sbb);
 
 		// bookshelves in corner
 		this.fillBlocksRotated(world, sbb, 10, y + 1, 17, 17, y + 4, 17, deco.blockState, rotation);
@@ -743,7 +729,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, true), 13, y + 1, 14, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.EAST, true), 14, y + 1, 14, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, true), 14, y + 1, 13, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, WEST, true), 13, y + 1, 13, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, true), 13, y + 1, 13, rotation, sbb);
 
 		// chair 1
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.EAST, false), 11, y + 1, 13, rotation, sbb);
@@ -807,15 +793,15 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		placeItemFrameRotated(world, 14, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(Items.REDSTONE), sbb);
 		placeItemFrameRotated(world, 15, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.borer_essence.get()), sbb);
 
-		placeItemFrameRotated(world, 17, y + 2, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 2, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 2, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 4, rotation, WEST, new ItemStack(TFItems.carminite.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 4, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 4, rotation, Direction.WEST, new ItemStack(TFItems.carminite.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 4, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
 
 		if (y < this.height - 13) {
 			// device bottom
@@ -1221,13 +1207,13 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			}
 			if (!isBottom || checkPost(world, x3, y - 5, z3, rotation, sbb)) {
 				setBlockStateRotated(world, beamStateUD, x3, y - by, z3, rotation, sbb);
-				setBlockStateRotated(world, Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, EAST), x3 - 1, y - by, z3, rotation, sbb);
+				setBlockStateRotated(world, Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, Direction.EAST), x3 - 1, y - by, z3, rotation, sbb);
 			}
 		}
 
 		// do we need a beam going up?
 		if (isTop) {
-			Rotation topFloorRotation = RotationUtil.ROTATIONS[(this.boundingBox.y0 + top + 1) % 4];
+			Rotation topFloorRotation = RotationUtil.ROTATIONS[(this.boundingBox.minY() + top + 1) % 4];
 
 			int ladderX = 4;
 			int ladderZ = 10;
@@ -1275,7 +1261,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			tags.putShort("MaxNearbyEntities", (short) 2);//(short) (world.difficultySetting));
 			tags.putShort("SpawnCount", (short) 1);
 
-			spawner.getSpawner().load(tags);
+			spawner.getSpawner().load(world.getLevel(), spawner.getBlockPos(), tags);
 		}
 	}
 
@@ -1302,8 +1288,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		makeBuilderPlatform(world, rand, Rotation.COUNTERCLOCKWISE_90, bottom, 5, true, sbb);
 
 		for (int y = bottom - 4; y < bottom; y++) {
-			setBlockStateRotated(world, Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, WEST), 1, y, 5, Rotation.CLOCKWISE_90, sbb);
-			setBlockStateRotated(world, Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, WEST), 1, y, 5, Rotation.COUNTERCLOCKWISE_90, sbb);
+			setBlockStateRotated(world, Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, Direction.WEST), 1, y, 5, Rotation.CLOCKWISE_90, sbb);
+			setBlockStateRotated(world, Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, Direction.WEST), 1, y, 5, Rotation.COUNTERCLOCKWISE_90, sbb);
 		}
 
 		// top platform
@@ -1347,7 +1333,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	 * Add the top floating platform in the builder platforms area
 	 */
 	private void addTopBuilderPlatform(WorldGenLevel world, Random rand, int top, int spacing, BoundingBox sbb) {
-		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.y0 + top + 1) % 4];
+		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY() + top + 1) % 4];
 
 		// platform
 		this.fillBlocksRotated(world, sbb, 5, top - spacing, 9, 7, top - spacing, 11, deco.accentState, rotation);

@@ -9,6 +9,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -30,12 +31,12 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		this.spawnListIndex = -1; // no monsters
 
 		this.setOrientation(keep.getOrientation());
-		this.boundingBox = new BoundingBox(keep.getBoundingBox().x0 + 14, keep.getBoundingBox().y1 + 2, keep.getBoundingBox().z0 + 14, keep.getBoundingBox().x1 - 14, keep.getBoundingBox().y1 + 13, keep.getBoundingBox().z1 - 14);
+		this.boundingBox = new BoundingBox(keep.getBoundingBox().minX() + 14, keep.getBoundingBox().maxY() + 2, keep.getBoundingBox().minZ() + 14, keep.getBoundingBox().maxX() - 14, keep.getBoundingBox().maxY() + 13, keep.getBoundingBox().maxZ() - 14);
 
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		this.deco = new StructureTFDecoratorCastle();
 		this.deco.blockState = TFBlocks.castle_rune_brick_blue.get().defaultBlockState();
 

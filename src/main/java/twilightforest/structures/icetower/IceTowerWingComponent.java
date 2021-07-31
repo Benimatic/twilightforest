@@ -16,6 +16,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
@@ -56,7 +57,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -126,7 +127,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
@@ -137,9 +138,9 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		IceTowerWingComponent wing = new IceTowerWingComponent(IceTowerPieces.TFITWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findCollisionPiece(list, wing.getBoundingBox());
+		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
-			list.add(wing);
+			list.addPiece(wing);
 			wing.addChildren(list.get(0), list, rand);
 			addOpening(x, y, z, rotation);
 			return true;
@@ -151,16 +152,16 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Make a new wing
 	 */
-	public boolean makeBossTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeBossTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		IceTowerWingComponent wing = new IceTowerBossWingComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructurePiece intersect = StructurePiece.findCollisionPiece(list, wing.getBoundingBox());
+		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
-			list.add(wing);
+			list.addPiece(wing);
 			wing.addChildren(list.get(0), list, rand);
 			addOpening(x, y, z, rotation);
 			return true;
@@ -183,7 +184,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// make walls
 		//fillWithMetadataBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockID, deco.blockMeta, AIR, false);
@@ -685,7 +686,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * This function keeps trying roofs starting with the largest and fanciest, and then keeps trying smaller and plainer ones
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		int index = this.getGenDepth();
 		tryToFitRoof(list, rand, new IceTowerRoofComponent(getFeatureType(), index + 1, this));
 	}
@@ -694,11 +695,11 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
 	@Override
-	public void makeABeard(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		int index = this.getGenDepth();
 		IceTowerBeardComponent beard;
 		beard = new IceTowerBeardComponent(getFeatureType(), index + 1, this);
-		list.add(beard);
+		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
 	}
 }

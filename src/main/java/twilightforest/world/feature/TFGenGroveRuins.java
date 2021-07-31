@@ -8,6 +8,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.util.FeatureUtil;
 
@@ -28,18 +29,22 @@ public class TFGenGroveRuins extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+		WorldGenLevel world = ctx.level();
+		BlockPos pos = ctx.origin();
+		Random rand = ctx.random();
+
 		if (rand.nextBoolean()) {
-			return generateLargeArch(world, rand, pos);
+			return generateLargeArch(world, pos);
 		} else {
-			return generateSmallArch(world, rand, pos);
+			return generateSmallArch(world, pos);
 		}
 	}
 
 	/**
 	 * Generate a ruin with the larger arch
 	 */
-	private boolean generateLargeArch(LevelAccessor world, Random rand, BlockPos pos) {
+	private boolean generateLargeArch(LevelAccessor world, BlockPos pos) {
 		if (!FeatureUtil.isAreaSuitable(world, pos, 2, 7, 6)) {
 			return false;
 		}
@@ -84,7 +89,7 @@ public class TFGenGroveRuins extends Feature<NoneFeatureConfiguration> {
 	/**
 	 * Generate a ruin with the smaller arch
 	 */
-	private boolean generateSmallArch(LevelAccessor world, Random rand, BlockPos pos) {
+	private boolean generateSmallArch(LevelAccessor world, BlockPos pos) {
 		if (!FeatureUtil.isAreaSuitable(world, pos, 7, 5, 9)) {
 			return false;
 		}

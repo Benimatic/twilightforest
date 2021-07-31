@@ -32,7 +32,7 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 		this.height = size / 2;
 
 		// just hang out at the very top of the tower
-		this.boundingBox = new BoundingBox(wing.getBoundingBox().x0 - 1, wing.getBoundingBox().y1, wing.getBoundingBox().z0 - 1, wing.getBoundingBox().x1 + 1, wing.getBoundingBox().y1 + this.height - 1, wing.getBoundingBox().z1 + 1);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
 	}
 
 	/**

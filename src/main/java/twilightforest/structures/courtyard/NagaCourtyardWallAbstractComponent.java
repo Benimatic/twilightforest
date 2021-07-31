@@ -41,8 +41,8 @@ public class NagaCourtyardWallAbstractComponent extends TFStructureComponentTemp
 
     @Override
     protected void loadTemplates(StructureManager templateManager) {
-        TEMPLATE = templateManager.get(WALL);
-        decayTemplate = templateManager.get(WALL_DECAYED);
+        TEMPLATE = templateManager.getOrCreate(WALL);
+        decayTemplate = templateManager.getOrCreate(WALL_DECAYED);
     }
 
 	@Override

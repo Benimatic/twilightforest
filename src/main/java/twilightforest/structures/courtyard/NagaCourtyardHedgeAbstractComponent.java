@@ -41,8 +41,8 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
 
     @Override
     protected void loadTemplates(StructureManager templateManager) {
-        TEMPLATE = templateManager.get(HEDGE);
-        templateBig = templateManager.get(HEDGE_BIG);
+        TEMPLATE = templateManager.getOrCreate(HEDGE);
+        templateBig = templateManager.getOrCreate(HEDGE_BIG);
     }
 
 	@Override

@@ -11,6 +11,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -39,19 +40,19 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 
 		// add foundation
 		FinalCastleBellFoundation21Component foundation = new FinalCastleBellFoundation21Component(getFeatureType(), rand, 4, this);
-		list.add(foundation);
+		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
 		TFStructureComponentOld roof = new FinalCastleRoof13CrenellatedComponent(getFeatureType(), rand, 4, this);
-		list.add(roof);
+		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}
 

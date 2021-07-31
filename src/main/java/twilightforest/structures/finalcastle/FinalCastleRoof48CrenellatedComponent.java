@@ -10,6 +10,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -25,19 +26,18 @@ public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentO
 		super(FinalCastlePieces.TFFCRo48Cr, nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleRoof48CrenellatedComponent(TFFeature feature, Random rand, int i, TFStructureComponentOld keep) {
+	public FinalCastleRoof48CrenellatedComponent(TFFeature feature, int i, TFStructureComponentOld keep) {
 		super(FinalCastlePieces.TFFCRo48Cr,feature, i);
 
 		int height = 5;
 
 		this.setOrientation(keep.getOrientation());
-		this.boundingBox = new BoundingBox(keep.getBoundingBox().x0 - 2, keep.getBoundingBox().y1 - 1, keep.getBoundingBox().z0 - 2, keep.getBoundingBox().x1 + 2, keep.getBoundingBox().y1 + height - 1, keep.getBoundingBox().z1 + 2);
+		this.boundingBox = new BoundingBox(keep.getBoundingBox().minX() - 2, keep.getBoundingBox().maxY() - 1, keep.getBoundingBox().minZ() - 2, keep.getBoundingBox().maxX() + 2, keep.getBoundingBox().maxY() + height - 1, keep.getBoundingBox().maxZ() + 2);
 
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}

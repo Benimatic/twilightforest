@@ -1,5 +1,6 @@
 package twilightforest.structures;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
@@ -53,7 +54,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		maze.roots = 3;
 
 		// set the seed to a fixed value based on this maze's x and z
-		maze.setSeed(world.getSeed() + this.boundingBox.x0 * this.boundingBox.z0);
+		maze.setSeed(world.getSeed() + (long) this.boundingBox.minX() * this.boundingBox.minZ());
 
 		// just add grass below the maze for now
 		// grass underneath

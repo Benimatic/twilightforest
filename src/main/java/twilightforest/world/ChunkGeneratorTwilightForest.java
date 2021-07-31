@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -52,8 +53,8 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 	}
 
 	@Override
-	public void fillFromNoise(LevelAccessor world, StructureFeatureManager p_230352_2_, ChunkAccess chunk) {
-		super.fillFromNoise(world, p_230352_2_, chunk);
+	public void createReferences(WorldGenLevel world, StructureFeatureManager manager, ChunkAccess chunk) {
+		super.createReferences(world, manager, chunk);
 
 		if(!(world instanceof WorldGenRegion))
 			return;
