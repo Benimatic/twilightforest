@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraHeadModel;
 import twilightforest.entity.boss.HydraEntity;
 import twilightforest.entity.boss.HydraHeadEntity;
@@ -20,7 +21,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHeadEntity, HydraHead
 
 
 	public HydraHeadRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new HydraHeadModel());
+		super(manager, new HydraHeadModel(manager.bakeLayer(TFModelLayers.HYDRA_HEAD)));
 	}
 
 	@Override

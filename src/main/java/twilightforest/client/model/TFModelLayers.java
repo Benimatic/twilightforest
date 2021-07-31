@@ -36,6 +36,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation CARMINITE_GHASTGUARD = register("carminite_ghastguard");
 	public static final ModelLayerLocation CARMINITE_GHASTLING = register("carminite_ghastling");
 	public static final ModelLayerLocation CARMINITE_GOLEM = register("carminite_golem");
+	public static final ModelLayerLocation CHAIN = register("chain");
 	public static final ModelLayerLocation DEATH_TOME = register("death_tome");
 	public static final ModelLayerLocation DEER = register("deer");
 	public static final ModelLayerLocation FIRE_BEETLE = register("fire_beetle");
@@ -45,6 +46,8 @@ public class TFModelLayers {
 	public static final ModelLayerLocation HELMET_CRAB = register("helmet_crab");
 	public static final ModelLayerLocation HOSTILE_WOLF = register("hostile_wolf");
 	public static final ModelLayerLocation HYDRA = register("hydra");
+	public static final ModelLayerLocation HYDRA_HEAD = register("hydra_head");
+	public static final ModelLayerLocation HYDRA_NECK = register("hydra_neck");
 	public static final ModelLayerLocation ICE_CRYSTAL = register("ice_crystal");
 	public static final ModelLayerLocation KING_SPIDER = register("king_spider");
 	public static final ModelLayerLocation KNIGHT_PHANTOM = register("knight_phantom");

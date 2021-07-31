@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.IceCrystalModel;
 import twilightforest.entity.boss.IceCrystalEntity;
 
@@ -15,7 +16,7 @@ public class IceCrystalRenderer extends MobRenderer<IceCrystalEntity, IceCrystal
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("icecrystal.png");
 
 	public IceCrystalRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new IceCrystalModel(), 0.25F);
+		super(manager, new IceCrystalModel(manager.bakeLayer(TFModelLayers.ICE_CRYSTAL)), 0.25F);
 	}
 
 	@Override

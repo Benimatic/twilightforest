@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HarbingerCubeModel;
 import twilightforest.entity.HarbingerCubeEntity;
 
@@ -14,7 +15,7 @@ public class HarbingerCubeRenderer<T extends HarbingerCubeEntity> extends MobRen
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("apocalypse2.png");
 
 	public HarbingerCubeRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new HarbingerCubeModel<>(), 1.0F);
+		super(manager, new HarbingerCubeModel<>(manager.bakeLayer(TFModelLayers.HARBINGER_CUBE)), 1.0F);
 	}
 
 	@Override

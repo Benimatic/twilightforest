@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraNeckModel;
 import twilightforest.entity.boss.HydraNeckEntity;
 import twilightforest.entity.boss.HydraHeadContainer;
@@ -17,7 +18,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeckEntity, HydraNeck
 
 
 	public HydraNeckRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new HydraNeckModel());
+		super(manager, new HydraNeckModel(manager.bakeLayer(TFModelLayers.HYDRA_NECK)));
 	}
 
 	@Override

@@ -2,43 +2,60 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import twilightforest.entity.boss.IceCrystalEntity;
 
-public class IceCrystalModel extends EntityModel<IceCrystalEntity> {
+public class IceCrystalModel extends HierarchicalModel<IceCrystalEntity> {
 
+	private ModelPart root;
 	private final ModelPart[] spikes = new ModelPart[16];
 
 	private boolean alive;
 
-	public IceCrystalModel() {
+	public IceCrystalModel(ModelPart root) {
 		super(RenderType::entityTranslucent);
-		this.texWidth = 32;
-		this.texHeight = 32;
+		this.root = root;
 
-		float par1 = 0F;
-		float par2 = 0F;
-
-		// spikes
 		for (int i = 0; i < spikes.length; i++) {
-			this.spikes[i] = new ModelPart(this, 0, 16);
+			this.spikes[i] = root.getChild("spike_" + i);
+		}
+
+	}
+
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
+
+		for (int i = 1; i < 16; i++) {
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			this.spikes[i].addBox(-1.0F, -1.0F, -1.0F, 2, spikeLength, 2, par1);
-			this.spikes[i].setPos(0.0F, 0.0F + par2, 0.0F);
+			partRoot.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
+							.texOffs(8, 16)
+							.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
+					PartPose.offsetAndRotation(0.0F, spikeLength, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));
 
-			ModelPart cube = new ModelPart(this, 8, 16);
-			cube.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-			cube.setPos(0.0F, spikeLength, 0.0F);
-
-			cube.zRot = (float) (Math.PI / 4F);
-
-			this.spikes[i].addChild(cube);
+			partRoot.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+							.texOffs(0, 16)
+							.addBox(-1.0F, -1.0F, -1.0F, 2.0F, spikeLength, 2.0F),
+					PartPose.ZERO);
 		}
+
+		return LayerDefinition.create(mesh, 32, 32);
+	}
+
+	@Override
+	public ModelPart root() {
+		return this.root;
 	}
 
 	@Override

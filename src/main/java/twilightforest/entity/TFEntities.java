@@ -391,7 +391,7 @@ public class TFEntities {
 		event.registerEntityRenderer(skeleton_druid, m -> new TFBipedRenderer<>(m, new SkeletonDruidModel(), new SkeletonDruidModel(), new SkeletonDruidModel(), 0.5F, "skeletondruid.png"));
 		event.registerEntityRenderer(hostile_wolf, WolfRenderer::new);
 		event.registerEntityRenderer(wraith, m -> new WraithRenderer(m, new WraithModel(), 0.5F));
-		event.registerEntityRenderer(hydra, m -> new HydraRenderer(m, new HydraModel(), 4.0F));
+		event.registerEntityRenderer(hydra, m -> new HydraRenderer(m, new HydraModel(m.bakeLayer(TFModelLayers.HYDRA)), 4.0F));
 		event.registerEntityRenderer(lich, m -> new LichRenderer(m, new LichModel(), 0.6F));
 		event.registerEntityRenderer(penguin, m -> new BirdRenderer<>(m, new PenguinModel(), 0.375F, "penguin.png"));
 		event.registerEntityRenderer(lich_minion, m -> new TFBipedRenderer<>(m, new LichMinionModel(false), new LichMinionModel(true), new LichMinionModel(true), 0.5F, "textures/entity/zombie/zombie.png"));
@@ -419,7 +419,7 @@ public class TFEntities {
 		event.registerEntityRenderer(blockchain_goblin, m -> new BlockChainGoblinRenderer<>(m, new BlockChainGoblinModel<>(m.bakeLayer(TFModelLayers.BLOCKCHAIN_GOBLIN)), 0.4F));
 		event.registerEntityRenderer(goblin_knight_upper, m -> new UpperGoblinKnightRenderer(m, new UpperGoblinKnightModel(), 0.625F));
 		event.registerEntityRenderer(goblin_knight_lower, m -> new TFBipedRenderer<>(m, new LowerGoblinKnightModel(), 0.625F, "doublegoblin.png"));
-		event.registerEntityRenderer(helmet_crab, m -> new TFGenericMobRenderer<>(m, new HelmetCrabModel(), 0.625F, "helmetcrab.png"));
+		event.registerEntityRenderer(helmet_crab, m -> new TFGenericMobRenderer<>(m, new HelmetCrabModel(m.bakeLayer(TFModelLayers.HELMET_CRAB)), 0.625F, "helmetcrab.png"));
 		event.registerEntityRenderer(knight_phantom, m -> new KnightPhantomRenderer(m, new KnightPhantomModel(), 0.625F));
 		event.registerEntityRenderer(naga, m -> new NagaRenderer<>(m, new NagaModel<>(), 1.45F));
 		event.registerEntityRenderer(swarm_spider, SwarmSpiderRenderer::new);

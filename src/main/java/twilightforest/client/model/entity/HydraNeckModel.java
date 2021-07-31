@@ -1,6 +1,8 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -9,12 +11,11 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import twilightforest.entity.boss.HydraNeckEntity;
 
-public class HydraNeckModel extends HierarchicalModel<HydraNeckEntity> {
+public class HydraNeckModel extends ListModel<HydraNeckEntity> {
 
-	ModelPart root, neck;
+	ModelPart neck;
 
 	public HydraNeckModel(ModelPart root) {
-		this.root = root;
 		this.neck = root.getChild("neck");
 	}
 
@@ -33,13 +34,13 @@ public class HydraNeckModel extends HierarchicalModel<HydraNeckEntity> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
 	public void setupAnim(HydraNeckEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		neck.yRot = netHeadYaw / 57.29578F;
 		neck.xRot = headPitch / 57.29578F;
+	}
+
+	@Override
+	public Iterable<ModelPart> parts() {
+		return ImmutableList.of(neck);
 	}
 }

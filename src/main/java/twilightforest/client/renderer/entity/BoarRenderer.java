@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.BoarModel;
 import twilightforest.entity.passive.BoarEntity;
 
@@ -14,7 +15,7 @@ public class BoarRenderer extends MobRenderer<BoarEntity, BoarModel<BoarEntity>>
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("wildboar.png");
 
 	public BoarRenderer(EntityRendererProvider.Context manager, BoarModel<BoarEntity> model) {
-		super(manager, new BoarModel<>(), 0.7F);
+		super(manager, new BoarModel<>(manager.bakeLayer(TFModelLayers.BOAR)), 0.7F);
 	}
 
 	@Override

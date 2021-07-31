@@ -44,6 +44,22 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP, BighornModel::create);
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP_FUR, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.BLOCKCHAIN_GOBLIN, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.BOAR, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.BUNNY, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.CARMINITE_GOLEM, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.CHAIN, ChainModel::create);
+		event.registerLayerDefinition(TFModelLayers.CUBE_OF_ANNIHILATION, CubeOfAnnihilationModel::create);
+		event.registerLayerDefinition(TFModelLayers.DEATH_TOME, DeathTomeModel::create);
+		event.registerLayerDefinition(TFModelLayers.DEER, DeerModel::create);
+		event.registerLayerDefinition(TFModelLayers.FIRE_BEETLE, FireBeetleModel::create);
+		event.registerLayerDefinition(TFModelLayers.HARBINGER_CUBE, HarbingerCubeModel::create);
+		event.registerLayerDefinition(TFModelLayers.HELMET_CRAB, HelmetCrabModel::create);
+		event.registerLayerDefinition(TFModelLayers.HYDRA_HEAD, HydraHeadModel::create);
+		event.registerLayerDefinition(TFModelLayers.HYDRA, HydraModel::create);
+		event.registerLayerDefinition(TFModelLayers.HYDRA_MORTAR, HydraMortarModel::create);
+		event.registerLayerDefinition(TFModelLayers.HYDRA_NECK, HydraNeckModel::create);
+		event.registerLayerDefinition(TFModelLayers.ICE_CRYSTAL, IceCrystalModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.7F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.7F), 64, 32));

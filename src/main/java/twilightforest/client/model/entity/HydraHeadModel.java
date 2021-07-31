@@ -13,12 +13,11 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.boss.HydraHeadEntity;
 import twilightforest.entity.boss.HydraPartEntity;
 
-public class HydraHeadModel extends HierarchicalModel<HydraHeadEntity> {
+public class HydraHeadModel extends ListModel<HydraHeadEntity> {
 
-	public ModelPart root, head, mouth;
+	public ModelPart head, mouth;
 
 	public HydraHeadModel(ModelPart root) {
-		this.root = root;
 		this.head = root.getChild("head");
 		this.mouth = root.getChild("mouth");
 	}
@@ -52,11 +51,6 @@ public class HydraHeadModel extends HierarchicalModel<HydraHeadEntity> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
 	public void setupAnim(HydraHeadEntity entity, float v, float v1, float v2, float v3, float v4) { }
 
 	@Override
@@ -79,5 +73,10 @@ public class HydraHeadModel extends HierarchicalModel<HydraHeadEntity> {
 
 	public float getRotationX(HydraPartEntity whichHead, float time) {
 		return (whichHead.xRotO + (whichHead.xRot - whichHead.xRotO) * time) / 57.29578F;
+	}
+
+	@Override
+	public Iterable<ModelPart> parts() {
+		return ImmutableList.of(head, mouth);
 	}
 }
