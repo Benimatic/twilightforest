@@ -384,7 +384,7 @@ public class TFEntities {
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void registerEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(wild_boar, m -> new BoarRenderer(m, new BoarModel<>()));
+		event.registerEntityRenderer(wild_boar, m -> new BoarRenderer(m, new BoarModel<>(m.bakeLayer(TFModelLayers.BOAR))));
 		event.registerEntityRenderer(bighorn_sheep, m -> new BighornRenderer(m, new BighornModel<>(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP)), new BighornFurLayer(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP_FUR)), 0.7F));
 		event.registerEntityRenderer(deer, m -> new TFGenericMobRenderer<>(m, new DeerModel(), 0.7F, "wilddeer.png"));
 		event.registerEntityRenderer(redcap, m -> new TFBipedRenderer<>(m, new RedcapModel<>(0.0F), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_INNER)), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_OUTER)), 0.4F, "redcap.png"));
@@ -398,7 +398,7 @@ public class TFEntities {
 		event.registerEntityRenderer(loyal_zombie, m -> new TFBipedRenderer<>(m, new LoyalZombieModel(false), new LoyalZombieModel(true), new LoyalZombieModel(true), 0.5F, "textures/entity/zombie/zombie.png"));
 		event.registerEntityRenderer(tiny_bird, m -> new TinyBirdRenderer(m, new TinyBirdModel(), 0.3F));
 		event.registerEntityRenderer(squirrel, m -> new TFGenericMobRenderer<>(m, new SquirrelModel(), 0.3F, "squirrel2.png"));
-		event.registerEntityRenderer(bunny, m -> new BunnyRenderer(m, new BunnyModel(), 0.3F));
+		event.registerEntityRenderer(bunny, m -> new BunnyRenderer(m, new BunnyModel(m.bakeLayer(TFModelLayers.BUNNY)), 0.3F));
 		event.registerEntityRenderer(raven, m -> new BirdRenderer<>(m, new RavenModel(), 0.3F, "raven.png"));
 		event.registerEntityRenderer(quest_ram, manager -> new QuestRamRenderer(manager, new QuestRamModel()));
 		event.registerEntityRenderer(kobold, m -> new KoboldRenderer(m, new KoboldModel(), 0.4F, "kobold.png"));
@@ -416,7 +416,7 @@ public class TFEntities {
 		event.registerEntityRenderer(tower_termite, m -> new TFGenericMobRenderer<>(m, new SilverfishModel<>(m.bakeLayer(ModelLayers.SILVERFISH)), 0.3F, "towertermite.png"));
 		event.registerEntityRenderer(tower_ghast, m -> new CarminiteGhastRenderer<>(m, new TFGhastModel<>(), 3.0F));
 		event.registerEntityRenderer(ur_ghast, m -> new UrGhastRenderer(m, new UrGhastModel(), 8.0F, 24F));
-		event.registerEntityRenderer(blockchain_goblin, m -> new BlockChainGoblinRenderer<>(m, new BlockChainGoblinModel<>(), 0.4F));
+		event.registerEntityRenderer(blockchain_goblin, m -> new BlockChainGoblinRenderer<>(m, new BlockChainGoblinModel<>(m.bakeLayer(TFModelLayers.BLOCKCHAIN_GOBLIN)), 0.4F));
 		event.registerEntityRenderer(goblin_knight_upper, m -> new UpperGoblinKnightRenderer(m, new UpperGoblinKnightModel(), 0.625F));
 		event.registerEntityRenderer(goblin_knight_lower, m -> new TFBipedRenderer<>(m, new LowerGoblinKnightModel(), 0.625F, "doublegoblin.png"));
 		event.registerEntityRenderer(helmet_crab, m -> new TFGenericMobRenderer<>(m, new HelmetCrabModel(), 0.625F, "helmetcrab.png"));

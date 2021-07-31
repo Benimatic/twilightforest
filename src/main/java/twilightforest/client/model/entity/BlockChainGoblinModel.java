@@ -2,6 +2,8 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.BlockChainGoblinEntity;
@@ -16,156 +18,204 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
     public ModelPart horns;
 
     ModelPart block;
-    ModelPart[] spikes = new ModelPart[27];
 
-    public BlockChainGoblinModel() {
-        super(0, 0, 64, 48);
-        this.rightArm = new ModelPart(this, 0, 0);
-        this.rightArm.setPos(-5.0F, 12.0F, 0.0F);
-        this.rightArm.texOffs(52, 2).addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightArm, 0.0F, 0.0F, 3.0543261909900767F);
-        this.leftArm = new ModelPart(this, 0, 0);
-        this.leftArm.setPos(5.0F, 12.0F, 0.0F);
-        this.leftArm.texOffs(52, 17).addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftArm, 0.0F, 0.0F, -3.0543261909900767F);
-        this.horns = new ModelPart(this, 0, 0);
-        this.horns.setPos(0.0F, 0.0F, 0.0F);
-        this.horns.texOffs(0, 18).addBox(-7.5F, -9.0F, -2.03F, 15.0F, 10.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(horns, 0.0F, -0.7853981633974483F, 0.0F);
-        this.rightLeg = new ModelPart(this, 0, 0);
-        this.rightLeg.setPos(-2.0F, 18.0F, 0.0F);
-        this.rightLeg.texOffs(0, 33).addBox(-1.4F, 0.0F, -1.5F, 3.0F, 6.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.leftLeg = new ModelPart(this, 0, 0);
-        this.leftLeg.setPos(2.0F, 18.0F, 0.0F);
-        this.leftLeg.texOffs(12, 33).addBox(-1.6F, 0.0F, -1.5F, 3.0F, 6.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.body = new ModelPart(this, 0, 0);
-        this.body.setPos(0.0F, 12.0F, 0.0F);
-        this.body.texOffs(28, 6).addBox(-3.5F, 1.0F, -2.0F, 7.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.helmet = new ModelPart(this, 0, 0);
-        this.helmet.setPos(0.0F, 0.0F, 0.0F);
-        this.helmet.texOffs(0, 5).addBox(-2.5F, -7.0F, -2.5F, 5.0F, 8.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(helmet, 0.0F, 0.7853981633974483F, 0.0F);
+    public BlockChainGoblinModel(ModelPart part) {
+        super(part);
+
+        helmet = this.getHead().getChild("hat").getChild("helmet");
+        horns = helmet.getChild("horns");
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+        PartDefinition part = mesh.getRoot();
+
+        part.addOrReplaceChild("right_arm", CubeListBuilder.create()
+                        .texOffs(52, 2)
+                        .addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F),
+                PartPose.offsetAndRotation(-5.0F, 12.0F, 0.0F, 0.0F, 0.0F, 3.0543261909900767F));
+
+        part.addOrReplaceChild("left_arm", CubeListBuilder.create()
+                        .texOffs(52, 17)
+                        .addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F),
+                PartPose.offsetAndRotation(5.0F, 12.0F, 0.0F, 0.0F, 0.0F, -3.0543261909900767F));
+
+        part.addOrReplaceChild("right_leg", CubeListBuilder.create()
+                        .texOffs(0, 33)
+                        .addBox(-1.4F, 0.0F, -1.5F, 3.0F, 6.0F, 3.0F),
+                PartPose.offset(-2.0F, 18.0F, 0.0F));
+
+        part.addOrReplaceChild("left_leg", CubeListBuilder.create()
+                        .texOffs(12, 33)
+                        .addBox(-1.6F, 0.0F, -1.5F, 3.0F, 6.0F, 3.0F),
+                PartPose.offset(2.0F, 18.0F, 0.0F));
+
+        part.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(28, 6)
+                        .addBox(-3.5F, 1.0F, -2.0F, 7.0F, 6.0F, 4.0F),
+                PartPose.offset(0.0F, 12.0F, 0.0F));
+
         //kill the head and headwear to prevent issues
-        head = new ModelPart(this, 0, 0);
-        head.addBox(0F, 0F, 0F, 0, 0, 0, 0F);
-        this.hat = new ModelPart(this, 0, 0);
-        this.hat.addBox(0, 0, 0, 0, 0, 0);
+        part.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
+        var hat = part.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        //TODO Probably make the Helmet the head instead?
 
-        this.helmet.addChild(this.horns);
-        this.hat.addChild(helmet);
+        var helmet = hat.addOrReplaceChild("helmet", CubeListBuilder.create()
+                        .texOffs(0, 5)
+                        .addBox(-2.5F, -7.0F, -2.5F, 5.0F, 8.0F, 5.0F),
+                PartPose.rotation(0.0F, 0.7853981633974483F, 0.0F));
 
-        block = new ModelPart(this, 32, 32);
-        block.addBox(-4F, -8F, -4F, 8, 8, 8, 0F);
-        block.setPos(0F, 0F, 0F);
+        helmet.addOrReplaceChild("horns", CubeListBuilder.create()
+                        .texOffs(0, 18)
+                        .addBox(-7.5F, -9.0F, -2.03F, 15.0F, 10.0F, 2.0F),
+                PartPose.rotation(0.0F, -0.7853981633974483F, 0.0F));
 
-        for (int i = 0; i < spikes.length; i++) {
-            spikes[i] = new ModelPart(this, 56, 36);
-            spikes[i].addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
-            block.addChild(spikes[i]);
-        }
+        var block = part.addOrReplaceChild("block", CubeListBuilder.create()
+                        .texOffs(32, 32)
+                        .addBox(-4F, -8F, -4F, 8, 8, 8),
+                PartPose.ZERO);
 
-        // X
-        spikes[2].x = 4;
-        spikes[3].x = 4;
-        spikes[4].x = 4;
-        spikes[11].x = 4;
-        spikes[12].x = 5;
-        spikes[13].x = 4;
-        spikes[20].x = 4;
-        spikes[21].x = 4;
-        spikes[22].x = 4;
+        // Rotation constants
+        final float QUARTER_PI = (float) (Math.PI / 4F);
+        final float ANGLE_MINOR = -35F / (180F / (float) Math.PI);
+        final float ANGLE_MAJOR = -55F / (180F / (float) Math.PI);
 
-        spikes[6].x = -4;
-        spikes[7].x = -4;
-        spikes[8].x = -4;
-        spikes[15].x = -4;
-        spikes[16].x = -5;
-        spikes[17].x = -4;
-        spikes[24].x = -4;
-        spikes[25].x = -4;
-        spikes[26].x = -4;
+        block.addOrReplaceChild("spikes_0", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(0, -9, 0, 0, 0, 0));
 
-        // Y
-        spikes[0].y = -9;
-        spikes[1].y = -8;
-        spikes[2].y = -8;
-        spikes[3].y = -8;
-        spikes[4].y = -8;
-        spikes[5].y = -8;
-        spikes[6].y = -8;
-        spikes[7].y = -8;
-        spikes[8].y = -8;
+        block.addOrReplaceChild("spikes_1", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(0, -8, 4, QUARTER_PI, 0, 0));
 
-        spikes[9].y = -4; // this spike is not really there
-        spikes[10].y = -4;
-        spikes[11].y = -4;
-        spikes[12].y = -4;
-        spikes[13].y = -4;
-        spikes[14].y = -4;
-        spikes[15].y = -4;
-        spikes[16].y = -4;
-        spikes[17].y = -4;
+        block.addOrReplaceChild("spikes_2", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, -8, 4, ANGLE_MAJOR, QUARTER_PI, 0));
 
-        spikes[18].y = 1;
+        block.addOrReplaceChild("spikes_3", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, -8, 0, 0, 0, QUARTER_PI));
 
-        // Z
-        spikes[1].z = 4;
-        spikes[2].z = 4;
-        spikes[8].z = 4;
-        spikes[10].z = 4;
-        spikes[11].z = 5;
-        spikes[17].z = 4;
-        spikes[19].z = 4;
-        spikes[20].z = 4;
-        spikes[26].z = 4;
+        block.addOrReplaceChild("spikes_4", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, -8, -4, ANGLE_MINOR, -QUARTER_PI, 0));
 
-        spikes[4].z = -4;
-        spikes[5].z = -4;
-        spikes[6].z = -4;
-        spikes[13].z = -4;
-        spikes[14].z = -5;
-        spikes[15].z = -4;
-        spikes[22].z = -4;
-        spikes[23].z = -4;
-        spikes[24].z = -4;
+        block.addOrReplaceChild("spikes_5", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(0, -8, -4, QUARTER_PI, 0, 0));
 
-        // rotation
-        float fourtyFive = (float) (Math.PI / 4F);
+        block.addOrReplaceChild("spikes_6", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-4, -8, -4, ANGLE_MINOR, QUARTER_PI, 0));
 
-        spikes[1].xRot = fourtyFive;
-        spikes[5].xRot = fourtyFive;
-        spikes[19].xRot = fourtyFive;
-        spikes[23].xRot = fourtyFive;
+        block.addOrReplaceChild("spikes_7", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-4, -8, 0, 0, 0, QUARTER_PI));
 
-        spikes[11].yRot = fourtyFive;
-        spikes[13].yRot = fourtyFive;
-        spikes[15].yRot = fourtyFive;
-        spikes[17].yRot = fourtyFive;
+        block.addOrReplaceChild("spikes_8", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-4, -8, 4, ANGLE_MAJOR, -QUARTER_PI, 0));
 
-        spikes[3].zRot = fourtyFive;
-        spikes[7].zRot = fourtyFive;
-        spikes[21].zRot = fourtyFive;
-        spikes[25].zRot = fourtyFive;
+        block.addOrReplaceChild("spikes_9", CubeListBuilder.create() // this spike is not really there
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(0, -4, 0, 0, 0, 0));
 
-        spikes[2].xRot = -55F / (180F / (float) Math.PI);
-        spikes[2].yRot = fourtyFive;
-        spikes[24].xRot = -55F / (180F / (float) Math.PI);
-        spikes[24].yRot = fourtyFive;
+        block.addOrReplaceChild("spikes_10", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(0, -4, 4, 0, 0, 0));
 
-        spikes[4].xRot = -35F / (180F / (float) Math.PI);
-        spikes[4].yRot = -fourtyFive;
-        spikes[26].xRot = -35F / (180F / (float) Math.PI);
-        spikes[26].yRot = -fourtyFive;
+        block.addOrReplaceChild("spikes_11", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, -4, 5, 0, QUARTER_PI, 0));
 
-        spikes[6].yRot = fourtyFive;
-        spikes[6].xRot = -35F / (180F / (float) Math.PI);
-        spikes[20].yRot = fourtyFive;
-        spikes[20].xRot = -35F / (180F / (float) Math.PI);
+        block.addOrReplaceChild("spikes_12", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(5, -4, 0, 0, 0, 0));
 
-        spikes[8].xRot = -55F / (180F / (float) Math.PI);
-        spikes[8].yRot = -fourtyFive;
-        spikes[22].xRot = -55F / (180F / (float) Math.PI);
-        spikes[22].yRot = -fourtyFive;
+        block.addOrReplaceChild("spikes_13", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, -4, -4, 0, QUARTER_PI, 0));
+
+        block.addOrReplaceChild("spikes_14", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(0, -4, -5, 0, 0, 0));
+
+        block.addOrReplaceChild("spikes_15", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-4, -4, -4, 0, QUARTER_PI, 0));
+
+        block.addOrReplaceChild("spikes_16", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-5, -4, 0, 0, 0, 0));
+
+        block.addOrReplaceChild("spikes_17", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-4, -4, 4, 0, QUARTER_PI, 0));
+
+        block.addOrReplaceChild("spikes_18", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(0, 1, 0, 0, 0, 0));
+
+        block.addOrReplaceChild("spikes_19", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(0, 0, 4, QUARTER_PI, 0, 0));
+
+        block.addOrReplaceChild("spikes_20", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, 0, 4, ANGLE_MINOR, QUARTER_PI, 0));
+
+        block.addOrReplaceChild("spikes_21", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, 0, 0, 0, 0, QUARTER_PI));
+
+        block.addOrReplaceChild("spikes_22", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, 0, -4, ANGLE_MAJOR, -QUARTER_PI, 0));
+
+        block.addOrReplaceChild("spikes_23", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(4, 0, -4, QUARTER_PI, 0, 0));
+
+        block.addOrReplaceChild("spikes_24", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-4, 0, -4, ANGLE_MAJOR, QUARTER_PI, 0));
+
+        block.addOrReplaceChild("spikes_25", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-4, 0, 0, 0, 0, QUARTER_PI));
+
+        block.addOrReplaceChild("spikes_26", CubeListBuilder.create()
+                        .texOffs(56, 36)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2),
+                PartPose.offsetAndRotation(-4, 0, 4, ANGLE_MINOR, -QUARTER_PI, 0));
+
+        return LayerDefinition.create(mesh, 64, 48);
     }
 
     @Override
@@ -192,14 +242,5 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
         block.z = (float) -Math.cos(angle) * length;
 
         block.yRot = -angle;
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }
