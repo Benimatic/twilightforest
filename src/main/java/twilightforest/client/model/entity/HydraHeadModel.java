@@ -1,47 +1,59 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.boss.HydraHeadEntity;
 import twilightforest.entity.boss.HydraPartEntity;
 
-public class HydraHeadModel extends ListModel<HydraHeadEntity> {
+public class HydraHeadModel extends HierarchicalModel<HydraHeadEntity> {
 
-	ModelPart head;
-	ModelPart mouth;
-	ModelPart plate;
+	public ModelPart root, head, mouth;
 
-	public HydraHeadModel() {
-		texWidth = 512;
-		texHeight = 256;
+	public HydraHeadModel(ModelPart root) {
+		this.root = root;
+		this.head = root.getChild("head");
+		this.mouth = root.getChild("mouth");
+	}
 
-		this.head = new ModelPart(this, 0, 0);
-		this.head.setPos(0F, 0F, 0F);
-		this.head.texOffs(260, 64).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-		this.head.texOffs(236, 128).addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F, 0.0F, 0.0F, 0.0F);
-		this.head.texOffs(356, 70).addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F, 0.0F, 0.0F, 0.0F);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(260, 64)
+						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
+						.texOffs(236, 128)
+						.addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F)
+						.texOffs(356, 70)
+						.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
+				PartPose.ZERO);
 
-		this.plate = new ModelPart(this, 0, 0);
-		this.plate.setPos(0.0F, 0.0F, 0.0F);
-		this.plate.texOffs(388, 0).addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-		this.plate.texOffs(220, 0).addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(plate, -0.7853981633974483F, 0.0F, 0.0F);
+		partRoot.addOrReplaceChild("mouth", CubeListBuilder.create()
+						.texOffs(240, 162)
+						.addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
+				PartPose.offset(0.0F, 10.0F, -14.0F));
 
-		head.addChild(plate);
+		partRoot.addOrReplaceChild("plate", CubeListBuilder.create()
+						.texOffs(388, 0)
+						.addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
+						.texOffs(220, 0)
+						.addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.7853981633974483F, 0.0F, 0.0F));
 
-		this.mouth = new ModelPart(this, 0, 0);
-		this.mouth.setPos(0.0F, 10.0F, -14.0F);
-		this.mouth.texOffs(240, 162).addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F, 0.0F, 0.0F, 0.0F);
-
-		head.addChild(mouth);
+		return LayerDefinition.create(mesh, 512, 256);
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(head);
+	public ModelPart root() {
+		return this.root;
 	}
 
 	@Override
@@ -67,11 +79,5 @@ public class HydraHeadModel extends ListModel<HydraHeadEntity> {
 
 	public float getRotationX(HydraPartEntity whichHead, float time) {
 		return (whichHead.xRotO + (whichHead.xRot - whichHead.xRotO) * time) / 57.29578F;
-	}
-
-	public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-		modelRenderer.xRot = x;
-		modelRenderer.yRot = y;
-		modelRenderer.zRot = z;
 	}
 }

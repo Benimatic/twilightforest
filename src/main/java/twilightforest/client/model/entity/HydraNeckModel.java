@@ -1,28 +1,40 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import twilightforest.entity.boss.HydraNeckEntity;
 
-public class HydraNeckModel extends ListModel<HydraNeckEntity> {
+public class HydraNeckModel extends HierarchicalModel<HydraNeckEntity> {
 
-	ModelPart neck;
+	ModelPart root, neck;
 
-	public HydraNeckModel() {
-		texWidth = 512;
-		texHeight = 256;
+	public HydraNeckModel(ModelPart root) {
+		this.root = root;
+		this.neck = root.getChild("neck");
+	}
 
-		this.neck = new ModelPart(this, 0, 0);
-		this.neck.setPos(0F, 0F, 0F);
-		this.neck.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-		this.neck.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
+		partRoot.addOrReplaceChild("neck", CubeListBuilder.create()
+						.texOffs(260, 0)
+						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
+						.texOffs(0, 0)
+						.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
+				PartPose.ZERO);
+
+		return LayerDefinition.create(mesh, 512, 256);
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(neck);
+	public ModelPart root() {
+		return this.root;
 	}
 
 	@Override

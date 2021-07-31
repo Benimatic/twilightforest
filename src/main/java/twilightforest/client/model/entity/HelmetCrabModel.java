@@ -1,10 +1,11 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,62 +16,82 @@ import twilightforest.entity.HelmetCrabEntity;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class HelmetCrabModel extends ListModel<HelmetCrabEntity> {
-    public ModelPart body;
-    public ModelPart rightLeg1;
-    public ModelPart rightLeg2;
-    public ModelPart leftLeg1;
-    public ModelPart leftLeg2;
-    public ModelPart leftClaw;
-    public ModelPart rightClaw;
-    public ModelPart helmet;
-    public ModelPart horns;
+public class HelmetCrabModel extends HierarchicalModel<HelmetCrabEntity> {
+    public ModelPart root, body, leftClaw, rightClaw;
+    public ModelPart rightLeg1, rightLeg2, leftLeg1, leftLeg2;
 
-    public HelmetCrabModel() {
-        this.texWidth = 64;
-        this.texHeight = 32;
-        this.leftLeg1 = new ModelPart(this, 0, 0);
-        this.leftLeg1.setPos(2.0F, 21.0F, 0.0F);
-        this.leftLeg1.texOffs(48, 19).addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftLeg1, 0.2181661564992912F, -0.4363323129985824F, 0.4363323129985824F);
-        this.helmet = new ModelPart(this, 0, 0);
-        this.helmet.setPos(0.0F, -1.0F, 0.5F);
-        this.helmet.texOffs(40, 0).addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.helmet.texOffs(16, 0).addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F, -0.25F, -0.25F, -0.25F);
-        this.setRotateAngle(helmet, -1.3089969389957472F, -0.2617993877991494F, 0.7463027588580033F);
-        this.leftLeg2 = new ModelPart(this, 0, 0);
-        this.leftLeg2.setPos(2.0F, 21.0F, -1.5F);
-        this.leftLeg2.texOffs(48, 15).addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftLeg2, 0.2181661564992912F, 0.0F, 0.4363323129985824F);
-        this.leftClaw = new ModelPart(this, 0, 0);
-        this.leftClaw.setPos(3.0F, 0.0F, -3.0F);
-        this.leftClaw.texOffs(0, 23).addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftClaw, 0.0F, -0.39269908169872414F, 0.0F);
-        this.horns = new ModelPart(this, 0, 0);
-        this.horns.setPos(0.0F, 0.0F, 0.0F);
-        this.horns.texOffs(18, 23).addBox(-11.5F, -12.0F, -0.67F, 23.0F, 9.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(horns, 0.0F, 0.7853981633974483F, 0.0F);
-        this.rightLeg1 = new ModelPart(this, 0, 0);
-        this.rightLeg1.setPos(-2.0F, 21.0F, 0.0F);
-        this.rightLeg1.texOffs(32, 15).addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightLeg1, 0.2181661564992912F, 0.4363323129985824F, -0.4363323129985824F);
-        this.rightClaw = new ModelPart(this, 0, 0);
-        this.rightClaw.setPos(-3.0F, 0.0F, -3.0F);
-        this.rightClaw.addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightClaw, 0.0F, 0.39269908169872414F, 0.0F);
-        this.rightLeg2 = new ModelPart(this, 0, 0);
-        this.rightLeg2.setPos(-2.0F, 21.0F, -1.5F);
-        this.rightLeg2.texOffs(32, 19).addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightLeg2, 0.2181661564992912F, 0.0F, -0.4363323129985824F);
-        this.body = new ModelPart(this, 0, 0);
-        this.body.setPos(0.0F, 21.0F, 0.0F);
-        this.body.texOffs(0, 9).addBox(-2.5F, -4.0F, -2.5F, 5.0F, 4.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.body.texOffs(58, 0).addBox(-1.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.body.texOffs(58, 3).addBox(0.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.body.addChild(this.helmet);
-        this.body.addChild(this.leftClaw);
-        this.body.addChild(this.rightClaw);
-        this.helmet.addChild(this.horns);
+    public HelmetCrabModel(ModelPart root) {
+        this.root = root;
+
+        this.body = root.getChild("body");
+
+        this.rightClaw = body.getChild("right_claw");
+        this.leftClaw = body.getChild("left_claw");
+
+        this.rightLeg1 = root.getChild("right_leg_1");
+        this.rightLeg2 = root.getChild("right_leg_2");
+        this.leftLeg1 = root.getChild("left_leg_1");
+        this.leftLeg2 = root.getChild("left_leg_2");
+
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("helmet", CubeListBuilder.create()
+                        .texOffs(40, 0)
+                        .addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F)
+                        .texOffs(16, 0)
+                        .addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F, new CubeDeformation(-0.25F)),
+                PartPose.offsetAndRotation(0.0F, -1.0F, 0.5F, -1.3089969389957472F, -0.2617993877991494F, 0.7463027588580033F));
+
+        partRoot.addOrReplaceChild("horns", CubeListBuilder.create()
+                        .texOffs(18, 23)
+                        .addBox(-11.5F, -12.0F, -0.67F, 23.0F, 9.0F, 0.0F),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
+
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(0, 9)
+                        .addBox(-2.5F, -4.0F, -2.5F, 5.0F, 4.0F, 5.0F)
+                        .texOffs(58, 0)
+                        .addBox(-1.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F)
+                        .texOffs(58, 3)
+                        .addBox(0.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F),
+                PartPose.offset(0.0F, 21.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_claw", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
+                PartPose.offsetAndRotation(-3.0F, 0.0F, -3.0F, 0.0F, 0.39269908169872414F, 0.0F));
+
+        partRoot.addOrReplaceChild("left_claw", CubeListBuilder.create()
+                        .texOffs(0, 23)
+                        .addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
+                PartPose.offsetAndRotation(3.0F, 0.0F, -3.0F, 0.0F, -0.39269908169872414F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
+                        .texOffs(32, 15)
+                        .addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 21.0F, 0.0F, 0.2181661564992912F, 0.4363323129985824F, -0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
+                        .texOffs(48, 19)
+                        .addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(2.0F, 21.0F, 0.0F, 0.2181661564992912F, -0.4363323129985824F, 0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
+                        .texOffs(32, 19)
+                        .addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, -0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
+                        .texOffs(48, 15)
+                        .addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, 0.4363323129985824F));
+
+
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override
@@ -80,15 +101,8 @@ public class HelmetCrabModel extends ListModel<HelmetCrabEntity> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(
-                body,
-                rightLeg1,
-                rightLeg2,
-                leftLeg1,
-                leftLeg2
-
-        );
+    public ModelPart root() {
+        return this.root;
     }
 
     @Override
@@ -126,13 +140,5 @@ public class HelmetCrabModel extends ListModel<HelmetCrabEntity> {
         this.rightClaw.yRot = 0.319531F;
         this.rightClaw.yRot += (Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F) / 2;
 
-    }
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

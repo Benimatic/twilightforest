@@ -2,41 +2,44 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import twilightforest.entity.HarbingerCubeEntity;
 
 public class HarbingerCubeModel<T extends HarbingerCubeEntity> extends QuadrupedModel<T> {
 
-	public HarbingerCubeModel() {
-		this(0.0F);
+	public HarbingerCubeModel(ModelPart part) {
+		super(part, false, 0.0F, 0.0F, 0.0F, 0.0F, 4); //All this is from AgeableModel. Do we scale?
 	}
 
-	public HarbingerCubeModel(float fNumber) {
-		super(6, fNumber, false, 0.0F, 0.0F, 0.0F, 0.0F, 4); //All this is from AgeableModel. Do we scale?
+	public static LayerDefinition create() {
+		MeshDefinition mesh = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
+		PartDefinition partRoot = mesh.getRoot();
 
-		this.texWidth = 128;
-		this.texHeight = 64;
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create(),
+				PartPose.ZERO);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
+				PartPose.offset(0.0F, 0.0F, -2.0F));
+		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				PartPose.offset(-6F, 16F, 9F));
+		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				PartPose.offset(6F, 16F, 9F));
+		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				PartPose.offset(-9F, 16F, -14F));
+		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				PartPose.offset(9F, 16F, -14F));
 
-		this.head = new ModelPart(this, 0, 0);
-
-		body = new ModelPart(this, 0, 0);
-		body.addBox(-16F, -16F, -16F, 32, 32, 32);
-		body.setPos(0F, 0F, -2F);
-
-        leg0 = new ModelPart(this, 0, 0);
-        leg0.addBox(-4F, 0F, -4F, 8, 8, 8);
-        leg0.setPos(-6F, 16F, 9F);
-
-        leg1 = new ModelPart(this, 0, 0);
-        leg1.addBox(-4F, 0F, -4F, 8, 8, 8);
-        leg1.setPos(6F, 16F, 9F);
-
-        leg2 = new ModelPart(this, 0, 0);
-        leg2.addBox(-4F, 0F, -4F, 8, 8, 8);
-        leg2.setPos(-9F, 16F, -14F);
-
-        leg3 = new ModelPart(this, 0, 0);
-        leg3.addBox(-4F, 0F, -4F, 8, 8, 8);
-        leg3.setPos(9F, 16F, -14F);
+		return LayerDefinition.create(mesh, 128, 64);
 	}
 
 	/**
