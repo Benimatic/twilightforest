@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,34 +21,53 @@ import net.minecraft.client.model.HumanoidModel.ArmPose;
 public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightEntity> {
     public ModelPart tunic;
 
-    public LowerGoblinKnightModel() {
-        super(0, 0, 128, 64);
-        this.rightArm = new ModelPart(this, 48, 48);
-        this.rightArm.setPos(-3.5F, 10.0F, 0.0F);
-        this.rightArm.addBox(-2.0F, -2.0F, -1.5F, 2.0F, 8.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightArm, 0.0F, 0.0F, 0.10000000116728046F);
-        this.tunic = new ModelPart(this, 64, 19);
-        this.tunic.setPos(0.0F, 7.5F, 0.0F);
-        this.tunic.addBox(-6.0F, 0.0F, -3.0F, 12.0F, 9.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.head = new ModelPart(this, 0, 30);
-        this.head.setPos(0.0F, 10.0F, 1.0F);
-        this.head.addBox(-2.5F, -5.0F, -3.5F, 5.0F, 5.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.leftArm = new ModelPart(this, 38, 48);
-        this.leftArm.setPos(3.5F, 10.0F, 0.0F);
-        this.leftArm.addBox(0.0F, -2.0F, -1.5F, 2.0F, 8.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftArm, 0.0F, 0.0F, -0.10000736647217022F);
-        this.leftLeg = new ModelPart(this, 0, 52);
-        this.leftLeg.setPos(2.5F, 16.0F, 0.0F);
-        this.leftLeg.addBox(-1.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.rightLeg = new ModelPart(this, 0, 40);
-        this.rightLeg.setPos(-2.5F, 16.0F, 0.0F);
-        this.rightLeg.addBox(-3.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.hat = new ModelPart(this, 0, 0);
-        this.hat.setPos(0.0F, 0.0F, 0.0F);
-        this.hat.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.body = new ModelPart(this, 16, 48);
-        this.body.setPos(0.0F, 8.0F, 0.0F);
-        this.body.addBox(-3.5F, 0.0F, -2.0F, 7.0F, 8.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+    public LowerGoblinKnightModel(ModelPart root) {
+        super(root);
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("", CubeListBuilder.create()
+                        .texOffs(0, 30)
+                        .addBox(-2.5F, -5.0F, -3.5F, 5.0F, 5.0F, 5.0F),
+                PartPose.offset(0.0F, 10.0F, 1.0F));
+
+        partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+                PartPose.ZERO);
+
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(16, 48)
+                        .addBox(-3.5F, 0.0F, -2.0F, 7.0F, 8.0F, 4.0F),
+                PartPose.offset(0.0F, 8.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("tunic", CubeListBuilder.create()
+                        .texOffs(64, 19)
+                        .addBox(-6.0F, 0.0F, -3.0F, 12.0F, 9.0F, 6.0F),
+                PartPose.offset(0.0F, 7.5F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+                        .texOffs(48, 48)
+                        .addBox(-2.0F, -2.0F, -1.5F, 2.0F, 8.0F, 3.0F),
+                PartPose.offsetAndRotation(-3.5F, 10.0F, 0.0F, 0.0F, 0.0F, 0.10000000116728046F));
+
+        partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+                        .texOffs(38, 48)
+                        .addBox(0.0F, -2.0F, -1.5F, 2.0F, 8.0F, 3.0F),
+                PartPose.offsetAndRotation(3.5F, 10.0F, 0.0F, 0.0F, 0.0F, -0.10000736647217022F));
+
+        partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+                        .texOffs(0, 40)
+                        .addBox(-3.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
+                PartPose.offset(-2.5F, 16.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+                        .texOffs(0, 52)
+                        .addBox(-1.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
+                PartPose.offset(2.5F, 16.0F, 0.0F));
+
+        return LayerDefinition.create(mesh, 64, 64);
     }
 
     @Override
@@ -108,13 +129,5 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightEntit
         this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 
         this.tunic.visible = entity.hasArmor();
-    }
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.boss.KnightPhantomEntity;
 
@@ -11,27 +13,35 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomEntity> {
 
 	private KnightPhantomEntity knight;
 
-	public KnightPhantomModel() {
-		this(0.0F);
+	public KnightPhantomModel(ModelPart root) {
+		super(root);
 	}
 
-	public KnightPhantomModel(float scale) {
-		super(scale);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partRoot = mesh.getRoot();
 
-		this.rightArm = new ModelPart(this, 40, 16);
-		this.rightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
-		this.rightArm.setPos(-5.0F, 2.0F, 0.0F);
-		this.leftArm = new ModelPart(this, 40, 16);
-		this.leftArm.mirror = true;
-		this.leftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
-		this.leftArm.setPos(5.0F, 2.0F, 0.0F);
-		this.rightLeg = new ModelPart(this, 0, 16);
-		this.rightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, scale);
-		this.rightLeg.setPos(-2.0F, 12.0F, 0.0F);
-		this.leftLeg = new ModelPart(this, 0, 16);
-		this.leftLeg.mirror = true;
-		this.leftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, scale);
-		this.leftLeg.setPos(2.0F, 12.0F, 0.0F);
+		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(40, 16)
+						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(-5.0F, 2.0F, 0.0F));
+
+		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+						.texOffs(40, 16)
+						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(5.0F, 2.0F, 0.0F));
+
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 16)
+						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(-2.0F, 12.0F, 0.0F));
+
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 16)
+						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(2.0F, 12.0F, 0.0F));
+
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	/**

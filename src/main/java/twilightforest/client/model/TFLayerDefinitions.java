@@ -1,6 +1,6 @@
 package twilightforest.client.model;
 
-import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -42,24 +42,38 @@ public class TFLayerDefinitions {
 
 		event.registerLayerDefinition(TFModelLayers.ADHERENT, AdherentModel::create);
 		event.registerLayerDefinition(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
+		event.registerLayerDefinition(TFModelLayers.ARMORED_GIANT, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP, BighornModel::create);
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP_FUR, BighornFurLayer::create);
 		event.registerLayerDefinition(TFModelLayers.BLOCKCHAIN_GOBLIN, BighornFurLayer::create);
 		event.registerLayerDefinition(TFModelLayers.BOAR, BighornFurLayer::create);
 		event.registerLayerDefinition(TFModelLayers.BUNNY, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.CARMINITE_BROODLING, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.CARMINITE_GOLEM, BighornFurLayer::create);
 		event.registerLayerDefinition(TFModelLayers.CHAIN, ChainModel::create);
 		event.registerLayerDefinition(TFModelLayers.CUBE_OF_ANNIHILATION, CubeOfAnnihilationModel::create);
 		event.registerLayerDefinition(TFModelLayers.DEATH_TOME, DeathTomeModel::create);
 		event.registerLayerDefinition(TFModelLayers.DEER, DeerModel::create);
 		event.registerLayerDefinition(TFModelLayers.FIRE_BEETLE, FireBeetleModel::create);
+		event.registerLayerDefinition(TFModelLayers.GIANT_MINER, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.HARBINGER_CUBE, HarbingerCubeModel::create);
+		event.registerLayerDefinition(TFModelLayers.HEDGE_SPIDER, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.HELMET_CRAB, HelmetCrabModel::create);
+		event.registerLayerDefinition(TFModelLayers.HOSTILE_WOLF, WolfModel::createBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.HYDRA_HEAD, HydraHeadModel::create);
 		event.registerLayerDefinition(TFModelLayers.HYDRA, HydraModel::create);
 		event.registerLayerDefinition(TFModelLayers.HYDRA_MORTAR, HydraMortarModel::create);
 		event.registerLayerDefinition(TFModelLayers.HYDRA_NECK, HydraNeckModel::create);
 		event.registerLayerDefinition(TFModelLayers.ICE_CRYSTAL, IceCrystalModel::create);
+		event.registerLayerDefinition(TFModelLayers.KING_SPIDER, SpiderModel::createSpiderBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.KNIGHT_PHANTOM, KnightPhantomModel::create);
+		event.registerLayerDefinition(TFModelLayers.KOBOLD, KoboldModel::create);
+		event.registerLayerDefinition(TFModelLayers.LICH_MINION, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.LICH_MINION_ARMOR, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.5F), 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.LICH, LichModel::create);
+		event.registerLayerDefinition(TFModelLayers.LOWER_GOBLIN_KNIGHT, LowerGoblinKnightModel::create);
+		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME, SlimeModel::createInnerBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
 
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.7F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.7F), 64, 32));

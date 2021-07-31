@@ -5,68 +5,75 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.boss.LichEntity;
 
 import java.util.Arrays;
 
 public class LichModel extends HumanoidModel<LichEntity> {
+
+	private boolean shadowClone;
 	private final ModelPart collar;
 	private final ModelPart cloak;
 
-	private boolean shadowClone;
+	public LichModel(ModelPart root) {
+		super(root);
+		this.collar = root.getChild("collar");
+		this.cloak = root.getChild("cloak");
+	}
 
-	public LichModel() {
-		super(0.0F, 0.0F, 64, 64);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partRoot = mesh.getRoot();
 
-		body = new ModelPart(this, 8, 16);
-		body.addBox(-4F, 0.0F, -2F, 8, 24, 4);
-		body.setPos(0.0F, -4.0F, 0.0F);
-		body.setTexSize(64, 64);
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		rightArm = new ModelPart(this, 0, 16);
-		rightArm.addBox(-2.0F, -2.0F, -2.0F, 2.0F, 12.0F, 2.0F);
-		rightArm.setTexSize(64, 64);
-		rightArm.setPos(-5.0F, -2.0F, 0.0F);
+		partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+						.texOffs(32, 0)
+						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
+				PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		leftArm = new ModelPart(this, 0, 16);
-		leftArm.mirror = true;
-		leftArm.addBox(-1.0F, -2.0F, -2.0F, 2.0F, 12.0F, 2.0F);
-		leftArm.setPos(5.0F, 2.0F, 0.0F);
-		leftArm.setTexSize(64, 64);
+		partRoot.addOrReplaceChild("collar", CubeListBuilder.create()
+						.texOffs(32, 16)
+						.addBox(-6.0F, -2.0F, -4.0F, 12.0F, 12.0F, 1.0F),
+				PartPose.offsetAndRotation(0.0F, -3.0F, -1.0F, 2.164208F, 0F, 0F));
 
-		hat = new ModelPart(this, 32, 0);
-		hat.addBox(-4F, -8F, -4F, 8, 8, 8, 0.5F);
-		hat.setPos(0.0F, -4.0F, 0.0F);
-		hat.setTexSize(64, 64);
+		partRoot.addOrReplaceChild("cloak", CubeListBuilder.create()
+						.texOffs(0, 44)
+						.addBox(-6.0F, 2.0F, 0.0F, 12.0F, 19.0F, 1.0F),
+				PartPose.offset(0.0F, -4.0F, 2.5F));
 
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-4F, -4F, -4F, 8, 8, 8);
-		head.setPos(0F, -4F, 0F);
-		head.setTexSize(64, 64);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(8, 16)
+						.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
+				PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		rightLeg = new ModelPart(this, 0, 16);
-		rightLeg.addBox(-1F, 2F, -1F, 2, 12, 2);
-		rightLeg.setPos(-2F, 9.5F, 0F);
-		rightLeg.setTexSize(64, 64);
+		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, -2.0F, -2.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(-5.0F, -2.0F, 0.0F));
 
-		leftLeg = new ModelPart(this, 0, 16);
-		leftLeg.addBox(-1F, 2F, -1F, 2, 12, 2);
-		leftLeg.setPos(2F, 9.5F, 0F);
-		leftLeg.setTexSize(64, 64);
-		leftLeg.mirror = true;
+		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+						.texOffs(0, 16)
+						.addBox(-1.0F, -2.0F, -2.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(5.0F, 2.0F, 0.0F));
 
-		collar = new ModelPart(this, 32, 16);
-		collar.addBox(-6F, -2F, -4F, 12, 12, 1);
-		collar.setPos(0F, -3F, -1F);
-		collar.setTexSize(64, 64);
-		setRotation(collar, 2.164208F, 0F, 0F);
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-1.0F, -2.0F, -2.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(-2.0F, 9.5F, 0.0F));
 
-		cloak = new ModelPart(this, 0, 44);
-		cloak.addBox(-6F, 2F, 0F, 12, 19, 1);
-		cloak.setPos(0F, -4F, 2.5F);
-		cloak.setTexSize(64, 64);
-		setRotation(cloak, 0F, 0F, 0F);
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 16)
+						.addBox(-1.0F, -2.0F, -2.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(2.0F, 9.5F, 0.0F));
+
+		return LayerDefinition.create(mesh, 64, 64);
 	}
 
 	@Override
@@ -112,11 +119,5 @@ public class LichModel extends HumanoidModel<LichEntity> {
 		hat.y = -4.0F;
 		rightLeg.y = 9.5F;
 		leftLeg.y = 9.5F;
-	}
-
-	private void setRotation(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
 	}
 }
