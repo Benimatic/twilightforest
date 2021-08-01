@@ -1,8 +1,12 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -11,33 +15,53 @@ import twilightforest.entity.CarminiteGhastguardEntity;
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
-public class TFGhastModel<T extends CarminiteGhastguardEntity> extends ListModel<T> {
-	public ModelPart body;
-	protected ModelPart[] tentacles = new ModelPart[9];
+public class TFGhastModel<T extends CarminiteGhastguardEntity> extends HierarchicalModel<T> {
+	protected final static int tentacleCount = 9;
+	private final ModelPart root, body;
+	private final ModelPart[] tentacles = new ModelPart[tentacleCount];
 
-	public TFGhastModel() {
-		byte yOffset = -16;
-		this.body = new ModelPart(this, 0, 0);
-		this.body.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16);
-		this.body.y += 24 + yOffset;
-		Random rand = new Random(1660L);
+	public TFGhastModel(ModelPart root) {
+		this.root = root;
+		this.body = root.getChild("body");
 
-		for (int i = 0; i < this.tentacles.length; ++i) {
-			makeTentacle(yOffset, rand, i);
+		for (int i = 0; i < this.tentacles.length; i++) {
+			this.tentacles[i] = this.body.getChild("tentacle_" + i);
 		}
 	}
 
-	protected void makeTentacle(byte yOffset, Random random, int i) {
-		this.tentacles[i] = new ModelPart(this, 0, 0);
-		float xPoint = ((i % 3 - i / 3 % 2 * 0.5F + 0.25F) / 2.0F * 2.0F - 1.0F) * 5.0F;
-		float zPoint = (i / 3 / 2.0F * 2.0F - 1.0F) * 5.0F;
-		int length = random.nextInt(7) + 8;
-		this.tentacles[i].addBox(-1.0F, 0.0F, -1.0F, 2, length, 2);
-		this.tentacles[i].x = xPoint;
-		this.tentacles[i].z = zPoint;
-		this.tentacles[i].y = 23 + yOffset;
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-		this.body.addChild(this.tentacles[i]);
+		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
+				PartPose.offset(0, 8, 0));
+
+		Random rand = new Random(1660L);
+
+		for (int i = 0; i < 9; ++i) {
+			makeTentacle(body, "tentacle_" + i, rand, i);
+		}
+
+		return LayerDefinition.create(mesh, 64, 64);
+	}
+
+	@Override
+	public ModelPart root() {
+		return this.root;
+	}
+
+	private static PartDefinition makeTentacle(PartDefinition parent, String name, Random random, int i) {
+		final int length = random.nextInt(7) + 8;
+
+		// Please ensure the model is working accurately before we port
+		float xPoint = ((((((i % 3) - (((i / 3.0F) % 2) * 0.5F)) + 0.25F) / 2.0F) * 2.0F) - 1.0F) * 5.0F;
+		float zPoint = (((i / 1.5F) * 2.0F) - 1.0F) * 5.0F;
+
+		return parent.addOrReplaceChild(name, CubeListBuilder.create()
+						.addBox(-1.0F, 0.0F, -1.0F, 2, length, 2),
+				PartPose.offset(xPoint, 7, zPoint));
 	}
 
 	/**
@@ -55,14 +79,5 @@ public class TFGhastModel<T extends CarminiteGhastguardEntity> extends ListModel
 		// make body face what we're looking at
 		this.body.xRot = headPitch / (180F / (float) Math.PI);
 		this.body.yRot = netHeadYaw / (180F / (float) Math.PI);
-	}
-
-	/**
-	 * Sets the models various rotation angles then renders the model.
-	 */
-
-    @Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(body);
 	}
 }
