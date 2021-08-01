@@ -1,5 +1,6 @@
 package twilightforest.structures.icetower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -35,7 +36,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	boolean hasBase = false;
 	protected int treasureFloor = -1;
 
-	public IceTowerWingComponent(StructureManager manager, CompoundTag nbt) {
+	public IceTowerWingComponent(ServerLevel level, CompoundTag nbt) {
 		this(IceTowerPieces.TFITWin, nbt);
 	}
 
@@ -50,8 +51,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putBoolean("hasBase", this.hasBase);
 		tagCompound.putInt("treasureFloor", this.treasureFloor);
 	}
@@ -116,8 +117,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 */
 	private boolean isOutOfRange(StructurePiece parent, int nx, int nz, int range) {
 		final BoundingBox sbb = parent.getBoundingBox();
-		final int centerX = sbb.x0 + (sbb.x1 - sbb.x0 + 1) / 2;
-		final int centerZ = sbb.z0 + (sbb.z1 - sbb.z0 + 1) / 2;
+		final int centerX = sbb.minX() + (sbb.maxX() - sbb.minX() + 1) / 2;
+		final int centerZ = sbb.minZ() + (sbb.maxZ() - sbb.minZ() + 1) / 2;
 
 		return Math.abs(nx - centerX) > range
 				|| Math.abs(nz - centerZ) > range;

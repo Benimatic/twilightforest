@@ -1,5 +1,6 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
@@ -50,7 +51,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	protected boolean keyTower = false;
 	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<>();
 
-	public DarkTowerWingComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerWingComponent(ServerLevel level, CompoundTag nbt) {
 		this(DarkTowerPieces.TFDTWin, nbt);
 	}
 
@@ -81,8 +82,8 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 
 		tagCompound.putBoolean("keyTower", this.keyTower);
 

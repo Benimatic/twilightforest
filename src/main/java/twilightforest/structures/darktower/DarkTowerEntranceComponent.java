@@ -2,6 +2,7 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -19,7 +20,7 @@ import java.util.Random;
 
 public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 
-	public DarkTowerEntranceComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerEntranceComponent(ServerLevel level, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTEnt, nbt);
 	}
 

@@ -2,6 +2,7 @@ package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -27,8 +28,8 @@ public class NagaCourtyardWallAbstractComponent extends TFStructureComponentTemp
 
     private StructureTemplate decayTemplate;
 
-    public NagaCourtyardWallAbstractComponent(StructureManager manager, StructurePieceType piece, CompoundTag nbt, ResourceLocation wall, ResourceLocation wall_decayed) {
-        super(manager, piece, nbt);
+    public NagaCourtyardWallAbstractComponent(ServerLevel level, StructurePieceType piece, CompoundTag nbt, ResourceLocation wall, ResourceLocation wall_decayed) {
+        super(level, piece, nbt);
         this.WALL = wall;
         this.WALL_DECAYED = wall_decayed;
     }

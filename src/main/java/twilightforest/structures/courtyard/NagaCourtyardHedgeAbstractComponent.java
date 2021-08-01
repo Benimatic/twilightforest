@@ -2,6 +2,7 @@ package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -26,8 +27,8 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
 
     private StructureTemplate templateBig;
 
-    public NagaCourtyardHedgeAbstractComponent(StructureManager manager, StructurePieceType piece, CompoundTag nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
-        super(manager, piece, nbt);
+    public NagaCourtyardHedgeAbstractComponent(ServerLevel level, StructurePieceType piece, CompoundTag nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
+        super(level, piece, nbt);
         this.HEDGE = hedge;
         this.HEDGE_BIG = hedgeBig;
     }

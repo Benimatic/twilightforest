@@ -1,5 +1,6 @@
 package twilightforest.structures.trollcave;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -27,7 +28,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 
 	protected boolean[] openingTowards = {false, false, true, false};
 
-	public TrollCaveConnectComponent(StructureManager manager, CompoundTag nbt) {
+	public TrollCaveConnectComponent(ServerLevel level, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCCon, nbt);
 		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
 		this.openingTowards[1] = nbt.getBoolean("openingTowards1");
@@ -44,8 +45,8 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		// too lazy to do this as a loop
 		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
 		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);

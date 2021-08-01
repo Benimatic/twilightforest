@@ -2,6 +2,7 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -18,7 +19,7 @@ import java.util.Random;
 
 public class StrongholdLeftTurnComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdLeftTurnComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdLeftTurnComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSLT, nbt);
 	}
 

@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -22,7 +23,7 @@ import java.util.Random;
 public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	@SuppressWarnings("unused")
-	public FinalCastleBossGazeboComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleBossGazeboComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCBoGaz, nbt);
 	}
 

@@ -1,5 +1,6 @@
 package twilightforest.structures;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +20,7 @@ import java.util.Random;
 
 public class YetiCaveComponent extends HollowHillComponent {
 
-	public YetiCaveComponent(StructureManager manager, CompoundTag nbt) {
+	public YetiCaveComponent(ServerLevel level, CompoundTag nbt) {
 		super(TFFeature.TFYeti, nbt);
 	}
 

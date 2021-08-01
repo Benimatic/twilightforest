@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,7 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 
 	private boolean enterBottom;
 
-	public StrongholdAtriumComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdAtriumComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSAt, nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
@@ -35,8 +36,8 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putBoolean("enterBottom", this.enterBottom);
 	}
 

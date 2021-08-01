@@ -2,6 +2,7 @@ package twilightforest.structures.mushroomtower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -18,7 +19,7 @@ import java.util.Random;
 
 public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
-	public MushroomTowerMainComponent(StructureManager manager, CompoundTag nbt) {
+	public MushroomTowerMainComponent(ServerLevel level, CompoundTag nbt) {
 		super(MushroomTowerPieces.TFMTMai, nbt);
 	}
 

@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -25,7 +26,7 @@ public class FinalCastleRoof13ConicalComponent extends TFStructureComponentOld {
 
 	public int slope;
 
-	public FinalCastleRoof13ConicalComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleRoof13ConicalComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCRo13Con, nbt);
 		this.slope = nbt.getInt("slope");
 	}
@@ -42,8 +43,8 @@ public class FinalCastleRoof13ConicalComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("slope", this.slope);
 	}
 

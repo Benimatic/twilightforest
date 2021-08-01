@@ -1,5 +1,6 @@
 package twilightforest.structures;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.EntityType;
@@ -27,7 +28,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	int hillSize;
 	int radius;
 
-	public HollowHillComponent(StructureManager manager, CompoundTag nbt) {
+	public HollowHillComponent(ServerLevel level, CompoundTag nbt) {
 		this(TFFeature.TFHill, nbt);
 	}
 
@@ -51,8 +52,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("hillSize", hillSize);
 	}
 

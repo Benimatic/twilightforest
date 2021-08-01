@@ -1,5 +1,6 @@
 package twilightforest.structures.mushroomtower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -33,7 +34,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	boolean hasBase = false;
 	public boolean isAscender = false;
 
-	public MushroomTowerWingComponent(StructureManager manager, CompoundTag nbt) {
+	public MushroomTowerWingComponent(ServerLevel level, CompoundTag nbt) {
 		this(MushroomTowerPieces.TFMTWin, nbt);
 	}
 
@@ -48,8 +49,8 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 
 		tagCompound.putBoolean("hasBase", this.hasBase);
 		tagCompound.putBoolean("isAscender", this.isAscender);

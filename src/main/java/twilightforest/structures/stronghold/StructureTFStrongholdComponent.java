@@ -1,8 +1,10 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -52,8 +54,8 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
 	}
 
@@ -88,7 +90,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -97,7 +99,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	/**
 	 * Add a new component in the specified direction
 	 */
-	protected void addNewComponent(StructurePiece entrance, List<StructurePiece> list, Random random, Rotation facing, int x, int y, int z) {
+	protected void addNewComponent(StructurePiece entrance, StructurePieceAccessor list, Random random, Rotation facing, int x, int y, int z) {
 		int index = this.genDepth + 1;
 		Direction nFacing = getStructureRelativeRotation(facing);
 		int nx = this.getWorldX(x, z);
@@ -124,7 +126,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		// is it clear?
 		if (nextComponent != null) {
 			// if so, add it
-			list.add(nextComponent);
+			list.addPiece(nextComponent);
 			nextComponent.addChildren(entrance, list, random);
 			this.addDoorwayTo(x, y, z, facing);
 		}
@@ -133,7 +135,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	/**
 	 * Check the list for components we can break in to at the specified point
 	 */
-	protected StructurePiece findBreakInComponent(List<StructurePiece> list, int x, int y, int z) {
+	protected StructurePiece findBreakInComponent(StructurePieceAccessor list, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
 		for (StructurePiece component : list) {
 			if (component.getBoundingBox() != null && component.getBoundingBox().isInside(pos)) {
@@ -144,7 +146,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		return null;
 	}
 
-	protected void addNewUpperComponent(StructurePiece parent, List<StructurePiece> list, Random random, Rotation facing, int x, int y, int z) {
+	protected void addNewUpperComponent(StructurePiece parent, StructurePieceAccessor list, Random random, Rotation facing, int x, int y, int z) {
 		StructureTFStrongholdComponent attempted;
 
 		int index = this.genDepth + 1;
@@ -179,9 +181,9 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		}
 
 		// is it clear?
-		if (attempted != null && StructurePiece.findCollisionPiece(list, attempted.getBoundingBox()) == null) {
+		if (attempted != null && list.findCollisionPiece(attempted.getBoundingBox()) == null) {
 			// if so, add it
-			list.add(attempted);
+			list.addPiece(attempted);
 			attempted.addChildren(parent, list, random);
 
 		}
@@ -192,13 +194,12 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 */
 	private boolean isOutOfRange(StructurePiece parent, int nx, int nz, int range) {
 
-		return Math.abs(nx - parent.getBoundingBox().x0) > range
-				|| Math.abs(nz - parent.getBoundingBox().z0) > range;
+		return Math.abs(nx - parent.getBoundingBox().minX()) > range
+				|| Math.abs(nz - parent.getBoundingBox().minZ()) > range;
 	}
 
 	/**
 	 * Make a doorway
-	 * TODO: Parameter "rand" is unused. Remove?
 	 */
 	protected void placeDoorwayAt(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
 		if (x == 0 || x == this.getXSize()) {
@@ -414,12 +415,12 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 * Is the specified point a valid spot to break in?
 	 */
 	protected boolean isValidBreakInPoint(int wx, int wy, int wz) {
-		if (wy < this.boundingBox.y0 || wy > this.boundingBox.y1) {
+		if (wy < this.boundingBox.minY() || wy > this.boundingBox.maxY()) {
 			return false;
-		} else if (wx == this.boundingBox.x0 || wx == this.boundingBox.x1) {
-			return wz > this.boundingBox.z0 && wz < this.boundingBox.z1;
-		} else if (wz == this.boundingBox.z0 || wz == this.boundingBox.z1) {
-			return wx > this.boundingBox.x0 && wx < this.boundingBox.x1;
+		} else if (wx == this.boundingBox.minX() || wx == this.boundingBox.maxX()) {
+			return wz > this.boundingBox.minZ() && wz < this.boundingBox.maxZ();
+		} else if (wz == this.boundingBox.minZ() || wz == this.boundingBox.maxZ()) {
+			return wx > this.boundingBox.minX() && wx < this.boundingBox.maxX();
 		} else {
 			return false;
 		}
@@ -430,32 +431,32 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 
 		switch (getOrientation()) {
 			case SOUTH:
-				return x - boundingBox.x0;
+				return x - boundingBox.minX();
 			case NORTH:
-				return boundingBox.x1 - x;
+				return boundingBox.maxX() - x;
 			case WEST:
-				return z - boundingBox.z0;
+				return z - boundingBox.minZ();
 			case EAST:
-				return boundingBox.z1 - z;
+				return boundingBox.maxZ() - z;
 			default:
 				return x;
 		}
 	}
 
 	protected int getRelativeY(int y) {
-		return y - this.boundingBox.y0;
+		return y - this.boundingBox.minY();
 	}
 
 	protected int getRelativeZ(int x, int z) {
 		switch (getOrientation()) {
 			case SOUTH:
-				return z - boundingBox.z0;
+				return z - boundingBox.minZ();
 			case NORTH:
-				return boundingBox.z1 - z;
+				return boundingBox.maxZ() - z;
 			case WEST:
-				return boundingBox.x1 - x;
+				return boundingBox.maxX() - x;
 			case EAST:
-				return x - boundingBox.x0;
+				return x - boundingBox.minX();
 			default:
 				return z;
 		}

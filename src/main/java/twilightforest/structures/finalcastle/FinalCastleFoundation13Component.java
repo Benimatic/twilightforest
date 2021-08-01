@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Rotation;
@@ -26,7 +27,7 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 
 	protected int groundLevel = -1;
 
-	public FinalCastleFoundation13Component(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleFoundation13Component(ServerLevel level, CompoundTag nbt) {
 		this(FinalCastlePieces.TFFCToF13, nbt);
 	}
 

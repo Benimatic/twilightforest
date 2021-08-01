@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
@@ -41,7 +42,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(5, 6), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(60, 10)));
 
-	public TrollCaveMainComponent(StructureManager manager, CompoundTag nbt) {
+	public TrollCaveMainComponent(ServerLevel level, CompoundTag nbt) {
 		this(TrollCavePieces.TFTCMai, nbt);
 	}
 
@@ -70,8 +71,8 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("size", this.size);
 		tagCompound.putInt("height", this.height);
 	}

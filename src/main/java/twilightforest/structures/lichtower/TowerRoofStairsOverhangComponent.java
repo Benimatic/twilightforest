@@ -1,5 +1,6 @@
 package twilightforest.structures.lichtower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
@@ -18,7 +19,7 @@ import java.util.Random;
 
 public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 
-	public TowerRoofStairsOverhangComponent(StructureManager manager, CompoundTag nbt) {
+	public TowerRoofStairsOverhangComponent(ServerLevel level, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRStO, nbt);
 	}
 

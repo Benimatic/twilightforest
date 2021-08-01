@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +23,7 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 
 	int entranceLevel;
 
-	public StrongholdFoundryComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdFoundryComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSFo, nbt);
 		this.entranceLevel = nbt.getInt("entranceLevel");
 	}
@@ -32,8 +33,8 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("entranceLevel", this.entranceLevel);
 	}
 

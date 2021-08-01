@@ -1,5 +1,6 @@
 package twilightforest.structures.trollcave;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
@@ -18,15 +19,15 @@ public class TrollCloudComponent extends TFStructureComponentOld {
 	private int size;
 	private int height;
 
-	public TrollCloudComponent(StructureManager manager, CompoundTag nbt) {
+	public TrollCloudComponent(ServerLevel level, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCloud, nbt);
 		this.size = nbt.getInt("size");
 		this.height = nbt.getInt("height");
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("size", this.size);
 		tagCompound.putInt("height", this.height);
 	}

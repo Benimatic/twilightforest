@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -178,7 +179,7 @@ public abstract class TFStructureComponent extends StructurePiece {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
 		tagCompound.putInt("si", this.spawnListIndex);
 		tagCompound.putString("deco", TFStructureDecorator.getDecoString(this.deco));
 		tagCompound.putInt("rot", this.rotation.ordinal());

@@ -2,6 +2,7 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -16,7 +17,7 @@ import java.util.Random;
 
 public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTower13Component {
 
-	public FinalCastleEntranceBottomTowerComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleEntranceBottomTowerComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCEnBoTo, nbt);
 	}
 

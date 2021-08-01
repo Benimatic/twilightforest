@@ -5,6 +5,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -614,8 +615,8 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
     }
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		ListTag mazeX = new ListTag();
 
 		for (int x = 0; x < widthInCellCount - 1; x++) {

@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -20,7 +21,7 @@ import java.util.Random;
 
 public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 
-	public FinalCastleFoundation48Component(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleFoundation48Component(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCToF48, nbt);
 	}
 

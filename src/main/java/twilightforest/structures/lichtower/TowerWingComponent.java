@@ -1,6 +1,7 @@
 package twilightforest.structures.lichtower;
 
 import com.google.common.collect.Lists;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -67,7 +68,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		handle_HangingEntity_updateFacingWithBoundingBox = tmp_handle_HangingEntity_updateFacingWithBoundingBox;
 	}
 
-	public TowerWingComponent(StructureManager manager, CompoundTag nbt) {
+	public TowerWingComponent(ServerLevel level, CompoundTag nbt) {
 		this(LichTowerPieces.TFLTWin, nbt);
 	}
 
@@ -128,8 +129,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 
 		tagCompound.putInt("towerSize", this.size);
 		tagCompound.putInt("towerHeight", this.height);

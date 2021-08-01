@@ -1,5 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +29,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	int rcoords[];
 	private int level;
 
-	public MinotaurMazeComponent(StructureManager manager, CompoundTag nbt) {
+	public MinotaurMazeComponent(ServerLevel level, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMaze, nbt);
 
 		this.level = nbt.getInt("mazeLevel");
@@ -103,8 +104,8 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("mazeLevel", this.level);
 		tagCompound.putIntArray("roomCoords", this.rcoords);
 	}

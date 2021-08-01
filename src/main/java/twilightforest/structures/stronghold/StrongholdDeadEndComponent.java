@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,7 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 
 	private boolean chestTrapped;
 
-	public StrongholdDeadEndComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdDeadEndComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSDE, nbt);
 		this.chestTrapped = nbt.getBoolean("chestTrapped");
 	}
@@ -33,8 +34,8 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
 	}
 

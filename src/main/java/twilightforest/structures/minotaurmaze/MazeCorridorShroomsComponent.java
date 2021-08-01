@@ -1,5 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
@@ -18,7 +19,7 @@ import java.util.Random;
 
 public class MazeCorridorShroomsComponent extends MazeCorridorComponent {
 
-	public MazeCorridorShroomsComponent(StructureManager manager, CompoundTag nbt) {
+	public MazeCorridorShroomsComponent(ServerLevel level, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMCS, nbt);
 	}
 

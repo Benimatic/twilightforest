@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,7 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 	public boolean hasTreasure;
 	public boolean chestTrapped;
 
-	public StrongholdSmallStairsComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdSmallStairsComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSSS, nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 		this.hasTreasure = nbt.getBoolean("hasTreasure");
@@ -37,8 +38,8 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putBoolean("enterBottom", this.enterBottom);
 		tagCompound.putBoolean("hasTreasure", this.hasTreasure);
 		tagCompound.putBoolean("chestTrapped", this.chestTrapped);

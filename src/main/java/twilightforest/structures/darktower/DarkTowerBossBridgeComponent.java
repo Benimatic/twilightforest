@@ -2,6 +2,7 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -13,7 +14,7 @@ import java.util.Random;
 
 public class DarkTowerBossBridgeComponent extends DarkTowerBridgeComponent {
 
-	public DarkTowerBossBridgeComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerBossBridgeComponent(ServerLevel level, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBB, nbt);
 	}
 

@@ -2,6 +2,7 @@ package twilightforest.structures.lichtower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -22,7 +23,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	protected int size;
 	protected int height;
 
-	public TowerRoofComponent(StructureManager manager, CompoundTag nbt) {
+	public TowerRoofComponent(ServerLevel level, CompoundTag nbt) {
 		this(LichTowerPieces.TFLTRoo, nbt);
 	}
 
@@ -41,8 +42,8 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("roofSize", this.size);
 		tagCompound.putInt("roofHeight", this.height);
 	}

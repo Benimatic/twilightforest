@@ -1,5 +1,6 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,7 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	protected int size;
 	protected int height;
 
-	public DarkTowerBeardComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerBeardComponent(ServerLevel level, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBea, nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
@@ -39,8 +40,8 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 
 		tagCompound.putInt("beardSize", this.size);
 		tagCompound.putInt("beardHeight", this.height);

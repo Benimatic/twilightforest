@@ -2,8 +2,10 @@ package twilightforest.structures.mushroomtower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
@@ -12,7 +14,7 @@ import java.util.Random;
 
 public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeComponent {
 
-	public MushroomTowerMainBridgeComponent(StructureManager manager, CompoundTag nbt) {
+	public MushroomTowerMainBridgeComponent(ServerLevel level, CompoundTag nbt) {
 		super(MushroomTowerPieces.TFMTMB, nbt);
 	}
 
@@ -22,7 +24,7 @@ public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeCompone
 	}
 
 	@Override
-	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		// make a new size 15 main tower
 		Direction direction = getStructureRelativeRotation(rotation);
@@ -33,7 +35,7 @@ public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeCompone
 
 		MushroomTowerMainComponent wing = new MushroomTowerMainComponent(getFeatureType(), index, dx[0], dx[1], dx[2], 15, wingHeight, direction);
 
-		list.add(wing);
+		list.addPiece(wing);
 		wing.addChildren(list.get(0), list, rand);
 		addOpening(x, y, z, rotation);
 

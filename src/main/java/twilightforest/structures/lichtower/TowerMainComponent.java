@@ -1,5 +1,6 @@
 package twilightforest.structures.lichtower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
@@ -31,7 +32,7 @@ import java.util.Random;
 
 public class TowerMainComponent extends TowerWingComponent {
 
-	public TowerMainComponent(StructureManager manager, CompoundTag nbt) {
+	public TowerMainComponent(ServerLevel level, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTMai, nbt);
 	}
 

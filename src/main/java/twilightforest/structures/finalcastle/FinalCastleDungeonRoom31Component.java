@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.material.Material;
@@ -30,7 +31,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
-	public FinalCastleDungeonRoom31Component(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleDungeonRoom31Component(ServerLevel level, CompoundTag nbt) {
 		this(FinalCastlePieces.TFFCDunR31, nbt);
 	}
 

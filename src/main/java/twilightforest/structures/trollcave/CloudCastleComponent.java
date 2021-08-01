@@ -1,5 +1,6 @@
 package twilightforest.structures.trollcave;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -27,7 +28,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	private boolean minerPlaced = false;
 	private boolean warriorPlaced = false;
 
-	public CloudCastleComponent(StructureManager manager, CompoundTag nbt) {
+	public CloudCastleComponent(ServerLevel level, CompoundTag nbt) {
 		super(TrollCavePieces.TFClCa, nbt);
 		this.minerPlaced = nbt.getBoolean("minerPlaced");
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
@@ -49,8 +50,8 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
 		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
 	}

@@ -1,5 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
@@ -16,7 +17,7 @@ import java.util.Random;
 
 public class MazeRoomFountainComponent extends MazeRoomComponent {
 
-	public MazeRoomFountainComponent(StructureManager manager, CompoundTag nbt) {
+	public MazeRoomFountainComponent(ServerLevel level, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMRF, nbt);
 	}
 

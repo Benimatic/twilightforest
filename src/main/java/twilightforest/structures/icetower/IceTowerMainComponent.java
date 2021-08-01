@@ -2,6 +2,7 @@ package twilightforest.structures.icetower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -16,7 +17,7 @@ import java.util.Random;
 public class IceTowerMainComponent extends IceTowerWingComponent {
 	public boolean hasBossWing = false;
 
-	public IceTowerMainComponent(StructureManager manager, CompoundTag nbt) {
+	public IceTowerMainComponent(ServerLevel level, CompoundTag nbt) {
 		super(IceTowerPieces.TFITMai, nbt);
 		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
@@ -35,8 +36,8 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putBoolean("hasBossWing", this.hasBossWing);
 	}
 

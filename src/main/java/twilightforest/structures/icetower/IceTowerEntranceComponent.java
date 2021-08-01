@@ -1,5 +1,6 @@
 package twilightforest.structures.icetower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +20,7 @@ import java.util.Random;
 
 public class IceTowerEntranceComponent extends IceTowerWingComponent {
 
-	public IceTowerEntranceComponent(StructureManager manager, CompoundTag nbt) {
+	public IceTowerEntranceComponent(ServerLevel level, CompoundTag nbt) {
 		super(IceTowerPieces.TFITEnt, nbt);
 	}
 
@@ -74,7 +75,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		return false;
 	}
 

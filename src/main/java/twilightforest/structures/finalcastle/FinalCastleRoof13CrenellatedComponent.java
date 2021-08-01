@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -20,7 +21,7 @@ import java.util.Random;
 
 public class FinalCastleRoof13CrenellatedComponent extends TFStructureComponentOld {
 
-	public FinalCastleRoof13CrenellatedComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleRoof13CrenellatedComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCRo13Cr, nbt);
 	}
 

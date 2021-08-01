@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -20,7 +21,7 @@ import java.util.Random;
 
 public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdTreasureCorridorComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdTreasureCorridorComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSTC, nbt);
 	}
 
@@ -54,7 +55,7 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 		this.placeWallStatue(world, 7, 1, 9, Rotation.COUNTERCLOCKWISE_90, sbb);
 		this.placeWallStatue(world, 7, 1, 17, Rotation.COUNTERCLOCKWISE_90, sbb);
 
-		Rotation rotation = (this.boundingBox.x0 ^ this.boundingBox.z0) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_180;
+		Rotation rotation = (this.boundingBox.minX() ^ this.boundingBox.minZ()) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_180;
 
 		// treasure!
 		this.placeTreasureRotated(world, 8, 2, 13, rotation == Rotation.NONE ? getOrientation().getClockWise() : getOrientation().getCounterClockWise(), rotation, TFTreasure.stronghold_cache, sbb);

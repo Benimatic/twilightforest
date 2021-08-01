@@ -1,5 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class MazeDeadEndTorchesComponent extends MazeDeadEndComponent {
 
-	public MazeDeadEndTorchesComponent(StructureManager manager, CompoundTag nbt) {
+	public MazeDeadEndTorchesComponent(ServerLevel level, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMDET, nbt);
 	}
 

@@ -2,6 +2,7 @@ package twilightforest.structures.icetower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class IceTowerRoofComponent extends TowerRoofComponent {
 
-	public IceTowerRoofComponent(StructureManager manager, CompoundTag nbt) {
+	public IceTowerRoofComponent(ServerLevel level, CompoundTag nbt) {
 		super(IceTowerPieces.TFITRoof, nbt);
 	}
 

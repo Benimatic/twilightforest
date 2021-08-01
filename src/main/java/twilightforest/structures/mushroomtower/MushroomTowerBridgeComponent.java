@@ -1,5 +1,6 @@
 package twilightforest.structures.mushroomtower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -25,7 +27,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 	int dSize;
 	int dHeight;
 
-	public MushroomTowerBridgeComponent(StructureManager manager, CompoundTag nbt) {
+	public MushroomTowerBridgeComponent(ServerLevel level, CompoundTag nbt) {
 		this(MushroomTowerPieces.TFMTBri, nbt);
 	}
 
@@ -45,14 +47,14 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("destSize", this.dSize);
 		tagCompound.putInt("destHeight", this.dHeight);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}

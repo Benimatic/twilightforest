@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,7 @@ import java.util.Random;
 
 public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 
-	public FinalCastleBridgeComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleBridgeComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCBri, nbt);
 	}
 

@@ -1,5 +1,6 @@
 package twilightforest.structures;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -34,7 +35,7 @@ public class QuestGroveComponent extends TFStructureComponentOld {
 	protected boolean beastPlaced = false;
 	protected boolean dispenserPlaced = false;
 
-	public QuestGroveComponent(StructureManager manager, CompoundTag nbt) {
+	public QuestGroveComponent(ServerLevel level, CompoundTag nbt) {
 		super(TFFeature.TFQuest1, nbt);
 	}
 

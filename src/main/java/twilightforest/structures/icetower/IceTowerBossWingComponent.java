@@ -1,5 +1,6 @@
 package twilightforest.structures.icetower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -15,7 +16,7 @@ import java.util.Random;
 
 public class IceTowerBossWingComponent extends IceTowerWingComponent {
 
-	public IceTowerBossWingComponent(StructureManager manager, CompoundTag nbt) {
+	public IceTowerBossWingComponent(ServerLevel level, CompoundTag nbt) {
 		super(IceTowerPieces.TFITBoss, nbt);
 		// no spawns
 		this.spawnListIndex = -1;

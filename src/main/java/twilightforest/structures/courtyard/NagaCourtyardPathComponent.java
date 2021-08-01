@@ -2,6 +2,7 @@ package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -20,8 +21,8 @@ public class NagaCourtyardPathComponent extends TFStructureComponentTemplate {
 
     private static final ResourceLocation PATH = new ResourceLocation(TwilightForestMod.ID, "courtyard/pathway");
 
-    public NagaCourtyardPathComponent(StructureManager manager, CompoundTag nbt) {
-        super(manager, NagaCourtyardPieces.TFNCPa, nbt);
+    public NagaCourtyardPathComponent(ServerLevel level, CompoundTag nbt) {
+        super(level, NagaCourtyardPieces.TFNCPa, nbt);
     }
 
     public NagaCourtyardPathComponent(TFFeature feature, int i, int x, int y, int z) {

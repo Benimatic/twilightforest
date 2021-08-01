@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -25,7 +26,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 
 	private static final int FLOORS = 8;
 
-	public FinalCastleBellTower21Component(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleBellTower21Component(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCBelTo, nbt);
 	}
 

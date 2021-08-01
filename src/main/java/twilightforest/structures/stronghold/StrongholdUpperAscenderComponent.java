@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
@@ -22,7 +24,7 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 
 	boolean exitTop;
 
-	public StrongholdUpperAscenderComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdUpperAscenderComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSUA, nbt);
 		this.exitTop = nbt.getBoolean("exitTop");
 	}
@@ -32,8 +34,8 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putBoolean("exitTop", this.exitTop);
 	}
 
@@ -49,7 +51,7 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
 		super.addChildren(parent, list, random);
 
 		// make a random component on the other side

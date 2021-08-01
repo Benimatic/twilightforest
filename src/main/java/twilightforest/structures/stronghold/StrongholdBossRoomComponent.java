@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -20,7 +21,7 @@ import java.util.Random;
 
 public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdBossRoomComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdBossRoomComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSBR, nbt);
 	}
 

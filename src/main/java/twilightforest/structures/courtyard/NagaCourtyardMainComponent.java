@@ -3,6 +3,7 @@ package twilightforest.structures.courtyard;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -24,7 +25,7 @@ public class NagaCourtyardMainComponent extends StructureMazeGenerator {
 	static final float WALL_DECAY = 0.1f;
 	static final float WALL_INTEGRITY = 0.95f;
 
-	public NagaCourtyardMainComponent(StructureManager manager, CompoundTag nbt) {
+	public NagaCourtyardMainComponent(ServerLevel level, CompoundTag nbt) {
 		super(NagaCourtyardPieces.TFNCMn, nbt);
 	}
 

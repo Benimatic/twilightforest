@@ -1,5 +1,6 @@
 package twilightforest.structures;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
@@ -19,7 +20,7 @@ import java.util.Random;
 
 public class HydraLairComponent extends HollowHillComponent {
 
-	public HydraLairComponent(StructureManager manager, CompoundTag nbt) {
+	public HydraLairComponent(ServerLevel level, CompoundTag nbt) {
 		super(TFFeature.TFHydra, nbt);
 	}
 

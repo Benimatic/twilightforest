@@ -2,6 +2,7 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -21,7 +22,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 
 	public StrongholdPieces lowerPieces;
 
-	public StrongholdEntranceComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdEntranceComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSEnter, nbt);
 
 		this.deco = new StrongholdDecorator();

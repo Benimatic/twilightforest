@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -18,7 +19,7 @@ import java.util.Random;
 
 public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerComponent {
 
-	public FinalCastleWreckedTowerComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleWreckedTowerComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCWrT, nbt);
 	}
 

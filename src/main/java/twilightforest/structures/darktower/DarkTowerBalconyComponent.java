@@ -1,5 +1,6 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -21,7 +22,7 @@ import java.util.Random;
 
 public class DarkTowerBalconyComponent extends TowerWingComponent {
 
-	public DarkTowerBalconyComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerBalconyComponent(ServerLevel level, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBal, nbt);
 	}
 

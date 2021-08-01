@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +39,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		color = NbtUtils.readBlockState(nbt.getCompound("color"));
 	}
 
-	public FinalCastleMazeTower13Component(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleMazeTower13Component(ServerLevel level, CompoundTag nbt) {
 		this(FinalCastlePieces.TFFCSiTo, nbt);
 	}
 
@@ -73,8 +74,8 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.put("color", NbtUtils.writeBlockState(color));
 	}
 

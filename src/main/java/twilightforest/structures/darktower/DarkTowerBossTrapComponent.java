@@ -1,5 +1,6 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -23,7 +24,7 @@ import java.util.Random;
 
 public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 
-	public DarkTowerBossTrapComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerBossTrapComponent(ServerLevel level, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBT, nbt);
 	}
 
@@ -62,13 +63,13 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 	 * Attach a roof to this tower.
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		//nope;
 	}
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);

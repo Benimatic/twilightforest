@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -21,7 +23,7 @@ import java.util.Random;
 
 public class StrongholdAccessChamberComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdAccessChamberComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdAccessChamberComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSAC, nbt);
 	}
 
@@ -38,7 +40,7 @@ public class StrongholdAccessChamberComponent extends StructureTFStrongholdCompo
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
 		super.addChildren(parent, list, random);
 
 		// make a random component in each direction

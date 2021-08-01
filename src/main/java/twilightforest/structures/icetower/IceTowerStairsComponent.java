@@ -3,6 +3,7 @@ package twilightforest.structures.icetower;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -20,7 +21,7 @@ import java.util.Random;
 
 public class IceTowerStairsComponent extends TowerWingComponent {
 
-	public IceTowerStairsComponent(StructureManager manager, CompoundTag nbt) {
+	public IceTowerStairsComponent(ServerLevel level, CompoundTag nbt) {
 		super(IceTowerPieces.TFITSt, nbt);
 	}
 

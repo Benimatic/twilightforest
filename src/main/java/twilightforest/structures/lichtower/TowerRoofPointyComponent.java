@@ -1,5 +1,6 @@
 package twilightforest.structures.lichtower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class TowerRoofPointyComponent extends TowerRoofComponent {
 
-	public TowerRoofPointyComponent(StructureManager manager, CompoundTag nbt) {
+	public TowerRoofPointyComponent(ServerLevel level, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRP, nbt);
 	}
 

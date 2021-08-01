@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
@@ -21,7 +22,7 @@ import java.util.Random;
 
 public class StrongholdCrossingComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdCrossingComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdCrossingComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSCr, nbt);
 	}
 

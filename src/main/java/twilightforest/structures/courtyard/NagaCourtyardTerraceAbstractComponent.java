@@ -2,6 +2,7 @@ package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -20,8 +21,8 @@ public abstract class NagaCourtyardTerraceAbstractComponent extends TFStructureC
 
     private final ResourceLocation TERRACE;
 
-    public NagaCourtyardTerraceAbstractComponent(StructureManager manager, StructurePieceType piece, CompoundTag nbt, ResourceLocation terrace) {
-        super(manager, piece, nbt);
+    public NagaCourtyardTerraceAbstractComponent(ServerLevel level, StructurePieceType piece, CompoundTag nbt, ResourceLocation terrace) {
+        super(level, piece, nbt);
         TERRACE = terrace;
     }
 

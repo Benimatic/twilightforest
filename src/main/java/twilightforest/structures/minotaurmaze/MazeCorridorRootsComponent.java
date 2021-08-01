@@ -1,5 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class MazeCorridorRootsComponent extends MazeCorridorComponent {
 
-	public MazeCorridorRootsComponent(StructureManager manager, CompoundTag nbt) {
+	public MazeCorridorRootsComponent(ServerLevel level, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMCR, nbt);
 	}
 

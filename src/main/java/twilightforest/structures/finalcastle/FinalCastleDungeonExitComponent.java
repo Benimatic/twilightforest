@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -23,7 +25,7 @@ import java.util.Random;
 
 public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Component {
 
-	public FinalCastleDungeonExitComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleDungeonExitComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCDunEx, nbt);
 	}
 
@@ -32,7 +34,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -43,7 +45,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX(), parent.getBoundingBox().minZ());
 
 		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, 5, boundingBox.minZ() + 15, boundingBox.minY(), boundingBox.minZ() + 15, bestDir.rotate(Direction.SOUTH));
-		list.add(steps0);
+		list.addPiece(steps0);
 		steps0.addChildren(this, list, rand);
 
 		// another level!?

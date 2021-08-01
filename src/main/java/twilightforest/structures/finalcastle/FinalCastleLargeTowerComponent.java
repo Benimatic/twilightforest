@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -10,6 +11,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -21,7 +23,7 @@ import java.util.Random;
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
-	public FinalCastleLargeTowerComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleLargeTowerComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCLaTo, nbt);
 	}
 
@@ -35,19 +37,19 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 		// add crown
 		FinalCastleRoof9CrenellatedComponent roof = new FinalCastleRoof9CrenellatedComponent(getFeatureType(), rand, 4, this);
-		list.add(roof);
+		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.x0 * 321534781) ^ (this.boundingBox.z0 * 756839));
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		generateBox(world, sbb, 0, 0, 0, 12, 59, 12, false, rand, deco.randomBlocks);
 

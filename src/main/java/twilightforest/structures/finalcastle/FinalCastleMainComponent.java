@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -25,7 +26,7 @@ import java.util.Random;
 
 public class FinalCastleMainComponent extends TFStructureComponentOld {
 
-	public FinalCastleMainComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleMainComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCMain, nbt);
 	}
 

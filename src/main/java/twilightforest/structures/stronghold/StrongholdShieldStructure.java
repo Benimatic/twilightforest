@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 public class StrongholdShieldStructure extends StructureTFStrongholdComponent {
 
-	public StrongholdShieldStructure(StructureManager manager, CompoundTag nbt) {
+	public StrongholdShieldStructure(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSShield, nbt);
 		this.spawnListIndex = -1;
 	}

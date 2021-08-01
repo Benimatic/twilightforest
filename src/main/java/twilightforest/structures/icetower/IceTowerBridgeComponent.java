@@ -3,6 +3,7 @@ package twilightforest.structures.icetower;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -21,7 +22,7 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 
 	private int length;
 
-	public IceTowerBridgeComponent(StructureManager manager, CompoundTag nbt) {
+	public IceTowerBridgeComponent(ServerLevel level, CompoundTag nbt) {
 		super(IceTowerPieces.TFITBri, nbt);
 		this.length = nbt.getInt("bridgeLength");
 	}
@@ -35,8 +36,8 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("bridgeLength", this.length);
 	}
 

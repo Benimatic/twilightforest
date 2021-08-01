@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.worldgen.Features;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
@@ -44,7 +45,7 @@ import java.util.Random;
 public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	private boolean placedKeys = false;
 
-	public DarkTowerMainComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerMainComponent(ServerLevel level, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTMai, nbt);
 	}
 

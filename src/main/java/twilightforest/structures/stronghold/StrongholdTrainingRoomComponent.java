@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +21,7 @@ import java.util.Random;
 
 public class StrongholdTrainingRoomComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdTrainingRoomComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdTrainingRoomComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSTR, nbt);
 	}
 

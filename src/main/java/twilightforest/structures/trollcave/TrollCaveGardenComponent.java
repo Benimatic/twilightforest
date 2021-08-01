@@ -1,6 +1,7 @@
 package twilightforest.structures.trollcave;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +39,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 	private final ConfiguredFeature<?,?> bigBrownMushroomGen = Features.HUGE_BROWN_MUSHROOM.decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(15, 10)));
 	private final ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().configured(FeatureConfiguration.NONE).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(15, 10)));
 
-	public TrollCaveGardenComponent(StructureManager manager, CompoundTag nbt) {
+	public TrollCaveGardenComponent(ServerLevel level, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCGard, nbt);
 	}
 

@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -24,7 +25,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	// we will model the mural in this byte array
 	private byte[][] mural;
 
-	public FinalCastleMuralComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleMuralComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCMur, nbt);
 	}
 

@@ -917,7 +917,7 @@ public enum TFFeature {
 		hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear
-		if (hinty.checkSpawnObstruction(world) && hinty.getSensing().canSee(player)) {
+		if (hinty.checkSpawnObstruction(world) && hinty.getSensing().hasLineOfSight(player)) {
 
 			// add items and hint book
 			ItemStack book = this.createHintBook();

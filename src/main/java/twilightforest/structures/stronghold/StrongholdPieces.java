@@ -3,6 +3,7 @@ package twilightforest.structures.stronghold;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import twilightforest.TFFeature;
 import twilightforest.structures.TFStructureComponentOld;
 
@@ -88,7 +89,7 @@ public class StrongholdPieces {
 		return flag;
 	}
 
-	public StructureTFStrongholdComponent getNextComponent(StructurePiece parent, List<StructurePiece> list, Random random, TFFeature feature, int index, Direction facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent getNextComponent(StructurePiece parent, StructurePieceAccessor list, Random random, TFFeature feature, int index, Direction facing, int x, int y, int z) {
 		if (!hasMoreLimitedPieces()) {
 			return null;
 		} else {
@@ -108,7 +109,7 @@ public class StrongholdPieces {
 						// we're here!
 						StructureTFStrongholdComponent component = piece.factory.newInstance(feature, index, facing, x, y, z);
 
-						if (StructurePiece.findCollisionPiece(list, component.getBoundingBox()) == null) {
+						if (list.findCollisionPiece(component.getBoundingBox()) == null) {
 							++piece.instancesSpawned;
 
 							if (!piece.canSpawnMoreStructures()) {
@@ -127,7 +128,7 @@ public class StrongholdPieces {
 		// dead end?
 		StructureTFStrongholdComponent deadEnd = new StrongholdDeadEndComponent(parent instanceof TFStructureComponentOld ? ((TFStructureComponentOld) parent).getFeatureType() : TFFeature.NOTHING, index, facing, x, y, z);
 
-		if (StructurePiece.findCollisionPiece(list, deadEnd.getBoundingBox()) == null) {
+		if (list.findCollisionPiece(deadEnd.getBoundingBox()) == null) {
 			return deadEnd;
 		} else {
 			return null;

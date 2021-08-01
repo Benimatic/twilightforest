@@ -2,6 +2,7 @@ package twilightforest.structures.icetower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -20,7 +21,7 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 	protected int size;
 	protected int height;
 
-	public IceTowerBeardComponent(StructureManager manager, CompoundTag nbt) {
+	public IceTowerBeardComponent(ServerLevel level, CompoundTag nbt) {
 		super(IceTowerPieces.TFITBea, nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
@@ -42,8 +43,8 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("beardSize", this.size);
 		tagCompound.putInt("beardHeight", this.height);
 	}

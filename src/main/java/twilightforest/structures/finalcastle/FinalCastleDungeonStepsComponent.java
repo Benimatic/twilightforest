@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +23,7 @@ import java.util.Random;
 
 public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 
-	public FinalCastleDungeonStepsComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleDungeonStepsComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCDunSt, nbt);
 	}
 

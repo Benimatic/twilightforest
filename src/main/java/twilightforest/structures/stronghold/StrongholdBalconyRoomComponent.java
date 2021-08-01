@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -21,7 +22,7 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 
 	boolean enterBottom;
 
-	public StrongholdBalconyRoomComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdBalconyRoomComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSBalR, nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
@@ -31,8 +32,8 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putBoolean("enterBottom", this.enterBottom);
 	}
 

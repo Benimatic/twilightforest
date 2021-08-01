@@ -3,6 +3,7 @@ package twilightforest.structures.mushroomtower;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -22,7 +23,7 @@ import java.util.Random;
 
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
-	public TowerRoofMushroomComponent(StructureManager manager, CompoundTag nbt) {
+	public TowerRoofMushroomComponent(ServerLevel level, CompoundTag nbt) {
 		super(MushroomTowerPieces.TFMTRoofMush, nbt);
 	}
 

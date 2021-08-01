@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,7 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 
 	public boolean hasExit = false;
 
-	public FinalCastleDungeonEntranceComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleDungeonEntranceComponent(ServerLevel level, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCDunEn, nbt);
 	}
 

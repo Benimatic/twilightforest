@@ -2,6 +2,7 @@ package twilightforest.structures.start;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -76,15 +77,16 @@ public class TFStructure<C extends FeatureConfiguration> extends StructureFeatur
 		return template ? TemplateStart::new : Start::new;
 	}
 
-	private StructureStart<C> createStructureStart(int p_236387_1_, int p_236387_2_, BoundingBox p_236387_3_, int refCount, long seed) {
-		return this.getStartFactory().create(this, p_236387_1_, p_236387_2_, p_236387_3_, refCount, seed);
+	private StructureStart<C> createStructureStart(ChunkPos pos, int refCount, long seed) {
+		return this.getStartFactory().create(this, pos, refCount, seed);
 	}
 
 	@Override
-	public StructureStart<?> generate(RegistryAccess dynamicRegistries, ChunkGenerator generator, BiomeSource provider, StructureManager templateManager, long seed, ChunkPos pos, Biome biome, int refCount, WorldgenRandom rand, StructureFeatureConfiguration settings, C config) {
-		if (this.isFeatureChunk(generator, provider, seed, rand, pos.x, pos.z, biome, pos, config)) {
-			StructureStart<C> structurestart = this.createStructureStart(pos.x, pos.z, BoundingBox.getUnknownBox(), refCount, seed);
-			structurestart.generatePieces(dynamicRegistries, generator, templateManager, pos.x, pos.z, biome, config);
+	public StructureStart<?> generate(RegistryAccess dynamicRegistries, ChunkGenerator generator, BiomeSource provider, StructureManager templateManager, long seed, ChunkPos pos, Biome biome, int refCount, WorldgenRandom rand, StructureFeatureConfiguration settings, C config, LevelHeightAccessor accessor) {
+		ChunkPos chunkpos = this.getPotentialFeatureChunk(settings, seed, rand, pos.x, pos.z);
+		if (this.isFeatureChunk(generator, provider, seed, rand, pos, biome, chunkpos, config, accessor)) {
+			StructureStart<C> structurestart = this.createStructureStart(pos, refCount, seed);
+			structurestart.generatePieces(dynamicRegistries, generator, templateManager, pos, biome, config, accessor);
 			if (structurestart.isValid()) {
 				return structurestart;
 			}
@@ -94,8 +96,8 @@ public class TFStructure<C extends FeatureConfiguration> extends StructureFeatur
 	}
 
 	@Override
-	protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource provider, long seed, WorldgenRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos structurePos, C config) {
-		return TFFeature.isInFeatureChunk(chunkX << 4, chunkZ << 4) && TFFeature.generateFeature(chunkX, chunkZ, biome, seed) == feature;
+	protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource provider, long seed, WorldgenRandom random, ChunkPos pos, Biome biome, ChunkPos structurePos, C config, LevelHeightAccessor accessor) {
+		return TFFeature.isInFeatureChunk(pos.x << 4, pos.z << 4) && TFFeature.generateFeature(pos.x, pos.z, biome, seed) == feature;
 	}
 
 	private static int getSpawnListIndexAt(StructureStart<?> start, BlockPos pos) {
@@ -134,37 +136,37 @@ public class TFStructure<C extends FeatureConfiguration> extends StructureFeatur
 	// FIXME: reimplement conquered status
 	private class Start extends StructureStart<C> {
 
-		public Start(StructureFeature<C> p_i225876_1_, int p_i225876_2_, int p_i225876_3_, BoundingBox p_i225876_4_, int p_i225876_5_, long p_i225876_6_) {
-			super(p_i225876_1_, p_i225876_2_, p_i225876_3_, p_i225876_4_, p_i225876_5_, p_i225876_6_);
+		public Start(StructureFeature<C> p_i225876_1_, ChunkPos p_i225876_2_, int p_i225876_3_, long p_i225876_4_) {
+			super(p_i225876_1_, p_i225876_2_, p_i225876_3_, p_i225876_4_);
 		}
 
 		@Override
-		public void generatePieces(RegistryAccess p_230364_1_, ChunkGenerator p_230364_2_, StructureManager p_230364_3_, int p_230364_4_, int p_230364_5_, Biome p_230364_6_, C p_230364_7_) {
+		public void generatePieces(RegistryAccess p_230364_1_, ChunkGenerator p_230364_2_, StructureManager p_230364_3_, ChunkPos p_230364_4_, Biome p_230364_5_, C p_230364_6_, LevelHeightAccessor p_230364_7_) {
 			boolean dontCenter = feature == TFFeature.LICH_TOWER || feature == TFFeature.TROLL_CAVE || feature == TFFeature.YETI_CAVE;
-			int x = (p_230364_4_ << 4) + (dontCenter ? 0 : 7);
-			int z = (p_230364_5_ << 4) + (dontCenter ? 0 : 7);
+			int x = (p_230364_4_.x << 4) + (dontCenter ? 0 : 7);
+			int z = (p_230364_4_.z << 4) + (dontCenter ? 0 : 7);
 			int y = TFGenerationSettings.SEALEVEL + 1;
 			StructurePiece start = feature.provideStructureStart(random, x, y, z);
 			if(start == null)
 				return;
-			pieces.add(start);
-			start.addChildren(start, pieces, random);
-			calculateBoundingBox();
+			this.addPiece(start);
+			start.addChildren(start, this, random);
+			createBoundingBox();
 		}
 	}
 
 	// FIXME: reimplement conquered status
 	private class TemplateStart extends Start {
 
-		public TemplateStart(StructureFeature<C> p_i225876_1_, int p_i225876_2_, int p_i225876_3_, BoundingBox p_i225876_4_, int p_i225876_5_, long p_i225876_6_) {
-			super(p_i225876_1_, p_i225876_2_, p_i225876_3_, p_i225876_4_, p_i225876_5_, p_i225876_6_);
+		public TemplateStart(StructureFeature<C> p_i225876_1_, ChunkPos p_i225876_2_, int p_i225876_3_, long p_i225876_4_) {
+			super(p_i225876_1_, p_i225876_2_, p_i225876_3_, p_i225876_4_);
 		}
 
 		@Override
-		public void generatePieces(RegistryAccess p_230364_1_, ChunkGenerator p_230364_2_, StructureManager p_230364_3_, int p_230364_4_, int p_230364_5_, Biome p_230364_6_, C p_230364_7_) {
+		public void generatePieces(RegistryAccess p_230364_1_, ChunkGenerator p_230364_2_, StructureManager p_230364_3_, ChunkPos p_230364_4_, Biome p_230364_5_, C p_230364_6_, LevelHeightAccessor p_230364_7_) {
 			super.generatePieces(p_230364_1_, p_230364_2_, p_230364_3_, p_230364_4_, p_230364_5_, p_230364_6_, p_230364_7_);
 			pieces.stream().filter(piece -> piece instanceof TFStructureComponentTemplate).map(TFStructureComponentTemplate.class::cast).forEach(piece -> piece.setup(p_230364_3_));
-			calculateBoundingBox();
+			createBoundingBox();
 		}
 
 		@Override

@@ -28,7 +28,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	private static final int DIAMETER = 2 * RADIUS;
 	private static final int FLOOR_LEVEL = 3;
 
-	public HedgeMazeComponent(StructureManager manager, CompoundTag nbt) {
+	public HedgeMazeComponent(ServerLevel level, CompoundTag nbt) {
 		super(TFFeature.TFHedge, nbt);
 	}
 

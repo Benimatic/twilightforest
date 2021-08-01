@@ -2,6 +2,7 @@ package twilightforest.structures.lichtower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -19,7 +20,7 @@ public class TowerBeardComponent extends TFStructureComponentOld {
 	int size;
 	int height;
 
-	public TowerBeardComponent(StructureManager manager, CompoundTag nbt) {
+	public TowerBeardComponent(ServerLevel level, CompoundTag nbt) {
 		this(LichTowerPieces.TFLTBea, nbt);
 	}
 
@@ -41,8 +42,8 @@ public class TowerBeardComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tagCompound) {
-		super.addAdditionalSaveData(tagCompound);
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("beardSize", this.size);
 		tagCompound.putInt("beardHeight", this.height);
 	}

@@ -1,5 +1,6 @@
 package twilightforest.structures.lichtower;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
@@ -23,7 +24,7 @@ import java.util.Random;
  */
 public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 
-	public TowerRoofSlabForwardsComponent(StructureManager manager, CompoundTag nbt) {
+	public TowerRoofSlabForwardsComponent(ServerLevel level, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRSF, nbt);
 	}
 

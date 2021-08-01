@@ -2,6 +2,7 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -21,7 +22,7 @@ import java.util.Random;
 
 public class DarkTowerRoofComponent extends TowerRoofComponent {
 
-	public DarkTowerRoofComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerRoofComponent(ServerLevel level, CompoundTag nbt) {
 		this(DarkTowerPieces.TFDTRooS, nbt);
 	}
 

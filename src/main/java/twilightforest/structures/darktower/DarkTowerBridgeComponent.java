@@ -2,6 +2,7 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -26,7 +27,7 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 		super(piece, nbt);
 	}
 
-	public DarkTowerBridgeComponent(StructureManager manager, CompoundTag nbt) {
+	public DarkTowerBridgeComponent(ServerLevel level, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBri, nbt);
 	}
 

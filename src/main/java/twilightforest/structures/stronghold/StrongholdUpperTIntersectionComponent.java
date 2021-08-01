@@ -2,6 +2,7 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -10,6 +11,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
@@ -18,7 +20,7 @@ import java.util.Random;
 
 public class StrongholdUpperTIntersectionComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdUpperTIntersectionComponent(StructureManager manager, CompoundTag nbt) {
+	public StrongholdUpperTIntersectionComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSUTI, nbt);
 	}
 
@@ -32,7 +34,7 @@ public class StrongholdUpperTIntersectionComponent extends StructureTFStronghold
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
 		super.addChildren(parent, list, random);
 
 		// make a random component to the left

@@ -3,6 +3,7 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -22,7 +23,7 @@ import java.util.Random;
 
 public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Component {
 
-	public FinalCastleDamagedTowerComponent(StructureManager manager, CompoundTag nbt) {
+	public FinalCastleDamagedTowerComponent(ServerLevel level, CompoundTag nbt) {
 		this(FinalCastlePieces.TFFCDamT, nbt);
 	}
 

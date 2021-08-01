@@ -2,6 +2,7 @@ package twilightforest.structures;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
@@ -24,11 +25,11 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     protected StructureTemplate TEMPLATE;
     public Runnable LAZY_TEMPLATE_LOADER;
 
-    public TFStructureComponentTemplate(StructureManager manager, StructurePieceType piece, CompoundTag nbt) {
+    public TFStructureComponentTemplate(ServerLevel level, StructurePieceType piece, CompoundTag nbt) {
         super(piece, nbt);
         this.templatePosition = new BlockPos(nbt.getInt("TPX"), nbt.getInt("TPY"), nbt.getInt("TPZ"));
         this.placeSettings.setRotation(this.rotation);
-		LAZY_TEMPLATE_LOADER = () -> setup(manager);
+		LAZY_TEMPLATE_LOADER = () -> setup(level.getStructureManager());
     }
 
     public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
@@ -61,8 +62,8 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     protected abstract void loadTemplates(StructureManager templateManager);
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tagCompound) {
-        super.addAdditionalSaveData(tagCompound);
+    protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+        super.addAdditionalSaveData(level, tagCompound);
         tagCompound.putInt("TPX", this.templatePosition.getX());
         tagCompound.putInt("TPY", this.templatePosition.getY());
         tagCompound.putInt("TPZ", this.templatePosition.getZ());
