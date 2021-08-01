@@ -2,6 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -12,6 +13,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.entity.GiantMinerEntity;
 
 public class TFGiantRenderer<T extends GiantMinerEntity> extends HumanoidMobRenderer<T, PlayerModel<T>> {
@@ -19,11 +21,11 @@ public class TFGiantRenderer<T extends GiantMinerEntity> extends HumanoidMobRend
 	private final PlayerModel<T> slimModel;
 
 	public TFGiantRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new PlayerModel<>(0, false), 1.8F);
+		super(manager, new PlayerModel<>(manager.bakeLayer(ModelLayers.PLAYER), false), 1.8F);
 		normalModel = getModel();
-		slimModel = new PlayerModel<>(0, true);
+		slimModel = new PlayerModel<>(manager.bakeLayer(ModelLayers.PLAYER_SLIM), true);
 
-		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(0.5F), new HumanoidModel<>(0.5F)));
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR))));
 	}
 
 	@Override

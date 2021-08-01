@@ -50,7 +50,7 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWepEntity> {
 		matrix.translate(-f9, -f10, -(f12 + f11));
 		matrix.translate(0f, 0f, f12 + f11);
 
-		Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, matrix, buffer);
+		Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, matrix, buffer, 0);
 
 		matrix.popPose();
 	}

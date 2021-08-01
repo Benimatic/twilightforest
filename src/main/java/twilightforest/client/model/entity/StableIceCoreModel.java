@@ -1,9 +1,14 @@
 package twilightforest.client.model.entity;
 
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import twilightforest.entity.StableIceCoreEntity;
 
 public class StableIceCoreModel extends UnstableIceCoreModel<StableIceCoreEntity> {
+
+	public StableIceCoreModel(ModelPart root) {
+		super(root);
+	}
 
 	@Override
 	public void prepareMobModel(StableIceCoreEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {

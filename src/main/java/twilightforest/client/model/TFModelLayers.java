@@ -76,7 +76,6 @@ public class TFModelLayers {
 	public static final ModelLayerLocation ROVING_CUBE = register("roving_cube");
 	public static final ModelLayerLocation SKELETON_DRUID = register("skeleton_druid");
 	public static final ModelLayerLocation SLIME_BEETLE = register("slime_beetle");
-	public static final ModelLayerLocation SNOW_GUARDIAN = register("snow_guardian");
 	public static final ModelLayerLocation SNOW_QUEEN = register("snow_queen");
 	public static final ModelLayerLocation SQUIRREL = register("squirrel");
 	public static final ModelLayerLocation STABLE_ICE_CORE = register("stable_ice_core");
@@ -85,38 +84,22 @@ public class TFModelLayers {
 	public static final ModelLayerLocation TOWERWOOD_BORER = register("towerwood_borer");
 	public static final ModelLayerLocation TROLL = register("troll");
 	public static final ModelLayerLocation UNSTABLE_ICE_CORE = register("unstable_ice_core");
-	public static final ModelLayerLocation UPPER_GOLBIN_KNIGHT = register("upper_goblin_knight");
+	public static final ModelLayerLocation UPPER_GOBLIN_KNIGHT = register("upper_goblin_knight");
 	public static final ModelLayerLocation UR_GHAST = register("ur_ghast");
 	public static final ModelLayerLocation WINTER_WOLF = register("winter_wolf");
 	public static final ModelLayerLocation WRAITH = register("wraith");
 	public static final ModelLayerLocation YETI = register("yeti");
 
 	public static final ModelLayerLocation CHAIN_BLOCK = register("chain_block");
-	public static final ModelLayerLocation CHARM_EFFECT = register("charm_effect");
 	public static final ModelLayerLocation CUBE_OF_ANNIHILATION = register("cube_of_annihilation");
-	public static final ModelLayerLocation FALLING_ICE = register("falling_ice");
 	public static final ModelLayerLocation PROTECTION_BOX = register("protection_box");
 
-	public static final ModelLayerLocation CICADA_SHOT = register("cicada_shot");
 	public static final ModelLayerLocation HYDRA_MORTAR = register("hydra_mortar");
-	public static final ModelLayerLocation ICE_ARROW = register("ice_arrow");
-	public static final ModelLayerLocation ICE_SNOWBALL = register("ice_snowball");
-	public static final ModelLayerLocation LICH_BOLT = register("lich_bolt");
-	public static final ModelLayerLocation LICH_BOMB = register("lich_bomb");
-	public static final ModelLayerLocation MOONWORM_SHOT = register("moonworm_shot");
-	public static final ModelLayerLocation NATURE_BOLT = register("nature_bolt");
-	public static final ModelLayerLocation SEEKER_ARROW = register("seeker_arrow");
-	public static final ModelLayerLocation SLIME_BLOB = register("slime_blob");
-	public static final ModelLayerLocation THROWN_ICE = register("thrown_ice");
-	public static final ModelLayerLocation THROWN_WEP = register("thrown_wep");
-	public static final ModelLayerLocation TOME_BOLT = register("tome_bolt");
-	public static final ModelLayerLocation WAND_BOLT = register("wand_bolt");
 
 	public static final ModelLayerLocation CICADA = register("cicada");
 	public static final ModelLayerLocation FIREFLY = register("firefly");
 	public static final ModelLayerLocation KEEPSAKE_CASKET = register("keepsake_casket");
 	public static final ModelLayerLocation MOONWORM = register("moonworm");
-	public static final ModelLayerLocation TROPHY = register("trophy");
 
 	private static ModelLayerLocation register(String p_171294_) {
 		return register(p_171294_, "main");

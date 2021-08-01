@@ -4,13 +4,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.UpperGoblinKnightEntity;
-
-import net.minecraft.client.model.HumanoidModel.ArmPose;
 
 /**
  * ModelTFGoblinKnightUpper - MCVinnyq
@@ -19,61 +22,77 @@ import net.minecraft.client.model.HumanoidModel.ArmPose;
 @OnlyIn(Dist.CLIENT)
 public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntity> {
     public ModelPart breastplate;
-    public ModelPart helmet;
-    public ModelPart head;
     public ModelPart spear;
     public ModelPart shield;
 
-    public UpperGoblinKnightModel() {
-        super(0, 0, 128, 64);
-        this.rightLeg = new ModelPart(this, 30, 24);
-        this.rightLeg.setPos(-4.0F, 20.0F, 0.0F);
-        this.rightLeg.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.head = new ModelPart(this, 0, 0);
-        this.head.setPos(0.0F, 0.0F, 0.0F);
-        this.head.texOffs(28, 0).addBox(-8.0F, -14.0F, -1.9F, 16.0F, 14.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(116, 0).addBox(-6.0F, -12.0F, -0.9F, 4.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(116, 4).addBox(2.0F, -12.0F, -1.0F, 4.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(head, 0.0F, -0.7853981633974483F, 0.0F);
-        this.rightArm = new ModelPart(this, 44, 16);
-        this.rightArm.setPos(-5.5F, 14.0F, 0.0F);
-        this.rightArm.addBox(-4.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightArm, -2.3876104699914644F, 0.0F, 0.10000736647217022F);
-        this.spear = new ModelPart(this, 108, 0);
-        this.spear.setPos(-2.0F, 8.5F, 0.0F);
-        this.spear.addBox(-1.0F, -19.0F, -1.0F, 2.0F, 40.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(spear, 1.5707963267948966F, 0.0F, 0.0F);
-        this.shield = new ModelPart(this, 63, 36);
-        this.shield.setPos(0.0F, 12.0F, 0.0F);
-        this.shield.addBox(-6.0F, -6.0F, -2.0F, 12.0F, 20.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(shield, 6.083185105107944F, 0.0F, 0.0F);
-        this.body = new ModelPart(this, 0, 18);
-        this.body.setPos(0.0F, 12.0F, 0.0F);
-        this.body.addBox(-5.5F, 0.0F, -2.0F, 11.0F, 8.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.head = new ModelPart(this, 0, 0);
-        this.head.setPos(0.0F, 12.0F, 0.0F);
-        this.head.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.leftArm = new ModelPart(this, 44, 32);
-        this.leftArm.setPos(5.5F, 14.0F, 0.0F);
-        this.leftArm.addBox(0.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftArm, 0.20001473294434044F, 0.0F, 0.10000736647217022F);
-        this.leftLeg = new ModelPart(this, 30, 16);
-        this.leftLeg.setPos(4.0F, 20.0F, 0.0F);
-        this.leftLeg.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.helmet = new ModelPart(this, 0, 0);
-        this.helmet.setPos(0.0F, 0.0F, 0.0F);
-        this.helmet.addBox(-3.5F, -11.0F, -3.5F, 7.0F, 11.0F, 7.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(helmet, 0.0F, 0.7853981633974483F, 0.0F);
-        this.hat = new ModelPart(this, 0, 0);
-        this.hat.setPos(0.0F, 12.0F, 0.0F);
-        this.hat.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.breastplate = new ModelPart(this, 64, 0);
-        this.breastplate.setPos(0.0F, 11.5F, 0.0F);
-        this.breastplate.addBox(-6.5F, 0.0F, -3.0F, 13.0F, 12.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.helmet.addChild(this.head);
-        this.rightArm.addChild(this.spear);
-        this.leftArm.addChild(this.shield);
-        this.hat.addChild(this.helmet);
+    public UpperGoblinKnightModel(ModelPart root) {
+        super(root);
+
+        this.breastplate = body.getChild("breastplate");
+        this.spear = rightArm.getChild("spear");
+        this.shield = leftArm.getChild("shield");
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(28, 0)
+                        .addBox(-8.0F, -14.0F, -1.9F, 16.0F, 14.0F, 2.0F)
+                        .texOffs(116, 0)
+                        .addBox(-6.0F, -12.0F, -0.9F, 4.0F, 2.0F, 2.0F)
+                        .texOffs(116, 4)
+                        .addBox(2.0F, -12.0F, -1.0F, 4.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -0.7853981633974483F, 0.0F));
+
+        partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-3.5F, -11.0F, -3.5F, 7.0F, 11.0F, 7.0F),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
+
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(0, 18)
+                        .addBox(-5.5F, 0.0F, -2.0F, 11.0F, 8.0F, 4.0F),
+                PartPose.offset(0.0F, 12.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("breastplate", CubeListBuilder.create()
+                        .texOffs(64, 0)
+                        .addBox(-6.5F, 0.0F, -3.0F, 13.0F, 12.0F, 6.0F),
+                PartPose.offset(0.0F, 11.5F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+                        .texOffs(44, 16)
+                        .addBox(-4.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offsetAndRotation(-5.5F, 14.0F, 0.0F, -2.3876104699914644F, 0.0F, 0.10000736647217022F));
+
+        partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+                        .texOffs(44, 32)
+                        .addBox(0.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offsetAndRotation(5.5F, 14.0F, 0.0F, 0.20001473294434044F, 0.0F, 0.10000736647217022F));
+
+        partRoot.addOrReplaceChild("spear", CubeListBuilder.create()
+                        .texOffs(108, 0)
+                        .addBox(-1.0F, -19.0F, -1.0F, 2.0F, 40.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 8.5F, 0.0F, 1.5707963267948966F, 0.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("shield", CubeListBuilder.create()
+                        .texOffs(63, 36)
+                        .addBox(-6.0F, -6.0F, -2.0F, 12.0F, 20.0F, 2.0F),
+                PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 6.083185105107944F, 0.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+                        .texOffs(30, 24)
+                        .addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F),
+                PartPose.offset(-4.0F, 20.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+                        .texOffs(30, 16)
+                        .addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F),
+                PartPose.offset(4.0F, 20.0F, 0.0F));
+
+
+        return LayerDefinition.create(mesh, 128, 64);
     }
 
     @Override

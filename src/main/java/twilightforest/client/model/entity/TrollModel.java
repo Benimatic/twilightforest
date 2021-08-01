@@ -2,53 +2,65 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.TrollEntity;
-
-import net.minecraft.client.model.HumanoidModel.ArmPose;
 
 public class TrollModel extends HumanoidModel<TrollEntity> {
 
 	public ModelPart nose;
 
-	public TrollModel() {
-		super(0.0F, 0.0F, 128, 64);
+	public TrollModel(ModelPart root) {
+		super(root);
+	}
 
-        this.head = new ModelPart(this, 0, 0);
-		this.head.addBox(-5.0F, -8.0F, -3.0F, 10, 10, 10);
-		this.head.setPos(0.0F, -9.0F, -6.0F);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-		this.hat = new ModelPart(this, 32, 0);
-		this.hat.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 10.0F),
+				PartPose.offset(0.0F, -9.0F, -6.0F));
 
-		this.body = new ModelPart(this, 40, 0);
-		this.body.addBox(-8.0F, 0.0F, -5.0F, 16, 26, 10);
-		this.body.setPos(0.0F, -14.0F, 0.0F);
+		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+				PartPose.ZERO);
 
+		partRoot.addOrReplaceChild("nose", CubeListBuilder.create()
+						.texOffs(0, 21)
+						.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F),
+				PartPose.offset(0.0F, -2.0F, -4.0F));
 
-		this.nose = new ModelPart(this, 0, 21);
-		this.nose.addBox(-2.0F, -2.0F, -2.0F, 4, 8, 4);
-		this.nose.setPos(0.0F, -2.0F, -4.0F);
-		this.head.addChild(nose);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-8.0F, 0.0F, -5.0F, 16.0F, 26.0F, 10.0F),
+				PartPose.offset(0.0F, -14.0F, 0.0F));
 
-		this.rightArm = new ModelPart(this, 32, 36);
-		this.rightArm.addBox(-5.0F, -2.0F, -3.0F, 6, 22, 6);
-		this.rightArm.setPos(-9.0F, -9.0F, 0.0F);
+		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(32, 36)
+						.addBox(-5.0F, -2.0F, -3.0F, 6.0F, 22.0F, 6.0F),
+				PartPose.offset(-9.0F, -9.0F, 0.0F));
 
-		this.leftArm = new ModelPart(this, 32, 36);
-		this.leftArm.mirror = true;
-		this.leftArm.addBox(-1.0F, -2.0F, -3.0F, 6, 22, 6);
-		this.leftArm.setPos(9.0F, -9.0F, 0.0F);
+		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+						.texOffs(32, 36)
+						.addBox(-1.0F, -2.0F, -3.0F, 6.0F, 22.0F, 6.0F),
+				PartPose.offset(9.0F, -9.0F, 0.0F));
 
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(0, 44)
+						.addBox(-3.0F, 0.0F, -4.0F, 6.0F, 12.0F, 8.0F),
+				PartPose.offset(-5.0F, 12.0F, 0.0F));
 
-		this.rightLeg = new ModelPart(this, 0, 44);
-		this.rightLeg.addBox(-3.0F, 0.0F, -4.0F, 6, 12, 8);
-		this.rightLeg.setPos(-5.0F, 12.0F, 0.0F);
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 44)
+						.addBox(-3.0F, 0.0F, -4.0F, 6.0F, 12.0F, 8.0F),
+				PartPose.offset(5.0F, 12.0F, 0.0F));
 
-		this.leftLeg = new ModelPart(this, 0, 44);
-		this.leftLeg.mirror = true;
-		this.leftLeg.addBox(-3.0F, 0.0F, -4.0F, 6, 12, 8);
-		this.leftLeg.setPos(5.0F, 12.0F, 0.0F);
+		return LayerDefinition.create(mesh, 128, 64);
 	}
 
 	@Override

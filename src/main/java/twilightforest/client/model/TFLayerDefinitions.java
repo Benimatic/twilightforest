@@ -80,6 +80,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, MinoshroomModel::create);
 		event.registerLayerDefinition(TFModelLayers.MINOTAUR, MinotaurModel::create);
 		event.registerLayerDefinition(TFModelLayers.MIST_WOLF, WolfModel::createBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.MOSQUITO_SWARM, MosquitoSwarmModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA, NagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NOOP, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 0, 0));
@@ -92,7 +93,16 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.ROVING_CUBE, CubeOfAnnihilationModel::create);
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID, SkeletonDruidModel::create);
 		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE, SlimeBeetleModel::create);
-
+		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN, SnowQueenModel::create);
+		event.registerLayerDefinition(TFModelLayers.CHAIN_BLOCK, SpikeBlockModel::create);
+		event.registerLayerDefinition(TFModelLayers.SQUIRREL, SquirrelModel::create);
+		event.registerLayerDefinition(TFModelLayers.STABLE_ICE_CORE, StableIceCoreModel::create);
+		event.registerLayerDefinition(TFModelLayers.SWARM_SPIDER, SpiderModel::createSpiderBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.TINY_BIRD, TinyBirdModel::create);
+		event.registerLayerDefinition(TFModelLayers.TOWERWOOD_BORER, SilverfishModel::createBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.TROLL, TrollModel::create);
+		event.registerLayerDefinition(TFModelLayers.UNSTABLE_ICE_CORE, UnstableIceCoreModel::create);
+		event.registerLayerDefinition(TFModelLayers.UPPER_GOBLIN_KNIGHT, UpperGoblinKnightModel::create);
 		event.registerLayerDefinition(TFModelLayers.UR_GHAST, UrGhastModel::create);
 		event.registerLayerDefinition(TFModelLayers.WINTER_WOLF, WolfModel::createBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.WRAITH, WraithModel::create);

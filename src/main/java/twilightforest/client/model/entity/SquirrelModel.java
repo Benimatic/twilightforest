@@ -2,7 +2,10 @@ package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -13,68 +16,66 @@ import twilightforest.entity.passive.SquirrelEntity;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class SquirrelModel extends ListModel<SquirrelEntity> {
-    public ModelPart body;
-    public ModelPart head;
-    public ModelPart rightFrontLeg;
-    public ModelPart leftFrontLeg;
-    public ModelPart rightBackLeg;
-    public ModelPart leftBackLeg;
+public class SquirrelModel extends QuadrupedModel<SquirrelEntity> {
+
     public ModelPart tail1;
     public ModelPart tail2;
 
-    public SquirrelModel() {
-        this.texWidth = 32;
-        this.texHeight = 32;
-        this.rightFrontLeg = new ModelPart(this, 0, 0);
-        this.rightFrontLeg.setPos(-1.5F, 23.0F, -2.5F);
-        this.rightFrontLeg.texOffs(0, 16).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.body = new ModelPart(this, 0, 0);
-        this.body.setPos(0.0F, 23.0F, 0.0F);
-        this.body.texOffs(0, 8).addBox(-2.0F, -3.0F, -3.0F, 4.0F, 3.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.leftBackLeg = new ModelPart(this, 0, 0);
-        this.leftBackLeg.setPos(1.5F, 23.0F, 1.5F);
-        this.leftBackLeg.texOffs(4, 18).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.head = new ModelPart(this, 0, 0);
-        this.head.setPos(0.0F, 20.0F, -3.0F);
-        this.head.addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.head.addBox(-2.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(0, 2).addBox(1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.tail2 = new ModelPart(this, 0, 0);
-        this.tail2.setPos(0.0F, 4.0F, 0.5F);
-        this.tail2.texOffs(13, 11).addBox(-1.5F, -1.0F, 0.0F, 3.0F, 3.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.leftFrontLeg = new ModelPart(this, 0, 0);
-        this.leftFrontLeg.setPos(1.5F, 23.0F, -2.5F);
-        this.leftFrontLeg.texOffs(4, 16).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.tail1 = new ModelPart(this, 0, 0);
-        this.tail1.setPos(0.0F, -3.0F, 2.0F);
-        this.tail1.texOffs(18, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 4.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(tail1, 2.530727415391778F, 0.0F, 0.0F);
-        this.rightBackLeg = new ModelPart(this, 0, 0);
-        this.rightBackLeg.setPos(-1.5F, 23.0F, 1.5F);
-        this.rightBackLeg.texOffs(0, 18).addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.tail1.addChild(this.tail2);
-        this.body.addChild(this.tail1);
+    public SquirrelModel(ModelPart root) {
+        super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
+
+        this.tail1 = body.getChild("tail_1");
+        this.tail2 = tail1.getChild("tail_2");
     }
 
-    @Override
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(
-                body,
-                leftFrontLeg,
-                rightFrontLeg,
-                leftBackLeg,
-                rightBackLeg,
-                head
-        );
-    }
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
+    public static LayerDefinition create() {
+        MeshDefinition mesh = QuadrupedModel.createBodyMesh(1, CubeDeformation.NONE);
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 4.0F)
+                        .addBox(-2.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F)
+                        .texOffs(0, 2)
+                        .addBox(1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F),
+                PartPose.offset(0.0F, 20.0F, -3.0F));
+
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(0, 8)
+                        .addBox(-2.0F, -3.0F, -3.0F, 4.0F, 3.0F, 5.0F),
+                PartPose.offset(0.0F, 23.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+                        .texOffs(0, 16)
+                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+                PartPose.offset(-1.5F, 23.0F, -2.5F));
+
+        partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+                        .texOffs(4, 16)
+                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+                PartPose.offset(1.5F, 23.0F, -2.5F));
+
+        partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+                        .texOffs(0, 18)
+                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+                PartPose.offset(-1.5F, 23.0F, 1.5F));
+
+        partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+                        .texOffs(4, 18)
+                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+                PartPose.offset(1.5F, 23.0F, 1.5F));
+
+        partRoot.addOrReplaceChild("tail_1", CubeListBuilder.create()
+                        .texOffs(18, 0)
+                        .addBox(-1.5F, 0.0F, -1.5F, 3.0F, 4.0F, 3.0F),
+                PartPose.offsetAndRotation(0.0F, -3.0F, 2.0F, 2.530727415391778F, 0.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("tail_2", CubeListBuilder.create()
+                        .texOffs(13, 11)
+                        .addBox(-1.5F, -1.0F, 0.0F, 3.0F, 3.0F, 5.0F),
+                PartPose.offset(0.0F, 4.0F, 0.5F));
+
+        return LayerDefinition.create(mesh, 32, 32);
     }
 
     @Override
@@ -83,8 +84,8 @@ public class SquirrelModel extends ListModel<SquirrelEntity> {
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        this.leftBackLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        this.rightBackLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+        this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
         if (limbSwingAmount > 0.2) {
             float wiggle = Math.min(limbSwingAmount, 0.6F);

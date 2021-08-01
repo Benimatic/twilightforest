@@ -5,6 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,36 +29,60 @@ public class TinyBirdModel extends AgeableListModel<TinyBirdEntity> {
     public ModelPart leftWing;
     public ModelPart tail;
 
-    public TinyBirdModel() {
-        this.texWidth = 32;
-        this.texHeight = 32;
-        this.body = new ModelPart(this, 0, 0);
-        this.body.setPos(0.0F, 20.0F, 0.0F);
-        this.body.texOffs(12, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.leftFoot = new ModelPart(this, 0, 0);
-        this.leftFoot.setPos(1.0F, 23.0F, 2.0F);
-        this.leftFoot.texOffs(0, 11).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.tail = new ModelPart(this, 0, 0);
-        this.tail.setPos(0.0F, 1.0F, 3.0F);
-        this.tail.texOffs(1, 6).addBox(-2.5F, 0.0F, 0.0F, 5.0F, 0.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(tail, 0.4363323129985824F, 0.0F, 0.0F);
-        this.head = new ModelPart(this, 0, 0);
-        this.head.setPos(0.0F, 21.0F, 0.0F);
-        this.head.addBox(-1.5F, -2.0F, -2.0F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(9, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.head.texOffs(0, 6).addBox(-1.5F, -5.0F, 1.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.rightWing = new ModelPart(this, 0, 0);
-        this.rightWing.setPos(-2.0F, 0.0F, 1.0F);
-        this.rightWing.texOffs(24, 0).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 2.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.leftWing = new ModelPart(this, 0, 0);
-        this.leftWing.setPos(2.0F, 0.0F, 1.0F);
-        this.leftWing.texOffs(24, 5).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 2.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.rightFoot = new ModelPart(this, 0, 0);
-        this.rightFoot.setPos(-1.0F, 23.0F, 2.0F);
-        this.rightFoot.texOffs(0, 9).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.body.addChild(this.tail);
-        this.body.addChild(this.rightWing);
-        this.body.addChild(this.leftWing);
+    public TinyBirdModel(ModelPart root) {
+        this.body = root.getChild("body");
+        this.head = body.getChild("head");
+        this.rightFoot = body.getChild("right_foot");
+        this.leftFoot = body.getChild("left_foot");
+        this.rightWing = body.getChild("right_wing");
+        this.leftWing = body.getChild("left_wing");
+        this.tail = body.getChild("tail");
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-1.5F, -2.0F, -2.0F, 3.0F, 3.0F, 3.0F)
+                        .texOffs(9, 0)
+                        .addBox(-0.5F, 0.0F, -3.0F, 1.0F, 1.0F, 1.0F)
+                        .texOffs(0, 6)
+                        .addBox(-1.5F, -5.0F, 1.0F, 3.0F, 3.0F, 0.0F),
+                PartPose.offset(0.0F, 21.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(12, 0)
+                        .addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 3.0F),
+                PartPose.offset(0.0F, 20.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_foot", CubeListBuilder.create()
+                        .texOffs(0, 9)
+                        .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F),
+                PartPose.offset(-1.0F, 23.0F, 2.0F));
+
+        partRoot.addOrReplaceChild("left_foot", CubeListBuilder.create()
+                        .texOffs(0, 11)
+                        .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F),
+                PartPose.offset(1.0F, 23.0F, 2.0F));
+
+        partRoot.addOrReplaceChild("right_wing", CubeListBuilder.create()
+                        .texOffs(24, 0)
+                        .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 2.0F, 3.0F),
+                PartPose.offset(-2.0F, 0.0F, 1.0F));
+
+        partRoot.addOrReplaceChild("left_wing", CubeListBuilder.create()
+                        .texOffs(24, 5)
+                        .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 2.0F, 3.0F),
+                PartPose.offset(2.0F, 0.0F, 1.0F));
+
+        partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
+                        .texOffs(1, 6)
+                        .addBox(-2.5F, 0.0F, 0.0F, 5.0F, 0.0F, 5.0F),
+                PartPose.offsetAndRotation(0.0F, 1.0F, 3.0F, 0.4363323129985824F, 0.0F, 0.0F));
+
+        return LayerDefinition.create(mesh, 32, 32);
     }
 
     @Override
@@ -88,15 +117,6 @@ public class TinyBirdModel extends AgeableListModel<TinyBirdEntity> {
             this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
             this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
         }
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 
     @Override
