@@ -1,129 +1,151 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.SlimeBeetleEntity;
+
+import javax.annotation.Nullable;
 
 /**
  * ModelSlimeBeetle - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class SlimeBeetleModel extends ListModel<SlimeBeetleEntity> {
-    public ModelPart head;
-    public ModelPart body;
-    public ModelPart tailBottom;
-    public ModelPart rightLeg1;
-    public ModelPart rightLeg2;
-    public ModelPart rightLeg3;
-    public ModelPart leftLeg1;
-    public ModelPart leftLeg2;
-    public ModelPart leftLeg3;
-    public ModelPart rightAntenna;
-    public ModelPart leftAntenna;
-    public ModelPart rightEye;
-    public ModelPart leftEye;
-    public ModelPart tailTop;
-    public ModelPart slime;
-    public ModelPart slimeCenter;
+public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetleEntity> {
+    public ModelPart root, head;
+    public ModelPart rightLeg1, rightLeg2, rightLeg3;
+    public ModelPart leftLeg1, leftLeg2, leftLeg3;
+    public ModelPart rightAntenna, leftAntenna;
+    public ModelPart rightEye, leftEye;
+    @Nullable //need this due to how the slime beetle tail works
+    public ModelPart tailBottom, tailTop, slime, slimeCenter;
 
     private final boolean translucent;
 
-    public SlimeBeetleModel() {
-        this(false);
+    public SlimeBeetleModel(ModelPart root, boolean translucent) {
+        this.translucent = translucent;
+        this.root = root;
+        this.head = root.getChild("head");
+
+        this.rightLeg1 = root.getChild("right_leg_1");
+        this.rightLeg2 = root.getChild("right_leg_2");
+        this.rightLeg3 = root.getChild("right_leg_3");
+
+        this.leftLeg1 = root.getChild("left_leg_1");
+        this.leftLeg2 = root.getChild("left_leg_2");
+        this.leftLeg3 = root.getChild("left_leg_3");
+
+        this.rightAntenna = head.getChild("right_antenna");
+        this.leftAntenna = head.getChild("left_antenna");
+        this.rightEye = head.getChild("right_eye");
+        this.leftEye = head.getChild("left_eye");
+
+        this.tailBottom = root.getChild("tail_bottom");
+        this.tailTop = tailBottom.getChild("tail_top");
+        if (translucent) this.slime = tailTop.getChild("slime");
+        else this.slimeCenter = tailTop.getChild("slime_center");
     }
 
-    public SlimeBeetleModel(boolean translucent) {
-        this.translucent = translucent;
-        this.texWidth = 64;
-        this.texHeight = 64;
-        this.body = new ModelPart(this, 0, 0);
-        this.body.setPos(0.0F, 17.0F, -8.0F);
-        this.body.texOffs(32, 8).addBox(-4.0F, 0.0F, -4.0F, 8.0F, 10.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(body, 1.5707963267948966F, 0.0F, 0.0F);
-        this.rightLeg1 = new ModelPart(this, 0, 0);
-        this.rightLeg1.setPos(-2.0F, 20.0F, -6.0F);
-        this.rightLeg1.texOffs(40, 0).addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightLeg1, 0.0F, -0.4363323129985824F, -0.4363323129985824F);
-        this.tailBottom = new ModelPart(this, 0, 0);
-        this.tailBottom.setPos(0.0F, 18.0F, 2.0F);
-        this.tailBottom.texOffs(0, 34).addBox(-3.0F, -3.0F, 0.0F, 6.0F, 6.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.slime = new ModelPart(this, 16, 40);
-        this.slime.setPos(0.0F, -8.0F, 2.0F);
-        this.slime.addBox(-6.0F, -12.0F, -7.0F, 12.0F, 12.0F, 12.0F, 0.0F, 0.0F, 0.0F);
-        this.slimeCenter = new ModelPart(this, 0, 18);
-        this.slimeCenter.setPos(0.0F, -9.0F, 2.0F);
-        this.slimeCenter.addBox(-4.0F, -9.0F, -5.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-        this.rightEye = new ModelPart(this, 0, 0);
-        this.rightEye.setPos(-2.5F, -1.0F, -4.5F);
-        this.rightEye.texOffs(0, 12).addBox(-2.0F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.leftEye = new ModelPart(this, 0, 0);
-        this.leftEye.setPos(2.5F, -1.0F, -4.5F);
-        this.leftEye.texOffs(16, 12).addBox(-1.0F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.rightAntenna = new ModelPart(this, 0, 0);
-        this.rightAntenna.setPos(-0.5F, -1.5F, -5.0F);
-        this.rightAntenna.texOffs(38, 4).addBox(-12.0F, -0.5F, -0.5F, 12.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightAntenna, 0.0F, -0.7853981633974483F, 0.7853981633974483F);
-        this.leftLeg2 = new ModelPart(this, 0, 0);
-        this.leftLeg2.mirror = true;
-        this.leftLeg2.setPos(2.0F, 20.0F, -4.0F);
-        this.leftLeg2.texOffs(40, 0).addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftLeg2, 0.0F, -0.2181661564992912F, 0.4363323129985824F);
-        this.tailTop = new ModelPart(this, 0, 0);
-        this.tailTop.setPos(0.0F, 0.0F, 3.0F);
-        this.tailTop.texOffs(32, 28).addBox(-3.0F, -9.0F, -1.0F, 6.0F, 6.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.rightLeg3 = new ModelPart(this, 0, 0);
-        this.rightLeg3.setPos(-2.0F, 20.0F, -2.0F);
-        this.rightLeg3.texOffs(40, 0).addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightLeg3, 0.0F, 0.7853981633974483F, -0.4363323129985824F);
-        this.leftAntenna = new ModelPart(this, 0, 0);
-        this.leftAntenna.setPos(0.5F, -1.5F, -5.0F);
-        this.leftAntenna.texOffs(38, 6).addBox(0.0F, -0.5F, -0.5F, 12.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftAntenna, 0.0F, 0.7853981633974483F, -0.7853981633974483F);
-        this.head = new ModelPart(this, 0, 0);
-        this.head.setPos(0.0F, 17.0F, -8.0F);
-        this.head.addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.rightLeg2 = new ModelPart(this, 0, 0);
-        this.rightLeg2.setPos(-2.0F, 20.0F, -4.0F);
-        this.rightLeg2.texOffs(40, 0).addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(rightLeg2, 0.0F, 0.2181661564992912F, -0.4363323129985824F);
-        this.leftLeg3 = new ModelPart(this, 0, 0);
-        this.leftLeg3.mirror = true;
-        this.leftLeg3.setPos(2.0F, 20.0F, -2.0F);
-        this.leftLeg3.texOffs(40, 0).addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftLeg3, 0.0F, -0.7853981633974483F, 0.4363323129985824F);
-        this.leftLeg1 = new ModelPart(this, 0, 0);
-        this.leftLeg1.mirror = true;
-        this.leftLeg1.setPos(2.0F, 20.0F, -6.0F);
-        this.leftLeg1.texOffs(40, 0).addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(leftLeg1, 0.0F, 0.4363323129985824F, 0.4363323129985824F);
-        this.tailTop.addChild(translucent ? this.slime : this.slimeCenter);
-        this.head.addChild(this.rightEye);
-        this.head.addChild(this.leftEye);
-        this.head.addChild(this.rightAntenna);
-        this.tailBottom.addChild(this.tailTop);
-        this.head.addChild(this.leftAntenna);
+    public static LayerDefinition create() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition partRoot = mesh.getRoot();
+
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 6.0F),
+                PartPose.offset(0.0F, 17.0F, -8.0F));
+        
+        partRoot.addOrReplaceChild("right_antenna", CubeListBuilder.create()
+                        .texOffs(38, 4)
+                        .addBox(-12.0F, -0.5F, -0.5F, 12.0F, 1.0F, 1.0F),
+                PartPose.offsetAndRotation(-0.5F, -1.5F, -5.0F, 0.0F, -0.7853981633974483F, 0.7853981633974483F));
+
+        partRoot.addOrReplaceChild("left_antenna", CubeListBuilder.create()
+                        .texOffs(38, 6)
+                        .addBox(0.0F, -0.5F, -0.5F, 12.0F, 1.0F, 1.0F),
+                PartPose.offsetAndRotation(0.5F, -1.5F, -5.0F, 0.0F, 0.7853981633974483F, -0.7853981633974483F));
+
+        partRoot.addOrReplaceChild("right_eye", CubeListBuilder.create()
+                        .texOffs(0, 12)
+                        .addBox(-2.0F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F),
+                PartPose.offset(-2.5F, -1.0F, -4.5F));
+
+        partRoot.addOrReplaceChild("left_eye", CubeListBuilder.create()
+                        .texOffs(16, 12)
+                        .addBox(-1.0F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F),
+                PartPose.offset(2.5F, -1.0F, -4.5F));
+        
+        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(32, 8)
+                        .addBox(-4.0F, 0.0F, -4.0F, 8.0F, 10.0F, 8.0F),
+                PartPose.offsetAndRotation(0.0F, 17.0F, -8.0F, 1.5707963267948966F, 0.0F, 0.0F));
+
+        partRoot.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
+                        .texOffs(40, 0)
+                        .addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 20.0F, -6.0F, 0.0F, -0.4363323129985824F, -0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
+                        .texOffs(40, 0)
+                        .addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 20.0F, -4.0F, 0.0F, 0.2181661564992912F, -0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("right_leg_3", CubeListBuilder.create()
+                        .texOffs(40, 0)
+                        .addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(-2.0F, 20.0F, -2.0F, 0.0F, 0.7853981633974483F, -0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("left_leg_1", CubeListBuilder.create().mirror()
+                        .texOffs(40, 0)
+                        .addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(2.0F, 20.0F, -6.0F, 0.0F, 0.4363323129985824F, 0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("left_leg_2", CubeListBuilder.create().mirror()
+                        .texOffs(40, 0)
+                        .addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(2.0F, 20.0F, -4.0F, 0.0F, -0.2181661564992912F, 0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("left_leg_3", CubeListBuilder.create().mirror()
+                        .texOffs(40, 0)
+                        .addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
+                PartPose.offsetAndRotation(2.0F, 20.0F, -2.0F, 0.0F, -0.7853981633974483F, 0.4363323129985824F));
+
+        partRoot.addOrReplaceChild("tail_bottom", CubeListBuilder.create()
+                        .texOffs(0, 34)
+                        .addBox(-3.0F, -3.0F, 0.0F, 6.0F, 6.0F, 6.0F),
+                PartPose.offset(0.0F, 18.0F, 2.0F));
+
+        partRoot.addOrReplaceChild("tail_top", CubeListBuilder.create()
+                        .texOffs(32, 28)
+                        .addBox(-3.0F, -9.0F, -1.0F, 6.0F, 6.0F, 6.0F),
+                PartPose.offset(0.0F, 0.0F, 3.0F));
+
+        partRoot.addOrReplaceChild("slime", CubeListBuilder.create()
+                        .texOffs(16, 40)
+                        .addBox(-6.0F, -12.0F, -7.0F, 12.0F, 12.0F, 12.0F),
+                PartPose.offset(0.0F, -8.0F, 2.0F));
+
+        partRoot.addOrReplaceChild("slime_center", CubeListBuilder.create()
+                        .texOffs(0, 18)
+                        .addBox(-4.0F, -9.0F, -5.0F, 8.0F, 8.0F, 8.0F),
+                PartPose.offset(0.0F, -9.0F, 2.0F));
+
+        return LayerDefinition.create(mesh, 64, 64);
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(
-                head,
-                body,
-                leftLeg1,
-                leftLeg2,
-                leftLeg3,
-                rightLeg1,
-                rightLeg2,
-                rightLeg3,
-                tailBottom
-        );
+    public ModelPart root() {
+        return this.root;
     }
 
     @Override
@@ -131,7 +153,7 @@ public class SlimeBeetleModel extends ListModel<SlimeBeetleEntity> {
         tailBottom.render(stack, builder, light, overlay, red, green, blue, alpha);
 
         if (!translucent) {
-            parts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
+            root().getAllParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
         }
     }
 

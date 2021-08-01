@@ -3,12 +3,13 @@ package twilightforest.client.model.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ZombieModel;
+import net.minecraft.client.model.geom.ModelPart;
 import twilightforest.entity.RisingZombieEntity;
 
 public class RisingZombieModel extends ZombieModel<RisingZombieEntity> {
 
-	public RisingZombieModel(boolean armor) {
-		super(0.0F, armor);
+	public RisingZombieModel(ModelPart part) {
+		super(part);
 	}
 
 	@Override

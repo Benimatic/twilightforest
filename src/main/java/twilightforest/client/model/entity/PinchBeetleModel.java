@@ -32,8 +32,8 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetleEntity> {
 
         this.head = root.getChild("head");
         
-        this.leftPincer = root.getChild("left_pincher");
-        this.rightPincer = root.getChild("right_pincher");
+        this.leftPincer = head.getChild("left_pincher");
+        this.rightPincer = head.getChild("right_pincher");
 
         this.rightLeg1 = root.getChild("right_leg_1");
         this.rightLeg2 = root.getChild("right_leg_2");

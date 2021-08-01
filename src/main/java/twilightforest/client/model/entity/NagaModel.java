@@ -22,7 +22,7 @@ import twilightforest.entity.boss.NagaSegmentEntity;
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class NagaModel<T extends Entity> extends HierarchicalModel<T> {
+public class NagaModel<T extends Entity> extends ListModel<T> {
 
     public ModelPart root;
     public ModelPart head;
@@ -70,8 +70,8 @@ public class NagaModel<T extends Entity> extends HierarchicalModel<T> {
     }
 
     @Override
-    public ModelPart root() {
-        return this.root;
+    public Iterable<ModelPart> parts() {
+        return ImmutableList.of(head, body);
     }
 
     @Override

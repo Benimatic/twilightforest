@@ -8,6 +8,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.ArcticArmorModel;
 import twilightforest.client.model.armor.FieryArmorModel;
@@ -50,6 +51,8 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.BUNNY, BighornFurLayer::create);
 		event.registerLayerDefinition(TFModelLayers.CARMINITE_BROODLING, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.CARMINITE_GOLEM, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.CARMINITE_GHASTGUARD, TFGhastModel::create);
+		event.registerLayerDefinition(TFModelLayers.CARMINITE_GHASTLING, TFGhastModel::create);
 		event.registerLayerDefinition(TFModelLayers.CHAIN, ChainModel::create);
 		event.registerLayerDefinition(TFModelLayers.CUBE_OF_ANNIHILATION, CubeOfAnnihilationModel::create);
 		event.registerLayerDefinition(TFModelLayers.DEATH_TOME, DeathTomeModel::create);
@@ -76,6 +79,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, MinoshroomModel::create);
 		event.registerLayerDefinition(TFModelLayers.MINOTAUR, MinotaurModel::create);
+		event.registerLayerDefinition(TFModelLayers.MIST_WOLF, WolfModel::createBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.NAGA, NagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NOOP, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 0, 0));
@@ -83,6 +87,16 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.PROTECTION_BOX, () -> LayerDefinition.create(ProtectionBoxModel.createMesh(), 16, 16));
 		event.registerLayerDefinition(TFModelLayers.QUEST_RAM, QuestRamModel::create);
 		event.registerLayerDefinition(TFModelLayers.RAVEN, RavenModel::create);
+		event.registerLayerDefinition(TFModelLayers.REDCAP, RedcapModel::create);
+		event.registerLayerDefinition(TFModelLayers.RISING_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.ROVING_CUBE, CubeOfAnnihilationModel::create);
+		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID, SkeletonDruidModel::create);
+		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE, SlimeBeetleModel::create);
+
+		event.registerLayerDefinition(TFModelLayers.UR_GHAST, UrGhastModel::create);
+		event.registerLayerDefinition(TFModelLayers.WINTER_WOLF, WolfModel::createBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.WRAITH, WraithModel::create);
+		event.registerLayerDefinition(TFModelLayers.YETI, YetiModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.7F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.7F), 64, 32));

@@ -31,12 +31,12 @@ public class PenguinModel extends AgeableListModel<PenguinEntity> {
 
 	public PenguinModel(ModelPart root) {
 		this.body = root.getChild("body");
-		this.rightarm = root.getChild("right_arm");
-		this.leftarm = root.getChild("left_arm");
-		this.rightleg = root.getChild("right_leg");
-		this.leftleg = root.getChild("left_leg");
-		this.head = root.getChild("head");
-		this.beak = root.getChild("beak");
+		this.rightarm = body.getChild("right_arm");
+		this.leftarm = body.getChild("left_arm");
+		this.rightleg = body.getChild("right_leg");
+		this.leftleg = body.getChild("left_leg");
+		this.head = body.getChild("head");
+		this.beak = head.getChild("beak");
 	}
 
 	public static LayerDefinition create() {

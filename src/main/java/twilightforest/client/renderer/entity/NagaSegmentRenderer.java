@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
 import twilightforest.entity.boss.NagaSegmentEntity;
 
@@ -15,7 +16,7 @@ public class NagaSegmentRenderer<T extends NagaSegmentEntity> extends TFPartRend
 	private static final ResourceLocation part_TextureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
 
 	public NagaSegmentRenderer(EntityRendererProvider.Context m) {
-		super(m, new NagaModel<>());
+		super(m, new NagaModel<>(m.bakeLayer(TFModelLayers.NAGA_BODY)));
 	}
 
 	@Override
