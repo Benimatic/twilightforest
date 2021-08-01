@@ -1,17 +1,14 @@
 package twilightforest.item;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.item.*;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.resources.ResourceLocation;
-import static twilightforest.TwilightForestMod.prefix;
-
-import net.minecraft.world.item.Item.Properties;
-
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.Block;
+
+import static twilightforest.TwilightForestMod.prefix;
 
 public class Experiment115Item extends BlockItem {
 	public static final ResourceLocation THINK = prefix("think");

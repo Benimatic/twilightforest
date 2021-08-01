@@ -11,7 +11,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.item.*;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -464,11 +463,11 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	}
 
 	@Override
-	public ItemStack clicked(int slotNum, int mouseButton, ClickType clickType, Player player) {
+	public void clicked(int slotNum, int mouseButton, ClickType clickType, Player player) {
 
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.assemblyMatrix
-				&& player.inventory.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
+				&& player.getInventory().getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
 
 			// is the assembly matrix empty?
 			if (this.assemblyMatrix.isEmpty()) {
@@ -480,37 +479,32 @@ public class UncraftingContainer extends AbstractContainerMenu {
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.tinkerResult
 				&& calculateRecraftingCost() > player.experienceLevel && !player.abilities.instabuild) {
 
-			return ItemStack.EMPTY;
+			return;
 		}
 
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.uncraftingMatrix) {
 
 			// similarly, reject uncrafting if they can't do that either
 			if (calculateUncraftingCost() > player.experienceLevel && !player.abilities.instabuild) {
-				return ItemStack.EMPTY;
+				return;
 			}
 
 			// don't allow uncrafting if the server option is turned off
 			if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
-				return ItemStack.EMPTY;
+				return;
 			}
 
 			// finally, don't give them damaged goods
 			ItemStack stackInSlot = this.slots.get(slotNum).getItem();
 			if (stackInSlot.isEmpty() || isMarked(stackInSlot)) {
-				return ItemStack.EMPTY;
+				return;
 			}
 		}
-
-		// also we may need to detect here when the player is increasing the stack size of the input slot
-		ItemStack ret = super.clicked(slotNum, mouseButton, clickType, player);
 
 		// just trigger this event whenever the input slot is clicked for any reason
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.tinkerInput) {
 			this.slotsChanged(this.tinkerInput);
 		}
-
-		return ret;
 	}
 
 	/**
@@ -603,15 +597,15 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			return ItemStack.EMPTY;
 		}
 
-		return transferSlot.onTake(player, transferStack);
+		//return transferSlot.onTake(player, transferStack);
 	}
 
 	@Override
 	public void removed(Player player) {
 		super.removed(player);
 		this.positionData.execute((world, pos) -> {
-			clearContainer(player, world, assemblyMatrix);
-			clearContainer(player, world, tinkerInput);
+			clearContainer(player, assemblyMatrix);
+			clearContainer(player, tinkerInput);
 		});
 	}
 

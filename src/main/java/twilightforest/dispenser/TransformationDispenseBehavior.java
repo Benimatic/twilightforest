@@ -3,7 +3,6 @@ package twilightforest.dispenser;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.BlockSource;
-import net.minecraft.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntitySelector;
@@ -58,7 +57,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
                        }
 
                        livingentity.level.addFreshEntity(newEntity);
-                       livingentity.remove();
+                       livingentity.discard();
 
                        if (livingentity instanceof Mob) {
                            ((Mob) livingentity).spawnAnim();

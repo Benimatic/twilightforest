@@ -31,7 +31,7 @@ public class EmptyMazeMapItem extends ComplexItem {
 		if (itemstack1.isEmpty()) {
 			return InteractionResultHolder.success(itemstack);
 		} else {
-			if (!playerIn.inventory.add(itemstack.copy())) {
+			if (!playerIn.getInventory().add(itemstack.copy())) {
 				playerIn.drop(itemstack, false);
 			}
 

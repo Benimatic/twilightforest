@@ -5,11 +5,6 @@ import net.minecraft.world.level.block.Rotation;
 
 import java.util.Random;
 
-import static net.minecraft.util.Rotation.CLOCKWISE_180;
-import staticnet.minecraft.world.level.block.Rotationn.CLOCKWISE_90;
-import static net.minecraft.util.Rotation.COUNTERCLOCKWISE_90;
-import staticnet.minecraft.world.level.block.Rotationn.NONE;
-
 public final class RotationUtil {
 	public static final Rotation[] ROTATIONS = Rotation.values();
 	public static final Direction[] CARDINALS = { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };
@@ -31,13 +26,13 @@ public final class RotationUtil {
 
 				switch (original) {
 					case NONE:
-						return CLOCKWISE_180;
+						return Rotation.CLOCKWISE_180;
 					case CLOCKWISE_90:
-						return COUNTERCLOCKWISE_90;
+						return Rotation.COUNTERCLOCKWISE_90;
 					case CLOCKWISE_180:
-						return NONE;
+						return Rotation.NONE;
 					case COUNTERCLOCKWISE_90:
-						return CLOCKWISE_90;
+						return Rotation.CLOCKWISE_90;
 					default:
 						return original;
 				}
@@ -46,13 +41,13 @@ public final class RotationUtil {
 
 				switch (original) {
 					case NONE:
-						return CLOCKWISE_90;
+						return Rotation.CLOCKWISE_90;
 					case CLOCKWISE_90:
-						return CLOCKWISE_180;
+						return Rotation.CLOCKWISE_180;
 					case CLOCKWISE_180:
-						return COUNTERCLOCKWISE_90;
+						return Rotation.COUNTERCLOCKWISE_90;
 					case COUNTERCLOCKWISE_90:
-						return NONE;
+						return Rotation.NONE;
 					default:
 						return original;
 				}
@@ -61,13 +56,13 @@ public final class RotationUtil {
 
 				switch (original) {
 					case NONE:
-						return COUNTERCLOCKWISE_90;
+						return Rotation.COUNTERCLOCKWISE_90;
 					case CLOCKWISE_90:
-						return NONE;
+						return Rotation.NONE;
 					case CLOCKWISE_180:
-						return CLOCKWISE_90;
+						return Rotation.CLOCKWISE_90;
 					case COUNTERCLOCKWISE_90:
-						return CLOCKWISE_180;
+						return Rotation.CLOCKWISE_180;
 					default:
 						return original;
 				}

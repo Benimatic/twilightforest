@@ -37,7 +37,7 @@ public class TwilightWandItem extends Item {
 
 			if (!world.isClientSide) {
 				world.addFreshEntity(new TwilightWandBoltEntity(world, player));
-				stack.hurt(1, random, (ServerPlayer) null);
+				stack.hurt(1, world.random, (ServerPlayer) null);
 			}
 
 			return InteractionResultHolder.success(player.getItemInHand(hand));

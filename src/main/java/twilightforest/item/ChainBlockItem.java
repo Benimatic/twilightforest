@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import com.google.common.collect.Sets;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,7 +32,7 @@ public class ChainBlockItem extends DiggerItem {
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	protected ChainBlockItem(Properties props) {
-		super(6, -3.0F, TwilightItemTier.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE), props);
+		super(6, -3.0F, TwilightItemTier.TOOL_KNIGHTLY, BlockTags.BASE_STONE_OVERWORLD, props);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class ChainBlockItem extends DiggerItem {
 		if (getThrownUuid(stack) != null)
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
-		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F));
+		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 1.0F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isClientSide) {
 			ChainBlockEntity launchedBlock = new ChainBlockEntity(TFEntities.chain_block, world, player, hand);

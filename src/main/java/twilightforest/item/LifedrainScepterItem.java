@@ -62,11 +62,11 @@ public class LifedrainScepterItem extends Item {
 	private static void animateTargetShatter(Level world, LivingEntity target) {
 		ItemStack itemId = new ItemStack(getTargetDropItem());
 		for (int i = 0; i < 50; ++i) {
-			double gaussX = random.nextGaussian() * 0.02D;
-			double gaussY = random.nextGaussian() * 0.02D;
-			double gaussZ = random.nextGaussian() * 0.02D;
+			double gaussX = world.random.nextGaussian() * 0.02D;
+			double gaussY = world.random.nextGaussian() * 0.02D;
+			double gaussZ = world.random.nextGaussian() * 0.02D;
 			double gaussFactor = 10.0D;
-			world.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemId), target.getX() + random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth() - gaussX * gaussFactor, target.getY() + random.nextFloat() * target.getBbHeight() - gaussY * gaussFactor, target.getZ() + random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth() - gaussZ * gaussFactor, gaussX, gaussY, gaussZ);
+			world.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemId), target.getX() + world.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth() - gaussX * gaussFactor, target.getY() + world.random.nextFloat() * target.getBbHeight() - gaussY * gaussFactor, target.getZ() + world.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth() - gaussZ * gaussFactor, gaussX, gaussY, gaussZ);
 		}
 	}
 
@@ -140,12 +140,12 @@ public class LifedrainScepterItem extends Item {
 						if (target instanceof Mob) {
 							((Mob) target).spawnAnim();
 						}
-						target.playSound(TFSounds.SCEPTER_DRAIN, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+						target.playSound(TFSounds.SCEPTER_DRAIN, 1.0F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						animateTargetShatter(world, target);
 						if (!world.isClientSide) {
-							target.spawnAtLocation(new ItemStack(getTargetDropItem(), random.nextInt(3)));
+							target.spawnAtLocation(new ItemStack(getTargetDropItem(), world.random.nextInt(3)));
 							target.die(DamageSource.indirectMagic(living, living));
-							target.remove();
+							target.discard();
 						}
 						living.stopUsingItem();
 					} else {
@@ -188,7 +188,7 @@ public class LifedrainScepterItem extends Item {
 				}
 
 				if (!world.isClientSide && living instanceof Player && !((Player)living).isCreative()) {
-					stack.hurt(1, random, (ServerPlayer) null);
+					stack.hurt(1, world.random, (ServerPlayer) null);
 				}
 			}
 		}

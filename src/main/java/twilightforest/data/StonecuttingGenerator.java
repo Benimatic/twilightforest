@@ -23,7 +23,7 @@ public class StonecuttingGenerator extends RecipeProvider {
 	}
 
 	@Override
-	protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
 		consumer.accept(stonecutting(TFBlocks.castle_brick.get(), TFBlocks.castle_brick_frame.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_brick_frame.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_brick_worn.get(), TFBlocks.castle_brick_frame.get()));

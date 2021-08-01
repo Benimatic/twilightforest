@@ -1,13 +1,13 @@
 package twilightforest.capabilities.shield;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.TFSounds;
-import twilightforest.network.UpdateShieldPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.network.UpdateShieldPacket;
 
 public class ShieldCapabilityHandler implements IShieldCapability {
 

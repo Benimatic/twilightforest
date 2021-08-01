@@ -1,28 +1,28 @@
 package twilightforest.worldgen.structures;
 
 import com.google.common.math.StatsAccumulator;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.*;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.StructureMode;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.*;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.gen.feature.template.*;
-
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.material.Material;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.StructureWoodVariant;
@@ -35,19 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-
 public class GenDruidHut extends Feature<NoneFeatureConfiguration> {
 
 	public GenDruidHut(Codec<NoneFeatureConfiguration> config) {
@@ -55,12 +42,13 @@ public class GenDruidHut extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override // Loosely based on WorldGenFossils FIXME See if we can move this over to purely-datadriven
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
-		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+		WorldGenLevel world = ctx.level();
+		BlockPos pos = ctx.origin();
 		Random random = world.getRandom();
 
 		StructureManager templatemanager = world.getLevel().getServer().getStructureManager();
-		StructureTemplate template = templatemanager.get(HutType.values()[random.nextInt(HutType.size)].RL);
+		StructureTemplate template = templatemanager.getOrCreate(HutType.values()[random.nextInt(HutType.size)].RL);
 		if(template == null)
 			return false;
 
@@ -76,7 +64,7 @@ public class GenDruidHut extends Feature<NoneFeatureConfiguration> {
 
 		BlockPos posSnap = chunkpos.getWorldPosition().offset(8, pos.getY() - 1, 8); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
 
-		BlockPos transformedSize = template.getSize(rotation);
+		BlockPos transformedSize = (BlockPos) template.getSize(rotation);
 		int dx = random.nextInt(17 - transformedSize.getX());
 		int dz = random.nextInt(17 - transformedSize.getZ());
 		posSnap.offset(dx, 0, dz);
@@ -88,16 +76,16 @@ public class GenDruidHut extends Feature<NoneFeatureConfiguration> {
 		}
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-		template.placeInWorld(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, rand.nextInt(), rand.nextInt(), rand.nextInt())), random, 20);
+		template.placeInWorld(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, random.nextInt(), random.nextInt(), random.nextInt())), random, 20);
 		List<StructureTemplate.StructureBlockInfo> data = new ArrayList<>(template.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 
 		if (random.nextBoolean()) {
-			template = templatemanager.get(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
+			template = templatemanager.getOrCreate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
 			if(template == null)
 				return false;
 			placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-			template.placeInWorld(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, rand.nextInt(14), rand.nextInt(14), rand.nextInt(14))), random, 20);
+			template.placeInWorld(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, random.nextInt(14), random.nextInt(14), random.nextInt(14))), random, 20);
 			data.addAll(template.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 		}
 

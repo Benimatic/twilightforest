@@ -2,46 +2,47 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
@@ -63,7 +64,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.*;
@@ -193,7 +194,7 @@ public class TFEventListener {
 		// fire aura
 		if (living instanceof Player && damageType.equals("mob") && trueSource != null) {
 			Player player = (Player) living;
-			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, damageSource);
+			int fireLevel = TFEnchantment.getFieryAuraLevel(player.getInventory(), damageSource);
 
 			if (fireLevel > 0 && player.getRandom().nextInt(25) < fireLevel) {
 				trueSource.setSecondsOnFire(fireLevel / 2);
@@ -203,7 +204,7 @@ public class TFEventListener {
 		// chill aura
 		if (living instanceof Player && damageType.equals("mob") && trueSource instanceof LivingEntity) {
 			Player player = (Player) living;
-			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, damageSource);
+			int chillLevel = TFEnchantment.getChillAuraLevel(player.getInventory(), damageSource);
 
 			if (chillLevel > 0) {
 				((LivingEntity) trueSource).addEffect(new MobEffectInstance(TFPotions.frosty.get(), chillLevel * 5 + 5, chillLevel));
@@ -304,7 +305,7 @@ public class TFEventListener {
 					int damage = world.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
 					if (world.random.nextFloat() <= 0.15F) {
 						if (damage >= 2) {
-							player.inventory.dropAll();
+							player.getInventory().dropAll();
 							world.setBlockAndUpdate(immutablePos, Blocks.AIR.defaultBlockState());
 							casketExpiration = true;
 							TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and dropping extra items", player.getName().getString());
@@ -320,12 +321,12 @@ public class TFEventListener {
 
 					// lets add our inventory exactly how it was on us
 					list.addAll(TFItemStackUtils.sortArmorForCasket(player));
-					player.inventory.armor.clear();
+					player.getInventory().armor.clear();
 					list.addAll(filler);
-					list.addAll(player.inventory.offhand);
-					player.inventory.offhand.clear();
+					list.addAll(player.getInventory().offhand);
+					player.getInventory().offhand.clear();
 					list.addAll(TFItemStackUtils.sortInvForCasket(player));
-					player.inventory.items.clear();
+					player.getInventory().items.clear();
 
 					casket.setItems(NonNullList.of(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
 				}
@@ -411,26 +412,26 @@ public class TFEventListener {
 		}
 
 		if (tier3) {
-			for (int i = 0; i < player.inventory.items.size(); i++) {
-				keepInventory.items.set(i, player.inventory.items.get(i).copy());
-				player.inventory.items.set(i, ItemStack.EMPTY);
+			for (int i = 0; i < player.getInventory().items.size(); i++) {
+				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
+				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setCarried(new ItemStack(TFItems.charm_of_keeping_3.get()));
+			keepInventory.setPickedItem(new ItemStack(TFItems.charm_of_keeping_3.get()));
 
 		} else if (tier2) {
 			for (int i = 0; i < 9; i++) {
-				keepInventory.items.set(i, player.inventory.items.get(i).copy());
-				player.inventory.items.set(i, ItemStack.EMPTY);
+				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
+				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setCarried(new ItemStack(TFItems.charm_of_keeping_2.get()));
+			keepInventory.setPickedItem(new ItemStack(TFItems.charm_of_keeping_2.get()));
 
 		} else if (tier1) {
-			int i = player.inventory.selected;
+			int i = player.getInventory().selected;
 			if (Inventory.isHotbarSlot(i)) {
-				keepInventory.items.set(i, player.inventory.items.get(i).copy());
-				player.inventory.items.set(i, ItemStack.EMPTY);
+				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
+				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setCarried(new ItemStack(TFItems.charm_of_keeping_1.get()));
+			keepInventory.setPickedItem(new ItemStack(TFItems.charm_of_keeping_1.get()));
 		}
 
 		//TODO: Baubles is dead, replace with curios
@@ -439,24 +440,24 @@ public class TFEventListener {
 		}*/
 
 		// always keep tower keys and held phantom armor
-		for (int i = 0; i < player.inventory.items.size(); i++) {
-			ItemStack stack = player.inventory.items.get(i);
+		for (int i = 0; i < player.getInventory().items.size(); i++) {
+			ItemStack stack = player.getInventory().items.get(i);
 			if (stack.getItem() == TFItems.tower_key.get()) {
 				keepInventory.items.set(i, stack.copy());
-				player.inventory.items.set(i, ItemStack.EMPTY);
+				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
 			if (stack.getItem() instanceof PhantomArmorItem) {
 				keepInventory.items.set(i, stack.copy());
-				player.inventory.items.set(i, ItemStack.EMPTY);
+				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
 		}
 
 		// Keep phantom equipment
-		for (int i = 0; i < player.inventory.armor.size(); i++) {
-			ItemStack armor = player.inventory.armor.get(i);
+		for (int i = 0; i < player.getInventory().armor.size(); i++) {
+			ItemStack armor = player.getInventory().armor.get(i);
 			if (armor.getItem() instanceof PhantomArmorItem) {
 				keepInventory.armor.set(i, armor.copy());
-				player.inventory.armor.set(i, ItemStack.EMPTY);
+				player.getInventory().armor.set(i, ItemStack.EMPTY);
 			}
 		}
 
@@ -467,16 +468,16 @@ public class TFEventListener {
 	 * Move the full armor inventory to the keep pile
 	 */
 	private static void keepAllArmor(Player player, Inventory keepInventory) {
-		for (int i = 0; i < player.inventory.armor.size(); i++) {
-			keepInventory.armor.set(i, player.inventory.armor.get(i).copy());
-			player.inventory.armor.set(i, ItemStack.EMPTY);
+		for (int i = 0; i < player.getInventory().armor.size(); i++) {
+			keepInventory.armor.set(i, player.getInventory().armor.get(i).copy());
+			player.getInventory().armor.set(i, ItemStack.EMPTY);
 		}
 	}
 
 	private static void keepOffHand(Player player, Inventory keepInventory) {
-		for (int i = 0; i < player.inventory.offhand.size(); i++) {
-			keepInventory.offhand.set(i, player.inventory.offhand.get(i).copy());
-			player.inventory.offhand.set(i, ItemStack.EMPTY);
+		for (int i = 0; i < player.getInventory().offhand.size(); i++) {
+			keepInventory.offhand.set(i, player.getInventory().offhand.get(i).copy());
+			player.getInventory().offhand.set(i, ItemStack.EMPTY);
 		}
 	}
 
@@ -502,28 +503,28 @@ public class TFEventListener {
 
 			NonNullList<ItemStack> displaced = NonNullList.create();
 
-			for (int i = 0; i < player.inventory.armor.size(); i++) {
+			for (int i = 0; i < player.getInventory().armor.size(); i++) {
 				ItemStack kept = keepInventory.armor.get(i);
 				if (!kept.isEmpty()) {
-					ItemStack existing = player.inventory.armor.set(i, kept);
+					ItemStack existing = player.getInventory().armor.set(i, kept);
 					if (!existing.isEmpty()) {
 						displaced.add(existing);
 					}
 				}
 			}
-			for (int i = 0; i < player.inventory.offhand.size(); i++) {
+			for (int i = 0; i < player.getInventory().offhand.size(); i++) {
 				ItemStack kept = keepInventory.offhand.get(i);
 				if (!kept.isEmpty()) {
-					ItemStack existing = player.inventory.offhand.set(i, kept);
+					ItemStack existing = player.getInventory().offhand.set(i, kept);
 					if (!existing.isEmpty()) {
 						displaced.add(existing);
 					}
 				}
 			}
-			for (int i = 0; i < player.inventory.items.size(); i++) {
+			for (int i = 0; i < player.getInventory().items.size(); i++) {
 				ItemStack kept = keepInventory.items.get(i);
 				if (!kept.isEmpty()) {
-					ItemStack existing = player.inventory.items.set(i, kept);
+					ItemStack existing = player.getInventory().items.set(i, kept);
 					if (!existing.isEmpty()) {
 						displaced.add(existing);
 					}
@@ -536,11 +537,11 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			if (!keepInventory.getCarried().isEmpty()) {
-				CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getCarried().getItem());
+			if (!keepInventory.getSelected().isEmpty()) {
+				CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
 				player.level.addFreshEntity(effect);
 
-				CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getCarried().getItem());
+				CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
 				effect2.offset = (float) Math.PI;
 				player.level.addFreshEntity(effect2);
 
@@ -686,13 +687,12 @@ public class TFEventListener {
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
 	 */
 	private static boolean isBlockProtectedFromInteraction(Level world, BlockPos pos) {
-		Block block = world.getBlockState(pos).getBlock();
-		return block.is(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
+		return world.getBlockState(pos).is(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
 	}
 
 	private static boolean isBlockProtectedFromBreaking(Level world, BlockPos pos) {
 		// todo improve
-		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave") || !world.getBlockState(pos).getBlock().is(TFBlocks.keepsake_casket.get());
+		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave") || !world.getBlockState(pos).is(TFBlocks.keepsake_casket.get());
 	}
 
 	/**
@@ -872,8 +872,8 @@ public class TFEventListener {
 	private static boolean globalParry = !ModList.get().isLoaded("parry");
 
 	@SubscribeEvent
-	public static void arrowParry(ProjectileImpactEvent.Arrow event) {
-		final AbstractArrow projectile = event.getArrow();
+	public static void arrowParry(ProjectileImpactEvent<AbstractArrow> event) {
+		final AbstractArrow projectile = event.getProjectile();
 
 		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
@@ -905,8 +905,8 @@ public class TFEventListener {
 	}
 
 	@SubscribeEvent
-	public static void fireballParry(ProjectileImpactEvent.Fireball event) {
-		final AbstractHurtingProjectile projectile = event.getFireball();
+	public static void fireballParry(ProjectileImpactEvent<Fireball> event) {
+		final AbstractHurtingProjectile projectile = event.getProjectile();
 
 		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
@@ -941,8 +941,8 @@ public class TFEventListener {
 	}
 
 	@SubscribeEvent
-	public static void throwableParry(ProjectileImpactEvent.Throwable event) {
-		final ThrowableProjectile projectile = event.getThrowable();
+	public static void throwableParry(ProjectileImpactEvent<ThrowableProjectile> event) {
+		final ThrowableProjectile projectile = event.getProjectile();
 
 		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()

@@ -4,7 +4,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
@@ -25,7 +24,7 @@ public class EntityUtil {
 
 	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getDestroySpeed(world, pos);
-		return hardness >= 0f && hardness < 50f && !state.getBlock().isAir(state, world, pos)
+		return hardness >= 0f && hardness < 50f && !state.isAir()
 				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
 				&& (/* rude type limit */!(entity instanceof LivingEntity)
 				|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state));

@@ -1,19 +1,21 @@
 package twilightforest.item;
 
-import net.minecraft.world.level.block.CauldronBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CauldronBlock;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
@@ -23,14 +25,6 @@ import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-
-import net.minecraft.world.item.Item.Properties;
-
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
 
 public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 
@@ -139,17 +133,18 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		displayCompound.putBoolean("hasColor", true);
 	}
 
+	//TODO do we even need this? CauldronInteraction checks for DyeableLeatherItem
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
 
 		if (this.hasCustomColor(itemstack)) {
 			BlockState blockAt = context.getLevel().getBlockState(context.getClickedPos());
 
-			if (blockAt.getBlock() instanceof CauldronBlock && blockAt.getValue(CauldronBlock.LEVEL) > 0) {
+			if (blockAt.getBlock() instanceof LayeredCauldronBlock && blockAt.getValue(LayeredCauldronBlock.LEVEL) > 0) {
 				clearColor(itemstack);
 				context.getPlayer().awardStat(Stats.CLEAN_ARMOR);
 
-				((CauldronBlock) blockAt.getBlock()).setWaterLevel(context.getLevel(), context.getClickedPos(), blockAt, blockAt.getValue(CauldronBlock.LEVEL) - 1);
+				LayeredCauldronBlock.lowerFillLevel(blockAt, context.getLevel(), context.getClickedPos());
 				return InteractionResult.SUCCESS;
 			}
 		}

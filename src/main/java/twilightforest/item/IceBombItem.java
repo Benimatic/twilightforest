@@ -21,7 +21,7 @@ public class IceBombItem extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-		player.playSound(TFSounds.ICEBOMB_FIRED, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+		player.playSound(TFSounds.ICEBOMB_FIRED, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
 
 		if (!world.isClientSide) {
 			if (!player.abilities.instabuild) {

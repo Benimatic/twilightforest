@@ -1,28 +1,28 @@
 package twilightforest.item;
 
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
-import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.worldgen.biomes.BiomeKeys;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -30,7 +30,6 @@ import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 // FIXME: Maps are empty. Anything could be the cause, so the comment sits here
-import net.minecraft.world.item.Item.Properties;
 
 public class MagicMapItem extends MapItem {
 	public static final String STR_ID = "magicmap";

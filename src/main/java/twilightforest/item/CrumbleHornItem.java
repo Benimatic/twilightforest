@@ -164,7 +164,7 @@ public class CrumbleHornItem extends Item {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block.isAir(state, world, pos)) return false;
+		if (state.isAir()) return false;
 
 		if(living instanceof Player) {
 			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player)living))) return false;

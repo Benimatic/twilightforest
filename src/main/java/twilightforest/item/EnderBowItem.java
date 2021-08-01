@@ -22,8 +22,8 @@ public class EnderBowItem extends BowItem {
 	}
 
 	@SubscribeEvent
-	public static void onHit(ProjectileImpactEvent.Arrow evt) {
-		AbstractArrow arrow = evt.getArrow();
+	public static void onHit(ProjectileImpactEvent evt) {
+		AbstractArrow arrow = (AbstractArrow) evt.getProjectile();
 		if (arrow.getOwner() instanceof Player
 						&& evt.getRayTraceResult() instanceof EntityHitResult
 						&& ((EntityHitResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity) {

@@ -9,11 +9,10 @@
 
 package twilightforest.client.shader;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
-import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 import net.minecraftforge.resource.VanillaResourceType;
 import org.lwjgl.opengl.*;
 import twilightforest.TFConfig;
@@ -28,7 +27,7 @@ import java.util.function.IntConsumer;
 
 public final class ShaderManager {
 
-    private static ISelectiveResourceReloadListener shaderReloadListener;
+    private static ReloadableResourceManager shaderReloadListener;
 
     private static final int VERT =  ARBVertexShader.GL_VERTEX_SHADER_ARB;
     private static final int FRAG =  ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
@@ -74,7 +73,7 @@ public final class ShaderManager {
         }
     }
 
-    public static ISelectiveResourceReloadListener getShaderReloadListener() {
+    public static ReloadableResourceManager getShaderReloadListener() {
         return shaderReloadListener;
     }
 

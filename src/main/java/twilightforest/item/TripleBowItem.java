@@ -1,21 +1,18 @@
 package twilightforest.item;
 
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.Items;
-import net.minecraft.stats.Stats;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class TripleBowItem extends BowItem {
 
@@ -102,11 +99,11 @@ public class TripleBowItem extends BowItem {
 						worldIn.addFreshEntity(entityarrow2);
 					}
 
-					worldIn.playSound((Player)null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					worldIn.playSound((Player)null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (worldIn.random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 					if (!flag1 && !entityplayer.abilities.instabuild) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty()) {
-							entityplayer.inventory.removeItem(itemstack);
+							entityplayer.getInventory().removeItem(itemstack);
 						}
 					}
 

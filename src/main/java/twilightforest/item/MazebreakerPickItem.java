@@ -1,19 +1,15 @@
 package twilightforest.item;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.item.*;
 import net.minecraft.core.NonNullList;
-import twilightforest.block.MazestoneBlock;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.world.item.Item.Properties;
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.block.MazestoneBlock;
+
+import javax.annotation.Nonnull;
 
 public class MazebreakerPickItem extends PickaxeItem {
 	protected MazebreakerPickItem(Tier material, Properties props) {

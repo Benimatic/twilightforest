@@ -1,31 +1,27 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.item.*;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.world.item.Item.Properties;
-
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import twilightforest.TFSounds;
+import twilightforest.block.TFBlocks;
+
+import javax.annotation.Nonnull;
 
 public class LampOfCindersItem extends Item {
 	private static final int FIRING_TIME = 12;
@@ -56,9 +52,9 @@ public class LampOfCindersItem extends Item {
 
 			// spawn flame particles
 			for (int i = 0; i < 10; i++) {
-				float dx = pos.getX() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
-				float dy = pos.getY() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
-				float dz = pos.getZ() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
+				float dx = pos.getX() + 0.5F + (world.random.nextFloat() - world.random.nextFloat()) * 0.75F;
+				float dy = pos.getY() + 0.5F + (world.random.nextFloat() - world.random.nextFloat()) * 0.75F;
+				float dz = pos.getZ() + 0.5F + (world.random.nextFloat() - world.random.nextFloat()) * 0.75F;
 				world.addParticle(ParticleTypes.SMOKE, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 				world.addParticle(ParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
@@ -113,9 +109,9 @@ public class LampOfCindersItem extends Item {
 		if (living instanceof Player) {
 			for (int i = 0; i < 6; i++) {
 				BlockPos rPos = pos.offset(
-						random.nextInt(range) - random.nextInt(range),
-						random.nextInt(2),
-						random.nextInt(range) - random.nextInt(range)
+						world.random.nextInt(range) - world.random.nextInt(range),
+						world.random.nextInt(2),
+						world.random.nextInt(range) - world.random.nextInt(range)
 				);
 
 				world.levelEvent((Player) living, 2004, rPos, 0);

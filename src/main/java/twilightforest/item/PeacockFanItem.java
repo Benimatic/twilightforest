@@ -79,7 +79,7 @@ public class PeacockFanItem extends Item {
 							lookVec.x, lookVec.y, lookVec.z);
 				}
 			}
-			player.playSound(TFSounds.FAN_WOOSH, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+			player.playSound(TFSounds.FAN_WOOSH, 1.0F + world.random.nextFloat(), world.random.nextFloat() * 0.7F + 0.3F);
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 		}
 
@@ -163,7 +163,7 @@ public class PeacockFanItem extends Item {
 
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock() instanceof FlowerBlock) {
-			if (random.nextInt(3) == 0) {
+			if (world.random.nextInt(3) == 0) {
 				if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
 					world.destroyBlock(pos, true);
 				}

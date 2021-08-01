@@ -1,15 +1,11 @@
 package twilightforest.item;
 
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.item.*;
 import net.minecraft.core.NonNullList;
-
-import net.minecraft.world.item.Item.Properties;
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 public class SteeleafSwordItem extends SwordItem {
 

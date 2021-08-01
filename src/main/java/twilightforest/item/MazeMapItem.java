@@ -4,23 +4,25 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
 import net.minecraft.item.*;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import twilightforest.TFMazeMapData;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.network.TFPacketHandler;
@@ -29,10 +31,6 @@ import javax.annotation.Nullable;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 // FIXME: Map does not display data. Investigate
-import net.minecraft.world.item.Item.Properties;
-
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MapItem;
 
 public class MazeMapItem extends MapItem {
 
@@ -219,7 +217,7 @@ public class MazeMapItem extends MapItem {
 					// TF - if player is far away vertically, show a dot
 					int yProximity = Mth.floor(entityplayer.getY() - mapdata.yCenter);
 					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
-						MapDecoration decoration = mapdata.decorations.get(entityplayer.getName().getString());
+						MapDecoration decoration = mapdata.get(entityplayer.getName().getString());
 						if (decoration != null) {
 							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.getX(), decoration.getY(), decoration.getRot(), null));
 						}
