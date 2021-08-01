@@ -1,6 +1,5 @@
 package twilightforest.client;
 
-import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColors;
@@ -18,7 +17,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.compat.ie.TFShaderItem;
 import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.TFItems;
 
@@ -378,7 +376,8 @@ public final class ColorHandler {
 						: 0xFFFFFF,
 				TFItems.arctic_helmet.get(), TFItems.arctic_chestplate.get(), TFItems.arctic_leggings.get(), TFItems.arctic_boots.get());
 
-		if (ModList.get().isLoaded("immersiveengineering")) {
+		//FIXME IE Compat
+		/*if (ModList.get().isLoaded("immersiveengineering")) {
 			itemColors.register(TFShaderItem::getShaderColors, ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
 			for(Rarity r: ShaderRegistry.rarityWeightMap.keySet()) {
 				itemColors.register((stack, tintIndex) -> {
@@ -391,7 +390,7 @@ public final class ColorHandler {
 							| (int) ((c & 0xFF) / d);
 				}, ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + r.name().toLowerCase(Locale.US).replace(':', '_'))));
 			}
-		}
+		}*/
 	}
 
 	private ColorHandler() {}

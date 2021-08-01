@@ -11,16 +11,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
 import twilightforest.entity.CubeOfAnnihilationEntity;
 
 public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilationEntity> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
-	private final Model model = new CubeOfAnnihilationModel();
+	private final Model model;
 
 	public CubeOfAnnihilationRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
+		model = new CubeOfAnnihilationModel(manager.bakeLayer(TFModelLayers.CUBE_OF_ANNIHILATION));
 	}
 
 	@Override

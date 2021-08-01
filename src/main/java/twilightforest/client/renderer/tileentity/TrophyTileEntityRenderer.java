@@ -89,11 +89,11 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 		if (((AbstractTrophyBlock) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST) {
 			((UrGhastTrophyModel)trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
-		render(direction, f1, variant, f, matrixStackIn, bufferIn, combinedLightIn, ItemTransforms.TransformType.NONE);
+		render(direction, f1, trophy, variant, f, matrixStackIn, bufferIn, combinedLightIn, ItemTransforms.TransformType.NONE);
 		matrixStackIn.popPose();
 	}
 
-	public void render(@Nullable Direction directionIn, float y, BossVariant variant, float animationProgress, PoseStack matrixStackIn, MultiBufferSource buffer, int combinedLight, ItemTransforms.TransformType camera) {
+	public static void render(@Nullable Direction directionIn, float y, GenericTrophyModel trophy, BossVariant variant, float animationProgress, PoseStack matrixStackIn, MultiBufferSource buffer, int combinedLight, ItemTransforms.TransformType camera) {
 		matrixStackIn.pushPose();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
 			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
@@ -101,7 +101,6 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 			matrixStackIn.translate(0.5F - directionIn.getStepX() * 0.25F, 0.25D, 0.5F - directionIn.getStepZ() * 0.25F);
 		}
 		matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-		GenericTrophyModel trophy = this.trophies.get(variant);
 		switch (variant) {
 		case HYDRA:
 			matrixStackIn.scale(0.25F, 0.25F, 0.25F);

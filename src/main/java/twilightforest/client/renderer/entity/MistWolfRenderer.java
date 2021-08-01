@@ -25,7 +25,6 @@ public class MistWolfRenderer extends WolfRenderer {
 		stack.scale(wolfScale, wolfScale, wolfScale);
 
 		RenderSystem.enableBlend();
-		RenderSystem.disableAlphaTest();
 		//GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		//GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);

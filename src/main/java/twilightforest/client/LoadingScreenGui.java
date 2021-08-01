@@ -1,14 +1,15 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.*;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
@@ -20,9 +21,6 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
 import java.util.Random;
-
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tesselator;
 
 @OnlyIn(Dist.CLIENT)
 public class LoadingScreenGui extends Screen {
@@ -48,7 +46,7 @@ public class LoadingScreenGui extends Screen {
 
 	@Override
 	protected void init() {
-		this.buttons.clear();
+		this.renderables.clear();
 		this.assignContent();
 	}
 
@@ -95,7 +93,7 @@ public class LoadingScreenGui extends Screen {
 		ms.translate(-(fontRenderer.width(loadTitle) / 4f), 0f, 0f);
 		fontRenderer.drawShadow(ms, loadTitle, 0, 0, 0xEEEEEE); //eeeeeeeeeeeeeeeeee
 		ms.popPose();
-		RenderSystem.color4f(1F, 1F, 1F, 1F);
+		RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 	}
 
 	private void assignContent() {
@@ -114,27 +112,30 @@ public class LoadingScreenGui extends Screen {
 	private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
 		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * LOADING_SCREEN.frequency.get().floatValue();
 		float sineTicker2 = (TFClientEvents.sineTicker + 314f + partialTicks) * LOADING_SCREEN.frequency.get().floatValue();
-		RenderSystem.pushMatrix();
+
+		PoseStack stack = RenderSystem.getModelViewStack();
+
+		stack.pushPose();
 
 		// Shove it!
-		RenderSystem.translatef(width - ((width / 30f) * LOADING_SCREEN.scale.get().floatValue()), height - (height / 10f), 0f); // Bottom right Corner
+		stack.translate(width - ((width / 30f) * LOADING_SCREEN.scale.get().floatValue()), height - (height / 10f), 0f); // Bottom right Corner
 
 		if (LOADING_SCREEN.enable.get()) {
 			// Wobble it!
-			RenderSystem.rotatef(Mth.sin(sineTicker / LOADING_SCREEN.tiltRange.get().floatValue()) * LOADING_SCREEN.tiltConstant.get().floatValue(), 0f, 0f, 1f);
+			stack.mulPose(Vector3f.XP.rotation(Mth.sin(sineTicker / LOADING_SCREEN.tiltRange.get().floatValue()) * LOADING_SCREEN.tiltConstant.get().floatValue()));
 
 			// Bounce it!
-			RenderSystem.scalef(((Mth.sin(((sineTicker2 + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), ((Mth.sin(((sineTicker + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), 1F);
+			stack.scale(((Mth.sin(((sineTicker2 + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), ((Mth.sin(((sineTicker + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), 1F);
 		}
 
 		// Shift it!
-		RenderSystem.translatef(-8f, -16.5f, 0f);
+		stack.translate(-8f, -16.5f, 0f);
 
 		// Draw it!
 		minecraft.getItemRenderer().renderAndDecorateItem(item, 0, 0);
 
 		// Pop it!
-		RenderSystem.popMatrix();
+		stack.popPose();
 		// Bop it!
 	}
 
@@ -151,9 +152,9 @@ public class LoadingScreenGui extends Screen {
 			void postRenderBackground(float width, float height) {
 				Tesselator tessellator = Tesselator.getInstance();
 				BufferBuilder buffer = tessellator.getBuilder();
-				Minecraft.getInstance().getTextureManager().bind(mazestoneDecor);
+				Minecraft.getInstance().getTextureManager().getTexture(mazestoneDecor);
 
-				buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				buffer.vertex(0, 24F, 0F)
 						.uv(0F, 0.75F)
 						.color(0.5F, 0.5F, 0.5F, 1F)
@@ -175,7 +176,7 @@ public class LoadingScreenGui extends Screen {
 				float halfScale = backgroundScale / 2F;
 				float bottomGrid = height - (height % halfScale);
 
-				buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				buffer.vertex(0, bottomGrid, 0F)
 						.uv(0F, 0.75F)
 						.color(0.5F, 0.5F, 0.5F, 1F)
@@ -217,16 +218,14 @@ public class LoadingScreenGui extends Screen {
 				final float headerDepthHeight = (backgroundScale / stretch) * depth;
 				final float footerDepthHeight = height - headerDepthHeight;
 
-				RenderSystem.disableLighting();
-				RenderSystem.disableFog();
 				Tesselator tessellator = Tesselator.getInstance();
 				BufferBuilder buffer = tessellator.getBuilder();
-				RenderSystem.color4f(0.9F, 0.9F, 0.9F, 1.0F);
+				RenderSystem.setShaderColor(0.9F, 0.9F, 0.9F, 1.0F);
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					for (float y = backgroundScale + headerDepthHeight; y < footerDepthHeight + backgroundScale; y += backgroundScale) {
-						Minecraft.getInstance().getTextureManager().bind(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
-						buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+						Minecraft.getInstance().getTextureManager().getTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
+						buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 						buffer.vertex(x - backgroundScale, y, 0)
 								.uv(0, 1)
 								.color(0.5f, 0.5f, 0.5f, 1f)
@@ -252,7 +251,7 @@ public class LoadingScreenGui extends Screen {
 			void postRenderBackground(float width, float height) {
 				Tesselator tessellator = Tesselator.getInstance();
 				BufferBuilder buffer = tessellator.getBuilder();
-				Minecraft.getInstance().getTextureManager().bind(towerwoodEncased);
+				Minecraft.getInstance().getTextureManager().getTexture(towerwoodEncased);
 
                 float offset = 0.4F;
                 final float textureHeaderXMin = stretch * offset;
@@ -264,7 +263,7 @@ public class LoadingScreenGui extends Screen {
 				final float footerTop = height - headerBottom;
 				final float footerDepthHeight = height - headerDepthHeight;
 
-				buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.vertex(0F, headerBottom, 0F)
 						.uv(textureHeaderXMin, 1F)
@@ -285,7 +284,7 @@ public class LoadingScreenGui extends Screen {
 						.endVertex();
 				tessellator.end();
 
-				buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.vertex(0F, headerDepthHeight, 0F)
 						.uv(0F, 1F)
@@ -306,7 +305,7 @@ public class LoadingScreenGui extends Screen {
 						.endVertex();
 				tessellator.end();
 
-				buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.vertex(0F, height, 0F)
 						.uv(textureHeaderXMin, 1F)
@@ -327,7 +326,7 @@ public class LoadingScreenGui extends Screen {
 						.endVertex();
 				tessellator.end();
 
-				buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.vertex(0F, footerTop, 0F)
 						.uv(textureHeaderXMin, 1F)
@@ -374,8 +373,6 @@ public class LoadingScreenGui extends Screen {
 
 			@Override
 			void postRenderBackground(float width, float height) {
-				RenderSystem.disableLighting();
-				RenderSystem.disableFog();
 				Tesselator tessellator = Tesselator.getInstance();
 				BufferBuilder buffer = tessellator.getBuilder();
 
@@ -386,8 +383,8 @@ public class LoadingScreenGui extends Screen {
 				int b = color & 255;
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
-					Minecraft.getInstance().getTextureManager().bind(this.magic[random.nextInt(this.magic.length)]);
-					buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+					Minecraft.getInstance().getTextureManager().getTexture(this.magic[random.nextInt(this.magic.length)]);
+					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, backgroundScale + (backgroundScale / 2), 0)
 							.uv(0, 1)
 							.color(r, g, b, 255)
@@ -408,8 +405,8 @@ public class LoadingScreenGui extends Screen {
 				}
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
-					Minecraft.getInstance().getTextureManager().bind(this.magic[random.nextInt(this.magic.length)]);
-					buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+					Minecraft.getInstance().getTextureManager().getTexture(this.magic[random.nextInt(this.magic.length)]);
+					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, height - (backgroundScale / 2), 0)
 							.uv(0, 1)
 							.color(r, g, b, 255)
@@ -442,16 +439,14 @@ public class LoadingScreenGui extends Screen {
 		}
 
 		void renderBackground(float width, float height) {
-			RenderSystem.disableLighting();
-			RenderSystem.disableFog();
 			Tesselator tessellator = Tesselator.getInstance();
 			BufferBuilder buffer = tessellator.getBuilder();
-			RenderSystem.color4f(0.9F, 0.9F, 0.9F, 1.0F);
+			RenderSystem.setShaderColor(0.9F, 0.9F, 0.9F, 1.0F);
 
 			for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 				for (float y = backgroundScale; y < height + backgroundScale; y += backgroundScale) {
-					Minecraft.getInstance().getTextureManager().bind(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
-					buffer.begin(7, DefaultVertexFormat.POSITION_TEX_COLOR);
+					Minecraft.getInstance().getTextureManager().getTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
+					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, y, 0)
 							.uv(0, 1)
 							.color(0.5f, 0.5f, 0.5f, 1f)

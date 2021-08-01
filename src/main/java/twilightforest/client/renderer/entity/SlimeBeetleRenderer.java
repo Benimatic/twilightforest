@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.SlimeBeetleModel;
 import twilightforest.entity.SlimeBeetleEntity;
 
@@ -21,7 +22,7 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetleEntity, SlimeBee
 
 	public SlimeBeetleRenderer(EntityRendererProvider.Context manager, SlimeBeetleModel model, float shadowSize) {
 		super(manager, model, shadowSize);
-		addLayer(new LayerInner(this));
+		addLayer(new LayerInner(this, manager));
 	}
 
 	@Override
@@ -36,10 +37,11 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetleEntity, SlimeBee
 	}
 
 	static class LayerInner extends RenderLayer<SlimeBeetleEntity, SlimeBeetleModel> {
-		private final SlimeBeetleModel innerModel = new SlimeBeetleModel(true);
+		private final SlimeBeetleModel innerModel;
 
-		public LayerInner(RenderLayerParent<SlimeBeetleEntity, SlimeBeetleModel> renderer) {
+		public LayerInner(RenderLayerParent<SlimeBeetleEntity, SlimeBeetleModel> renderer, EntityRendererProvider.Context manager) {
 			super(renderer);
+			innerModel =  new SlimeBeetleModel(manager.bakeLayer(TFModelLayers.SLIME_BEETLE), true);
 		}
 
 		@Override

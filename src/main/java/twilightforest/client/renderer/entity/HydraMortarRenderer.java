@@ -11,17 +11,19 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraMortarModel;
 import twilightforest.entity.boss.HydraMortarHead;
 
 public class HydraMortarRenderer extends EntityRenderer<HydraMortarHead> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
-	private final HydraMortarModel mortarModel = new HydraMortarModel();
+	private final HydraMortarModel mortarModel;
 
 	public HydraMortarRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 		this.shadowRadius = 0.5F;
+		mortarModel = new HydraMortarModel(manager.bakeLayer(TFModelLayers.HYDRA_MORTAR));
 	}
 
 	@Override

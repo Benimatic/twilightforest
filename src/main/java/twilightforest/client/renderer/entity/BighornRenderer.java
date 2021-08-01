@@ -19,7 +19,7 @@ public class BighornRenderer extends SheepRenderer {
 		super(manager);
 		this.shadowRadius = shadowSize;
 		this.model = (SheepModel<Sheep>) baseModel;
-		this.addLayer(new SheepFurLayer(this));
+		this.addLayer(new SheepFurLayer(this, manager.getModelSet()));
 	}
 
 	@Override

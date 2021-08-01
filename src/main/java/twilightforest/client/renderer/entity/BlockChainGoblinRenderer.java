@@ -19,6 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
@@ -28,11 +29,13 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblinEntity, M extend
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 
-	private final Model model = new SpikeBlockModel();
-	private final Model chainModel = new ChainModel();
+	private final Model model;
+	private final Model chainModel;
 
-	public BlockChainGoblinRenderer(EntityRendererProvider.Context manager, M model, float shadowSize) {
-		super(manager, model, shadowSize);
+	public BlockChainGoblinRenderer(EntityRendererProvider.Context manager, M goblinModel, float shadowSize) {
+		super(manager, goblinModel, shadowSize);
+		model = new SpikeBlockModel(manager.bakeLayer(TFModelLayers.CHAIN_BLOCK));
+		chainModel = new ChainModel(manager.bakeLayer(TFModelLayers.CHAIN));
 	}
 
 	@Override
