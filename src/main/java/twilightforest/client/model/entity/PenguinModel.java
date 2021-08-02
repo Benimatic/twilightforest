@@ -43,12 +43,12 @@ public class PenguinModel extends AgeableListModel<PenguinEntity> {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition partRoot = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-3.5F, -4.0F, -3.5F, 7.0F, 5.0F, 7.0F),
 				PartPose.offset(0.0F, 13.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("beak", CubeListBuilder.create()
+		head.addOrReplaceChild("beak", CubeListBuilder.create()
 						.texOffs(0, 13)
 						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 2.0F),
 				PartPose.offset(0.0F, -1.0F, -4.0F));

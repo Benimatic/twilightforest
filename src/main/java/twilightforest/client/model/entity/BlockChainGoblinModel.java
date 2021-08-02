@@ -52,17 +52,12 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
                         .addBox(-3.5F, 1.0F, -2.0F, 7.0F, 6.0F, 4.0F),
                 PartPose.offset(0.0F, 12.0F, 0.0F));
 
-        //kill the head and headwear to prevent issues
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
-        var hat = partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
-        //TODO Probably make the Helmet the head instead?
-
-        var helmet = hat.addOrReplaceChild("helmet", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 5)
                         .addBox(-2.5F, -7.0F, -2.5F, 5.0F, 8.0F, 5.0F),
                 PartPose.rotation(0.0F, 0.7853981633974483F, 0.0F));
 
-        helmet.addOrReplaceChild("horns", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
                         .texOffs(0, 18)
                         .addBox(-7.5F, -9.0F, -2.03F, 15.0F, 10.0F, 2.0F),
                 PartPose.rotation(0.0F, -0.7853981633974483F, 0.0F));

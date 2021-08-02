@@ -22,7 +22,7 @@ public class RedcapModel<T extends RedcapEntity> extends HumanoidModel<T> {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partRoot = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-3.5F, -5.0F, -4.0F, 7.0F, 7.0F, 7.0F),
 				PartPose.offset(0.0F, 4.0F, 0.0F));
@@ -32,12 +32,12 @@ public class RedcapModel<T extends RedcapEntity> extends HumanoidModel<T> {
 						.addBox(-2.0F, -6.0F, -3.0F, 4.0F, 5.0F, 7.0F),
 				PartPose.offset(0.0F, 7.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_ear", CubeListBuilder.create()
+		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
 						.texOffs(48, 20)
 						.addBox(3.0F, -10.0F, -1.0F, 2.0F, 3.0F, 1.0F),
 				PartPose.offset(0.0F, 7.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_ear", CubeListBuilder.create().mirror()
+		head.addOrReplaceChild("left_ear", CubeListBuilder.create().mirror()
 						.texOffs(48, 20)
 						.addBox(-5.0F, -10.0F, -1.0F, 2.0F, 3.0F, 1.0F),
 				PartPose.offset(0.0F, 7.0F, 0.0F));

@@ -11,8 +11,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.MinoshroomEntity;
 
-import net.minecraft.client.model.HumanoidModel.ArmPose;
-
 /**
  * ModelMinoshroom - MCVinnyq
  * Created using Tabula 8.0.0
@@ -189,14 +187,5 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomEntity> {
             this.rightFrontLeg.xRot -= f1 * (float) Math.PI * 0.3F;
             this.body.y = -6F + -3.0F * f1;
         }
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

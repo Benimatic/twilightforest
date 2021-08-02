@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.DeathTomeEntity;
 
 public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
-    private final ModelPart root, paperStorm;
+    private final ModelPart root, book;
     private final ModelPart pagesRight, pagesLeft;
     private final ModelPart flippingPageRight, flippingPageLeft;
     private final ModelPart coverRight, coverLeft;
@@ -19,6 +19,8 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
 
     public DeathTomeModel(ModelPart root) {
         this.root = root;
+
+        this.book = root.getChild("book");
 
         this.pagesRight = this.root.getChild("pages_right");
         this.pagesLeft = this.root.getChild("pages_left");
@@ -29,48 +31,50 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
         this.coverRight = this.root.getChild("cover_right");
         this.coverLeft = this.root.getChild("cover_left");
 
-        this.paperStorm = this.root.getChild("paper_storm");
+        ModelPart paperStorm = this.root.getChild("paper_storm");
 
-        this.loosePage0 = this.paperStorm.getChild("loose_page_0");
-        this.loosePage1 = this.paperStorm.getChild("loose_page_1");
-        this.loosePage2 = this.paperStorm.getChild("loose_page_2");
-        this.loosePage3 = this.paperStorm.getChild("loose_page_3");
+        this.loosePage0 = paperStorm.getChild("loose_page_0");
+        this.loosePage1 = paperStorm.getChild("loose_page_1");
+        this.loosePage2 = paperStorm.getChild("loose_page_2");
+        this.loosePage3 = paperStorm.getChild("loose_page_3");
     }
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("pages_right", CubeListBuilder.create()
+        var book = partRoot.addOrReplaceChild("book", CubeListBuilder.create(), PartPose.ZERO);
+
+        book.addOrReplaceChild("pages_right", CubeListBuilder.create()
                         .texOffs(0, 10)
                         .addBox(0.0F, -4.0F, -0.99F, 5.0F, 8.0F, 1.0F),
                 PartPose.ZERO);
 
-        partRoot.addOrReplaceChild("pages_left", CubeListBuilder.create()
+        book.addOrReplaceChild("pages_left", CubeListBuilder.create()
                         .texOffs(12, 10)
                         .addBox(0.0F, -4.0F, -0.01F, 5.0F, 8.0F, 1.0F),
                 PartPose.ZERO);
 
-        partRoot.addOrReplaceChild("flipping_page_right", CubeListBuilder.create()
+        book.addOrReplaceChild("flipping_page_right", CubeListBuilder.create()
                         .texOffs(24, 10)
                         .addBox(0.0F, -4.0F, 0.0F, 5.0F, 8.0F, 0.005F),
                 PartPose.ZERO);
 
-        partRoot.addOrReplaceChild("flipping_page_left", CubeListBuilder.create()
+        book.addOrReplaceChild("flipping_page_left", CubeListBuilder.create()
                         .texOffs(24, 10)
                         .addBox(0.0F, -4.0F, 0.0F, 5.0F, 8.0F, 0.005F),
                 PartPose.ZERO);
 
-        partRoot.addOrReplaceChild("cover_right", CubeListBuilder.create()
+        book.addOrReplaceChild("cover_right", CubeListBuilder.create()
                         .addBox(-6.0F, -5.0F, -0.005F, 6.0F, 10.0F, 0.005F),
                 PartPose.offset(0.0F, 0.0F, -1.0F));
 
-        partRoot.addOrReplaceChild("cover_left", CubeListBuilder.create()
+        book.addOrReplaceChild("cover_left", CubeListBuilder.create()
                         .texOffs(16, 0)
                         .addBox(0.0F, -5.0F, -0.005F, 6.0F, 10.0F, 0.005F),
                 PartPose.offset(0.0F, 0.0F, 1.0F));
 
-        partRoot.addOrReplaceChild("book_spine", CubeListBuilder.create()
+        book.addOrReplaceChild("book_spine", CubeListBuilder.create()
                         .texOffs(12, 0)
                         .addBox(-1.0F, -5.0F, 0.0F, 2.0F, 10.0F, 0.005F),
                 PartPose.rotation(0, Mth.HALF_PI, 0));
@@ -107,10 +111,10 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
 
     @Override
     public void setupAnim(DeathTomeEntity entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
-        this.root.zRot = -0.8726646259971647F;
+        this.book.zRot = -0.8726646259971647F;
 
-        this.paperStorm.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;
-        this.paperStorm.zRot = 0.8726646259971647F;
+        this.root.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;
+        this.root.zRot = 0.8726646259971647F;
     }
 
     @Override
@@ -121,7 +125,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
         float flipLeft = 0.6f;
 
         // hoveriness
-        this.root.setPos(0, 4 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
+        this.book.setPos(0, 4 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
 
         // book openness
         float openAngle = (Mth.sin(bounce * 0.4F) * 0.3F + 1.25F) * open;

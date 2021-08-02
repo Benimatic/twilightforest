@@ -61,22 +61,22 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
                         .addBox(-6.5F, 0.0F, -3.0F, 13.0F, 12.0F, 6.0F),
                 PartPose.offset(0.0F, 11.5F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+        var rightArm = partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
                         .texOffs(44, 16)
                         .addBox(-4.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offsetAndRotation(-5.5F, 14.0F, 0.0F, -2.3876104699914644F, 0.0F, 0.10000736647217022F));
 
-        partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+        var leftArm = partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
                         .texOffs(44, 32)
                         .addBox(0.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offsetAndRotation(5.5F, 14.0F, 0.0F, 0.20001473294434044F, 0.0F, 0.10000736647217022F));
 
-        partRoot.addOrReplaceChild("spear", CubeListBuilder.create()
+        rightArm.addOrReplaceChild("spear", CubeListBuilder.create()
                         .texOffs(108, 0)
                         .addBox(-1.0F, -19.0F, -1.0F, 2.0F, 40.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 8.5F, 0.0F, 1.5707963267948966F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("shield", CubeListBuilder.create()
+        leftArm.addOrReplaceChild("shield", CubeListBuilder.create()
                         .texOffs(63, 36)
                         .addBox(-6.0F, -6.0F, -2.0F, 12.0F, 20.0F, 2.0F),
                 PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 6.083185105107944F, 0.0F, 0.0F));

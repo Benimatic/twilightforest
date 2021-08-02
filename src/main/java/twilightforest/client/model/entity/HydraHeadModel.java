@@ -26,7 +26,7 @@ public class HydraHeadModel extends ListModel<HydraHeadEntity> {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition partRoot = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(260, 64)
 						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(236, 128)
@@ -35,12 +35,12 @@ public class HydraHeadModel extends ListModel<HydraHeadEntity> {
 						.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("mouth", CubeListBuilder.create()
+		head.addOrReplaceChild("mouth", CubeListBuilder.create()
 						.texOffs(240, 162)
 						.addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
 				PartPose.offset(0.0F, 10.0F, -14.0F));
 
-		partRoot.addOrReplaceChild("plate", CubeListBuilder.create()
+		head.addOrReplaceChild("plate", CubeListBuilder.create()
 						.texOffs(388, 0)
 						.addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
 						.texOffs(220, 0)

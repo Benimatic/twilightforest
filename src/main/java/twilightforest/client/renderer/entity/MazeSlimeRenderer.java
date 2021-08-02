@@ -2,16 +2,12 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.SlimeModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraft.client.renderer.entity.layers.SlimeOuterLayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.entity.MazeSlimeEntity;
@@ -21,8 +17,8 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlimeEntity, SlimeModel<M
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mazeslime.png");
 
 	public MazeSlimeRenderer(EntityRendererProvider.Context manager, float shadowSize) {
-		super(manager, new SlimeModel(manager.bakeLayer(TFModelLayers.MAZE_SLIME)), shadowSize);
-		this.addLayer(new SlimeOuterLayer(this, manager.getModelSet()));
+		super(manager, new SlimeModel<>(manager.bakeLayer(TFModelLayers.MAZE_SLIME)), shadowSize);
+		this.addLayer(new SlimeOuterLayer<>(this, manager.getModelSet()));
 	}
 
 	@Override

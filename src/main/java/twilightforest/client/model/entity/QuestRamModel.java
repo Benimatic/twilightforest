@@ -67,7 +67,7 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
                         .addBox(-5.0F, -11.0F, -2.0F, 10.0F, 12.0F, 12.0F),
                 PartPose.offsetAndRotation(0.0F, 2.0F, -3.0F, 0.6108652381980153F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("front_torso", CubeListBuilder.create()
+        var frontTorso = partRoot.addOrReplaceChild("front_torso", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-8.0F, -7.0F, -6.0F, 16.0F, 14.0F, 16.0F),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -107,7 +107,7 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
 
         for (int i = 0; i < 16; i++) {
 
-            partRoot.addOrReplaceChild("segment_" + i, CubeListBuilder.create()
+            frontTorso.addOrReplaceChild("segment_" + i, CubeListBuilder.create()
                             .texOffs(0, 112)
                             .addBox(-8.0F, -7.0F, 8.0F, 16.0F, 14.0F, 2.0F),
                     PartPose.offset(0.0F, 0.0F, 10.0F));

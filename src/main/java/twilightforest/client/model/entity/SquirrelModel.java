@@ -40,7 +40,7 @@ public class SquirrelModel extends QuadrupedModel<SquirrelEntity> {
                         .addBox(1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F),
                 PartPose.offset(0.0F, 20.0F, -3.0F));
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 8)
                         .addBox(-2.0F, -3.0F, -3.0F, 4.0F, 3.0F, 5.0F),
                 PartPose.offset(0.0F, 23.0F, 0.0F));
@@ -65,12 +65,12 @@ public class SquirrelModel extends QuadrupedModel<SquirrelEntity> {
                         .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
                 PartPose.offset(1.5F, 23.0F, 1.5F));
 
-        partRoot.addOrReplaceChild("tail_1", CubeListBuilder.create()
+        var tail1 = body.addOrReplaceChild("tail_1", CubeListBuilder.create()
                         .texOffs(18, 0)
                         .addBox(-1.5F, 0.0F, -1.5F, 3.0F, 4.0F, 3.0F),
                 PartPose.offsetAndRotation(0.0F, -3.0F, 2.0F, 2.530727415391778F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("tail_2", CubeListBuilder.create()
+        tail1.addOrReplaceChild("tail_2", CubeListBuilder.create()
                         .texOffs(13, 11)
                         .addBox(-1.5F, -1.0F, 0.0F, 3.0F, 3.0F, 5.0F),
                 PartPose.offset(0.0F, 4.0F, 0.5F));

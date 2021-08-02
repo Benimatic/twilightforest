@@ -33,7 +33,7 @@ public class HydraModel extends HierarchicalModel<HydraEntity> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head_1", CubeListBuilder.create()
+        var head1 = partRoot.addOrReplaceChild("head_1", CubeListBuilder.create()
                         .texOffs(260, 64)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(236, 128)
@@ -42,7 +42,7 @@ public class HydraModel extends HierarchicalModel<HydraEntity> {
                         .addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
                 PartPose.offset(-8.0F, -24.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("head_2", CubeListBuilder.create()
+        var head2 = partRoot.addOrReplaceChild("head_2", CubeListBuilder.create()
                         .texOffs(260, 64)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(236, 128)
@@ -51,7 +51,7 @@ public class HydraModel extends HierarchicalModel<HydraEntity> {
                         .addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
                 PartPose.offset(0.0F, -32.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("head_3", CubeListBuilder.create()
+        var head3 = partRoot.addOrReplaceChild("head_3", CubeListBuilder.create()
                         .texOffs(260, 64)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(236, 128)
@@ -60,83 +60,83 @@ public class HydraModel extends HierarchicalModel<HydraEntity> {
                         .addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
                 PartPose.offset(8.0F, -24.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("mouth_1", CubeListBuilder.create()
+        head1.addOrReplaceChild("mouth_1", CubeListBuilder.create()
                         .texOffs(240, 162)
                         .addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
                 PartPose.offset(0.0F, 8.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("mouth_2", CubeListBuilder.create()
+        head2.addOrReplaceChild("mouth_2", CubeListBuilder.create()
                         .texOffs(240, 162)
                         .addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
                 PartPose.offset(0.0F, 8.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("mouth_3", CubeListBuilder.create()
+        head3.addOrReplaceChild("mouth_3", CubeListBuilder.create()
                         .texOffs(240, 162)
                         .addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
                 PartPose.offset(0.0F, 8.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("plate_1", CubeListBuilder.create()
+        head1.addOrReplaceChild("plate_1", CubeListBuilder.create()
                         .texOffs(388, 0)
                         .addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
                         .texOffs(220, 0)
                         .addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
                 PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, -0.7853981633974483F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("plate_2", CubeListBuilder.create()
+        head2.addOrReplaceChild("plate_2", CubeListBuilder.create()
                         .texOffs(388, 0)
                         .addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
                         .texOffs(220, 0)
                         .addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
                 PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, -0.7853981633974483F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("plate_3", CubeListBuilder.create()
+        head3.addOrReplaceChild("plate_3", CubeListBuilder.create()
                         .texOffs(388, 0)
                         .addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
                         .texOffs(220, 0)
                         .addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
                 PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, -0.7853981633974483F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("neck_1", CubeListBuilder.create()
+        var neck1 = partRoot.addOrReplaceChild("neck_1", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(-42.0F, -48.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("neck_2", CubeListBuilder.create()
+        var neck2 = partRoot.addOrReplaceChild("neck_2", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(0.0F, -58.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("neck_3", CubeListBuilder.create()
+        var neck3 = partRoot.addOrReplaceChild("neck_3", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(42.0F, -48.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("neck_4", CubeListBuilder.create()
+        var neck4 = neck1.addOrReplaceChild("neck_4", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(-16.0F, -24.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("neck_5", CubeListBuilder.create()
+        var neck5 = neck2.addOrReplaceChild("neck_5", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(-16.0F, -24.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("neck_6", CubeListBuilder.create()
+        var neck6 = neck3.addOrReplaceChild("neck_6", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(-8.0F, -24.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("neck_7", CubeListBuilder.create()
+        neck4.addOrReplaceChild("neck_7", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(8.0F, -24.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("neck_8", CubeListBuilder.create()
+        neck5.addOrReplaceChild("neck_8", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(16.0F, -24.0F, -16.0F));
 
-        partRoot.addOrReplaceChild("neck_9", CubeListBuilder.create()
+        neck6.addOrReplaceChild("neck_9", CubeListBuilder.create()
                         .texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(16.0F, -24.0F, -16.0F));
@@ -165,21 +165,21 @@ public class HydraModel extends HierarchicalModel<HydraEntity> {
                         .addBox(-14.0F, 36.0F, -22.0F, 28.0F, 8.0F, 6.0F),
                 PartPose.offset(40.0F, -20.0F, -12.0F));
 
-        partRoot.addOrReplaceChild("tail_1", CubeListBuilder.create()
+        var tail1 = partRoot.addOrReplaceChild("tail_1", CubeListBuilder.create()
                         .texOffs(260, 0)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0)
                         .addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(0.0F, 8.0F, 80.0F));
 
-        partRoot.addOrReplaceChild("tail_2", CubeListBuilder.create()
+        var tail2 = tail1.addOrReplaceChild("tail_2", CubeListBuilder.create()
                         .texOffs(260, 0)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0)
                         .addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(0.0F, 0.0F, 32.0F));
 
-        partRoot.addOrReplaceChild("tail_3", CubeListBuilder.create()
+        tail2.addOrReplaceChild("tail_3", CubeListBuilder.create()
                         .texOffs(260, 0)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0)

@@ -33,12 +33,12 @@ public class CarminiteGolemModel<T extends CarminiteGolemEntity> extends Hierarc
 						.addBox(-4F, -6F, -3.5F, 8, 4, 6),
 				PartPose.offset(0F, -11F, -2F));
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 26)
 						.addBox(-8F, 0F, -5F, 16, 10, 10),
 				PartPose.offset(0F, -13F, 0F));
 
-		partRoot.addOrReplaceChild("ribs", CubeListBuilder.create()
+		body.addOrReplaceChild("ribs", CubeListBuilder.create()
 						.texOffs(0, 46)
 						.addBox(-5F, 0F, -3F, 10, 6, 6),
 				PartPose.offset(0F, -3F, 0F));
@@ -74,12 +74,12 @@ public class CarminiteGolemModel<T extends CarminiteGolemEntity> extends Hierarc
 						.addBox(0F, -1F, -2F, 2, 5, 3),
 				PartPose.offset(8F, -12F, 0F));
 
-		partRoot.addOrReplaceChild("hips", CubeListBuilder.create()
+		body.addOrReplaceChild("hips", CubeListBuilder.create()
 						.texOffs(84, 25)
 						.addBox(-5F, 0F, -2F, 10, 3, 4),
 				PartPose.offset(0F, 1F, 0F));
 
-		partRoot.addOrReplaceChild("spine", CubeListBuilder.create()
+		body.addOrReplaceChild("spine", CubeListBuilder.create()
 						.texOffs(84, 18)
 						.addBox(-1.5F, 0F, -1.5F, 3, 4, 3),
 				PartPose.offset(0F, -3F, 0F));

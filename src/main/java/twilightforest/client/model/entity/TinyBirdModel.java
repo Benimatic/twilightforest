@@ -31,9 +31,9 @@ public class TinyBirdModel extends AgeableListModel<TinyBirdEntity> {
 
     public TinyBirdModel(ModelPart root) {
         this.body = root.getChild("body");
-        this.head = body.getChild("head");
-        this.rightFoot = body.getChild("right_foot");
-        this.leftFoot = body.getChild("left_foot");
+        this.head = root.getChild("head");
+        this.rightFoot = root.getChild("right_foot");
+        this.leftFoot = root.getChild("left_foot");
         this.rightWing = body.getChild("right_wing");
         this.leftWing = body.getChild("left_wing");
         this.tail = body.getChild("tail");
@@ -52,7 +52,7 @@ public class TinyBirdModel extends AgeableListModel<TinyBirdEntity> {
                         .addBox(-1.5F, -5.0F, 1.0F, 3.0F, 3.0F, 0.0F),
                 PartPose.offset(0.0F, 21.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(12, 0)
                         .addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 3.0F),
                 PartPose.offset(0.0F, 20.0F, 0.0F));
@@ -67,17 +67,17 @@ public class TinyBirdModel extends AgeableListModel<TinyBirdEntity> {
                         .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F),
                 PartPose.offset(1.0F, 23.0F, 2.0F));
 
-        partRoot.addOrReplaceChild("right_wing", CubeListBuilder.create()
+        body.addOrReplaceChild("right_wing", CubeListBuilder.create()
                         .texOffs(24, 0)
                         .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 2.0F, 3.0F),
                 PartPose.offset(-2.0F, 0.0F, 1.0F));
 
-        partRoot.addOrReplaceChild("left_wing", CubeListBuilder.create()
+        body.addOrReplaceChild("left_wing", CubeListBuilder.create()
                         .texOffs(24, 5)
                         .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 2.0F, 3.0F),
                 PartPose.offset(2.0F, 0.0F, 1.0F));
 
-        partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
+        body.addOrReplaceChild("tail", CubeListBuilder.create()
                         .texOffs(1, 6)
                         .addBox(-2.5F, 0.0F, 0.0F, 5.0F, 0.0F, 5.0F),
                 PartPose.offsetAndRotation(0.0F, 1.0F, 3.0F, 0.4363323129985824F, 0.0F, 0.0F));

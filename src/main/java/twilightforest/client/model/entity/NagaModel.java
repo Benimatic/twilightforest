@@ -40,12 +40,12 @@ public class NagaModel<T extends Entity> extends ListModel<T> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
                 PartPose.offset(0.0F, 8.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("tongue", CubeListBuilder.create()
+        head.addOrReplaceChild("tongue", CubeListBuilder.create()
                         .texOffs(84, 0)
                         .addBox(-6.0F, 0.0F, -12.0F, 12.0F, 0.0F, 12.0F),
                 PartPose.offsetAndRotation(0.0F, 10.0F, -16.0F, 0.4363323129985824F, 0.0F, 0.0F));

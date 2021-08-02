@@ -39,19 +39,7 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrabEntity> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("helmet", CubeListBuilder.create()
-                        .texOffs(40, 0)
-                        .addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F)
-                        .texOffs(16, 0)
-                        .addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F, new CubeDeformation(-0.25F)),
-                PartPose.offsetAndRotation(0.0F, -1.0F, 0.5F, -1.3089969389957472F, -0.2617993877991494F, 0.7463027588580033F));
-
-        partRoot.addOrReplaceChild("horns", CubeListBuilder.create()
-                        .texOffs(18, 23)
-                        .addBox(-11.5F, -12.0F, -0.67F, 23.0F, 9.0F, 0.0F),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
-
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 9)
                         .addBox(-2.5F, -4.0F, -2.5F, 5.0F, 4.0F, 5.0F)
                         .texOffs(58, 0)
@@ -60,12 +48,24 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrabEntity> {
                         .addBox(0.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F),
                 PartPose.offset(0.0F, 21.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_claw", CubeListBuilder.create()
+        body.addOrReplaceChild("helmet", CubeListBuilder.create()
+                        .texOffs(40, 0)
+                        .addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F)
+                        .texOffs(16, 0)
+                        .addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F, new CubeDeformation(-0.25F)),
+                PartPose.offsetAndRotation(0.0F, -1.0F, 0.5F, -1.3089969389957472F, -0.2617993877991494F, 0.7463027588580033F));
+
+        body.addOrReplaceChild("horns", CubeListBuilder.create()
+                        .texOffs(18, 23)
+                        .addBox(-11.5F, -12.0F, -0.67F, 23.0F, 9.0F, 0.0F),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
+
+        body.addOrReplaceChild("right_claw", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
                 PartPose.offsetAndRotation(-3.0F, 0.0F, -3.0F, 0.0F, 0.39269908169872414F, 0.0F));
 
-        partRoot.addOrReplaceChild("left_claw", CubeListBuilder.create()
+        body.addOrReplaceChild("left_claw", CubeListBuilder.create()
                         .texOffs(0, 23)
                         .addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
                 PartPose.offsetAndRotation(3.0F, 0.0F, -3.0F, 0.0F, -0.39269908169872414F, 0.0F));

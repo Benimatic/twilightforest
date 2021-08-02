@@ -47,12 +47,12 @@ public class UnstableIceCoreModel<T extends IceMobEntity> extends HierarchicalMo
 		for (int i = 0; i < 16; i++) {
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			partRoot.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+			var spike = partRoot.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
 							.texOffs(0, 16)
 							.addBox(-1.0F, 6.0F, -1.0F, 2, spikeLength, 2),
 					PartPose.offset(0.0F, 4.0F, 0.0F));
 
-			partRoot.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
+			spike.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
 							.texOffs(8, 16)
 							.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
 					PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));

@@ -29,7 +29,7 @@ public class KoboldModel extends HumanoidModel<KoboldEntity> {
         MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(20, 0)
                         .addBox(-1.5F, -3.0F, -6.0F, 3.0F, 2.0F, 3.0F),
                 PartPose.offset(0.0F, 12.0F, 0.0F));
@@ -37,17 +37,17 @@ public class KoboldModel extends HumanoidModel<KoboldEntity> {
         partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
                 PartPose.ZERO);
 
-        partRoot.addOrReplaceChild("right_ear", CubeListBuilder.create()
+        head.addOrReplaceChild("right_ear", CubeListBuilder.create()
                         .texOffs(32, 0)
                         .addBox(-2.0F, -4.0F, 0.0F, 4.0F, 4.0F, 1.0F),
                 PartPose.offsetAndRotation(-3.0F, -4.0F, 0.0F, 0.0F, 0.0F, -1.3089969389957472F));
 
-        partRoot.addOrReplaceChild("left_ear", CubeListBuilder.create()
+        head.addOrReplaceChild("left_ear", CubeListBuilder.create()
                         .texOffs(42, 0)
                         .addBox(-2.0F, -4.0F, 0.0F, 4.0F, 4.0F, 1.0F),
                 PartPose.offsetAndRotation(-3.0F, -4.0F, 0.0F, 0.0F, 0.0F, 1.3089969389957472F));
         
-        partRoot.addOrReplaceChild("mouth", CubeListBuilder.create()
+        head.addOrReplaceChild("mouth", CubeListBuilder.create()
                         .texOffs(26, 5)
                         .addBox(-1.5F, 0.0F, -3.0F, 3.0F, 1.0F, 3.0F),
                 PartPose.offsetAndRotation(0.0F, -1.0F, -3.0F, 0.2181661564992912F, 0.0F, 0.0F));

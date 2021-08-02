@@ -22,7 +22,7 @@ public class TrollModel extends HumanoidModel<TrollEntity> {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition partRoot = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 10.0F),
 				PartPose.offset(0.0F, -9.0F, -6.0F));
@@ -30,7 +30,7 @@ public class TrollModel extends HumanoidModel<TrollEntity> {
 		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("nose", CubeListBuilder.create()
+		head.addOrReplaceChild("nose", CubeListBuilder.create()
 						.texOffs(0, 21)
 						.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F),
 				PartPose.offset(0.0F, -2.0F, -4.0F));
