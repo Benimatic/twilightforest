@@ -1,17 +1,15 @@
 package twilightforest.item;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
-
-import net.minecraft.world.item.Item.Properties;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EnderBowItem extends BowItem {
@@ -22,13 +20,11 @@ public class EnderBowItem extends BowItem {
 	}
 
 	@SubscribeEvent
-	public static void onHit(ProjectileImpactEvent evt) {
-		AbstractArrow arrow = (AbstractArrow) evt.getProjectile();
-		if (arrow.getOwner() instanceof Player
+	public static void onHit(ProjectileImpactEvent<AbstractArrow> evt) {
+		AbstractArrow arrow = evt.getProjectile();
+		if (arrow.getOwner() instanceof Player player
 						&& evt.getRayTraceResult() instanceof EntityHitResult
-						&& ((EntityHitResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity) {
-			Player player = (Player) arrow.getOwner();
-			LivingEntity living = (LivingEntity) ((EntityHitResult) evt.getRayTraceResult()).getEntity();
+						&& ((EntityHitResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity living) {
 
 			if (arrow.getPersistentData().contains(KEY) && player.getVehicle() == null) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();

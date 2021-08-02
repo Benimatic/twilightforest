@@ -3,6 +3,7 @@ package twilightforest.tileentity.spawner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.UrGhastEntity;
 import twilightforest.tileentity.TFTileEntities;
@@ -11,6 +12,10 @@ public class UrGhastSpawnerTileEntity extends BossSpawnerTileEntity<UrGhastEntit
 
 	public UrGhastSpawnerTileEntity(BlockPos pos, BlockState state) {
 		super(TFTileEntities.UR_GHAST_SPAWNER.get(), TFEntities.ur_ghast, pos, state);
+	}
+
+	public UrGhastSpawnerTileEntity() {
+		this(BlockPos.ZERO, TFBlocks.boss_spawner_ur_ghast.get().defaultBlockState());
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package twilightforest.tileentity.spawner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.SnowQueenEntity;
 import twilightforest.tileentity.TFTileEntities;
@@ -11,6 +12,10 @@ public class SnowQueenSpawnerTileEntity extends BossSpawnerTileEntity<SnowQueenE
 
 	public SnowQueenSpawnerTileEntity(BlockPos pos, BlockState state) {
 		super(TFTileEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.snow_queen, pos, state);
+	}
+
+	public SnowQueenSpawnerTileEntity() {
+		this(BlockPos.ZERO, TFBlocks.boss_spawner_snow_queen.get().defaultBlockState());
 	}
 
 	@Override
