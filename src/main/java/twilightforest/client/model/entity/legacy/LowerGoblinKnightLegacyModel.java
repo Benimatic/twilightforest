@@ -4,65 +4,63 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.LowerGoblinKnightEntity;
 
-import net.minecraft.client.model.HumanoidModel.ArmPose;
-
 public class LowerGoblinKnightLegacyModel extends HumanoidModel<LowerGoblinKnightEntity> {
 
-	public ModelPart tunic;
+	ModelPart tunic;
 
-	public LowerGoblinKnightLegacyModel() {
-		super(0.0F, 0.0F, 128, 64);
+	public LowerGoblinKnightLegacyModel(ModelPart root) {
+		super(root);
+		this.tunic = root.getChild("tunic");
+	}
 
-		this.crouching = false;
-		this.texWidth = 128;
-		this.texHeight = 64;
+	public static LayerDefinition create() {
+		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
+		PartDefinition partRoot = mesh.getRoot();
 
-//FIXME: AtomicBlom: Replace with something like LayerCape
-/*
-		this.bipedCloak = new ModelRenderer(this, 0, 0);
-        this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
-*/
-//FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
-/*
-        this.bipedEars = new ModelRenderer(this, 24, 0);
-        this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
-*/
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 32)
+						.addBox(-2.5F, -5.0F, -3.5F, 5, 5, 5),
+				PartPose.offset(0.0F, 10.0F, 1.0F));
 
-		this.head = new ModelPart(this, 0, 32);
-		this.head.addBox(-2.5F, -5.0F, -3.5F, 5, 5, 5);
-		this.head.setPos(0.0F, 10.0F, 1.0F);
+		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+				PartPose.ZERO);
 
-		this.hat = new ModelPart(this, 0, 0);
-		this.hat.addBox(0, 0, 0, 0, 0, 0);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(16, 48)
+						.addBox(-3.5F, 0.0F, -2.0F, 7, 8, 4),
+				PartPose.offset(0.0F, 8.0F, 0.0F));
 
-		this.body = new ModelPart(this, 16, 48);
-		this.body.addBox(-3.5F, 0.0F, -2.0F, 7, 8, 4);
-		this.body.setPos(0.0F, 8.0F, 0.0F);
+		partRoot.addOrReplaceChild("tunic", CubeListBuilder.create()
+						.texOffs(64, 19)
+						.addBox(-6.0F, 0.0F, -3.0F, 12, 9, 6),
+				PartPose.offset(0F, 7.5F, 0.0F));
 
-		this.rightArm = new ModelPart(this, 40, 48);
-		this.rightArm.addBox(-2.0F, -2.0F, -1.5F, 2, 8, 3);
-		this.rightArm.setPos(-3.5F, 10.0F, 0.0F);
+		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(40, 48)
+						.addBox(-2.0F, -2.0F, -1.5F, 2, 8, 3),
+				PartPose.offset(-3.5F, 10.0F, 0.0F));
 
-		this.leftArm = new ModelPart(this, 40, 48);
-		this.leftArm.mirror = true;
-		this.leftArm.addBox(0.0F, -2.0F, -1.5F, 2, 8, 3);
-		this.leftArm.setPos(3.5F, 10.0F, 0.0F);
+		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+						.texOffs(40, 48)
+						.addBox(0.0F, -2.0F, -1.5F, 2, 8, 3),
+				PartPose.offset(3.5F, 10.0F, 0.0F));
 
-		this.rightLeg = new ModelPart(this, 0, 48);
-		this.rightLeg.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4);
-		this.rightLeg.setPos(-2.5F, 16.0F, 0.0F);
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(0, 48)
+						.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4),
+				PartPose.offset(-2.5F, 16.0F, 0.0F));
 
-		this.leftLeg = new ModelPart(this, 0, 48);
-		this.leftLeg.mirror = true;
-		this.leftLeg.addBox(-1.0F, 0.0F, -2.0F, 4, 8, 4);
-		this.leftLeg.setPos(2.5F, 16.0F, 0.0F);
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 48)
+						.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4),
+				PartPose.offset(2.5F, 16.0F, 0.0F));
 
-		this.tunic = new ModelPart(this, 64, 19);
-		this.tunic.addBox(-6.0F, 0.0F, -3.0F, 12, 9, 6);
-		this.tunic.setPos(0F, 7.5F, 0.0F);
+		return LayerDefinition.create(mesh, 128, 64);
 	}
 
 	/**

@@ -7,12 +7,12 @@ import twilightforest.entity.boss.UrGhastEntity;
 
 import java.util.Random;
 
-public class ModelTFTowerBossLegacy extends TFGhastModel<UrGhastEntity> {
+public class UrGhastLegacyModel extends TFGhastModel<UrGhastEntity> {
 
 	protected ModelPart[][] subTentacles;
 	protected ModelPart[][] smallTentacles;
 
-	public ModelTFTowerBossLegacy() {
+	public UrGhastLegacyModel() {
 		super();
 
 		this.smallTentacles = new ModelPart[2][3];

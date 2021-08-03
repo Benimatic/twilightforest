@@ -2,48 +2,60 @@ package twilightforest.client.model.entity.legacy;
 
 import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import twilightforest.entity.passive.BighornEntity;
 
 public class BighornLegacyModel<T extends BighornEntity> extends SheepModel<T> {
 
-	public BighornLegacyModel() {
-		super();
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-3F, -4F, -6F, 6, 6, 7, 0F);
-		head.setPos(0F, 6F, -8F);
+	public BighornLegacyModel(ModelPart root) {
+		super(root);
+	}
 
-		body = new ModelPart(this, 36, 10);
-		body.addBox(-4F, -9F, -7F, 8, 15, 6, 0F);
-		body.setPos(0F, 5F, 2F);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = SheepModel.createBodyMesh(0, CubeDeformation.NONE);
+		PartDefinition partRoot = mesh.getRoot();
 
-		leg0 = new ModelPart(this, 0, 16);
-		leg0.addBox(-2F, 0.0F, -2F, 4, 12, 4, 0F);
-		leg0.setPos(-3F, 12F, 7F);
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F)
+						.texOffs(28, 16)
+						.addBox(-5.0F, -4.0F, -4.0F, 2.0F, 2.0F, 2.0F)
+						.texOffs(16, 13)
+						.addBox(-6.0F, -5.0F, -3.0F, 2.0F, 2.0F, 4.0F)
+						.texOffs(16, 19)
+						.addBox(-7.0F, -4.0F, 0.0F, 2.0F, 5.0F, 2.0F)
+						.texOffs(18, 27)
+						.addBox(-8.0F, 0.0F, -2.0F, 2.0F, 2.0F, 3.0F)
+						.texOffs(28, 27)
+						.addBox(-9.0F, -1.0F, -3.0F, 2.0F, 2.0F, 1.0F),
+				PartPose.offset(0.0F, 6.0F, -8.0F));
 
-		leg1 = new ModelPart(this, 0, 16);
-		leg1.addBox(-2F, 0.0F, -2F, 4, 12, 4, 0F);
-		leg1.setPos(3F, 12F, 7F);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(36, 10)
+						.addBox(-4.0F, -9.0F, -7.0F, 8.0F, 15.0F, 6.0F),
+				PartPose.offset(0.0F, 5.0F, 2.0F));
 
-		leg2 = new ModelPart(this, 0, 16);
-		leg2.addBox(-2F, 0.0F, -2F, 4, 12, 4, 0F);
-		leg2.setPos(-3F, 12F, -5F);
+		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.offset(-3.0F, 12.0F, 7.0F));
 
-		leg3 = new ModelPart(this, 0, 16);
-		leg3.addBox(-2F, 0.0F, -2F, 4, 12, 4, 0F);
-		leg3.setPos(3F, 12F, -5F);
+		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.offset(3.0F, 12.0F, 7.0F));
 
-		// curly horn 1
-		head.texOffs(28, 16).addBox(-5F, -4F, -4F, 2, 2, 2, 0F);
-		head.texOffs(16, 13).addBox(-6F, -5F, -3F, 2, 2, 4, 0F);
-		head.texOffs(16, 19).addBox(-7F, -4F, 0F, 2, 5, 2, 0F);
-		head.texOffs(18, 27).addBox(-8F, 0F, -2F, 2, 2, 3, 0F);
-		head.texOffs(28, 27).addBox(-9F, -1F, -3F, 2, 2, 1, 0F);
+		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.offset(-3.0F, 12.0F, -5.0F));
 
-		// curly horn 2
-		head.texOffs(28, 16).addBox(3F, -4F, -4F, 2, 2, 2, 0F);
-		head.texOffs(16, 13).addBox(4F, -5F, -3F, 2, 2, 4, 0F);
-		head.texOffs(16, 19).addBox(5F, -4F, 0F, 2, 5, 2, 0F);
-		head.texOffs(18, 27).addBox(6F, 0F, -2F, 2, 2, 3, 0F);
-		head.texOffs(28, 27).addBox(7F, -1F, -3F, 2, 2, 1, 0F);
+		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.offset(3.0F, 12.0F, -5.0F));
+
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 }

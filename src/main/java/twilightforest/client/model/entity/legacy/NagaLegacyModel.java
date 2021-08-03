@@ -5,22 +5,41 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 import twilightforest.entity.boss.NagaEntity;
 import twilightforest.entity.boss.NagaSegmentEntity;
 
 public class NagaLegacyModel<T extends Entity> extends ListModel<T> {
 
+	public ModelPart head;
+	public ModelPart body;
 	private T entity;
 
-	public NagaLegacyModel() {
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-8F, -12F, -8F, 16, 16, 16, 0F);
-		head.setPos(0F, 0F, 0F);
+	public NagaLegacyModel(ModelPart root) {
+		this.head = root.getChild("head");
+		this.body = root.getChild("body");
+	}
 
-		body = new ModelPart(this, 0, 0);
-		body.addBox(-8F, -16F, -8F, 16, 16, 16, 0F);
-		body.setPos(0F, 0F, 0F);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
+
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-8F, -12F, -8F, 16, 16, 16),
+				PartPose.ZERO);
+
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-8F, -12F, -8F, 16, 16, 16),
+				PartPose.ZERO);
+
+		return LayerDefinition.create(mesh, 64, 64);
 	}
 
 	@Override
@@ -46,8 +65,4 @@ public class NagaLegacyModel<T extends Entity> extends ListModel<T> {
 	public void setupAnim(T entity, float v, float v1, float v2, float v3, float v4) {
 		this.entity = entity;
 	}
-
-	//fields
-	public ModelPart head;
-	public ModelPart body;
 }

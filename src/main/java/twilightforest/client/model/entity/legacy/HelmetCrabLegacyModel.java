@@ -6,233 +6,176 @@
 
 package twilightforest.client.model.entity.legacy;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.HelmetCrabEntity;
 
 /**
  * Helmet crab model, based partially on some of the spider code
  */
-public class HelmetCrabLegacyModel extends ListModel<HelmetCrabEntity> {
+public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrabEntity> {
 	//fields
-	ModelPart body;
-	ModelPart helmetBase;
-	ModelPart Leg8;
-	ModelPart Leg6;
-	ModelPart Leg4;
-	ModelPart rightArm;
-	ModelPart Leg5;
-	ModelPart Leg3;
-	ModelPart clawbase;
-	ModelPart clawtop;
-	ModelPart clawbottom;
-	ModelPart righteye;
-	ModelPart lefteye;
+	ModelPart root, body, rightArm;
+	ModelPart leg1, leg2, leg3, leg4, leg5;
 
-	public ModelPart helmet;
-	public ModelPart righthorn1;
-	public ModelPart righthorn2;
-	public ModelPart lefthorn1;
-	public ModelPart lefthorn2;
+	public HelmetCrabLegacyModel(ModelPart root) {
+		this.root = root;
 
+		this.body = root.getChild("body");
+		this.rightArm = root.getChild("right_arm");
 
-	public HelmetCrabLegacyModel() {
-		texWidth = 64;
-		texHeight = 32;
-
-		body = new ModelPart(this, 32, 4);
-		body.addBox(-2.5F, -2.5F, -5F, 5, 5, 5);
-		body.setPos(0F, 19F, 0F);
-
-		helmetBase = new ModelPart(this, 0, 0);
-		helmetBase.addBox(0, 0, 0, 0, 0, 0);
-		helmetBase.setPos(0F, 18F, 0F);
-		this.helmetBase.xRot = -100F / (180F / (float) Math.PI);
-		this.helmetBase.yRot = -30F / (180F / (float) Math.PI);
-
-		this.helmet = new ModelPart(this, 0, 14);
-		this.helmet.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7);
-		this.helmet.yRot = 45F / (180F / (float) Math.PI);
-
-		this.righthorn1 = new ModelPart(this, 28, 14);
-		this.righthorn1.addBox(-6F, -1.5F, -1.5F, 7, 3, 3);
-		this.righthorn1.setPos(-3.5F, -9F, 0.0F);
-		this.righthorn1.yRot = -15F / (180F / (float) Math.PI);
-		this.righthorn1.zRot = 10F / (180F / (float) Math.PI);
-
-		this.righthorn2 = new ModelPart(this, 28, 20);
-		this.righthorn2.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2);
-		this.righthorn2.setPos(-5.5F, 0.0F, 0.0F);
-		this.righthorn2.yRot = -15F / (180F / (float) Math.PI);
-		this.righthorn2.zRot = 10F / (180F / (float) Math.PI);
-
-		this.righthorn1.addChild(righthorn2);
-
-		this.lefthorn1 = new ModelPart(this, 28, 14);
-		this.lefthorn1.mirror = true;
-		this.lefthorn1.addBox(-1F, -1.5F, -1.5F, 7, 3, 3);
-		this.lefthorn1.setPos(3.5F, -9F, 0.0F);
-		this.lefthorn1.yRot = 15F / (180F / (float) Math.PI);
-		this.lefthorn1.zRot = -10F / (180F / (float) Math.PI);
-
-		this.lefthorn2 = new ModelPart(this, 28, 20);
-		this.lefthorn2.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2);
-		this.lefthorn2.setPos(5.5F, 0.0F, 0.0F);
-		this.lefthorn2.yRot = 15F / (180F / (float) Math.PI);
-		this.lefthorn2.zRot = -10F / (180F / (float) Math.PI);
-
-		this.lefthorn1.addChild(lefthorn2);
-
-		this.helmetBase.addChild(helmet);
-		this.helmetBase.addChild(righthorn1);
-		this.helmetBase.addChild(lefthorn1);
-
-		Leg8 = new ModelPart(this, 18, 0);
-		Leg8.addBox(-1F, -1F, -1F, 8, 2, 2);
-		Leg8.setPos(3F, 20F, -3F);
-		setRotation(Leg8, 0F, 0.5759587F, 0.1919862F);
-
-		Leg6 = new ModelPart(this, 18, 0);
-		Leg6.addBox(-1F, -1F, -1F, 8, 2, 2);
-		Leg6.setPos(3F, 20F, -2F);
-		setRotation(Leg6, 0F, 0.2792527F, 0.1919862F);
-
-		Leg4 = new ModelPart(this, 18, 0);
-		Leg4.addBox(-1F, -1F, -1F, 8, 2, 2);
-		Leg4.setPos(3F, 20F, -1F);
-		setRotation(Leg4, 0F, -0.2792527F, 0.1919862F);
-
-		rightArm = new ModelPart(this, 38, 0);
-		rightArm.addBox(-7F, -1F, -1F, 8, 2, 2);
-		rightArm.setPos(-3F, 20F, -3F);
-		setRotation(rightArm, 0F, -1.319531F, -0.1919862F);
-
-		Leg5 = new ModelPart(this, 18, 0);
-		Leg5.addBox(-7F, -1F, -1F, 8, 2, 2);
-		Leg5.setPos(-3F, 20F, -2F);
-		setRotation(Leg5, 0F, -0.2792527F, -0.1919862F);
-
-		Leg3 = new ModelPart(this, 18, 0);
-		Leg3.addBox(-7F, -1F, -1F, 8, 2, 2);
-		Leg3.setPos(-3F, 20F, -1F);
-		setRotation(Leg3, 0F, 0.2792527F, -0.1919862F);
-
-		clawbase = new ModelPart(this, 0, 0);
-		clawbase.addBox(0F, -1.5F, -1F, 3, 3, 2);
-		clawbase.setPos(-6F, 0F, -0.5F);
-		setRotation(clawbase, 0.0F, (float) (Math.PI / 2.0F), 0);
-
-		clawtop = new ModelPart(this, 0, 5);
-		clawtop.addBox(0F, -0.5F, -1F, 3, 1, 2);
-		clawtop.setPos(3F, -1F, 0F);
-		setRotation(clawtop, 0F, 0F, -0.1858931F);
-
-		clawbottom = new ModelPart(this, 0, 8);
-		clawbottom.addBox(0F, -0.5F, -1F, 3, 2, 2);
-		clawbottom.setPos(3F, 0F, 0F);
-		setRotation(clawbottom, 0F, 0F, 0.2602503F);
-
-		this.clawbase.addChild(clawtop);
-		this.clawbase.addChild(clawbottom);
-
-		this.rightArm.addChild(clawbase);
-
-		righteye = new ModelPart(this, 10, 0);
-		righteye.addBox(-1F, -3F, -1F, 2, 3, 2);
-		righteye.setPos(-1F, -1F, -4F);
-		setRotation(righteye, (float) (Math.PI / 4.0F), 0.0F, -(float) (Math.PI / 4.0F));
-
-		lefteye = new ModelPart(this, 10, 0);
-		lefteye.addBox(-1F, -3F, -1F, 2, 3, 2);
-		lefteye.setPos(1F, -1F, -4F);
-		setRotation(lefteye, (float) (Math.PI / 4.0F), 0.0F, (float) (Math.PI / 4.0F));
-
-		this.body.addChild(righteye);
-		this.body.addChild(lefteye);
+		this.leg1 = root.getChild("leg_1");
+		this.leg2 = root.getChild("leg_2");
+		this.leg3 = root.getChild("leg_3");
+		this.leg4 = root.getChild("leg_4");
+		this.leg5 = root.getChild("leg_5");
 	}
 
-	/**
-	 * Sets the models various rotation angles then renders the model.
-	 */
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//
-////		clawbase.render(scale);
-////		clawtop.render(scale);
-////		clawbottom.render(scale);
-////		righteye.render(scale);
-////		lefteye.render(scale);
-//	}
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
+
+		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(32, 4)
+						.addBox(-2.5F, -2.5F, -5F, 5, 5, 5),
+				PartPose.offset(0F, 19F, 0F));
+
+		body.addOrReplaceChild("right_eye", CubeListBuilder.create()
+						.texOffs(10, 0)
+						.addBox(-1F, -3F, -1F, 2, 3, 2),
+				PartPose.offsetAndRotation(-1F, -1F, -4F, (Mth.PI / 4.0F), 0.0F, -(Mth.PI / 4.0F)));
+
+		body.addOrReplaceChild("left_eye", CubeListBuilder.create()
+						.texOffs(10, 0)
+						.addBox(-1F, -3F, -1F, 2, 3, 2),
+				PartPose.offsetAndRotation(1F, -1F, -4F, (Mth.PI / 4.0F), 0.0F, (Mth.PI / 4.0F)));
+
+		var helmetBase = body.addOrReplaceChild("helmet_base", CubeListBuilder.create(),
+				PartPose.offsetAndRotation(0F, 18F, 0F, -100F / (180F / Mth.PI), -30F / (180F / Mth.PI), 0.0F));
+
+		helmetBase.addOrReplaceChild("helmet", CubeListBuilder.create()
+						.texOffs(0, 14)
+						.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45F / (180F / Mth.PI), 0.0F));
+
+		var rightHorn = helmetBase.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
+						.texOffs(28, 14)
+						.addBox(-6F, -1.5F, -1.5F, 7, 3, 3),
+				PartPose.offsetAndRotation(-3.5F, -9F, 0.0F, 0.0F, -15F / (180F / Mth.PI), 10F / (180F / Mth.PI)));
+
+		rightHorn.addOrReplaceChild("right_horn_2", CubeListBuilder.create()
+						.texOffs(28, 20)
+						.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2),
+				PartPose.offsetAndRotation(-5.5F, 0.0F, 0.0F, 0.0F, -15F / (180F / Mth.PI), 10F / (180F / Mth.PI)));
+
+		var leftHorn = helmetBase.addOrReplaceChild("left_horn_1", CubeListBuilder.create()
+						.texOffs(28, 14)
+						.addBox(-6F, -1.5F, -1.5F, 7, 3, 3),
+				PartPose.offsetAndRotation(3.5F, -9F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
+
+		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create()
+						.texOffs(28, 20)
+						.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2),
+				PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
+
+		var rightArm = partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(38, 0)
+						.addBox(-7F, -1F, -1F, 8, 2, 2),
+				PartPose.offsetAndRotation(-3F, 20F, -3F, 0F, -1.319531F, -0.1919862F));
+
+		var clawBase = rightArm.addOrReplaceChild("claw_base", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0F, -1.5F, -1F, 3, 3, 2),
+				PartPose.offsetAndRotation(-6F, 0F, -0.5F, 0.0F, (Mth.PI / 2.0F), 0));
+
+		clawBase.addOrReplaceChild("claw_bottom", CubeListBuilder.create()
+						.texOffs(0, 8)
+						.addBox(0F, -0.5F, -1F, 3, 2, 2),
+				PartPose.offsetAndRotation(3F, 0F, 0F, 0F, 0F, 0.2602503F));
+
+		clawBase.addOrReplaceChild("claw_top", CubeListBuilder.create()
+						.texOffs(0, 5)
+						.addBox(0F, -0.5F, -1F, 3, 1, 2),
+				PartPose.offsetAndRotation(3F, -1F, 0F, 0F, 0F, -0.1858931F));
+
+		partRoot.addOrReplaceChild("leg_1", CubeListBuilder.create()
+						.texOffs(18, 0)
+						.addBox(-1F, -1F, -1F, 8, 2, 2),
+				PartPose.offsetAndRotation(-3F, 20F, -1F, 0F, 0.2792527F, -0.1919862F));
+
+		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create()
+						.texOffs(18, 0)
+						.addBox(-1F, -1F, -1F, 8, 2, 2),
+				PartPose.offsetAndRotation(3F, 20F, -1F, 0F, -0.2792527F, 0.1919862F));
+
+		partRoot.addOrReplaceChild("leg_3", CubeListBuilder.create()
+						.texOffs(18, 0)
+						.addBox(-1F, -1F, -1F, 8, 2, 2),
+				PartPose.offsetAndRotation(-3F, 20F, -2F, 0F, -0.2792527F, -0.1919862F));
+
+		partRoot.addOrReplaceChild("leg_4", CubeListBuilder.create()
+						.texOffs(18, 0)
+						.addBox(-1F, -1F, -1F, 8, 2, 2),
+				PartPose.offsetAndRotation(3F, 20F, -2F, 0F, 0.2792527F, 0.1919862F));
+
+		partRoot.addOrReplaceChild("leg_5", CubeListBuilder.create()
+						.texOffs(18, 0)
+						.addBox(-1F, -1F, -1F, 8, 2, 2),
+				PartPose.offsetAndRotation(3F, 20F, -3F, 0F, 0.5759587F, 0.1919862F));
+
+		return LayerDefinition.create(mesh, 64, 32);
+	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(
-				body,
-				helmetBase,
-				Leg8,
-				Leg6,
-				Leg4,
-				rightArm,
-				Leg5,
-				Leg3
-		);
-	}
-
-	private void setRotation(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
+	public ModelPart root() {
+		return this.root;
 	}
 
 	@Override
 	public void setupAnim(HelmetCrabEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
+		//leg3 -> leg1, leg4 -> leg2, leg5 -> leg3, leg6 -> leg4, leg8 -> leg5
 		this.body.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.body.xRot = headPitch / (180F / (float) Math.PI);
+
 		float f6 = ((float) Math.PI / 4F);
-		//this.Leg1.rotateAngleZ = -f6;
-		//this.Leg2.rotateAngleZ = f6;
-		this.Leg3.zRot = -f6 * 0.74F;
-		this.Leg4.zRot = f6 * 0.74F;
-		this.Leg5.zRot = -f6 * 0.74F;
-		this.Leg6.zRot = f6 * 0.74F;
-		//this.Leg7.rotateAngleZ = -f6;
-		this.Leg8.zRot = f6;
+		this.leg1.zRot = -f6 * 0.74F;
+		this.leg2.zRot = f6 * 0.74F;
+		this.leg3.zRot = -f6 * 0.74F;
+		this.leg4.zRot = f6 * 0.74F;
+		this.leg5.zRot = f6;
+
 		float f7 = -0.0F;
 		float f8 = 0.3926991F;
-		//this.Leg1.rotateAngleY = f8 * 2.0F + f7;
-		//this.Leg2.rotateAngleY = -f8 * 2.0F - f7;
-		this.Leg3.yRot = f8 + f7;
-		this.Leg4.yRot = -f8 - f7;
-		this.Leg5.yRot = -f8 + f7;
-		this.Leg6.yRot = f8 - f7;
-		//this.Leg7.rotateAngleY = -f8 * 2.0F + f7;
-		this.Leg8.yRot = f8 * 2.0F - f7;
+		this.leg1.yRot = f8 + f7;
+		this.leg2.yRot = -f8 - f7;
+		this.leg3.yRot = -f8 + f7;
+		this.leg4.yRot = f8 - f7;
+		this.leg5.yRot = f8 * 2.0F - f7;
+
 		float f10 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
 		float f11 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI / 2F)) * 0.4F) * limbSwingAmount;
 		float f12 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 		float f14 = Math.abs(Mth.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
 		float f15 = Math.abs(Mth.sin(limbSwing * 0.6662F + ((float) Math.PI / 2F)) * 0.4F) * limbSwingAmount;
 		float f16 = Math.abs(Mth.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
-		//this.Leg1.rotateAngleY += f9;
-		//this.Leg2.rotateAngleY += -f9;
-		this.Leg3.yRot += f10;
-		this.Leg4.yRot += -f10;
-		this.Leg5.yRot += f11;
-		this.Leg6.yRot += -f11;
-		//this.Leg7.rotateAngleY += f12;
-		this.Leg8.yRot += -f12;
-		//this.Leg1.rotateAngleZ += f13;
-		//this.Leg2.rotateAngleZ += -f13;
-		this.Leg3.zRot += f14;
-		this.Leg4.zRot += -f14;
-		this.Leg5.zRot += f15;
-		this.Leg6.zRot += -f15;
-		//this.Leg7.rotateAngleZ += f16;
-		this.Leg8.zRot += -f16;
+		this.leg1.yRot += f10;
+		this.leg2.yRot += -f10;
+		this.leg3.yRot += f11;
+		this.leg4.yRot += -f11;
+		this.leg5.yRot += -f12;
+
+		this.leg1.zRot += f14;
+		this.leg2.zRot += -f14;
+		this.leg3.zRot += f15;
+		this.leg4.zRot += -f15;
+		this.leg5.zRot += -f16;
 
 		// swing right arm as if it were an arm, not a leg
 		this.rightArm.yRot = -1.319531F;

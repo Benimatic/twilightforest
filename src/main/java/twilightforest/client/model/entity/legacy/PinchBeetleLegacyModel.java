@@ -5,210 +5,181 @@
 // - ZeuX
 package twilightforest.client.model.entity.legacy;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.PinchBeetleEntity;
 
-public class PinchBeetleLegacyModel extends ListModel<PinchBeetleEntity> {
-	//fields
-	ModelPart thorax;
+public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity> {
+
+	ModelPart root;
 	ModelPart head;
-	ModelPart connector2;
-	ModelPart RearEnd;
-	ModelPart Leg6;
-	ModelPart Leg4;
-	ModelPart Leg2;
-	ModelPart Leg5;
-	ModelPart Leg3;
-	ModelPart Leg1;
-	ModelPart connector1;
+	ModelPart leg6;
+	ModelPart leg4;
+	ModelPart leg2;
+	ModelPart leg5;
+	ModelPart leg3;
+	ModelPart leg1;
+
 	ModelPart jaw1a;
-	ModelPart jaw1b;
 	ModelPart jaw2a;
-	ModelPart jaw2b;
-	ModelPart antenna1;
-	ModelPart antenna2;
-	ModelPart eye1;
-	ModelPart eye2;
-	ModelPart tooth1a;
-	ModelPart tooth1b;
-	ModelPart tooth1c;
-	ModelPart tooth2a;
-	ModelPart tooth2b;
-	ModelPart tooth2c;
 
-	public PinchBeetleLegacyModel() {
-		texWidth = 64;
-		texHeight = 32;
 
-		thorax = new ModelPart(this, 0, 22);
-		thorax.addBox(-4.5F, -4F, 0F, 9, 8, 2);
-		thorax.setPos(0F, 18F, -4.5F);
+	public PinchBeetleLegacyModel(ModelPart root) {
+		this.root = root;
+		this.head = root.getChild("head");
 
-		connector1 = new ModelPart(this, 0, 12);
-		connector1.addBox(-3F, -3F, 0F, 6, 6, 1);
-		connector1.setPos(0F, 18F, -3F);
+		this.leg1 = root.getChild("leg_1");
+		this.leg2 = root.getChild("leg_2");
+		this.leg3 = root.getChild("leg_3");
+		this.leg4 = root.getChild("leg_4");
+		this.leg5 = root.getChild("leg_5");
+		this.leg6 = root.getChild("leg_6");
 
-		connector2 = new ModelPart(this, 0, 12);
-		connector2.addBox(-3F, -3F, -1F, 6, 6, 1);
-		connector2.setPos(0F, 18F, -4F);
-
-		RearEnd = new ModelPart(this, 28, 14);
-		RearEnd.addBox(-5F, -9F, -4F, 10, 10, 8);
-		RearEnd.setPos(0F, 18F, 7F);
-		setRotation(RearEnd, 1.570796F, 0F, 0F);
-
-		Leg6 = new ModelPart(this, 40, 0);
-		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg6.setPos(4F, 21F, -4F);
-		setRotation(Leg6, 0F, 0.2792527F, 0.3490659F);
-
-		Leg5 = new ModelPart(this, 40, 0);
-		Leg5.mirror = true;
-		Leg5.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg5.setPos(-4F, 21F, -4F);
-		setRotation(Leg5, 0F, -0.2792527F, -0.3490659F);
-
-		Leg4 = new ModelPart(this, 40, 0);
-		Leg4.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg4.setPos(4F, 21F, -1F);
-		setRotation(Leg4, 0F, -0.2792527F, 0.3490659F);
-
-		Leg2 = new ModelPart(this, 40, 0);
-		Leg2.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg2.setPos(4F, 21F, 4F);
-		setRotation(Leg2, 0F, -0.6981317F, 0.3490659F);
-
-		Leg3 = new ModelPart(this, 40, 0);
-		Leg3.mirror = true;
-		Leg3.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg3.setPos(-4F, 21F, -1F);
-		setRotation(Leg3, 0F, 0.2792527F, -0.3490659F);
-
-		Leg1 = new ModelPart(this, 40, 0);
-		Leg1.mirror = true;
-		Leg1.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg1.setPos(-4F, 21F, 4F);
-		Leg1.setTexSize(64, 32);
-		setRotation(Leg1, 0F, 0.6981317F, -0.3490659F);
-
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-4F, -4F, -6F, 8, 6, 6);
-		head.setPos(0F, 19F, -5F);
-
-		jaw1a = new ModelPart(this, 40, 6);
-		jaw1a.addBox(-1F, -1F, -1.5F, 8, 2, 3);
-		jaw1a.setPos(-3F, 1F, -6F);
-		setRotation(jaw1a, 0F, 2.6354471F, 0F);
-
-		jaw1b = new ModelPart(this, 40, 10);
-		jaw1b.addBox(-1F, -1F, -1F, 10, 2, 2);
-		jaw1b.setPos(7F, 0F, 0F);
-		setRotation(jaw1b, 0F, -1.047197F, 0F);
-
-		jaw2a = new ModelPart(this, 40, 6);
-		jaw2a.addBox(-1F, -1F, -1.5F, 8, 2, 3);
-		jaw2a.setPos(3F, 1F, -6F);
-		setRotation(jaw2a, 0F, 0.5410520F, 0F);
-
-		jaw2b = new ModelPart(this, 40, 10);
-		jaw2b.addBox(-1F, -1F, -1F, 10, 2, 2);
-		jaw2b.setPos(7F, 0F, 0F);
-		setRotation(jaw2b, 0F, 1.047197F, 0F);
-
-		antenna1 = new ModelPart(this, 42, 4);
-		antenna1.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
-		antenna1.setPos(1F, -3F, -5F);
-		setRotation(antenna1, 0F, 1.047198F, -0.296706F);
-
-		antenna2 = new ModelPart(this, 42, 4);
-		antenna2.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
-		antenna2.setPos(-1F, -3F, -5F);
-		setRotation(antenna2, 0F, 2.094395F, 0.296706F);
-
-		eye1 = new ModelPart(this, 15, 12);
-		eye1.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-		eye1.setPos(-3F, -2F, -5F);
-
-		eye2 = new ModelPart(this, 15, 12);
-		eye2.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-		eye2.setPos(3F, -2F, -5F);
-
-		tooth1a = new ModelPart(this, 0, 0);
-		tooth1a.addBox(0F, -0.5F, -0F, 2, 1, 1);
-		tooth1a.setPos(9F, 0F, 0F);
-		setRotation(tooth1a, 0F, -0.5235987F, 0);
-
-		tooth1b = new ModelPart(this, 0, 0);
-		tooth1b.addBox(-2.5F, -0.5F, -0F, 2, 1, 1);
-		tooth1b.setPos(6F, 0F, 0F);
-		setRotation(tooth1b, 0F, 1.5707963F, 0);
-
-		tooth1c = new ModelPart(this, 0, 0);
-		tooth1c.addBox(-2.5F, -0.5F, -0F, 2, 1, 1);
-		tooth1c.setPos(3F, 0F, 0F);
-		setRotation(tooth1c, 0F, 1.5707963F, 0);
-
-		tooth2a = new ModelPart(this, 0, 0);
-		tooth2a.addBox(0F, -0.5F, -1F, 2, 1, 1);
-		tooth2a.setPos(9F, 0F, 0F);
-		setRotation(tooth2a, 0F, 0.5235987F, 0);
-
-		tooth2b = new ModelPart(this, 0, 0);
-		tooth2b.addBox(-2.5F, -0.5F, -1F, 2, 1, 1);
-		tooth2b.setPos(6F, 0F, 0F);
-		setRotation(tooth2b, 0F, -1.5707963F, 0);
-
-		tooth2c = new ModelPart(this, 0, 0);
-		tooth2c.addBox(-2.5F, -0.5F, -1F, 2, 1, 1);
-		tooth2c.setPos(3F, 0F, 0F);
-		setRotation(tooth2c, 0F, -1.5707963F, 0);
-
-		head.addChild(jaw1a);
-		jaw1a.addChild(jaw1b);
-		jaw1b.addChild(tooth1a);
-		jaw1b.addChild(tooth1b);
-		jaw1b.addChild(tooth1c);
-		jaw2b.addChild(tooth2a);
-		jaw2b.addChild(tooth2b);
-		jaw2b.addChild(tooth2c);
-		head.addChild(jaw2a);
-		jaw2a.addChild(jaw2b);
-		head.addChild(antenna1);
-		head.addChild(antenna2);
-		head.addChild(eye1);
-		head.addChild(eye2);
+		this.jaw1a = head.getChild("right_jaw_bottom");
+		this.jaw2a = head.getChild("left_jaw_bottom");
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
+
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4F, -4F, -6F, 8, 6, 6),
+				PartPose.offset(0F, 19F, -5F));
+
+		head.addOrReplaceChild("right_antenna", CubeListBuilder.create()
+						.texOffs(42, 4)
+						.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
+				PartPose.offsetAndRotation(1F, -3F, -5F, 0F, 1.047198F, -0.296706F));
+
+		head.addOrReplaceChild("left_antenna", CubeListBuilder.create()
+						.texOffs(42, 4)
+						.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
+				PartPose.offsetAndRotation(-1F, -3F, -5F,  0F, 2.094395F, 0.296706F));
+
+		head.addOrReplaceChild("right_eye", CubeListBuilder.create()
+						.texOffs(15, 12)
+						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+				PartPose.offset(-3F, -2F, -5F));
+
+		head.addOrReplaceChild("left_eye", CubeListBuilder.create()
+						.texOffs(15, 12)
+						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+				PartPose.offset(3F, -2F, -5F));
+
+		var rightJaw = head.addOrReplaceChild("right_jaw_bottom", CubeListBuilder.create()
+						.texOffs(40, 6)
+						.addBox(-1F, -1F, -1.5F, 8, 2, 3),
+				PartPose.offsetAndRotation(-3F, 1F, -6F, 0F, 2.6354471F, 0F));
+
+		var rightJawTooth = rightJaw.addOrReplaceChild("right_jaw_top", CubeListBuilder.create()
+						.texOffs(40, 10)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(7F, 0F, 0F, 0F, -1.047197F, 0F));
+
+		rightJawTooth.addOrReplaceChild("right_tooth_1", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0F, -0.5F, -0F, 2, 1, 1),
+				PartPose.offsetAndRotation(9F, 0F, 0F, 0F, -0.5235987F, 0));
+
+		rightJawTooth.addOrReplaceChild("right_tooth_2", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0F, -0.5F, -0F, 2, 1, 1),
+				PartPose.offsetAndRotation(6F, 0F, 0F, 0F, 1.5707963F, 0));
+
+		rightJawTooth.addOrReplaceChild("right_tooth_3", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0F, -0.5F, -0F, 2, 1, 1),
+				PartPose.offsetAndRotation(3F, 0F, 0F, 0F, 1.5707963F, 0));
+
+		var leftJaw = head.addOrReplaceChild("left_jaw_bottom", CubeListBuilder.create()
+						.texOffs(40, 6)
+						.addBox(-1F, -1F, -1.5F, 8, 2, 3),
+				PartPose.offsetAndRotation(3F, 1F, -6F, 0F, 0.5410520F, 0F));
+
+		var leftJawTooth = leftJaw.addOrReplaceChild("left_jaw_top", CubeListBuilder.create()
+						.texOffs(40, 10)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(7F, 0F, 0F, 0F, 1.047197F, 0F));
+
+		leftJawTooth.addOrReplaceChild("left_tooth_1", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0F, -0.5F, -0F, 2, 1, 1),
+				PartPose.offsetAndRotation(9F, 0F, 0F, 0F, 0.5235987F, 0));
+
+		leftJawTooth.addOrReplaceChild("left_tooth_2", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0F, -0.5F, -0F, 2, 1, 1),
+				PartPose.offsetAndRotation(6F, 0F, 0F, 0F, -1.5707963F, 0));
+
+		leftJawTooth.addOrReplaceChild("left_tooth_3", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(0F, -0.5F, -0F, 2, 1, 1),
+				PartPose.offsetAndRotation(3F, 0F, 0F, 0F, -1.5707963F, 0));
+
+		partRoot.addOrReplaceChild("thorax", CubeListBuilder.create()
+						.texOffs(0, 22)
+						.addBox(-4.5F, -4F, 0F, 9, 8, 2),
+				PartPose.offset(0F, 18F, -4.5F));
+
+		partRoot.addOrReplaceChild("connector_1", CubeListBuilder.create()
+						.texOffs(0, 12)
+						.addBox(-3F, -3F, 0F, 6, 6, 1),
+				PartPose.offset(0F, 18F, -3F));
+
+		partRoot.addOrReplaceChild("connector_2", CubeListBuilder.create()
+						.texOffs(0, 12)
+						.addBox(-3F, -3F, -1F, 6, 6, 1),
+				PartPose.offset(0F, 18F, -4F));
+
+		partRoot.addOrReplaceChild("rear", CubeListBuilder.create()
+						.texOffs(28, 14)
+						.addBox(-5F, -9F, -4F, 10, 10, 8),
+				PartPose.offsetAndRotation(0F, 18F, 7F, 1.570796F, 0F, 0F));
+
+		partRoot.addOrReplaceChild("leg_1", CubeListBuilder.create().mirror()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(-4F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
+
+		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(4F, 21F, 4F, 0F, -0.6981317F, 0.3490659F));
+
+		partRoot.addOrReplaceChild("leg_3", CubeListBuilder.create().mirror()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(-4F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
+
+		partRoot.addOrReplaceChild("leg_4", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(4F, 21F, -1F, 0F, -0.2792527F, 0.3490659F));
+
+		partRoot.addOrReplaceChild("leg_5", CubeListBuilder.create().mirror()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(-4F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
+
+		partRoot.addOrReplaceChild("leg_6", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(4F, 21F, -4F, 0F, 0.2792527F, 0.3490659F));
+
+		return LayerDefinition.create(mesh, 64, 32);
+	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(
-				thorax,
-				head,
-				connector2,
-				RearEnd,
-				Leg6,
-				Leg4,
-				Leg2,
-				Leg5,
-				Leg3,
-				Leg1,
-				connector1
-		);
-	}
-
-	private void setRotation(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
+	public ModelPart root() {
+		return this.root;
 	}
 
 	@Override
@@ -217,21 +188,21 @@ public class PinchBeetleLegacyModel extends ListModel<PinchBeetleEntity> {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 
 		float legZ = ((float) Math.PI / 11F);
-		this.Leg1.zRot = -legZ;
-		this.Leg2.zRot = legZ;
-		this.Leg3.zRot = -legZ * 0.74F;
-		this.Leg4.zRot = legZ * 0.74F;
-		this.Leg5.zRot = -legZ;
-		this.Leg6.zRot = legZ;
+		this.leg1.zRot = -legZ;
+		this.leg2.zRot = legZ;
+		this.leg3.zRot = -legZ * 0.74F;
+		this.leg4.zRot = legZ * 0.74F;
+		this.leg5.zRot = -legZ;
+		this.leg6.zRot = legZ;
 
 		float var9 = -0.0F;
 		float var10 = 0.3926991F;
-		this.Leg1.yRot = var10 * 2.0F + var9;
-		this.Leg2.yRot = -var10 * 2.0F - var9;
-		this.Leg3.yRot = var10 + var9;
-		this.Leg4.yRot = -var10 - var9;
-		this.Leg5.yRot = -var10 * 2.0F + var9;
-		this.Leg6.yRot = var10 * 2.0F - var9;
+		this.leg1.yRot = var10 * 2.0F + var9;
+		this.leg2.yRot = -var10 * 2.0F - var9;
+		this.leg3.yRot = var10 + var9;
+		this.leg4.yRot = -var10 - var9;
+		this.leg5.yRot = -var10 * 2.0F + var9;
+		this.leg6.yRot = var10 * 2.0F - var9;
 
 		float var11 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
 		float var12 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
@@ -241,21 +212,21 @@ public class PinchBeetleLegacyModel extends ListModel<PinchBeetleEntity> {
 		float var16 = Math.abs(Mth.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
 		float var18 = Math.abs(Mth.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 
-		this.Leg1.yRot += var11;
-		this.Leg2.yRot += -var11;
-		this.Leg3.yRot += var12;
-		this.Leg4.yRot += -var12;
-		this.Leg5.yRot += var14;
-		this.Leg6.yRot += -var14;
+		this.leg1.yRot += var11;
+		this.leg2.yRot += -var11;
+		this.leg3.yRot += var12;
+		this.leg4.yRot += -var12;
+		this.leg5.yRot += var14;
+		this.leg6.yRot += -var14;
 
-		this.Leg1.zRot += var15;
-		this.Leg2.zRot += -var15;
+		this.leg1.zRot += var15;
+		this.leg2.zRot += -var15;
 
-		this.Leg3.zRot += var16;
-		this.Leg4.zRot += -var16;
+		this.leg3.zRot += var16;
+		this.leg4.zRot += -var16;
 
-		this.Leg5.zRot += var18;
-		this.Leg6.zRot += -var18;
+		this.leg5.zRot += var18;
+		this.leg6.zRot += -var18;
 	}
 
 	@Override

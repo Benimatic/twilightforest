@@ -19,7 +19,7 @@ public class HydraHeadModel extends ListModel<HydraHeadEntity> {
 
 	public HydraHeadModel(ModelPart root) {
 		this.head = root.getChild("head");
-		this.mouth = root.getChild("mouth");
+		this.mouth = head.getChild("mouth");
 	}
 
 	public static LayerDefinition create() {

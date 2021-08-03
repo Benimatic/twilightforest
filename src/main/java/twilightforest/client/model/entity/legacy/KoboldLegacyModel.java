@@ -9,81 +9,77 @@ package twilightforest.client.model.entity.legacy;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.KoboldEntity;
 
 public class KoboldLegacyModel extends HumanoidModel<KoboldEntity> {
-	//fields
 
-	ModelPart rightear;
-	ModelPart leftear;
-	ModelPart snout;
 	ModelPart jaw;
-
 	boolean isJumping;
 
-	public KoboldLegacyModel() {
-		super(0.0F);
+	public KoboldLegacyModel(ModelPart root) {
+		super(root);
+		this.isJumping = false;
+		this.jaw = getHead().getChild("jaw");
+	}
 
-		isJumping = false;
+	public static LayerDefinition create() {
+		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
+		PartDefinition partRoot = mesh.getRoot();
 
-//		textureWidth = 64;
-//		textureHeight = 32;
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-3.5F, -7F, -3F, 7, 6, 6),
+				PartPose.offset(0F, 13F, 0F));
 
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-3.5F, -7F, -3F, 7, 6, 6);
-		head.setPos(0F, 13F, 0F);
+		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
+						.texOffs(48, 20)
+						.addBox(0F, -4F, 0F, 4, 4, 1),
+				PartPose.offsetAndRotation(3.5F, -3F, -1F, 0.0F, 0.2617994F, -0.3490659F));
 
-		body = new ModelPart(this, 12, 19);
-		body.addBox(0F, 0F, 0F, 7, 7, 4);
-		body.setPos(-3.5F, 12F, -2F);
+		head.addOrReplaceChild("left_ear", CubeListBuilder.create()
+						.texOffs(48, 25)
+						.addBox(0F, -4F, 0F, 4, 4, 1),
+				PartPose.offsetAndRotation(-3.5F, -3F, -1F, 0.0F, -0.2617994F, 0.3490659F));
 
-		rightArm = new ModelPart(this, 36, 17);
-		rightArm.addBox(-3F, -1F, -1.5F, 3, 7, 3);
-		rightArm.setPos(-3.5F, 12F, 0F);
+		head.addOrReplaceChild("snout", CubeListBuilder.create()
+						.texOffs(28, 0)
+						.addBox(-1.5F, -2F, -2F, 3, 2, 3),
+				PartPose.offset(0F, -2F, -3F));
 
-		leftArm.mirror = true;
-		leftArm = new ModelPart(this, 36, 17);
-		leftArm.addBox(0F, -1F, -1.5F, 3, 7, 3);
-		leftArm.setPos(3.5F, 12F, 0F);
+		head.addOrReplaceChild("jaw", CubeListBuilder.create()
+						.texOffs(28, 5)
+						.addBox(-1.5F, 0F, -2F, 3, 1, 3),
+				PartPose.offsetAndRotation(0F, -2F, -3F, 0.20944F, 0.0F, 0.0F));
 
-		leftArm.mirror = false;
-		rightLeg = new ModelPart(this, 0, 20);
-		rightLeg.addBox(-1.5F, 0F, -1.5F, 3, 5, 3);
-		rightLeg.setPos(-2F, 19F, 0F);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(12, 19)
+						.addBox(0F, 0F, 0F, 7, 7, 4),
+				PartPose.offset(-3.5F, 12F, -2F));
 
-		leftLeg = new ModelPart(this, 0, 20);
-		leftLeg.addBox(-1.5F, 0F, -1.5F, 3, 5, 3);
-		leftLeg.setPos(2F, 19F, 0F);
+		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(36, 17)
+						.addBox(-3F, -1F, -1.5F, 3, 7, 3),
+				PartPose.offset(-3.5F, 12F, 0F));
 
-		rightear = new ModelPart(this, 48, 20);
-		rightear.addBox(0F, -4F, 0F, 4, 4, 1);
-		rightear.setPos(3.5F, -3F, -1F);
-		rightear.yRot = 0.2617994F;
-		rightear.zRot = -0.3490659F;
+		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+						.texOffs(36, 17)
+						.addBox(-3F, -1F, -1.5F, 3, 7, 3),
+				PartPose.offset(3.5F, 12F, 0F));
 
-		head.addChild(rightear);
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(0, 20)
+						.addBox(-1.5F, 0F, -1.5F, 3, 5, 3),
+				PartPose.offset(-2F, 19F, 0F));
 
-		leftear = new ModelPart(this, 48, 25);
-		leftear.addBox(-4F, -4F, 0F, 4, 4, 1);
-		leftear.setPos(-3.5F, -3F, -1F);
-		leftear.yRot = -0.2617994F;
-		leftear.zRot = 0.3490659F;
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 20)
+						.addBox(-1.5F, 0F, -1.5F, 3, 5, 3),
+				PartPose.offset(2F, 19F, 0F));
 
-		head.addChild(leftear);
-
-		snout = new ModelPart(this, 28, 0);
-		snout.addBox(-1.5F, -2F, -2F, 3, 2, 3);
-		snout.setPos(0F, -2F, -3F);
-
-		head.addChild(snout);
-
-		jaw = new ModelPart(this, 28, 5);
-		jaw.addBox(-1.5F, 0F, -2F, 3, 1, 3);
-		jaw.setPos(0F, -2F, -3F);
-		jaw.xRot = 0.20944F;
-
-		head.addChild(jaw);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	@Override
@@ -121,26 +117,5 @@ public class KoboldLegacyModel extends HumanoidModel<KoboldEntity> {
 	public void prepareMobModel(KoboldEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		// check if entity is jumping
 		this.isJumping = entity.getDeltaMovement().y() > 0;
-	}
-
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
-
-	@Override
-	protected Iterable<ModelPart> headParts() {
-		return ImmutableList.of(head);
-	}
-
-	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(
-				body,
-				rightArm,
-				leftArm,
-				rightLeg,
-				leftLeg
-		);
 	}
 }

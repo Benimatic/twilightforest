@@ -3,6 +3,11 @@ package twilightforest.client.model.entity.legacy;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.boss.HydraHeadEntity;
 import twilightforest.entity.boss.HydraPartEntity;
@@ -11,65 +16,64 @@ public class HydraHeadLegacyModel extends ListModel<HydraHeadEntity> {
 
     ModelPart head;
     ModelPart jaw;
-    ModelPart frill;
 
-    public HydraHeadLegacyModel() {
-        texWidth = 512;
-        texHeight = 256;
-
-        head = new ModelPart(this/*, "head"*/);
-        head.texOffs(272, 0).addBox(-16F, -14F, -32F, 32, 24, 32);
-        head.texOffs(272, 56).addBox(-15F, -2F, -56F, 30, 12, 24);
-        head.texOffs(272, 132).addBox(-15F, 10F, -20F, 30, 8, 16);
-        head.texOffs(128, 200).addBox(-2F, -30F, -12F, 4, 24, 24);
-        head.texOffs(272, 156).addBox(-12F, 10, -49F, 2, 5, 2);
-        head.texOffs(272, 156).addBox(10F, 10, -49F, 2, 5, 2);
-        head.texOffs(280, 156).addBox(-8F, 9, -49F, 16, 2, 2);
-        head.texOffs(280, 160).addBox(-10F, 9, -45F, 2, 2, 16);
-        head.texOffs(280, 160).addBox(8F, 9, -45F, 2, 2, 16);
-        head.setPos(0F, 0F, 0F);
-
-        jaw = new ModelPart(this/*, "jaw"*/);
-        jaw.setPos(0F, 10F, -20F);
-        jaw.texOffs(272, 92).addBox(-15F, 0F, -32F, 30, 8, 32);
-        jaw.texOffs(272, 156).addBox(-10F, -5, -29F, 2, 5, 2);
-        jaw.texOffs(272, 156).addBox(8F, -5, -29F, 2, 5, 2);
-        jaw.texOffs(280, 156).addBox(-8F, -1, -29F, 16, 2, 2);
-        jaw.texOffs(280, 160).addBox(-10F, -1, -25F, 2, 2, 16);
-        jaw.texOffs(280, 160).addBox(8F, -1, -25F, 2, 2, 16);
-        setRotation(jaw, 0F, 0F, 0F);
-        head.addChild(jaw);
-
-        frill = new ModelPart(this/*, "frill"*/);
-        frill.setPos(0F, 0F, -14F);
-        frill.texOffs(272, 200).addBox(-24F, -40.0F, 0F, 48, 48, 4);
-        setRotation(frill, -0.5235988F, 0F, 0F);
-        head.addChild(frill);
+    public HydraHeadLegacyModel(ModelPart root) {
+        this.head = root.getChild("head");
+        this.jaw = head.getChild("jaw");
     }
 
-    private void setRotation(ModelPart model, float x, float y, float z) {
-        model.xRot = x;
-        model.yRot = y;
-        model.zRot = z;
-    }
+    public static LayerDefinition create() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition partRoot = mesh.getRoot();
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		head.render(scale);
-//	}
+        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(272, 0)
+                        .addBox(-16F, -14F, -32F, 32, 24, 32)
+                        .texOffs(272, 56)
+                        .addBox(-15F, -2F, -56F, 30, 12, 24)
+                        .texOffs(272, 132)
+                        .addBox(-15F, 10F, -20F, 30, 8, 16)
+                        .texOffs(128, 200)
+                        .addBox(-2F, -30F, -12F, 4, 24, 24)
+                        .texOffs(272, 156)
+                        .addBox(-12F, 10, -49F, 2, 5, 2)
+                        .texOffs(272, 156)
+                        .addBox(10F, 10, -49F, 2, 5, 2)
+                        .texOffs(280, 156)
+                        .addBox(-8F, 9, -49F, 16, 2, 2)
+                        .texOffs(280, 160)
+                        .addBox(-10F, 9, -45F, 2, 2, 16)
+                        .texOffs(280, 160)
+                        .addBox(8F, 9, -45F, 2, 2, 16),
+                PartPose.ZERO);
+
+        head.addOrReplaceChild("jaw", CubeListBuilder.create()
+                        .texOffs(272, 92)
+                        .addBox(-15F, 0F, -32F, 30, 8, 32)
+                        .texOffs(272, 156)
+                        .addBox(-10F, -5, -29F, 2, 5, 2)
+                        .texOffs(272, 156)
+                        .addBox(8F, -5, -29F, 2, 5, 2)
+                        .texOffs(280, 156)
+                        .addBox(-8F, -1, -29F, 16, 2, 2)
+                        .texOffs(280, 160)
+                        .addBox(-10F, -1, -25F, 2, 2, 16)
+                        .texOffs(280, 160)
+                        .addBox(8F, -1, -25F, 2, 2, 16),
+                PartPose.offset(0F, 10F, -20F));
+
+        head.addOrReplaceChild("frill", CubeListBuilder.create()
+                        .texOffs(272, 200)
+                        .addBox(-24F, -40.0F, 0F, 48, 48, 4),
+                PartPose.offsetAndRotation(0F, 0F, -14F, -0.5235988F, 0F, 0F));
+
+        return LayerDefinition.create(mesh, 512, 256);
+    }
 
     @Override
     public Iterable<ModelPart> parts() {
         return ImmutableList.of(head);
     }
-
-//	@Override
-//	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-////		head.rotateAngleY = netHeadYaw / (180F / (float)Math.PI);
-////		head.rotateAngleX = headPitch / (180F / (float)Math.PI);
-//	}
 
     @Override
     public void setupAnim(HydraHeadEntity entity, float v, float v1, float v2, float v3, float v4) { }

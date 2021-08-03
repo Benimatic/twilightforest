@@ -2,41 +2,56 @@ package twilightforest.client.model.entity.legacy;
 
 import net.minecraft.client.model.PigModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import twilightforest.entity.passive.BoarEntity;
 
 public class BoarLegacyModel<T extends BoarEntity> extends PigModel<T> {
-	public BoarLegacyModel() {
-		super();
 
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-4F, -2F, -6F, 8, 7, 6, 0F);
-		head.setPos(0F, 12F, -6F);
+	public BoarLegacyModel(ModelPart root) {
+		super(root);
+	}
 
-		body = new ModelPart(this, 28, 10);
-		body.addBox(-5F, -8F, -7F, 10, 14, 8, 0F);
-		body.setPos(0F, 11F, 2F);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = PigModel.createBodyMesh(0, CubeDeformation.NONE);
+		PartDefinition partRoot = mesh.getRoot();
 
-		body.xRot = 1.570796F;
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0,0)
+						.addBox(-4.0F, -2.0F, -6.0F, 8.0F, 7.0F, 6.0F)
+						.texOffs(28, 0)
+						.addBox(-3.0F, 1.0F, -9.0F, 6.0F, 4.0F, 3.0F)
+						.texOffs(17, 17)
+						.addBox(3.0F, 2.0F, -9.0F, 1.0F, 2.0F, 1.0F)
+						.texOffs(17, 17)
+						.addBox(-4.0F, 2.0F, -9.0F, 1.0F, 2.0F, 1.0F),
+				PartPose.offset(0.0F, 12.0F, -6.0F));
 
-		leg0 = new ModelPart(this, 0, 16);
-		leg0.addBox(-2F, 0F, -2F, 4, 6, 4, 0F);
-		leg0.setPos(-3F, 18F, 7F);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(28, 10)
+						.addBox(-5.0F, -8.0F, -7.0F, 10.0F, 14.0F, 8.0F),
+				PartPose.offset(0.0F, 11.0F, 2.0F));
 
-		leg1 = new ModelPart(this, 0, 16);
-		leg1.addBox(-2F, 0F, -2F, 4, 6, 4, 0F);
-		leg1.setPos(3F, 18F, 7F);
+		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F),
+				PartPose.offset(-3.0F, 18.0F, 7.0F));
 
-		leg2 = new ModelPart(this, 0, 16);
-		leg2.addBox(-2F, 0F, -2F, 4, 6, 4, 0F);
-		leg2.setPos(-3F, 18F, -5F);
+		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F),
+				PartPose.offset(3.0F, 18.0F, 7.0F));
 
-		leg3 = new ModelPart(this, 0, 16);
-		leg3.addBox(-2F, 0F, -2F, 4, 6, 4, 0F);
-		leg3.setPos(3F, 18F, -5F);
+		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F),
+				PartPose.offset(-3.0F, 18.0F, -5.0F));
 
-		head.texOffs(28, 0).addBox(-3F, 1F, -9F, 6, 4, 3, 0F); // snout
+		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F),
+				PartPose.offset(3.0F, 18.0F, -5.0F));
 
-		head.texOffs(17, 17).addBox(3F, 2F, -9F, 1, 2, 1, 0F); // tusk1
-		head.texOffs(17, 17).addBox(-4F, 2F, -9F, 1, 2, 1, 0F); // tusk2
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 }

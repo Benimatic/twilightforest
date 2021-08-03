@@ -4,80 +4,83 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import twilightforest.entity.passive.DeerEntity;
 
 public class DeerLegacyModel extends QuadrupedModel<DeerEntity> {
-	public DeerLegacyModel() {
-		super(12, 0.0F, false, 4.0F, 4.0F, 2.0F, 2.0F, 10);
 
-		head = new ModelPart(this, 0, 5);
-		head.addBox(-2F, -8F, -6F, 4, 6, 6, 0F);
-		head.setPos(0F, 4F, -7F);
-
-		body = new ModelPart(this, 36, 6);
-		body.addBox(-4F, -10F, -7F, 6, 18, 8, 0F);
-		body.setPos(1F, 5F, 2F);
-
-		body.xRot = 1.570796F;
-		leg0 = new ModelPart(this, 0, 17);
-		leg0.addBox(-3F, 0F, -2F, 2, 12, 3, 0F);
-		leg0.setPos(0F, 12F, 9F);
-
-		leg1 = new ModelPart(this, 0, 17);
-		leg1.addBox(-1F, 0F, -2F, 2, 12, 3, 0F);
-		leg1.setPos(2F, 12F, 9F);
-
-		leg2 = new ModelPart(this, 0, 17);
-		leg2.addBox(-3F, 0F, -3F, 2, 12, 3, 0F);
-		leg2.setPos(0F, 12F, -5F);
-
-		leg3 = new ModelPart(this, 0, 17);
-		leg3.addBox(-1F, 0F, -3F, 2, 12, 3, 0F);
-		leg3.setPos(2F, 12F, -5F);
-
-		// neck
-		neck = new ModelPart(this, 10, 19);
-		neck.addBox(-2.5F, -8, -11F, 3, 9, 4, 0F);
-//		neck.setRotationPoint(1F, 5F, 2F);
-
-		neck.xRot = 4.974188f;
-
-		body.addChild(neck);
-
-		// nose
-		head.texOffs(52, 0).addBox(-1.5F, -5F, -9F, 3, 3, 3, 0F);
-
-		// antler 1
-		head.texOffs(20, 0);
-		head.addBox(-3F, -10F, -2F, 2, 2, 2, 0F);
-		head.addBox(-3F, -10F, -2F, 2, 2, 2, 0F);
-		head.addBox(-4F, -10F, -1F, 1, 1, 3, 0F);
-		head.addBox(-5F, -11F, 1F, 1, 1, 5, 0F);
-		head.addBox(-5F, -14F, 2F, 1, 4, 1, 0F);
-		head.addBox(-6F, -17F, 3F, 1, 4, 1, 0F);
-		head.addBox(-6F, -13F, 0F, 1, 1, 3, 0F);
-		head.addBox(-6F, -14F, -3F, 1, 1, 4, 0F);
-		head.addBox(-7F, -15F, -6F, 1, 1, 4, 0F);
-		head.addBox(-6F, -16F, -9F, 1, 1, 4, 0F);
-		head.addBox(-7F, -18F, -1F, 1, 5, 1, 0F);
-		head.addBox(-6F, -19F, -6F, 1, 5, 1, 0F);
-
-		// antler 2
-		head.addBox(1F, -10F, -2F, 2, 2, 2, 0F);
-		head.addBox(3F, -10F, -1F, 1, 1, 3, 0F);
-		head.addBox(4F, -11F, 1F, 1, 1, 5, 0F);
-		head.addBox(4F, -14F, 2F, 1, 4, 1, 0F);
-		head.addBox(5F, -17F, 3F, 1, 4, 1, 0F);
-		head.addBox(5F, -13F, 0F, 1, 1, 3, 0F);
-		head.addBox(5F, -14F, -3F, 1, 1, 4, 0F);
-		head.addBox(6F, -15F, -6F, 1, 1, 4, 0F);
-		head.addBox(5F, -16F, -9F, 1, 1, 4, 0F);
-		head.addBox(6F, -18F, -1F, 1, 5, 1, 0F);
-		head.addBox(5F, -19F, -6F, 1, 5, 1, 0F);
+	public DeerLegacyModel(ModelPart root) {
+		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 10);
 	}
 
-	//fields
-	public ModelPart neck;
+	public static LayerDefinition create() {
+		MeshDefinition mesh = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
+		PartDefinition partRoot = mesh.getRoot();
+
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 5)
+						.addBox(-2.0F, -8.0F, -6.0F, 4.0F, 6.0F, 6.0F)
+						.texOffs(52, 0)
+						.addBox(-1.5F, -5.0F, -9.0F, 3.0F, 3.0F, 3.0F)
+						.texOffs(20, 0)
+						.addBox(-3.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
+						.addBox(-3.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
+						.addBox(-4.0F, -10.0F, -1.0F, 1.0F, 1.0F, 3.0F)
+						.addBox(-5.0F, -11.0F, 1.0F, 1.0F, 1.0F, 5.0F)
+						.addBox(-5.0F, -14.0F, 2.0F, 1.0F, 4.0F, 1.0F)
+						.addBox(-6.0F, -17.0F, 3.0F, 1.0F, 4.0F, 1.0F)
+						.addBox(-6.0F, -13.0F, 0.0F, 1.0F, 1.0F, 3.0F)
+						.addBox(-6.0F, -14.0F, -3.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(-7.0F, -15.0F, -6.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(-6.0F, -16.0F, -9.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(-7.0F, -18.0F, -1.0F, 1.0F, 5.0F, 1.0F)
+						.addBox(-6.0F, -19.0F, -6.0F, 1.0F, 5.0F, 1.0F)
+						.addBox(1.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
+						.addBox(3.0F, -10.0F, -1.0F, 1.0F, 1.0F, 3.0F)
+						.addBox(4.0F, -11.0F, 1.0F, 1.0F, 1.0F, 5.0F)
+						.addBox(4.0F, -14.0F, 2.0F, 1.0F, 4.0F, 1.0F)
+						.addBox(5.0F, -17.0F, 3.0F, 1.0F, 4.0F, 1.0F)
+						.addBox(5.0F, -13.0F, 0.0F, 1.0F, 1.0F, 3.0F)
+						.addBox(5.0F, -14.0F, -3.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(6.0F, -15.0F, -6.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(5.0F, -16.0F, -9.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(6.0F, -18.0F, -1.0F, 1.0F, 5.0F, 1.0F)
+						.addBox(5.0F, -19.0F, -6.0F, 1.0F, 5.0F, 1.0F),
+				PartPose.offset(0.0F, 4.0F, -7.0F));
+
+		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(36, 6)
+						.addBox(-4F, -10F, -7F, 6, 18, 8),
+				PartPose.offsetAndRotation(1F, 5F, 2F, 1.570796F, 0.0F, 0.0F));
+
+		body.addOrReplaceChild("neck", CubeListBuilder.create()
+						.texOffs(10, 19)
+						.addBox(-2.5F, -8, -11F, 3, 9, 4),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 4.974188f, 0.0F, 0.0F));
+
+		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+						.texOffs(0, 17)
+						.addBox(-3F, 0F, -2F, 2, 12, 3),
+				PartPose.offset(0F, 12F, 9F));
+
+		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+						.texOffs(0, 17)
+						.addBox(-3F, 0F, -2F, 2, 12, 3),
+				PartPose.offset(2F, 12F, 9F));
+
+		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 17)
+						.addBox(-3F, 0F, -2F, 2, 12, 3),
+				PartPose.offset(0F, 12F, -5F));
+
+		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 17)
+						.addBox(-3F, 0F, -2F, 2, 12, 3),
+				PartPose.offset(2F, 12F, -5F));
+
+		return LayerDefinition.create(mesh, 64, 32);
+	}
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
@@ -90,7 +93,7 @@ public class DeerLegacyModel extends QuadrupedModel<DeerEntity> {
 
 			stack.pushPose();
 			stack.scale(0.5F, 0.5F, 0.5F);
-			stack.translate(0F, 1.5F, 0F);
+			stack.translate(0F, 1.5F, 0.0F);
 			this.bodyParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
 			stack.popPose();
 		} else {
