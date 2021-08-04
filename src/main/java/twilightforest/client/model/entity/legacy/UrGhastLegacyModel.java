@@ -1,7 +1,13 @@
 package twilightforest.client.model.entity.legacy;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.TFGhastModel;
 import twilightforest.entity.boss.UrGhastEntity;
 
@@ -9,101 +15,72 @@ import java.util.Random;
 
 public class UrGhastLegacyModel extends TFGhastModel<UrGhastEntity> {
 
-	protected ModelPart[][] subTentacles;
-	protected ModelPart[][] smallTentacles;
+	private final ModelPart[][] tentacles = new ModelPart[9][3];
 
-	public UrGhastLegacyModel() {
-		super();
+	public UrGhastLegacyModel(ModelPart root) {
+		super(root);
+		ModelPart body = root.getChild("body");
 
-		this.smallTentacles = new ModelPart[2][3];
-		for (int i = 0; i < this.smallTentacles.length; ++i) {
-			makeSmallTentacle(i);
+		for (int i = 0; i < this.tentacles.length; i++) {
+			this.tentacles[i][0] = body.getChild("tentacle_" + i + "_base");
+			this.tentacles[i][1] = this.tentacles[i][0].getChild("tentacle_" + i + "_extension");
+			this.tentacles[i][2] = this.tentacles[i][1].getChild("tentacle_" + i + "_extension_2");
+			this.tentacles[i][3] = this.tentacles[i][1].getChild("tentacle_" + i + "_tip");
 		}
 	}
 
-	@Override
-	protected void makeTentacle(byte yOffset, Random random, int num) {
-		this.tentacles[num] = new ModelPart(this, num % 3, 0);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-		int length = 5;
+		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
+				PartPose.offset(0.0F, 8.0F, 0.0F));
 
-		this.tentacles[num].addBox(-1.5F, 0.0F, -1.5F, 3, length, 3);
-
-		if (num == 0) {
-			this.tentacles[num].x = 4.5F;
-			this.tentacles[num].z = 4.5F;
-			this.tentacles[num].y = 23 + yOffset;
-		}
-		if (num == 1) {
-			this.tentacles[num].x = -4.5F;
-			this.tentacles[num].z = 4.5F;
-			this.tentacles[num].y = 23 + yOffset;
-		}
-		if (num == 2) {
-			this.tentacles[num].x = 0F;
-			this.tentacles[num].z = 0F;
-			this.tentacles[num].y = 23 + yOffset;
-		}
-		if (num == 3) {
-			this.tentacles[num].x = 5.5F;
-			this.tentacles[num].z = -4.5F;
-			this.tentacles[num].y = 23 + yOffset;
-		}
-		if (num == 4) {
-			this.tentacles[num].x = -5.5F;
-			this.tentacles[num].z = -4.5F;
-			this.tentacles[num].y = 23 + yOffset;
-		} else if (num == 5) {
-			this.tentacles[num].x = -7.5F;
-			this.tentacles[num].y = 3.5F;
-			this.tentacles[num].z = -1F;
-
-			this.tentacles[num].zRot = (float) Math.PI / 4.0F;
-		} else if (num == 6) {
-			this.tentacles[num].x = -7.5F;
-			this.tentacles[num].y = -1.5F;
-			this.tentacles[num].z = 3.5F;
-
-			this.tentacles[num].zRot = (float) Math.PI / 3.0F;
-		} else if (num == 7) {
-			this.tentacles[num].x = 7.5F;
-			this.tentacles[num].y = 3.5F;
-			this.tentacles[num].z = -1F;
-
-			this.tentacles[num].zRot = -(float) Math.PI / 4.0F;
-		} else if (num == 8) {
-			this.tentacles[num].x = 7.5F;
-			this.tentacles[num].y = -1.5F;
-			this.tentacles[num].z = 3.5F;
-
-			this.tentacles[num].zRot = -(float) Math.PI / 3.0F;
+		for (int i = 0; i < 9; ++i) {
+			makeTentacle(body, "tentacle_" + i, i);
 		}
 
-		// goofy mid-method initializer
-		if (this.subTentacles == null) {
-			this.subTentacles = new ModelPart[tentacles.length][3];
-		}
-
-		for (int i = 0; i < 3; i++) {
-			length = 4;
-
-			this.subTentacles[num][i] = new ModelPart(this, num % 4, (i * 5) - 1);
-
-			this.subTentacles[num][i].addBox(-1.5F, -0.5F, -1.5F, 3, length, 3);
-			this.subTentacles[num][i].x = 0;
-			this.subTentacles[num][i].z = 0;
-			this.subTentacles[num][i].y = length;
-
-			if (i == 0) {
-				this.tentacles[num].addChild(this.subTentacles[num][i]);
-			} else {
-				this.subTentacles[num][i - 1].addChild(this.subTentacles[num][i]);
-			}
-		}
-
-		this.body.addChild(this.tentacles[num]);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
+	protected static void makeTentacle(PartDefinition parent, String name, int iteration) {
+
+		var tentacleBase = parent.addOrReplaceChild(name + "_base", CubeListBuilder.create()
+						.addBox(-1.5F, 0.0F, -1.5F, 3, 5, 3),
+				switch (iteration) {
+					case 0 -> PartPose.offset(4.5F, 7, 4.5F);
+					case 1 -> PartPose.offset(-4.5F, 7, 4.5F);
+					case 2 -> PartPose.offset(0F, 7, 0F);
+					case 3 -> PartPose.offset(5.5F, 7, -4.5F);
+					case 4 -> PartPose.offset(-5.5F, 7, -4.5F);
+					case 5 -> PartPose.offsetAndRotation(-7.5F, 3.5F, -1F, 0F, 0F, Mth.PI / 4.0F);
+					case 6 -> PartPose.offsetAndRotation(-7.5F, -1.5F, 3.5F, 0F, 0F, Mth.PI / 3.0F);
+					case 7 -> PartPose.offsetAndRotation(7.5F, 3.5F, -1F, 0F, 0F, -Mth.PI / 4.0F);
+					case 8 -> PartPose.offsetAndRotation(7.5F, -1.5F, 3.5F, 0F, 0F, -Mth.PI / 3.0F);
+					default -> {
+						TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration " + iteration);
+						yield PartPose.ZERO;
+					}
+				});
+
+		var tentacleExtension = tentacleBase.addOrReplaceChild(name + "_extension", CubeListBuilder.create()
+						.texOffs(0, 3)
+						.addBox(-1.5F, -0.5F, -1.5F, 3.0F, 4.0F, 3.0F),
+				PartPose.offset(0.0F, 4.0F, 0.0F));
+
+		var tentacleExtension2 = tentacleExtension.addOrReplaceChild(name + "_extension_2", CubeListBuilder.create()
+						.texOffs(0, 9)
+						.addBox(-1.5F, 1.3F, -1.5F, 3.0F, 4.0F, 3.0F),
+				PartPose.offset(0.0F, 4.0F, 0.0F));
+
+		tentacleExtension2.addOrReplaceChild(name + "_tip", CubeListBuilder.create()
+						.texOffs(0, 9)
+						.addBox(-1.5F, 1.3F, -1.5F, 3.0F, 4.0F, 3.0F),
+				PartPose.offset(0, 4, 0));
+
+	}
 
 	/**
 	 * Make one of the small tentacles
@@ -117,7 +94,7 @@ public class UrGhastLegacyModel extends TFGhastModel<UrGhastEntity> {
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// wave tentacles
-		for (int i = 0; i < this.subTentacles.length; ++i) {
+		for (int i = 0; i < this.tentacles.length; ++i) {
 //            for (int j = 0; j < this.subTentacles[i].length; ++j)
 //            {
 //            	this.subTentacles[i][j].rotateAngleX = 0.8F * MathHelper.sin(i * 2.3F) + 0.3F * MathHelper.sin(j) + 0.2F;
@@ -128,17 +105,17 @@ public class UrGhastLegacyModel extends TFGhastModel<UrGhastEntity> {
 
 			float time = (ageInTicks + (i * 9)) / 2.0F;
 
-			this.subTentacles[i][0].xRot = (Mth.cos(time * 0.6662F) - (float) Math.PI / 3.0F) * wiggle;
-			this.subTentacles[i][1].xRot = Mth.cos(time * 0.7774F) * 1.2F * wiggle;
-			this.subTentacles[i][2].xRot = Mth.cos(time * 0.8886F + (float) Math.PI / 2.0F) * 1.4F * wiggle;
+			this.tentacles[i][0].xRot = (Mth.cos(time * 0.6662F) - (float) Math.PI / 3.0F) * wiggle;
+			this.tentacles[i][1].xRot = Mth.cos(time * 0.7774F) * 1.2F * wiggle;
+			this.tentacles[i][2].xRot = Mth.cos(time * 0.8886F + (float) Math.PI / 2.0F) * 1.4F * wiggle;
 
-			this.subTentacles[i][0].xRot = 0.2F + Mth.cos(time * 0.3335F) * 0.15F;
-			this.subTentacles[i][1].xRot = 0.1F + Mth.cos(time * 0.4445F) * 0.20F;
-			this.subTentacles[i][2].xRot = 0.1F + Mth.cos(time * 0.5555F) * 0.25F;
+			this.tentacles[i][0].xRot = 0.2F + Mth.cos(time * 0.3335F) * 0.15F;
+			this.tentacles[i][1].xRot = 0.1F + Mth.cos(time * 0.4445F) * 0.20F;
+			this.tentacles[i][2].xRot = 0.1F + Mth.cos(time * 0.5555F) * 0.25F;
 
 			float yTwist = 0.4F;
 
-			this.tentacles[i].yRot = yTwist * Mth.sin(time * 0.3F);
+			this.tentacles[i][0].yRot = yTwist * Mth.sin(time * 0.3F);
 		}
 	}
 }

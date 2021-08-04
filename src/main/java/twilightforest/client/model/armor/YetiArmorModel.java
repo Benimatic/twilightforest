@@ -27,11 +27,6 @@ public class YetiArmorModel extends TFArmorModel {
 		this.leftRuff = this.leftLeg.getChild("left_ruff");
 		this.rightToe = this.rightLeg.getChild("right_toe");
 		this.leftToe = this.leftLeg.getChild("left_toe");
-
-		this.head.getChild("horn1a");
-		this.head.getChild("horn1b");
-		this.head.getChild("horn2a");
-		this.head.getChild("horn2b");
 	}
 
 	public static LayerDefinition addPieces(CubeDeformation deformation, float expand) {
@@ -39,53 +34,53 @@ public class YetiArmorModel extends TFArmorModel {
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		//bigger head
-		partdefinition.addOrReplaceChild("head",
+		var head= partdefinition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.5F, -7.5F, -4.0F, 9, 8, 8, deformation),
 		PartPose.offset(0.0F, 0.0F + expand, 0.0F));
 
 		// add horns
-		addPairHorns(partdefinition, -8.0F, 35F);
-		addPairHorns(partdefinition,-6.0F, 15F);
-		addPairHorns(partdefinition,-4.0F, -5F);
+		addPairHorns(head, -8.0F, 35F);
+		addPairHorns(head,-6.0F, 15F);
+		addPairHorns(head,-4.0F, -5F);
 
 
 		// change leg texture
-		partdefinition.addOrReplaceChild("right_leg",
+		var rightLeg = partdefinition.addOrReplaceChild("right_leg",
 				CubeListBuilder.create()
 						.texOffs(40, 0)
 						.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, deformation),
 				PartPose.offset(-1.9F, 12.0F + 0.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("left_leg",
+		var leftLeg = partdefinition.addOrReplaceChild("left_leg",
 				CubeListBuilder.create()
 						.texOffs(40, 0).mirror()
 						.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, deformation),
 				PartPose.offset(1.9F, 12.0F + 0.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("right_ruff",
+		rightLeg.addOrReplaceChild("right_ruff",
 				CubeListBuilder.create()
 						.texOffs(40, 22)
 						.addBox(-2.5F, 0.0F, -2.5F, 5, 2, 5, deformation),
 				PartPose.offset(0.0F, 6.0F, 0.0F));
 
 
-		partdefinition.addOrReplaceChild("left_ruff",
+		leftLeg.addOrReplaceChild("left_ruff",
 				CubeListBuilder.create()
 						.texOffs(40, 22)
 						.addBox(-2.5F, 0.0F, -2.5F, 5, 2, 5, deformation),
 				PartPose.offset(0.0F, 6.0F, 0.0F));
 
 
-		partdefinition.addOrReplaceChild("right_toe",
+		rightLeg.addOrReplaceChild("right_toe",
 				CubeListBuilder.create()
 						.texOffs(40, 17)
 						.addBox(-2.0F, 0.0F, -1.0F, 4, 2, 1, deformation),
 				PartPose.offset(0.0F, 10.0F, -2.0F));
 
 
-		partdefinition.addOrReplaceChild("left_toe",
+		leftLeg.addOrReplaceChild("left_toe",
 				CubeListBuilder.create()
 						.texOffs(40, 17)
 						.addBox(-2.0F, 0.0F, -1.0F, 4, 2, 1, deformation),
@@ -111,7 +106,7 @@ public class YetiArmorModel extends TFArmorModel {
 						.addBox(-3.0F, -2.0F, -2.0F, 4, 10, 4, deformation),
 				PartPose.offset(-5.0F, 2.0F + 0.0f, 0.0F));
 
-		partdefinition.addOrReplaceChild("right_arm",
+		partdefinition.addOrReplaceChild("left_arm",
 				CubeListBuilder.create()
 						.texOffs(0, 16).mirror()
 						.addBox(-1.0F, -2.0F, -2.0F, 4, 10, 4, deformation),
@@ -127,28 +122,28 @@ public class YetiArmorModel extends TFArmorModel {
 
 	private static void addPairHorns(PartDefinition partdefinition, float height, float zangle) {
 
-		partdefinition.addOrReplaceChild("horn1a",
+		var leftBottom = partdefinition.addOrReplaceChild("horn1a",
 				CubeListBuilder.create()
 						.texOffs(0, 19)
 						.addBox(-3.0F, -1.5F, -1.5F, 3, 3, 3),
 				PartPose.offsetAndRotation(-4.5F, height, -1.0F,
 						0.0F, -30F / (180F / (float) Math.PI), zangle / (180F / (float) Math.PI)));
 
-		partdefinition.addOrReplaceChild("horn1b",
+		leftBottom.addOrReplaceChild("horn1b",
 				CubeListBuilder.create()
 						.texOffs(0, 26)
 						.addBox(-4.0F, -1.0F, -1.0F, 5, 2, 2),
 				PartPose.offsetAndRotation(-3.0F, 0.0F, 0.0F,
 						0.0F, -20F / (180F / (float) Math.PI), zangle / (180F / (float) Math.PI)));
 
-		partdefinition.addOrReplaceChild("horn2a",
+		var rightBottom = partdefinition.addOrReplaceChild("horn2a",
 				CubeListBuilder.create()
 						.texOffs(0, 19)
 						.addBox(0.0F, -1.5F, -1.5F, 3, 3, 3),
 				PartPose.offsetAndRotation(4.5F, height, -1.0F,
 						0.0F, 30F / (180F / (float) Math.PI), -zangle / (180F / (float) Math.PI)));
 
-		partdefinition.addOrReplaceChild("horn2b",
+		rightBottom.addOrReplaceChild("horn2b",
 				CubeListBuilder.create()
 						.texOffs(0, 26)
 						.addBox(-1.0F, -1.0F, -1.0F, 5, 2, 2),

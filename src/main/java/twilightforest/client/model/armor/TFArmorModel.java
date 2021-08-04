@@ -8,8 +8,8 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 
 public class TFArmorModel extends HumanoidModel<LivingEntity> {
 
-	public TFArmorModel(ModelPart size) {
-		super(size);
+	public TFArmorModel(ModelPart root) {
+		super(root);
 	}
 
 	@Override

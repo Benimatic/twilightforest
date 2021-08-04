@@ -3,87 +3,92 @@ package twilightforest.client.model.tileentity.legacy;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
 
 public class SnowQueenTrophyLegacyModel extends GenericTrophyModel {
 
 	public ModelPart head;
-	public ModelPart crown;
 
-	public SnowQueenTrophyLegacyModel() {
-		texWidth = 64;
-		texHeight = 32;
-
-		this.head = new ModelPart(this, 0, 0);
-		this.head.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F);
-		this.head.setPos(0.0F, -4.0F, 0.0F);
-
-		this.crown = new ModelPart(this, 0, 0);
-		this.crown.addChild(makeFrontCrown(-1, -4, 10F));
-		this.crown.addChild(makeFrontCrown(0, 4, -10F));
-		this.crown.addChild(makeSideCrown(-1, -4, 10F));
-		this.crown.addChild(makeSideCrown(0, 4, -10F));
-		this.head.addChild(crown);
+	public SnowQueenTrophyLegacyModel(ModelPart root) {
+		this.head = root.getChild("head");
 	}
 
-	private ModelPart makeSideCrown(float spikeDepth, float crownX, float angle) {
-		ModelPart crownSide = new ModelPart(this, 28, 28);
-		crownSide.addBox(-3.5F, -0.5F, -0.5F, 7, 1, 1);
-		crownSide.setPos(crownX, -6.0F, 0.0F);
-		crownSide.yRot = 3.14159F / 2.0F;
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-		ModelPart spike4 = new ModelPart(this, 48, 27);
-		spike4.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
-		spike4.xRot = angle * 1.5F / 180F * 3.14159F;
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		ModelPart spike3l = new ModelPart(this, 52, 28);
-		spike3l.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
-		spike3l.setPos(-2.5F, 0.0F, 0.0F);
-		spike3l.xRot = angle / 180F * 3.14159F;
-		spike3l.zRot = -10F / 180F * 3.14159F;
+		var crown = head.addOrReplaceChild("crown", CubeListBuilder.create(),
+				PartPose.ZERO);
 
-		ModelPart spike3r = new ModelPart(this, 52, 28);
-		spike3r.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
-		spike3r.setPos(2.5F, 0.0F, 0.0F);
-		spike3r.xRot = angle / 180F * 3.14159F;
-		spike3r.zRot = 10F / 180F * 3.14159F;
+		makeFrontCrown(crown, -1, -4, 10F, 0);
+		makeFrontCrown(crown, 0, 4, -10F, 1);
+		makeSideCrown(crown, -1, -4, 10F, 0);
+		makeSideCrown(crown, 0, 4, -10F, 1);
 
-		crownSide.addChild(spike4);
-		crownSide.addChild(spike3l);
-		crownSide.addChild(spike3r);
-		return crownSide;
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
-	private ModelPart makeFrontCrown(float spikeDepth, float crownZ, float angle) {
-		ModelPart crownFront = new ModelPart(this, 28, 30);
-		crownFront.addBox(-4.5F, -0.5F, -0.5F, 9, 1, 1);
-		crownFront.setPos(0.0F, -6.0F, crownZ);
+	private static void makeSideCrown(PartDefinition parent, float spikeDepth, float crownX, float angle, int iteration) {
 
-		ModelPart spike4 = new ModelPart(this, 48, 27);
-		spike4.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
-		spike4.xRot = angle * 1.5F / 180F * 3.14159F;
+		var crownSide = parent.addOrReplaceChild("crown_side_" + iteration, CubeListBuilder.create()
+						.texOffs(28, 28)
+						.addBox(-3.5F, -0.5F, -0.5F, 7, 1, 1),
+				PartPose.offsetAndRotation(crownX, -6.0F, 0.0F, 0.0F, Mth.PI / 2.0F, 0.0F));
 
-		ModelPart spike3l = new ModelPart(this, 52, 28);
-		spike3l.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
-		spike3l.setPos(-2.5F, 0.0F, 0.0F);
-		spike3l.xRot = angle / 180F * 3.14159F;
-		spike3l.zRot = -10F / 180F * 3.14159F;
+		crownSide.addOrReplaceChild("spike_4", CubeListBuilder.create()
+						.texOffs(48, 27)
+						.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, angle * 1.5F / 180F * Mth.PI, 0.0F, 0.0F));
 
-		ModelPart spike3r = new ModelPart(this, 52, 28);
-		spike3r.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
-		spike3r.setPos(2.5F, 0.0F, 0.0F);
-		spike3r.xRot = angle / 180F * 3.14159F;
-		spike3r.zRot = 10F / 180F * 3.14159F;
+		crownSide.addOrReplaceChild("spike_3l", CubeListBuilder.create()
+						.texOffs(52, 28)
+						.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1),
+				PartPose.offsetAndRotation(-2.5F, 0.0F, 0.0F, angle / 180F * Mth.PI, 0.0F, -10F / 180F * Mth.PI));
 
-		crownFront.addChild(spike4);
-		crownFront.addChild(spike3l);
-		crownFront.addChild(spike3r);
-		return crownFront;
+		crownSide.addOrReplaceChild("spike_3r", CubeListBuilder.create()
+						.texOffs(52, 28)
+						.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1),
+				PartPose.offsetAndRotation(2.5F, 0.0F, 0.0F, angle / 180F * Mth.PI, 0.0F, 10F / 180F * Mth.PI));
+
+	}
+
+	private static void makeFrontCrown(PartDefinition parent, float spikeDepth, float crownZ, float angle, int iteration) {
+
+		var crownFront = parent.addOrReplaceChild("crown_front_" + iteration, CubeListBuilder.create()
+						.texOffs(28, 30)
+						.addBox(-4.5F, -0.5F, -0.5F, 9, 1, 1),
+				PartPose.offset(0.0F, -6.0F, crownZ));
+
+		crownFront.addOrReplaceChild("spike_4", CubeListBuilder.create()
+						.texOffs(48, 27)
+						.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, angle * 1.5F / 180F * Mth.PI, 0.0F, 0.0F));
+
+		crownFront.addOrReplaceChild("spike_3l", CubeListBuilder.create()
+						.texOffs(52, 28)
+						.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1),
+				PartPose.offsetAndRotation(-2.5F, 0.0F, 0.0F, angle / 180F * Mth.PI, 0.0F, -10F / 180F * 3.14159F));
+
+		crownFront.addOrReplaceChild("spike_3r", CubeListBuilder.create()
+						.texOffs(52, 28)
+						.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1),
+				PartPose.offsetAndRotation(2.5F, 0.0F, 0.0F, angle / 180F * Mth.PI, 0.0F, 10F / 180F * 3.14159F));
+
 	}
 	
 	@Override
 	public void setRotations(float x, float y, float z) {
-		super.setRotations(x, y, z);
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = x * ((float) Math.PI / 180F);
 	}

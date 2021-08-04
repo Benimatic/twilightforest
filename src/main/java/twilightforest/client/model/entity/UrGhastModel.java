@@ -39,7 +39,7 @@ public class UrGhastModel extends TFGhastModel<UrGhastEntity> {
 
         for (int i = 0; i < tentacleCount; ++i) makeTentacle(body, "tentacle_" + i, i);
 
-        return LayerDefinition.create(mesh, 64, 64);
+        return LayerDefinition.create(mesh, 192, 96);
     }
 
     private static void makeTentacle(PartDefinition parent, String name, int iteration) {
