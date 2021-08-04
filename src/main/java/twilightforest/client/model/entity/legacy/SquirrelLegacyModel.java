@@ -7,127 +7,99 @@
 package twilightforest.client.model.entity.legacy;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.passive.SquirrelEntity;
 
-public class SquirrelLegacyModel extends ListModel<SquirrelEntity> {
+public class SquirrelLegacyModel extends QuadrupedModel<SquirrelEntity> {
 	//fields
-	ModelPart body;
-	ModelPart leg1;
-	ModelPart leg2;
-	ModelPart leg3;
-	ModelPart leg4;
-	ModelPart head;
 	ModelPart tail;
 	ModelPart fluff1;
 	ModelPart fluff2;
 	ModelPart fluff3;
 
-	public SquirrelLegacyModel() {
-		texWidth = 32;
-		texHeight = 32;
-
-//		setTextureOffset("tail.fluff1", 0, 20);
-//		setTextureOffset("tail.fluff2", 0, 20);
-//		setTextureOffset("tail.fluff3", 0, 26);
-
-		body = new ModelPart(this, 0, 8);
-		body.addBox(-2F, -1F, -2F, 4, 3, 5);
-		body.setPos(0F, 21F, 0F);
-		body.setTexSize(32, 32);
-		body.mirror = true;
-		setRotation(body, 0F, 0F, 0F);
-		leg1 = new ModelPart(this, 0, 16);
-		leg1.addBox(0F, 0F, 0F, 1, 1, 1);
-		leg1.setPos(-2F, 23F, 2F);
-		leg1.setTexSize(32, 32);
-		leg1.mirror = true;
-		setRotation(leg1, 0F, 0F, 0F);
-		leg2 = new ModelPart(this, 0, 16);
-		leg2.addBox(0F, 0F, 0F, 1, 1, 1);
-		leg2.setPos(1F, 23F, 2F);
-		leg2.setTexSize(32, 32);
-		leg2.mirror = true;
-		setRotation(leg2, 0F, 0F, 0F);
-		leg3 = new ModelPart(this, 0, 16);
-		leg3.addBox(0F, 0F, 0F, 1, 1, 1);
-		leg3.setPos(-2F, 23F, -2F);
-		leg3.setTexSize(32, 32);
-
-		setRotation(leg3, 0F, 0F, 0F);
-		leg4 = new ModelPart(this, 0, 16);
-		leg4.addBox(0F, 0F, 0F, 1, 1, 1);
-		leg4.setPos(1F, 23F, -2F);
-		leg4.setTexSize(32, 32);
-
-		setRotation(leg4, 0F, 0F, 0F);
-		head = new ModelPart(this/*, "head"*/);
-		head.setPos(0F, 22F, -2F);
-		setRotation(head, 0F, 0F, 0F);
-
-		head.texOffs(0, 0).addBox(-2F, -5F, -3F, 4, 4, 4);
-		head.texOffs(16, 0).addBox(-2F, -6F, -0.5F, 1, 1, 1);
-		head.texOffs(16, 0).addBox(1F, -6F, -0.5F, 1, 1, 1);
-
-		tail = new ModelPart(this/*, "tail"*/);
-		tail.setPos(0F, 21F, 2F);
-		tail.texOffs(0, 18).addBox(-0.5F, -1.5F, 0.5F, 1, 1, 1);
-
-		fluff1 = new ModelPart(this, 0, 20);
-		fluff1.addBox(-1.5F, -4F, 1F, 3, 3, 3);
-		tail.addChild(fluff1);
-
-		fluff2 = new ModelPart(this, 0, 20);
-		fluff2.addBox(0F, -3F, -1.5F, 3, 3, 3);
-		fluff2.setPos(-1.5F, -4F, 2.5F);
-		fluff1.addChild(fluff2);
-
-		fluff3 = new ModelPart(this, 0, 26);
-		fluff3.addBox(1.5F, -3F, -1.5F, 3, 3, 3);
-		fluff3.setPos(-1.5F, -3F, 0F);
-		fluff2.addChild(fluff3);
+	public SquirrelLegacyModel(ModelPart root) {
+		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
+		this.tail = body.getChild("tail");
+		this.fluff1 = tail.getChild("fluff_1");
+		this.fluff2 = fluff1.getChild("fluff_2");
+		this.fluff3 = fluff2.getChild("fluff_3");
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
+	public static LayerDefinition create() {
+		MeshDefinition mesh = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
+		PartDefinition partRoot = mesh.getRoot();
 
-	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(
-				body,
-				leg1,
-				leg2,
-				leg3,
-				leg4,
-				head,
-				tail
-		);
-	}
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-2F, -5F, -3F, 4, 4, 4)
+						.texOffs(16, 0)
+						.addBox(-2F, -6F, -0.5F, 1, 1, 1)
+						.texOffs(16, 0)
+						.addBox(1F, -6F, -0.5F, 1, 1, 1),
+				PartPose.offset(0F, 22F, -2F));
 
-	private void setRotation(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
-	}
+		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create().mirror()
+						.texOffs(0, 0)
+						.addBox(-2F, -1F, -2F, 4, 3, 5),
+				PartPose.offset(0F, 21F, 0F));
 
-	@Override
-	public void prepareMobModel(SquirrelEntity entity, float limbSwing, float limbSwingAmount, float partialTickTime) {
-		//EntityTFSquirrel squirrel = (EntityTFSquirrel)entity;
+		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 16)
+						.addBox(0F, 0F, 0F, 1, 1, 1),
+				PartPose.offset(-2F, 23F, 2F));
+
+		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 16)
+						.addBox(0F, 0F, 0F, 1, 1, 1),
+				PartPose.offset(1F, 23F, 2F));
+
+		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(0F, 0F, 0F, 1, 1, 1),
+				PartPose.offset(-2F, 23F, -2F));
+
+		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(0F, 0F, 0F, 1, 1, 1),
+				PartPose.offset(1F, 23F, -2F));
+
+		var tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
+						.texOffs(0, 18)
+						.addBox(-0.5F, -1.5F, 0.5F, 1, 1, 1),
+				PartPose.offset(0F, 21F, 2F));
+
+		var fluff1 = tail.addOrReplaceChild("fluff_1", CubeListBuilder.create()
+						.texOffs(0, 20)
+						.addBox(-1.5F, -4F, 1F, 3, 3, 3),
+				PartPose.ZERO);
+
+		var fluff2 = fluff1.addOrReplaceChild("fluff_2", CubeListBuilder.create()
+						.texOffs(0, 20)
+						.addBox(0F, -3F, -1.5F, 3, 3, 3),
+				PartPose.offset(-1.5F, -4F, 2.5F));
+
+		fluff2.addOrReplaceChild("fluff_3", CubeListBuilder.create()
+						.texOffs(0, 26)
+						.addBox(1.5F, -3F, -1.5F, 3, 3, 3),
+				PartPose.offset(-1.5F, -3F, 0F));
+
+		return LayerDefinition.create(mesh, 32, 32);
 	}
 
 	@Override
 	public void setupAnim(SquirrelEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.leg3.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.leg4.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
 		if (limbSwingAmount > 0.2) {
 			float wiggle = Math.min(limbSwingAmount, 0.6F);

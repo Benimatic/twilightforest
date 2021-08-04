@@ -4,125 +4,105 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.UpperGoblinKnightEntity;
-
-import net.minecraft.client.model.HumanoidModel.ArmPose;
 
 public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnightEntity> {
 
 	public ModelPart breastplate;
-	public ModelPart helmet;
-	public ModelPart righthorn1;
-	public ModelPart righthorn2;
-	public ModelPart lefthorn1;
-	public ModelPart lefthorn2;
 
 	public ModelPart shield;
 	public ModelPart spear;
 
+	public UpperGoblinKnightLegacyModel(ModelPart root) {
+		super(root);
+		this.breastplate = root.getChild("breastplate");
+		this.shield = leftArm.getChild("shield");
+		this.spear = rightArm.getChild("spear");
+	}
 
-	public UpperGoblinKnightLegacyModel() {
-		super(0.0F, 0.0F, 128, 64);
-		this.crouching = false;
-		this.texWidth = 128;
-		this.texHeight = 64;
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-//FIXME: AtomicBlom: Replace with something like LayerCape
-/*
-		this.bipedCloak = new ModelRenderer(this, 0, 0);
-        this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
-*/
-//FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
-/*
-        this.bipedEars = new ModelRenderer(this, 24, 0);
-        this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
-*/
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create(),
+				PartPose.offset(0.0F, 12.0F, 0.0F));
 
-		this.head = new ModelPart(this, 0, 0);
-		this.head.addBox(0, 0, 0, 0, 0, 0);
-		this.head.setPos(0.0F, 12.0F, 0.0F);
+		var hat = partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45F / (180F / Mth.PI), 0.0F));
 
-		this.hat = new ModelPart(this, 0, 0);
-		this.hat.addBox(0, 0, 0, 0, 0, 0);
-		this.hat.setPos(0.0F, 12.0F, 0.0F);
+		var rightHorn = hat.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
+						.texOffs(28, 0)
+						.addBox(-6F, -1.5F, -1.5F, 7, 3, 3),
+				PartPose.offsetAndRotation(-3.5F, -9F, 0.0F, 0.0F, 15F / (180F / Mth.PI), 10F / (180F / Mth.PI)));
 
-		this.helmet = new ModelPart(this, 0, 0);
-		this.helmet.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7);
-		this.helmet.yRot = 45F / (180F / (float) Math.PI);
+		rightHorn.addOrReplaceChild("right_horn_2", CubeListBuilder.create()
+						.texOffs(28, 6)
+						.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2),
+				PartPose.offsetAndRotation(-5.5F, 0.0F, 0.0F, 0.0F, 0.0F, 10F / (180F / Mth.PI)));
 
-		this.righthorn1 = new ModelPart(this, 28, 0);
-		this.righthorn1.addBox(-6F, -1.5F, -1.5F, 7, 3, 3);
-		this.righthorn1.setPos(-3.5F, -9F, 0.0F);
-		this.righthorn1.yRot = 15F / (180F / (float) Math.PI);
-		this.righthorn1.zRot = 10F / (180F / (float) Math.PI);
+		var leftHorn = hat.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
+						.texOffs(28, 0)
+						.addBox(-6F, -1.5F, -1.5F, 7, 3, 3),
+				PartPose.offsetAndRotation(3.5F, -9F, 0.0F, 0.0F, -15F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
 
-		this.righthorn2 = new ModelPart(this, 28, 6);
-		this.righthorn2.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2);
-		this.righthorn2.setPos(-5.5F, 0.0F, 0.0F);
-		this.righthorn2.zRot = 10F / (180F / (float) Math.PI);
+		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create().mirror()
+						.texOffs(28, 6)
+						.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2),
+				PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 0.0F, -10F / (180F / Mth.PI)));
 
-		this.righthorn1.addChild(righthorn2);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 18)
+						.addBox(-5.5F, 0.0F, -2.0F, 11, 8, 4)
+						.texOffs(30, 24)
+						.addBox(-6.5F, 0F, -2F, 1, 4, 4)
+						.texOffs(30, 24)
+						.addBox(5.5F, 0F, -2F, 1, 4, 4),
+				PartPose.offset(0.0F, 12.0F, 0.0F));
 
-		this.lefthorn1 = new ModelPart(this, 28, 0);
-		this.lefthorn1.mirror = true;
-		this.lefthorn1.addBox(-1F, -1.5F, -1.5F, 7, 3, 3);
-		this.lefthorn1.setPos(3.5F, -9F, 0.0F);
-		this.lefthorn1.yRot = -15F / (180F / (float) Math.PI);
-		this.lefthorn1.zRot = -10F / (180F / (float) Math.PI);
+		partRoot.addOrReplaceChild("breastplate", CubeListBuilder.create()
+						.texOffs(64, 0)
+						.addBox(-6.5F, 0.0F, -3.0F, 13, 12, 6),
+				PartPose.offset(0F, 11.5F, 0.0F));
 
-		this.lefthorn2 = new ModelPart(this, 28, 6);
-		this.lefthorn2.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2);
-		this.lefthorn2.setPos(5.5F, 0.0F, 0.0F);
-		this.lefthorn2.zRot = -10F / (180F / (float) Math.PI);
+		var rightArm = partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(44, 16)
+						.addBox(-4.0F, -2.0F, -2.0F, 4, 12, 4),
+				PartPose.offset(-6.5F, 14.0F, 0.0F));
 
-		this.lefthorn1.addChild(lefthorn2);
+		rightArm.addOrReplaceChild("spear", CubeListBuilder.create()
+						.texOffs(108, 0)
+						.addBox(-1.0F, -19.0F, -1.0F, 2, 40, 2),
+				PartPose.offsetAndRotation(-2F, 8.5F, 0.0F, 90F / (180F / Mth.PI), 0.0F, 0.0F));
 
-		this.hat.addChild(helmet);
-		this.hat.addChild(righthorn1);
-		this.hat.addChild(lefthorn1);
+		var leftArm = partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+						.texOffs(44, 16)
+						.addBox(0.0F, -2.0F, -2.0F, 4, 12, 4),
+				PartPose.offset(6.5F, 14.0F, 0.0F));
 
-		this.body = new ModelPart(this, 0, 18);
-		this.body.setPos(0.0F, 12.0F, 0.0F);
-		this.body.addBox(-5.5F, 0.0F, -2.0F, 11, 8, 4);
-		this.body.texOffs(30, 24).addBox(-6.5F, 0F, -2F, 1, 4, 4); // right shoulder
-		this.body.texOffs(30, 24).addBox(5.5F, 0F, -2F, 1, 4, 4); // left shoulder
+		leftArm.addOrReplaceChild("shield", CubeListBuilder.create()
+						.texOffs(63, 36)
+						.addBox(-6.0F, -6.0F, -2.0F, 12, 20, 2),
+				PartPose.offsetAndRotation(0F, 12F, 0.0F, 90F / (180F / Mth.PI), 0.0F, 0.0F));
 
-		this.rightArm = new ModelPart(this, 44, 16);
-		this.rightArm.addBox(-4.0F, -2.0F, -2.0F, 4, 12, 4);
-		this.rightArm.setPos(-6.5F, 14.0F, 0.0F);
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(30, 16)
+						.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4),
+				PartPose.offset(-4F, 20.0F, 0.0F));
 
-		this.leftArm = new ModelPart(this, 44, 16);
-		this.leftArm.mirror = true;
-		this.leftArm.addBox(0.0F, -2.0F, -2.0F, 4, 12, 4);
-		this.leftArm.setPos(6.5F, 14.0F, 0.0F);
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+						.texOffs(30, 16)
+						.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4),
+				PartPose.offset(4F, 20.0F, 0.0F));
 
-		this.rightLeg = new ModelPart(this, 30, 16);
-		this.rightLeg.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4);
-		this.rightLeg.setPos(-4F, 20.0F, 0.0F);
-
-		this.leftLeg = new ModelPart(this, 30, 16);
-		this.leftLeg.mirror = true;
-		this.leftLeg.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4);
-		this.leftLeg.setPos(4F, 20.0F, 0.0F);
-
-		this.shield = new ModelPart(this, 63, 36);
-		this.shield.addBox(-6.0F, -6.0F, -2.0F, 12, 20, 2);
-		this.shield.setPos(0F, 12F, 0.0F);
-		this.shield.xRot = 90F / (180F / (float) Math.PI);
-
-		this.leftArm.addChild(shield);
-
-		this.spear = new ModelPart(this, 108, 0);
-		this.spear.addBox(-1.0F, -19.0F, -1.0F, 2, 40, 2);
-		this.spear.setPos(-2F, 8.5F, 0.0F);
-		this.spear.xRot = 90F / (180F / (float) Math.PI);
-
-		this.rightArm.addChild(spear);
-
-		this.breastplate = new ModelPart(this, 64, 0);
-		this.breastplate.addBox(-6.5F, 0.0F, -3.0F, 13, 12, 6);
-		this.breastplate.setPos(0F, 11.5F, 0.0F);
+		return LayerDefinition.create(mesh, 128, 64);
 	}
 
 	/**

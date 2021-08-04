@@ -11,12 +11,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.passive.TinyBirdEntity;
 
 public class TinyBirdLegacyModel extends AgeableListModel<TinyBirdEntity> {
 	//fields
-	ModelPart beak;
 	ModelPart head;
 	ModelPart body;
 	ModelPart rightarm;
@@ -25,59 +29,61 @@ public class TinyBirdLegacyModel extends AgeableListModel<TinyBirdEntity> {
 	ModelPart leftleg;
 	ModelPart tail;
 
-	public TinyBirdLegacyModel() {
-		texWidth = 32;
-		texHeight = 32;
+	public TinyBirdLegacyModel(ModelPart root) {
+		this.head = root.getChild("head");
+		this.body = root.getChild("body");
+		this.rightarm = root.getChild("right_arm");
+		this.leftarm = root.getChild("left_arm");
+		this.rightleg = root.getChild("right_leg");
+		this.leftleg = root.getChild("left_leg");
+		this.tail = root.getChild("tail");
+	}
 
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-		head.setPos(0F, 20.5F, -0.5F);
-		head.setTexSize(32, 32);
-		head.mirror = true;
-		setRotation(head, 0F, 0F, 0F);
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-		beak = new ModelPart(this, 12, 0);
-		beak.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1);
-		beak.setPos(0F, 0.5F, -2F);
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+				PartPose.offset(0F, 20.5F, -0.5F));
 
-		head.addChild(beak);
+		head.addOrReplaceChild("beak", CubeListBuilder.create()
+						.texOffs(12, 0)
+						.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1),
+				PartPose.offset(0F, 0.5F, -2F));
 
-		body = new ModelPart(this, 0, 6);
-		body.addBox(-1.5F, 0F, -1F, 3, 3, 3);
-		body.setPos(0F, 20F, 0F);
-		body.setTexSize(32, 32);
-		body.mirror = true;
-		setRotation(body, 0F, 0F, 0F);
-		rightarm = new ModelPart(this, 12, 2);
-		rightarm.addBox(-1F, 0F, -1.5F, 1, 2, 3);
-		rightarm.setPos(-1.5F, 20.5F, 1F);
-		rightarm.setTexSize(32, 32);
-		rightarm.mirror = true;
-		setRotation(rightarm, 0F, 0F, 0F);
-		leftarm = new ModelPart(this, 12, 2);
-		leftarm.addBox(0F, 0F, -1.5F, 1, 2, 3);
-		leftarm.setPos(1.5F, 20.5F, 1F);
-		leftarm.setTexSize(32, 32);
-		leftarm.mirror = true;
-		setRotation(leftarm, 0F, 0F, 0F);
-		rightleg = new ModelPart(this, 0, 12);
-		rightleg.addBox(0F, 0F, 0F, 1, 1, 1);
-		rightleg.setPos(-1.5F, 23F, 0F);
-		rightleg.setTexSize(32, 32);
-		rightleg.mirror = true;
-		setRotation(rightleg, 0F, 0F, 0F);
-		leftleg = new ModelPart(this, 0, 12);
-		leftleg.addBox(0.5F, 0F, 0F, 1, 1, 1);
-		leftleg.setPos(0F, 23F, 0F);
-		leftleg.setTexSize(32, 32);
-		leftleg.mirror = true;
-		setRotation(leftleg, 0F, 0F, 0F);
-		tail = new ModelPart(this, 0, 14);
-		tail.addBox(-1.5F, -0.5F, 0F, 3, 1, 2);
-		tail.setPos(0F, 22F, 2F);
-		tail.setTexSize(32, 32);
-		tail.mirror = true;
-		setRotation(tail, 0F, 0F, 0F);
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 6)
+						.addBox(-1.5F, 0F, -1F, 3, 3, 3),
+				PartPose.offset(0F, 20F, 0F));
+
+		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(12, 2)
+						.addBox(-1F, 0F, -1.5F, 1, 2, 3),
+				PartPose.offset(-1.5F, 20.5F, 1F));
+
+		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+						.texOffs(12, 2)
+						.addBox(0F, 0F, -1.5F, 1, 2, 3),
+				PartPose.offset(1.5F, 20.5F, 1F));
+
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(0, 12)
+						.addBox(0F, 0F, 0F, 1, 1, 1),
+				PartPose.offset(-1.5F, 23F, 0F));
+
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 12)
+						.addBox(0F, 0F, 0F, 1, 1, 1),
+				PartPose.offset(0F, 23F, 0F));
+
+		partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
+						.texOffs(0, 14)
+						.addBox(-1.5F, -0.5F, 0F, 3, 1, 2),
+				PartPose.offset(0F, 22F, 2F));
+
+		return LayerDefinition.create(mesh, 32, 32);
 	}
 
 	@Override
@@ -115,12 +121,6 @@ public class TinyBirdLegacyModel extends AgeableListModel<TinyBirdEntity> {
 			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 		}
-	}
-
-	private void setRotation(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
 	}
 
 	/**
