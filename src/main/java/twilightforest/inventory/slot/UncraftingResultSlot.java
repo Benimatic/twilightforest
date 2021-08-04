@@ -26,12 +26,12 @@ public class UncraftingResultSlot extends ResultSlot {
 	}
 
 	@Override
-	public ItemStack onTake(Player player, ItemStack stack) {
+	public void onTake(Player player, ItemStack stack) {
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
 		boolean combined = true;
 
 		for (Recipe<CraftingContainer> recipe : player.level.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix, this.player.level)) {
-			if (AbstractContainerMenu.consideredTheSameItem(recipe.getResultItem(), stack)) {
+			if (ItemStack.isSame(recipe.getResultItem(), stack)) {
 				combined = false;
 				break;
 			}
@@ -54,6 +54,5 @@ public class UncraftingResultSlot extends ResultSlot {
 		for (int i = 0; i < assemblyMatrix.getContainerSize(); i++) {
 			assemblyMatrix.removeItem(i, 1);
 		}
-		return stack;
 	}
 }

@@ -2,6 +2,7 @@ package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.pathfinder.Path;
@@ -38,7 +39,7 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 		this.builtTargetSelector = new Predicate<Entity>() {
 			@Override
 			public boolean test(@Nullable Entity input) {
-				return input.isAlive() && AvoidAnyEntityGoal.this.entity.getSensing().canSee(input) && !AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
+				return input.isAlive() && AvoidAnyEntityGoal.this.entity.getSensing().hasLineOfSight(input) && !AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
 			}
 		};
 
@@ -58,7 +59,7 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 
 		if (!list.isEmpty()) {
 			this.avoidTarget = list.get(0);
-			Vec3 vec3d = RandomPos.getPosAvoid(this.entity, 16, 7, this.entity.position());
+			Vec3 vec3d = DefaultRandomPos.getPosAway(this.entity, 16, 7, this.entity.position());
 
 			if (vec3d == null) {
 				return false;

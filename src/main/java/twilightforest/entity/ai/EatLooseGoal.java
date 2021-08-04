@@ -55,7 +55,7 @@ public class EatLooseGoal extends Goal {
 		this.temptedQuestRam.getLookControl().setLookAt(this.temptingItem, 30.0F, this.temptedQuestRam.getMaxHeadXRot());
 
 		if (this.temptedQuestRam.distanceToSqr(this.temptingItem) < 6.25D && temptedQuestRam.tryAccept(temptingItem.getItem())) {
-			this.temptingItem.remove();
+			this.temptingItem.discard();
 		}
 	}
 

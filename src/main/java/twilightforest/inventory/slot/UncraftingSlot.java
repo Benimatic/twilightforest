@@ -66,7 +66,7 @@ public class UncraftingSlot extends Slot {
 	 * Called when the player picks up an item from an inventory slot
 	 */
 	@Override
-	public ItemStack onTake(Player player, ItemStack stack) {
+	public void onTake(Player player, ItemStack stack) {
 		// charge the player for this
 		if (this.uncraftingMatrix.uncraftingCost > 0) {
 			this.player.giveExperienceLevels(-this.uncraftingMatrix.uncraftingCost);
@@ -88,7 +88,7 @@ public class UncraftingSlot extends Slot {
 			this.inputSlot.removeItem(0, uncraftingMatrix.numberOfInputItems);
 		}
 
-		return super.onTake(player, stack);
+		super.onTake(player, stack);
 	}
 
 	@Override

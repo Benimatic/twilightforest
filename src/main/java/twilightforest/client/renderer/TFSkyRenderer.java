@@ -37,7 +37,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		LevelRenderer rg = mc.levelRenderer;
 
 		RenderSystem.disableTexture();
-		Vec3 vec3d = world.getSkyColor(mc.gameRenderer.getMainCamera().getBlockPosition(), partialTicks);
+		Vec3 vec3d = world.getSkyColor(mc.gameRenderer.getMainCamera().getPosition(), partialTicks);
 		float f = (float) vec3d.x;
 		float f1 = (float) vec3d.y;
 		float f2 = (float) vec3d.z;
@@ -46,17 +46,14 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		Tesselator tessellator = Tesselator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuilder();
 		RenderSystem.depthMask(false);
-		RenderSystem.enableFog();
-		RenderSystem.color3f(f, f1, f2);
+		RenderSystem.setShaderColor(f, f1, f2, 1.0F);
 
 		rg.skyBuffer.bind();
-		this.vertexBufferFormat.setupBufferState(0L);
-		rg.skyBuffer.draw(ms.last().pose(), 7);
+		ShaderInstance shaderinstance = RenderSystem.getShader();
+		rg.skyBuffer.drawWithShader(ms.last().pose(), 7, shaderinstance);
 		VertexBuffer.unbind();
 		this.vertexBufferFormat.clearBufferState();
 
-		RenderSystem.disableFog();
-		RenderSystem.disableAlphaTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 //		RenderHelper.disableStandardItemLighting();
@@ -77,21 +74,18 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		float f15 = 1.0F; // TF - stars are always bright
 
 		//if (f15 > 0.0F) { Always true
-		RenderSystem.color4f(f15, f15, f15, f15);
+		RenderSystem.setShaderColor(f15, f15, f15, f15);
 
 		this.starVBO.bind();
-		this.vertexBufferFormat.setupBufferState(0L);
-		this.starVBO.draw(ms.last().pose(), 7);
+		this.starVBO.drawWithShader(ms.last().pose(), 7, shaderinstance);
 		VertexBuffer.unbind();
 		this.vertexBufferFormat.clearBufferState();
 		//}
 
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.disableBlend();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.enableFog();
 		ms.popPose();
-		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
+		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
 		/** world.getWorldInfo().getVoidFogHeight() -> 27, because the sea level for TF is lower TODO: Keep an eye on Forge PR #7528*/
 		double d0 = mc.player.getEyePosition(partialTicks).y - 30;
 
@@ -100,8 +94,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 			ms.translate(0.0F, 12.0F, 0.0F);
 
 			rg.darkBuffer.bind();
-			this.vertexBufferFormat.setupBufferState(0L);
-			rg.darkBuffer.draw(ms.last().pose(), 7);
+			rg.darkBuffer.drawWithShader(ms.last().pose(), 7, shaderinstance);
 			VertexBuffer.unbind();
 			this.vertexBufferFormat.clearBufferState();
 
@@ -109,7 +102,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 //			float f18 = 1.0F;
 			float f19 = -((float) (d0 + 65.0D));
 //			float f20 = -1.0F;
-			bufferbuilder.begin(7, DefaultVertexFormat.POSITION_COLOR);
+			bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 			bufferbuilder.vertex(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.vertex(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
@@ -134,14 +127,13 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		}
 
 		if (world.effects().hasGround()) {
-			RenderSystem.color3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
+			RenderSystem.setShaderColor(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F, 1.0F);
 		} else {
-			RenderSystem.color3f(f, f1, f2);
+			RenderSystem.setShaderColor(f, f1, f2, 1.0F);
 		}
 
 		RenderSystem.enableTexture();
 		RenderSystem.depthMask(true);
-		RenderSystem.disableFog();
 	}
 
 	// [VanillaCopy] RenderGlobal.generateStars
@@ -164,7 +156,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 	@SuppressWarnings("unused")
 	private void renderStars(BufferBuilder bufferBuilder) {
 		Random random = new Random(10842L);
-		bufferBuilder.begin(7, DefaultVertexFormat.POSITION);
+		bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 
 		// TF - 1500 -> 3000
 		for (int i = 0; i < 3000; ++i) {

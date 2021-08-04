@@ -32,20 +32,4 @@ public class KnightmetalArmorItem extends ArmorItem {
 			return TwilightForestMod.ARMOR_DIR + "knightly_1.png";
 		}
 	}
-
-	@Nullable
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	@SuppressWarnings("unchecked")
-	public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A original) {
-		return (A) knightlyArmorModel.get(armorSlot);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void initArmorModel() {
-		knightlyArmorModel.put(EquipmentSlot.HEAD, new KnightmetalArmorModel(0.75F));
-		knightlyArmorModel.put(EquipmentSlot.CHEST, new KnightmetalArmorModel(1.0F));
-		knightlyArmorModel.put(EquipmentSlot.LEGS, new KnightmetalArmorModel(0.5F));
-		knightlyArmorModel.put(EquipmentSlot.FEET, new KnightmetalArmorModel(1.0F));
-	}
 }

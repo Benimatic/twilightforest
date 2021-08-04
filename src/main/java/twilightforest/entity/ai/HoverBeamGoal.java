@@ -121,7 +121,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 
 		double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
-		distanceDesired = Mth.sqrt(distanceDesired);
+		distanceDesired = Mth.sqrt((float) distanceDesired);
 
 		if (distanceDesired > 0.5) {
 

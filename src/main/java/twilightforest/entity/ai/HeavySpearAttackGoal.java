@@ -26,6 +26,6 @@ public class HeavySpearAttackGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < UpperGoblinKnightEntity.HEAVY_SPEAR_TIMER_START && EntitySelector.ATTACK_ALLOWED.test(entity.getTarget());
+		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < UpperGoblinKnightEntity.HEAVY_SPEAR_TIMER_START && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity.getTarget());
 	}
 }

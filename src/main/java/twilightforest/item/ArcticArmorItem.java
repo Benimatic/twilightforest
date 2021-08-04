@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.CauldronBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,21 +39,6 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "arcticarmor_1" + (layer == null ? "_dyed" : "_overlay") + ".png";
 		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	@SuppressWarnings("unchecked")
-	public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A oldM) {
-		return (A) arcticArmorModel.get(armorSlot);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void initArmorModel() {
-		arcticArmorModel.put(EquipmentSlot.HEAD, new ArcticArmorModel(0.75F));
-		arcticArmorModel.put(EquipmentSlot.CHEST, new ArcticArmorModel(1.0F));
-		arcticArmorModel.put(EquipmentSlot.LEGS, new ArcticArmorModel(0.5F));
-		arcticArmorModel.put(EquipmentSlot.FEET, new ArcticArmorModel(1.0F));
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class ThrowSpikeBlockGoal extends Goal {
 		if (target == null || this.attacker.distanceToSqr(target) > 42) {
 			return false;
 		} else {
-			return this.attacker.isAlive() && this.attacker.canSee(target) && this.attacker.level.random.nextInt(56) == 0;
+			return this.attacker.isAlive() && this.attacker.hasLineOfSight(target) && this.attacker.level.random.nextInt(56) == 0;
 		}
 	}
 

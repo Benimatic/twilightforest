@@ -24,7 +24,7 @@ public class NoClipMoveHelper extends MoveControl {
 
 			if (this.courseChangeCooldown-- <= 0) {
 				this.courseChangeCooldown += this.parentEntity.getRandom().nextInt(5) + 2;
-				dist = Mth.sqrt(dist);
+				dist = Mth.sqrt((float) dist);
 
 				this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().add((dx / dist * 0.1D) * speedModifier, (dy / dist * 0.1D) * speedModifier, (dz / dist * 0.1D) * speedModifier));
 			}

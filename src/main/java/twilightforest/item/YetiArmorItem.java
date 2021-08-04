@@ -58,21 +58,6 @@ public class YetiArmorItem extends ArmorItem {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	@SuppressWarnings("unchecked")
-	public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
-		return (A) yetiArmorModel.get(armorSlot);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void initArmorModel() {
-		yetiArmorModel.put(EquipmentSlot.HEAD, new YetiArmorModel(EquipmentSlot.HEAD, 0.75F));
-		yetiArmorModel.put(EquipmentSlot.CHEST, new YetiArmorModel(EquipmentSlot.CHEST, 1.0F));
-		yetiArmorModel.put(EquipmentSlot.LEGS, new YetiArmorModel(EquipmentSlot.LEGS, 0.5F));
-		yetiArmorModel.put(EquipmentSlot.FEET, new YetiArmorModel(EquipmentSlot.FEET, 1.0F));
-	}
-
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltips, TooltipFlag flags) {

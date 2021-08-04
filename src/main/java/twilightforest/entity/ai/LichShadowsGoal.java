@@ -53,7 +53,7 @@ public class LichShadowsGoal extends Goal {
 			}
 		}
 
-		if (lich.getSensing().canSee(targetedEntity) && lich.getAttackCooldown() == 0 && dist < 20F) {
+		if (lich.getSensing().hasLineOfSight(targetedEntity) && lich.getAttackCooldown() == 0 && dist < 20F) {
 			if (lich.getNextAttackType() == 0) {
 				lich.launchBoltAt();
 			} else {
@@ -74,7 +74,7 @@ public class LichShadowsGoal extends Goal {
 			findNewMaster();
 		}
 		if (!lich.level.isClientSide && (lich.getMasterLich() == null || !lich.getMasterLich().isAlive())) {
-			lich.remove();
+			lich.discard();
 		}
 	}
 

@@ -52,7 +52,7 @@ public class LichMinionsGoal extends Goal {
 				// melee attack
 				lich.doHurtTarget(targetedEntity);
 				lich.setAttackCooldown(20);
-			} else if (dist < 20F && lich.getSensing().canSee(targetedEntity)) {
+			} else if (dist < 20F && lich.getSensing().hasLineOfSight(targetedEntity)) {
 				if (lich.getNextAttackType() == 0) {
 					lich.launchBoltAt();
 				} else {

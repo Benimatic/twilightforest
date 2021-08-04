@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.LivingEntity;
 import org.lwjgl.opengl.GL11;
@@ -22,17 +23,18 @@ public enum RenderEffect {
 		public void render(LivingEntity entity, EntityModel<? extends LivingEntity> renderer,
 		                   double x, double y, double z, float partialTicks, boolean firstPerson) {
 
-			RenderSystem.pushMatrix();
-			RenderSystem.translated(x, y, z);
-			RenderSystem.rotatef(180, 1, 0, 0);
-			RenderSystem.translatef(0, 0.5F - entity.getEyeHeight(), 0);
+			PoseStack ms = RenderSystem.getModelViewStack();
+			ms.pushPose();
+			ms.translate(x, y, z);
+			//ms.rotatef(180, 1, 0, 0); //FIXME
+			ms.translate(0, 0.5F - entity.getEyeHeight(), 0);
 			RenderSystem.enableBlend();
 			RenderSystem.disableCull();
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			// fixme 1.16 layer.render(entity, 0, 0, partialTicks, 0, 0, 0, 0.0625F);
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
-			RenderSystem.popMatrix();
+			ms.popPose();
 		}
 	};
 

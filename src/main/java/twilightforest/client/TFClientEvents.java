@@ -140,7 +140,7 @@ public class TFClientEvents {
 	 */
 	@SubscribeEvent
 	public static void preOverlay(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
+		if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER) {
 			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
 				event.setCanceled(true);
 			}

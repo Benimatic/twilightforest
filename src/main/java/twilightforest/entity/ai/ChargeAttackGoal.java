@@ -59,7 +59,7 @@ public class ChargeAttackGoal extends Goal {
 				return false;
 			} else {
 				Vec3 chargePos = findChargePoint(charger, chargeTarget, 2.1);
-				boolean canSeeTargetFromDest = charger.getSensing().canSee(chargeTarget);
+				boolean canSeeTargetFromDest = charger.getSensing().hasLineOfSight(chargeTarget);
 				if (!canSeeTargetFromDest) {
 					return false;
 				} else {
@@ -161,7 +161,7 @@ public class ChargeAttackGoal extends Goal {
 		double vecz = target.getZ() - attacker.getZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
-		double distance = Mth.sqrt(vecx * vecx + vecz * vecz);
+		double distance = Mth.sqrt((float) (vecx * vecx + vecz * vecz));
 
 		// figure out where we're headed from the target angle
 		double dx = Mth.cos(rangle) * (distance + overshoot);

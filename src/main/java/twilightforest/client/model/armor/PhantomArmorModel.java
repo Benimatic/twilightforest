@@ -14,7 +14,7 @@ public class PhantomArmorModel extends KnightmetalArmorModel {
 		super(root);
 	}
 
-	public LayerDefinition addPieces() {
+	public static LayerDefinition addPieces() {
 		MeshDefinition mesh = KnightmetalArmorModel.setup();
 		PartDefinition part = mesh.getRoot();
 

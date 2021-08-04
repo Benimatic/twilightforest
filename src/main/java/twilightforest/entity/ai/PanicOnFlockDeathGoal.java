@@ -2,6 +2,7 @@ package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -33,7 +34,7 @@ public class PanicOnFlockDeathGoal extends Goal {
 		boolean yikes = fleeTimer > 0;
 
 		// check if any of us is dead within 4 squares
-		List<PathfinderMob> flockList = this.flockCreature.level.getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
+		List<? extends PathfinderMob> flockList = this.flockCreature.level.getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
 		for (LivingEntity flocker : flockList) {
 			if (flocker.deathTime > 0) {
 				yikes = true;
@@ -44,7 +45,7 @@ public class PanicOnFlockDeathGoal extends Goal {
 		if (!yikes) {
 			return false;
 		} else {
-			Vec3 target = RandomPos.getPos(this.flockCreature, 5, 4);
+			Vec3 target = DefaultRandomPos.getPos(this.flockCreature, 5, 4);
 
 			if (target == null) {
 				return false;

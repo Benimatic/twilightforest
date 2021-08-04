@@ -44,7 +44,7 @@ public class GroundAttackGoal extends Goal {
 				return false;
 			} else {
 
-				if (this.attacker.canSee(attackTarget)) {
+				if (this.attacker.hasLineOfSight(attackTarget)) {
 					return this.attacker.getRandom().nextInt(FREQ) == 0;
 				} else {
 					return this.attacker.getRandom().nextInt(FREQ - 4) == 0;

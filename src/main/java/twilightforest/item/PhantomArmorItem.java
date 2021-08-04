@@ -39,19 +39,6 @@ public class PhantomArmorItem extends ArmorItem {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	@SuppressWarnings("unchecked")
-	public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A original) {
-		return (A) phantomArmorModel.get(armorSlot);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void initArmorModel() {
-		phantomArmorModel.put(EquipmentSlot.HEAD, new PhantomArmorModel(EquipmentSlot.HEAD, 0.75F));
-		phantomArmorModel.put(EquipmentSlot.CHEST, new PhantomArmorModel(EquipmentSlot.CHEST, 1.0F));
-	}
-
-	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return !(enchantment instanceof VanishingCurseEnchantment) && !(enchantment instanceof BindingCurseEnchantment) && enchantment.category.canEnchant(stack.getItem());
 	}

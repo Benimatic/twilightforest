@@ -35,7 +35,7 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueenEntity> {
 		} else if (this.attacker.getCurrentPhase() != Phase.SUMMON) {
 			return false;
 		} else {
-			return attacker.getSensing().canSee(target);
+			return attacker.getSensing().hasLineOfSight(target);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueenEntity> {
 
 		double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
-		distanceDesired = Mth.sqrt(distanceDesired);
+		distanceDesired = Mth.sqrt((float) distanceDesired);
 
 		// add velocity
 		double velX = offsetX / distanceDesired * 0.05D;

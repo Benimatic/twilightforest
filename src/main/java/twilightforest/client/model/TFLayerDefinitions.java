@@ -10,10 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.armor.ArcticArmorModel;
-import twilightforest.client.model.armor.FieryArmorModel;
-import twilightforest.client.model.armor.KnightmetalArmorModel;
-import twilightforest.client.model.armor.YetiArmorModel;
+import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
@@ -27,7 +24,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR, () -> ArcticArmorModel.addPieces(CubeDeformation.NONE));
 		event.registerLayerDefinition(TFModelLayers.FIERY_ARMOR, () -> LayerDefinition.create(FieryArmorModel.createMesh(CubeDeformation.NONE, 0.5F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_ARMOR, KnightmetalArmorModel::addPieces);
-		event.registerLayerDefinition(TFModelLayers.PHANTOM_ARMOR, KnightmetalArmorModel::addPieces);
+		event.registerLayerDefinition(TFModelLayers.PHANTOM_ARMOR, PhantomArmorModel::addPieces);
 		event.registerLayerDefinition(TFModelLayers.YETI_ARMOR, () -> YetiArmorModel.addPieces(CubeDeformation.NONE, 0.5F));
 
 		event.registerLayerDefinition(TFModelLayers.ALPHA_YETI_TROPHY, AlphaYetiTrophyModel::createHead);

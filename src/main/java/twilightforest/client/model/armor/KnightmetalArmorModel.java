@@ -99,7 +99,7 @@ public class KnightmetalArmorModel extends TFArmorModel {
 		return meshdefinition;
 	}
 
-	public LayerDefinition addPieces() {
+	public static LayerDefinition addPieces() {
 		return LayerDefinition.create(setup(), 64, 32);
 	}
 }

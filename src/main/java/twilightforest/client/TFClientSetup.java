@@ -61,11 +61,6 @@ public class TFClientSetup {
 		}
 		TFItems.addItemModelProperties();
 
-        KnightmetalArmorItem.initArmorModel();
-        PhantomArmorItem.initArmorModel();
-        YetiArmorItem.initArmorModel();
-        ArcticArmorItem.initArmorModel();
-        FieryArmorItem.initArmorModel();
         MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         RenderLayerRegistration.init();
         TFTileEntities.registerTileEntityRenders();

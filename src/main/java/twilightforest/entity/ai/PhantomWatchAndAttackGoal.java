@@ -31,7 +31,7 @@ public class PhantomWatchAndAttackGoal extends Goal {
 			if (target.isAlive()) {
 				float f1 = target.distanceTo(boss);
 
-				if (boss.getSensing().canSee(target)) {
+				if (boss.getSensing().hasLineOfSight(target)) {
 					if (attackTime-- <= 0 && f1 < 2.0F && target.getBoundingBox().maxY > boss.getBoundingBox().minY && boss.getTarget().getBoundingBox().minY < boss.getBoundingBox().maxY) {
 						attackTime = 20;
 						boss.doHurtTarget(target);

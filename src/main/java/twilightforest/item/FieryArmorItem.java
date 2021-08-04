@@ -46,19 +46,4 @@ public class FieryArmorItem extends ArmorItem {
 		super.appendHoverText(stack, world, tooltip, flags);
 		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
 	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	@SuppressWarnings("unchecked")
-	public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A oldModel) {
-		return (A) fieryArmorModel.get(armorSlot);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void initArmorModel() {
-		fieryArmorModel.put(EquipmentSlot.HEAD, new FieryArmorModel(0.75F));
-		fieryArmorModel.put(EquipmentSlot.CHEST, new FieryArmorModel(1.0F));
-		fieryArmorModel.put(EquipmentSlot.LEGS, new FieryArmorModel(0.5F));
-		fieryArmorModel.put(EquipmentSlot.FEET, new FieryArmorModel(1.0F));
-	}
 }

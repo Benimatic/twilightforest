@@ -20,7 +20,7 @@ public class RiderSpearAttackGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof UpperGoblinKnightEntity && EntitySelector.ATTACK_ALLOWED.test(entity.getTarget())) {
+		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof UpperGoblinKnightEntity && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity.getTarget())) {
 			int timer = ((UpperGoblinKnightEntity) this.entity.getPassengers().get(0)).heavySpearTimer;
 			return timer > 0 && timer < UpperGoblinKnightEntity.HEAVY_SPEAR_TIMER_START;
 		} else {

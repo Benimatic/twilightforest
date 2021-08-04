@@ -67,9 +67,9 @@ public final class ShaderManager {
         ResourceManager iManager;
 
         if ((iManager = Minecraft.getInstance().getResourceManager()) instanceof SimpleReloadableResourceManager) {
-            ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager, predicate) -> {
-                if (predicate.test(VanillaResourceType.SHADERS)) reloadShaders();
-            });
+//            ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager, predicate) -> {
+//                if (predicate.test(VanillaResourceType.SHADERS)) reloadShaders();
+//            });
         }
     }
 

@@ -48,7 +48,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 	private Map<ResourceLocation, LevelStem> getDimensions() {
 		Optional<NoiseGeneratorSettings> forestDimensionSettings = makeDimensionSettings(
 				new StructureSettings(Optional.empty(), ImmutableMap.of()),
-				new NoiseSettings(
+				NoiseSettings.create(
+						0,
 						128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
 						new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
 						new NoiseSlideSettings(-10, 3, 0),
@@ -75,7 +76,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				new StructureSettings(Optional.empty(), ImmutableMap.of()),
 				// https://misode.github.io/worldgen/noise-settings/
 				// So far this looks great! We just need to raise the island levels to sea level. Otherwise is generates flat-flakey islands that really show the roots on dirt bottoms from trees
-				new NoiseSettings(
+				NoiseSettings.create(
+						0, //min height
 						128, // height
 						new NoiseSamplingSettings(3.0D, 1.0D, 256.0D, 16.0D), // sampling
 						new NoiseSlideSettings(-3000, 92, -66), // top_slide
