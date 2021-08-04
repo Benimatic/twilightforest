@@ -6,138 +6,148 @@
 
 package twilightforest.client.model.entity.legacy;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.util.Mth;
 import twilightforest.entity.passive.QuestRamEntity;
 
-public class QuestRamLegacyModel extends ListModel<QuestRamEntity> {
-	//fields
-	ModelPart frontbody;
-	ModelPart rearbody;
-	ModelPart leg1;
-	ModelPart haunch1;
-	ModelPart leg2;
-	ModelPart haunch2;
-	ModelPart leg3;
-	ModelPart haunch3;
-	ModelPart leg4;
-	ModelPart haunch4;
-	ModelPart neck;
-	ModelPart nose;
-	public ModelPart head;
+import java.util.Arrays;
 
-	ModelPart[] segments;
+public class QuestRamLegacyModel extends HierarchicalModel<QuestRamEntity> {
+	//root
+	public ModelPart root;
+	//fields
+	ModelPart rearbody;
+	public ModelPart leg1;
+	public ModelPart haunch1;
+	public ModelPart leg2;
+	public ModelPart haunch2;
+	public ModelPart leg3;
+	public ModelPart haunch3;
+	public ModelPart leg4;
+	public ModelPart haunch4;
+	public ModelPart neck;
+	public ModelPart head;
+	public ModelPart[] segments = new ModelPart[16];
 
 	int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
 
-	public QuestRamLegacyModel() {
-		texWidth = 128;
-		texHeight = 128;
+	public QuestRamLegacyModel(ModelPart root) {
+		this.root = root;
 
-
-		frontbody = new ModelPart(this, 0, 0);
-		frontbody.addBox(-9F, -7.5F, -15F, 18, 15, 15);
-		frontbody.setPos(0F, -1F, 2F);
-
-		rearbody = new ModelPart(this, 0, 30);
-		rearbody.addBox(-9F, -7.5F, 0F, 18, 15, 15);
-		rearbody.setPos(0F, -1F, 4F);
-
-		leg1 = new ModelPart(this, 66, 0);
-		leg1.addBox(-3F, 10F, -3F, 6, 12, 6);
-		leg1.setPos(-6F, 2F, 13F);
-
-		haunch1 = new ModelPart(this, 90, 0);
-		haunch1.addBox(-3.5F, 0F, -6F, 7, 10, 10);
-		haunch1.setPos(-6F, 2F, 13F);
-
-		leg2 = new ModelPart(this, 66, 0);
-		leg2.addBox(-3F, 10F, -3F, 6, 12, 6);
-		leg2.setPos(6F, 2F, 13F);
-
-		haunch2 = new ModelPart(this, 90, 0);
-		haunch2.addBox(-3.5F, 0F, -6F, 7, 10, 10);
-		haunch2.setPos(6F, 2F, 13F);
-
-		leg3 = new ModelPart(this, 66, 18);
-		leg3.addBox(-3F, 10F, -3F, 6, 13, 6);
-		leg3.setPos(-6F, 1F, -8F);
-
-		haunch3 = new ModelPart(this, 90, 20);
-		haunch3.addBox(-3.5F, 0F, -4F, 7, 10, 7);
-		haunch3.setPos(-6F, 1F, -8F);
-
-		leg4 = new ModelPart(this, 66, 18);
-		leg4.addBox(-3F, 10F, -3F, 6, 13, 6);
-		leg4.setPos(6F, 1F, -8F);
-
-		haunch4 = new ModelPart(this, 90, 20);
-		haunch4.addBox(-3.5F, 0F, -4F, 7, 10, 7);
-		haunch4.setPos(6F, 1F, -8F);
-
-		neck = new ModelPart(this, 66, 37);
-		neck.addBox(-5.5F, -8F, -8F, 11, 14, 12);
-		neck.setPos(0F, -8F, -7F);
-
-		setRotation(neck, 0.2617994F, 0F, 0F);
-
-		head = new ModelPart(this/*, "head"*/);
-		head.setPos(0F, -13F, -5F);
-
-		head.texOffs(0, 70).addBox(-6F, -4.5F, -15F, 12, 9, 15);
-		head.texOffs(0, 94).addBox(5F, -9F, -7F, 4, 4, 6);
-		head.texOffs(20, 96).addBox(7F, -8F, -2F, 3, 4, 4);
-		head.texOffs(34, 95).addBox(8F, -6F, 0F, 3, 6, 3);
-		head.texOffs(46, 98).addBox(9.5F, -2F, -2F, 3, 3, 3);
-		head.texOffs(58, 95).addBox(11F, 0F, -7F, 3, 3, 6);
-		head.texOffs(76, 95).addBox(12F, -4F, -9F, 3, 6, 3);
-		head.texOffs(88, 97).addBox(13F, -6F, -7F, 3, 3, 4);
-		head.texOffs(0, 94).addBox(-9F, -9F, -7F, 4, 4, 6);
-		head.texOffs(20, 96).addBox(-10F, -8F, -2F, 3, 4, 4);
-		head.texOffs(34, 95).addBox(-11F, -6F, 0F, 3, 6, 3);
-		head.texOffs(46, 98).addBox(-12.5F, -2F, -2F, 3, 3, 3);
-		head.texOffs(58, 95).addBox(-14F, 0F, -7F, 3, 3, 6);
-		head.texOffs(76, 95).addBox(-15F, -4F, -9F, 3, 6, 3);
-		head.texOffs(88, 97).addBox(-16F, -6F, -7F, 3, 3, 4);
-
-		nose = new ModelPart(this, 54, 73);
-		nose.addBox(-5.5F, -5F, -13F, 11, 9, 12);
-		nose.setPos(0F, -7F, -1F);
-		nose.setTexSize(128, 128);
-		setRotation(nose, 0.5235988F, 0F, 0F);
-		head.addChild(nose);
-
-		segments = new ModelPart[16];
+		this.head = root.getChild("head");
+		this.neck = root.getChild("neck");
+		this.rearbody = root.getChild("rear_body");
+		this.haunch1 = root.getChild("front_right_haunch");
+		this.leg1 = root.getChild("front_right_leg");
+		this.haunch2 = root.getChild("front_left_haunch");
+		this.leg2 = root.getChild("front_left_leg");
+		this.haunch3 = root.getChild("back_right_haunch");
+		this.leg3 = root.getChild("back_right_leg");
+		this.haunch4 = root.getChild("back_left_haunch");
+		this.leg4 = root.getChild("back_left_leg");
+		Arrays.setAll(this.segments, (num) -> root.getChild(getSegmentName(num)));
 		for (int i = 0; i < 16; i++) {
-			segments[i] = new ModelPart(this, 0, 104);
-			segments[i].addBox(-9F, -7.5F, 0F, 18, 15, 2);
-			segments[i].setPos(0F, -1F, 2F);
 			segments[i].visible = false;
 		}
 	}
 
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition base = mesh.getRoot();
+
+		PartDefinition headpart = base.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 70).addBox(-6F, -4.5F, -15F, 12, 9, 15)
+						.texOffs(0, 94).addBox(5F, -9F, -7F, 4, 4, 6)
+						.texOffs(20, 96).addBox(7F, -8F, -2F, 3, 4, 4)
+						.texOffs(34, 95).addBox(8F, -6F, 0F, 3, 6, 3)
+						.texOffs(46, 98).addBox(9.5F, -2F, -2F, 3, 3, 3)
+						.texOffs(58, 95).addBox(11F, 0F, -7F, 3, 3, 6)
+						.texOffs(76, 95).addBox(12F, -4F, -9F, 3, 6, 3)
+						.texOffs(88, 97).addBox(13F, -6F, -7F, 3, 3, 4)
+						.texOffs(0, 94).addBox(-9F, -9F, -7F, 4, 4, 6)
+						.texOffs(20, 96).addBox(-10F, -8F, -2F, 3, 4, 4)
+						.texOffs(34, 95).addBox(-11F, -6F, 0F, 3, 6, 3)
+						.texOffs(46, 98).addBox(-12.5F, -2F, -2F, 3, 3, 3)
+						.texOffs(58, 95).addBox(-14F, 0F, -7F, 3, 3, 6)
+						.texOffs(76, 95).addBox(-15F, -4F, -9F, 3, 6, 3)
+						.texOffs(88, 97).addBox(-16F, -6F, -7F, 3, 3, 4),
+				PartPose.offset(0F, -13F, -5F));
+		headpart.addOrReplaceChild("nose", CubeListBuilder.create()
+						.texOffs(54, 73)
+						.addBox(-5.5F, -5F, -13F, 11, 9, 12),
+				PartPose.offsetAndRotation(0F, -7F, -1F, 0.5235988F, 0F, 0F));
+		base.addOrReplaceChild("neck", CubeListBuilder.create()
+						.texOffs(66, 37)
+						.addBox(-5.5F, -8F, -8F, 11, 14, 12),
+				PartPose.offsetAndRotation(0F, -8F, -7F, 0.2617994F, 0F, 0F));
+		base.addOrReplaceChild("front_body", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-9F, -7.5F, -15F, 18, 15, 15),
+				PartPose.offset(0F, -1F, 2F));
+		base.addOrReplaceChild("rear_body", CubeListBuilder.create()
+						.texOffs(0, 30)
+						.addBox(-9F, -7.5F, 0F, 18, 15, 15),
+				PartPose.offset(0F, -1F, 4F));
+		base.addOrReplaceChild("right_front_haunch", CubeListBuilder.create()
+						.texOffs(90, 0)
+						.addBox(-3.5F, 0F, -6F, 7, 10, 10),
+				PartPose.offset(-6F, 2F, 13F));
+		base.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+						.texOffs(66, 0)
+						.addBox(-3F, 10F, -3F, 6, 12, 6),
+				PartPose.offset(-6F, 2F, 13F));
+		base.addOrReplaceChild("left_front_haunch", CubeListBuilder.create()
+						.texOffs(90, 0)
+						.addBox(-3.5F, 0F, -6F, 7, 10, 10),
+				PartPose.offset(6F, 2F, 13F));
+		base.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+						.texOffs(66, 0)
+						.addBox(-3F, 10F, -3F, 6, 12, 6),
+				PartPose.offset(6F, 2F, 13F));
+		base.addOrReplaceChild("right_back_haunch", CubeListBuilder.create()
+						.texOffs(90, 20)
+						.addBox(-3.5F, 0F, -4F, 7, 10, 7),
+				PartPose.offset(-6F, 1F, -8F));
+		base.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
+						.texOffs(66, 18)
+						.addBox(-3F, 10F, -3F, 6, 13, 6),
+				PartPose.offset(-6F, 1F, -8F));
+		base.addOrReplaceChild("left_back_haunch", CubeListBuilder.create()
+						.texOffs(90, 20)
+						.addBox(-3.5F, 0F, -4F, 7, 10, 7),
+				PartPose.offset(6F, 1F, -8F));
+		base.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
+						.texOffs(66, 18)
+						.addBox(-3F, 10F, -3F, 6, 13, 6),
+				PartPose.offset(6F, 1F, -8F));
+
+		CubeListBuilder bodycube = CubeListBuilder.create()
+				.texOffs(0, 104)
+				.addBox(-9F, -7.5F, 0F, 18, 15, 2);
+		for (int i = 0; i < 16; i++) {
+			base.addOrReplaceChild(getSegmentName(i), bodycube, PartPose.offset(0F, -1F, 2F));
+		}
+
+		return LayerDefinition.create(mesh, 128, 128);
+	}
+
+	private static String getSegmentName(int num) {
+		return "segment" + num;
+	}
+
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(
-				frontbody,
-				rearbody,
-				leg1,
-				haunch1,
-				leg2,
-				haunch2,
-				leg3,
-				haunch3,
-				leg4,
-				haunch4,
-				neck,
-				head
-		);
+	public ModelPart root() {
+		return this.root;
 	}
 
 	@Override
@@ -148,12 +158,6 @@ public class QuestRamLegacyModel extends ListModel<QuestRamEntity> {
 			final float[] dyeRgb = Sheep.getColorArray(DyeColor.byId(i));
 			segments[i].render(stack, builder, light, overlay, dyeRgb[0], dyeRgb[1], dyeRgb[2], alpha);
 		}
-	}
-
-	private void setRotation(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
 	}
 
 	@Override

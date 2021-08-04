@@ -5,160 +5,149 @@
 // - ZeuX
 package twilightforest.client.model.entity.legacy;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.SlimeBeetleEntity;
 
-public class SlimeBeetleLegacyModel extends ListModel<SlimeBeetleEntity> {
-	ModelPart head;
-	ModelPart RearEnd;
-	ModelPart Leg6;
-	ModelPart Leg4;
-	ModelPart Leg2;
-	ModelPart Leg5;
-	ModelPart Leg3;
-	ModelPart Leg1;
-	ModelPart connector1;
-	ModelPart antenna1;
-	ModelPart antenna2;
-	ModelPart eye1;
-	ModelPart eye2;
+public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity> {
+	public ModelPart root;
+	public ModelPart head;
+	public ModelPart legFL;
+	public ModelPart legML;
+	public ModelPart legBL;
+	public ModelPart legFR;
+	public ModelPart legMR;
+	public ModelPart legBR;
+	public ModelPart slimeCube;
+	public ModelPart tail1;
+	public ModelPart tail2;
+	public ModelPart slimeCenter;
 
-	ModelPart slimeCube;
-	ModelPart tail1;
-	ModelPart tail2;
-	ModelPart mouth;
-	ModelPart slimeCenter;
+	private static boolean translucent;
 
-	private final boolean translucent;
-
-	public SlimeBeetleLegacyModel() {
-		this(false);
+	public SlimeBeetleLegacyModel(ModelPart root) {
+		this(root, false);
 	}
 
-	public SlimeBeetleLegacyModel(boolean translucent) {
-		this.translucent = translucent;
+	public SlimeBeetleLegacyModel(ModelPart root, boolean translucent) {
+		SlimeBeetleLegacyModel.translucent = translucent;
+		this.root = root;
 
-		texWidth = 64;
-		texHeight = 64;
+		this.head = root.getChild("head");
+		this.legFL = root.getChild("front_left_leg");
+		this.legFR = root.getChild("front_right_leg");
+		this.legML = root.getChild("middle_left_leg");
+		this.legMR = root.getChild("middle_right_leg");
+		this.legBL = root.getChild("back_left_leg");
+		this.legBR = root.getChild("back_right_leg");
+		this.tail1 = root.getChild("tail1");
+		this.tail2 = tail1.getChild("tail2");
 
-		connector1 = new ModelPart(this, 0, 12);
-		connector1.addBox(-3F, -3F, -1F, 6, 6, 1);
-		connector1.setPos(0F, 19F, -4F);
-
-		RearEnd = new ModelPart(this, 31, 6);
-		RearEnd.addBox(-4F, -11F, -4F, 8, 10, 8);
-		RearEnd.setPos(0F, 18F, 7F);
-		setRotation(RearEnd, 1.570796F, 0F, 0F);
-
-		Leg6 = new ModelPart(this, 40, 0);
-		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg6.setPos(2F, 21F, -4F);
-		setRotation(Leg6, 0F, 0.2792527F, 0.3490659F);
-
-		Leg5 = new ModelPart(this, 40, 0);
-		Leg5.mirror = true;
-		Leg5.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg5.setPos(-2F, 21F, -4F);
-		setRotation(Leg5, 0F, -0.2792527F, -0.3490659F);
-
-		Leg4 = new ModelPart(this, 40, 0);
-		Leg4.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg4.setPos(2F, 21F, -1F);
-		setRotation(Leg4, 0F, -0.2792527F, 0.3490659F);
-
-		Leg2 = new ModelPart(this, 40, 0);
-		Leg2.addBox(-1F, -1F, -1F, 10, 2, 2);
-		Leg2.setPos(2F, 21F, 4F);
-		setRotation(Leg2, 0F, -0.6981317F, 0.3490659F);
-
-		Leg3 = new ModelPart(this, 40, 0);
-		Leg3.mirror = true;
-		Leg3.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg3.setPos(-2F, 21F, -1F);
-		setRotation(Leg3, 0F, 0.2792527F, -0.3490659F);
-
-		Leg1 = new ModelPart(this, 40, 0);
-		Leg1.mirror = true;
-		Leg1.addBox(-9F, -1F, -1F, 10, 2, 2);
-		Leg1.setPos(-2F, 21F, 4F);
-		Leg1.setTexSize(64, 32);
-		setRotation(Leg1, 0F, 0.6981317F, -0.3490659F);
-
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-4F, -4F, -6F, 8, 6, 6);
-		head.setPos(0F, 19F, -5F);
-
-		antenna1 = new ModelPart(this, 38, 4);
-		antenna1.addBox(0F, -0.5F, -0.5F, 12, 1, 1);
-		antenna1.setPos(1F, -3F, -5F);
-		setRotation(antenna1, 0F, 1.047198F, -0.296706F);
-
-		antenna2 = new ModelPart(this, 38, 4);
-		antenna2.addBox(0F, -0.5F, -0.5F, 12, 1, 1);
-		antenna2.setPos(-1F, -3F, -5F);
-		setRotation(antenna2, 0F, 2.094395F, 0.296706F);
-
-		eye1 = new ModelPart(this, 15, 12);
-		eye1.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-		eye1.setPos(-3F, -2F, -5F);
-
-		eye2 = new ModelPart(this, 15, 12);
-		eye2.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-		eye2.setPos(3F, -2F, -5F);
-
-		mouth = new ModelPart(this, 17, 12);
-		mouth.addBox(-1F, -1F, -1F, 2, 2, 1);
-		mouth.setPos(0F, 1, -6F);
-
-		head.addChild(antenna1);
-		head.addChild(antenna2);
-		head.addChild(eye1);
-		head.addChild(eye2);
-		head.addChild(mouth);
-
-		tail1 = new ModelPart(this, 0, 20);
-		tail1.addBox(-3F, -3F, -3F, 6, 6, 6);
-		tail1.setPos(0F, 19F, 9F);
-
-		tail2 = new ModelPart(this, 0, 20);
-		tail2.addBox(-3F, -6F, -3F, 6, 6, 6);
-		tail2.setPos(0F, -3F, 2F);
-
-		slimeCube = new ModelPart(this, 0, 40);
-		slimeCube.addBox(-6F, -12F, -9F, 12, 12, 12);
-		slimeCube.setPos(0F, -6, 0);
-
-		slimeCenter = new ModelPart(this, 32, 24);
-		slimeCenter.addBox(-4F, -10F, -7F, 8, 8, 8);
-		slimeCenter.setPos(0F, -6, 0);
-
-		tail1.addChild(tail2);
-
-		if (this.translucent) {
-			tail2.addChild(slimeCube);
+		if (SlimeBeetleLegacyModel.translucent) {
+			this.slimeCube = tail2.getChild("slime_cube");
 		} else {
-			tail2.addChild(slimeCenter);
+			this.slimeCenter = tail2.getChild("clime_center");
 		}
 	}
 
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition base = mesh.getRoot();
+
+		PartDefinition headpart = base.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-4F, -4F, -6F, 8, 6, 6),
+				PartPose.offset(0F, 19F, -5F));
+		headpart.addOrReplaceChild("left_antenna", CubeListBuilder.create()
+						.texOffs(38, 4)
+						.addBox(0F, -0.5F, -0.5F, 12, 1, 1),
+				PartPose.offsetAndRotation(1F, -3F, -5F, 0F, 1.047198F, -0.296706F));
+		headpart.addOrReplaceChild("right_antenna", CubeListBuilder.create()
+						.texOffs(38, 4)
+						.addBox(0F, -0.5F, -0.5F, 12, 1, 1),
+				PartPose.offsetAndRotation(-1F, -3F, -5F, 0F, 2.094395F, 0.296706F));
+		headpart.addOrReplaceChild("left_eye", CubeListBuilder.create()
+						.texOffs(15, 12)
+						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+				PartPose.offset(3F, -2F, -5F));
+		headpart.addOrReplaceChild("right_eye", CubeListBuilder.create()
+						.texOffs(15, 12)
+						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+				PartPose.offset(-3F, -2F, -5F));
+		headpart.addOrReplaceChild("mouth", CubeListBuilder.create()
+						.texOffs(17, 12)
+						.addBox(-1F, -1F, -1F, 2, 2, 1),
+				PartPose.offset(0F, 1, -6F));
+		base.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(31, 6)
+						.addBox(-4F, -11F, -4F, 8, 10, 8),
+				PartPose.offsetAndRotation(0F, 18F, 7F, 1.570796F, 0F, 0F));
+		base.addOrReplaceChild("front_left_leg", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(2F, 21F, -4F, 0F, 0.2792527F, 0.3490659F));
+		base.addOrReplaceChild("front_right_leg", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-9F, -1F, -1F, 10, 2, 2)
+						.mirror(),
+				PartPose.offsetAndRotation(-2F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
+		base.addOrReplaceChild("middle_left_leg", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(2F, 21F, -1F, 0F, -0.2792527F, 0.3490659F));
+		base.addOrReplaceChild("middle_right_leg", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-9F, -1F, -1F, 10, 2, 2)
+						.mirror(),
+				PartPose.offsetAndRotation(-2F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
+		base.addOrReplaceChild("back_left_leg", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-1F, -1F, -1F, 10, 2, 2),
+				PartPose.offsetAndRotation(2F, 21F, 4F, 0F, -0.6981317F, 0.3490659F));
+		base.addOrReplaceChild("back_right_leg", CubeListBuilder.create()
+						.texOffs(40, 0)
+						.addBox(-9F, -1F, -1F, 10, 2, 2)
+						.mirror(),
+				PartPose.offsetAndRotation(-2F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
+		base.addOrReplaceChild("connector", CubeListBuilder.create()
+						.texOffs(0, 12)
+						.addBox(-3F, -3F, -1F, 6, 6, 1),
+				PartPose.offset(0F, 19F, -4F));
+		PartDefinition tail1part = base.addOrReplaceChild("tail1", CubeListBuilder.create()
+						.texOffs(0, 20)
+						.addBox(-3F, -3F, -3F, 6, 6, 6),
+				PartPose.offset(0F, 19F, 9F));
+		PartDefinition tail2part = tail1part.addOrReplaceChild("tail2", CubeListBuilder.create()
+						.texOffs(0, 20)
+						.addBox(-3F, -6F, -3F, 6, 6, 6),
+				PartPose.offset(0F, -3F, 2F));
+
+		if (SlimeBeetleLegacyModel.translucent) {
+			tail2part.addOrReplaceChild("slime_cube", CubeListBuilder.create()
+							.texOffs(0, 40)
+							.addBox(-6F, -12F, -9F, 12, 12, 12),
+					PartPose.offset(0F, -6, 0));
+		} else {
+			tail2part.addOrReplaceChild("slime_center", CubeListBuilder.create()
+							.texOffs(32, 24)
+							.addBox(-4F, -10F, -7F, 8, 8, 8),
+					PartPose.offset(0F, -6, 0));
+		}
+
+		return LayerDefinition.create(mesh, 64, 64);
+	}
+
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(
-				head,
-				RearEnd,
-				Leg6,
-				Leg4,
-				Leg2,
-				Leg5,
-				Leg3,
-				Leg1,
-				connector1
-		);
+	public ModelPart root() {
+		return this.root;
 	}
 
 	@Override
@@ -166,14 +155,8 @@ public class SlimeBeetleLegacyModel extends ListModel<SlimeBeetleEntity> {
 		tail1.render(stack, builder, light, overlay, red, green, blue, alpha);
 
 		if (!translucent) {
-			parts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
+			this.root().getAllParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
 		}
-	}
-
-	private void setRotation(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
 	}
 
 	@Override
@@ -183,21 +166,21 @@ public class SlimeBeetleLegacyModel extends ListModel<SlimeBeetleEntity> {
 
 		// legs!
 		float legZ = ((float) Math.PI / 11F);
-		this.Leg1.zRot = -legZ;
-		this.Leg2.zRot = legZ;
-		this.Leg3.zRot = -legZ * 0.74F;
-		this.Leg4.zRot = legZ * 0.74F;
-		this.Leg5.zRot = -legZ;
-		this.Leg6.zRot = legZ;
+		this.legBR.zRot = -legZ;
+		this.legBL.zRot = legZ;
+		this.legMR.zRot = -legZ * 0.74F;
+		this.legML.zRot = legZ * 0.74F;
+		this.legFR.zRot = -legZ;
+		this.legFL.zRot = legZ;
 
 		float var9 = -0.0F;
 		float var10 = 0.3926991F;
-		this.Leg1.yRot = var10 * 2.0F + var9;
-		this.Leg2.yRot = -var10 * 2.0F - var9;
-		this.Leg3.yRot = var10 + var9;
-		this.Leg4.yRot = -var10 - var9;
-		this.Leg5.yRot = -var10 * 2.0F + var9;
-		this.Leg6.yRot = var10 * 2.0F - var9;
+		this.legBR.yRot = var10 * 2.0F + var9;
+		this.legBL.yRot = -var10 * 2.0F - var9;
+		this.legMR.yRot = var10 + var9;
+		this.legML.yRot = -var10 - var9;
+		this.legFR.yRot = -var10 * 2.0F + var9;
+		this.legFL.yRot = var10 * 2.0F - var9;
 
 		float var11 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
 		float var12 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
@@ -207,21 +190,21 @@ public class SlimeBeetleLegacyModel extends ListModel<SlimeBeetleEntity> {
 		float var16 = Math.abs(Mth.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
 		float var18 = Math.abs(Mth.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 
-		this.Leg1.yRot += var11;
-		this.Leg2.yRot += -var11;
-		this.Leg3.yRot += var12;
-		this.Leg4.yRot += -var12;
-		this.Leg5.yRot += var14;
-		this.Leg6.yRot += -var14;
+		this.legBR.yRot += var11;
+		this.legBL.yRot += -var11;
+		this.legMR.yRot += var12;
+		this.legML.yRot += -var12;
+		this.legFR.yRot += var14;
+		this.legFL.yRot += -var14;
 
-		this.Leg1.zRot += var15;
-		this.Leg2.zRot += -var15;
+		this.legBR.zRot += var15;
+		this.legBL.zRot += -var15;
 
-		this.Leg3.zRot += var16;
-		this.Leg4.zRot += -var16;
+		this.legMR.zRot += var16;
+		this.legML.zRot += -var16;
 
-		this.Leg5.zRot += var18;
-		this.Leg6.zRot += -var18;
+		this.legFR.zRot += var18;
+		this.legFL.zRot += -var18;
 
 		// tail wiggle
 		this.tail1.xRot = Mth.cos(ageInTicks * 0.3335F) * 0.15F;

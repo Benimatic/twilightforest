@@ -6,121 +6,92 @@
 
 package twilightforest.client.model.entity.legacy;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.entity.passive.RavenEntity;
 
-public class RavenLegacyModel extends ListModel<RavenEntity> {
+public class RavenLegacyModel extends HierarchicalModel<RavenEntity> {
+	ModelPart root;
 	//fields
 	ModelPart head;
-	ModelPart beak1;
-	ModelPart beak2;
-	ModelPart body;
 	ModelPart rightarm;
 	ModelPart leftarm;
 	ModelPart rightleg;
 	ModelPart leftleg;
-	ModelPart rightfoot;
-	ModelPart leftfoot;
-	ModelPart tail;
 
-	public RavenLegacyModel() {
-		texWidth = 32;
-		texHeight = 32;
+	public RavenLegacyModel(ModelPart root) {
+		this.root = root;
 
-		head = new ModelPart(this, 0, 0);
-		head.addBox(-1.5F, -1.5F, -3F, 3, 3, 3);
-		head.setPos(0F, 18F, 0F);
-		head.setTexSize(32, 32);
-		head.mirror = true;
-		setRotation(head, 0F, 0F, 0F);
-
-		beak1 = new ModelPart(this, 12, 0);
-		beak1.addBox(-0.5F, -1F, -2F, 1, 1, 2);
-		beak1.setPos(0F, 0F, -2.5F);
-		beak1.xRot = 0.2617994F;
-		head.addChild(beak1);
-
-		beak2 = new ModelPart(this, 12, 0);
-		beak2.addBox(-0.5F, 0F, -2F, 1, 1, 2);
-		beak2.setPos(0F, 0F, -2.5F);
-		beak2.xRot = -0.2617994F;
-		head.addChild(beak2);
-
-		body = new ModelPart(this, 0, 6);
-		body.addBox(-1.5F, 0F, -1F, 3, 4, 6);
-		body.setPos(0F, 17F, 1F);
-		body.setTexSize(32, 32);
-		setRotation(body, -0.5235988F, 0F, 0F);
-
-		rightarm = new ModelPart(this, 0, 16);
-		rightarm.addBox(-1F, 0F, -1.5F, 1, 3, 6);
-		rightarm.setPos(-1.5F, 18F, 1F);
-		rightarm.setTexSize(32, 32);
-
-		leftarm = new ModelPart(this, 0, 16);
-		leftarm.addBox(0F, 0F, -1.5F, 1, 3, 6);
-		leftarm.setPos(1.5F, 18F, 1F);
-		leftarm.setTexSize(32, 32);
-
-		rightleg = new ModelPart(this, 14, 16);
-		rightleg.addBox(0F, 0F, 0F, 1, 2, 1);
-		rightleg.setPos(-1.5F, 21F, 1F);
-		rightleg.setTexSize(32, 32);
-
-		rightfoot = new ModelPart(this, 14, 20);
-		rightfoot.addBox(0F, -1F, -2F, 1, 1, 2);
-		rightfoot.setPos(0F, 2F, 1F);
-		rightfoot.setTexSize(32, 32);
-		setRotation(rightfoot, 0.5235988F, 0F, 0F);
-		rightleg.addChild(rightfoot);
-
-		leftleg = new ModelPart(this, 14, 16);
-		leftleg.addBox(0F, 0F, 0F, 1, 2, 1);
-		leftleg.setPos(0.5F, 21F, 1F);
-		leftleg.setTexSize(32, 32);
-
-		leftfoot = new ModelPart(this, 14, 20);
-		leftfoot.addBox(0F, -1F, -2F, 1, 1, 2);
-		leftfoot.setPos(0F, 2F, 1F);
-		leftfoot.setTexSize(32, 32);
-		setRotation(leftfoot, 0.5235988F, 0F, 0F);
-		leftleg.addChild(leftfoot);
-
-		tail = new ModelPart(this, 0, 25);
-		tail.addBox(-1.5F, -0.5F, 0F, 3, 1, 3);
-		tail.setPos(0F, 21F, 4F);
-		tail.setTexSize(32, 32);
-		setRotation(tail, -0.5235988F, 0F, 0F);
+		this.head = root.getChild("head");
+		this.rightarm = root.getChild("right_wing");
+		this.leftleg = root.getChild("left_wing");
+		this.rightleg = root.getChild("right_leg");
+		this.leftleg = root.getChild("left_leg");
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition base = mesh.getRoot();
+
+		PartDefinition headpart = base.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-1.5F, -1.5F, -3F, 3, 3, 3)
+						.mirror(),
+				PartPose.offset(0F, 18F, 0F));
+		headpart.addOrReplaceChild("beak1", CubeListBuilder.create()
+						.texOffs(12, 0)
+						.addBox(-0.5F, -1F, -2F, 1, 1, 2),
+				PartPose.offsetAndRotation(0F, 0F, -2.5F, 0.2617994F, 0.0F, 0.0F));
+		headpart.addOrReplaceChild("beak2", CubeListBuilder.create()
+						.texOffs(12, 0)
+						.addBox(-0.5F, 0F, -2F, 1, 1, 2),
+				PartPose.offsetAndRotation(0F, 0F, -2.5F, -0.2617994F, 0.0F, 0.0F));
+		base.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 6)
+						.addBox(-1.5F, 0F, -1F, 3, 4, 6),
+				PartPose.offsetAndRotation(0F, 17F, 1F, -0.5235988F, 0F, 0F));
+		base.addOrReplaceChild("right_wing", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-1F, 0F, -1.5F, 1, 3, 6),
+				PartPose.offset(-1.5F, 18F, 1F));
+		base.addOrReplaceChild("left_wing", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(0F, 0F, -1.5F, 1, 3, 6),
+				PartPose.offset(1.5F, 18F, 1F));
+		PartDefinition rightlegpart = base.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(14, 16)
+						.addBox(0F, 0F, 0F, 1, 2, 1),
+				PartPose.offset(-1.5F, 21F, 1F));
+		rightlegpart.addOrReplaceChild("right_foot", CubeListBuilder.create()
+						.texOffs(14, 20)
+						.addBox(0F, -1F, -2F, 1, 1, 2),
+				PartPose.offsetAndRotation(0F, 2F, 1F, 0.5235988F, 0F, 0F));
+		PartDefinition leftlegpart = base.addOrReplaceChild("left_leg", CubeListBuilder.create()
+						.texOffs(14, 16)
+						.addBox(0F, 0F, 0F, 1, 2, 1),
+				PartPose.offset(0.5F, 21F, 1F));
+		leftlegpart.addOrReplaceChild("left_foot", CubeListBuilder.create()
+						.texOffs(14, 20)
+						.addBox(0F, -1F, -2F, 1, 1, 2),
+				PartPose.offsetAndRotation(0F, 2F, 1F, 0.5235988F, 0F, 0F));
+		base.addOrReplaceChild("tail", CubeListBuilder.create()
+						.texOffs(0, 25)
+						.addBox(-1.5F, -0.5F, 0F, 3, 1, 3),
+				PartPose.offsetAndRotation(0F, 21F, 4F, -0.5235988F, 0F, 0F));
+
+		return LayerDefinition.create(mesh, 32, 32);
+	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(
-				head,
-				body,
-				rightarm,
-				leftarm,
-				rightleg,
-				leftleg,
-				tail
-		);
+	public ModelPart root() {
+		return this.root;
 	}
-
-	private void setRotation(ModelPart model, float x, float y, float z) {
-		model.xRot = x;
-		model.yRot = y;
-		model.zRot = z;
-	}
-
 
 	@Override
 	public void setupAnim(RavenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
