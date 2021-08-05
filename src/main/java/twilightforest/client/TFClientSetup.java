@@ -21,13 +21,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
-import twilightforest.item.ArcticArmorItem;
-import twilightforest.item.FieryArmorItem;
-import twilightforest.item.KnightmetalArmorItem;
-import twilightforest.item.PhantomArmorItem;
-import twilightforest.item.YetiArmorItem;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
 

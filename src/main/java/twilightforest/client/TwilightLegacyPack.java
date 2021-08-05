@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
+import net.minecraftforge.forgespi.locating.IModFile;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
@@ -25,10 +26,10 @@ import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
 public class TwilightLegacyPack extends AbstractPackResources {
-    private final ModFile modFile;
+    private final IModFile modFile;
     private static final String subDir = "classic/";
 
-    public TwilightLegacyPack(ModFile modFile) {
+    public TwilightLegacyPack(IModFile modFile) {
         super(modFile.getFilePath().toFile());
         this.modFile = modFile;
     }
@@ -37,7 +38,7 @@ public class TwilightLegacyPack extends AbstractPackResources {
     @Override
     public Set<String> getNamespaces(PackType type) {
         try {
-            Path root = modFile.getLocator().findPath(modFile, subDir + type.getDirectory()).toAbsolutePath();
+            Path root = modFile.findResource(subDir + type.getDirectory()).toAbsolutePath();
 
             return Files.walk(root,1)
                     .map(path -> root.relativize(path.toAbsolutePath()))
@@ -56,7 +57,7 @@ public class TwilightLegacyPack extends AbstractPackResources {
     // Forgecopy ModFileResourcePack#getInputStream: added `subDir + `
     @Override
     protected InputStream getResource(String location) throws IOException {
-        final Path path = modFile.getLocator().findPath(modFile, subDir + location);
+        final Path path = modFile.findResource(subDir + location);
 
         if (!Files.exists(path)) {
             TwilightForestMod.LOGGER.error("File does not exist!");
@@ -69,14 +70,14 @@ public class TwilightLegacyPack extends AbstractPackResources {
     // Forgecopy ModFileResourcePack#resourceExists: added `subDir + `
     @Override
     protected boolean hasResource(String resourcePath) {
-        return Files.exists(modFile.getLocator().findPath(modFile, subDir + resourcePath));
+        return Files.exists(modFile.findResource(subDir + resourcePath));
     }
 
     // Forgecopy ModFileResourcePack#getAllResourceLocations: added `subDir + `
     @Override
     public Collection<ResourceLocation> getResources(PackType type, String namespaceIn, String pathIn, int maxDepthIn, Predicate<String> filterIn) {
         try {
-            Path root = modFile.getLocator().findPath(modFile, subDir + type.getDirectory()).toAbsolutePath();
+            Path root = modFile.findResource(subDir + type.getDirectory()).toAbsolutePath();
             Path inputPath = root.getFileSystem().getPath(pathIn);
 
             return Files.walk(root).
