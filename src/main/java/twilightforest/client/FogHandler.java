@@ -1,6 +1,5 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FogRenderer;
@@ -59,17 +58,18 @@ public class FogHandler {
 				spoopFog += shift;
 			spoopFog = Mth.clamp(spoopFog, 0F, 1F);
 
-			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
+			//FIXME: These two are commented out as they do not exist in the main game. While this might mean they aren't needed, look at this if there is a problem
+//			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
 
 			if (event.getType() == FogRenderer.FogMode.FOG_SKY) {
-				RenderSystem.fogStart(0.0F);
-				RenderSystem.fogEnd(f);
+				RenderSystem.setShaderFogStart(0.0F);
+				RenderSystem.setShaderFogEnd(f);
 			} else {
-				RenderSystem.fogStart(f * 0.75F);
-				RenderSystem.fogEnd(f);
+				RenderSystem.setShaderFogStart(f * 0.75F);
+				RenderSystem.setShaderFogEnd(f);
 			}
 
-			RenderSystem.setupNvFogDistance();
+//			RenderSystem.setupNvFogDistance();
 		}
 	}
 
