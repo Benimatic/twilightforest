@@ -51,7 +51,7 @@ public class MazeMapPacket {
 					String s = MazeMapItem.getMapName(message.inner.getMapId());
 					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(Minecraft.getInstance().level, s);
 					if (mapdata == null) {
-						mapdata = new TFMazeMapData(s);
+						mapdata = new TFMazeMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), Minecraft.getInstance().level.dimension());
 						if (mapitemrenderer.getMapInstanceIfExists(s) != null) {
 							MapItemSavedData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
 							if (mapdata1 instanceof TFMazeMapData) {

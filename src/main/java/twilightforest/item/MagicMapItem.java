@@ -78,8 +78,8 @@ public class MagicMapItem extends MapItem {
 
 	private static TFMagicMapData createMapData(ItemStack stack, Level world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
 		int i = world.getFreeMapId();
-		TFMagicMapData mapdata = new TFMagicMapData(getMapName(i));
-		mapdata.setProperties(x, z, scale, trackingPosition, unlimitedTracking, dimension);
+//		TFMagicMapData mapdata = new TFMagicMapData(getMapName(i));
+		TFMagicMapData mapdata = new TFMagicMapData(x, z, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
 		TFMagicMapData.registerMagicMapData(world, mapdata); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
@@ -139,7 +139,7 @@ public class MagicMapItem extends MapItem {
 
 							if (orgPixel != ourPixel) {
 								data.colors[xPixel + zPixel * 128] = ourPixel;
-								data.setDirty(xPixel, zPixel);
+								data.setDirty();
 							}
 
 							// look for TF features

@@ -2,6 +2,8 @@ package twilightforest;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
@@ -18,14 +20,16 @@ public class TFMazeMapData extends MapItemSavedData {
 
 	public int yCenter;
 
-	public TFMazeMapData(String name) {
-		super(name);
+	public TFMazeMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
+		super(x, z, scale, trackpos, unlimited, locked, dim);
 	}
 
-	@Override
-	public void load(CompoundTag nbt) {
-		super.load(nbt);
-		this.yCenter = nbt.getInt("yCenter");
+	//TODO: Evaluate this
+	public static TFMazeMapData load(CompoundTag nbt) {
+		MapItemSavedData data = MapItemSavedData.load(nbt);
+		TFMazeMapData tfdata = (TFMazeMapData) data;
+		tfdata.yCenter = nbt.getInt("yCenter");
+		return tfdata;
 	}
 
 	@Override
@@ -55,7 +59,7 @@ public class TFMazeMapData extends MapItemSavedData {
 		if (world.isClientSide) {
 			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
 		} else {
-			return world.getServer().getLevel(Level.OVERWORLD).getDataStorage().get(() -> new TFMazeMapData(name), name);
+			return world.getServer().overworld().getDataStorage().get(TFMazeMapData::load, name);
 		}
 	}
 
@@ -64,7 +68,7 @@ public class TFMazeMapData extends MapItemSavedData {
 		if (world.isClientSide) {
 			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
 		} else {
-			world.getServer().getLevel(Level.OVERWORLD).getDataStorage().set(data);
+			world.getServer().overworld().getDataStorage().set(MapItem.makeKey(world.getFreeMapId()), data);
 		}
 	}
 }

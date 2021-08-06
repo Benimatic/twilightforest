@@ -5,7 +5,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import net.minecraft.core.BlockPos;
-import net.minecraft.item.*;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
@@ -70,8 +69,8 @@ public class MazeMapItem extends MapItem {
 	// [VanillaCopy] super with own item and id, and y parameter
 	private static TFMazeMapData createMapData(ItemStack stack, Level world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y) {
 		int i = world.getFreeMapId();
-		TFMazeMapData mapdata = new TFMazeMapData(getMapName(i));
-		mapdata.setProperties(x, z, scale, trackingPosition, unlimitedTracking, dimension);
+//		TFMazeMapData mapdata = new TFMazeMapData(getMapName(i));
+		TFMazeMapData mapdata = new TFMazeMapData(x, z, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(world, x, y, z, scale); // call our own map center calculation
 		TFMazeMapData.registerMazeMapData(world, mapdata); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
@@ -191,7 +190,7 @@ public class MazeMapItem extends MapItem {
 
 									if (b0 != b1) {
 										data.colors[xPixel + zPixel * 128] = b1;
-										data.setDirty(xPixel, zPixel);
+										data.setDirty();
 										flag = true;
 									}
 								}
@@ -217,7 +216,7 @@ public class MazeMapItem extends MapItem {
 					// TF - if player is far away vertically, show a dot
 					int yProximity = Mth.floor(entityplayer.getY() - mapdata.yCenter);
 					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
-						MapDecoration decoration = mapdata.get(entityplayer.getName().getString());
+						MapDecoration decoration = mapdata.decorations.get(entityplayer.getName().getString());
 						if (decoration != null) {
 							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.getX(), decoration.getY(), decoration.getRot(), null));
 						}

@@ -56,7 +56,7 @@ public class MagicMapPacket {
 					String s = MagicMapItem.getMapName(message.inner.getMapId());
 					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(Minecraft.getInstance().level, s);
 					if (mapdata == null) {
-						mapdata = new TFMagicMapData(s);
+						mapdata = new TFMagicMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), Minecraft.getInstance().level.dimension());
 						if (mapitemrenderer.getMapInstanceIfExists(s) != null) {
 							MapItemSavedData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
 							if (mapdata1 instanceof TFMagicMapData) {

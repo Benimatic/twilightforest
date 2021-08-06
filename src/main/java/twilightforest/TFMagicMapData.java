@@ -8,6 +8,8 @@ import net.minecraft.nbt.CompoundTag;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
@@ -18,25 +20,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import net.minecraft.world.level.saveddata.maps.MapDecoration.Type;
-
 public class TFMagicMapData extends MapItemSavedData {
 	private static final Map<Level, Map<String, TFMagicMapData>> CLIENT_DATA = new WeakHashMap<>();
 
 	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
 
-	public TFMagicMapData(String name) {
-		super(name);
+	public TFMagicMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
+		super(x, z, scale, trackpos, unlimited, locked, dim);
 	}
 
-	@Override
-	public void load(CompoundTag cmp) {
-		super.load(cmp);
+	//TODO: Evaluate this
+	public static TFMagicMapData load(CompoundTag cmp) {
+		MapItemSavedData data = MapItemSavedData.load(cmp);
+		TFMagicMapData tfdata = (TFMagicMapData) data;
 
 		byte[] featureStorage = cmp.getByteArray("features");
 		if (featureStorage.length > 0) {
-			this.deserializeFeatures(featureStorage);
+			tfdata.deserializeFeatures(featureStorage);
 		}
+
+		return tfdata;
 	}
 
 	@Override
@@ -115,7 +118,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		if (world.isClientSide) {
 			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
 		} else {
-			return world.getServer().getLevel(Level.OVERWORLD).getDataStorage().get(() -> new TFMagicMapData(name), name);
+			return world.getServer().overworld().getDataStorage().get(TFMagicMapData::load, name);
 		}
 	}
 
@@ -124,7 +127,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		if (world.isClientSide) {
 			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
 		} else {
-			world.getServer().getLevel(Level.OVERWORLD).getDataStorage().set(data);
+			world.getServer().overworld().getDataStorage().set(MapItem.makeKey(world.getFreeMapId()), data);
 		}
 	}
 
