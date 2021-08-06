@@ -16,8 +16,6 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class MagicBeansItem extends Item {
 
 	protected MagicBeansItem(Properties props) {
@@ -144,7 +142,7 @@ public class MagicBeansItem extends Item {
 	 */
 	private boolean tryToPlaceStalk(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.isAir() || state.getMaterial().isReplaceable() || state.getBlock().canBeReplacedByLeaves(state, world, pos) || BlockTags.LEAVES.contains(state.getBlock()) /*|| state.getBlock().canSustainLeaves(state, world, pos)*/) {
+		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || BlockTags.LEAVES.contains(state.getBlock()) /*|| state.getBlock().canSustainLeaves(state, world, pos)*/) {
 			world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.get().defaultBlockState());
 			return true;
 		} else {
@@ -154,7 +152,7 @@ public class MagicBeansItem extends Item {
 
 	private void tryToPlaceLeaves(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
+		if (state.isAir() || state.is(BlockTags.LEAVES)) {
 			world.setBlock(pos, TFBlocks.beanstalk_leaves.get().defaultBlockState(), 2);
 		}
 	}
