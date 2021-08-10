@@ -7,14 +7,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
-import twilightforest.util.MushroomUtil;
-import twilightforest.world.feature.config.CaveStalactiteConfig;
+import twilightforest.util.HugeMushroomUtil;
 
 import java.util.Random;
 
@@ -56,14 +54,14 @@ public class TFGenBigMushgloom extends Feature<NoneFeatureConfiguration> {
 
 	private void makeMushroomCap(LevelAccessor world, BlockPos pos) {
 		BlockState defState = TFBlocks.huge_mushgloom.get().defaultBlockState();
-		world.setBlock(pos.offset(-1, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH_WEST, defState), 3);
-		world.setBlock(pos.offset(0, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH, defState), 3);
-		world.setBlock(pos.offset(1, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH_EAST, defState), 3);
-		world.setBlock(pos.offset(-1, 0, 0), MushroomUtil.getState(MushroomUtil.Type.WEST, defState), 3);
-		world.setBlock(pos, MushroomUtil.getState(MushroomUtil.Type.CENTER, defState), 3);
-		world.setBlock(pos.offset(1, 0, 0), MushroomUtil.getState(MushroomUtil.Type.EAST, defState), 3);
-		world.setBlock(pos.offset(-1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, defState), 3);
-		world.setBlock(pos.offset(0, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH, defState), 3);
-		world.setBlock(pos.offset(1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, defState), 3);
+		world.setBlock(pos.offset(-1, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH_WEST, defState), 3);
+		world.setBlock(pos.offset(0, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH, defState), 3);
+		world.setBlock(pos.offset(1, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH_EAST, defState), 3);
+		world.setBlock(pos.offset(-1, 0, 0), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.WEST, defState), 3);
+		world.setBlock(pos, HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.CENTER, defState), 3);
+		world.setBlock(pos.offset(1, 0, 0), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.EAST, defState), 3);
+		world.setBlock(pos.offset(-1, 0, 1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.SOUTH_WEST, defState), 3);
+		world.setBlock(pos.offset(0, 0, 1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.SOUTH, defState), 3);
+		world.setBlock(pos.offset(1, 0, 1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.SOUTH_EAST, defState), 3);
 	}
 }

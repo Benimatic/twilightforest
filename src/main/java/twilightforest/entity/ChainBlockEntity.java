@@ -102,7 +102,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 
 			// only hit living things
 			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getOwner()) {
-				if (entityRay.getEntity().hurt(TFDamageSources.SPIKED(this, (LivingEntity)this.getOwner()), 10)) {
+				if (entityRay.getEntity().hurt(TFDamageSources.spiked(this, (LivingEntity)this.getOwner()), 10)) {
 					// age when we hit a monster so that we go back to the player faster
 					this.tickCount += 60;
 				}

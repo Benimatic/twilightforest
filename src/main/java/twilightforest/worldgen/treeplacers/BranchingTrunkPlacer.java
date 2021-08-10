@@ -6,13 +6,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.FeatureLogic;
 import twilightforest.worldgen.TwilightFeatures;
 
 import java.util.List;
@@ -68,7 +66,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 
     private static void buildBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, Random treeRNG, TreeConfiguration treeConfig, boolean perpendicularBranches) {
         BlockPos src = pos.above(height);
-        BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
+        BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
         if (perpendicularBranches) {
             drawBresenhamBranch(worldReader, worldPlacer, treeRNG, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), treeConfig);
@@ -95,7 +93,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
      * This takes all variables for setting Branch
      */
     private static void drawBresenhamBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos from, BlockPos to, TreeConfiguration config) {
-        for (BlockPos pixel : FeatureUtil.getBresenhamArrays(from, to)) {
+        for (BlockPos pixel : FeatureLogic.getBresenhamArrays(from, to)) {
             placeLog(worldReader, worldPlacer, random, pixel, config);
         }
     }

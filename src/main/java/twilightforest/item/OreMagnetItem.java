@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.FeatureLogic;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -125,7 +125,7 @@ public class OreMagnetItem extends Item {
 
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
-		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(usePos, destPos);
+		BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(usePos, destPos);
 
 		// find some ore?
 		BlockState attactedOreBlock = Blocks.AIR.defaultBlockState();

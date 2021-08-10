@@ -146,7 +146,7 @@ public class IceBombEntity extends TFThrowableEntity {
 
 					entity.discard();
 				} else {
-					entity.hurt(TFDamageSources.FROZEN(this, (LivingEntity)this.getOwner()), 1);
+					entity.hurt(TFDamageSources.frozen(this, (LivingEntity)this.getOwner()), 1);
 					entity.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
 				}
 			}

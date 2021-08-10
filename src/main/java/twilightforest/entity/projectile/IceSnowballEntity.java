@@ -74,7 +74,7 @@ public class IceSnowballEntity extends TFThrowableEntity implements ItemSupplier
 		if (result instanceof EntityHitResult) {
 			Entity target = ((EntityHitResult)result).getEntity();
 			if (!level.isClientSide && target instanceof LivingEntity) {
-				target.hurt(TFDamageSources.SNOWBALL_FIGHT(this, (LivingEntity) this.getOwner()), DAMAGE);
+				target.hurt(TFDamageSources.snowballFight(this, (LivingEntity) this.getOwner()), DAMAGE);
 				//damage armor pieces
 				if(target instanceof Player) {
 					for(ItemStack stack : target.getArmorSlots())

@@ -74,7 +74,7 @@ public class GiantMinerEntity extends Monster {
 
 	@Override
 	public boolean doHurtTarget(Entity entityIn) {
-		entityIn.hurt(TFDamageSources.ANT(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entityIn.hurt(TFDamageSources.ant(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entityIn);
 	}
 

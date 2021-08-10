@@ -10,8 +10,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProv
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
-import twilightforest.util.FeatureUtil;
-import twilightforest.world.feature.TFTreeGenerator;
+import twilightforest.util.FeatureLogic;
 import twilightforest.worldgen.TwilightFeatures;
 
 import java.util.List;
@@ -97,17 +96,17 @@ public class TreeRootsDecorator extends TreeDecorator {
     }
 
     protected void buildRootExposed(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, double offset, int iteration, int length, BlockStateProvider airRoot, BlockStateProvider dirtRoot) {
-        BlockPos dest = FeatureUtil.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
+        BlockPos dest = FeatureLogic.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
-        BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
+        BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(pos.below(), dest);
         boolean stillAboveGround = true;
         for (BlockPos coord : lineArray) {
-            if (stillAboveGround && FeatureUtil.hasEmptyNeighbor(worldReader, pos)) {
+            if (stillAboveGround && FeatureLogic.hasEmptyNeighbor(worldReader, pos)) {
                 worldPlacer.accept(coord, airRoot.getState(random, coord));
             } else {
                 stillAboveGround = false;
-                if (FeatureUtil.canRootGrowIn(worldReader, coord)) {
+                if (FeatureLogic.canRootGrowIn(worldReader, coord)) {
                     worldPlacer.accept(coord, dirtRoot.getState(random, coord));
                 }
             }
@@ -116,12 +115,12 @@ public class TreeRootsDecorator extends TreeDecorator {
 
     // Shortcircuited version of above function
     protected void buildRoot(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, double offset, int iteration, int length, BlockStateProvider dirtRoot) {
-        BlockPos dest = FeatureUtil.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
+        BlockPos dest = FeatureLogic.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
-        BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
+        BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(pos.below(), dest);
         for (BlockPos coord : lineArray) {
-            if (FeatureUtil.canRootGrowIn(world, coord)) {
+            if (FeatureLogic.canRootGrowIn(world, coord)) {
                 worldPlacer.accept(coord, dirtRoot.getState(random, coord));
             }
         }

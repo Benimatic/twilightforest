@@ -5,7 +5,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.client.model.HumanoidModel;
@@ -42,7 +41,6 @@ import twilightforest.entity.passive.*;
 import twilightforest.entity.projectile.*;
 import twilightforest.item.TransformPowderItem;
 import twilightforest.item.TFItems;
-import twilightforest.util.TFEntityNames;
 
 import java.util.ArrayList;
 import java.util.List;

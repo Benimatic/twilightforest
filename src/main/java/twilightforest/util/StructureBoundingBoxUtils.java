@@ -1,28 +1,31 @@
 package twilightforest.util;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.core.Vec3i;
 
 import javax.annotation.Nullable;
 
+// TODO Do we need to keep this class? Delete if this remains untouched by 1.19
 public class StructureBoundingBoxUtils {
+	@Deprecated // Use `BoundingBox#getCenter` directly
 	public static Vec3i getCenter(BoundingBox sbb) {
-		return new BlockPos(sbb.x0 + (sbb.x1 - sbb.x0 + 1) / 2, sbb.y0 + (sbb.y1 - sbb.y0 + 1) / 2, sbb.z0 + (sbb.z1 - sbb.z0 + 1) / 2);
+		return sbb.getCenter();
 	}
 
+	// This method has been renamed to be the intersection because it functionally is.
+	// If you're looking for the union equivalent, use `BoundingBox#encapsulate`
 	@SuppressWarnings("unused")
 	@Nullable
-	public static BoundingBox getUnionOfSBBs(BoundingBox sbbIn, BoundingBox sbbMask) {
-		if (!sbbIn.intersects(sbbMask))
+	public static BoundingBox getIntersectionOfSBBs(BoundingBox box1, BoundingBox box2) {
+		if (!box1.intersects(box2))
 			return null;
 
 		return new BoundingBox(
-						Math.max(sbbIn.x0, sbbMask.x0),
-						Math.max(sbbIn.y0, sbbMask.y0),
-						Math.max(sbbIn.z0, sbbMask.z0),
-						Math.min(sbbIn.x1, sbbMask.x1),
-						Math.min(sbbIn.y1, sbbMask.y1),
-						Math.min(sbbIn.z1, sbbMask.z1));
+						Math.max(box1.minX(), box2.minX()),
+						Math.max(box1.minY(), box2.minY()),
+						Math.max(box1.minZ(), box2.minZ()),
+						Math.min(box1.maxX(), box2.maxX()),
+						Math.min(box1.maxY(), box2.maxY()),
+						Math.min(box1.maxZ(), box2.maxZ()));
 	}
 }

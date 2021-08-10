@@ -9,8 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelAccessor;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
-import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
@@ -83,23 +83,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 					if (!bushy && Math.abs(ly) > 0 && Math.abs(lx) > 0) {
 						continue;
 					}
-					FeatureUtil.putLeafBlock(leavesPlacer, pos.offset(lx, ly, lz), config.leavesProvider, rand);
-				}
-			}
-		}
-	}
-
-	@Deprecated
-	protected void putBranchWithLeaves(LevelAccessor world, Random rand, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, boolean bushy, BoundingBox mbb, TFTreeFeatureConfig config) {
-		setBranchBlockState(world, rand, pos, branch, mbb, config);
-
-		for (int lx = -1; lx <= 1; lx++) {
-			for (int ly = -1; ly <= 1; ly++) {
-				for (int lz = -1; lz <= 1; lz++) {
-					if (!bushy && Math.abs(ly) > 0 && Math.abs(lx) > 0) {
-						continue;
-					}
-					FeatureUtil.putLeafBlock(world, pos.offset(lx, ly, lz), config.leavesProvider.getState(rand, pos.offset(lx, ly, lz)), leaves);
+					FeaturePlacers.putLeafBlock(leavesPlacer, pos.offset(lx, ly, lz), config.leavesProvider, rand);
 				}
 			}
 		}

@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
+import twilightforest.util.FeatureLogic;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -77,7 +79,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 	}
 
 	private void makeLeafBlob(BiConsumer<BlockPos, BlockState> leafPlacer, Random rand, BlockPos leafPos, TFTreeFeatureConfig config) {
-		FeatureUtil.makeLeafSpheroid(leafPlacer, rand, leafPos, 2, 2, config.leavesProvider);
+		FeaturePlacers.makeLeafSpheroid(leafPlacer, rand, leafPos, 2, 2, config.leavesProvider);
 	}
 
 	private void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {
@@ -113,7 +115,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 	@Override
 	void buildBranch(LevelAccessor world, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, TFTreeFeatureConfig config) {
 		BlockPos src = pos.above(height);
-		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
+		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
 		// constrain branch spread
 		int limit = 5;
@@ -131,9 +133,9 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		}
 
 		if (trunk) {
-			FeatureUtil.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider.getState(treeRNG, src));
+			FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider.getState(treeRNG, src));
 		} else {
-			FeatureUtil.drawBresenhamBranch(this, world, trunkPlacer, treeRNG, src, dest, config);
+			FeaturePlacers.drawBresenhamBranch(this, world, trunkPlacer, treeRNG, src, dest, config);
 		}
 
 		this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.east(), config);

@@ -6,15 +6,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelSimulatedRW;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
@@ -69,7 +66,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 			int radius = leafRadius(treeHeight, dy, leafType);
 
-			FeatureUtil.makeLeafCircle2(leavesPlacer, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
+			FeaturePlacers.makeLeafCircle2(leavesPlacer, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
 			this.makePineBranches(world, trunkPlacer, random, pos.above(offGround + treeHeight - dy), radius, config);
 		}
 	}

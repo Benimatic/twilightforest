@@ -23,38 +23,38 @@ public class TFDamageSources {
     public static final DamageSource REACTOR = new DamageSource(tfSource("reactor"));
     public static final DamageSource SLIDER = new DamageSource(tfSource("slider"));
 
-    public static DamageSource AXING(LivingEntity mob) {
+    public static DamageSource axing(LivingEntity mob) {
         return new EntityDamageSource(tfSource("axing"), mob); //minotaur, minoshroom
     }
     //TODO actually figure out how to implement this one
-    public static DamageSource YEETED(LivingEntity mob) {
+    public static DamageSource yeeted(LivingEntity mob) {
         return new EntityDamageSource(tfSource("yeeted"), mob); //yetis, alpha yeti
     }
-    public static DamageSource ANT(LivingEntity mob) {
+    public static DamageSource ant(LivingEntity mob) {
         return new EntityDamageSource(tfSource("ant"), mob); //giants
     }
-    public static DamageSource HAUNT(LivingEntity mob) {
+    public static DamageSource haunt(LivingEntity mob) {
         return new EntityDamageSource(tfSource("haunt"), mob); //wraith, knight phantom
     }
-    public static DamageSource CLAMPED(LivingEntity mob) {
+    public static DamageSource clamped(LivingEntity mob) {
         return new EntityDamageSource(tfSource("clamped"), mob); //pinch beetle
     }
-    public static DamageSource SCORCHED(LivingEntity mob) {
+    public static DamageSource scorched(LivingEntity mob) {
         return new EntityDamageSource(tfSource("scorched"), mob); //fire beetle
     }
-    public static DamageSource FROZEN(Entity source, LivingEntity mob) {
+    public static DamageSource frozen(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("frozen"), source, mob); //ice bomb
     }
-    public static DamageSource SPIKED(Entity source, LivingEntity mob) {
+    public static DamageSource spiked(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("spiked"), source, mob); //block and chain
     }
-    public static DamageSource LEAF_BRAIN(Entity source, LivingEntity mob) {
+    public static DamageSource leafBrain(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("leafBrain"), source, mob).bypassArmor().setMagic(); //druid
     }
-    public static DamageSource LOST_WORDS(Entity source, LivingEntity mob) {
+    public static DamageSource lostWords(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("lostWords"), source, mob).bypassArmor().setMagic(); //tome
     }
-    public static DamageSource SNOWBALL_FIGHT(Entity source, LivingEntity mob) {
+    public static DamageSource snowballFight(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("snowballFight"), source, mob); //ice core
     }
 

@@ -199,7 +199,7 @@ public class WraithEntity extends FlyingMob implements Enemy {
 			i += EnchantmentHelper.getKnockbackBonus(this);
 		}
 
-		boolean flag = entityIn.hurt(TFDamageSources.HAUNT(this), f);
+		boolean flag = entityIn.hurt(TFDamageSources.haunt(this), f);
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {

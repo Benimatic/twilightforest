@@ -21,7 +21,7 @@ public final class WorldUtil {
 	 * Inclusive of edges
 	 */
 	public static Iterable<BlockPos> getAllInBB(AABB bb) {
-		return BlockPos.betweenClosed(new BlockPos(bb.minX, bb.minY, bb.minZ), new BlockPos(bb.maxX, bb.maxY, bb.maxZ));
+		return BlockPos.betweenClosed((int) bb.minX, (int) bb.minY, (int) bb.minZ, (int) bb.maxX, (int) bb.maxY, (int) bb.maxZ);
 	}
 
 	public static BlockPos randomOffset(Random random, BlockPos pos, int range) {

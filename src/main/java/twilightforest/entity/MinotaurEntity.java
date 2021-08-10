@@ -96,10 +96,10 @@ public class MinotaurEntity extends Monster implements ITFCharger {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		entity.hurt(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageSources.axing(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		boolean success = super.doHurtTarget(entity);
 		if (success && this.isCharging()) {
-			entity.hurt(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+			entity.hurt(TFDamageSources.axing(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 			entity.push(0, 0.4, 0);
 			playSound(TFSounds.MINOTAUR_ATTACK, 1.0F, 1.0F);
 		}

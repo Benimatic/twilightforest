@@ -81,7 +81,7 @@ public class PinchBeetleEntity extends Monster implements IHostileMount {
 		if (this.getPassengers().isEmpty() && !entity.isPassenger()) {
 			entity.startRiding(this);
 		}
-		entity.hurt(TFDamageSources.CLAMPED(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageSources.clamped(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entity);
 	}
 

@@ -1,6 +1,5 @@
 package twilightforest.world.feature;
 
-import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +16,7 @@ import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.Material;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -200,10 +200,10 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	 */
 	@Deprecated
 	protected void buildRoot(LevelAccessor world, Random rand, BlockPos pos, Set<BlockPos> setpos, double offset, int b, BoundingBox mbb, T config) {
-		BlockPos dest = FeatureUtil.translate(pos.below(b + 2), 5, 0.3 * b + offset, 0.8);
+		BlockPos dest = FeatureLogic.translate(pos.below(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
-		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
+		BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(pos.below(), dest);
 		for (BlockPos coord : lineArray) {
 			this.setRootsBlockState(world, rand, coord, setpos, mbb, config);
 		}
@@ -213,10 +213,10 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	 * Build a root, but don't let it stick out too far into thin air because that's weird
 	 */
 	protected void buildRoot(LevelAccessor world, BiConsumer<BlockPos, BlockState> placer, Random rand, BlockPos pos, double offset, int b, T config) {
-		BlockPos dest = FeatureUtil.translate(pos.below(b + 2), 5, 0.3 * b + offset, 0.8);
+		BlockPos dest = FeatureLogic.translate(pos.below(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
-		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
+		BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(pos.below(), dest);
 		for (BlockPos coord : lineArray) {
 			this.setRootsBlockState(world, placer, rand, coord, config);
 		}

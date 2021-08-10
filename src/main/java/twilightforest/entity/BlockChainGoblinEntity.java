@@ -153,7 +153,7 @@ public class BlockChainGoblinEntity extends Monster {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		swing(InteractionHand.MAIN_HAND);
-		entity.hurt(TFDamageSources.SPIKED(this.block, this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageSources.spiked(this.block, this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return false;
 	}
 

@@ -5,11 +5,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
@@ -42,7 +42,7 @@ public class TFGenFoundation extends Feature<NoneFeatureConfiguration> {
 					int ht = rand.nextInt(4) + 1;
 
 					for (int cy = 0; cy <= ht; cy++) {
-						world.setBlock(pos.offset(cx, cy - 1, cz), FeatureUtil.randStone(rand, cy + 1), 3);
+						world.setBlock(pos.offset(cx, cy - 1, cz), FeatureLogic.randStone(rand, cy + 1), 3);
 					}
 				} else {
 					// destroyed wooden plank floor

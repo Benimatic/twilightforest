@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.worldgen.TwilightFeatures;
 
 import java.util.Random;
@@ -61,7 +61,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     protected void createFoliage(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, TreeConfiguration baseTreeFeatureConfig, int trunkHeight, FoliageAttachment foliage, int foliageHeight, int radius, int offset) {
         BlockPos center = foliage.pos().above(offset); // foliage.getCenter
 
-        FeatureUtil.makeLeafSpheroid(worldPlacer, random, center, foliage.radiusOffset() + this.horizontalRadius + random.nextInt(this.randomHorizontal + 1), foliage.radiusOffset() + this.verticalRadius + random.nextInt(this.randomVertical + 1), this.verticalBias, baseTreeFeatureConfig.foliageProvider);
+        FeaturePlacers.makeLeafSpheroid(worldPlacer, random, center, foliage.radiusOffset() + this.horizontalRadius + random.nextInt(this.randomHorizontal + 1), foliage.radiusOffset() + this.verticalRadius + random.nextInt(this.randomVertical + 1), this.verticalBias, baseTreeFeatureConfig.foliageProvider);
 
         if (this.shag_factor > 0) {
             for (int i = 0; i < this.shag_factor; i++) {
@@ -80,10 +80,10 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     }
 
     private static void placeLeafCluster(BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, BlockStateProvider state) {
-        FeatureUtil.putLeafBlock(worldPlacer, pos, state, random);
-        FeatureUtil.putLeafBlock(worldPlacer, pos.east(), state, random);
-        FeatureUtil.putLeafBlock(worldPlacer, pos.south(), state, random);
-        FeatureUtil.putLeafBlock(worldPlacer, pos.offset(1, 0, 1), state, random);
+        FeaturePlacers.putLeafBlock(worldPlacer, pos, state, random);
+        FeaturePlacers.putLeafBlock(worldPlacer, pos.east(), state, random);
+        FeaturePlacers.putLeafBlock(worldPlacer, pos.south(), state, random);
+        FeaturePlacers.putLeafBlock(worldPlacer, pos.offset(1, 0, 1), state, random);
     }
 
     @Override // foliage Height

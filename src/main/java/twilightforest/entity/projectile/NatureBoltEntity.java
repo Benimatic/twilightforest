@@ -88,7 +88,7 @@ public class NatureBoltEntity extends TFThrowableEntity implements ITFProjectile
 				Entity owner = getOwner();
 				Entity entityHit = ((EntityHitResult) ray).getEntity();
 				if (entityHit instanceof LivingEntity && (owner == null || (entityHit != owner && entityHit != owner.getVehicle()))) {
-					if (entityHit.hurt(TFDamageSources.LEAF_BRAIN(this, (LivingEntity)this.getOwner()), 2)
+					if (entityHit.hurt(TFDamageSources.leafBrain(this, (LivingEntity)this.getOwner()), 2)
 							&& level.getDifficulty() != Difficulty.PEACEFUL) {
 						int poisonTime = level.getDifficulty() == Difficulty.HARD ? 7 : 3;
 						((LivingEntity) entityHit).addEffect(new MobEffectInstance(MobEffects.POISON, poisonTime * 20, 0));

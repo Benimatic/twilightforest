@@ -43,7 +43,7 @@ public class TFItemStackUtils {
 	}
 
 	public static boolean consumeInventoryItem(final Player player, final Item item) {
-		return consumeInventoryItem(player.inventory.armor, item) || consumeInventoryItem(player.inventory.items, item) || consumeInventoryItem(player.inventory.offhand, item);
+		return consumeInventoryItem(player.getInventory().armor, item) || consumeInventoryItem(player.getInventory().items, item) || consumeInventoryItem(player.getInventory().offhand, item);
 	}
 
 	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item) {
@@ -65,13 +65,13 @@ public class TFItemStackUtils {
 	}
 
 	public static NonNullList<ItemStack> sortArmorForCasket(Player player) {
-		NonNullList<ItemStack> armor = player.inventory.armor;
+		NonNullList<ItemStack> armor = player.getInventory().armor;
 		Collections.reverse(armor);
 		return armor;
 	}
 
 	public static NonNullList<ItemStack> sortInvForCasket(Player player) {
-		NonNullList<ItemStack> inv = player.inventory.items;
+		NonNullList<ItemStack> inv = player.getInventory().items;
 		NonNullList<ItemStack> sorted = NonNullList.create();
 		//hotbar at the bottom
 		sorted.addAll(inv.subList(9, 36));

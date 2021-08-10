@@ -6,15 +6,15 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelAccessor;
+import twilightforest.util.FeatureLogic;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 /**
@@ -89,9 +89,9 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	private void makeLeafBlob(BiConsumer<BlockPos, BlockState> leafPlacer, Random random, BlockPos leafPos, TFTreeFeatureConfig config) {
-		FeatureUtil.makeLeafCircle(leafPlacer, random, leafPos.below(), 3, config.leavesProvider);
-		FeatureUtil.makeLeafCircle(leafPlacer, random, leafPos, 4, config.leavesProvider);
-		FeatureUtil.makeLeafCircle(leafPlacer, random, leafPos.above(), 2, config.leavesProvider);
+		FeaturePlacers.makeLeafCircle(leafPlacer, random, leafPos.below(), 3, config.leavesProvider);
+		FeaturePlacers.makeLeafCircle(leafPlacer, random, leafPos, 4, config.leavesProvider);
+		FeaturePlacers.makeLeafCircle(leafPlacer, random, leafPos.above(), 2, config.leavesProvider);
 	}
 
 	/**
@@ -99,15 +99,15 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	 */
 	void buildBranch(LevelAccessor world, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, TFTreeFeatureConfig config) {
 		BlockPos src = pos.above(height);
-		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
+		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 5)) {
 
 			if (trunk) {
-				FeatureUtil.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider.getState(treeRNG, src));
+				FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider.getState(treeRNG, src));
 			} else {
-				FeatureUtil.drawBresenhamBranch(this, world, trunkPlacer, treeRNG, src, dest, config);
+				FeaturePlacers.drawBresenhamBranch(this, world, trunkPlacer, treeRNG, src, dest, config);
 			}
 
 			// seems to help lighting to place this firefly now
