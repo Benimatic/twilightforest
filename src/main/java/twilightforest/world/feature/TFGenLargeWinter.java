@@ -1,6 +1,7 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.core.Direction;
@@ -14,6 +15,7 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
@@ -22,7 +24,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, BoundingBox mbb, TFTreeFeatureConfig config) {
+	protected boolean generate(WorldGenLevel world, Random random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
 		// determine a height
 		int treeHeight = 35;
 		if (random.nextInt(3) == 0) {
@@ -44,22 +46,22 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		//okay build a tree!  Go up to the height
-		buildTrunk(world, random, pos, trunk, treeHeight, mbb, config);
+		buildTrunk(world, trunkPlacer, random, pos, treeHeight, config);
 
 		// make leaves
-		makeLeaves(world, random, pos, treeHeight, trunk, leaves, mbb, config);
+		makeLeaves(world, trunkPlacer, leavesPlacer, random, pos, treeHeight, config);
 
 		// roots!
 		int numRoots = 4 + random.nextInt(3);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			buildRoot(world, random, pos, root, offset, b, mbb, config);
+			buildRoot(world, decorationPlacer, random, pos, offset, b, config);
 		}
 
 		return true;
 	}
 
-	private void makeLeaves(LevelAccessor world, Random random, BlockPos pos, int treeHeight, Set<BlockPos> trunk, Set<BlockPos> leaves, BoundingBox mbb, TFTreeFeatureConfig config) {
+	private void makeLeaves(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
 		int offGround = 3;
 		int leafType = 1;
 
@@ -67,38 +69,37 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 			int radius = leafRadius(treeHeight, dy, leafType);
 
-			FeatureUtil.makeLeafCircle2(world, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider.getState(random, pos.above(offGround + treeHeight - dy)), leaves);
-			this.makePineBranches(world, random, pos.above(offGround + treeHeight - dy), trunk, radius, mbb, config);
+			FeatureUtil.makeLeafCircle2(leavesPlacer, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
+			this.makePineBranches(world, trunkPlacer, random, pos.above(offGround + treeHeight - dy), radius, config);
 		}
 	}
 
-	private void makePineBranches(LevelAccessor world, Random rand, BlockPos pos, Set<BlockPos> trunk, int radius, BoundingBox mbb, TFTreeFeatureConfig config) {
+	private void makePineBranches(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, Random rand, BlockPos pos, int radius, TFTreeFeatureConfig config) {
 		int branchLength = radius > 4 ? radius - 1 : radius - 2;
 
 		switch (pos.getY() % 2) {
 			case 0:
 				// branches
 				for (int i = 1; i <= branchLength; i++) {
-					this.placeLogAt(world, rand, pos.offset(-i, 0, 0), Direction.Axis.X, trunk, mbb, config);
-					this.placeLogAt(world, rand, pos.offset(0, 0, i + 1), Direction.Axis.Z, trunk, mbb, config);
-					this.placeLogAt(world, rand, pos.offset(i + 1, 0, 1), Direction.Axis.X, trunk, mbb, config);
-					this.placeLogAt(world, rand, pos.offset(1, 0, -i), Direction.Axis.Z, trunk, mbb, config);
+					this.placeLogAt(trunkPlacer, rand, pos.offset(-i, 0, 0), Direction.Axis.X, config);
+					this.placeLogAt(trunkPlacer, rand, pos.offset(0, 0, i + 1), Direction.Axis.Z, config);
+					this.placeLogAt(trunkPlacer, rand, pos.offset(i + 1, 0, 1), Direction.Axis.X, config);
+					this.placeLogAt(trunkPlacer, rand, pos.offset(1, 0, -i), Direction.Axis.Z, config);
 				}
 				break;
 			case 1:
 				for (int i = 1; i <= branchLength; i++) {
-					this.placeLogAt(world, rand, pos.offset(-1, 0, 1), Direction.Axis.X, trunk, mbb, config);
-					this.placeLogAt(world, rand, pos.offset(1, 0, i + 1), Direction.Axis.Z, trunk, mbb, config);
-					this.placeLogAt(world, rand, pos.offset(i + 1, 0, 0), Direction.Axis.X, trunk, mbb, config);
-					this.placeLogAt(world, rand, pos.offset(0, 0, -i), Direction.Axis.Z, trunk, mbb, config);
+					this.placeLogAt(trunkPlacer, rand, pos.offset(-1, 0, 1), Direction.Axis.X, config);
+					this.placeLogAt(trunkPlacer, rand, pos.offset(1, 0, i + 1), Direction.Axis.Z, config);
+					this.placeLogAt(trunkPlacer, rand, pos.offset(i + 1, 0, 0), Direction.Axis.X, config);
+					this.placeLogAt(trunkPlacer, rand, pos.offset(0, 0, -i), Direction.Axis.Z, config);
 				}
 				break;
 		}
 	}
 
-	private void placeLogAt(LevelSimulatedRW reader, Random rand, BlockPos pos, Direction.Axis axis, Set<BlockPos> logPos, BoundingBox boundingBox, TFTreeFeatureConfig config) {
-		this.setBlockState(reader, pos, config.trunkProvider.getState(rand, pos).setValue(RotatedPillarBlock.AXIS, axis), boundingBox);
-		logPos.add(pos.immutable());
+	private void placeLogAt(BiConsumer<BlockPos, BlockState> trunkPlacer, Random rand, BlockPos pos, Direction.Axis axis, TFTreeFeatureConfig config) {
+		trunkPlacer.accept(pos, config.trunkProvider.getState(rand, pos).setValue(RotatedPillarBlock.AXIS, axis));
 	}
 
 	private int leafRadius(int treeHeight, int dy, int functionType) {
@@ -113,12 +114,12 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 	}
 
-	private void buildTrunk(LevelAccessor world, Random rand, BlockPos pos, Set<BlockPos> trunk, int treeHeight, BoundingBox mbb, TFTreeFeatureConfig config) {
+	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, Random rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
-			this.setLogBlockState(world, rand, pos.offset(0, dy, 0), trunk, mbb, config);
-			this.setLogBlockState(world, rand, pos.offset(1, dy, 0), trunk, mbb, config);
-			this.setLogBlockState(world, rand, pos.offset(0, dy, 1), trunk, mbb, config);
-			this.setLogBlockState(world, rand, pos.offset(1, dy, 1), trunk, mbb, config);
+			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(0, dy, 0), config);
+			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(1, dy, 0), config);
+			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(0, dy, 1), config);
+			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(1, dy, 1), config);
 		}
 	}
 }

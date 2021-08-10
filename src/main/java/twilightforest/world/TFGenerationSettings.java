@@ -142,8 +142,12 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		}
 	}
 
+	// FIXME Why are these three here - Can we get this from the World's Settings itself? Document here why not, if unable
+	@Deprecated
 	public static final int SEALEVEL = 31;
+	@Deprecated
 	public static final int CHUNKHEIGHT = 256; // more like world generation height
+	@Deprecated
 	public static final int MAXHEIGHT = 256; // actual max height
 
 	@Nullable

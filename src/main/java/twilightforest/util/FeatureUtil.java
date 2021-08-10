@@ -1,40 +1,107 @@
 package twilightforest.util;
 
-import net.minecraft.world.level.block.AirBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.LevelSimulatedRW;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.material.Material;
+import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.TFTreeGenerator;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
+// TODO Split into FeatureLogic and FeaturePlacers
+//  jesus christ
 public class FeatureUtil {
-	public static void putLeafBlock(LevelSimulatedRW world, Random random, BlockPos pos, BlockStateProvider state, Set<BlockPos> leavesPos) {
-		if (/*leavesPos.contains(pos) ||*/ !TreeFeature.validTreePos(world, pos))
-			return;
+	/**
+	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
+	 * This takes all variables for setting Branch
+	 */
+	public static void drawBresenhamBranch(TFTreeGenerator<? extends TFTreeFeatureConfig> generator, LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, Random random, BlockPos from, BlockPos to, TFTreeFeatureConfig config) {
+		for (BlockPos pixel : getBresenhamArrays(from, to)) {
+			generator.setBranchBlockState(world, trunkPlacer, random, pixel, config);
+		}
+	}
 
-		world.setBlock(pos, state.getState(random, pos), 3);
-		leavesPos.add(pos.immutable());
+	/**
+	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
+	 * This just takes a BlockState, used to set Trunk
+	 */
+	public static void drawBresenhamTree(BiConsumer<BlockPos, BlockState> trunkPlacer, BlockPos from, BlockPos to, BlockState state) {
+		for (BlockPos pixel : getBresenhamArrays(from, to)) {
+			trunkPlacer.accept(pixel, state);
+		}
+	}
+
+	private static final Predicate<BlockState> IS_AIR = BlockBehaviour.BlockStateBase::isAir;
+	public static boolean hasEmptyNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
+		return worldReader.isStateAtPosition(pos.above(), IS_AIR)
+				|| worldReader.isStateAtPosition(pos.north(), IS_AIR)
+				|| worldReader.isStateAtPosition(pos.south(), IS_AIR)
+				|| worldReader.isStateAtPosition(pos.west(), IS_AIR)
+				|| worldReader.isStateAtPosition(pos.east(), IS_AIR)
+				|| worldReader.isStateAtPosition(pos.below(), IS_AIR);
+	}
+
+	// Slight stretch of logic: We check if the block is completely surrounded by air.
+	// If it's not completely surrounded by air, then there's a solid
+	public static boolean hasSolidNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
+		return !(worldReader.isStateAtPosition(pos.below(), IS_AIR)
+				&& worldReader.isStateAtPosition(pos.north(), IS_AIR)
+				&& worldReader.isStateAtPosition(pos.south(), IS_AIR)
+				&& worldReader.isStateAtPosition(pos.west(), IS_AIR)
+				&& worldReader.isStateAtPosition(pos.east(), IS_AIR)
+				&& worldReader.isStateAtPosition(pos.above(), IS_AIR));
+	}
+
+	public static boolean canRootGrowIn(LevelSimulatedReader worldReader, BlockPos pos) {
+		if (worldReader.isStateAtPosition(pos, IS_AIR)) {
+			// roots can grow through air if they are near a solid block
+			return hasSolidNeighbor(worldReader, pos);
+		} else {
+			return worldReader.isStateAtPosition(pos, FeatureUtil::canRootReplace);
+		}
+	}
+
+	public static boolean canRootReplace(BlockState state) {
+		Block block = state.getBlock();
+
+		return /*(state.getDestroySpeed() >= 0) //
+				&&*/ block != TFBlocks.stronghold_shield.get()
+				&& block != TFBlocks.trophy_pedestal.get()
+				&& block != TFBlocks.boss_spawner_naga.get()
+				&& block != TFBlocks.boss_spawner_lich.get()
+				&& block != TFBlocks.boss_spawner_hydra.get()
+				&& block != TFBlocks.boss_spawner_ur_ghast.get()
+				&& block != TFBlocks.boss_spawner_knight_phantom.get()
+				&& block != TFBlocks.boss_spawner_snow_queen.get()
+				&& block != TFBlocks.boss_spawner_minoshroom.get()
+				&& block != TFBlocks.boss_spawner_alpha_yeti.get()
+				&& (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT || state.getMaterial() == Material.STONE || state.getMaterial() == Material.WATER);
+	}
+
+	public static void putLeafBlock(BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, BlockStateProvider state, Random random) {
+		worldPlacer.accept(pos, state.getState(random, pos));
 	}
 
 	// TODO phase out other leaf circle algorithms
-	public static void makeLeafCircle(LevelSimulatedRW world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
+	public static void makeLeafCircle(BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos centerPos, float radius, BlockStateProvider state) {
 		// Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
 		// the pos to be immutable causing multiple same BlockPos instances to exist.
 		float radiusSquared = radius * radius;
-		putLeafBlock(world, random, centerPos, state, leaves);
+		putLeafBlock(worldPlacer, centerPos, state, random);
 
 		// trace out a quadrant
 		for (int x = 0; x <= radius; x++) {
@@ -42,131 +109,134 @@ public class FeatureUtil {
 				// if we're inside the blob, fill it
 				if (x * x + z * z <= radiusSquared) {
 					// do four at a time for easiness!
-					putLeafBlock(world, random, centerPos.offset(  x, 0,  z), state, leaves);
-					putLeafBlock(world, random, centerPos.offset( -x, 0, -z), state, leaves);
-					putLeafBlock(world, random, centerPos.offset( -z, 0,  x), state, leaves);
-					putLeafBlock(world, random, centerPos.offset(  z, 0, -x), state, leaves);
+					putLeafBlock(worldPlacer, centerPos.offset(  x, 0,  z), state, random);
+					putLeafBlock(worldPlacer, centerPos.offset( -x, 0, -z), state, random);
+					putLeafBlock(worldPlacer, centerPos.offset( -z, 0,  x), state, random);
+					putLeafBlock(worldPlacer, centerPos.offset(  z, 0, -x), state, random);
 					// Confused how this circle pixel-filling algorithm works exactly? https://www.desmos.com/calculator/psqynhk21k
 				}
 			}
 		}
 	}
 
-	// TODO Determine if we should cut this method
-	public static void makeLeafSpheroid(LevelSimulatedRW world, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
+	// Same as above except for even-sized trunks
+	public static void makeLeafCircle2(BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos centerPos, float radius, BlockStateProvider state) {
+		// Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
+		// the pos to be immutable causing multiple same BlockPos instances to exist.
+		float radiusSquared = radius * radius;
+		putLeafBlock(worldPlacer, centerPos, state, random);
+
+		// trace out a quadrant
+		for (int x = 0; x <= radius; x++) {
+			for (int z = 1; z <= radius; z++) {
+				// if we're inside the blob, fill it
+				if (x * x + z * z <= radiusSquared) {
+					// do four at a time for easiness!
+					putLeafBlock(worldPlacer, centerPos.offset( 1+x, 0, 1+z), state, random);
+					putLeafBlock(worldPlacer, centerPos.offset( -x, 0, -z), state, random);
+					putLeafBlock(worldPlacer, centerPos.offset( -x, 0, 1+z), state, random);
+					putLeafBlock(worldPlacer, centerPos.offset( 1+x, 0, -z), state, random);
+					// Confused how this circle pixel-filling algorithm works exactly? https://www.desmos.com/calculator/psqynhk21k
+				}
+			}
+		}
+	}
+
+	public static void makeLeafSpheroid(BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider state) {
 		float xzRadiusSquared = xzRadius * xzRadius;
 		float yRadiusSquared = yRadius * yRadius;
 		float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
-		putLeafBlock(world, random, centerPos, state, leaves);
+		putLeafBlock(worldPlacer, centerPos, state, random);
 
 		for (int y = 0; y <= yRadius; y++) {
 			if (y > yRadius) continue;
 
-			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
+			putLeafBlock(worldPlacer, centerPos.offset( 0,  y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0,  y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0,  y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0,  y, 0), state, random);
 
-			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
+			putLeafBlock(worldPlacer, centerPos.offset( 0, -y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0, -y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0, -y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0, -y, 0), state, random);
 		}
 
 		for (int x = 0; x <= xzRadius; x++) {
 			for (int z = 1; z <= xzRadius; z++) {
 				if (x * x + z * z > xzRadiusSquared) continue;
 
-				putLeafBlock(world, random, centerPos.offset(  x, 0,  z), state, leaves);
-				putLeafBlock(world, random, centerPos.offset( -x, 0, -z), state, leaves);
-				putLeafBlock(world, random, centerPos.offset( -z, 0,  x), state, leaves);
-				putLeafBlock(world, random, centerPos.offset(  z, 0, -x), state, leaves);
+				putLeafBlock(worldPlacer, centerPos.offset(  x, 0,  z), state, random);
+				putLeafBlock(worldPlacer, centerPos.offset( -x, 0, -z), state, random);
+				putLeafBlock(worldPlacer, centerPos.offset( -z, 0,  x), state, random);
+				putLeafBlock(worldPlacer, centerPos.offset(  z, 0, -x), state, random);
 
 				for (int y = 1; y <= yRadius; y++) {
 					float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
 					if (xzSquare + (((y - verticalBias) * (y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
-						putLeafBlock(world, random, centerPos.offset(  x,  y,  z), state, leaves);
-						putLeafBlock(world, random, centerPos.offset( -x,  y, -z), state, leaves);
-						putLeafBlock(world, random, centerPos.offset( -z,  y,  x), state, leaves);
-						putLeafBlock(world, random, centerPos.offset(  z,  y, -x), state, leaves);
+						putLeafBlock(worldPlacer, centerPos.offset(  x,  y,  z), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset( -x,  y, -z), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset( -z,  y,  x), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset(  z,  y, -x), state, random);
 					}
 
 					if (xzSquare + (((y + verticalBias) * (y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
-						putLeafBlock(world, random, centerPos.offset(  x, -y,  z), state, leaves);
-						putLeafBlock(world, random, centerPos.offset( -x, -y, -z), state, leaves);
-						putLeafBlock(world, random, centerPos.offset( -z, -y,  x), state, leaves);
-						putLeafBlock(world, random, centerPos.offset(  z, -y, -x), state, leaves);
+						putLeafBlock(worldPlacer, centerPos.offset(  x, -y,  z), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset( -x, -y, -z), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset( -z, -y,  x), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset(  z, -y, -x), state, random);
 					}
 				}
 			}
 		}
 	}
 
-	public static void makeLeafSpheroid(LevelSimulatedRW world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
-		float radiusSquared = radius * radius;
-		putLeafBlock(world, random, centerPos, state, leaves);
+	public static void makeLeafSpheroid(BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos centerPos, float xzRadius, float yRadius, BlockStateProvider state) {
+		float xzRadiusSquared = xzRadius * xzRadius;
+		float yRadiusSquared = yRadius * yRadius;
+		float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
+		putLeafBlock(worldPlacer, centerPos, state, random);
 
-		for (int y = 0; y <= radius; y++) {
-			if (y > radius) continue;
+		for (int y = 0; y <= yRadius; y++) {
+			if (y > yRadius) continue;
 
-			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0,  y, 0), state, leaves);
+			putLeafBlock(worldPlacer, centerPos.offset( 0,  y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0,  y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0,  y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0,  y, 0), state, random);
 
-			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
-			putLeafBlock(world, random, centerPos.offset( 0, -y, 0), state, leaves);
+			putLeafBlock(worldPlacer, centerPos.offset( 0, -y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0, -y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0, -y, 0), state, random);
+			putLeafBlock(worldPlacer, centerPos.offset( 0, -y, 0), state, random);
 		}
 
-		for (int x = 0; x <= radius; x++) {
-			for (int z = 1; z <= radius; z++) {
-				float xzSquare = x * x + z * z;
+		for (int x = 0; x <= xzRadius; x++) {
+			for (int z = 1; z <= xzRadius; z++) {
+				if (x * x + z * z > xzRadiusSquared) continue;
 
-				if (xzSquare > radiusSquared) continue;
+				putLeafBlock(worldPlacer, centerPos.offset(  x, 0,  z), state, random);
+				putLeafBlock(worldPlacer, centerPos.offset( -x, 0, -z), state, random);
+				putLeafBlock(worldPlacer, centerPos.offset( -z, 0,  x), state, random);
+				putLeafBlock(worldPlacer, centerPos.offset(  z, 0, -x), state, random);
 
-				putLeafBlock(world, random, centerPos.offset(  x, 0,  z), state, leaves);
-				putLeafBlock(world, random, centerPos.offset( -x, 0, -z), state, leaves);
-				putLeafBlock(world, random, centerPos.offset( -z, 0,  x), state, leaves);
-				putLeafBlock(world, random, centerPos.offset(  z, 0, -x), state, leaves);
+				for (int y = 1; y <= yRadius; y++) {
+					float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
-				for (int y = 1; y <= radius; y++) {
+					if (xzSquare + (y * y) * xzRadiusSquared <= superRadiusSquared) {
+						putLeafBlock(worldPlacer, centerPos.offset(  x,  y,  z), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset( -x,  y, -z), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset( -z,  y,  x), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset(  z,  y, -x), state, random);
 
-					if (xzSquare + y * y <= radius * radius) {
-						putLeafBlock(world, random, centerPos.offset(  x,  y,  z), state, leaves);
-						putLeafBlock(world, random, centerPos.offset( -x,  y, -z), state, leaves);
-						putLeafBlock(world, random, centerPos.offset( -z,  y,  x), state, leaves);
-						putLeafBlock(world, random, centerPos.offset(  z,  y, -x), state, leaves);
-
-						putLeafBlock(world, random, centerPos.offset(  x, -y,  z), state, leaves);
-						putLeafBlock(world, random, centerPos.offset( -x, -y, -z), state, leaves);
-						putLeafBlock(world, random, centerPos.offset( -z, -y,  x), state, leaves);
-						putLeafBlock(world, random, centerPos.offset(  z, -y, -x), state, leaves);
+						putLeafBlock(worldPlacer, centerPos.offset(  x, -y,  z), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset( -x, -y, -z), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset( -z, -y,  x), state, random);
+						putLeafBlock(worldPlacer, centerPos.offset(  z, -y, -x), state, random);
 					}
 				}
 			}
-		}
-	}
-
-	public static boolean hasAirAround(LevelSimulatedRW world, BlockPos pos) {
-		for (Direction e : directionsExceptDown) {
-			if (world.isStateAtPosition(pos, b -> b.getBlock() instanceof AirBlock)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
-	 * This takes all variables for setting Branch
-	 */
-	public static void drawBresenhamBranch(LevelSimulatedRW world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, BoundingBox mbb, TreeConfiguration config) {
-		for (BlockPos pixel : getBresenhamArrays(from, to)) {
-			TrunkPlacer.placeLog(world, random, pixel, state, mbb, config);
 		}
 	}
 
@@ -204,6 +274,7 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This just takes a BlockState, used to set Trunk
 	 */
+	@Deprecated
 	public static void drawBresenhamTree(LevelAccessor world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
 		for (BlockPos pixel : getBresenhamArrays(from, to)) {
 			world.setBlock(pixel, state, 3);
@@ -304,6 +375,7 @@ public class FeatureUtil {
 	/**
 	 * Draw a flat blob (circle) of leaves
 	 */
+	@Deprecated
 	public static void makeLeafCircle(LevelAccessor world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -333,7 +405,7 @@ public class FeatureUtil {
 	public static void putLeafBlock(LevelAccessor world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
 		BlockState whatsThere = world.getBlockState(pos);
 
-		if (whatsThere.canBeReplacedByLeaves(world, pos) && whatsThere.getBlock() != state.getBlock()) {
+		if (TreeFeature.isAirOrLeaves(world, pos) && whatsThere.getBlock() != state.getBlock()) {
 			world.setBlock(pos, state, 3);
 			leavespos.add(pos.immutable());
 		}

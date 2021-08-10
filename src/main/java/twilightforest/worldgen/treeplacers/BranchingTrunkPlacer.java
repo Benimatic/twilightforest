@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -15,7 +17,7 @@ import twilightforest.worldgen.TwilightFeatures;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class BranchingTrunkPlacer extends TrunkPlacer {
     public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
@@ -43,55 +45,58 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedRW world, Random random, int height, BlockPos startPos, Set<BlockPos> trunkBlocks, BoundingBox mutableBoundingBox, TreeConfiguration baseTreeFeatureConfig) {
-        List<FoliagePlacer.FoliageAttachment> leafBlocks = Lists.newArrayList();
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
+        List<FoliagePlacer.FoliageAttachment> leafAttachments = Lists.newArrayList();
 
         for (int y = 0; y <= height; y++) { // Keep building upwards until we cannot, and then adjust height if we run into something
-            if (!placeLog(world, random, startPos.above(y), trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig)) {
+            if (!placeLog(worldReader, worldPlacer, random, startPos.above(y), treeConfig)) {
                 height = y;
                 break;
             }
         }
 
-        leafBlocks.add(new FoliagePlacer.FoliageAttachment(startPos.above(height), 0, false));
+        leafAttachments.add(new FoliagePlacer.FoliageAttachment(startPos.above(height), 0, false));
 
-        int numBranches = branchesConfig.branchCount + random.nextInt(branchesConfig.randomAddBranches + 1);
+        int numBranches = this.branchesConfig.branchCount + random.nextInt(this.branchesConfig.randomAddBranches + 1);
         float offset = random.nextFloat();
         for (int b = 0; b < numBranches; b++) {
-            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - branchDownwardOffset + b, branchesConfig.length, branchesConfig.spacingYaw * b + offset, branchesConfig.downwardsPitch, random, mutableBoundingBox, baseTreeFeatureConfig, perpendicularBranches);
+            buildBranch(worldReader, worldPlacer, startPos, leafAttachments, height - this.branchDownwardOffset + b, this.branchesConfig.length, this.branchesConfig.spacingYaw * b + offset, this.branchesConfig.downwardsPitch, random, treeConfig, this.perpendicularBranches);
         }
 
-        return leafBlocks;
+        return leafAttachments;
     }
 
-
-    private static void buildBranch(LevelSimulatedRW world, BlockPos pos, Set<BlockPos> trunkBlocks, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, Random treeRNG, BoundingBox mbb, TreeConfiguration config, boolean perpendicularBranches) {
+    private static void buildBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, Random treeRNG, TreeConfiguration treeConfig, boolean perpendicularBranches) {
         BlockPos src = pos.above(height);
         BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
         if (perpendicularBranches) {
-            drawBresenhamBranch(world, treeRNG, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), trunkBlocks, mbb, config);
+            drawBresenhamBranch(worldReader, worldPlacer, treeRNG, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), treeConfig);
 
             int max = Math.max(src.getY(), dest.getY());
 
             for (int i = Math.min(src.getY(), dest.getY()); i < max + 1; i++) {
-                placeLog(world, treeRNG, new BlockPos(dest.getX(), i, dest.getZ()), trunkBlocks, mbb, config);
+                placeLog(worldReader, worldPlacer, treeRNG, new BlockPos(dest.getX(), i, dest.getZ()), treeConfig);
             }
         } else {
-            drawBresenhamBranch(world, treeRNG, src, dest, trunkBlocks, mbb, config);
+            drawBresenhamBranch(worldReader, worldPlacer, treeRNG, src, dest, treeConfig);
         }
 
-        placeLog(world, treeRNG, dest.east(), trunkBlocks, mbb, config);
-        placeLog(world, treeRNG, dest.west(), trunkBlocks, mbb, config);
-        placeLog(world, treeRNG, dest.south(), trunkBlocks, mbb, config);
-        placeLog(world, treeRNG, dest.north(), trunkBlocks, mbb, config);
+        placeLog(worldReader, worldPlacer, treeRNG, dest.east(), treeConfig);
+        placeLog(worldReader, worldPlacer, treeRNG, dest.west(), treeConfig);
+        placeLog(worldReader, worldPlacer, treeRNG, dest.south(), treeConfig);
+        placeLog(worldReader, worldPlacer, treeRNG, dest.north(), treeConfig);
 
         leafBlocks.add(new FoliagePlacer.FoliageAttachment(dest, 0, false));
     }
 
-    private static void drawBresenhamBranch(LevelSimulatedRW world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, BoundingBox mbb, TreeConfiguration config) {
+    /**
+     * Draws a line from {x1, y1, z1} to {x2, y2, z2}
+     * This takes all variables for setting Branch
+     */
+    private static void drawBresenhamBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos from, BlockPos to, TreeConfiguration config) {
         for (BlockPos pixel : FeatureUtil.getBresenhamArrays(from, to)) {
-            placeLog(world, random, pixel, state, mbb, config);
+            placeLog(worldReader, worldPlacer, random, pixel, config);
         }
     }
 }

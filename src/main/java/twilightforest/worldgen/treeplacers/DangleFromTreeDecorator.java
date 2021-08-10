@@ -3,6 +3,9 @@ package twilightforest.worldgen.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -13,6 +16,7 @@ import twilightforest.worldgen.TwilightFeatures;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class DangleFromTreeDecorator extends TreeDecorator {
     public static final Codec<DangleFromTreeDecorator> CODEC = RecordCodecBuilder.create(
@@ -50,11 +54,11 @@ public class DangleFromTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    public void place(WorldGenLevel world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, BoundingBox mutableBoundingBox) {
+    public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
         if (leafBlocks.isEmpty())
             return;
 
-        int totalTries = count + random.nextInt(randomAddCount + 1);
+        int totalTries = this.count + random.nextInt(this.randomAddCount + 1);
         int leafTotal = leafBlocks.size();
         boolean clearedOfPossibleLeaves;
         boolean isAir;
@@ -67,11 +71,11 @@ public class DangleFromTreeDecorator extends TreeDecorator {
             clearedOfPossibleLeaves = false;
             pos = leafBlocks.get(random.nextInt(leafTotal));
 
-            cordLength = baseLength + random.nextInt(randomAddLength + 1);
+            cordLength = this.baseLength + random.nextInt(this.randomAddLength + 1);
 
             // Scan to make sure we have
             for (int ropeUnrolling = 1; ropeUnrolling <= cordLength; ropeUnrolling++) {
-                isAir = world.isEmptyBlock(pos.below(ropeUnrolling));
+                isAir = worldReader.isStateAtPosition(pos.below(ropeUnrolling), BlockBehaviour.BlockStateBase::isAir);
 
                 if (!clearedOfPossibleLeaves && isAir)
                     clearedOfPossibleLeaves = true;
@@ -83,16 +87,16 @@ public class DangleFromTreeDecorator extends TreeDecorator {
                 }
             }
 
-            if (cordLength > minimumRequiredLength) { // We don't want no pathetic unroped baggage
+            if (cordLength > this.minimumRequiredLength) { // We don't want no pathetic unroped baggage
                 for (int ropeUnrolling = 1; ropeUnrolling < cordLength; ropeUnrolling++) {
                     pos = pos.below(1);
 
-                    setBlock(world, pos, rope.getState(random, pos), decorations, mutableBoundingBox);
+                    worldPlacer.accept(pos, this.rope.getState(random, pos));
                 }
 
                 pos = pos.below(1);
 
-                setBlock(world, pos, baggage.getState(random, pos), decorations, mutableBoundingBox);
+                worldPlacer.accept(pos, this.baggage.getState(random, pos));
             }
         }
     }

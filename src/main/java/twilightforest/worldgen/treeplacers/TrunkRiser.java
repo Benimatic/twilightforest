@@ -3,6 +3,8 @@ package twilightforest.worldgen.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -14,6 +16,7 @@ import twilightforest.worldgen.TwilightFeatures;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class TrunkRiser extends TrunkPlacer {
     public static final Codec<TrunkRiser> CODEC = RecordCodecBuilder.create(instance ->
@@ -39,7 +42,7 @@ public class TrunkRiser extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedRW iWorldGenerationReader, Random random, int i, BlockPos blockPos, Set<BlockPos> set, BoundingBox mutableBoundingBox, TreeConfiguration baseTreeFeatureConfig) {
-        return placer.placeTrunk(iWorldGenerationReader, random, i, blockPos.above(offset), set, mutableBoundingBox, baseTreeFeatureConfig);
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
+        return this.placer.placeTrunk(worldReader, worldPlacer, random, height, startPos, treeConfig);
     }
 }

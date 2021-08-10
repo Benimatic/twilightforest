@@ -3,11 +3,14 @@ package twilightforest.worldgen.treeplacers;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -37,16 +40,9 @@ public class TreeCorePlacer extends TreeDecorator {
 	}
 
 	@Override
-	public void place(WorldGenLevel world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks,
-			Set<BlockPos> decorations, BoundingBox mutableBoundingBox) {
+	public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
 		BlockPos pos = trunkBlocks.get(0);
 		BlockPos position = pos.offset(0, this.corePos, 0);
-		placeCore(world, random, position, decorations, 0, corePos, 0, mutableBoundingBox, core);
+		worldPlacer.accept(pos, this.core.getState(random, position));
 	}
-	
-	public void placeCore(WorldGenLevel world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, BoundingBox mutableBoundingBox, BlockStateProvider coreType) {
-		BlockPos position = pos.offset(0, this.corePos, 0);
-		setBlock(world, pos, coreType.getState(random, position), decorations, mutableBoundingBox);
-	}
-
 }

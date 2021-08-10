@@ -4,8 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
@@ -16,15 +17,17 @@ import twilightforest.worldgen.TwilightFeatures;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class TreeRootsDecorator extends TreeDecorator {
+    private static final SimpleStateProvider EMPTY = new SimpleStateProvider(Blocks.AIR.defaultBlockState());
+
     public static final Codec<TreeRootsDecorator> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.intRange(0, 16).fieldOf("base_strand_count").forGetter(o -> o.strands),
                     Codec.intRange(0, 16).fieldOf("additional_random_strands").forGetter(o -> o.addExtraStrands),
                     Codec.intRange(0, 32).fieldOf("root_length").forGetter(o -> o.length),
-                    BlockStateProvider.CODEC.optionalFieldOf("air_roots_provider").forGetter(o -> Optional.ofNullable(o.surfaceBlock)),
+                    BlockStateProvider.CODEC.optionalFieldOf("exposed_roots_provider").forGetter(o -> Optional.ofNullable(o.surfaceBlock != EMPTY ? o.surfaceBlock : null)),
                     BlockStateProvider.CODEC.fieldOf("ground_roots_provider").forGetter(o -> o.rootBlock)
             ).apply(instance, TreeRootsDecorator::new)
     );
@@ -43,10 +46,10 @@ public class TreeRootsDecorator extends TreeDecorator {
         this.length = length;
         this.rootBlock = rootBlock;
 
-        if (hasSurfaceRoots = surfaceBlock.isPresent()) {
+        if (this.hasSurfaceRoots = surfaceBlock.isPresent()) {
             this.surfaceBlock = surfaceBlock.get();
         } else {
-            this.surfaceBlock = null;
+            this.surfaceBlock = EMPTY;
         }
     }
 
@@ -56,7 +59,7 @@ public class TreeRootsDecorator extends TreeDecorator {
         this.length = length;
         this.rootBlock = rootBlock;
         this.hasSurfaceRoots = false;
-        this.surfaceBlock = null;
+        this.surfaceBlock = EMPTY;
     }
 
     public TreeRootsDecorator(int count, int addExtraStrands, int length, BlockStateProvider surfaceBlock, BlockStateProvider rootBlock) {
@@ -74,52 +77,52 @@ public class TreeRootsDecorator extends TreeDecorator {
     }
 
     @Override
-    public void place(LevelSimulatedReader world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, BoundingBox mutableBoundingBox) {
+    public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
         if (trunkBlocks.isEmpty())
             return;
 
-        int numBranches = strands + random.nextInt(addExtraStrands + 1);
+        int numBranches = this.strands + random.nextInt(this.addExtraStrands + 1);
         float offset = random.nextFloat();
         BlockPos startPos = trunkBlocks.get(0);
 
-        if (hasSurfaceRoots) {
+        if (this.hasSurfaceRoots) {
             for (int i = 0; i < numBranches; i++) {
-                buildRootWithAir(world, random, startPos, decorations, offset, i, length, mutableBoundingBox, surfaceBlock, rootBlock);
+                buildRootExposed(worldReader, worldPlacer, random, startPos, offset, i, this.length, this.surfaceBlock, this.rootBlock);
             }
         } else {
             for (int i = 0; i < numBranches; i++) {
-                buildRoot(world, random, startPos, decorations, offset, i, length, mutableBoundingBox, rootBlock);
+                buildRoot(worldReader, worldPlacer, random, startPos, offset, i, this.length, this.rootBlock);
             }
         }
     }
 
-    protected void buildRootWithAir(WorldGenLevel world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, BoundingBox mutableBoundingBox, BlockStateProvider airRoot, BlockStateProvider dirtRoot) {
+    protected void buildRootExposed(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, double offset, int iteration, int length, BlockStateProvider airRoot, BlockStateProvider dirtRoot) {
         BlockPos dest = FeatureUtil.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
         BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
         boolean stillAboveGround = true;
         for (BlockPos coord : lineArray) {
-            if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {
-                setBlock(world, coord, airRoot.getState(random, coord), decorations, mutableBoundingBox);
+            if (stillAboveGround && FeatureUtil.hasEmptyNeighbor(worldReader, pos)) {
+                worldPlacer.accept(coord, airRoot.getState(random, coord));
             } else {
                 stillAboveGround = false;
-                if (TFTreeGenerator.canRootGrowIn(world, coord)) {
-                    setBlock(world, coord, dirtRoot.getState(random, coord), decorations, mutableBoundingBox);
+                if (FeatureUtil.canRootGrowIn(worldReader, coord)) {
+                    worldPlacer.accept(coord, dirtRoot.getState(random, coord));
                 }
             }
         }
     }
 
     // Shortcircuited version of above function
-    protected void buildRoot(WorldGenLevel world, Random random, BlockPos pos, Set<BlockPos> decorations, double offset, int iteration, int length, BoundingBox mutableBoundingBox, BlockStateProvider dirtRoot) {
+    protected void buildRoot(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, double offset, int iteration, int length, BlockStateProvider dirtRoot) {
         BlockPos dest = FeatureUtil.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
         BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.below(), dest);
         for (BlockPos coord : lineArray) {
-            if (TFTreeGenerator.canRootGrowIn(world, coord)) {
-                setBlock(world, coord, dirtRoot.getState(random, coord), decorations, mutableBoundingBox);
+            if (FeatureUtil.canRootGrowIn(world, coord)) {
+                worldPlacer.accept(coord, dirtRoot.getState(random, coord));
             }
         }
     }

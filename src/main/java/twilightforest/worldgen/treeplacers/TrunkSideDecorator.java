@@ -3,8 +3,10 @@ package twilightforest.worldgen.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -16,6 +18,7 @@ import twilightforest.worldgen.TwilightFeatures;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class TrunkSideDecorator extends TreeDecorator {
     public static final Codec<TrunkSideDecorator> CODEC = RecordCodecBuilder.create(
@@ -42,17 +45,17 @@ public class TrunkSideDecorator extends TreeDecorator {
     }
 
     @Override
-    public void place(WorldGenLevel world, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks, Set<BlockPos> decorations, BoundingBox mutableBoundingBox) {
+    public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
         int blockCount = trunkBlocks.size();
 
-        for (int attempt = 0; attempt < count; attempt++) {
-            if (random.nextFloat() >= probability) continue;
+        for (int attempt = 0; attempt < this.count; attempt++) {
+            if (random.nextFloat() >= this.probability) continue;
 
             Rotation rot = Rotation.getRandom(random);
             BlockPos pos = trunkBlocks.get(random.nextInt(blockCount)).relative(rot.rotate(Direction.NORTH));
 
-            if (Feature.isAir(world, pos)) // Checks if block is air
-                setBlock(world, pos, decoration.getState(random, pos).rotate(rot), decorations, mutableBoundingBox);
+            if (Feature.isAir(worldReader, pos)) // Checks if block is air
+                worldPlacer.accept(pos, this.decoration.getState(random, pos));
         }
     }
 }
