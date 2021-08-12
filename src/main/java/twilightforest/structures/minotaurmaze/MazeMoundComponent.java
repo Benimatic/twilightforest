@@ -32,7 +32,7 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 	private MazeUpperEntranceComponent mazeAbove;
 
 	public MazeMoundComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMMound, feature, i);
+		super(MinotaurMazePieces.TFMMMound, feature, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
 		this.boundingBox = new BoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER);

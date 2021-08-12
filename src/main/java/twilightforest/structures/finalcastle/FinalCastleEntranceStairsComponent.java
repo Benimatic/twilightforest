@@ -29,7 +29,7 @@ public class FinalCastleEntranceStairsComponent extends TFStructureComponentOld 
 	}
 
 	public FinalCastleEntranceStairsComponent(TFFeature feature, int index, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCEnSt, feature, index);
+		super(FinalCastlePieces.TFFCEnSt, feature, index, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}

@@ -3,6 +3,7 @@ package twilightforest.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
@@ -108,11 +109,13 @@ public class TFClientSetup {
                 attachRenderLayers((LivingEntityRenderer<?, ?>) r);
             }
         });
-        Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().values().forEach(TFClientSetup::attachRenderLayers);
+        Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().values().forEach(renderer -> attachRenderLayers(renderer));
     }
 
-    private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
-        renderer.addLayer(new ShieldLayer<>(renderer));
-        renderer.addLayer(new IceLayer<>(renderer));
+    private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(EntityRenderer<T> renderer) {
+        if (renderer instanceof LivingEntityRenderer<?, ?> livingEntityRenderer) { // FIXME Porting bandaid
+            livingEntityRenderer.addLayer(new ShieldLayer(livingEntityRenderer));
+            livingEntityRenderer.addLayer(new IceLayer(livingEntityRenderer));
+        }
     }
 }

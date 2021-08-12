@@ -96,13 +96,13 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected int highestOpening;
 	protected boolean[] openingTowards = new boolean[]{false, false, true, false};
 
-	protected TowerWingComponent(StructurePieceType type, TFFeature feature, int i) {
-		super(type, feature, i);
+	protected TowerWingComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+		super(type, feature, i, x, y, z);
 		this.highestOpening = 0;
 	}
 
 	protected TowerWingComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(type, feature, i);
+		super(type, feature, i, x, y, z);
 
 		this.size = pSize;
 		this.height = pHeight;
@@ -272,7 +272,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (attached) {
 			beard = new TowerBeardAttachedComponent(getFeatureType(), index + 1, this);
 		} else {
-			beard = new TowerBeardComponent(LichTowerPieces.TFLTBea, getFeatureType(), index + 1, this);
+			beard = new TowerBeardComponent(LichTowerPieces.TFLTBea, getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		}
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);

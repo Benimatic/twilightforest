@@ -3,6 +3,7 @@ package twilightforest.client.renderer.tileentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -37,15 +38,15 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyTil
 			RenderSystem.disableBlend();
 			RenderSystem.defaultBlendFunc();
 		});
-		RenderStateShard.AlphaStateShard noAlphaTest = new RenderStateShard.AlphaStateShard(0);
+		//RenderStateShard.AlphaStateShard noAlphaTest = new RenderStateShard.AlphaStateShard(0);
 
 		// [VanillaCopy] RenderState constants
-		RenderStateShard.DiffuseLightingStateShard enableDiffuse = new RenderStateShard.DiffuseLightingStateShard(true);
+		//RenderStateShard.DiffuseLightingStateShard enableDiffuse = new RenderStateShard.DiffuseLightingStateShard(true);
 		RenderStateShard.CullStateShard disableCull = new RenderStateShard.CullStateShard(false);
 		RenderStateShard.LightmapStateShard enableLightmap = new RenderStateShard.LightmapStateShard(true);
 
-		RenderType.CompositeState rendertype$state = RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(textureLoc, false, false)).setTransparencyState(transparencyState).setDiffuseLightingState(enableDiffuse).setAlphaState(noAlphaTest).setCullState(disableCull).setLightmapState(enableLightmap).createCompositeState(false);
-		GLOW_LAYER = RenderType.create(TwilightForestMod.ID + ":firefly_glow", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 256, true, true, rendertype$state);
+		RenderType.CompositeState rendertype$state = RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(textureLoc, false, false)).setTransparencyState(transparencyState)/*FIXME .setDiffuseLightingState(enableDiffuse).setAlphaState(noAlphaTest)*/.setCullState(disableCull).setLightmapState(enableLightmap).createCompositeState(false);
+		GLOW_LAYER = RenderType.create(TwilightForestMod.ID + ":firefly_glow", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, true, true, rendertype$state);
 	}
 
 	public FireflyTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {

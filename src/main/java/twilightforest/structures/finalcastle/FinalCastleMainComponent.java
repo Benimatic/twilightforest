@@ -13,6 +13,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -31,7 +32,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	}
 
 	public FinalCastleMainComponent(TFFeature feature, Random rand, int i, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCMain, feature, i);
+		super(FinalCastlePieces.TFFCMain, feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
@@ -57,17 +58,17 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		// add foundation
-		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(getFeatureType(), rand, 4, this);
+		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = new FinalCastleRoof48CrenellatedComponent(getFeatureType(), 4, this);
+		TFStructureComponentOld roof = new FinalCastleRoof48CrenellatedComponent(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
 		// boss gazebo on roof
-		TFStructureComponentOld gazebo = new FinalCastleBossGazeboComponent(getFeatureType(), rand, 5, this);
+		TFStructureComponentOld gazebo = new FinalCastleBossGazeboComponent(getFeatureType(), rand, 5, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(gazebo);
 		gazebo.addChildren(this, list, rand);
 
@@ -130,58 +131,62 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	 * Build a side tower, then tell it to start building towards the destination
 	 */
 	private void buildTowerMaze(StructurePieceAccessor list, Random rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
-		boolean complete = false;
-		int iterations = 0;
-		while (!complete && iterations < 15) {
-			iterations++;
-			// duplicate list
-			List<StructurePiece> before = new LinkedList<>(list);
+		if (list instanceof StructureStart<?> start) {
+			boolean complete = false;
+			int iterations = 0;
+			while (!complete && iterations < 15) {
+				iterations++;
+				// duplicate list
+				List<StructurePiece> before = new LinkedList<>(start.getPieces());
 
-			// build
-			BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-			FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(FinalCastlePieces.TFFCSiTo, getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+				// build
+				BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(FinalCastlePieces.TFFCSiTo, getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
-			// add bridge
-			BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
-			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+				// add bridge
+				BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
+				FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 
-			list.addPiece(bridge);
-			bridge.addChildren(this, list, rand);
+				list.addPiece(bridge);
+				bridge.addChildren(this, list, rand);
 
-			// don't check if the bounding box is clear, there's either nothing there or we've made a terrible mistake
-			list.addPiece(sTower);
-			sTower.buildTowards(this, list, rand, dest);
+				// don't check if the bounding box is clear, there's either nothing there or we've made a terrible mistake
+				list.addPiece(sTower);
+				sTower.buildTowards(this, list, rand, dest);
 
-			// check if we've successfully built the end tower
-			//TwilightForestMod.LOGGER.debug("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
-			if (this.isMazeComplete(list, type)) {
-				//TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
-				complete = true;
-			} else {
-				// TODO: add limit on retrying, in case of infinite loop?
-				TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
-				list.clear();
-				list.addAll(before);
-				//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, color, dest);
+				// check if we've successfully built the end tower
+				//TwilightForestMod.LOGGER.debug("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
+				if (this.isMazeComplete(list, type)) {
+					//TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
+					complete = true;
+				} else {
+					// TODO: add limit on retrying, in case of infinite loop?
+					TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
+					start.getPieces().clear();
+					start.getPieces().addAll(before);
+					//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, color, dest);
+				}
 			}
 		}
 	}
 
 	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
-		if (list.size() > 60) {
-			TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
-		}
-		for (StructurePiece structurecomponent : list) {
-			BoundingBox boundingBox = structurecomponent.getBoundingBox();
-			int x = (boundingBox.maxX() - boundingBox.minX() / 2) + boundingBox.minX();
-			int y = (boundingBox.maxY() - boundingBox.minY() / 2) + boundingBox.minY();
-			int z = (boundingBox.maxZ() - boundingBox.minZ() / 2) + boundingBox.minZ();
-			//TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
-			if (type == TFBlocks.castle_rune_brick_pink.get().defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
-				return true;
+		if (list instanceof StructureStart<?> start) {
+			if (start.getPieces().size() > 60) {
+				TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
 			}
-			if (type == TFBlocks.castle_rune_brick_blue.get().defaultBlockState() && structurecomponent instanceof FinalCastleBellTower21Component) {
-				return true;
+			for (StructurePiece structurecomponent : start.getPieces()) {
+				BoundingBox boundingBox = structurecomponent.getBoundingBox();
+				int x = (boundingBox.maxX() - boundingBox.minX() / 2) + boundingBox.minX();
+				int y = (boundingBox.maxY() - boundingBox.minY() / 2) + boundingBox.minY();
+				int z = (boundingBox.maxZ() - boundingBox.minZ() / 2) + boundingBox.minZ();
+				//TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
+				if (type == TFBlocks.castle_rune_brick_pink.get().defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
+					return true;
+				}
+				if (type == TFBlocks.castle_rune_brick_blue.get().defaultBlockState() && structurecomponent instanceof FinalCastleBellTower21Component) {
+					return true;
+				}
 			}
 		}
 		return false;

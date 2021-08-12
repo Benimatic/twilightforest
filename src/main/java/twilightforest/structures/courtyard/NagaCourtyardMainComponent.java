@@ -30,7 +30,7 @@ public class NagaCourtyardMainComponent extends StructureMazeGenerator {
 	}
 
 	public NagaCourtyardMainComponent(TFFeature feature, Random rand, int i, int x, int y, int z) {
-		super(NagaCourtyardPieces.TFNCMn, feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS);
+		super(NagaCourtyardPieces.TFNCMn, feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z);
 
 		this.setOrientation(Direction.NORTH);
 

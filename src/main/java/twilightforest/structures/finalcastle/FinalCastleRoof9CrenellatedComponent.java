@@ -25,8 +25,8 @@ public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOl
 		super(FinalCastlePieces.TFFCRo9Cr, nbt);
 	}
 
-	public FinalCastleRoof9CrenellatedComponent(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
-		super(FinalCastlePieces.TFFCRo9Cr, feature, i);
+	public FinalCastleRoof9CrenellatedComponent(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(FinalCastlePieces.TFFCRo9Cr, feature, i, x, y, z);
 
 		int height = 5;
 

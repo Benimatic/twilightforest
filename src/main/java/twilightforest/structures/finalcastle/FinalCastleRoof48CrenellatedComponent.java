@@ -27,8 +27,8 @@ public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentO
 		super(FinalCastlePieces.TFFCRo48Cr, nbt);
 	}
 
-	public FinalCastleRoof48CrenellatedComponent(TFFeature feature, int i, TFStructureComponentOld keep) {
-		super(FinalCastlePieces.TFFCRo48Cr,feature, i);
+	public FinalCastleRoof48CrenellatedComponent(TFFeature feature, int i, TFStructureComponentOld keep, int x, int y, int z) {
+		super(FinalCastlePieces.TFFCRo48Cr,feature, i, x, y, z);
 
 		int height = 5;
 

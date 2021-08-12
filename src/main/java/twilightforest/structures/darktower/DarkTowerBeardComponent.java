@@ -28,8 +28,8 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("beardHeight");
 	}
 
-	public DarkTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(DarkTowerPieces.TFDTBea, feature, i);
+	public DarkTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(DarkTowerPieces.TFDTBea, feature, i, x, y, z);
 
 		this.setOrientation(wing.getOrientation());
 		this.size = wing.size;

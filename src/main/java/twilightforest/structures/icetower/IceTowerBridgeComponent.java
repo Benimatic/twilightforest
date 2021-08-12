@@ -28,7 +28,7 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 	}
 
 	public IceTowerBridgeComponent(TFFeature feature, int index, int x, int y, int z, int length, Direction direction) {
-		super(IceTowerPieces.TFITBri, feature, index);
+		super(IceTowerPieces.TFITBri, feature, index, x, y, z);
 		this.length = length;
 		this.setOrientation(direction);
 

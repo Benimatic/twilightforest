@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
@@ -133,7 +134,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (isOutOfRange(list.get(0), dx[0], dx[2], RANGE)) {
+		if (list instanceof StructureStart<?> start && isOutOfRange(start.getPieces().get(0), dx[0], dx[2], RANGE)) {
 			return false;
 		}
 
@@ -142,7 +143,9 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.addPiece(wing);
-			wing.addChildren(list.get(0), list, rand);
+			if (list instanceof StructureStart<?> start) {
+				wing.addChildren(start.getPieces().get(0), list, rand);
+			}
 			addOpening(x, y, z, rotation);
 			return true;
 		} else {
@@ -163,7 +166,9 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.addPiece(wing);
-			wing.addChildren(list.get(0), list, rand);
+			if (list instanceof StructureStart<?> start) {
+				wing.addChildren(start.getPieces().get(0), list, rand);
+			}
 			addOpening(x, y, z, rotation);
 			return true;
 		} else {

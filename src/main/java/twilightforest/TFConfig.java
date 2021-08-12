@@ -474,13 +474,13 @@ public class TFConfig {
 
 	private static final String config = TwilightForestMod.ID + ".config.";
 
-	@SubscribeEvent
+	/*@SubscribeEvent //FIXME Replace
 	public static void onConfigChanged(ModConfig.Reloading event) {
 		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
 //			TFDimensions.checkOriginDimension();
 			build();
 		}
-	}
+	}*/
 
 	public static void build() {
 		//buildPortalIngredient();

@@ -27,8 +27,8 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("beardHeight");
 	}
 
-	public IceTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(IceTowerPieces.TFITBea, feature, i);
+	public IceTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(IceTowerPieces.TFITBea, feature, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

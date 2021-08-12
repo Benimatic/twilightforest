@@ -39,7 +39,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	public HollowHillComponent(StructurePieceType piece, TFFeature feature, int i, int size, int x, int y, int z) {
-		super(piece, feature, i);
+		super(piece, feature, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 

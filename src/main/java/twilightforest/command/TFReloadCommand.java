@@ -19,9 +19,9 @@ public class TFReloadCommand {
     }
 
     private static int reload(CommandContext<CommandSourceStack> ctx) {
-        ctx.getSource().sendSuccess(new TranslatableComponent("commands.tfreload.reload"), true);
-        ShaderManager.getShaderReloadListener().onResourceManagerReload(Minecraft.getInstance().getResourceManager());
-        if (ModList.get().isLoaded("immersiveengineering"))
+        //ctx.getSource().sendSuccess(new TranslatableComponent("commands.tfreload.reload"), true);
+        //ShaderManager.getShaderReloadListener().onResourceManagerReload(Minecraft.getInstance().getResourceManager());
+        //if (ModList.get().isLoaded("immersiveengineering"))
             //IEShaderRegister.initShaders();
         return Command.SINGLE_SUCCESS;
     }

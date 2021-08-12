@@ -23,7 +23,7 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 	}
 
 	public CloudTreeComponent(TFFeature feature, int index, int x, int y, int z) {
-		super(TrollCavePieces.TFClTr, feature, index);
+		super(TrollCavePieces.TFClTr, feature, index, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 

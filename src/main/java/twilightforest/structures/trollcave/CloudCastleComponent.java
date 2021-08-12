@@ -35,7 +35,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	}
 
 	public CloudCastleComponent(TFFeature feature, int index, int x, int y, int z) {
-		super(TrollCavePieces.TFClCa, feature, index);
+		super(TrollCavePieces.TFClCa, feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// round to nearest mult of 4

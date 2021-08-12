@@ -30,7 +30,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	}
 
 	public MazeRuinsComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRuins, feature, i);
+		super(MinotaurMazePieces.TFMMRuins, feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// I have no bounding box

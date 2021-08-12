@@ -29,7 +29,7 @@ public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 	}
 
 	public FinalCastleBridgeComponent(TFFeature feature, int i, int x, int y, int z, int length, Direction direction) {
-		super(FinalCastlePieces.TFFCBri, feature, i);
+		super(FinalCastlePieces.TFFCBri, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -3, length - 1, 5, 6, direction);
 	}

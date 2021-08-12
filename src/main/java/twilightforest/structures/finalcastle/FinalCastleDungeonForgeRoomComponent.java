@@ -22,7 +22,7 @@ public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOl
 	}
 
 	public FinalCastleDungeonForgeRoomComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCDunBoR, feature, i);
+		super(FinalCastlePieces.TFFCDunBoR, feature, i, x, y, z);
 		this.spawnListIndex = 3; // forge monsters
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, -15, 0, -15, 50, 30, 50, direction);

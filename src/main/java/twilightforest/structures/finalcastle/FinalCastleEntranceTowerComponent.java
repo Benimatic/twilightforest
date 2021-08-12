@@ -89,10 +89,11 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 
 		BoundingBox largerBB = new BoundingBox(eTower.getBoundingBox().getCenter());
 
-		largerBB.minX() -= 6;
-		largerBB.minZ() -= 6;
-		largerBB.maxX() += 6;
-		largerBB.maxZ() += 6;
+		// FIXME
+		//largerBB.minX() -= 6;
+		//largerBB.minZ() -= 6;
+		//largerBB.maxX() += 6;
+		//largerBB.maxZ() += 6;
 
 		StructurePiece intersect = list.findCollisionPiece(largerBB);
 

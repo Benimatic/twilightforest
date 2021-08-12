@@ -53,7 +53,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	}
 
 	public MinotaurMazeComponent(TFFeature feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
-		super(MinotaurMazePieces.TFMMaze, feature, index);
+		super(MinotaurMazePieces.TFMMaze, feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.level = level;
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, Direction.SOUTH);

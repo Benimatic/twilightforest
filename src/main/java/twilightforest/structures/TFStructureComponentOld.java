@@ -43,8 +43,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		super(piece, nbt);
 	}
 
-	public TFStructureComponentOld(StructurePieceType type, TFFeature feature, int i) {
-		super(type, i);
+	public TFStructureComponentOld(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+		super(type, i, new BoundingBox(x, y, z, x, y, z));
 		this.feature = feature;
 	}
 

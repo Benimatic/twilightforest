@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -254,51 +255,54 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		//TwilightForestMod.LOGGER.debug("Our coord mode is {}, and direction is {}, so our door is going to be at {} and the new tower will appear at {}", this.getCoordBaseMode(), facing, opening, tc);
 
 		// find start
-		StructurePiece start = list.get(0);
+		if (list instanceof StructureStart<?> start2) {
+			StructurePiece start = start2.getPieces().get(0);
 
-		int centerX = ((start.getBoundingBox().minX() + 128) >> 8) << 8;
-		int centerZ = ((start.getBoundingBox().minZ() + 128) >> 8) << 8;
+			int centerX = ((start.getBoundingBox().minX() + 128) >> 8) << 8;
+			int centerZ = ((start.getBoundingBox().minZ() + 128) >> 8) << 8;
 
-		//TwilightForestMod.LOGGER.debug("Testing range, uncorrected center is at {}, {}", centerX, centerZ);
+			//TwilightForestMod.LOGGER.debug("Testing range, uncorrected center is at {}, {}", centerX, centerZ);
 
-		if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
+			if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
-			FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(FinalCastlePieces.TFFCSiTo, getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(FinalCastlePieces.TFFCSiTo, getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
-			BoundingBox largerBB = new BoundingBox(sTower.getBoundingBox().getCenter());
+				BoundingBox largerBB = new BoundingBox(sTower.getBoundingBox().getCenter());
 
-			largerBB.minX() -= 6;
-			largerBB.minZ() -= 6;
-			largerBB.maxX() += 6;
-			largerBB.maxZ() += 6;
-			largerBB.minY() = 0;
-			largerBB.maxY() = 255;
+				//largerBB.minX() -= 6;
+				//largerBB.minZ() -= 6;
+				//largerBB.maxX() += 6;
+				//largerBB.maxZ() += 6;
+				//largerBB.minY() = 0;
+				//largerBB.maxY() = 255;
 
-			StructurePiece intersect = list.findCollisionPiece(largerBB);
+				StructurePiece intersect = list.findCollisionPiece(largerBB);
 
-			if (intersect == null) {
-				//TwilightForestMod.LOGGER.debug("tower success!");
-				list.addPiece(sTower);
-				sTower.buildTowards(this, list, rand, dest);
+				if (intersect == null) {
+					//TwilightForestMod.LOGGER.debug("tower success!");
+					list.addPiece(sTower);
+					sTower.buildTowards(this, list, rand, dest);
 
-				// add bridge
-				BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
-				FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
-				list.addPiece(bridge);
-				bridge.addChildren(this, list, rand);
+					// add bridge
+					BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
+					FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
+					list.addPiece(bridge);
+					bridge.addChildren(this, list, rand);
 
-				// opening
-				addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
+					// opening
+					addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
-				return true;
+					return true;
+				} else {
+					TwilightForestMod.LOGGER.info("tower blocked by {}", intersect);
+					return false;
+				}
 			} else {
-				TwilightForestMod.LOGGER.info("tower blocked by {}", intersect);
+				TwilightForestMod.LOGGER.info("tower out of range");
 				return false;
 			}
-		} else {
-			TwilightForestMod.LOGGER.info("tower out of range");
-			return false;
 		}
+		 return false;
 	}
 
 	protected boolean buildDamagedTower(StructurePieceAccessor list, Random rand, Direction facing) {
@@ -313,10 +317,10 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 		BoundingBox largerBB = new BoundingBox(eTower.getBoundingBox().getCenter());
 
-		largerBB.minX() -= 6;
-		largerBB.minZ() -= 6;
-		largerBB.maxX() += 6;
-		largerBB.maxZ() += 6;
+		//largerBB.minX() -= 6;
+		//largerBB.minZ() -= 6;
+		//largerBB.maxX() += 6;
+		//largerBB.maxZ() += 6;
 
 		StructurePiece intersect = list.findCollisionPiece(largerBB);
 
@@ -383,10 +387,10 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 		BoundingBox largerBB = new BoundingBox(eTower.getBoundingBox().getCenter());
 
-		largerBB.minX() -= 6;
-		largerBB.minZ() -= 6;
-		largerBB.maxX() += 6;
-		largerBB.maxZ() += 6;
+		//largerBB.minX() -= 6;
+		//largerBB.minZ() -= 6;
+		//largerBB.maxX() += 6;
+		//largerBB.maxZ() += 6;
 
 		StructurePiece intersect = list.findCollisionPiece(largerBB);
 

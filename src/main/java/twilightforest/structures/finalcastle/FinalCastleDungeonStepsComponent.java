@@ -28,7 +28,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	}
 
 	public FinalCastleDungeonStepsComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
-		super(FinalCastlePieces.TFFCDunSt, feature, i);
+		super(FinalCastlePieces.TFFCDunSt, feature, i, x, y, z);
 		this.spawnListIndex = 2; // dungeon monsters
 
 		this.setOrientation(rotation);

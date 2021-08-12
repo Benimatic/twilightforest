@@ -32,7 +32,7 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 	}
 
 	public MazeRoomComponent(StructurePieceType type, TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(type, feature, i);
+		super(type, feature, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
 		this.boundingBox = new BoundingBox(x, y, z, x + 15, y + 4, z + 15);

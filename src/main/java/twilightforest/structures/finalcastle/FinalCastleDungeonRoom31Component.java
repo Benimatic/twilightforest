@@ -3,6 +3,7 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -103,16 +104,18 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		BoundingBox largerBB = new BoundingBox(dRoom.getBoundingBox().getCenter());
 
 		int expand = 0;
-		largerBB.minX() -= expand;
-		largerBB.minZ() -= expand;
-		largerBB.maxX() += expand;
-		largerBB.maxZ() += expand;
+		//largerBB.minX() -= expand; FIXME
+		//largerBB.minZ() -= expand;
+		//largerBB.maxX() += expand;
+		//largerBB.maxZ() += expand;
 
-		StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(list, largerBB, this);
-		if (intersect == null) {
-			list.addPiece(dRoom);
-			dRoom.addChildren(parent, list, rand);
-			return true;
+		if (list instanceof StructureStart<?> start) {
+			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.getPieces(), largerBB, this);
+			if (intersect == null) {
+				list.addPiece(dRoom);
+				dRoom.addChildren(parent, list, rand);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -125,11 +128,13 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		rotation = rotation.getRotated(this.rotation);
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 		FinalCastleDungeonExitComponent dRoom = new FinalCastleDungeonExitComponent(getFeatureType(), rand, this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
-		StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(list, dRoom.getBoundingBox(), this);
-		if (intersect == null) {
-			list.addPiece(dRoom);
-			dRoom.addChildren(this, list, rand);
-			return true;
+		if (list instanceof StructureStart<?> start) {
+			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.getPieces(), dRoom.getBoundingBox(), this);
+			if (intersect == null) {
+				list.addPiece(dRoom);
+				dRoom.addChildren(this, list, rand);
+				return true;
+			}
 		}
 		return false;
 	}

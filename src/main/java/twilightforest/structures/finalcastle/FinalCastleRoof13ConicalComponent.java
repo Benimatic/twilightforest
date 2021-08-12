@@ -31,8 +31,8 @@ public class FinalCastleRoof13ConicalComponent extends TFStructureComponentOld {
 		this.slope = nbt.getInt("slope");
 	}
 
-	public FinalCastleRoof13ConicalComponent(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
-		super(FinalCastlePieces.TFFCRo13Con, feature, i);
+	public FinalCastleRoof13ConicalComponent(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(FinalCastlePieces.TFFCRo13Con, feature, i, x, y, z);
 
 		this.slope = 2 + rand.nextInt(3) + rand.nextInt(3);
 

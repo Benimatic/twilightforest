@@ -41,8 +41,8 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 		}
     }
 
-    StructureMazeGenerator(StructurePieceType type, TFFeature feature, Random rand, int i, int widthInCellCount, int heightInCellCount) {
-        super(type, feature, i);
+    StructureMazeGenerator(StructurePieceType type, TFFeature feature, Random rand, int i, int widthInCellCount, int heightInCellCount, int x, int y, int z) {
+        super(type, feature, i, x, y, z);
         this.widthInCellCount = widthInCellCount;
         this.heightInCellCount = heightInCellCount;
         this.maze = new int[widthInCellCount-1][heightInCellCount-1];

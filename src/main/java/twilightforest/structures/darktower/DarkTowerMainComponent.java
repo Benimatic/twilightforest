@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -63,7 +63,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			TwilightForestMod.LOGGER.info("Lowering Dark Tower max height by {} to be within world bounds", amtToLower);
 
 			this.height -= amtToLower;
-			this.boundingBox.maxY() -= amtToLower;
+			//this.boundingBox.maxY() -= amtToLower; FIXME
 		}
 
 		// decorator
@@ -157,12 +157,11 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// count how many size 9 towers we have hanging off us
 			ArrayList<DarkTowerWingComponent> possibleKeyTowers = new ArrayList<DarkTowerWingComponent>();
 
-			for (Object piece : list) {
-				if (piece instanceof DarkTowerWingComponent) {
-					DarkTowerWingComponent wing = (DarkTowerWingComponent) piece;
-
-					if (wing.size == 9 && wing.getGenDepth() == this.getGenDepth())
+			if (list instanceof StructureStart<?> start) {
+				for (StructurePiece piece : start.getPieces()) {
+					if (piece instanceof DarkTowerWingComponent wing && wing.size == 9 && wing.getGenDepth() == this.getGenDepth()) {
 						possibleKeyTowers.add(wing);
+					}
 				}
 			}
 

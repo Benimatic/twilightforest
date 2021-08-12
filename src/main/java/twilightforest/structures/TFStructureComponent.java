@@ -78,13 +78,14 @@ public abstract class TFStructureComponent extends StructurePiece {
 		this.rotation = Rotation.values()[nbt.getInt("rot") % Rotation.values().length];
 	}
 
-	public TFStructureComponent(StructurePieceType type, int i) {
-		super(type, i);
+	public TFStructureComponent(StructurePieceType type, int i, BoundingBox boundingBox) {
+		super(type, i, boundingBox);
 		this.rotation = Rotation.NONE;
 	}
 
-	public TFStructureComponent(StructurePieceType type, TFFeature feature, int i) {
-		this(type, i);
+	@Deprecated // FIXME Boundingbox
+	public TFStructureComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+		this(type, i, new BoundingBox(x, y, z, x, y, z));
 		this.feature = feature;
 	}
 

@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -161,25 +162,25 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	 * Adjust the coordinates for this tower to link up with any others within 3
 	 */
 	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, Direction direction, StructurePieceAccessor list) {
-
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
+		if (list instanceof StructureStart<?> start) {
+			for (StructurePiece obj : start.getPieces()) {
+				if (obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
+					TowerWingComponent otherWing = (TowerWingComponent) obj;
 
-		for (Object obj : list) {
-			if (obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
-				TowerWingComponent otherWing = (TowerWingComponent) obj;
-
-				if (wingSize == otherWing.size && otherWing.getBoundingBox().intersects(x - 3, z - 3, x + 3, z + 3)) {
-					switch (direction) {
-						case SOUTH:
-							return new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().minZ()};
-						case WEST:
-							return new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().minZ()};
-						case NORTH:
-							return new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().maxZ()};
-						case EAST:
-							return new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().maxZ()};
-						default:
-							return new int[]{x, y, z};
+					if (wingSize == otherWing.size && otherWing.getBoundingBox().intersects(x - 3, z - 3, x + 3, z + 3)) {
+						switch (direction) {
+							case SOUTH:
+								return new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().minZ()};
+							case WEST:
+								return new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().minZ()};
+							case NORTH:
+								return new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().maxZ()};
+							case EAST:
+								return new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().maxZ()};
+							default:
+								return new int[]{x, y, z};
+						}
 					}
 				}
 			}
@@ -196,14 +197,16 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 		BoundingBox boxAbove = new BoundingBox(boundingBox.getCenter());
 
-		boxAbove.maxY() = 256;
+		//boxAbove.maxY() = 256;
 
-		for (Object obj : list) {
-			if (this != obj && obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
-				TowerWingComponent otherWing = (TowerWingComponent) obj;
+		if (list instanceof StructureStart<?> start) {
+			for (StructurePiece obj : start.getPieces()) {
+				if (this != obj && obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
+					TowerWingComponent otherWing = (TowerWingComponent) obj;
 
-				if (size == otherWing.size && otherWing.getBoundingBox().intersects(boxAbove)) {
-					return false;
+					if (size == otherWing.size && otherWing.getBoundingBox().intersects(boxAbove)) {
+						return false;
+					}
 				}
 			}
 		}

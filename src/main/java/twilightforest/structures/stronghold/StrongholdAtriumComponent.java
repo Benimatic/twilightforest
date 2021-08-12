@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.data.worldgen.Features;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.worldgen.ConfiguredFeatures;
@@ -64,7 +65,7 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
 		super.addChildren(parent, list, random);
 
 		if (this.enterBottom) {

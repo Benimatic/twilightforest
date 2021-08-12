@@ -30,7 +30,7 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 	private int averageGroundLevel = -1;
 
 	public MazeEntranceShaftComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMES, feature, i);
+		super(MinotaurMazePieces.TFMMES, feature, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
 		this.boundingBox = new BoundingBox(x, y, z, x + 6 - 1, y + 14, z + 6 - 1);
@@ -53,8 +53,8 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 				return true;
 			}
 
-			this.boundingBox.maxY() = this.averageGroundLevel;
-			this.boundingBox.minY() = TFGenerationSettings.SEALEVEL - 10;
+			//this.boundingBox.maxY() = this.averageGroundLevel;
+			//this.boundingBox.minY() = TFGenerationSettings.SEALEVEL - 10;
 		}
 
 		this.generateBox(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSpan(), 5, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, true);

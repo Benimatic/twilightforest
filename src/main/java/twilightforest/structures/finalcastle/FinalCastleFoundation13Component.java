@@ -35,8 +35,8 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
-	public FinalCastleFoundation13Component(StructurePieceType type, TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
-		super(type, feature, i);
+	public FinalCastleFoundation13Component(StructurePieceType type, TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(type, feature, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().minY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().minX() + 2, sideTower.getBoundingBox().minY(), sideTower.getBoundingBox().maxZ() + 2);

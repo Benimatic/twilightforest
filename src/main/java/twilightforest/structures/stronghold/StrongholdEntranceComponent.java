@@ -11,6 +11,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -39,70 +41,74 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
-		super.addChildren(parent, list, random);
+	public void addChildren(StructurePiece parent, StructurePieceAccessor old, Random random) {
+		super.addChildren(parent, old, random);
 
-		// make a random component in each direction
-		lowerPieces.prepareStructurePieces();
-		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 18);
-		lowerPieces.prepareStructurePieces();
-		if (listContainsBossRoom(list)) {
-			lowerPieces.markBossRoomUsed();
-		}
-		addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 1, 13);
-		lowerPieces.prepareStructurePieces();
-		if (listContainsBossRoom(list)) {
-			lowerPieces.markBossRoomUsed();
-		}
-		addNewComponent(parent, list, random, Rotation.CLOCKWISE_180, 13, 1, -1);
-		lowerPieces.prepareStructurePieces();
-		if (listContainsBossRoom(list)) {
-			lowerPieces.markBossRoomUsed();
-		}
-		addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
-		if (!listContainsBossRoom(list)) {
-			TwilightForestMod.LOGGER.warn("Did not find boss room from exit 3 - EPIC FAIL");
-		}
-		BoundingBox shieldBox = new BoundingBox(this.boundingBox);
+		if (old instanceof StructureStart<?> start) {
+			List<StructurePiece> list = start.getPieces();
 
-		int tStairs = 0;
-		int tCorridors = 0;
-		int deadEnd = 0;
-		int tRooms = 0;
-		int bossRooms = 0;
+			// make a random component in each direction
+			lowerPieces.prepareStructurePieces();
+			addNewComponent(parent, old, random, Rotation.NONE, 4, 1, 18);
+			lowerPieces.prepareStructurePieces();
+			if (listContainsBossRoom(list)) {
+				lowerPieces.markBossRoomUsed();
+			}
+			addNewComponent(parent, old, random, Rotation.CLOCKWISE_90, -1, 1, 13);
+			lowerPieces.prepareStructurePieces();
+			if (listContainsBossRoom(list)) {
+				lowerPieces.markBossRoomUsed();
+			}
+			addNewComponent(parent, old, random, Rotation.CLOCKWISE_180, 13, 1, -1);
+			lowerPieces.prepareStructurePieces();
+			if (listContainsBossRoom(list)) {
+				lowerPieces.markBossRoomUsed();
+			}
+			addNewComponent(parent, old, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
+			if (!listContainsBossRoom(list)) {
+				TwilightForestMod.LOGGER.warn("Did not find boss room from exit 3 - EPIC FAIL");
+			}
+			BoundingBox shieldBox = new BoundingBox(this.boundingBox.getCenter()); // FIXME
 
-		// compute and generate MEGASHIELD
-		for (StructurePiece component : list) {
-			shieldBox.expand(component.getBoundingBox());
+			int tStairs = 0;
+			int tCorridors = 0;
+			int deadEnd = 0;
+			int tRooms = 0;
+			int bossRooms = 0;
+
+			// compute and generate MEGASHIELD
+			for (StructurePiece component : list) {
+				shieldBox.encapsulate(component.getBoundingBox());
 
 
-			if (component instanceof StrongholdSmallStairsComponent && ((StrongholdSmallStairsComponent) component).hasTreasure) {
-				tStairs++;
+				if (component instanceof StrongholdSmallStairsComponent && ((StrongholdSmallStairsComponent) component).hasTreasure) {
+					tStairs++;
+				}
+				if (component instanceof StrongholdTreasureCorridorComponent) {
+					tCorridors++;
+				}
+				if (component instanceof StrongholdDeadEndComponent) {
+					deadEnd++;
+				}
+				if (component instanceof StrongholdTreasureRoomComponent) {
+					tRooms++;
+				}
+				if (component instanceof StrongholdBossRoomComponent) {
+					bossRooms++;
+				}
 			}
-			if (component instanceof StrongholdTreasureCorridorComponent) {
-				tCorridors++;
-			}
-			if (component instanceof StrongholdDeadEndComponent) {
-				deadEnd++;
-			}
-			if (component instanceof StrongholdTreasureRoomComponent) {
-				tRooms++;
-			}
-			if (component instanceof StrongholdBossRoomComponent) {
-				bossRooms++;
-			}
-		}
 
 //		System.out.printf("MEGASHIELD computed!  %d, %d, %d to %d, %d, %d.\n", shieldBox.minX, shieldBox.minY, shieldBox.minZ, shieldBox.maxX, shieldBox.maxY, shieldBox.maxZ);
 //		System.out.printf("Stronghold at this point contains %d elements.\n", pieceList.size());
-//		
+//
 //		StructureTFStrongholdShield shield = new StructureTFStrongholdShield(shieldBox.minX - 1, shieldBox.minY, shieldBox.minZ - 1, shieldBox.maxX, shieldBox.maxY, shieldBox.maxZ);
 //		list.add(shield);
 
-		// add the upper stronghold
-		StructureTFStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(getFeatureType(), 2, this.getOrientation(), boundingBox.x0 + 8, boundingBox.y0 + 7, boundingBox.z0 + 4);
-		list.add(accessChamber);
-		accessChamber.addChildren(this, list, random);
+			// add the upper stronghold
+			StructureTFStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(getFeatureType(), 2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
+			list.add(accessChamber);
+			accessChamber.addChildren(this, old, random);
+		}
 	}
 
 	private boolean listContainsBossRoom(List<StructurePiece> list) {

@@ -1,12 +1,10 @@
 package twilightforest.structures.trollcave;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -17,12 +15,9 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
@@ -30,7 +25,6 @@ import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
-import twilightforest.worldgen.BlockConstants;
 
 import java.util.Random;
 import java.util.function.Predicate;
@@ -40,7 +34,8 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	protected int size;
 	protected int height;
 
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(5, 6), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(60, 10)));
+	// FIXME Can we just pluck it from the data pack?
+	//public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(5, 6), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).decorated(FeatureDecorator.DEPTH_AVERAGE.configured(new DepthAverageConfigation(60, 10)));
 
 	public TrollCaveMainComponent(ServerLevel level, CompoundTag nbt) {
 		this(TrollCavePieces.TFTCMai, nbt);
@@ -52,12 +47,8 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("height");
 	}
 
-	public TrollCaveMainComponent(StructurePieceType type, TFFeature feature, int index) {
-		super(type, feature, index);
-	}
-
 	public TrollCaveMainComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
-		this(type, feature, i);
+		super(type, feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// adjust y
@@ -133,7 +124,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		// uberous!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateAtSurface(world, generator, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
+			//generateAtSurface(world, generator, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
 		}
 
 		return true;

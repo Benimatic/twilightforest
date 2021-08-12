@@ -205,7 +205,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 */
 	@Override
 	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
-		DarkTowerBeardComponent beard = new DarkTowerBeardComponent(getFeatureType(), this.getGenDepth() + 1, this);
+		DarkTowerBeardComponent beard = new DarkTowerBeardComponent(getFeatureType(), this.getGenDepth() + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
 	}

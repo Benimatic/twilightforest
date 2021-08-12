@@ -13,6 +13,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
@@ -53,7 +54,7 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
 		super.addChildren(parent, list, random);
 
 		switch (this.entranceLevel) {

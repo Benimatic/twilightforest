@@ -33,7 +33,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	}
 
 	public HedgeMazeComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(TFFeature.TFHedge, feature, i);
+		super(TFFeature.TFHedge, feature, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 

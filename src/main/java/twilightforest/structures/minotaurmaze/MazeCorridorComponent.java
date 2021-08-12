@@ -28,7 +28,7 @@ public class MazeCorridorComponent extends TFStructureComponentOld {
 	}
 
 	public MazeCorridorComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(type, feature, i);
+		super(type, feature, i, x, y, z);
 		this.setOrientation(rotation);
 		this.boundingBox = new BoundingBox(x, y, z, x + 5, y + 5, z + 5);
 	}

@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -33,7 +34,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	public StructureTFStrongholdComponent(StructurePieceType type, TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(type, feature, i);
+		super(type, feature, i, x, y, z);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setOrientation(facing);
 	}
@@ -137,9 +138,11 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 */
 	protected StructurePiece findBreakInComponent(StructurePieceAccessor list, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
-		for (StructurePiece component : list) {
-			if (component.getBoundingBox() != null && component.getBoundingBox().isInside(pos)) {
-				return component;
+		if (list instanceof StructureStart<?> start) {
+			for (StructurePiece component : start.getPieces()) {
+				if (component.getBoundingBox() != null && component.getBoundingBox().isInside(pos)) {
+					return component;
+				}
 			}
 		}
 

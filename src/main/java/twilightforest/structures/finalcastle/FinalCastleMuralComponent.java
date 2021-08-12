@@ -30,7 +30,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	}
 
 	public FinalCastleMuralComponent(TFFeature feature, int i, int x, int y, int z, int width, int height, Direction direction) {
-		super(FinalCastlePieces.TFFCMur, feature, i);
+		super(FinalCastlePieces.TFFCMur, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 	}

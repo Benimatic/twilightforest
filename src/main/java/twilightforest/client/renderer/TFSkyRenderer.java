@@ -50,7 +50,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 
 		rg.skyBuffer.bind();
 		ShaderInstance shaderinstance = RenderSystem.getShader();
-		rg.skyBuffer.drawWithShader(ms.last().pose(), 7, shaderinstance);
+		rg.skyBuffer.drawWithShader(ms.last().pose(), ms.last().pose(), shaderinstance);
 		VertexBuffer.unbind();
 		this.vertexBufferFormat.clearBufferState();
 
@@ -77,7 +77,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.setShaderColor(f15, f15, f15, f15);
 
 		this.starVBO.bind();
-		this.starVBO.drawWithShader(ms.last().pose(), 7, shaderinstance);
+		this.starVBO.drawWithShader(ms.last().pose(), ms.last().pose(), shaderinstance);
 		VertexBuffer.unbind();
 		this.vertexBufferFormat.clearBufferState();
 		//}
@@ -94,7 +94,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 			ms.translate(0.0F, 12.0F, 0.0F);
 
 			rg.darkBuffer.bind();
-			rg.darkBuffer.drawWithShader(ms.last().pose(), 7, shaderinstance);
+			rg.darkBuffer.drawWithShader(ms.last().pose(), ms.last().pose(), shaderinstance);
 			VertexBuffer.unbind();
 			this.vertexBufferFormat.clearBufferState();
 
@@ -146,7 +146,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		}
 
 		// TF - inlined RenderGlobal field that's only used once here
-		this.starVBO = new VertexBuffer(DefaultVertexFormat.POSITION);
+		this.starVBO = new VertexBuffer(/*DefaultVertexFormat.POSITION*/);
 		this.renderStars(bufferbuilder);
 		bufferbuilder.end();
 		this.starVBO.upload(bufferbuilder);

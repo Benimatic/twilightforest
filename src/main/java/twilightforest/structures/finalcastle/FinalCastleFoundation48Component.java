@@ -26,8 +26,8 @@ public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleFoundation48Component(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
-		super(FinalCastlePieces.TFFCToF48, feature, i);
+	public FinalCastleFoundation48Component(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(FinalCastlePieces.TFFCToF48, feature, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX(), sideTower.getBoundingBox().minY(), sideTower.getBoundingBox().minZ(), sideTower.getBoundingBox().maxX(), sideTower.getBoundingBox().minY() - 1, sideTower.getBoundingBox().maxZ());

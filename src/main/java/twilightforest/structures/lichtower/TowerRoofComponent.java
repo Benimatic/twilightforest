@@ -33,8 +33,8 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("roofHeight");
 	}
 
-	public TowerRoofComponent(StructurePieceType type, TFFeature feature, int i) {
-		super(type, feature, i);
+	public TowerRoofComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+		super(type, feature, i, x, y, z);
 
 		this.spawnListIndex = -1;
 

@@ -1,5 +1,6 @@
 package twilightforest.structures;
 
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureMana
 import twilightforest.TFFeature;
 
 /**
- * Copied a few things from {@link net.minecraft.world.gen.feature.structure.TemplateStructurePiece}
+ * Copied a few things from {@link net.minecraft.world.level.levelgen.structure.TemplateStructurePiece}
  */
 public abstract class TFStructureComponentTemplate extends TFStructureComponent {
 
@@ -33,24 +34,22 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     }
 
     public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(type, i);
+        super(type, i, new BoundingBox(x, y, z, x, y, z));
         this.feature = feature;
         this.rotation = rotation;
         this.mirror = Mirror.NONE;
         this.placeSettings.setRotation(rotation);
         this.templatePosition = new BlockPos(x, y, z);
-        this.boundingBox = new BoundingBox(x, y, z, x, y, z);
     }
 
     //TODO: Unused. Remove?
     public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
-        super(type, i);
+        super(type, i, new BoundingBox(x, y, z, x, y, z));
         this.feature = feature;
         this.rotation = rotation;
         this.mirror = mirror;
         this.placeSettings.setRotation(rotation);
         this.templatePosition = new BlockPos(x, y, z);
-        this.boundingBox = new BoundingBox(x, y, z, x, y, z);
     }
 
     public final void setup(StructureManager templateManager) {
@@ -70,9 +69,8 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 	}
 
     protected final void setModifiedTemplatePositionFromRotation() {
-
         Rotation rotation = this.placeSettings.getRotation();
-        BlockPos size = this.TEMPLATE.getSize(rotation);
+        Vec3i size = this.TEMPLATE.getSize(rotation);
 
         rotatedPosition = new BlockPos(this.templatePosition);
 
@@ -87,7 +85,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 
     protected final void setBoundingBoxFromTemplate(BlockPos pos) {
         Rotation rotation = this.placeSettings.getRotation();
-        BlockPos size = this.TEMPLATE.getSize(rotation);
+        Vec3i size = this.TEMPLATE.getSize(rotation);
         Mirror mirror = this.placeSettings.getMirror();
         this.boundingBox = new BoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 
@@ -146,7 +144,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     @Deprecated
     protected final void setTemplatePositionFromRotation() {
         Rotation rotation = this.placeSettings.getRotation();
-        BlockPos size = this.TEMPLATE.getSize(rotation);
+        Vec3i size = this.TEMPLATE.getSize(rotation);
 
         if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.CLOCKWISE_180)
             this.templatePosition = this.templatePosition.east(size.getZ()-1);
@@ -158,7 +156,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     @Deprecated
     protected final void setBoundingBoxFromTemplate() {
         Rotation rotation = this.placeSettings.getRotation();
-        BlockPos size = this.TEMPLATE.getSize(rotation);
+        Vec3i size = this.TEMPLATE.getSize(rotation);
         Mirror mirror = this.placeSettings.getMirror();
         this.boundingBox = new BoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 

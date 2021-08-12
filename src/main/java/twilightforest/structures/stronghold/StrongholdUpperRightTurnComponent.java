@@ -43,9 +43,9 @@ public class StrongholdUpperRightTurnComponent extends StructureTFStrongholdComp
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.edgesLiquid(world, sbb)) {
+		/*if (this.edgesLiquid(world, sbb)) {
 			return false;
-		} else {
+		} else */{
 			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 4, 4, rand, deco.randomBlocks);
 
 			// entrance doorway

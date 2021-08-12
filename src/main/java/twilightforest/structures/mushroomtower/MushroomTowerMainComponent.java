@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -52,7 +54,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -100,7 +102,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	/**
 	 * Make a new ascender tower.  Returns direction if successful, null if not.
 	 */
-	private Rotation makeAscenderTower(List<StructurePiece> list, Random rand) {
+	private Rotation makeAscenderTower(StructurePieceAccessor list, Random rand) {
 
 		Rotation mainDir = RotationUtil.ROTATIONS[rand.nextInt(4)];
 		int[] dest = getValidOpening(rand, mainDir);
@@ -120,9 +122,11 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	 * Make a mushroom roof!
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F);
-		list.add(roof);
+		if (list instanceof StructureStart<?> start) {
+			start.getPieces().add(roof);
+		}
 		roof.addChildren(this, list, rand);
 	}
 

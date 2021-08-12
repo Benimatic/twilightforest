@@ -40,7 +40,7 @@ public class QuestGroveComponent extends TFStructureComponentOld {
 	}
 
 	public QuestGroveComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(TFFeature.TFQuest1, feature, i);
+		super(TFFeature.TFQuest1, feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// the maze is 25 x 25 for now

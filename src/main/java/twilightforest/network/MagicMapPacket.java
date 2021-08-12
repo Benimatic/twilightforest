@@ -28,22 +28,22 @@ public class MagicMapPacket {
 	public MagicMapPacket(FriendlyByteBuf buf) {
 		featureData = buf.readByteArray();
 
-		inner = new ClientboundMapItemDataPacket();
-		try {
+		inner = new ClientboundMapItemDataPacket(buf);
+		/*try {
 			inner.read(buf);
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't read inner SPacketMaps", e);
-		}
+		}*/
 	}
 
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeByteArray(featureData);
 
-		try {
+		//try {
 			inner.write(buf);
-		} catch (IOException e) {
-			throw new RuntimeException("Couldn't write inner SPacketMaps", e);
-		}
+		//} catch (IOException e) {
+		//	throw new RuntimeException("Couldn't write inner SPacketMaps", e);
+		//}
 	}
 
 	public static class Handler {

@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 
@@ -48,9 +49,11 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		// add entrance tower
 		BoundingBox towerBB = BoundingBox.infinite();
 
-		for (StructurePiece structurecomponent : list) {
-			towerBB.expand(structurecomponent.getBoundingBox());
-		}
+		/*if (list instanceof StructureStart<?> start) { FIXME
+			for (StructurePiece structurecomponent : start.getPieces()) {
+				towerBB.expand(structurecomponent.getBoundingBox());
+			}
+		}*/
 
 		// TODO: make this more general
 		BlockPos myDoor = this.openings.get(0);
@@ -85,7 +88,9 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
 
 		list.addPiece(bridge);
-		bridge.addChildren(list.get(0), list, rand);
+		if (list instanceof StructureStart<?> start) {
+			bridge.addChildren(start.getPieces().get(0), list, rand);
+		}
 	}
 
 	public boolean makeEntranceTower(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
@@ -95,7 +100,9 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		IceTowerWingComponent entrance = new IceTowerEntranceComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
 		list.addPiece(entrance);
-		entrance.addChildren(list.get(0), list, rand);
+		if (list instanceof StructureStart<?> start) {
+			entrance.addChildren(start.getPieces().get(0), list, rand);
+		}
 		addOpening(x, y, z, rotation);
 		return true;
 	}
