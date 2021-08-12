@@ -1,14 +1,5 @@
 {
   "config": {
-    "max_water_depth": 0,
-    "ignore_vines": true,
-    "heightmap": "OCEAN_FLOOR",
-    "minimum_size": {
-      "limit": 11,
-      "lower_size": 0,
-      "upper_size": 5,
-      "type": "minecraft:two_layers_feature_size"
-    },
     "decorators": [
       {
         "placement_count": 1,
@@ -26,21 +17,21 @@
         "type": "twilightforest:trunkside_decorator"
       }
     ],
-    "trunk_provider": {
+    "ignore_vines": true,
+    "force_dirt": false,
+    "dirt_provider": {
       "state": {
-        "Properties": {
-          "west": "true",
-          "up": "true",
-          "south": "true",
-          "north": "true",
-          "east": "true",
-          "down": "true"
-        },
-        "Name": "minecraft:mushroom_stem"
+        "Name": "minecraft:dirt"
       },
       "type": "minecraft:simple_state_provider"
     },
-    "leaves_provider": {
+    "minimum_size": {
+      "limit": 11,
+      "lower_size": 0,
+      "upper_size": 5,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "foliage_provider": {
       "state": {
         "Properties": {
           "west": "true",
@@ -54,6 +45,12 @@
       },
       "type": "minecraft:simple_state_provider"
     },
+    "sapling_provider": {
+      "state": {
+        "Name": "minecraft:red_mushroom"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
     "foliage_placer": {
       "random_add_horizontal": 0,
       "random_add_vertical": 0,
@@ -63,6 +60,20 @@
       "vertical_radius": 1.75,
       "offset": 1,
       "type": "twilightforest:spheroid_foliage_placer"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "west": "true",
+          "up": "true",
+          "south": "true",
+          "north": "true",
+          "east": "true",
+          "down": "true"
+        },
+        "Name": "minecraft:mushroom_stem"
+      },
+      "type": "minecraft:simple_state_provider"
     },
     "trunk_placer": {
       "branch_start_offset_down": 6,

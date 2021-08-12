@@ -20,7 +20,9 @@
                             "inner": {
                               "config": {
                                 "outer": {
-                                  "config": {},
+                                  "config": {
+                                    "heightmap": "WORLD_SURFACE_WG"
+                                  },
                                   "type": "minecraft:heightmap"
                                 },
                                 "inner": {
@@ -51,7 +53,9 @@
                             "inner": {
                               "config": {
                                 "outer": {
-                                  "config": {},
+                                  "config": {
+                                    "heightmap": "WORLD_SURFACE_WG"
+                                  },
                                   "type": "minecraft:heightmap"
                                 },
                                 "inner": {
@@ -82,7 +86,9 @@
                         "inner": {
                           "config": {
                             "outer": {
-                              "config": {},
+                              "config": {
+                                "heightmap": "WORLD_SURFACE_WG"
+                              },
                               "type": "minecraft:heightmap"
                             },
                             "inner": {
@@ -102,8 +108,10 @@
               "type": "minecraft:random_selector"
             },
             "decorator": {
-              "config": {},
-              "type": "minecraft:heightmap_world_surface"
+              "config": {
+                "heightmap": "WORLD_SURFACE_WG"
+              },
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"

@@ -16,7 +16,9 @@
                     "inner": {
                       "config": {
                         "outer": {
-                          "config": {},
+                          "config": {
+                            "heightmap": "WORLD_SURFACE_WG"
+                          },
                           "type": "minecraft:heightmap"
                         },
                         "inner": {
@@ -39,7 +41,9 @@
                   "type": "minecraft:square"
                 },
                 "inner": {
-                  "config": {},
+                  "config": {
+                    "heightmap": "MOTION_BLOCKING"
+                  },
                   "type": "minecraft:heightmap"
                 }
               },

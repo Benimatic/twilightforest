@@ -41,7 +41,44 @@
     "air": [
       {
         "config": {
-          "probability": 0.03
+          "lava_level": {
+            "above_bottom": 10
+          },
+          "aquifers_enabled": false,
+          "debug_settings": {
+            "water_state": {
+              "Properties": {
+                "waterlogged": "false",
+                "lit": "false",
+                "candles": "1"
+              },
+              "Name": "minecraft:candle"
+            },
+            "lava_state": {
+              "Name": "minecraft:orange_stained_glass"
+            },
+            "barrier_state": {
+              "Name": "minecraft:glass"
+            },
+            "air_state": {
+              "Name": "minecraft:diamond_block"
+            }
+          },
+          "probability": 0.03,
+          "y": {
+            "min_inclusive": {
+              "absolute": 0
+            },
+            "max_inclusive": {
+              "absolute": 127
+            },
+            "inner": 8,
+            "type": "minecraft:biased_to_bottom"
+          },
+          "yScale": 0.5,
+          "horizontal_radius_multiplier": 1.0,
+          "vertical_radius_multiplier": 1.0,
+          "floor_level": -0.7
         },
         "type": "twilightforest:tf_caves"
       }
@@ -61,6 +98,7 @@
       "minecraft:ore_redstone",
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
+      "minecraft:ore_copper",
       "minecraft:disk_clay",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
@@ -200,6 +238,7 @@
       }
     ],
     "ambient": [],
+    "underground_water_creature": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []

@@ -1,14 +1,5 @@
 {
   "config": {
-    "max_water_depth": 6,
-    "ignore_vines": false,
-    "heightmap": "OCEAN_FLOOR",
-    "minimum_size": {
-      "limit": 1,
-      "lower_size": 0,
-      "upper_size": 1,
-      "type": "minecraft:two_layers_feature_size"
-    },
     "decorators": [
       {
         "placement_count": 1,
@@ -27,7 +18,7 @@
       },
       {
         "root_length": 12,
-        "air_roots_provider": {
+        "exposed_roots_provider": {
           "state": {
             "Properties": {
               "axis": "y"
@@ -39,16 +30,16 @@
         "ground_roots_provider": {
           "entries": [
             {
-              "weight": 4,
               "data": {
                 "Name": "twilightforest:root"
-              }
+              },
+              "weight": 4
             },
             {
-              "weight": 1,
               "data": {
                 "Name": "twilightforest:liveroot_block"
-              }
+              },
+              "weight": 1
             }
           ],
           "type": "minecraft:weighted_state_provider"
@@ -61,22 +52,37 @@
         "type": "minecraft:leave_vine"
       }
     ],
-    "trunk_provider": {
+    "ignore_vines": false,
+    "force_dirt": false,
+    "dirt_provider": {
       "state": {
-        "Properties": {
-          "axis": "y"
-        },
-        "Name": "twilightforest:mangrove_log"
+        "Name": "minecraft:dirt"
       },
       "type": "minecraft:simple_state_provider"
     },
-    "leaves_provider": {
+    "minimum_size": {
+      "limit": 1,
+      "lower_size": 0,
+      "upper_size": 1,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "foliage_provider": {
       "state": {
         "Properties": {
           "persistent": "false",
           "distance": "7"
         },
         "Name": "twilightforest:mangrove_leaves"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "sapling_provider": {
+      "state": {
+        "Properties": {
+          "waterlogged": "false",
+          "stage": "0"
+        },
+        "Name": "twilightforest:mangrove_sapling"
       },
       "type": "minecraft:simple_state_provider"
     },
@@ -89,6 +95,15 @@
       "vertical_radius": 1.5,
       "offset": 0,
       "type": "twilightforest:spheroid_foliage_placer"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "twilightforest:mangrove_log"
+      },
+      "type": "minecraft:simple_state_provider"
     },
     "trunk_placer": {
       "offset_up": 5,

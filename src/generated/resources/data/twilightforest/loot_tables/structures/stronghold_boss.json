@@ -2,14 +2,15 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 4,
+      "rolls": 4.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20,
+              "levels": 20.0,
               "treasure": false
             }
           ],
@@ -20,7 +21,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20,
+              "levels": 20.0,
               "treasure": false
             }
           ],
@@ -31,7 +32,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20,
+              "levels": 20.0,
               "treasure": false
             }
           ],
@@ -40,14 +41,15 @@
       ]
     },
     {
-      "rolls": 2,
+      "rolls": 2.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20,
+              "levels": 20.0,
               "treasure": false
             }
           ],
@@ -58,7 +60,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 20,
+              "levels": 20.0,
               "treasure": false
             }
           ],
@@ -67,14 +69,15 @@
       ]
     },
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 30,
+              "levels": 30.0,
               "treasure": false
             }
           ],
@@ -85,7 +88,7 @@
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
-              "levels": 30,
+              "levels": 30.0,
               "treasure": false
             }
           ],
@@ -94,7 +97,8 @@
       ]
     },
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -103,7 +107,8 @@
       ]
     },
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -116,7 +121,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader",
               "default": "twilightforest:knightmetal_ingot"
             },
             {
@@ -129,7 +133,8 @@
       ]
     },
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -142,7 +147,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader_bag_twilight",
               "default": "twilightforest:knightmetal_ingot"
             }
           ],

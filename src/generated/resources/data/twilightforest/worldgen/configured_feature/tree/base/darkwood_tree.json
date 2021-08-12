@@ -1,27 +1,32 @@
 {
   "config": {
-    "max_water_depth": 0,
+    "decorators": [],
     "ignore_vines": true,
-    "heightmap": "OCEAN_FLOOR",
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
     "minimum_size": {
       "limit": 1,
       "lower_size": 0,
       "upper_size": 1,
       "type": "minecraft:two_layers_feature_size"
     },
-    "decorators": [],
-    "trunk_provider": {
+    "foliage_provider": {
       "state": {
-        "Properties": {
-          "axis": "y"
-        },
-        "Name": "twilightforest:dark_log"
+        "Name": "twilightforest:dark_leaves"
       },
       "type": "minecraft:simple_state_provider"
     },
-    "leaves_provider": {
+    "sapling_provider": {
       "state": {
-        "Name": "twilightforest:dark_leaves"
+        "Properties": {
+          "stage": "0"
+        },
+        "Name": "twilightforest:darkwood_sapling"
       },
       "type": "minecraft:simple_state_provider"
     },
@@ -34,6 +39,15 @@
       "vertical_radius": 2.25,
       "offset": 0,
       "type": "twilightforest:spheroid_foliage_placer"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "twilightforest:dark_log"
+      },
+      "type": "minecraft:simple_state_provider"
     },
     "trunk_placer": {
       "branch_start_offset_down": 4,

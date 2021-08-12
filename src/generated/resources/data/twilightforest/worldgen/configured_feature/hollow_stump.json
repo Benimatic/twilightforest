@@ -6,7 +6,6 @@
           "config": {
             "feature": {
               "config": {
-                "has_leaves": false,
                 "check_water": false,
                 "sapling": {
                   "state": {
@@ -17,8 +16,10 @@
                   },
                   "type": "minecraft:simple_state_provider"
                 },
+                "decorators": [],
                 "add_first_five_chance": 1,
                 "add_second_five_chance": 1,
+                "has_leaves": false,
                 "branch_provider": {
                   "state": {
                     "Properties": {
@@ -71,7 +72,9 @@
               "type": "minecraft:square"
             },
             "inner": {
-              "config": {},
+              "config": {
+                "heightmap": "MOTION_BLOCKING"
+              },
               "type": "minecraft:heightmap"
             }
           },

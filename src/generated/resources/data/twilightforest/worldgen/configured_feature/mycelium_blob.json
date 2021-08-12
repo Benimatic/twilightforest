@@ -11,8 +11,11 @@
               "Name": "minecraft:mycelium"
             },
             "radius": {
-              "base": 4,
-              "spread": 2
+              "type": "minecraft:uniform",
+              "value": {
+                "min_inclusive": 4,
+                "max_inclusive": 2
+              }
             },
             "half_height": 3,
             "targets": [
@@ -33,7 +36,9 @@
               "type": "minecraft:square"
             },
             "inner": {
-              "config": {},
+              "config": {
+                "heightmap": "MOTION_BLOCKING"
+              },
               "type": "minecraft:heightmap_spread_double"
             }
           },

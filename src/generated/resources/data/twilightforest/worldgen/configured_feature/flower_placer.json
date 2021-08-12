@@ -20,76 +20,76 @@
                     "state_provider": {
                       "entries": [
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:poppy"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:dandelion"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:red_tulip"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:orange_tulip"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:pink_tulip"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:white_tulip"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:cornflower"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:lily_of_the_valley"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:blue_orchid"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:allium"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:azure_bluet"
-                          }
+                          },
+                          "weight": 1
                         },
                         {
-                          "weight": 1,
                           "data": {
                             "Name": "minecraft:oxeye_daisy"
-                          }
+                          },
+                          "weight": 1
                         }
                       ],
                       "type": "minecraft:weighted_state_provider"
@@ -114,7 +114,9 @@
                   "type": "minecraft:square"
                 },
                 "inner": {
-                  "config": {},
+                  "config": {
+                    "heightmap": "MOTION_BLOCKING"
+                  },
                   "type": "minecraft:heightmap"
                 }
               },

@@ -2,7 +2,8 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -14,7 +15,8 @@
           "condition": "minecraft:random_chance",
           "chance": 0.025
         }
-      ]
+      ],
+      "functions": []
     }
   ]
 }

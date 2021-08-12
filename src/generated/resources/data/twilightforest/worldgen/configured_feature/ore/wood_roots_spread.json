@@ -19,11 +19,9 @@
             },
             "decorator": {
               "config": {
-                "bottom_offset": 0,
-                "top_offset": 0,
-                "maximum": 30
+                "chance": 30
               },
-              "type": "minecraft:range"
+              "type": "minecraft:chance"
             }
           },
           "type": "minecraft:decorated"

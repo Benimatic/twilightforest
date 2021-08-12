@@ -8,7 +8,8 @@
     "minecraft:podzol",
     "minecraft:farmland",
     "minecraft:soul_soil",
-    "minecraft:grass_path",
+    "minecraft:dirt_path",
+    "minecraft:rooted_dirt",
     "twilightforest:uberous_soil"
   ]
 }

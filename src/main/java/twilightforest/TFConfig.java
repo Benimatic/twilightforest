@@ -43,8 +43,8 @@ public class TFConfig {
 				DIMENSION.twilightForestID = builder.
 						translation(config + "twilight_dimension_id").
 						worldRestart().
-						comment("Destination dimension for Twilight Portals and some other logic as well").
-						define("twilightDimensionID", "twilightforest:twilightforest");
+						comment("Marked dimension ID for Twilight Portals and some other Twilight mod logic as well").
+						define("twilightDimensionID", "twilightforest:twilight_forest");
 				builder.
 						comment("Weights for various small features").
 						push("World-Gen Weights");

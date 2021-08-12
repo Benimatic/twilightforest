@@ -21,11 +21,9 @@
                 },
                 "decorator": {
                   "config": {
-                    "bottom_offset": 0,
-                    "top_offset": 0,
-                    "maximum": 95
+                    "chance": 95
                   },
-                  "type": "minecraft:range"
+                  "type": "minecraft:chance"
                 }
               },
               "type": "minecraft:decorated"
@@ -37,7 +35,9 @@
                   "type": "minecraft:square"
                 },
                 "inner": {
-                  "config": {},
+                  "config": {
+                    "heightmap": "MOTION_BLOCKING"
+                  },
                   "type": "minecraft:heightmap"
                 }
               },
@@ -58,8 +58,11 @@
     "decorator": {
       "config": {
         "count": {
-          "base": 0,
-          "spread": 85
+          "type": "minecraft:uniform",
+          "value": {
+            "min_inclusive": 0,
+            "max_inclusive": 85
+          }
         }
       },
       "type": "minecraft:count"

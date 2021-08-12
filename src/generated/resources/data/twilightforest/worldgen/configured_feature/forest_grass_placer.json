@@ -141,8 +141,11 @@
                         "decorator": {
                           "config": {
                             "count": {
-                              "base": -1,
-                              "spread": 4
+                              "type": "minecraft:uniform",
+                              "value": {
+                                "min_inclusive": 1,
+                                "max_inclusive": 4
+                              }
                             }
                           },
                           "type": "minecraft:count"
@@ -164,7 +167,9 @@
                       "type": "minecraft:square"
                     },
                     "inner": {
-                      "config": {},
+                      "config": {
+                        "heightmap": "MOTION_BLOCKING"
+                      },
                       "type": "minecraft:heightmap"
                     }
                   },

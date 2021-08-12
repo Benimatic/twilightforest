@@ -212,7 +212,22 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
 
     // Otherwise using an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
     @SuppressWarnings("SameParameterValue")
-    protected static Optional<NoiseGeneratorSettings> makeDimensionSettings(StructureSettings structures, NoiseSettings noise, BlockState defaultBlock, BlockState defaultFluid, int bedrockRoofPosition, int bedrockFloorPosition, int seaLevel, boolean disableMobGeneration) {
+    protected static Optional<NoiseGeneratorSettings> makeDimensionSettings(
+            StructureSettings structureSettings,
+            NoiseSettings noiseSettings,
+            BlockState defaultBlock,
+            BlockState defaultFluid,
+            int bedrockRoofPosition,
+            int bedrockFloorPosition,
+            int seaLevel,
+            int minSurfaceLevel,
+            boolean disableMobGeneration,
+            boolean aquifersEnabled,
+            boolean noiseCavesEnabled,
+            boolean deepslateEnabled,
+            boolean oreVeinsEnabled,
+            boolean noodleCavesEnabled
+    ) {
         try {
             Constructor<NoiseGeneratorSettings> ctor = NoiseGeneratorSettings.class.getDeclaredConstructor(
                     StructureSettings.class,
@@ -222,12 +237,18 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
                     int.class,
                     int.class,
                     int.class,
+                    int.class,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
                     boolean.class
             );
 
             ctor.setAccessible(true);
 
-            return Optional.of(ctor.newInstance(structures, noise, defaultBlock, defaultFluid, bedrockRoofPosition, bedrockFloorPosition, seaLevel, disableMobGeneration));
+            return Optional.of(ctor.newInstance(structureSettings, noiseSettings, defaultBlock, defaultFluid, bedrockRoofPosition, bedrockFloorPosition, seaLevel, minSurfaceLevel, disableMobGeneration, aquifersEnabled, noiseCavesEnabled, deepslateEnabled, oreVeinsEnabled, noodleCavesEnabled));
         } catch (Exception e) {
             LOGGER.error("Error constructing `DimensionSettings`!", e);
 
@@ -236,6 +257,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
     }
 
     @SuppressWarnings("SameParameterValue")
+    @Deprecated
     protected static Optional<DimensionType> makeDimensionType(
             OptionalLong fixedTime,
             boolean hasSkyLight,

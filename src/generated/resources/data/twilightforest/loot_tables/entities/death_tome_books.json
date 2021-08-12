@@ -2,7 +2,8 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -11,9 +12,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
+                "type": "minecraft:uniform",
                 "min": 1.0,
-                "max": 10.0,
-                "type": "minecraft:uniform"
+                "max": 10.0
               },
               "treasure": false
             }
@@ -27,9 +28,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
+                "type": "minecraft:uniform",
                 "min": 11.0,
-                "max": 20.0,
-                "type": "minecraft:uniform"
+                "max": 20.0
               },
               "treasure": false
             }
@@ -43,9 +44,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
+                "type": "minecraft:uniform",
                 "min": 21.0,
-                "max": 30.0,
-                "type": "minecraft:uniform"
+                "max": 30.0
               },
               "treasure": false
             }
@@ -58,9 +59,9 @@
             {
               "function": "minecraft:enchant_with_levels",
               "levels": {
+                "type": "minecraft:uniform",
                 "min": 31.0,
-                "max": 40.0,
-                "type": "minecraft:uniform"
+                "max": 40.0
               },
               "treasure": false
             }

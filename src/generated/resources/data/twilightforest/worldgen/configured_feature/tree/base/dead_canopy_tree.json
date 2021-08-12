@@ -1,14 +1,5 @@
 {
   "config": {
-    "max_water_depth": 0,
-    "ignore_vines": true,
-    "heightmap": "OCEAN_FLOOR",
-    "minimum_size": {
-      "limit": 20,
-      "lower_size": 0,
-      "upper_size": 5,
-      "type": "minecraft:two_layers_feature_size"
-    },
     "decorators": [
       {
         "placement_count": 1,
@@ -30,16 +21,16 @@
         "ground_roots_provider": {
           "entries": [
             {
-              "weight": 6,
               "data": {
                 "Name": "twilightforest:root"
-              }
+              },
+              "weight": 6
             },
             {
-              "weight": 1,
               "data": {
                 "Name": "twilightforest:liveroot_block"
-              }
+              },
+              "weight": 1
             }
           ],
           "type": "minecraft:weighted_state_provider"
@@ -49,18 +40,32 @@
         "type": "twilightforest:tree_roots"
       }
     ],
-    "trunk_provider": {
+    "ignore_vines": true,
+    "force_dirt": false,
+    "dirt_provider": {
       "state": {
-        "Properties": {
-          "axis": "y"
-        },
-        "Name": "twilightforest:canopy_log"
+        "Name": "minecraft:dirt"
       },
       "type": "minecraft:simple_state_provider"
     },
-    "leaves_provider": {
+    "minimum_size": {
+      "limit": 20,
+      "lower_size": 0,
+      "upper_size": 5,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "foliage_provider": {
       "state": {
         "Name": "minecraft:air"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "sapling_provider": {
+      "state": {
+        "Properties": {
+          "stage": "0"
+        },
+        "Name": "twilightforest:canopy_sapling"
       },
       "type": "minecraft:simple_state_provider"
     },
@@ -73,6 +78,15 @@
       "vertical_radius": 0.0,
       "offset": 0,
       "type": "twilightforest:spheroid_foliage_placer"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "twilightforest:canopy_log"
+      },
+      "type": "minecraft:simple_state_provider"
     },
     "trunk_placer": {
       "branch_start_offset_down": 7,

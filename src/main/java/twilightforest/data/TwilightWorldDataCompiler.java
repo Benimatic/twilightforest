@@ -68,7 +68,13 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				-20,
 				0,
 				31,
-				false
+				0,
+				false,
+				true,
+				true,
+				true,
+				true,
+				true
 		);
 
 		// Problem island at /tp 9389.60 90.00 11041.66
@@ -96,7 +102,13 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				-20,
 				-20,
 				0,
-				false
+				0,
+				false,
+				true,
+				true,
+				true,
+				true,
+				true
 		);
 
 		// Register the dimension noise settings in the local datagen registry.
@@ -110,7 +122,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		//NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 4L, () -> WorldGenRegistries.NOISE_SETTINGS.getValueForKey(RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, new ResourceLocation("floating_islands"))));
 		//NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new CheckerboardBiomeProvider(BiomeMaker.BIOMES.values().stream().sorted((o1, o2) -> Float.compare(o1.getDepth(), o2.getDepth())).map(b -> (Supplier<Biome>) () -> b).collect(Collectors.toList()), 2), 4L, skyDimensionSettings::get);
 
-		Optional<DimensionType> twilightType = makeDimensionType(
+		final DimensionType twilightType = DimensionType.create(
 				OptionalLong.of(13000L), // TODO Kill the celestial bodies
 				true,
 				false,
@@ -122,7 +134,9 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				true,
 				true,
 				false,
-				256,
+				0, // Minimum Height
+				256, // Max Height
+				256, // Logical Height
 				FuzzyOffsetBiomeZoomer.INSTANCE,
 				new ResourceLocation("infiniburn_overworld"),
 				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
@@ -130,12 +144,11 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		);
 
 		// Register the type in the local datagen registry. Hacky.
-		getOrCreateInRegistry(dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), twilightType::get);
+		getOrCreateInRegistry(dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), () -> twilightType);
 
 		return ImmutableMap.of(
-				// TODO add underscore to twilightforest
-				TwilightForestMod.prefix("twilightforest"), new LevelStem(twilightType::get, forestChunkGen),
-				TwilightForestMod.prefix("skylight_forest"), new LevelStem(twilightType::get, skyChunkGen)
+				TwilightForestMod.prefix("twilight_forest"), new LevelStem(() -> twilightType, forestChunkGen),
+				TwilightForestMod.prefix("skylight_forest"), new LevelStem(() -> twilightType, skyChunkGen)
 				// TODO add *actual* twilightforest:void world without islands
 		);
 	}

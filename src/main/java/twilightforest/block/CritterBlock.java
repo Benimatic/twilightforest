@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
 
 public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	private final float WIDTH = getWidth();
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+	public static final DirectionProperty FACING = DirectionalBlock.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private final VoxelShape DOWN_BB  = Shapes.create(new AABB(0.5F -WIDTH, 1.0F -WIDTH * 2.0F, 0.2F, 0.5F +WIDTH, 1.0F, 0.8F));
 	private final VoxelShape UP_BB    = Shapes.create(new AABB(0.5F - WIDTH, 0.0F, 0.2F, 0.5F + WIDTH, WIDTH * 2.0F, 0.8F));
@@ -48,7 +48,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	protected CritterBlock(Properties props) {
 		super(props);
-		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.valueOf(false)));
+		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.FALSE));
 	}
 
 	public float getWidth() {
@@ -121,7 +121,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		return canSupportCenter(world, restingPos, facing);
 	}
 
-	public abstract ItemStack getSquishResult(); // oh no!
+	public abstract ItemStack getSquishResult(); // oh no! TODO Return Loot Table instead?
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
