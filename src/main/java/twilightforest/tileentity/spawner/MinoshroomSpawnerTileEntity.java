@@ -14,10 +14,6 @@ public class MinoshroomSpawnerTileEntity extends BossSpawnerTileEntity<Minoshroo
 		super(TFTileEntities.MINOSHROOM_SPAWNER.get(), TFEntities.minoshroom, pos, state);
 	}
 
-	public MinoshroomSpawnerTileEntity() {
-		this(BlockPos.ZERO, TFBlocks.boss_spawner_minoshroom.get().defaultBlockState());
-	}
-
 	@Override
 	public boolean anyPlayerInRange() {
 		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);

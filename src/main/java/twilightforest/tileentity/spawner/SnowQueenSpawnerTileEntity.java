@@ -14,10 +14,6 @@ public class SnowQueenSpawnerTileEntity extends BossSpawnerTileEntity<SnowQueenE
 		super(TFTileEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.snow_queen, pos, state);
 	}
 
-	public SnowQueenSpawnerTileEntity() {
-		this(BlockPos.ZERO, TFBlocks.boss_spawner_snow_queen.get().defaultBlockState());
-	}
-
 	@Override
 	public boolean anyPlayerInRange() {
 		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);

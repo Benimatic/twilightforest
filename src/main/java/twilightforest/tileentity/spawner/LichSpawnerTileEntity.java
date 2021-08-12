@@ -14,10 +14,6 @@ public class LichSpawnerTileEntity extends BossSpawnerTileEntity<LichEntity> {
 		super(TFTileEntities.LICH_SPAWNER.get(), TFEntities.lich, pos, state);
 	}
 
-	public LichSpawnerTileEntity() {
-		this(BlockPos.ZERO, TFBlocks.boss_spawner_lich.get().defaultBlockState());
-	}
-
 	@Override
 	public boolean anyPlayerInRange() {
 		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);

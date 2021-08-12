@@ -13,10 +13,6 @@ public class HydraSpawnerTileEntity extends BossSpawnerTileEntity<HydraEntity> {
 		super(TFTileEntities.HYDRA_SPAWNER.get(), TFEntities.hydra, pos, state);
 	}
 
-	public HydraSpawnerTileEntity() {
-		this(BlockPos.ZERO, TFBlocks.boss_spawner_hydra.get().defaultBlockState());
-	}
-
 	@Override
 	protected int getRange() {
 		return LONG_RANGE;

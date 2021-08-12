@@ -14,10 +14,6 @@ public class UrGhastSpawnerTileEntity extends BossSpawnerTileEntity<UrGhastEntit
 		super(TFTileEntities.UR_GHAST_SPAWNER.get(), TFEntities.ur_ghast, pos, state);
 	}
 
-	public UrGhastSpawnerTileEntity() {
-		this(BlockPos.ZERO, TFBlocks.boss_spawner_ur_ghast.get().defaultBlockState());
-	}
-
 	@Override
 	public boolean anyPlayerInRange() {
 		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);

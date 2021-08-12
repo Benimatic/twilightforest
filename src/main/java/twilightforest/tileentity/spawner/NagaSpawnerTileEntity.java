@@ -13,10 +13,6 @@ public class NagaSpawnerTileEntity extends BossSpawnerTileEntity<NagaEntity> {
 		super(TFTileEntities.NAGA_SPAWNER.get(), TFEntities.naga, pos, state);
 	}
 
-	public NagaSpawnerTileEntity() {
-		this(BlockPos.ZERO, TFBlocks.boss_spawner_naga.get().defaultBlockState());
-	}
-
 	@Override
 	protected int getRange() {
 		return LONG_RANGE;

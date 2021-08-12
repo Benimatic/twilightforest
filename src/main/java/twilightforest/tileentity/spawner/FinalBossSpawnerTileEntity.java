@@ -14,10 +14,6 @@ public class FinalBossSpawnerTileEntity extends BossSpawnerTileEntity<PlateauBos
 		super(TFTileEntities.FINAL_BOSS_SPAWNER.get(), TFEntities.plateau_boss, pos, state);
 	}
 
-	public FinalBossSpawnerTileEntity() {
-		this(BlockPos.ZERO, TFBlocks.boss_spawner_final_boss.get().defaultBlockState());
-	}
-
 	public static void tick(Level level, BlockPos pos, BlockState state, BossSpawnerTileEntity<?> te) {
 
 	}

@@ -27,13 +27,13 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return boss.getSpawner();
+		return boss.getType().create(pos, state);
 	}
 
 	@Nullable
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, boss.getSpawner().getType(), BossSpawnerTileEntity::tick);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> type) {
+		return createTickerHelper(type, boss.getType(), BossSpawnerTileEntity::tick);
 	}
 
 	@Override
