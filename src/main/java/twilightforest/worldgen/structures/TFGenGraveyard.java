@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
@@ -109,21 +110,25 @@ public class TFGenGraveyard extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+		WorldGenLevel world = ctx.level();
+		BlockPos pos = ctx.origin();
+		Random rand = ctx.random();
+
 		int flags = 16 | 2 | 1;
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 
 		StructureManager templatemanager = world.getLevel().getServer().getStructureManager();
-		StructureTemplate base = templatemanager.get(GRAVEYARD);
+		StructureTemplate base = templatemanager.getOrCreate(GRAVEYARD);
 		if (base == null)
 			return false;
 		List<Pair<GraveType, StructureTemplate>> graves = new ArrayList<>();
-		StructureTemplate trap = templatemanager.get(TRAP);
+		StructureTemplate trap = templatemanager.getOrCreate(TRAP);
 		if (trap == null)
 			return false;
 		for (GraveType type : GraveType.VALUES) {
-			StructureTemplate grave = templatemanager.get(type.RL);
+			StructureTemplate grave = templatemanager.getOrCreate(type.RL);
 			if (grave == null)
 				return false;
 			graves.add(Pair.of(type, grave));
@@ -135,8 +140,8 @@ public class TFGenGraveyard extends Feature<NoneFeatureConfiguration> {
 		Mirror[] mirrors = Mirror.values();
 		Mirror mirror = mirrors[random.nextInt(mirrors.length + 1) % mirrors.length];
 
-		BlockPos transformedSize = base.getSize(rotation);
-		BlockPos transformedGraveSize = graves.get(0).getValue().getSize(rotation);
+		BlockPos transformedSize = (BlockPos) base.getSize(rotation);
+		BlockPos transformedGraveSize = (BlockPos) graves.get(0).getValue().getSize(rotation);
 
 		ChunkPos chunkpos = new ChunkPos(pos.offset(-8, 0, -8));
 		ChunkPos chunkendpos = new ChunkPos(pos.offset(-8, 0, -8).offset(transformedSize));

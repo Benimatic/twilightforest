@@ -1,5 +1,6 @@
 package twilightforest.world.feature;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * Makes large trees with flat leaf ovals that provide a canopy for the forest
@@ -83,10 +85,23 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 		Set<BlockPos> set1 = Sets.newHashSet();
 		Set<BlockPos> set2 = Sets.newHashSet();
 		BoundingBox mutableboundingbox = BoundingBox.infinite();
-		boolean flag = place(reader, rand, pos, set, set1, mutableboundingbox, config);
+		BiConsumer<BlockPos, BlockState> biconsumer = (p_160555_, p_160556_) -> {
+			set.add(p_160555_.immutable());
+			reader.setBlock(p_160555_, p_160556_, 19);
+		};
+		BiConsumer<BlockPos, BlockState> biconsumer1 = (p_160548_, p_160549_) -> {
+			set1.add(p_160548_.immutable());
+			reader.setBlock(p_160548_, p_160549_, 19);
+		};
+		BiConsumer<BlockPos, BlockState> biconsumer2 = (p_160543_, p_160544_) -> {
+			set2.add(p_160543_.immutable());
+			reader.setBlock(p_160543_, p_160544_, 19);
+		};
+		boolean flag = doPlace(reader, rand, pos, biconsumer, biconsumer1, config);
 		difference = mutableboundingbox.minY() - pos.getY();
-		mutableboundingbox.minY() = pos.getY();
-		mutableboundingbox.maxY() = mutableboundingbox.maxY() - difference;
+		//what do
+		//mutableboundingbox.minY() = pos.getY();
+		//mutableboundingbox.maxY() = mutableboundingbox.maxY() - difference;
 		if(flag && !set.isEmpty()) {
 			if (!config.decorators.isEmpty()) {
 				List<BlockPos> list = Lists.newArrayList(set);
@@ -94,48 +109,41 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 				list.sort(Comparator.comparingInt(Vec3i::getY));
 				list1.sort(Comparator.comparingInt(Vec3i::getY));
 				config.decorators.forEach((p_236405_6_) -> {
-					p_236405_6_.place(reader, rand, list, list1, set2, mutableboundingbox);
+					p_236405_6_.place(reader, biconsumer2, rand, list, list1);
 				});
 			}
 
-			DiscreteVoxelShape voxelshapepart = this.updateLeaves(reader, mutableboundingbox, set, set2);
-			StructureTemplate.updateShapeAtEdge(reader, 3, voxelshapepart, mutableboundingbox.x0, mutableboundingbox.y0, mutableboundingbox.z0);
+			DiscreteVoxelShape voxelshapepart = updateLeaves(reader, mutableboundingbox, set, set2);
+			StructureTemplate.updateShapeAtEdge(reader, 3, voxelshapepart, mutableboundingbox.minX(), mutableboundingbox.minY(), mutableboundingbox.minZ());
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	//Mostly [VanillaCopy] of TreeFeature.place, edits noted
-	private boolean place(LevelSimulatedRW generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, BoundingBox boundingBoxIn, TreeConfiguration configIn) {
-		int i = configIn.trunkPlacer.getTreeHeight(rand);
-		int j = configIn.foliagePlacer.foliageHeight(rand, i, configIn);
+	//Mostly [VanillaCopy] of TreeFeature.doPlace, edits noted
+	private boolean doPlace(WorldGenLevel p_160511_, Random p_160512_, BlockPos p_160513_, BiConsumer<BlockPos, BlockState> p_160514_, BiConsumer<BlockPos, BlockState> p_160515_, TreeConfiguration p_160516_) {
+		int i = p_160516_.trunkPlacer.getTreeHeight(p_160512_);
+		int j = p_160516_.foliagePlacer.foliageHeight(p_160512_, i, p_160516_);
 		int k = i - j;
-		int l = configIn.foliagePlacer.foliageRadius(rand, k);
-		BlockPos blockpos;
-		if (!configIn.fromSapling) {
-			int i1 = generationReader.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, positionIn).getY();
-			int j1 = generationReader.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, positionIn).getY();
-			if (j1 - i1 > configIn.maxWaterDepth) {
+		int l = p_160516_.foliagePlacer.foliageRadius(p_160512_, k);
+		//set our blockpos to the valid dirt pos, not highest ground
+		p_160513_ = new BlockPos(p_160513_.getX(), validPos.getY(), p_160513_.getZ());
+		if (p_160513_.getY() >= p_160511_.getMinBuildHeight() + 1 && p_160513_.getY() + i + 1 <= p_160511_.getMaxBuildHeight()) {
+			if (!p_160516_.saplingProvider.getState(p_160512_, p_160513_).canSurvive(p_160511_, p_160513_)) {
 				return false;
-			}
-			//set our blockpos to the valid dirt pos, not highest ground
-			blockpos = new BlockPos(positionIn.getX(), validPos.getY(), positionIn.getZ());
-		} else {
-			blockpos = positionIn;
-		}
-
-		if (blockpos.getY() >= 1 && blockpos.getY() + i + 1 <= 256) {
-			OptionalInt optionalint = configIn.minimumSize.minClippedHeight();
-			int l1 = this.getMaxFreeTreeHeight(generationReader, i, blockpos, configIn);
-			if (l1 >= i || optionalint.isPresent() && l1 >= optionalint.getAsInt()) {
-				List<FoliagePlacer.FoliageAttachment> list = configIn.trunkPlacer.placeTrunk(generationReader, rand, l1, blockpos, p_225557_4_, boundingBoxIn, configIn);
-				list.forEach((p_236407_8_) -> {
-					configIn.foliagePlacer.createFoliage(generationReader, rand, configIn, l1, p_236407_8_, j, l, p_225557_5_, boundingBoxIn);
-				});
-				return true;
 			} else {
-				return false;
+				OptionalInt optionalint = p_160516_.minimumSize.minClippedHeight();
+				int i1 = this.getMaxFreeTreeHeight(p_160511_, i, p_160513_, p_160516_);
+				if (i1 >= i || optionalint.isPresent() && i1 >= optionalint.getAsInt()) {
+					List<FoliagePlacer.FoliageAttachment> list = p_160516_.trunkPlacer.placeTrunk(p_160511_, p_160514_, p_160512_, i1, p_160513_, p_160516_);
+					list.forEach((p_160539_) -> {
+						p_160516_.foliagePlacer.createFoliage(p_160511_, p_160515_, p_160512_, p_160516_, i1, p_160539_, j, l);
+					});
+					return true;
+				} else {
+					return false;
+				}
 			}
 		} else {
 			return false;
@@ -170,36 +178,37 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 		p_236408_0_.setBlock(p_236408_1_, p_236408_2_, 19);
 	}
 
-	private DiscreteVoxelShape updateLeaves(LevelAccessor p_236403_1_, BoundingBox p_236403_2_, Set<BlockPos> p_236403_3_, Set<BlockPos> p_236403_4_) {
+	private static DiscreteVoxelShape updateLeaves(LevelAccessor p_67203_, BoundingBox p_67204_, Set<BlockPos> p_67205_, Set<BlockPos> p_67206_) {
 		List<Set<BlockPos>> list = Lists.newArrayList();
-		DiscreteVoxelShape voxelshapepart = new BitSetDiscreteVoxelShape(p_236403_2_.getXSpan(), p_236403_2_.getYSpan(), p_236403_2_.getZSpan());
+		DiscreteVoxelShape discretevoxelshape = new BitSetDiscreteVoxelShape(p_67204_.getXSpan(), p_67204_.getYSpan(), p_67204_.getZSpan());
+		int i = 6;
 
 		for(int j = 0; j < 6; ++j) {
 			list.add(Sets.newHashSet());
 		}
 
-		BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
+		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-		for(BlockPos blockpos : Lists.newArrayList(p_236403_4_)) {
-			if (p_236403_2_.isInside(blockpos)) {
-				voxelshapepart.setFull(blockpos.getX() - p_236403_2_.minX(), blockpos.getY() - p_236403_2_.minY(), blockpos.getZ() - p_236403_2_.minZ(), true, true);
+		for(BlockPos blockpos : Lists.newArrayList(p_67206_)) {
+			if (p_67204_.isInside(blockpos)) {
+				discretevoxelshape.fill(blockpos.getX() - p_67204_.minX(), blockpos.getY() - p_67204_.minY(), blockpos.getZ() - p_67204_.minZ());
 			}
 		}
 
-		for(BlockPos blockpos1 : Lists.newArrayList(p_236403_3_)) {
-			if (p_236403_2_.isInside(blockpos1)) {
-				voxelshapepart.setFull(blockpos1.getX() - p_236403_2_.minX(), blockpos1.getY() - p_236403_2_.minY(), blockpos1.getZ() - p_236403_2_.minZ(), true, true);
+		for(BlockPos blockpos1 : Lists.newArrayList(p_67205_)) {
+			if (p_67204_.isInside(blockpos1)) {
+				discretevoxelshape.fill(blockpos1.getX() - p_67204_.minX(), blockpos1.getY() - p_67204_.minY(), blockpos1.getZ() - p_67204_.minZ());
 			}
 
 			for(Direction direction : Direction.values()) {
-				blockpos$mutable.setWithOffset(blockpos1, direction);
-				if (!p_236403_3_.contains(blockpos$mutable)) {
-					BlockState blockstate = p_236403_1_.getBlockState(blockpos$mutable);
+				blockpos$mutableblockpos.setWithOffset(blockpos1, direction);
+				if (!p_67205_.contains(blockpos$mutableblockpos)) {
+					BlockState blockstate = p_67203_.getBlockState(blockpos$mutableblockpos);
 					if (blockstate.hasProperty(BlockStateProperties.DISTANCE)) {
-						list.get(0).add(blockpos$mutable.immutable());
-						setBlockKnownShape(p_236403_1_, blockpos$mutable, blockstate.setValue(BlockStateProperties.DISTANCE, Integer.valueOf(1)));
-						if (p_236403_2_.isInside(blockpos$mutable)) {
-							voxelshapepart.setFull(blockpos$mutable.getX() - p_236403_2_.minX(), blockpos$mutable.getY() - p_236403_2_.minY(), blockpos$mutable.getZ() - p_236403_2_.minZ(), true, true);
+						list.get(0).add(blockpos$mutableblockpos.immutable());
+						setBlockKnownShape(p_67203_, blockpos$mutableblockpos, blockstate.setValue(BlockStateProperties.DISTANCE, Integer.valueOf(1)));
+						if (p_67204_.isInside(blockpos$mutableblockpos)) {
+							discretevoxelshape.fill(blockpos$mutableblockpos.getX() - p_67204_.minX(), blockpos$mutableblockpos.getY() - p_67204_.minY(), blockpos$mutableblockpos.getZ() - p_67204_.minZ());
 						}
 					}
 				}
@@ -211,24 +220,24 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 			Set<BlockPos> set1 = list.get(l);
 
 			for(BlockPos blockpos2 : set) {
-				if (p_236403_2_.isInside(blockpos2)) {
-					voxelshapepart.setFull(blockpos2.getX() - p_236403_2_.minX(), blockpos2.getY() - p_236403_2_.minY(), blockpos2.getZ() - p_236403_2_.minZ(), true, true);
+				if (p_67204_.isInside(blockpos2)) {
+					discretevoxelshape.fill(blockpos2.getX() - p_67204_.minX(), blockpos2.getY() - p_67204_.minY(), blockpos2.getZ() - p_67204_.minZ());
 				}
 
 				for(Direction direction1 : Direction.values()) {
-					blockpos$mutable.setWithOffset(blockpos2, direction1);
-					if (!set.contains(blockpos$mutable) && !set1.contains(blockpos$mutable)) {
-						BlockState blockstate1 = p_236403_1_.getBlockState(blockpos$mutable);
+					blockpos$mutableblockpos.setWithOffset(blockpos2, direction1);
+					if (!set.contains(blockpos$mutableblockpos) && !set1.contains(blockpos$mutableblockpos)) {
+						BlockState blockstate1 = p_67203_.getBlockState(blockpos$mutableblockpos);
 						if (blockstate1.hasProperty(BlockStateProperties.DISTANCE)) {
 							int k = blockstate1.getValue(BlockStateProperties.DISTANCE);
 							if (k > l + 1) {
 								BlockState blockstate2 = blockstate1.setValue(BlockStateProperties.DISTANCE, Integer.valueOf(l + 1));
-								setBlockKnownShape(p_236403_1_, blockpos$mutable, blockstate2);
-								if (p_236403_2_.isInside(blockpos$mutable)) {
-									voxelshapepart.setFull(blockpos$mutable.getX() - p_236403_2_.minX(), blockpos$mutable.getY() - p_236403_2_.minY(), blockpos$mutable.getZ() - p_236403_2_.minZ(), true, true);
+								setBlockKnownShape(p_67203_, blockpos$mutableblockpos, blockstate2);
+								if (p_67204_.isInside(blockpos$mutableblockpos)) {
+									discretevoxelshape.fill(blockpos$mutableblockpos.getX() - p_67204_.minX(), blockpos$mutableblockpos.getY() - p_67204_.minY(), blockpos$mutableblockpos.getZ() - p_67204_.minZ());
 								}
 
-								set1.add(blockpos$mutable.immutable());
+								set1.add(blockpos$mutableblockpos.immutable());
 							}
 						}
 					}
@@ -236,6 +245,6 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 			}
 		}
 
-		return voxelshapepart;
+		return discretevoxelshape;
 	}
 }

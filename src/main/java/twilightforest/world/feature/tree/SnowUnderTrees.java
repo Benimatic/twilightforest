@@ -1,6 +1,7 @@
 package twilightforest.world.feature.tree;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Random;
@@ -22,7 +24,9 @@ public class SnowUnderTrees extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+        BlockPos pos = ctx.origin();
+        WorldGenLevel world = ctx.level();
         BlockPos.MutableBlockPos mPos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos mPosDown = new BlockPos.MutableBlockPos();
 
@@ -37,7 +41,7 @@ public class SnowUnderTrees extends Feature<NoneFeatureConfiguration> {
                     mPos.set(x, world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z), z);
                     state = world.getBlockState(mPos);
 
-                    if (state.isAir(world, mPos)) {
+                    if (state.isAir()) {
                         BlockState stateBelow;
                         mPosDown.set(mPos).move(Direction.DOWN);
                         stateBelow = world.getBlockState(mPosDown);

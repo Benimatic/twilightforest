@@ -66,7 +66,7 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		//this.biomesForGeneration = getBiomeProvider().getBiomesInArea(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		ProtoChunk primer = new DirectChunkPrimer(region.getCenter()); // Is this even correct?
+		ProtoChunk primer = new DirectChunkPrimer(region.getCenter(), region.getLevel()); // Is this even correct?
 		//initPrimer(primer, data); TODO : Should be do SurfaceBuilder
 
 		//deformTerrainForFeature(x, z, region);

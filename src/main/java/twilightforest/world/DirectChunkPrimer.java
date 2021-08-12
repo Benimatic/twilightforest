@@ -1,5 +1,6 @@
 package twilightforest.world;
 
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
@@ -16,8 +17,8 @@ public class DirectChunkPrimer extends ProtoChunk {
 
 	private final BlockState[] states = new BlockState[65536];
 
-	public DirectChunkPrimer(ChunkPos pos) {
-		super(pos, UpgradeData.EMPTY);
+	public DirectChunkPrimer(ChunkPos pos, LevelAccessor level) {
+		super(pos, UpgradeData.EMPTY, level);
 	}
 
 	@Override

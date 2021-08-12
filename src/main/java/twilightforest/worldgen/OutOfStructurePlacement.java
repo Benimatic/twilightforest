@@ -22,7 +22,8 @@ public class OutOfStructurePlacement extends FeatureDecorator<NoneDecoratorConfi
 
 	@Override
 	public Stream<BlockPos> getPositions(DecorationContext worldDecoratingHelper, Random random, NoneDecoratorConfiguration noPlacementConfig, BlockPos blockPos) {
-		if (worldDecoratingHelper.generator instanceof ChunkGeneratorTwilightBase) {
+		//FIXME used to be worldDecoratingHelper.generator... not sure if this is right but im not getting an error anymore so
+		if (worldDecoratingHelper.getLevel() instanceof ChunkGeneratorTwilightBase) {
 			Optional<StructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange(worldDecoratingHelper.level, blockPos, 0);
 			if(struct.isPresent()) {
 				StructureStart<?> structure = struct.get();
