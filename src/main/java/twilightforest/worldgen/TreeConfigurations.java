@@ -178,7 +178,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.SPRUCE_SAPLING),
             new MegaPineFoliagePlacer(ConstantInt.of(0),
                     ConstantInt.of(0),
-                    UniformInt.of(13, 4)),
+                    UniformInt.of(13, 17)),
 
             new TwoLayersFeatureSize(1, 1, 2))
         .build();

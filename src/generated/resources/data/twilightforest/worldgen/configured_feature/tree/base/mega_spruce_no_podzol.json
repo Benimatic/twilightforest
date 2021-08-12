@@ -41,7 +41,7 @@
         "type": "minecraft:uniform",
         "value": {
           "min_inclusive": 13,
-          "max_inclusive": 4
+          "max_inclusive": 17
         }
       },
       "type": "minecraft:mega_pine_foliage_placer"
