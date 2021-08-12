@@ -70,10 +70,10 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 			makeLeafBlob(leavesPlacer, random, leafPos, config);
 		}
 
-		makeRoots(world, trunkPlacer, decorationPlacer, random, pos, config);
-		makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east(), config);
-		makeRoots(world, trunkPlacer, decorationPlacer, random, pos.south(), config);
-		makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east().south(), config);
+		TFGenCanopyOak.makeRoots(world, trunkPlacer, decorationPlacer, random, pos, config);
+		TFGenCanopyOak.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east(), config);
+		TFGenCanopyOak.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.south(), config);
+		TFGenCanopyOak.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east().south(), config);
 
 		return true;
 	}
@@ -82,7 +82,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		FeaturePlacers.placeSpheroid(leafPlacer, rand, leafPos, 2, 2, config.leavesProvider);
 	}
 
-	private void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {
+	private static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);
@@ -94,7 +94,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		int numRoots = 1 + random.nextInt(2);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			buildRoot(world, decoPlacer, random, pos, offset, b, config);
+			FeaturePlacers.buildRoot(world, decoPlacer, random, pos, offset, b, config.rootsProvider);
 		}
 	}
 

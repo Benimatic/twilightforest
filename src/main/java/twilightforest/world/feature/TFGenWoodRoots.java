@@ -11,7 +11,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureLogic;
-import twilightforest.util.FeaturePlacers;
 
 import java.util.Random;
 
@@ -117,7 +116,7 @@ public class TFGenWoodRoots extends Feature<NoneFeatureConfiguration> {
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
 	protected void placeRootBlock(LevelAccessor world, BlockPos pos, BlockState state) {
-		if (FeaturePlacers.canRootGrowIn(world, pos)) {
+		if (FeatureLogic.canRootGrowIn(world, pos)) {
 			world.setBlock(pos, state, 3);
 		}
 	}

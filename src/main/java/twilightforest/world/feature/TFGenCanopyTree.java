@@ -82,7 +82,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		int numRoots = 3 + random.nextInt(2);
 		offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			buildRoot(world, decorationPlacer, random, pos, offset, b, config);
+			FeaturePlacers.buildRoot(world, decorationPlacer, random, pos, offset, b, config.rootsProvider);
 		}
 
 		return true;

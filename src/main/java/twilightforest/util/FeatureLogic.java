@@ -49,7 +49,7 @@ public final class FeatureLogic {
     public static boolean canRootReplace(BlockState state) {
         Block block = state.getBlock();
 
-        return /*(state.getDestroySpeed() >= 0) //
+        return /*(state.getDestroySpeed() >= 0) // TODO Starting to sound like we should have a generalized no-replace tag list
                 &&*/ block != TFBlocks.stronghold_shield.get()
                 && block != TFBlocks.trophy_pedestal.get()
                 && block != TFBlocks.boss_spawner_naga.get()

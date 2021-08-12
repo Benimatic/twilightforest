@@ -52,7 +52,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 		int numRoots = 4 + random.nextInt(3);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			buildRoot(world, decorationPlacer, random, pos, offset, b, config);
+			FeaturePlacers.buildRoot(world, decorationPlacer, random, pos, offset, b, config.rootsProvider);
 		}
 
 		return true;
