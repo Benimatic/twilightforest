@@ -20,7 +20,7 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderBaseCo
 	}
 
 	@Override
-	public void apply(Random rand, ChunkAccess primer, Biome biome, int x, int z, int startheight, double noiseVal, BlockState defaultBlock, BlockState defaultFluid, int sealevel, long seed, SurfaceBuilderBaseConfiguration config) {
+	public void apply(Random rand, ChunkAccess primer, Biome biome, int x, int z, int startheight, double noiseVal, BlockState defaultBlock, BlockState defaultFluid, int sealevel, int minSurfaceLevel, long seed, SurfaceBuilderBaseConfiguration config) {
 		this.genTwilightBiomeTerrain(rand, primer, biome, x, z, startheight, noiseVal, defaultBlock, defaultFluid, config.getTopMaterial(), config.getUnderMaterial(), config.getUnderwaterMaterial(), sealevel);
 	}
 
