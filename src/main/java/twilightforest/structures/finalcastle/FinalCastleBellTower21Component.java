@@ -47,12 +47,12 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		}
 
 		// add foundation
-		FinalCastleBellFoundation21Component foundation = new FinalCastleBellFoundation21Component(getFeatureType(), rand, 4, this);
+		FinalCastleBellFoundation21Component foundation = new FinalCastleBellFoundation21Component(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = new FinalCastleRoof13CrenellatedComponent(getFeatureType(), rand, 4, this);
+		TFStructureComponentOld roof = new FinalCastleRoof13CrenellatedComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}

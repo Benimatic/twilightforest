@@ -20,8 +20,8 @@ public class DarkTowerRoofAntennaComponent extends DarkTowerRoofComponent {
 		super(DarkTowerPieces.TFDTRA, nbt);
 	}
 
-	public DarkTowerRoofAntennaComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(DarkTowerPieces.TFDTRA, feature, i, wing);
+	public DarkTowerRoofAntennaComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(DarkTowerPieces.TFDTRA, feature, i, wing, x, y, z);
 	}
 
 	/**

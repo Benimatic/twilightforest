@@ -20,8 +20,8 @@ public class TowerRoofAttachedSlabComponent extends TowerRoofSlabComponent {
 		super(LichTowerPieces.TFLTRAS, nbt);
 	}
 
-	public TowerRoofAttachedSlabComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(LichTowerPieces.TFLTRAS, feature, i, wing);
+	public TowerRoofAttachedSlabComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(LichTowerPieces.TFLTRAS, feature, i, wing, x, y, z);
 	}
 
 	/**

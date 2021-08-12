@@ -20,8 +20,8 @@ public class TowerBeardAttachedComponent extends TowerBeardComponent {
 		super(LichTowerPieces.TFLTBA, nbt);
 	}
 
-	public TowerBeardAttachedComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(LichTowerPieces.TFLTBA, feature, i, wing);
+	public TowerBeardAttachedComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(LichTowerPieces.TFLTBA, feature, i, wing, x, y, z);
 
 		// just hang out at the very bottom of the tower
 		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().minY() - this.height - 1, wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY() - 1, wing.getBoundingBox().maxZ());

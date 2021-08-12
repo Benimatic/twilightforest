@@ -26,8 +26,8 @@ public class TowerRoofSlabComponent extends TowerRoofComponent {
 		super(piece, nbt);
 	}
 
-	public TowerRoofSlabComponent(StructurePieceType piece, TFFeature feature, int i, TowerWingComponent wing) {
-		super(piece, feature, i);
+	public TowerRoofSlabComponent(StructurePieceType piece, TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(piece, feature, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

@@ -186,7 +186,7 @@ public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 	}
 
 	// [VanillaCopy] of superclass ver, changes noted
-	@Override
+	//@Override
 	protected boolean canBurn(Recipe<?> recipe) {
 		if (this.items.get(0).isEmpty()) {
 			return false;

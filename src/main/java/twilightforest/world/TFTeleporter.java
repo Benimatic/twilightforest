@@ -111,7 +111,7 @@ public class TFTeleporter implements ITeleporter {
 									blockpos1 = blockpos2;
 								}
 
-								double d1 = blockpos1.distSqr(pos);
+								float d1 = (float) blockpos1.distSqr(pos);
 								if (d0 < 0.0D || d1 < d0) {
 									d0 = d1;
 									blockpos = blockpos1;

@@ -30,7 +30,7 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 
 	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleStairTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
-		super(FinalCastlePieces.TFFCStTo, feature, i);
+		super(FinalCastlePieces.TFFCStTo, feature, i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 9;
 		this.height = 51;
@@ -43,7 +43,7 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 		// add crown
-		FinalCastleRoof9CrenellatedComponent roof = new FinalCastleRoof9CrenellatedComponent(getFeatureType(), rand, 4, this);
+		FinalCastleRoof9CrenellatedComponent roof = new FinalCastleRoof9CrenellatedComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}

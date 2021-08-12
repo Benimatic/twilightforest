@@ -53,8 +53,8 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 
 	@Override
 	public void spawnOriginalMobs(WorldGenRegion region) { //decorate?
-		int x = region.getCenterX();
-		int z = region.getCenterZ();
+		//int x = region.getCenterX();
+		//int z = region.getCenterZ();
 
 		//TODO: Is there a point to this?
 //		rand.setSeed(getSeed(x, z));
@@ -66,7 +66,7 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		//this.biomesForGeneration = getBiomeProvider().getBiomesInArea(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		ProtoChunk primer = new DirectChunkPrimer(new ChunkPos(x, z));
+		ProtoChunk primer = new DirectChunkPrimer(region.getCenter()); // Is this even correct?
 		//initPrimer(primer, data); TODO : Should be do SurfaceBuilder
 
 		//deformTerrainForFeature(x, z, region);

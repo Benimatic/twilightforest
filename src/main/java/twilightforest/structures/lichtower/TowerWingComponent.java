@@ -270,7 +270,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		int index = this.getGenDepth();
 		TowerBeardComponent beard;
 		if (attached) {
-			beard = new TowerBeardAttachedComponent(getFeatureType(), index + 1, this);
+			beard = new TowerBeardAttachedComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		} else {
 			beard = new TowerBeardComponent(LichTowerPieces.TFLTBea, getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		}
@@ -304,25 +304,25 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		// this is our preferred roof type:
 		if (roofType == null && rand.nextInt(32) != 0) {
-			tryToFitRoof(list, rand, new TowerRoofGableForwardsComponent(getFeatureType(), index + 1, this));
+			tryToFitRoof(list, rand, new TowerRoofGableForwardsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 		}
 
 		// this is for roofs that don't fit.
 		if (roofType == null && rand.nextInt(8) != 0) {
-			tryToFitRoof(list, rand, new TowerRoofSlabForwardsComponent(getFeatureType(), index + 1, this));
+			tryToFitRoof(list, rand, new TowerRoofSlabForwardsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 		}
 
 		// finally, if we're cramped for space, try this
 		if (roofType == null && rand.nextInt(32) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofAttachedSlabComponent(getFeatureType(), index + 1, this);
+			roof = new TowerRoofAttachedSlabComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// last resort
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this);
+			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 	}
@@ -346,31 +346,31 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		// most roofs that fit fancy roofs will be this
 		if (roofType == null && rand.nextInt(8) != 0) {
-			roof = new TowerRoofPointyOverhangComponent(getFeatureType(), index + 1, this);
+			roof = new TowerRoofPointyOverhangComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// don't pass by this one if it fits
 		if (roofType == null) {
-			roof = new TowerRoofStairsOverhangComponent(getFeatureType(), index + 1, this);
+			roof = new TowerRoofStairsOverhangComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// don't pass by this one if it fits
 		if (roofType == null) {
-			roof = new TowerRoofStairsComponent(getFeatureType(), index + 1, this);
+			roof = new TowerRoofStairsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		if (roofType == null && rand.nextInt(53) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofSlabComponent(LichTowerPieces.TFLTRS, getFeatureType(), index + 1, this);
+			roof = new TowerRoofSlabComponent(LichTowerPieces.TFLTRS, getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this);
+			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 	}

@@ -45,7 +45,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	public FinalCastleMazeTower13Component(StructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, BlockState color, Direction direction) {
-		super(piece, feature, i);
+		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.color = color;
 		this.size = 13;
@@ -82,7 +82,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleMazeTower13Component(StructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
-		super(piece, feature, i);
+		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.color = color;
 		this.size = 13;
@@ -98,12 +98,12 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(FinalCastlePieces.TFFCToF13, getFeatureType(), rand, 4, this);
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(FinalCastlePieces.TFFCToF13, getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = rand.nextBoolean() ? new FinalCastleRoof13ConicalComponent(getFeatureType(), rand, 4, this) : new FinalCastleRoof13CrenellatedComponent(getFeatureType(), rand, 4, this);
+		TFStructureComponentOld roof = rand.nextBoolean() ? new FinalCastleRoof13ConicalComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()) : new FinalCastleRoof13CrenellatedComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}

@@ -27,8 +27,8 @@ public class FinalCastleBellFoundation21Component extends FinalCastleFoundation1
 		super(FinalCastlePieces.TFFCBeF21, nbt);
 	}
 
-	public FinalCastleBellFoundation21Component(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
-		super(FinalCastlePieces.TFFCBeF21, feature, rand, i, sideTower);
+	public FinalCastleBellFoundation21Component(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(FinalCastlePieces.TFFCBeF21, feature, rand, i, sideTower, x, y, z);
 
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().minX() + 2, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 2);
 	}

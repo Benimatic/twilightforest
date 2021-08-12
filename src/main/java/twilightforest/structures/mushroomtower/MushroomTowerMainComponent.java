@@ -123,7 +123,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	 */
 	@Override
 	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
-		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F);
+		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		if (list instanceof StructureStart<?> start) {
 			start.getPieces().add(roof);
 		}

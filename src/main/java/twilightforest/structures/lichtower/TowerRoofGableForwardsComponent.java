@@ -23,8 +23,8 @@ public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 		super(LichTowerPieces.TFLTRGF, nbt);
 	}
 
-	public TowerRoofGableForwardsComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(LichTowerPieces.TFLTRGF, feature, i);
+	public TowerRoofGableForwardsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(LichTowerPieces.TFLTRGF, feature, i, x, y, z);
 
 		// same facing
 		this.setOrientation(wing.getOrientation());

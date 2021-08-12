@@ -22,8 +22,8 @@ public class IceTowerRoofComponent extends TowerRoofComponent {
 		super(IceTowerPieces.TFITRoof, nbt);
 	}
 
-	public IceTowerRoofComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(IceTowerPieces.TFITRoof, feature, i);
+	public IceTowerRoofComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(IceTowerPieces.TFITRoof, feature, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

@@ -27,8 +27,8 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 		super(MushroomTowerPieces.TFMTRoofMush, nbt);
 	}
 
-	public TowerRoofMushroomComponent(TFFeature feature, int i, TowerWingComponent wing, float pHang) {
-		super(MushroomTowerPieces.TFMTRoofMush, feature, i);
+	public TowerRoofMushroomComponent(TFFeature feature, int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
+		super(MushroomTowerPieces.TFMTRoofMush, feature, i, x, y, z);
 		this.height = wing.size;
 		int overhang = (int) (height * pHang);
 		this.size = height + (overhang * 2);

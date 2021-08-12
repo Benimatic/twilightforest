@@ -11,8 +11,8 @@ public class TowerRoofPointyOverhangComponent extends TowerRoofPointyComponent {
 		super(LichTowerPieces.TFLTRPO, nbt);
 	}
 
-	public TowerRoofPointyOverhangComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(LichTowerPieces.TFLTRPO, feature, i, wing);
+	public TowerRoofPointyOverhangComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(LichTowerPieces.TFLTRPO, feature, i, wing, x, y, z);
 
 		// same facing, but it doesn't matter
 		this.setOrientation(wing.getOrientation());

@@ -20,8 +20,8 @@ public class TowerRoofFenceComponent extends TowerRoofComponent {
 		super(LichTowerPieces.TFLTRF, nbt);
 	}
 
-	public TowerRoofFenceComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(LichTowerPieces.TFLTRF, feature, i);
+	public TowerRoofFenceComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(LichTowerPieces.TFLTRF, feature, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

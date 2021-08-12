@@ -20,8 +20,8 @@ public class DarkTowerRoofFourPostComponent extends DarkTowerRoofComponent {
 		super(DarkTowerPieces.TFDTRFP, nbt);
 	}
 
-	public DarkTowerRoofFourPostComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(DarkTowerPieces.TFDTRFP, feature, i, wing);
+	public DarkTowerRoofFourPostComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(DarkTowerPieces.TFDTRFP, feature, i, wing, x, y, z);
 	}
 
 	@Override

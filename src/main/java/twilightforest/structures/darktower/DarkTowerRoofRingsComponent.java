@@ -20,8 +20,8 @@ public class DarkTowerRoofRingsComponent extends DarkTowerRoofComponent {
 		super(DarkTowerPieces.TFDTRR, nbt);
 	}
 
-	public DarkTowerRoofRingsComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(DarkTowerPieces.TFDTRR, feature, i, wing);
+	public DarkTowerRoofRingsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(DarkTowerPieces.TFDTRR, feature, i, wing, x, y, z);
 	}
 
 	@Override

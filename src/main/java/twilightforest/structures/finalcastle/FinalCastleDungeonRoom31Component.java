@@ -42,7 +42,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleDungeonRoom31Component(StructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
-		super(piece, feature, i);
+		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.spawnListIndex = 2; // dungeon monsters
 		this.size = 31;

@@ -15,6 +15,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.HugeMushroomUtil;
@@ -35,7 +36,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	public TrollCaveConnectComponent(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TrollCavePieces.TFTCCon, feature, index);
+		super(TrollCavePieces.TFTCCon, feature, index, x, y, z);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
@@ -260,16 +261,18 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	private StructurePiece findNearbyGarden(StructurePieceAccessor list, BoundingBox boundingBox) {
 
 		BoundingBox largeBox = new BoundingBox(boundingBox.getCenter());
-		largeBox.minX() -= 30;
-		largeBox.minY() -= 30;
-		largeBox.minZ() -= 30;
-		largeBox.maxX() += 30;
-		largeBox.maxY() += 30;
-		largeBox.maxZ() += 30;
+		//largeBox.minX() -= 30;
+		//largeBox.minY() -= 30;
+		//largeBox.minZ() -= 30;
+		//largeBox.maxX() += 30;
+		//largeBox.maxY() += 30;
+		//largeBox.maxZ() += 30;
 
-		for (StructurePiece component : list) {
-			if (component instanceof TrollCaveGardenComponent && component.getBoundingBox().intersects(largeBox)) {
-				return component;
+		if (list instanceof StructureStart<?> start) {
+			for (StructurePiece component : start.getPieces()) {
+				if (component instanceof TrollCaveGardenComponent && component.getBoundingBox().intersects(largeBox)) {
+					return component;
+				}
 			}
 		}
 

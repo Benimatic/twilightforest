@@ -31,8 +31,8 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 		super(FinalCastlePieces.TFFCFTh21, nbt);
 	}
 
-	public FinalCastleFoundation13ComponentThorns(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower) {
-		super(FinalCastlePieces.TFFCFTh21, feature, rand, i, sideTower);
+	public FinalCastleFoundation13ComponentThorns(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(FinalCastlePieces.TFFCFTh21, feature, rand, i, sideTower, x, y, z);
 
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 5, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 5, sideTower.getBoundingBox().maxX() + 5, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 5);
 	}

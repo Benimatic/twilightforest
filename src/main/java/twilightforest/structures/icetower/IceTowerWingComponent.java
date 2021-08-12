@@ -694,7 +694,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	@Override
 	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		int index = this.getGenDepth();
-		tryToFitRoof(list, rand, new IceTowerRoofComponent(getFeatureType(), index + 1, this));
+		tryToFitRoof(list, rand, new IceTowerRoofComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 	}
 
 	/**
@@ -704,7 +704,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		int index = this.getGenDepth();
 		IceTowerBeardComponent beard;
-		beard = new IceTowerBeardComponent(getFeatureType(), index + 1, this);
+		beard = new IceTowerBeardComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
 	}

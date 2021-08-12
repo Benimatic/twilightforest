@@ -28,8 +28,8 @@ public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 		super(LichTowerPieces.TFLTRSF, nbt);
 	}
 
-	public TowerRoofSlabForwardsComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(LichTowerPieces.TFLTRSF, feature, i, wing);
+	public TowerRoofSlabForwardsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(LichTowerPieces.TFLTRSF, feature, i, wing, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

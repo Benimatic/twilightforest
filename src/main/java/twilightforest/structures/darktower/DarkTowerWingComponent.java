@@ -152,16 +152,16 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 			case 0:
 			case 1:
 			default:
-				roof = new DarkTowerRoofAntennaComponent(getFeatureType(), index, this);
+				roof = new DarkTowerRoofAntennaComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 				break;
 			case 2:
-				roof = new DarkTowerRoofCactusComponent(getFeatureType(), index, this);
+				roof = new DarkTowerRoofCactusComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 				break;
 			case 3:
-				roof = new DarkTowerRoofRingsComponent(getFeatureType(), index, this);
+				roof = new DarkTowerRoofRingsComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 				break;
 			case 4:
-				roof = new DarkTowerRoofFourPostComponent(getFeatureType(), index, this);
+				roof = new DarkTowerRoofFourPostComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 				break;
 		}
 
@@ -177,25 +177,25 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		// this is our preferred roof type:
 		if (roofType == null && rand.nextInt(32) != 0) {
-			tryToFitRoof(list, rand, new TowerRoofGableForwardsComponent(getFeatureType(), index + 1, this));
+			tryToFitRoof(list, rand, new TowerRoofGableForwardsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 		}
 
 		// this is for roofs that don't fit.
 		if (roofType == null && rand.nextInt(8) != 0) {
-			tryToFitRoof(list, rand, new TowerRoofSlabForwardsComponent(getFeatureType(), index + 1, this));
+			tryToFitRoof(list, rand, new TowerRoofSlabForwardsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 		}
 
 		// finally, if we're cramped for space, try this
 		if (roofType == null && rand.nextInt(32) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofAttachedSlabComponent(getFeatureType(), index + 1, this);
+			roof = new TowerRoofAttachedSlabComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// last resort
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this);
+			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 	}

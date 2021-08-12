@@ -25,7 +25,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 	}
 
 	public TrollVaultComponent(TFFeature feature, int index, int x, int y, int z) {
-		super(TrollCavePieces.TFTCVa, feature, index);
+		super(TrollCavePieces.TFTCVa, feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// adjust x, y, z

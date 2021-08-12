@@ -23,8 +23,8 @@ public class TowerRoofStairsComponent extends TowerRoofComponent {
 		super(LichTowerPieces.TFLTRSt, nbt);
 	}
 
-	public TowerRoofStairsComponent(TFFeature feature, int i, TowerWingComponent wing) {
-		super(LichTowerPieces.TFLTRSt, feature, i);
+	public TowerRoofStairsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(LichTowerPieces.TFLTRSt, feature, i, x, y, z);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setOrientation(Direction.SOUTH);

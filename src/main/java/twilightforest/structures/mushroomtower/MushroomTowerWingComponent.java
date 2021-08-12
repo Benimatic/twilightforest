@@ -220,11 +220,11 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	@Override
 	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 
-		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F);
+		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		if (!(list.findCollisionPiece(roof.getBoundingBox()) instanceof TowerRoofMushroomComponent)) {
-			roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.0F);
+			roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.0F, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			if (!(list.findCollisionPiece(roof.getBoundingBox()) instanceof TowerRoofMushroomComponent)) {
-				roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 0.6F);
+				roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 0.6F, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			}
 		}
 		list.addPiece(roof);
