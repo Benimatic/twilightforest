@@ -4,6 +4,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -20,8 +21,8 @@ public class EnderBowItem extends BowItem {
 	}
 
 	@SubscribeEvent
-	public static void onHit(ProjectileImpactEvent<AbstractArrow> evt) {
-		AbstractArrow arrow = evt.getProjectile();
+	public static void onHit(ProjectileImpactEvent evt) {
+		Projectile arrow = evt.getProjectile();
 		if (arrow.getOwner() instanceof Player player
 						&& evt.getRayTraceResult() instanceof EntityHitResult
 						&& ((EntityHitResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity living) {

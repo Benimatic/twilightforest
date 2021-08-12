@@ -330,7 +330,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 			if (!hasRestriction()) {
 				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_alpha_yeti.get().defaultBlockState());
 			}
-			remove(true);
+			remove(RemovalReason.DISCARDED);
 		} else {
 			super.checkDespawn();
 		}

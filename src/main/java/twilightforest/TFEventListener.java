@@ -23,10 +23,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
-import net.minecraft.world.entity.projectile.Fireball;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.entity.projectile.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
@@ -669,7 +666,7 @@ public class TFEventListener {
 	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
 		ItemStack heldStack = player.getMainHandItem();
 		Item heldItem = heldStack.getItem();
-		return heldItem == TFItems.giant_pickaxe.get() && heldItem.canHarvestBlock(heldStack, state);
+		return heldItem == TFItems.giant_pickaxe.get()/* && heldItem.canHarvestBlock(heldStack, state)*/;
 	}
 
 	@SubscribeEvent
@@ -871,7 +868,7 @@ public class TFEventListener {
 
 	private static boolean globalParry = !ModList.get().isLoaded("parry");
 
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void arrowParry(ProjectileImpactEvent<AbstractArrow> event) {
 		final AbstractArrow projectile = event.getProjectile();
 
@@ -902,9 +899,9 @@ public class TFEventListener {
 				}
 			}
 		}
-	}
+	}*/
 
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void fireballParry(ProjectileImpactEvent<Fireball> event) {
 		final AbstractHurtingProjectile projectile = event.getProjectile();
 
@@ -938,11 +935,11 @@ public class TFEventListener {
 				}
 			}
 		}
-	}
+	}*/
 
 	@SubscribeEvent
-	public static void throwableParry(ProjectileImpactEvent<ThrowableProjectile> event) {
-		final ThrowableProjectile projectile = event.getProjectile();
+	public static void throwableParry(ProjectileImpactEvent event) {
+		final Projectile projectile = event.getProjectile();
 
 		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
@@ -952,9 +949,7 @@ public class TFEventListener {
 				Entity entity = ((EntityHitResult) event.getRayTraceResult()).getEntity();
 
 
-				if (event.getEntity() != null && entity instanceof LivingEntity) {
-					LivingEntity entityBlocking = (LivingEntity) entity;
-
+				if (event.getEntity() != null && entity instanceof LivingEntity entityBlocking) {
 					if (entityBlocking.isDamageSourceBlocked(new DamageSource("parry_this") {
 						@Override
 						public Vec3 getSourcePosition() {

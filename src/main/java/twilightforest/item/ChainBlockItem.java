@@ -1,22 +1,18 @@
 package twilightforest.item;
 
-import com.google.common.collect.Sets;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.DiggerItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.ToolType;
 import twilightforest.TFSounds;
 import twilightforest.entity.ChainBlockEntity;
 import twilightforest.entity.TFEntities;
@@ -24,8 +20,6 @@ import twilightforest.enums.TwilightItemTier;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ChainBlockItem extends DiggerItem {
 
@@ -109,12 +103,12 @@ public class ChainBlockItem extends DiggerItem {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable Player player, @Nullable BlockState blockState) {
 		if (tool == ToolType.PICKAXE) {
 			return 2;
 		} else {
 			return -1;
 		}
-	}
+	}*/
 }

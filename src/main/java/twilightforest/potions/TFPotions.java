@@ -9,7 +9,7 @@ import twilightforest.TwilightForestMod;
 
 public class TFPotions {
 
-	public static final DeferredRegister<MobEffect> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, TwilightForestMod.ID);
+	public static final DeferredRegister<MobEffect> POTIONS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, TwilightForestMod.ID);
 
 	public static final RegistryObject<MobEffect> frosty = POTIONS.register("frosted",() -> new FrostedPotion(MobEffectCategory.HARMFUL, 0x56CBFD));
 }

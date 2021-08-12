@@ -40,7 +40,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	}
 
 	public void calculateMapCenter(Level world, int x, int y, int z, int mapScale) {
-		super.setOrigin(x, z, mapScale);
+		// FIXME super.setOrigin(x, z, mapScale);
 		this.yCenter = y;
 
 		// when we are in a labyrinth, snap to the LABYRINTH
@@ -66,7 +66,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMazeMapData(Level world, TFMazeMapData data) {
 		if (world.isClientSide) {
-			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
+			// FIXME CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
 		} else {
 			world.getServer().overworld().getDataStorage().set(MapItem.makeKey(world.getFreeMapId()), data);
 		}

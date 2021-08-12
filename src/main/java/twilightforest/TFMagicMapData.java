@@ -102,7 +102,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	}
 
 	// VanillaCopy of super, but adjust origin
-	@Override
+	//@Override
 	public void setOrigin(double x, double z, int mapScale) {
 		// magic maps are offset by 1024 from normal maps so that 0,0 is in the middle of the map containing those coords
 		int mapSize = 128 * (1 << mapScale);
@@ -125,7 +125,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level world, TFMagicMapData data) {
 		if (world.isClientSide) {
-			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
+			//FIXME CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
 		} else {
 			world.getServer().overworld().getDataStorage().set(MapItem.makeKey(world.getFreeMapId()), data);
 		}

@@ -112,6 +112,7 @@ public class TFClientSetup {
         Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().values().forEach(renderer -> attachRenderLayers(renderer));
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(EntityRenderer<T> renderer) {
         if (renderer instanceof LivingEntityRenderer<?, ?> livingEntityRenderer) { // FIXME Porting bandaid
             livingEntityRenderer.addLayer(new ShieldLayer(livingEntityRenderer));

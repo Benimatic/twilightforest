@@ -57,12 +57,12 @@ public class MagicMapPacket {
 					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(Minecraft.getInstance().level, s);
 					if (mapdata == null) {
 						mapdata = new TFMagicMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), Minecraft.getInstance().level.dimension());
-						if (mapitemrenderer.getMapInstanceIfExists(s) != null) {
-							MapItemSavedData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
-							if (mapdata1 instanceof TFMagicMapData) {
-								mapdata = (TFMagicMapData) mapdata1;
-							}
-						}
+						//if (mapitemrenderer.getMapInstanceIfExists(s) != null) {
+						//	MapItemSavedData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
+						//	if (mapdata1 instanceof TFMagicMapData) {
+						//		mapdata = (TFMagicMapData) mapdata1;
+						//	}
+						//}
 
 						TFMagicMapData.registerMagicMapData(Minecraft.getInstance().level, mapdata);
 					}
@@ -85,7 +85,7 @@ public class MagicMapPacket {
 						mapdata.decorations.putAll(saveVanilla);
 					}
 
-					mapitemrenderer.update(mapdata);
+					//mapitemrenderer.update(mapdata);
 				}
 			});
 

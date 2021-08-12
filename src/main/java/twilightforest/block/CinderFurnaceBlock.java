@@ -28,7 +28,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
 import twilightforest.tileentity.CinderFurnaceTileEntity;
 import twilightforest.tileentity.TFTileEntities;
 
@@ -42,7 +41,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	private static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 
 	CinderFurnaceBlock() {
-		super(Properties.of(Material.WOOD).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().strength(7.0F).lightLevel((state) -> 15));
+		super(Properties.of(Material.WOOD)/*.harvestTool(ToolType.PICKAXE)*/.requiresCorrectToolForDrops().strength(7.0F).lightLevel((state) -> 15));
 		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
 	}
 

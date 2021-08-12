@@ -1,5 +1,6 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -107,7 +108,7 @@ public class LichShadowsGoal extends Goal {
 	private void despawnClones() {
 		for (LichEntity nearbyLich : lich.getNearbyLiches()) {
 			if (nearbyLich.isShadowClone()) {
-				nearbyLich.remove(true);
+				nearbyLich.remove(Entity.RemovalReason.DISCARDED);
 			}
 		}
 	}

@@ -29,24 +29,20 @@ public class UpdateTFMultipartPacket {
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		try {
-			buf.writeInt(entity.getId());
-			PartEntity<?>[] parts = entity.getParts();
-			// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
-			if (parts != null) {
-				for (PartEntity<?> part : parts) {
-					if (part instanceof TFPartEntity) {
-						TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
-						tfPart.writeData(buf);
-						boolean dirty = tfPart.getEntityData().isDirty();
-						buf.writeBoolean(dirty);
-						if (dirty)
-							SynchedEntityData.pack(tfPart.getEntityData().packDirty(), buf);
-					}
+		buf.writeInt(entity.getId());
+		PartEntity<?>[] parts = entity.getParts();
+		// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
+		if (parts != null) {
+			for (PartEntity<?> part : parts) {
+				if (part instanceof TFPartEntity) {
+					TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
+					tfPart.writeData(buf);
+					boolean dirty = tfPart.getEntityData().isDirty();
+					buf.writeBoolean(dirty);
+					if (dirty)
+						SynchedEntityData.pack(tfPart.getEntityData().packDirty(), buf);
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -55,29 +51,25 @@ public class UpdateTFMultipartPacket {
 			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					try {
-						Level world = Minecraft.getInstance().level;
-						if (world == null)
+					Level world = Minecraft.getInstance().level;
+					if (world == null)
+						return;
+					Entity ent = world.getEntity(message.id);
+					if (ent != null && ent.isMultipartEntity()) {
+						PartEntity<?>[] parts = ent.getParts();
+						if (parts == null)
 							return;
-						Entity ent = world.getEntity(message.id);
-						if (ent != null && ent.isMultipartEntity()) {
-							PartEntity<?>[] parts = ent.getParts();
-							if (parts == null)
-								return;
-							for (PartEntity<?> part : parts) {
-								if (part instanceof TFPartEntity) {
-									TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
-									tfPart.readData(message.buffer);
-									if (message.buffer.readBoolean()) {
-										List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
-										if (data != null)
-											tfPart.getEntityData().assignValues(data);
-									}
+						for (PartEntity<?> part : parts) {
+							if (part instanceof TFPartEntity) {
+								TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
+								tfPart.readData(message.buffer);
+								if (message.buffer.readBoolean()) {
+									List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
+									if (data != null)
+										tfPart.getEntityData().assignValues(data);
 								}
 							}
 						}
-					} catch (IOException e) {
-						e.printStackTrace();
 					}
 				}
 			});

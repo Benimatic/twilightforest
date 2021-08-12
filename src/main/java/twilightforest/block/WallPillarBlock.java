@@ -22,7 +22,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -53,7 +52,7 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public WallPillarBlock(Material material, double width, double height) {
-        super(Properties.of(material).strength(1.5F, 10.0F).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).noOcclusion(), width, height);
+        super(Properties.of(material).strength(1.5F, 10.0F).requiresCorrectToolForDrops()/*.harvestTool(ToolType.PICKAXE)*/.noOcclusion(), width, height);
         this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 
