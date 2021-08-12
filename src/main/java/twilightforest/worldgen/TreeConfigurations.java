@@ -124,16 +124,16 @@ public final class TreeConfigurations {
             new LeafSpheroidFoliagePlacer(2.5f, 1.5f, ConstantInt.of(0), 2, 0, -0.25f, (int) (LEAF_SHAG_FACTOR * 0.666f)),
             new TwoLayersFeatureSize(1, 0, 1)
     )
-            .maxWaterDepth(6)
+            // .maxWaterDepth(6) // FIXME Verify if this tree will still generate in water
             .decorators(ImmutableList.of(
                     TreeDecorators.FIREFLY,
                     new TreeRootsDecorator(3, 1, 12, new SimpleStateProvider(BlockConstants.MANGROVE_WOOD), (new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
                             .add(BlockConstants.ROOTS, 4)
-                            .add(TFBlocks.liveroot_block.get().defaultBlockState(), 1).build())),
+                            .add(TFBlocks.liveroot_block.get().defaultBlockState(), 1).build()))),
                     LeaveVineDecorator.INSTANCE
                     )
             )
-            .build());
+            .build();
 
     public static final TreeConfiguration DARKWOOD_TREE = new TreeConfiguration.TreeConfigurationBuilder(
             new SimpleStateProvider(BlockConstants.DARKWOOD_LOG),

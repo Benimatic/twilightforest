@@ -1,9 +1,11 @@
 package twilightforest.world.feature;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -14,6 +16,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -48,15 +52,13 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 
 		if (this.generate(contextWorldGenLevel, contextRandom, contextBlockPos, trunkPlacer, leavesPlacer, decorationPlacer, contextConfig) && (!trunkSet.isEmpty() || !leavesSet.isEmpty())) {
 			// TODO Could be fun if we added Decorators
-			/*if (!contextConfig.decorators.isEmpty()) {
+			if (!contextConfig.decorators.isEmpty()) {
 				List<BlockPos> trunkList = Lists.newArrayList(trunkSet);
 				List<BlockPos> leavesList = Lists.newArrayList(leavesSet);
 				trunkList.sort(Comparator.comparingInt(Vec3i::getY));
 				leavesList.sort(Comparator.comparingInt(Vec3i::getY));
-				contextConfig.decorators.forEach((treeDecorator) -> {
-					treeDecorator.place(contextWorldGenLevel, decorationPlacer, contextRandom, trunkList, leavesList);
-				});
-			}*/
+				contextConfig.decorators.forEach(treeDecorator -> treeDecorator.place(contextWorldGenLevel, decorationPlacer, contextRandom, trunkList, leavesList));
+			}
 
 			return BoundingBox.encapsulatingPositions(Iterables.concat(trunkSet, leavesSet, decorationSet)).map(boundingBox -> {
 				DiscreteVoxelShape voxelShape = TreeFeature.updateLeaves(contextWorldGenLevel, boundingBox, trunkSet, decorationSet);
