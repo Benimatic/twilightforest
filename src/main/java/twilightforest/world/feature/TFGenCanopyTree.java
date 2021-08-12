@@ -73,9 +73,9 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
-			this.setLogBlockState(world, trunkPlacer, random, pos.below(), config);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);
 		} else {
-			this.setRootsBlockState(world, decorationPlacer, random, pos.below(), config);
+			FeaturePlacers.placeIfValidRootPos(world, decorationPlacer, random, pos.below(), config.rootsProvider);
 		}
 
 		// roots!
@@ -89,9 +89,9 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	private void makeLeafBlob(BiConsumer<BlockPos, BlockState> leafPlacer, Random random, BlockPos leafPos, TFTreeFeatureConfig config) {
-		FeaturePlacers.makeLeafCircle(leafPlacer, random, leafPos.below(), 3, config.leavesProvider);
-		FeaturePlacers.makeLeafCircle(leafPlacer, random, leafPos, 4, config.leavesProvider);
-		FeaturePlacers.makeLeafCircle(leafPlacer, random, leafPos.above(), 2, config.leavesProvider);
+		FeaturePlacers.placeCircleOdd(leafPlacer, random, leafPos.below(), 3, config.leavesProvider);
+		FeaturePlacers.placeCircleOdd(leafPlacer, random, leafPos, 4, config.leavesProvider);
+		FeaturePlacers.placeCircleOdd(leafPlacer, random, leafPos.above(), 2, config.leavesProvider);
 	}
 
 	/**
@@ -105,21 +105,21 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		if (world.isAreaLoaded(dest, 5)) {
 
 			if (trunk) {
-				FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider.getState(treeRNG, src));
+				FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider, treeRNG);
 			} else {
-				FeaturePlacers.drawBresenhamBranch(this, world, trunkPlacer, treeRNG, src, dest, config);
+				FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, config.branchProvider);
 			}
 
 			// seems to help lighting to place this firefly now
 			if (trunk) {
 				// add a firefly (torch) to the trunk
-				addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+				FeaturePlacers.addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
 			}
 
-			this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.east(), config);
-			this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.west(), config);
-			this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.south(), config);
-			this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.north(), config);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.east(), config.branchProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.west(), config.branchProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.south(), config.branchProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.north(), config.branchProvider);
 //			setBlockAndNotifyAdequately(world, dest.east(), branchState);
 //			setBlockAndNotifyAdequately(world, dest.west(), branchState);
 //			setBlockAndNotifyAdequately(world, dest.south(), branchState);

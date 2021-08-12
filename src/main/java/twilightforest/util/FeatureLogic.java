@@ -12,7 +12,10 @@ import twilightforest.block.TFBlocks;
 import java.util.Random;
 import java.util.function.Predicate;
 
-public class FeatureLogic {
+/**
+ * Feature Utility methods that don't invoke placement. For placement see FeaturePlacers
+ */
+public final class FeatureLogic {
     static final Predicate<BlockState> IS_AIR = BlockBehaviour.BlockStateBase::isAir;
     public static boolean hasEmptyNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
         return worldReader.isStateAtPosition(pos.above(), IS_AIR)

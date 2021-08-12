@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelAccessor;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeaturePlacers;
@@ -14,7 +13,6 @@ import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
@@ -37,7 +35,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// 9 block high trunk
 		for (int dy = 0; dy <= 9; dy++) {
-			setLogBlockState(world, trunkPlacer, random, pos.above(dy), config);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.above(dy), config.trunkProvider);
 		}
 
 		// branches with leaf blocks
@@ -59,9 +57,9 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
-			this.setLogBlockState(world, trunkPlacer, random, pos.below(), config);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);
 		} else {
-			this.setRootsBlockState(world, decorationPlacer, random, pos.below(), config);
+			FeaturePlacers.placeIfValidRootPos(world, decorationPlacer, random, pos.below(), config.rootsProvider);
 		}
 
 		// roots!
@@ -74,8 +72,8 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	protected void putBranchWithLeaves(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
-		setBranchBlockState(world, trunkPlacer, rand, pos, config);
+	protected static void putBranchWithLeaves(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos, config.branchProvider);
 
 		for (int lx = -1; lx <= 1; lx++) {
 			for (int ly = -1; ly <= 1; ly++) {
@@ -83,7 +81,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 					if (!bushy && Math.abs(ly) > 0 && Math.abs(lx) > 0) {
 						continue;
 					}
-					FeaturePlacers.putLeafBlock(leavesPlacer, pos.offset(lx, ly, lz), config.leavesProvider, rand);
+					FeaturePlacers.placeProvidedBlock(leavesPlacer, pos.offset(lx, ly, lz), config.leavesProvider, rand);
 				}
 			}
 		}

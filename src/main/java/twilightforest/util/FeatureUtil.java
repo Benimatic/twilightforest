@@ -5,27 +5,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.material.Material;
-
-import java.util.Set;
 
 // TODO Split into FeatureLogic and FeaturePlacers
 @Deprecated
-public class FeatureUtil {
-
-	/**
-	 * Put a leaf only in spots where leaves can go!
-	 */
-	public static void putLeafBlock(LevelAccessor world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
-		BlockState whatsThere = world.getBlockState(pos);
-
-		if (TreeFeature.isAirOrLeaves(world, pos) && whatsThere.getBlock() != state.getBlock()) {
-			world.setBlock(pos, state, 3);
-			leavespos.add(pos.immutable());
-		}
-	}
-
+public final class FeatureUtil {
 	/**
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 */

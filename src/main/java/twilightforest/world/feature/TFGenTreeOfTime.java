@@ -1,6 +1,7 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.core.Direction;
@@ -13,20 +14,20 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class TFGenTreeOfTime extends TFGenHollowTree {
-
 	public TFGenTreeOfTime(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean generate(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, BoundingBox mbb, TFTreeFeatureConfig config) {
-		int height = 8;
-		int diameter = 1;
+	public boolean generate(WorldGenLevel world, Random random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+		final int height = 8;
+		final int diameter = 1;
 
 		// do we have enough height?
-		if (pos.getY() < 1 || pos.getY() + height + diameter > TFGenerationSettings.MAXHEIGHT) {
+		if (world.isOutsideBuildHeight(pos.getY() + 1) || world.isOutsideBuildHeight(pos.getY() + height + diameter)) {
 			return false;
 		}
 
@@ -39,16 +40,16 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		// make a tree!
 
 		// build the trunk
-		buildTrunk(world, random, pos, trunk, branch, root, diameter, height, mbb, config);
+		buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, diameter, height, config);
 
 		// build the crown
-		buildTinyCrown(world, random, pos, leaves, branch, diameter, height, mbb, config);
+		buildTinyCrown(world, trunkPlacer, leavesPlacer, random, pos, diameter, height, config);
 
 		// 3-5 roots at the bottom
-		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 0, 12, 0.75D, 3, 5, 3, false, mbb, config);
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 0, 12, 0.75D, 3, 5, 3, false, config);
 
 		// several more taproots
-		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, mbb, config);
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, config);
 
 		// add clock block
 		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.time_log_core.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
@@ -60,20 +61,20 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 	 * Build the crown of the tree. This builds a smaller crown, since the large
 	 * ones were causing some performance issues
 	 */
-	protected void buildTinyCrown(LevelAccessor world, Random random, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int diameter, int height, BoundingBox mbb, TFTreeFeatureConfig config) {
-		int crownRadius = 4;
-		int bvar = 1;
+	protected void buildTinyCrown(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
+		final int crownRadius = 4;
+		final int bvar = 1;
 
 		// 3-5 medium branches starting at the bottom of the crown
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height - crownRadius, 0, crownRadius, 0.35D, bvar, bvar + 2, 1, true, mbb, config);
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, height - crownRadius, 0, crownRadius, 0.35D, bvar, bvar + 2, 1, true, config);
 
 		// 3-5 medium branches at the crown middle
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height - (crownRadius / 2), 0, crownRadius, 0.28D, bvar, bvar + 2, 1, true, mbb, config);
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, height - (crownRadius >> 1), 0, crownRadius, 0.28D, bvar, bvar + 2, 1, true, config);
 
 		// 2-4 medium branches at the crown top
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, crownRadius, 0.15D, 2, 4, 0, true, mbb, config);
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, height, 0, crownRadius, 0.15D, 2, 4, 0, true, config);
 
 		// 3-6 medium branches going straight up
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, (crownRadius / 2), 0.05D, bvar, bvar + 2, 0, true, mbb, config);
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, height, 0, crownRadius >> 1, 0.05D, bvar, bvar + 2, 0, true, config);
 	}
 }

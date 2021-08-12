@@ -79,15 +79,15 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 	}
 
 	private void makeLeafBlob(BiConsumer<BlockPos, BlockState> leafPlacer, Random rand, BlockPos leafPos, TFTreeFeatureConfig config) {
-		FeaturePlacers.makeLeafSpheroid(leafPlacer, rand, leafPos, 2, 2, config.leavesProvider);
+		FeaturePlacers.placeSpheroid(leafPlacer, rand, leafPos, 2, 2, config.leavesProvider);
 	}
 
 	private void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
-			this.setLogBlockState(world, trunkPlacer, random, pos.below(), config);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);
 		} else {
-			this.setRootsBlockState(world, decoPlacer, random, pos.below(), config);
+			FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, pos.below(), config.rootsProvider);
 		}
 
 		// roots!
@@ -100,10 +100,10 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 
 	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, Random rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
-			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(0, dy, 0), config);
-			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(1, dy, 0), config);
-			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(0, dy, 1), config);
-			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(1, dy, 1), config);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config.trunkProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 1), config.trunkProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 1), config.trunkProvider);
 		}
 
 		this.leaves.add(pos.offset(0, treeHeight, 0));
@@ -133,15 +133,15 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		}
 
 		if (trunk) {
-			FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider.getState(treeRNG, src));
+			FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider, treeRNG);
 		} else {
-			FeaturePlacers.drawBresenhamBranch(this, world, trunkPlacer, treeRNG, src, dest, config);
+			FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, config.branchProvider);
 		}
 
-		this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.east(), config);
-		this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.west(), config);
-		this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.north(), config);
-		this.setBranchBlockState(world, trunkPlacer, treeRNG, dest.south(), config);
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.east(), config.branchProvider);
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.west(), config.branchProvider);
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.north(), config.branchProvider);
+		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.south(), config.branchProvider);
 
 		this.leaves.add(dest);
 	}

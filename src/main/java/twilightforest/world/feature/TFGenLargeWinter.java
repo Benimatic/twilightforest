@@ -66,7 +66,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 			int radius = leafRadius(treeHeight, dy, leafType);
 
-			FeaturePlacers.makeLeafCircle2(leavesPlacer, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
+			FeaturePlacers.placeCircleEven(leavesPlacer, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
 			this.makePineBranches(world, trunkPlacer, random, pos.above(offGround + treeHeight - dy), radius, config);
 		}
 	}
@@ -113,10 +113,10 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, Random rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
-			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(0, dy, 0), config);
-			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(1, dy, 0), config);
-			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(0, dy, 1), config);
-			this.setLogBlockState(world, trunkPlacer, rand, pos.offset(1, dy, 1), config);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config.trunkProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 1), config.trunkProvider);
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 1), config.trunkProvider);
 		}
 	}
 }

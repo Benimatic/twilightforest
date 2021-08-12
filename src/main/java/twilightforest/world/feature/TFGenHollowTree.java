@@ -162,7 +162,6 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	protected void buildBranchRing(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos pos, int diameter, int branchHeight, int heightVar, int length, double tilt, int minBranches, int maxBranches, int size, boolean leafy, TFTreeFeatureConfig config) {
 		//let's do this!
 		int numBranches = random.nextInt(maxBranches - minBranches) + minBranches;
-		;
 		double branchRotation = 1.0 / (numBranches + 1);
 		double branchOffset = random.nextDouble();
 
@@ -190,8 +189,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	 * This function builds the hollow trunk of the tree
 	 */
 	protected void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
-
-		int hollow = diameter / 2;
+		final int hollow = diameter >> 1;
 
 		// go down 4 squares and fill in extra trunk as needed, in case we're on uneven terrain
 		for (int dx = -diameter; dx <= diameter; dx++) {
@@ -200,18 +198,18 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 					// determine how far we are from the center.
 					int ax = Math.abs(dx);
 					int az = Math.abs(dz);
-					int dist = (int) (Math.max(ax, az) + (Math.min(ax, az) * 0.5));
+					int dist = Math.max(ax, az) + (Math.min(ax, az) >> 1);
 
 					if (dist <= diameter) {
 						BlockPos dPos = pos.offset(dx, dy, dz);
 						if (FeatureUtil.hasAirAround(world, dPos)) {
 							if (dist > hollow) {
-								this.setLogBlockState(world, trunkPlacer, random, dPos, config);
+								FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, config.trunkProvider);
 							} else {
-								this.setBranchBlockState(world, trunkPlacer, random, dPos, config);
+								FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, config.branchProvider);
 							}
 						} else {
-							this.setRootsBlockState(world, decoPlacer, random, dPos, config);
+							FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, config.rootsProvider);
 						}
 					}
 				}
@@ -230,7 +228,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 					// make a trunk!
 					if (dist <= diameter && dist > hollow) {
-						setLogBlockState(world, trunkPlacer, random, dPos, config);
+						FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, config.trunkProvider);
 					}
 
 					// fill it with lava!
@@ -263,7 +261,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	protected void makeMedBranch(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos src, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
-		FeaturePlacers.drawBresenhamBranch(this, world, trunkPlacer, random, src, dest, config);
+		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, config.branchProvider);
 
 		// with leaves!
 
@@ -280,7 +278,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			*/
 
 			// and a blob at the end
-			FeaturePlacers.makeLeafSpheroid(leavesPlacer, random, dest, 2, 2, config.leavesProvider);
+			FeaturePlacers.placeSpheroid(leavesPlacer, random, dest, 2, 2, config.leavesProvider);
 		}
 
 		// and several small branches
@@ -309,11 +307,11 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	protected void makeSmallBranch(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos src, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
-		FeaturePlacers.drawBresenhamBranch(this, world, trunkPlacer, random, src, dest, config);
+		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, config.branchProvider);
 
 		if (leafy) {
 			byte leafRad = (byte) (random.nextInt(2) + 1);
-			FeaturePlacers.makeLeafSpheroid(leavesPlacer, random, dest, leafRad, leafRad, config.leavesProvider);
+			FeaturePlacers.placeSpheroid(leavesPlacer, random, dest, leafRad, leafRad, config.leavesProvider);
 		}
 	}
 
@@ -355,7 +353,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
 		// draw the main branch
-		FeaturePlacers.drawBresenhamBranch(this, world, trunkPlacer, random, src, dest, config);
+		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, config.branchProvider);
 
 		// reinforce it
 		//drawBresehnam(src[0], src[1] + 1, src[2], dest[0], dest[1], dest[2], treeBlock, true);
@@ -364,12 +362,12 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			int vx = (i & 2) == 0 ? 1 : 0;
 			int vy = (i & 1) == 0 ? 1 : -1;
 			int vz = (i & 2) == 0 ? 0 : 1;
-			FeaturePlacers.drawBresenhamBranch(this, world, trunkPlacer, random, src.offset(vx, vy, vz), dest, config);
+			FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src.offset(vx, vy, vz), dest, config.branchProvider);
 		}
 
 		if (leafy) {
 			// add a leaf blob at the end
-			FeaturePlacers.makeLeafSpheroid(leavesPlacer, random, dest.above(), 3, 3, config.leavesProvider);
+			FeaturePlacers.placeSpheroid(leavesPlacer, random, dest.above(), 3, 3, config.leavesProvider);
 		}
 
 		// go about halfway out and make a few medium branches.
@@ -404,7 +402,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	private void makeLeafDungeon(LevelAccessor world, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {
 		// make leaves
-		FeaturePlacers.makeLeafSpheroid(leavesPlacer, random, pos, 4, 4, config.leavesProvider);
+		FeaturePlacers.placeSpheroid(leavesPlacer, random, pos, 4, 4, config.leavesProvider);
 		// wood support
 		FeatureUtil.drawBlob(world, pos, 3, config.branchProvider.getState(random, pos));
 		// air
