@@ -386,7 +386,7 @@ public class TFEntities {
 		event.registerEntityRenderer(bighorn_sheep, m -> new BighornRenderer(m, new BighornModel<>(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP)), new BighornFurLayer(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP_FUR)), 0.7F));
 		event.registerEntityRenderer(deer, m -> new TFGenericMobRenderer<>(m, new DeerModel(m.bakeLayer(TFModelLayers.DEER)), 0.7F, "wilddeer.png"));
 		event.registerEntityRenderer(redcap, m -> new TFBipedRenderer<>(m, new RedcapModel<>(m.bakeLayer(TFModelLayers.REDCAP)), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_INNER)), new HumanoidModel<>(m.bakeLayer(TFModelLayers.REDCAP_ARMOR_OUTER)), 0.4F, "redcap.png"));
-		event.registerEntityRenderer(skeleton_druid, m -> new TFBipedRenderer<>(m, new SkeletonDruidModel(m.bakeLayer(TFModelLayers.SKELETON_DRUID)), new SkeletonDruidModel(m.bakeLayer(ModelLayers.SKELETON_OUTER_ARMOR)), new SkeletonDruidModel(m.bakeLayer(ModelLayers.SKELETON_INNER_ARMOR)), 0.5F, "skeletondruid.png"));
+		event.registerEntityRenderer(skeleton_druid, m -> new TFBipedRenderer<>(m, new SkeletonDruidModel(m.bakeLayer(TFModelLayers.SKELETON_DRUID)), new SkeletonDruidModel(m.bakeLayer(TFModelLayers.SKELETON_DRUID_OUTER_ARMOR)), new SkeletonDruidModel(m.bakeLayer(TFModelLayers.SKELETON_DRUID_OUTER_ARMOR)), 0.5F, "skeletondruid.png"));
 		event.registerEntityRenderer(hostile_wolf, WolfRenderer::new);
 		event.registerEntityRenderer(wraith, m -> new WraithRenderer(m, new WraithModel(m.bakeLayer(TFModelLayers.WRAITH)), 0.5F));
 		event.registerEntityRenderer(hydra, m -> new HydraRenderer(m, new HydraModel(m.bakeLayer(TFModelLayers.HYDRA)), 4.0F));

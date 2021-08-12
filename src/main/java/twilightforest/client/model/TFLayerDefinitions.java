@@ -43,11 +43,11 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.ARMORED_GIANT, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP, BighornModel::create);
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP_FUR, BighornFurLayer::create);
-		event.registerLayerDefinition(TFModelLayers.BLOCKCHAIN_GOBLIN, BighornFurLayer::create);
-		event.registerLayerDefinition(TFModelLayers.BOAR, BighornFurLayer::create);
-		event.registerLayerDefinition(TFModelLayers.BUNNY, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.BLOCKCHAIN_GOBLIN, BlockChainGoblinModel::create);
+		event.registerLayerDefinition(TFModelLayers.BOAR, BoarModel::create);
+		event.registerLayerDefinition(TFModelLayers.BUNNY, BunnyModel::create);
 		event.registerLayerDefinition(TFModelLayers.CARMINITE_BROODLING, SpiderModel::createSpiderBodyLayer);
-		event.registerLayerDefinition(TFModelLayers.CARMINITE_GOLEM, BighornFurLayer::create);
+		event.registerLayerDefinition(TFModelLayers.CARMINITE_GOLEM, CarminiteGolemModel::create);
 		event.registerLayerDefinition(TFModelLayers.CARMINITE_GHASTGUARD, TFGhastModel::create);
 		event.registerLayerDefinition(TFModelLayers.CARMINITE_GHASTLING, TFGhastModel::create);
 		event.registerLayerDefinition(TFModelLayers.CHAIN, ChainModel::create);
@@ -82,6 +82,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NOOP, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 0, 0));
 		event.registerLayerDefinition(TFModelLayers.PENGUIN, PenguinModel::create);
+		event.registerLayerDefinition(TFModelLayers.PINCH_BEETLE, PinchBeetleModel::create);
 		event.registerLayerDefinition(TFModelLayers.PROTECTION_BOX, () -> LayerDefinition.create(ProtectionBoxModel.createMesh(), 16, 16));
 		event.registerLayerDefinition(TFModelLayers.QUEST_RAM, QuestRamModel::create);
 		event.registerLayerDefinition(TFModelLayers.RAVEN, RavenModel::create);
@@ -89,6 +90,8 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.RISING_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.ROVING_CUBE, CubeOfAnnihilationModel::create);
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID, SkeletonDruidModel::create);
+		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID_INNER_ARMOR, () -> SkeletonDruidModel.create(LayerDefinitions.INNER_ARMOR_DEFORMATION));
+		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID_OUTER_ARMOR, () -> SkeletonDruidModel.create(LayerDefinitions.OUTER_ARMOR_DEFORMATION));
 		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE, SlimeBeetleModel::create);
 		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN, SnowQueenModel::create);
 		event.registerLayerDefinition(TFModelLayers.CHAIN_BLOCK, SpikeBlockModel::create);

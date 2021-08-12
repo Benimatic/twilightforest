@@ -15,28 +15,28 @@ public class HydraTrophyModel extends GenericTrophyModel {
 
 	public HydraTrophyModel(ModelPart part) {
 		this.head = part.getChild("head");
-		this.plate = head.getChild("plate");
-		this.mouth = head.getChild("mouth");
+		this.plate = this.head.getChild("plate");
+		this.mouth = this.head.getChild("mouth");
 	}
 
 	public static LayerDefinition createHead() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head",
+		var head = partdefinition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(260, 64).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(236, 128).addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F)
 						.texOffs(356, 70).addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
 				PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("plate",
+		head.addOrReplaceChild("plate",
 				CubeListBuilder.create()
 						.texOffs(388, 0).addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
 						.texOffs(220, 0).addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
 				PartPose.rotation(-0.7853981633974483F, 0.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("mouth",
+		head.addOrReplaceChild("mouth",
 				CubeListBuilder.create()
 						.texOffs(240, 162)
 						.addBox(-15.0F, -2.0F, -24.0F, 30.0F, 8.0F, 24.0F),
@@ -52,11 +52,11 @@ public class HydraTrophyModel extends GenericTrophyModel {
 	}
 	
 	public void openMouthForTrophy(float mouthOpen) {
-		head.yRot = 0;
-		head.xRot = 0;
+		this.head.yRot = 0;
+		this.head.xRot = 0;
 
-		head.xRot -= (float) (mouthOpen * (Math.PI / 12.0));
-		mouth.xRot = (float) (mouthOpen * (Math.PI / 3.0));
+		this.head.xRot -= (float) (mouthOpen * (Math.PI / 12.0));
+		this.mouth.xRot = (float) (mouthOpen * (Math.PI / 3.0));
 	}
 	
 	@Override

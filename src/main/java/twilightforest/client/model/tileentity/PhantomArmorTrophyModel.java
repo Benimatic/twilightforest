@@ -30,34 +30,34 @@ public class PhantomArmorTrophyModel extends GenericTrophyModel {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head",
+		var head = partdefinition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("right_horn_1",
+		var rightHorn = head.addOrReplaceChild("right_horn_1",
 				CubeListBuilder.create()
 						.texOffs(24, 0)
 						.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3),
 				PartPose.offsetAndRotation(-4.0F, -6.5F, 0.0F,
 						0.0F, -25F / (180F / (float) Math.PI), 45F / (180F / (float) Math.PI)));
 
-		partdefinition.addOrReplaceChild("right_horn_2",
+		rightHorn.addOrReplaceChild("right_horn_2",
 				CubeListBuilder.create()
 						.texOffs(54, 16)
 						.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),
 				PartPose.offsetAndRotation(-4.5F, 0.0F, 0.0F,
 						0.0F, -15F / (180F / (float) Math.PI), 45F / (180F / (float) Math.PI)));
 
-		partdefinition.addOrReplaceChild("left_horn_1",
+		var leftHorn = head.addOrReplaceChild("left_horn_1",
 				CubeListBuilder.create()
 						.texOffs(24, 0)
 						.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3),
 				PartPose.offsetAndRotation(4.0F, -6.5F, 0.0F,
 						0.0F, 25F / (180F / (float) Math.PI), -45F / (180F / (float) Math.PI)));
 
-		partdefinition.addOrReplaceChild("left_horn_2",
+		leftHorn.addOrReplaceChild("left_horn_2",
 				CubeListBuilder.create()
 						.texOffs(54, 16)
 						.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),

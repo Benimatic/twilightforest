@@ -2,10 +2,7 @@ package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -21,7 +18,7 @@ public class WraithModel extends HumanoidModel<WraithEntity> {
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
+		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partRoot = mesh.getRoot();
 
 		partRoot.addOrReplaceChild("dress", CubeListBuilder.create()

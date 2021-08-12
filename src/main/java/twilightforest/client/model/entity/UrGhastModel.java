@@ -22,7 +22,7 @@ public class UrGhastModel extends TFGhastModel<UrGhastEntity> {
         ModelPart body = root.getChild("body");
 
         for (int i = 0; i < this.tentacles.length; i++) {
-            this.tentacles[i][0] = body.getChild("tentacle_" + i + "_base");
+            this.tentacles[i][0] = body.getChild("tentacle_" + i + "");
             this.tentacles[i][1] = this.tentacles[i][0].getChild("tentacle_" + i + "_extension");
             this.tentacles[i][2] = this.tentacles[i][1].getChild("tentacle_" + i + "_tip");
         }
@@ -43,7 +43,7 @@ public class UrGhastModel extends TFGhastModel<UrGhastEntity> {
     }
 
     private static void makeTentacle(PartDefinition parent, String name, int iteration) {
-        var tentacleBase = parent.addOrReplaceChild(name + "_base", CubeListBuilder.create()
+        var tentacleBase = parent.addOrReplaceChild(name, CubeListBuilder.create()
                         .addBox(-1.5F, 0.0F, -1.5F, 3.333F, 5.333F, 3.333F),
                 switch (iteration) {
                     case 0 -> PartPose.offset(4.5F, 7, 4.5F);

@@ -7,10 +7,7 @@ import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.util.Mth;
@@ -35,13 +32,16 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
 
         this.horns = root.getChild("horns");
         this.backtorso = root.getChild("back_torso");
+
+        var frontTorso = root.getChild("front_torso");
+
         for(int i = 0; i < 16; i++) {
-            this.segments[i] = root.getChild("segment_" + i);
+            this.segments[i] = frontTorso.getChild("segment_" + i);
         }
     }
 
     public static LayerDefinition create() {
-        MeshDefinition mesh = new MeshDefinition();
+        MeshDefinition mesh = QuadrupedModel.createBodyMesh(16, CubeDeformation.NONE);
         PartDefinition partRoot = mesh.getRoot();
 
         partRoot.addOrReplaceChild("head", CubeListBuilder.create()

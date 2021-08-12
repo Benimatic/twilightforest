@@ -28,9 +28,9 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
     public UpperGoblinKnightModel(ModelPart root) {
         super(root);
 
-        this.breastplate = body.getChild("breastplate");
-        this.spear = rightArm.getChild("spear");
-        this.shield = leftArm.getChild("shield");
+        this.breastplate = this.body.getChild("breastplate");
+        this.spear = this.rightArm.getChild("spear");
+        this.shield = this.leftArm.getChild("shield");
     }
 
     public static LayerDefinition create() {
@@ -51,12 +51,12 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
                         .addBox(-3.5F, -11.0F, -3.5F, 7.0F, 11.0F, 7.0F),
                 PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 18)
                         .addBox(-5.5F, 0.0F, -2.0F, 11.0F, 8.0F, 4.0F),
                 PartPose.offset(0.0F, 12.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("breastplate", CubeListBuilder.create()
+        body.addOrReplaceChild("breastplate", CubeListBuilder.create()
                         .texOffs(64, 0)
                         .addBox(-6.5F, 0.0F, -3.0F, 13.0F, 12.0F, 6.0F),
                 PartPose.offset(0.0F, 11.5F, 0.0F));
@@ -148,11 +148,11 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
             this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
         }
 
-        rightArm.xRot -= (Math.PI * 0.66);
+        this.rightArm.xRot -= (Math.PI * 0.66);
 
         // during swing move arm forward
         if (entity.heavySpearTimer > 0) {
-            rightArm.xRot -= this.getArmRotationDuringSwing(60 - entity.heavySpearTimer) / (180F / (float) Math.PI);
+            this.rightArm.xRot -= this.getArmRotationDuringSwing(60 - entity.heavySpearTimer) / (180F / (float) Math.PI);
         }
 
         this.rightArm.yRot = 0.0F;

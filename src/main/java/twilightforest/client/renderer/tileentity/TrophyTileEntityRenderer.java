@@ -3,17 +3,14 @@ package twilightforest.client.renderer.tileentity;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -58,8 +55,9 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 		trophyList.put(BossVariant.MINOSHROOM, new MinoshroomTrophyModel(set.bakeLayer(TFModelLayers.MINOSHROOM_TROPHY)));
 		trophyList.put(BossVariant.HYDRA, new HydraTrophyModel(set.bakeLayer(TFModelLayers.HYDRA_TROPHY)));
 		trophyList.put(BossVariant.KNIGHT_PHANTOM, new KnightPhantomTrophyModel(set.bakeLayer(TFModelLayers.KNIGHT_PHANTOM_TROPHY)));
-		//FIXME can I do this, or am I gonna have to do something else?
-		trophyList.put(BossVariant.KNIGHT_PHANTOM, new PhantomArmorTrophyModel(set.bakeLayer(TFModelLayers.KNIGHT_PHANTOM_ARMOR_TROPHY)));
+		// FIXME can I do this, or am I gonna have to do something else?
+		//  Yep -D
+		//trophyList.put(BossVariant.KNIGHT_PHANTOM, new PhantomArmorTrophyModel(set.bakeLayer(TFModelLayers.KNIGHT_PHANTOM_ARMOR_TROPHY)));
 		trophyList.put(BossVariant.UR_GHAST, new UrGhastTrophyModel(set.bakeLayer(TFModelLayers.UR_GHAST_TROPHY)));
 		trophyList.put(BossVariant.ALPHA_YETI, new AlphaYetiTrophyModel(set.bakeLayer(TFModelLayers.ALPHA_YETI_TROPHY)));
 		trophyList.put(BossVariant.SNOW_QUEEN, new SnowQueenTrophyModel(set.bakeLayer(TFModelLayers.SNOW_QUEEN_TROPHY)));
@@ -161,7 +159,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 			matrixStackIn.translate(0.0F, -1.5F, 0.0F);
 			trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 			VertexConsumer yetiVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocYeti));
-			((AlphaYetiTrophyModel)trophy).head.render(matrixStackIn, yetiVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			((AlphaYetiTrophyModel)trophy).main.render(matrixStackIn, yetiVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		case QUEST_RAM:
 			matrixStackIn.scale(0.7f, 0.7f, 0.7f);

@@ -24,13 +24,13 @@ public class QuestRamTrophyModel extends GenericTrophyModel {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head",
+		var head = partdefinition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(74, 70).addBox(-6.0F, -4.0F, -10.0F, 12.0F, 8.0F, 15.0F)
 						.texOffs(42, 71).addBox(-6.0F, -7.0F, -6.0F, 12.0F, 3.0F, 11.0F),
 				PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("horns",
+		head.addOrReplaceChild("horns",
 				CubeListBuilder.create()
 						.texOffs(64, 0).addBox(-9.0F, -6.0F, -1.0F, 4.0F, 10.0F, 10.0F)
 						.texOffs(48, 0).addBox(-13.0F, -6.0F, 5.0F, 4.0F, 4.0F, 4.0F)

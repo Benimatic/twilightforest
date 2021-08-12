@@ -24,12 +24,12 @@ public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarmEntity> {
 
 		this.core = this.root.getChild("core");
 
-		this.group1 = this.root.getChild("group_1");
-		this.group2 = this.root.getChild("group_2");
-		this.group3 = this.root.getChild("group_3");
-		this.group4 = this.root.getChild("group_4");
-		this.group5 = this.root.getChild("group_5");
-		this.group6 = this.root.getChild("group_6");
+		this.group1 = this.core.getChild("group_1");
+		this.group2 = this.core.getChild("group_2");
+		this.group3 = this.core.getChild("group_3");
+		this.group4 = this.core.getChild("group_4");
+		this.group5 = this.core.getChild("group_5");
+		this.group6 = this.core.getChild("group_6");
 	}
 
 	public static LayerDefinition create() {
@@ -44,7 +44,7 @@ public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarmEntity> {
 		PartPose offset = PartPose.offset(-0.5F, -2F, -0.5F);
 
 		for (Direction dir : Direction.values()) {
-			addBugsToGroup(dir.ordinal(), core.addOrReplaceChild("group_" + dir.ordinal(), CubeListBuilder.create()
+			addBugsToGroup(dir.ordinal(), core.addOrReplaceChild("group_" + (dir.ordinal() + 1), CubeListBuilder.create()
 							.texOffs(rand.nextInt(28), rand.nextInt(28))
 							.addBox(dir.getStepX() * 11, dir.getStepY() * 11, dir.getStepZ() * 11, 1, 1, 1),
 					offset));

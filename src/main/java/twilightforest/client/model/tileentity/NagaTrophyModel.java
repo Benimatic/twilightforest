@@ -12,7 +12,6 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 //This model doesnt require a legacy as the tongue will only show up in newer versions
 public class NagaTrophyModel extends GenericTrophyModel {
-
 	public ModelPart head;
 	public ModelPart tongue;
 
@@ -25,13 +24,13 @@ public class NagaTrophyModel extends GenericTrophyModel {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head",
+		var head = partdefinition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-8.0F, -16.0F, -8.0F, 16.0F, 16.0F, 16.0F),
 		PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("tongue",
+		head.addOrReplaceChild("tongue",
 				CubeListBuilder.create()
 						.texOffs(42, 0)
 						.addBox(-3.0F, -3.0F, -14.0F, 6.0F, 0.0F, 6.0F),

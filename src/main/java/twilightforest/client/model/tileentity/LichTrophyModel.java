@@ -14,20 +14,20 @@ public class LichTrophyModel extends GenericTrophyModel {
 
 	public LichTrophyModel(ModelPart part) {
 		this.head = part.getChild("head");
-		this.crown = head.getChild("crown");
+		this.crown = this.head.getChild("crown");
 	}
 
 	public static LayerDefinition createHead() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head",
+		var head = partdefinition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4F, -8F, -4F, 8, 8, 8),
 		PartPose.offset(0F, -4F, 0F));
 
-		partdefinition.addOrReplaceChild("crown",
+		head.addOrReplaceChild("crown",
 				CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4F, -8F, -4F, 8, 8, 8, new CubeDeformation(0.5F)),

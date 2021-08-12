@@ -22,7 +22,7 @@ public class TFGhastModel<T extends CarminiteGhastguardEntity> extends Hierarchi
 
 	public TFGhastModel(ModelPart root) {
 		this.root = root;
-		this.body = root.getChild("body");
+		this.body = this.root.getChild("body");
 
 		for (int i = 0; i < this.tentacles.length; i++) {
 			this.tentacles[i] = this.body.getChild("tentacle_" + i);
@@ -40,7 +40,7 @@ public class TFGhastModel<T extends CarminiteGhastguardEntity> extends Hierarchi
 
 		Random rand = new Random(1660L);
 
-		for (int i = 0; i < 9; ++i) {
+		for (int i = 0; i < TFGhastModel.tentacleCount; ++i) {
 			makeTentacle(body, "tentacle_" + i, rand, i);
 		}
 

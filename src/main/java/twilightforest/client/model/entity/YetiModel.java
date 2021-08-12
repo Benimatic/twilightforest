@@ -16,10 +16,11 @@ public class YetiModel<T extends YetiEntity> extends HumanoidModel<T> {
 	public YetiModel(ModelPart root) {
 		super(root);
 
-		this.rightEye = root.getChild("right_eye");
-		this.leftEye = root.getChild("left_eye");
-		this.angryRightEye = root.getChild("angry_right_eye");
-		this.angryLeftEye = root.getChild("angry_left_eye");
+		var body = root.getChild("body");
+		this.rightEye = body.getChild("right_eye");
+		this.leftEye = body.getChild("left_eye");
+		this.angryRightEye = body.getChild("angry_right_eye");
+		this.angryLeftEye = body.getChild("angry_left_eye");
 	}
 
 	public static LayerDefinition create() {

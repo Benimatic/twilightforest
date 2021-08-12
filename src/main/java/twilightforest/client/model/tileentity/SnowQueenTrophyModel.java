@@ -31,25 +31,25 @@ public class SnowQueenTrophyModel extends GenericTrophyModel {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head",
+		var head = partdefinition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.ZERO);
-		partdefinition.addOrReplaceChild("crown_right",
+		head.addOrReplaceChild("crown_right",
 				CubeListBuilder.create()
 						.texOffs(24, 4).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 				PartPose.offsetAndRotation(-4.0F, -6.0F, 0.0F, 0.39269908169872414F, 1.5707963267948966F, 0.0F));
-		partdefinition.addOrReplaceChild("crown_back",
+		head.addOrReplaceChild("crown_back",
 				CubeListBuilder.create()
 						.texOffs(44, 0).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 				PartPose.offsetAndRotation(0.0F, -6.0F, 4.0F, -0.39269908169872414F, 0.0F, 0.0F)
 				);
-		partdefinition.addOrReplaceChild("crown_left",
+		head.addOrReplaceChild("crown_left",
 				CubeListBuilder.create()
 						.texOffs(44, 4).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 				PartPose.offsetAndRotation(4.0F, -6.0F, 0.0F, -0.39269908169872414F, 1.5707963267948966F, 0.0F));
-		partdefinition.addOrReplaceChild("crown_front",
+		head.addOrReplaceChild("crown_front",
 				CubeListBuilder.create()
 						.texOffs(24, 0).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 				PartPose.offsetAndRotation(0.0F, -6.0F, -4.0F, 0.39269908169872414F, 0.0F, 0.0F));

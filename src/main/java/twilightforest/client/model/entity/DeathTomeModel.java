@@ -22,14 +22,14 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
 
         this.book = root.getChild("book");
 
-        this.pagesRight = this.root.getChild("pages_right");
-        this.pagesLeft = this.root.getChild("pages_left");
+        this.pagesRight = this.book.getChild("pages_right");
+        this.pagesLeft = this.book.getChild("pages_left");
 
-        this.flippingPageRight = this.root.getChild("flipping_page_right");
-        this.flippingPageLeft = this.root.getChild("flipping_page_left");
+        this.flippingPageRight = this.book.getChild("flipping_page_right");
+        this.flippingPageLeft = this.book.getChild("flipping_page_left");
 
-        this.coverRight = this.root.getChild("cover_right");
-        this.coverLeft = this.root.getChild("cover_left");
+        this.coverRight = this.book.getChild("cover_right");
+        this.coverLeft = this.book.getChild("cover_left");
 
         ModelPart paperStorm = this.root.getChild("paper_storm");
 

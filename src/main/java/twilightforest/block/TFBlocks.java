@@ -307,14 +307,14 @@ public class TFBlocks {
 	public static final RegistryObject<FlowerPotBlock> potted_green_thorn = BLOCKS.register("potted_green_thorn", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, green_thorns, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 	public static final RegistryObject<FlowerPotBlock> potted_dead_thorn = BLOCKS.register("potted_dead_thorn", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, burnt_thorns, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 
-	public static final WoodType TWILIGHT_OAK = WoodType.create(TwilightForestMod.prefix("twilight_oak").toString());
-	public static final WoodType CANOPY = WoodType.create(TwilightForestMod.prefix("canopy").toString());
-	public static final WoodType MANGROVE = WoodType.create(TwilightForestMod.prefix("mangrove").toString());
-	public static final WoodType DARKWOOD = WoodType.create(TwilightForestMod.prefix("darkwood").toString());
-	public static final WoodType TIMEWOOD = WoodType.create(TwilightForestMod.prefix("timewood").toString());
-	public static final WoodType TRANSFORMATION = WoodType.create(TwilightForestMod.prefix("transformation").toString());
-	public static final WoodType MINING = WoodType.create(TwilightForestMod.prefix("mining").toString());
-	public static final WoodType SORTING = WoodType.create(TwilightForestMod.prefix("sorting").toString());
+	public static final WoodType TWILIGHT_OAK = WoodType.create("twilight_oak");
+	public static final WoodType CANOPY = WoodType.create("canopy");
+	public static final WoodType MANGROVE = WoodType.create("mangrove");
+	public static final WoodType DARKWOOD = WoodType.create("darkwood");
+	public static final WoodType TIMEWOOD = WoodType.create("timewood");
+	public static final WoodType TRANSFORMATION = WoodType.create("transformation");
+	public static final WoodType MINING = WoodType.create("mining");
+	public static final WoodType SORTING = WoodType.create("sorting");
 
 	// TODO chests? boats?
 	public static final RegistryObject<Block> twilight_oak_planks           = BLOCKS.register("twilight_oak_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
