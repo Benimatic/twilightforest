@@ -1,16 +1,18 @@
 package twilightforest.capabilities.shield;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.TFSounds;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
 
 public class ShieldCapabilityHandler implements IShieldCapability {
-
 	private int temporaryShields;
 	private int permanentShields;
 	private LivingEntity host;
@@ -100,5 +102,18 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	private void sendUpdatePacket() {
 		if (host instanceof ServerPlayer)
 			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> host), new UpdateShieldPacket(host, this));
+	}
+
+	@Override
+	public CompoundTag serializeNBT() {
+		CompoundTag tag = new CompoundTag();
+		tag.putInt("tempshields", this.temporaryShieldsLeft());
+		tag.putInt("permshields", this.permanentShieldsLeft());
+		return tag;
+	}
+
+	@Override
+	public void deserializeNBT(CompoundTag tag) {
+		this.initShields(tag.getInt("tempshields"), tag.getInt("permshields"));
 	}
 }

@@ -14,7 +14,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.capabilities.shield.ShieldCapabilityHandler;
-import twilightforest.capabilities.shield.ShieldCapabilityStorage;
 
 import javax.annotation.Nonnull;
 
@@ -28,7 +27,7 @@ public class CapabilityList {
 	}
 
 	public static void registerCapabilities() {
-		CapabilityManager.INSTANCE.register(IShieldCapability.class, new ShieldCapabilityStorage(), ShieldCapabilityHandler::new);
+		CapabilityManager.INSTANCE.register(IShieldCapability.class);
 		MinecraftForge.EVENT_BUS.register(CapabilityList.class);
 	}
 
@@ -37,7 +36,7 @@ public class CapabilityList {
 		if (e.getObject() instanceof LivingEntity) {
 			e.addCapability(IShieldCapability.ID, new ICapabilitySerializable<CompoundTag>() {
 
-				IShieldCapability inst = SHIELDS.getDefaultInstance();
+				IShieldCapability inst = new ShieldCapabilityHandler();
 
 				{
 					inst.setEntity((LivingEntity) e.getObject());
@@ -51,14 +50,13 @@ public class CapabilityList {
 
 				@Override
 				public CompoundTag serializeNBT() {
-					return (CompoundTag) SHIELDS.getStorage().writeNBT(SHIELDS, inst, null);
+					return inst.serializeNBT();
 				}
 
 				@Override
 				public void deserializeNBT(CompoundTag nbt) {
-					SHIELDS.getStorage().readNBT(SHIELDS, inst, null, nbt);
+					inst.deserializeNBT(nbt);
 				}
-
 			});
 		}
 	}
