@@ -20,11 +20,11 @@ import javax.annotation.Nullable;
 
 public class CicadaTileEntityRenderer implements BlockEntityRenderer<CicadaTileEntity> {
 
-	private final CicadaModel cicadaModel = new CicadaModel();
+	private final CicadaModel cicadaModel;
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
 
 	public CicadaTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-		renderer.bakeLayer(TFModelLayers.CICADA);
+		this.cicadaModel = new CicadaModel(renderer.bakeLayer(TFModelLayers.CICADA));
 	}
 
 	@Override

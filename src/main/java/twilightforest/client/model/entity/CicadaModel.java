@@ -13,20 +13,23 @@ import net.minecraft.client.model.geom.ModelPart;
 
 public class CicadaModel extends Model {
 
-	public ModelPart legs;
-	public ModelPart fatbody;
-	public ModelPart skinnybody;
-	public ModelPart eye1;
-	public ModelPart eye2;
-	public ModelPart wings;
+	public ModelPart legs, fatbody, skinnybody, eye1, eye2, wings;
 
-	public CicadaModel() {
+	public CicadaModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);
+
+		this.legs = root.getChild("legs");
+		this.fatbody = root.getChild("fat_body");
+		this.skinnybody = root.getChild("skinny_body");
+		this.eye1 = root.getChild("eye_1");
+		this.eye2 = root.getChild("eye_2");
+		this.wings = root.getChild("wings");
 	}
 
 	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
+
 		partdefinition.addOrReplaceChild("legs",
 				CubeListBuilder.create()
 						.texOffs(0, 21)
@@ -63,11 +66,11 @@ public class CicadaModel extends Model {
 
 	@Override
 	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
-		legs.render(ms, buffer, light, overlay, r, g, b, a);
-		fatbody.render(ms, buffer, light, overlay, r, g, b, a);
-		skinnybody.render(ms, buffer, light, overlay, r, g, b, a);
-		eye1.render(ms, buffer, light, overlay, r, g, b, a);
-		eye2.render(ms, buffer, light, overlay, r, g, b, a);
-		wings.render(ms, buffer, light, overlay, r, g, b, a);
+		this.legs.render(ms, buffer, light, overlay, r, g, b, a);
+		this.fatbody.render(ms, buffer, light, overlay, r, g, b, a);
+		this.skinnybody.render(ms, buffer, light, overlay, r, g, b, a);
+		this.eye1.render(ms, buffer, light, overlay, r, g, b, a);
+		this.eye2.render(ms, buffer, light, overlay, r, g, b, a);
+		this.wings.render(ms, buffer, light, overlay, r, g, b, a);
 	}
 }

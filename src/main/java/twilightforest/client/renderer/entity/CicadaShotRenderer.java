@@ -11,17 +11,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CicadaModel;
 import twilightforest.entity.projectile.CicadaShotEntity;
 
 public class CicadaShotRenderer extends EntityRenderer<CicadaShotEntity> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
-	private final CicadaModel cicadaModel = new CicadaModel();
+	private final CicadaModel cicadaModel;
 
 	public CicadaShotRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 		this.shadowRadius = 0.25F;
+
+		this.cicadaModel = new CicadaModel(manager.bakeLayer(TFModelLayers.CICADA));
 	}
 
 	@Override
@@ -33,8 +36,8 @@ public class CicadaShotRenderer extends EntityRenderer<CicadaShotEntity> {
 		stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.yRot) - 180.0F));
 		stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.xRot)));
 
-		VertexConsumer builder = buffer.getBuffer(cicadaModel.renderType(textureLoc));
-		cicadaModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		VertexConsumer builder = buffer.getBuffer(this.cicadaModel.renderType(textureLoc));
+		this.cicadaModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
 		stack.popPose();
 	}

@@ -23,13 +23,15 @@ import twilightforest.tileentity.MoonwormTileEntity;
 import javax.annotation.Nullable;
 
 public class MoonwormModel extends Model {
-	ModelPart shape1;
-	ModelPart shape2;
-	ModelPart shape3;
-	ModelPart head;
+	private final ModelPart shape1, shape2, shape3, head;
 
-	public MoonwormModel() {
+	public MoonwormModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);
+
+		this.head = root.getChild("head");
+		this.shape1 = root.getChild("shape1");
+		this.shape2 = root.getChild("shape2");
+		this.shape3 = root.getChild("shape3");
 	}
 
 	public static LayerDefinition create() {
@@ -60,35 +62,35 @@ public class MoonwormModel extends Model {
 	}
 
 	public void setRotationAngles(@Nullable MoonwormTileEntity moonworm, float partialTime) {
-		head.y = 7F;
-		shape1.y = 7F;
-		shape2.y = 7F;
-		shape3.y = 7F;
+		this.head.y = 7F;
+		this.shape1.y = 7F;
+		this.shape2.y = 7F;
+		this.shape3.y = 7F;
 
 		if (moonworm != null && moonworm.yawDelay == 0) {
 			float time = (moonworm.desiredYaw - moonworm.currentYaw) - partialTime;
 
 			// moving
-			head.y += Math.min(0, Mth.sin(time / 2));
-			shape1.y += Math.min(0, Mth.sin(time / 2 + 1));
-			shape2.y += Math.min(0, Mth.sin(time / 2 + 2));
-			shape3.y += Math.min(0, Mth.sin(time / 2 + 3));
+			this.head.y += Math.min(0, Mth.sin(time / 2));
+			this.shape1.y += Math.min(0, Mth.sin(time / 2 + 1));
+			this.shape2.y += Math.min(0, Mth.sin(time / 2 + 2));
+			this.shape3.y += Math.min(0, Mth.sin(time / 2 + 3));
 		} else if (moonworm == null && BugModelAnimationHelper.yawWriggleDelay == 0) {
 			float time = (BugModelAnimationHelper.desiredRotation - BugModelAnimationHelper.currentRotation) - partialTime;
 
 			// moving
-			head.y += Math.min(0, Mth.sin(time / 2));
-			shape1.y += Math.min(0, Mth.sin(time / 2 + 1));
-			shape2.y += Math.min(0, Mth.sin(time / 2 + 2));
-			shape3.y += Math.min(0, Mth.sin(time / 2 + 3));
+			this.head.y += Math.min(0, Mth.sin(time / 2));
+			this.shape1.y += Math.min(0, Mth.sin(time / 2 + 1));
+			this.shape2.y += Math.min(0, Mth.sin(time / 2 + 2));
+			this.shape3.y += Math.min(0, Mth.sin(time / 2 + 3));
 		}
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
-		shape1.render(ms, buffer, light, overlay, r, g, b, a);
-		shape2.render(ms, buffer, light, overlay, r, g, b, a);
-		shape3.render(ms, buffer, light, overlay, r, g, b, a);
-		head.render(ms, buffer, light, overlay, r, g, b, a);
+		this.shape1.render(ms, buffer, light, overlay, r, g, b, a);
+		this.shape2.render(ms, buffer, light, overlay, r, g, b, a);
+		this.shape3.render(ms, buffer, light, overlay, r, g, b, a);
+		this.head.render(ms, buffer, light, overlay, r, g, b, a);
 	}
 }

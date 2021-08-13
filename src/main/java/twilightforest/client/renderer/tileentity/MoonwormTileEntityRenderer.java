@@ -23,10 +23,10 @@ import javax.annotation.Nullable;
 public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormTileEntity> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
-	private final MoonwormModel moonwormModel = new MoonwormModel();
+	private final MoonwormModel moonwormModel;
 
 	public MoonwormTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-		renderer.bakeLayer(TFModelLayers.MOONWORM);
+		this.moonwormModel = new MoonwormModel(renderer.bakeLayer(TFModelLayers.MOONWORM));
 	}
 
 	@Override
@@ -58,9 +58,9 @@ public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormT
 		ms.mulPose(Vector3f.YP.rotationDegrees(yaw));
 		ms.scale(1f, -1f, -1f);
 
-		VertexConsumer builder = buffer.getBuffer(moonwormModel.renderType(textureLoc));
-		moonwormModel.setRotationAngles(te, partialTicks);
-		moonwormModel.renderToBuffer(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		VertexConsumer builder = buffer.getBuffer(this.moonwormModel.renderType(textureLoc));
+		this.moonwormModel.setRotationAngles(te, partialTicks);
+		this.moonwormModel.renderToBuffer(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
 		ms.popPose();
 	}
