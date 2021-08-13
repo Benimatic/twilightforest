@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyTileEntity> {
 
-	private final FireflyModel fireflyModel = new FireflyModel();
+	private final FireflyModel fireflyModel;
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
 	private static final RenderType GLOW_LAYER;
 	static {
@@ -50,7 +50,7 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyTil
 	}
 
 	public FireflyTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-		renderer.bakeLayer(TFModelLayers.FIREFLY);
+		this.fireflyModel = new FireflyModel(renderer.bakeLayer(TFModelLayers.FIREFLY));
 	}
 
 	@Override

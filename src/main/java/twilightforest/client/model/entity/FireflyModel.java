@@ -14,8 +14,11 @@ public class FireflyModel extends ListModel<Entity> {
 	//fields
 	public ModelPart legs, fatbody, skinnybody, glow;
 
-	public FireflyModel() {
-
+	public FireflyModel(ModelPart root) {
+		this.legs = root.getChild("legs");
+		this.fatbody = root.getChild("fat_body");
+		this.skinnybody = root.getChild("skinny_body");
+		this.glow = root.getChild("glow");
 	}
 
 	public static LayerDefinition create() {
