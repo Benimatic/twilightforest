@@ -151,8 +151,9 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 			matrixStackIn.scale(1.1F, 1.1F, 1.1F);
 			matrixStackIn.translate(0.0F, 0.05F, 0.0F);
 			trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
-			VertexConsumer phantomArmorVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocKnightPhantomArmor));
-			((PhantomArmorTrophyModel)trophy).head.render(matrixStackIn, phantomArmorVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.0625F);
+			// FIXME
+			//VertexConsumer phantomArmorVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocKnightPhantomArmor));
+			//((PhantomArmorTrophyModel)trophy).head.render(matrixStackIn, phantomArmorVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.0625F);
 			break;
 		case ALPHA_YETI:
 			matrixStackIn.scale(0.2F, 0.2F, 0.2F);
@@ -165,7 +166,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 			matrixStackIn.scale(0.7f, 0.7f, 0.7f);
 			trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 			VertexConsumer ramVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocQuestRam));
-			((HydraTrophyModel)trophy).head.render(matrixStackIn, ramVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			((QuestRamTrophyModel)trophy).head.render(matrixStackIn, ramVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		default:
 			break;

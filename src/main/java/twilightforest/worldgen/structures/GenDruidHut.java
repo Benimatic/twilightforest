@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
@@ -64,7 +65,7 @@ public class GenDruidHut extends Feature<NoneFeatureConfiguration> {
 
 		BlockPos posSnap = chunkpos.getWorldPosition().offset(8, pos.getY() - 1, 8); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
 
-		BlockPos transformedSize = (BlockPos) template.getSize(rotation);
+		Vec3i transformedSize = template.getSize(rotation);
 		int dx = random.nextInt(17 - transformedSize.getX());
 		int dz = random.nextInt(17 - transformedSize.getZ());
 		posSnap.offset(dx, 0, dz);
@@ -156,7 +157,7 @@ public class GenDruidHut extends Feature<NoneFeatureConfiguration> {
 		return true;
 	}
 
-    private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, BlockPos size) {
+    private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, Vec3i size) {
         StatsAccumulator heights = new StatsAccumulator();
 
         for (int dx = 0; dx < size.getX(); dx++) {

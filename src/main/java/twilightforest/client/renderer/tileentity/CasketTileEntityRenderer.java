@@ -47,12 +47,14 @@ import java.util.Locale;
 //Most of the other stuff is derived from ChestTileEntityRenderer
 @OnlyIn(Dist.CLIENT)
 public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
-
     public ModelPart base;
     public ModelPart lid;
 
     public CasketTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-        renderer.bakeLayer(TFModelLayers.KEEPSAKE_CASKET);
+        var root = renderer.bakeLayer(TFModelLayers.KEEPSAKE_CASKET);
+
+        this.base = root.getChild("base");
+        this.lid = root.getChild("lid");
     }
 
     public static LayerDefinition create() {
