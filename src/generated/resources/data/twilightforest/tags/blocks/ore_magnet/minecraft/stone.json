@@ -3,6 +3,7 @@
   "values": [
     "minecraft:gold_ore",
     "minecraft:iron_ore",
+    "minecraft:coal_ore",
     "minecraft:lapis_ore",
     "minecraft:diamond_ore",
     "minecraft:redstone_ore",

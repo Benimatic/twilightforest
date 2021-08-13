@@ -154,36 +154,32 @@ jar {
 }
 
 repositories {
-    /*maven {
+    maven {
         name 'progwm\'s Maven' // JEI + Mantle + TCon
         url 'https://dvs1.progwml6.com/files/maven'
     }
-    maven {
-        name 'tterrag\'s Maven' // CTM
-        url 'https://maven.tterrag.com/'
-    }
-    maven {
-        // Temporary mappings
-        url 'https://www.dogforce-games.com/maven/'
-    }
-    maven {
-        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
-        url 'https://maven.blamejared.com/'
-    }
-    maven {
-        name 'theillusivec4\'s Maven' //Curios
-        url 'https://maven.theillusivec4.top/'
-    }
-    maven {
-        name 'player\'s Maven' // Forestry
-        url 'http://maven.ic2.player.to/'
-    }*/
+    //maven {
+    //    name 'tterrag\'s Maven' // CTM
+    //    url 'https://maven.tterrag.com/'
+    //}
+    //maven {
+    //    name 'Jared\'s Maven' // Immersive Engineering + Patchouli
+    //    url 'https://maven.blamejared.com/'
+    //}
+    //maven {
+    //    name 'theillusivec4\'s Maven' //Curios
+    //    url 'https://maven.theillusivec4.top/'
+    //}
+    //maven {
+    //    name 'player\'s Maven' // Forestry
+    //    url 'http://maven.ic2.player.to/'
+    //}
 }
 
 dependencies {
     // progwml6
-    //compileOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}:api")
-    //runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}")
+    //compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     //implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}")
     //implementation fg.deobf("slimeknights:TConstruct:${minecraft_version}-${tcon_version}")

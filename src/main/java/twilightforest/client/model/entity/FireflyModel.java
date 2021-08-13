@@ -11,6 +11,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 
 public class FireflyModel extends ListModel<Entity> {
+	//fields
+	public ModelPart legs, fatbody, skinnybody, glow;
+
+	public FireflyModel() {
+
+	}
 
 	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
@@ -42,9 +48,9 @@ public class FireflyModel extends ListModel<Entity> {
 	@Override
 	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(
-				legs,
-				fatbody,
-				skinnybody
+				this.legs,
+				this.fatbody,
+				this.skinnybody
 		);
 	}
 
@@ -52,11 +58,4 @@ public class FireflyModel extends ListModel<Entity> {
 	public void setupAnim(Entity entity, float v, float v1, float v2, float v3, float v4) {
 		//super.setRotationAngles(f, f1, f2, f3, f4, f5);
 	}
-
-	//fields
-	public ModelPart legs;
-	public ModelPart fatbody;
-	public ModelPart skinnybody;
-	public ModelPart glow;
-
 }

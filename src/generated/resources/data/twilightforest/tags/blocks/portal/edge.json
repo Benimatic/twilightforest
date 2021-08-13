@@ -1,15 +1,6 @@
 {
   "replace": false,
   "values": [
-    "minecraft:grass_block",
-    "minecraft:mycelium",
-    "minecraft:dirt",
-    "minecraft:coarse_dirt",
-    "minecraft:podzol",
-    "minecraft:farmland",
-    "minecraft:soul_soil",
-    "minecraft:dirt_path",
-    "minecraft:rooted_dirt",
-    "twilightforest:uberous_soil"
+    "#minecraft:dirt"
   ]
 }

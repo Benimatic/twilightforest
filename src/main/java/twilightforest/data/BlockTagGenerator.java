@@ -52,6 +52,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final Tag.Named<Block> TROPHIES = BlockTags.bind(TwilightForestMod.prefix("trophies").toString());
     public static final Tag.Named<Block> FIRE_JET_FUEL = BlockTags.bind(TwilightForestMod.prefix("fire_jet_fuel").toString());
 
+    public static final Tag.Named<Block> COMMON_PROTECTIONS = BlockTags.bind(TwilightForestMod.prefix("common_protections").toString());
     public static final Tag.Named<Block> ANNIHILATION_INCLUSIONS = BlockTags.bind(TwilightForestMod.prefix("annihilation_inclusions").toString());
     public static final Tag.Named<Block> ANTIBUILDER_IGNORES = BlockTags.bind(TwilightForestMod.prefix("antibuilder_ignores").toString());
     public static final Tag.Named<Block> CARMINITE_REACTOR_IMMUNE = BlockTags.bind(TwilightForestMod.prefix("carminite_reactor_immune").toString());
@@ -63,8 +64,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final Tag.Named<Block> ORE_MAGNET_NETHERRACK = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/minecraft/netherrack").toString());
     public static final Tag.Named<Block> ORE_MAGNET_END_STONE = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/minecraft/end_stone").toString());
     public static final Tag.Named<Block> ORE_MAGNET_ROOT = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/" + TwilightForestMod.ID + "/" + TFBlocks.root.getId().getPath()).toString());
-    // TODO 1.17
-    // public static final ITag.INamedTag<Block> ORE_MAGNET_DEEPSLATE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ore_magnet/minecraft/deepslate").toString());
+    public static final Tag.Named<Block> ORE_MAGNET_DEEPSLATE = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/minecraft/deepslate").toString());
 
     public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
         super(generator, TwilightForestMod.ID, exFileHelper);
@@ -166,18 +166,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .add(TFBlocks.potted_twilight_oak_sapling.get(), TFBlocks.potted_canopy_sapling.get(), TFBlocks.potted_mangrove_sapling.get(), TFBlocks.potted_darkwood_sapling.get(), TFBlocks.potted_rainboak_sapling.get())
                 .add(TFBlocks.potted_hollow_oak_sapling.get(), TFBlocks.potted_time_sapling.get(), TFBlocks.potted_trans_sapling.get(), TFBlocks.potted_mine_sapling.get(), TFBlocks.potted_sort_sapling.get())
                 .add(TFBlocks.potted_mayapple.get(), TFBlocks.potted_fiddlehead.get(), TFBlocks.potted_mushgloom.get(), TFBlocks.potted_thorn.get(), TFBlocks.potted_green_thorn.get(), TFBlocks.potted_dead_thorn.get());
+
         tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.fiery_block.get());
         tag(BlockTags.PORTALS).add(TFBlocks.twilight_portal.get());
         tag(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder.get());
-
-        tag(BlockTags.SIGNS).add(TFBlocks.twilight_oak_sign.get(), TFBlocks.twilight_wall_sign.get(),
-                TFBlocks.canopy_sign.get(), TFBlocks.canopy_wall_sign.get(),
-                TFBlocks.mangrove_sign.get(), TFBlocks.mangrove_wall_sign.get(),
-                TFBlocks.darkwood_sign.get(), TFBlocks.darkwood_wall_sign.get(),
-                TFBlocks.time_sign.get(), TFBlocks.time_wall_sign.get(),
-                TFBlocks.trans_sign.get(), TFBlocks.trans_wall_sign.get(),
-                TFBlocks.mine_sign.get(), TFBlocks.mine_wall_sign.get(),
-                TFBlocks.sort_sign.get(), TFBlocks.sort_wall_sign.get());
 
         tag(BlockTags.STANDING_SIGNS).add(TFBlocks.twilight_oak_sign.get(), TFBlocks.canopy_sign.get(),
                 TFBlocks.mangrove_sign.get(), TFBlocks.darkwood_sign.get(),
@@ -210,18 +202,18 @@ public class BlockTagGenerator extends BlockTagsProvider {
         tag(Tags.Blocks.STORAGE_BLOCKS).addTags(STORAGE_BLOCKS_ARCTIC_FUR, STORAGE_BLOCKS_CARMINITE, STORAGE_BLOCKS_FIERY,  STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_STEELEAF);
 
         tag(Tags.Blocks.ORES).addTags(ORES_IRONWOOD, ORES_KNIGHTMETAL);
-        tag(ORES_IRONWOOD);
-        tag(ORES_KNIGHTMETAL);
+        tag(ORES_IRONWOOD); // Intentionally blank
+        tag(ORES_KNIGHTMETAL); // Intentionally blank
 
-        tag(PORTAL_EDGE)
-                .add(Blocks.GRASS_BLOCK, Blocks.MYCELIUM).add(getAllFilteredBlocks(b -> /*b.material == Material.ORGANIC ||*/ b.material == Material.DIRT));
+        tag(BlockTags.DIRT).add(TFBlocks.uberous_soil.get());
+        tag(PORTAL_EDGE).addTags(BlockTags.DIRT);
         // So yes, we could do fluid tags for the portal pool but the problem is that we're -replacing- the block, effectively replacing what would be waterlogged, with the portal block
         // In the future if we can "portal log" blocks then we can re-explore doing it as a fluid
         tag(PORTAL_POOL).add(Blocks.WATER);
         tag(PORTAL_DECO)
                 .addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
                 .add(Blocks.BAMBOO)
-                .add(getAllFilteredBlocks(b -> (b.material == Material.PLANT || b.material == Material.REPLACEABLE_PLANT || b.material == Material.LEAVES) && !plants.contains(b)));
+                .add(getAllMinecraftOrTwilightBlocks(b -> (b.material == Material.PLANT || b.material == Material.REPLACEABLE_PLANT || b.material == Material.LEAVES) && !plants.contains(b)));
 
         tag(SPECIAL_POTS)
                 .add(TFBlocks.potted_thorn.get(), TFBlocks.potted_green_thorn.get(), TFBlocks.potted_dead_thorn.get())
@@ -241,49 +233,67 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
         tag(FIRE_JET_FUEL).add(Blocks.LAVA);
 
+        tag(COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
+                TFBlocks.boss_spawner_naga.get(),
+                TFBlocks.boss_spawner_lich.get(),
+                TFBlocks.boss_spawner_minoshroom.get(),
+                TFBlocks.boss_spawner_hydra.get(),
+                TFBlocks.boss_spawner_knight_phantom.get(),
+                TFBlocks.boss_spawner_ur_ghast.get(),
+                TFBlocks.boss_spawner_alpha_yeti.get(),
+                TFBlocks.boss_spawner_snow_queen.get(),
+                TFBlocks.boss_spawner_final_boss.get(),
+                TFBlocks.stronghold_shield.get(),
+                TFBlocks.vanishing_block.get(),
+                TFBlocks.locked_vanishing_block.get(),
+                TFBlocks.force_field_pink.get(),
+                TFBlocks.force_field_orange.get(),
+                TFBlocks.force_field_green.get(),
+                TFBlocks.force_field_blue.get(),
+                TFBlocks.force_field_purple.get(),
+                TFBlocks.fake_diamond.get(),
+                TFBlocks.fake_gold.get(),
+                TFBlocks.keepsake_casket.get()
+        ).add( // [VanillaCopy] WITHER_IMMUNE - Do NOT include that tag in this tag
+                Blocks.BARRIER,
+                Blocks.BEDROCK,
+                Blocks.END_PORTAL,
+                Blocks.END_PORTAL_FRAME,
+                Blocks.END_GATEWAY,
+                Blocks.COMMAND_BLOCK,
+                Blocks.REPEATING_COMMAND_BLOCK,
+                Blocks.CHAIN_COMMAND_BLOCK,
+                Blocks.STRUCTURE_BLOCK,
+                Blocks.JIGSAW,
+                Blocks.MOVING_PISTON
+        );
+
         // TODO Test behavior with giant blocks for immunity stuffs
-        tag(BlockTags.DRAGON_IMMUNE)
-                .add(TFBlocks.boss_spawner_naga.get(), TFBlocks.boss_spawner_lich.get())
-                .add(TFBlocks.boss_spawner_minoshroom.get(), TFBlocks.boss_spawner_hydra.get())
-                .add(TFBlocks.boss_spawner_knight_phantom.get(), TFBlocks.boss_spawner_ur_ghast.get())
-                .add(TFBlocks.boss_spawner_alpha_yeti.get(), TFBlocks.boss_spawner_snow_queen.get())
-                .add(TFBlocks.boss_spawner_final_boss.get())
-                .add(TFBlocks.force_field_pink.get(), TFBlocks.force_field_orange.get(), TFBlocks.force_field_green.get(), TFBlocks.force_field_blue.get(), TFBlocks.force_field_purple.get())
-                .add(TFBlocks.giant_obsidian.get(), TFBlocks.stronghold_shield.get(), TFBlocks.vanishing_block.get(), TFBlocks.locked_vanishing_block.get(), TFBlocks.keepsake_casket.get());
+        tag(BlockTags.DRAGON_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.giant_obsidian.get());
 
-        tag(BlockTags.WITHER_IMMUNE)
-                .add(TFBlocks.boss_spawner_naga.get(), TFBlocks.boss_spawner_lich.get())
-                .add(TFBlocks.boss_spawner_minoshroom.get(), TFBlocks.boss_spawner_hydra.get())
-                .add(TFBlocks.boss_spawner_knight_phantom.get(), TFBlocks.boss_spawner_ur_ghast.get())
-                .add(TFBlocks.boss_spawner_alpha_yeti.get(), TFBlocks.boss_spawner_snow_queen.get())
-                .add(TFBlocks.boss_spawner_final_boss.get())
-                .add(TFBlocks.force_field_pink.get(), TFBlocks.force_field_orange.get(), TFBlocks.force_field_green.get(), TFBlocks.force_field_blue.get(), TFBlocks.force_field_purple.get())
-                .add(TFBlocks.stronghold_shield.get(), TFBlocks.vanishing_block.get(), TFBlocks.locked_vanishing_block.get(), TFBlocks.keepsake_casket.get());
+        tag(BlockTags.WITHER_IMMUNE).addTag(COMMON_PROTECTIONS);
 
-        tag(CARMINITE_REACTOR_IMMUNE)
-                // [VanillaCopy] WITHER_IMMUNE - Do NOT put that tag in this tag
-                .add(Blocks.BARRIER, Blocks.BEDROCK, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME, Blocks.END_GATEWAY, Blocks.COMMAND_BLOCK, Blocks.REPEATING_COMMAND_BLOCK, Blocks.CHAIN_COMMAND_BLOCK, Blocks.STRUCTURE_BLOCK, Blocks.JIGSAW, Blocks.MOVING_PISTON)
-                .add(TFBlocks.boss_spawner_naga.get(), TFBlocks.boss_spawner_lich.get())
-                .add(TFBlocks.boss_spawner_minoshroom.get(), TFBlocks.boss_spawner_hydra.get())
-                .add(TFBlocks.boss_spawner_knight_phantom.get(), TFBlocks.boss_spawner_ur_ghast.get())
-                .add(TFBlocks.boss_spawner_alpha_yeti.get(), TFBlocks.boss_spawner_snow_queen.get())
-                .add(TFBlocks.boss_spawner_final_boss.get())
-                .add(TFBlocks.force_field_pink.get(), TFBlocks.force_field_orange.get(), TFBlocks.force_field_green.get(), TFBlocks.force_field_blue.get(), TFBlocks.force_field_purple.get())
-                .add(TFBlocks.stronghold_shield.get(), TFBlocks.vanishing_block.get(), TFBlocks.locked_vanishing_block.get(), TFBlocks.keepsake_casket.get());
+        tag(CARMINITE_REACTOR_IMMUNE).addTag(COMMON_PROTECTIONS);
 
-        tag(ANNIHILATION_INCLUSIONS)
+        tag(ANNIHILATION_INCLUSIONS) // This is NOT a blacklist! This is a whitelist
                 .add(TFBlocks.deadrock.get(), TFBlocks.deadrock_cracked.get(), TFBlocks.deadrock_weathered.get())
                 .add(TFBlocks.castle_brick.get(), TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_brick_frame.get(), TFBlocks.castle_brick_mossy.get(), TFBlocks.castle_brick_roof.get(), TFBlocks.castle_brick_worn.get())
                 .add(TFBlocks.castle_rune_brick_blue.get(), TFBlocks.castle_rune_brick_purple.get(), TFBlocks.castle_rune_brick_yellow.get(), TFBlocks.castle_rune_brick_pink.get())
                 .add(TFBlocks.force_field_pink.get(), TFBlocks.force_field_orange.get(), TFBlocks.force_field_green.get(), TFBlocks.force_field_blue.get(), TFBlocks.force_field_purple.get())
                 .add(TFBlocks.brown_thorns.get(), TFBlocks.green_thorns.get());
 
-        tag(ANTIBUILDER_IGNORES)
-                .add(Blocks.BEDROCK, Blocks.REDSTONE_LAMP, Blocks.TNT, Blocks.WATER)
-                .add(TFBlocks.antibuilder.get(), TFBlocks.carminite_builder.get(), TFBlocks.built_block.get())
-                .add(TFBlocks.reactor_debris.get(), TFBlocks.carminite_reactor.get(), TFBlocks.fake_diamond.get(), TFBlocks.fake_gold.get())
-                .add(TFBlocks.vanishing_block.get(), TFBlocks.reappearing_block.get(), TFBlocks.locked_vanishing_block.get(), TFBlocks.ghast_trap.get())
-                .add(TFBlocks.keepsake_casket.get()).addOptional(new ResourceLocation("gravestone:gravestone"));
+        tag(ANTIBUILDER_IGNORES).addTag(COMMON_PROTECTIONS).addOptional(new ResourceLocation("gravestone:gravestone")).add(
+                Blocks.REDSTONE_LAMP,
+                Blocks.TNT,
+                Blocks.WATER,
+                TFBlocks.antibuilder.get(),
+                TFBlocks.carminite_builder.get(),
+                TFBlocks.built_block.get(),
+                TFBlocks.reactor_debris.get(),
+                TFBlocks.carminite_reactor.get(),
+                TFBlocks.reappearing_block.get(),
+                TFBlocks.ghast_trap.get()
+        );
 
         tag(STRUCTURE_BANNED_INTERACTIONS)
                 .addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS).add(Blocks.LEVER)
@@ -293,11 +303,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .addTags(ORE_MAGNET_BLOCK_REPLACE_ORE, Tags.Blocks.DIRT, Tags.Blocks.GRAVEL, Tags.Blocks.SAND);
 
         tag(ORE_MAGNET_BLOCK_REPLACE_ORE)
-                .add(Blocks.STONE, Blocks.NETHERRACK, Blocks.END_STONE, TFBlocks.root.get());
+                .add(Blocks.STONE, Blocks.NETHERRACK, Blocks.END_STONE, TFBlocks.root.get(), Blocks.DEEPSLATE);
 
         // Don't add general ore taglists here, since those will include non-stone ores
         tag(ORE_MAGNET_STONE)
-                .add(Blocks.GOLD_ORE, Blocks.IRON_ORE, /* Blocks.COAL_ORE //No, not you */ Blocks.LAPIS_ORE, Blocks.DIAMOND_ORE, Blocks.REDSTONE_ORE, Blocks.EMERALD_ORE);
+                .add(Blocks.GOLD_ORE, Blocks.IRON_ORE, Blocks.COAL_ORE, Blocks.LAPIS_ORE, Blocks.DIAMOND_ORE, Blocks.REDSTONE_ORE, Blocks.EMERALD_ORE);
 
         tag(ORE_MAGNET_NETHERRACK)
                 .add(Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
@@ -306,48 +316,50 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 // Using a Quark ore as an example filler
                 .addOptional(new ResourceLocation("quark", "biotite_ore"));
 
+        tag(ORE_MAGNET_DEEPSLATE)
+                .add(Blocks.DEEPSLATE_GOLD_ORE, Blocks.DEEPSLATE_IRON_ORE, Blocks.DEEPSLATE_COAL_ORE, Blocks.DEEPSLATE_LAPIS_ORE, Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.DEEPSLATE_REDSTONE_ORE, Blocks.DEEPSLATE_EMERALD_ORE);
+
         tag(ORE_MAGNET_ROOT)
                 .add(TFBlocks.liveroot_block.get());
     }
 
-    private static Block[] getAllFilteredBlocks(Predicate<Block> predicate) {
+    private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
         return ForgeRegistries.BLOCKS.getValues().stream()
                 .filter(b -> b.getRegistryName() != null && (b.getRegistryName().getNamespace().equals(TwilightForestMod.ID) || b.getRegistryName().getNamespace().equals("minecraft")) && predicate.test(b))
                 .toArray(Block[]::new);
     }
 
-    //private static final MutableBoolean bool = new MutableBoolean();
-    //private static final Map<ResourceLocation, ITag<Block>> map = Maps.newHashMap();
-    //private static final Function<ResourceLocation, ITag<Block>> mapGetter = map::get;
     private static final Set<Block> plants;
     static {
         plants = ImmutableSet.<Block>builder().add(
-                Blocks.DANDELION, Blocks.POPPY, Blocks.BLUE_ORCHID, Blocks.ALLIUM, Blocks.AZURE_BLUET, Blocks.RED_TULIP, Blocks.ORANGE_TULIP, Blocks.WHITE_TULIP, Blocks.PINK_TULIP, Blocks.OXEYE_DAISY, Blocks.CORNFLOWER, Blocks.LILY_OF_THE_VALLEY, Blocks.WITHER_ROSE, // BlockTags.FLOWERS
-                Blocks.SUNFLOWER, Blocks.LILAC, Blocks.PEONY, Blocks.ROSE_BUSH, // BlockTags.FLOWERS
-                Blocks.JUNGLE_LEAVES, Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.ACACIA_LEAVES, Blocks.BIRCH_LEAVES, // BlockTags.LEAVES
-                Blocks.OAK_SAPLING, Blocks.SPRUCE_SAPLING, Blocks.BIRCH_SAPLING, Blocks.JUNGLE_SAPLING, Blocks.ACACIA_SAPLING, Blocks.DARK_OAK_SAPLING, // BlockTags.SAPLINGS
-                Blocks.BEETROOTS, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT, Blocks.MELON_STEM, Blocks.PUMPKIN_STEM, // BlockTags.CROPS
-
-                // TF addons of above taglists
-                TFBlocks.oak_sapling.get(), TFBlocks.canopy_sapling.get(), TFBlocks.mangrove_sapling.get(), TFBlocks.darkwood_sapling.get(),
-                TFBlocks.time_sapling.get(), TFBlocks.transformation_sapling.get(), TFBlocks.mining_sapling.get(), TFBlocks.sorting_sapling.get(),
-                TFBlocks.hollow_oak_sapling.get(), TFBlocks.rainboak_sapling.get(),
-                TFBlocks.rainboak_leaves.get(), TFBlocks.oak_leaves.get(), TFBlocks.canopy_leaves.get(), TFBlocks.mangrove_leaves.get(), TFBlocks.dark_leaves.get(),
-                TFBlocks.time_leaves.get(), TFBlocks.transformation_leaves.get(), TFBlocks.mining_leaves.get(), TFBlocks.sorting_leaves.get(),
-                TFBlocks.thorn_leaves.get(), TFBlocks.beanstalk_leaves.get()
+                Blocks.DANDELION, Blocks.POPPY, Blocks.BLUE_ORCHID, Blocks.ALLIUM, Blocks.AZURE_BLUET, Blocks.RED_TULIP, Blocks.ORANGE_TULIP, Blocks.WHITE_TULIP, Blocks.PINK_TULIP, Blocks.OXEYE_DAISY, Blocks.CORNFLOWER, Blocks.LILY_OF_THE_VALLEY, Blocks.WITHER_ROSE, // BlockTags.SMALL_FLOWERS
+                Blocks.SUNFLOWER, Blocks.LILAC, Blocks.PEONY, Blocks.ROSE_BUSH, // BlockTags.TALL_FLOWERS
+                Blocks.FLOWERING_AZALEA_LEAVES, Blocks.FLOWERING_AZALEA, // BlockTags.FLOWERS
+                Blocks.JUNGLE_LEAVES, Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.ACACIA_LEAVES, Blocks.BIRCH_LEAVES, Blocks.AZALEA_LEAVES, Blocks.FLOWERING_AZALEA_LEAVES, // BlockTags.LEAVES
+                Blocks.OAK_SAPLING, Blocks.SPRUCE_SAPLING, Blocks.BIRCH_SAPLING, Blocks.JUNGLE_SAPLING, Blocks.ACACIA_SAPLING, Blocks.DARK_OAK_SAPLING, Blocks.AZALEA, Blocks.FLOWERING_AZALEA, // BlockTags.SAPLINGS
+                Blocks.BEETROOTS, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT, Blocks.MELON_STEM, Blocks.PUMPKIN_STEM // BlockTags.CROPS
+        ).add( // TF addons of above taglists
+                TFBlocks.oak_sapling.get(),
+                TFBlocks.canopy_sapling.get(),
+                TFBlocks.mangrove_sapling.get(),
+                TFBlocks.darkwood_sapling.get(),
+                TFBlocks.time_sapling.get(),
+                TFBlocks.transformation_sapling.get(),
+                TFBlocks.mining_sapling.get(),
+                TFBlocks.sorting_sapling.get(),
+                TFBlocks.hollow_oak_sapling.get(),
+                TFBlocks.rainboak_sapling.get(),
+                TFBlocks.rainboak_leaves.get(),
+                TFBlocks.oak_leaves.get(),
+                TFBlocks.canopy_leaves.get(),
+                TFBlocks.mangrove_leaves.get(),
+                TFBlocks.dark_leaves.get(),
+                TFBlocks.time_leaves.get(),
+                TFBlocks.transformation_leaves.get(),
+                TFBlocks.mining_leaves.get(),
+                TFBlocks.sorting_leaves.get(),
+                TFBlocks.thorn_leaves.get(),
+                TFBlocks.beanstalk_leaves.get()
         ).build();
-    }
-
-    private boolean isExcludedFromTagBuilder(Block block, Tag.Named<Block> tag) {
-		/* FIXME make this work somehow
-		getOrCreateBuilder(tag)
-				.getInternalBuilder()
-				.getProxyStream()
-				.forEach(proxy -> proxy
-						.getEntry()
-						.matches(mapGetter, ForgeRegistries.BLOCKS::getValue, i -> bool.setValue(block.equals(i)))
-				);*/
-
-        return !plants.contains(block);
     }
 }

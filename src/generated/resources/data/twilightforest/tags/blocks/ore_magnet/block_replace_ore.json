@@ -4,6 +4,7 @@
     "minecraft:stone",
     "minecraft:netherrack",
     "minecraft:end_stone",
-    "twilightforest:root"
+    "twilightforest:root",
+    "minecraft:deepslate"
   ]
 }

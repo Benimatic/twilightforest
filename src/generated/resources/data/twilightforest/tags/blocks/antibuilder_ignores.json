@@ -1,7 +1,11 @@
 {
   "replace": false,
   "values": [
-    "minecraft:bedrock",
+    "#twilightforest:common_protections",
+    {
+      "id": "gravestone:gravestone",
+      "required": false
+    },
     "minecraft:redstone_lamp",
     "minecraft:tnt",
     "minecraft:water",
@@ -10,16 +14,7 @@
     "twilightforest:built_block",
     "twilightforest:reactor_debris",
     "twilightforest:carminite_reactor",
-    "twilightforest:fake_diamond",
-    "twilightforest:fake_gold",
-    "twilightforest:vanishing_block",
     "twilightforest:reappearing_block",
-    "twilightforest:locked_vanishing_block",
-    "twilightforest:ghast_trap",
-    "twilightforest:keepsake_casket",
-    {
-      "id": "gravestone:gravestone",
-      "required": false
-    }
+    "twilightforest:ghast_trap"
   ]
 }
