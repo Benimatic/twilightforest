@@ -212,7 +212,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
 
     // Otherwise using an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
     @SuppressWarnings("SameParameterValue")
-    protected static Optional<NoiseGeneratorSettings> makeDimensionSettings(
+    protected static NoiseGeneratorSettings makeDimensionSettings(
             StructureSettings structureSettings,
             NoiseSettings noiseSettings,
             BlockState defaultBlock,
@@ -228,81 +228,6 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
             boolean oreVeinsEnabled,
             boolean noodleCavesEnabled
     ) {
-        try {
-            Constructor<NoiseGeneratorSettings> ctor = NoiseGeneratorSettings.class.getDeclaredConstructor(
-                    StructureSettings.class,
-                    NoiseSettings.class,
-                    BlockState.class,
-                    BlockState.class,
-                    int.class,
-                    int.class,
-                    int.class,
-                    int.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class
-            );
-
-            ctor.setAccessible(true);
-
-            return Optional.of(ctor.newInstance(structureSettings, noiseSettings, defaultBlock, defaultFluid, bedrockRoofPosition, bedrockFloorPosition, seaLevel, minSurfaceLevel, disableMobGeneration, aquifersEnabled, noiseCavesEnabled, deepslateEnabled, oreVeinsEnabled, noodleCavesEnabled));
-        } catch (Exception e) {
-            LOGGER.error("Error constructing `DimensionSettings`!", e);
-
-            return Optional.empty();
-        }
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    @Deprecated
-    protected static Optional<DimensionType> makeDimensionType(
-            OptionalLong fixedTime,
-            boolean hasSkyLight,
-            boolean hasCeiling,
-            boolean ultrawarm,
-            boolean natural,
-            double coordinateScale,
-            boolean hasDragonFight,
-            boolean piglinSafe,
-            boolean bedWorks,
-            boolean respawnAnchorWorks,
-            boolean hasRaids,
-            int logicalHeight,
-            BiomeZoomer magnifier,
-            ResourceLocation infiniburn,
-            ResourceLocation effects,
-            float ambientLight
-    ) {
-        try {
-            Constructor<DimensionType> ctor = DimensionType.class.getDeclaredConstructor(
-                    OptionalLong.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    double.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    boolean.class,
-                    int.class,
-                    BiomeZoomer.class,
-                    ResourceLocation.class,
-                    ResourceLocation.class,
-                    float.class
-            );
-
-            ctor.setAccessible(true);
-
-            return Optional.of(ctor.newInstance(fixedTime, hasSkyLight, hasCeiling, ultrawarm, natural, coordinateScale, hasDragonFight, piglinSafe, bedWorks, respawnAnchorWorks, hasRaids, logicalHeight, magnifier, infiniburn, effects, ambientLight));
-        } catch (Exception e) {
-            LOGGER.error("Error constructing `DimensionType`!", e);
-
-            return Optional.empty();
-        }
+        return new NoiseGeneratorSettings(structureSettings, noiseSettings, defaultBlock, defaultFluid, bedrockRoofPosition, bedrockFloorPosition, seaLevel, minSurfaceLevel, disableMobGeneration, aquifersEnabled, noiseCavesEnabled, deepslateEnabled, oreVeinsEnabled, noodleCavesEnabled);
     }
 }

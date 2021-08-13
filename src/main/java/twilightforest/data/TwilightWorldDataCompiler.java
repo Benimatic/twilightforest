@@ -46,7 +46,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 	}
 
 	private Map<ResourceLocation, LevelStem> getDimensions() {
-		Optional<NoiseGeneratorSettings> forestDimensionSettings = makeDimensionSettings(
+		NoiseGeneratorSettings forestDimensionSettings = makeDimensionSettings(
 				new StructureSettings(Optional.empty(), ImmutableMap.of()),
 				NoiseSettings.create(
 						0,
@@ -65,7 +65,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				-20,
+				Integer.MIN_VALUE,
 				0,
 				31,
 				0,
@@ -78,7 +78,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		);
 
 		// Problem island at /tp 9389.60 90.00 11041.66
-		Optional<NoiseGeneratorSettings> skyDimensionSettings = makeDimensionSettings(
+		NoiseGeneratorSettings skyDimensionSettings = makeDimensionSettings(
 				new StructureSettings(Optional.empty(), ImmutableMap.of()),
 				// https://misode.github.io/worldgen/noise-settings/
 				// So far this looks great! We just need to raise the island levels to sea level. Otherwise is generates flat-flakey islands that really show the roots on dirt bottoms from trees
@@ -99,8 +99,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				-20,
-				-20,
+				Integer.MIN_VALUE,
+				Integer.MAX_VALUE,
 				0,
 				0,
 				false,
@@ -112,13 +112,13 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		);
 
 		// Register the dimension noise settings in the local datagen registry.
-		getOrCreateInRegistry(dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.prefix("forest_noise_config")), forestDimensionSettings::get);
-		getOrCreateInRegistry(dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.prefix("sky_noise_config")), skyDimensionSettings::get);
+		getOrCreateInRegistry(dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.prefix("forest_noise_config")), () -> forestDimensionSettings);
+		getOrCreateInRegistry(dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.prefix("sky_noise_config")), () -> skyDimensionSettings);
 
 		TFDimensions.init();
 		//FIXME: The issue with generated files using 0 as the seed is here. We need to somehow just...not have it here?
-		ChunkGeneratorTwilightBase forestChunkGen = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, forestDimensionSettings::get);
-		NoiseBasedChunkGenerator skyChunkGen = new NoiseBasedChunkGenerator(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, skyDimensionSettings::get);
+		ChunkGeneratorTwilightBase forestChunkGen = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> forestDimensionSettings);
+		NoiseBasedChunkGenerator skyChunkGen = new NoiseBasedChunkGenerator(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> skyDimensionSettings);
 		//NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 4L, () -> WorldGenRegistries.NOISE_SETTINGS.getValueForKey(RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, new ResourceLocation("floating_islands"))));
 		//NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new CheckerboardBiomeProvider(BiomeMaker.BIOMES.values().stream().sorted((o1, o2) -> Float.compare(o1.getDepth(), o2.getDepth())).map(b -> (Supplier<Biome>) () -> b).collect(Collectors.toList()), 2), 4L, skyDimensionSettings::get);
 

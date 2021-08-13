@@ -12,7 +12,7 @@
     },
     "Name": "minecraft:water"
   },
-  "bedrock_roof_position": -20,
+  "bedrock_roof_position": -2147483648,
   "bedrock_floor_position": 0,
   "sea_level": 31,
   "structures": {
