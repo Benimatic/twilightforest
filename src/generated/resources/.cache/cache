@@ -1772,6 +1772,7 @@ a8874d42dc4f9129f48f85a9c211eb4b48a7af84 data/minecraft/tags/blocks/strider_warm
 fc4bf0a61a4e3703fe36f2b84c74e32c7cd2bbc9 data/minecraft/tags/blocks/wooden_slabs.json
 dff03e7943801be09305bd92bd4714211a275e47 data/minecraft/tags/blocks/wooden_stairs.json
 6143aa3040495e5971f91285be1a9dc1c96be9da data/minecraft/tags/blocks/wooden_trapdoors.json
+e88927a4537906dc786b1ea2feeeb2bd8424564c data/minecraft/tags/items/freeze_immune_wearables.json
 0924d0684b8acaccb9daa1c4c9cd233b08c11e97 data/minecraft/tags/items/leaves.json
 7e0b55c221c967b9b9d96fdc65d02dc6d65d40fe data/minecraft/tags/items/logs.json
 13e8b297acb446ab4973b0b0e90ebf3ba946d27a data/minecraft/tags/items/logs_that_burn.json

@@ -143,5 +143,20 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ORES_KNIGHTMETAL).add(TFItems.armor_shard_cluster.get());
 
 		tag(PORTAL_ACTIVATOR).addTag(Tags.Items.GEMS_DIAMOND);
+
+		tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
+				TFItems.fiery_helmet.get(),
+				TFItems.fiery_chestplate.get(),
+				TFItems.fiery_leggings.get(),
+				TFItems.fiery_boots.get(),
+				TFItems.arctic_helmet.get(),
+				TFItems.arctic_chestplate.get(),
+				TFItems.arctic_leggings.get(),
+				TFItems.arctic_boots.get(),
+				TFItems.yeti_helmet.get(),
+				TFItems.yeti_chestplate.get(),
+				TFItems.yeti_leggings.get(),
+				TFItems.yeti_boots.get()
+		);
 	}
 }
