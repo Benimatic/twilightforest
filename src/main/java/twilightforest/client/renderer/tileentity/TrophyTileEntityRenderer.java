@@ -76,13 +76,11 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 		BossVariant variant = ((AbstractTrophyBlock) blockstate.getBlock()).getVariant();
 		GenericTrophyModel trophy = this.trophies.get(variant);
 		matrixStackIn.pushPose();
-		if (((AbstractTrophyBlock) blockstate.getBlock()).getVariant() == BossVariant.HYDRA && flag) {
+		if (((AbstractTrophyBlock) blockstate.getBlock()).getVariant() == BossVariant.HYDRA) {
 			//FIXME: both rotation points are legacy
-			//hydraHead.mouth.setRotationPoint(0.0F, 15.0F, -19.0F);
-			((HydraTrophyModel)trophy).openMouthForTrophy(0.5F);
-		} else {
-			//hydraHead.mouth.setRotationPoint(0.0F, 10.0F, -20.0F);
-			((HydraTrophyModel)trophy).openMouthForTrophy(0.0F);
+			//hydraHead.mouth.setRotationPoint(0.0F, 15.0F, -19.0F); (flag = true)
+			//hydraHead.mouth.setRotationPoint(0.0F, 10.0F, -20.0F); (flag = false)
+			((HydraTrophyModel) trophy).openMouthForTrophy(flag ? 0.5F : 0.0F);
 		}
 		if (((AbstractTrophyBlock) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST) {
 			((UrGhastTrophyModel)trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
