@@ -15,9 +15,7 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.RegistryWriteOps;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.biome.BiomeZoomer;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.StructureSettings;
-import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.levelgen.*;
 import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -210,8 +208,40 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
         return "Twilight World";
     }
 
-    // Otherwise using an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
-    @SuppressWarnings("SameParameterValue")
+    @SuppressWarnings("SameParameterValue") // Keep this because Mojang's params are unmapped
+    protected static NoiseSettings makeNoiseSettings(
+            int minY,
+            int height,
+            NoiseSamplingSettings noiseSamplingSettings,
+            NoiseSlideSettings topSlideSettings,
+            NoiseSlideSettings bottomSlideSettings,
+            int noiseSizeHorizontal,
+            int noiseSizeVertical,
+            double densityFactor,
+            double densityOffset,
+            boolean useSimplexSurfaceNoise,
+            boolean randomDensityOffset,
+            boolean islandNoiseOverride,
+            boolean isAmplified
+    ) {
+        return NoiseSettings.create(
+                minY,
+                height,
+                noiseSamplingSettings,
+                topSlideSettings,
+                bottomSlideSettings,
+                noiseSizeHorizontal,
+                noiseSizeVertical,
+                densityFactor,
+                densityOffset,
+                useSimplexSurfaceNoise,
+                randomDensityOffset,
+                islandNoiseOverride,
+                isAmplified
+        );
+    }
+
+    @SuppressWarnings("SameParameterValue") // Keep this because Mojang's params are unmapped
     protected static NoiseGeneratorSettings makeDimensionSettings(
             StructureSettings structureSettings,
             NoiseSettings noiseSettings,
@@ -228,6 +258,21 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
             boolean oreVeinsEnabled,
             boolean noodleCavesEnabled
     ) {
-        return new NoiseGeneratorSettings(structureSettings, noiseSettings, defaultBlock, defaultFluid, bedrockRoofPosition, bedrockFloorPosition, seaLevel, minSurfaceLevel, disableMobGeneration, aquifersEnabled, noiseCavesEnabled, deepslateEnabled, oreVeinsEnabled, noodleCavesEnabled);
+        return new NoiseGeneratorSettings(
+                structureSettings,
+                noiseSettings,
+                defaultBlock,
+                defaultFluid,
+                bedrockRoofPosition,
+                bedrockFloorPosition,
+                seaLevel,
+                minSurfaceLevel,
+                disableMobGeneration,
+                aquifersEnabled,
+                noiseCavesEnabled,
+                deepslateEnabled,
+                oreVeinsEnabled,
+                noodleCavesEnabled
+        );
     }
 }

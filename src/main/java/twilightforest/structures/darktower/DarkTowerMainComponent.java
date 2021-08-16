@@ -714,7 +714,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 		// cauldron and brewing stand
 		this.setBlockStateRotated(world, Blocks.BREWING_STAND.defaultBlockState(), 13, y + 2, 5, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), 15, y + 2, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), 15, y + 2, 3, rotation, sbb);
 
 		// bookshelves in corner
 		this.fillBlocksRotated(world, sbb, 10, y + 1, 17, 17, y + 4, 17, deco.blockState, rotation);

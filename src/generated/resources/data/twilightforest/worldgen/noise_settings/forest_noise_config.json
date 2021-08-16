@@ -1,11 +1,11 @@
 {
-  "noise_caves_enabled": true,
-  "deepslate_enabled": true,
+  "noise_caves_enabled": false,
+  "deepslate_enabled": false,
   "ore_veins_enabled": true,
   "noodle_caves_enabled": true,
-  "min_surface_level": 0,
+  "min_surface_level": -16,
   "disable_mob_generation": false,
-  "aquifers_enabled": true,
+  "aquifers_enabled": false,
   "default_fluid": {
     "Properties": {
       "level": "0"
@@ -13,30 +13,30 @@
     "Name": "minecraft:water"
   },
   "bedrock_roof_position": -2147483648,
-  "bedrock_floor_position": 0,
-  "sea_level": 31,
+  "bedrock_floor_position": -32,
+  "sea_level": 0,
   "structures": {
     "structures": {}
   },
   "noise": {
-    "simplex_surface_noise": false,
+    "simplex_surface_noise": true,
     "random_density_offset": true,
     "size_vertical": 2,
     "density_factor": 1.0,
-    "density_offset": -0.46875,
+    "density_offset": -0.95,
     "top_slide": {
       "target": -10,
       "size": 3,
       "offset": 0
     },
     "bottom_slide": {
-      "target": -30,
-      "size": 0,
+      "target": 15,
+      "size": 3,
       "offset": 0
     },
     "size_horizontal": 1,
-    "min_y": 0,
-    "height": 128,
+    "min_y": -32,
+    "height": 256,
     "sampling": {
       "xz_scale": 0.9999999814507745,
       "y_scale": 0.9999999814507745,

@@ -3,6 +3,7 @@ package twilightforest.worldgen.structures;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -50,7 +51,7 @@ public class TFGenGraveyard extends Feature<NoneFeatureConfiguration> {
 		super(config);
 	}
 
-	private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, BlockPos size) {
+	private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, Vec3i size) {
 		StatsAccumulator heights = new StatsAccumulator();
 
 		for (int dx = 0; dx < size.getX(); dx++) {
@@ -140,8 +141,8 @@ public class TFGenGraveyard extends Feature<NoneFeatureConfiguration> {
 		Mirror[] mirrors = Mirror.values();
 		Mirror mirror = mirrors[random.nextInt(mirrors.length + 1) % mirrors.length];
 
-		BlockPos transformedSize = (BlockPos) base.getSize(rotation);
-		BlockPos transformedGraveSize = (BlockPos) graves.get(0).getValue().getSize(rotation);
+		Vec3i transformedSize = base.getSize(rotation);
+		Vec3i transformedGraveSize = graves.get(0).getValue().getSize(rotation);
 
 		ChunkPos chunkpos = new ChunkPos(pos.offset(-8, 0, -8));
 		ChunkPos chunkendpos = new ChunkPos(pos.offset(-8, 0, -8).offset(transformedSize));
@@ -156,8 +157,8 @@ public class TFGenGraveyard extends Feature<NoneFeatureConfiguration> {
 		}
 
 		BlockPos placementPos = base.getZeroPositionWithTransform(startPos, mirror, rotation).offset(1, -1, 0);
-		BlockPos size = transformedSize.offset(-1, 0, -1);
-		BlockPos graveSize = transformedGraveSize.offset(-1, 0, -1);
+		Vec3i size = transformedSize.offset(-1, 0, -1);
+		Vec3i graveSize = transformedGraveSize.offset(-1, 0, -1);
 
 		base.placeInWorld(world, placementPos, placementPos, placementsettings.addProcessor(new WebTemplateProcessor(0.2F)), random, flags);
 		List<StructureTemplate.StructureBlockInfo> data = new ArrayList<>(base.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));

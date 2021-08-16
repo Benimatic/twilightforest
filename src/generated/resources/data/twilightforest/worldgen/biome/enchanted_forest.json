@@ -20,23 +20,7 @@
     "water_color": 4159204,
     "water_fog_color": 329011
   },
-  "surface_builder": {
-    "config": {
-      "top_material": {
-        "Properties": {
-          "snowy": "false"
-        },
-        "Name": "minecraft:grass_block"
-      },
-      "under_material": {
-        "Name": "minecraft:dirt"
-      },
-      "underwater_material": {
-        "Name": "minecraft:sand"
-      }
-    },
-    "type": "twilightforest:default"
-  },
+  "surface_builder": "minecraft:ocean_sand",
   "carvers": {
     "air": [
       {

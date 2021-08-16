@@ -435,7 +435,7 @@ public abstract class BiomeHelper {
 
     public static BiomeGenerationSettings.Builder defaultGenSettingBuilder() {
         BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .surfaceBuilder(twilightforest.worldgen.ConfiguredSurfaceBuilders.CONFIGURED_TF_DEFAULT);
+                .surfaceBuilder(SurfaceBuilders.OCEAN_SAND);
 
         BiomeDefaultFeatures.addDefaultOres(biome);
         BiomeDefaultFeatures.addSwampClayDisk(biome);
