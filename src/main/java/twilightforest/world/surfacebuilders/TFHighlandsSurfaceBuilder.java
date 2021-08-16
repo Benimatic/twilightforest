@@ -26,6 +26,6 @@ public class TFHighlandsSurfaceBuilder extends TFDefaultSurfaceBuilder {
 			topBlock = Blocks.PODZOL.defaultBlockState();
 		}
 
-		this.genTwilightBiomeTerrain(rand, primer, biome, x, z, startheight, noiseVal, defaultBlock, defaultFluid, topBlock, fillerBlock, config.getUnderwaterMaterial(), sealevel);
+		this.apply(rand, primer, biome, x, z, startheight, noiseVal, defaultBlock, defaultFluid, topBlock, fillerBlock, config.getUnderwaterMaterial(), sealevel, minSurfaceLevel);
 	}
 }
