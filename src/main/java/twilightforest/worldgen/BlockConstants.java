@@ -67,6 +67,7 @@ public final class BlockConstants {
     public static final BlockState MYCELIUM = Blocks.MYCELIUM.defaultBlockState();
     public static final BlockState UBEROUS_SOIL = TFBlocks.uberous_soil.get().defaultBlockState();
     public static final BlockState DIRT = Blocks.DIRT.defaultBlockState();
+    public static final BlockState SAND = Blocks.SAND.defaultBlockState();
     public static final BlockState STONE = Blocks.STONE.defaultBlockState();
     public static final BlockState GRASS_BLOCK = Blocks.GRASS_BLOCK.defaultBlockState();
     public static final BlockState PODZOL = Blocks.PODZOL.defaultBlockState();

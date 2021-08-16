@@ -10,10 +10,7 @@
       "Name": "minecraft:coarse_dirt"
     },
     "underwater_material": {
-      "Properties": {
-        "snowy": "false"
-      },
-      "Name": "minecraft:grass_block"
+      "Name": "minecraft:sand"
     }
   },
   "type": "twilightforest:highlands"

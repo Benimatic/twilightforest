@@ -5,11 +5,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.surfacebuilders.DefaultSurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 
 import java.util.Random;
 
-public class TFHighlandsSurfaceBuilder extends TFDefaultSurfaceBuilder {
+public class TFHighlandsSurfaceBuilder extends DefaultSurfaceBuilder {
 
 	public TFHighlandsSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> config) {
 		super(config);
@@ -18,7 +19,6 @@ public class TFHighlandsSurfaceBuilder extends TFDefaultSurfaceBuilder {
 	@Override
 	public void apply(Random rand, ChunkAccess primer, Biome biome, int x, int z, int startheight, double noiseVal, BlockState defaultBlock, BlockState defaultFluid, int sealevel, int minSurfaceLevel, long seed, SurfaceBuilderBaseConfiguration config) {
 		BlockState topBlock = config.getTopMaterial();
-		BlockState fillerBlock = config.getUnderMaterial();
 
 		if (noiseVal > 1.75D) {
 			topBlock = Blocks.COARSE_DIRT.defaultBlockState();
@@ -26,6 +26,6 @@ public class TFHighlandsSurfaceBuilder extends TFDefaultSurfaceBuilder {
 			topBlock = Blocks.PODZOL.defaultBlockState();
 		}
 
-		this.apply(rand, primer, biome, x, z, startheight, noiseVal, defaultBlock, defaultFluid, topBlock, fillerBlock, config.getUnderwaterMaterial(), sealevel, minSurfaceLevel);
+		this.apply(rand, primer, biome, x, z, startheight, noiseVal, defaultBlock, defaultFluid, topBlock, config.getUnderMaterial(), config.getUnderwaterMaterial(), sealevel, minSurfaceLevel);
 	}
 }

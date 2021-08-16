@@ -7,7 +7,7 @@
       "Name": "twilightforest:deadrock_cracked"
     },
     "underwater_material": {
-      "Name": "twilightforest:deadrock"
+      "Name": "twilightforest:deadrock_cracked"
     }
   },
   "type": "twilightforest:plateau"
