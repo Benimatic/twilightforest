@@ -3,6 +3,7 @@ package twilightforest.structures.start;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -141,11 +142,11 @@ public class TFStructure<C extends FeatureConfiguration> extends StructureFeatur
 		}
 
 		@Override
-		public void generatePieces(RegistryAccess p_230364_1_, ChunkGenerator p_230364_2_, StructureManager p_230364_3_, ChunkPos p_230364_4_, Biome p_230364_5_, C p_230364_6_, LevelHeightAccessor p_230364_7_) {
+		public void generatePieces(RegistryAccess registryAccess, ChunkGenerator chunkGenerator, StructureManager structureManager, ChunkPos chunkPos, Biome biome, C config, LevelHeightAccessor levelHeightAccessor) {
 			boolean dontCenter = feature == TFFeature.LICH_TOWER || feature == TFFeature.TROLL_CAVE || feature == TFFeature.YETI_CAVE;
-			int x = (p_230364_4_.x << 4) + (dontCenter ? 0 : 7);
-			int z = (p_230364_4_.z << 4) + (dontCenter ? 0 : 7);
-			int y = TFGenerationSettings.SEALEVEL + 1;
+			int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
+			int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
+			int y = chunkGenerator.getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
 			StructurePiece start = feature.provideStructureStart(random, x, y, z);
 			if(start == null)
 				return;
@@ -163,9 +164,9 @@ public class TFStructure<C extends FeatureConfiguration> extends StructureFeatur
 		}
 
 		@Override
-		public void generatePieces(RegistryAccess p_230364_1_, ChunkGenerator p_230364_2_, StructureManager p_230364_3_, ChunkPos p_230364_4_, Biome p_230364_5_, C p_230364_6_, LevelHeightAccessor p_230364_7_) {
-			super.generatePieces(p_230364_1_, p_230364_2_, p_230364_3_, p_230364_4_, p_230364_5_, p_230364_6_, p_230364_7_);
-			pieces.stream().filter(piece -> piece instanceof TFStructureComponentTemplate).map(TFStructureComponentTemplate.class::cast).forEach(piece -> piece.setup(p_230364_3_));
+		public void generatePieces(RegistryAccess registryAccess, ChunkGenerator chunkGenerator, StructureManager structureManager, ChunkPos chunkPos, Biome biome, C config, LevelHeightAccessor levelHeightAccessor) {
+			super.generatePieces(registryAccess, chunkGenerator, structureManager, chunkPos, biome, config, levelHeightAccessor);
+			pieces.stream().filter(piece -> piece instanceof TFStructureComponentTemplate).map(TFStructureComponentTemplate.class::cast).forEach(piece -> piece.setup(structureManager));
 			createBoundingBox();
 		}
 

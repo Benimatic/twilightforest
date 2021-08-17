@@ -1,32 +1,31 @@
 package twilightforest.world.surfacebuilders;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.surfacebuilders.DefaultSurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
-import twilightforest.block.TFBlocks;
-import twilightforest.worldgen.BlockConstants;
 
 import java.util.Random;
 
-// [VanillaCopy] of DefaultSurfaceBuilder.apply
-public class DeadrockFillingSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderBaseConfiguration> {
-	public DeadrockFillingSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> config) {
+// [VanillaCopy] of DefaultSurfaceBuilder
+public class FillingSurfaceBuilder extends SurfaceBuilder<FillingSurfaceBuilder.FillingSurfaceBuilderConfig> {
+	public FillingSurfaceBuilder(Codec<FillingSurfaceBuilderConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public void apply(Random random, ChunkAccess chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minSurfaceLevel, long seed, SurfaceBuilderBaseConfiguration config) {
-		this.apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, config.getTopMaterial(), config.getUnderMaterial(), config.getUnderwaterMaterial(), seaLevel, minSurfaceLevel);
-	}
+	public void apply(Random random, ChunkAccess chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minSurfaceLevel, long seed, FillingSurfaceBuilderConfig config) {
+		final BlockState topState = config.getTopMaterial();
+		final BlockState midState = config.getUnderMaterial();
+		final BlockState underWaterState = config.getUnderwaterMaterial();
+		final BlockState filler = config.underFiller;
 
-	protected void apply(Random random, ChunkAccess chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, BlockState topState, BlockState midState, BlockState underWaterState, int seaLevel, int minSurfaceLevel) {
-		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+		final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
 		int noiseHeight = (int)(noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
 		if (noiseHeight == 0) {
@@ -47,7 +46,7 @@ public class DeadrockFillingSurfaceBuilder extends SurfaceBuilder<SurfaceBuilder
 						} else if (y == seaLevel - 1) {
 							newState = biomeIn.getTemperature(mutablePos) < 0.15F ? Blocks.ICE.defaultBlockState() : defaultFluid;
 						} else if (y >= seaLevel - (7 + noiseHeight)) {
-							newState = BlockConstants.DEADROCK;
+							newState = filler;
 						} else {
 							newState = underWaterState;
 						}
@@ -82,7 +81,7 @@ public class DeadrockFillingSurfaceBuilder extends SurfaceBuilder<SurfaceBuilder
 						} else if (y >= seaLevel - (7 + noiseHeight)) {
 							newTopState = newMidState;
 						} else {
-							newMidState = BlockConstants.DEADROCK;
+							newMidState = filler;
 							newTopState = underWaterState;
 						}
 
@@ -97,11 +96,26 @@ public class DeadrockFillingSurfaceBuilder extends SurfaceBuilder<SurfaceBuilder
 					}
 					// Added, for replacing the default block downwards
 					else {
-						chunkIn.setBlockState(mutablePos, BlockConstants.DEADROCK, false);
+						chunkIn.setBlockState(mutablePos, filler, false);
 					}
 				}
 			}
 		}
+	}
 
+	public static class FillingSurfaceBuilderConfig extends SurfaceBuilderBaseConfiguration {
+		public static final Codec<FillingSurfaceBuilderConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				BlockState.CODEC.fieldOf("top_material").forGetter(SurfaceBuilderBaseConfiguration::getTopMaterial),
+				BlockState.CODEC.fieldOf("under_material").forGetter(SurfaceBuilderBaseConfiguration::getUnderMaterial),
+				BlockState.CODEC.fieldOf("underwater_material").forGetter(SurfaceBuilderBaseConfiguration::getUnderwaterMaterial),
+				BlockState.CODEC.fieldOf("ground_filler").forGetter(conf -> conf.underFiller)
+		).apply(instance, FillingSurfaceBuilderConfig::new));
+
+		private final BlockState underFiller;
+
+		public FillingSurfaceBuilderConfig(BlockState topMaterial, BlockState underMaterial, BlockState underwaterMaterial, BlockState underFiller) {
+			super(topMaterial, underMaterial, underwaterMaterial);
+			this.underFiller = underFiller;
+		}
 	}
 }

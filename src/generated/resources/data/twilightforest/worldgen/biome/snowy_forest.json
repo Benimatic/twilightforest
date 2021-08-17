@@ -17,20 +17,7 @@
     "water_color": 4159204,
     "water_fog_color": 329011
   },
-  "surface_builder": {
-    "config": {
-      "top_material": {
-        "Name": "minecraft:snow_block"
-      },
-      "under_material": {
-        "Name": "minecraft:snow_block"
-      },
-      "underwater_material": {
-        "Name": "minecraft:packed_ice"
-      }
-    },
-    "type": "minecraft:default"
-  },
+  "surface_builder": "twilightforest:heavy_snow",
   "carvers": {
     "air": [
       {

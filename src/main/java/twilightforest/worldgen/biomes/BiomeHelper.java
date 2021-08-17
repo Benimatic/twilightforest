@@ -9,8 +9,8 @@ import net.minecraft.data.worldgen.SurfaceBuilders;
 import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
 import twilightforest.worldgen.ConfiguredFeatures;
+import twilightforest.worldgen.ConfiguredSurfaceBuilders;
 import twilightforest.worldgen.ConfiguredWorldCarvers;
-import twilightforest.worldgen.TwilightFeatures;
 
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
@@ -240,7 +240,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder glacierGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .surfaceBuilder(SurfaceBuilders.GRASS);
+                .surfaceBuilder(ConfiguredSurfaceBuilders.CONFIGURED_GLACIER);
 		addCaves(biome);
 		return biome;
 	}

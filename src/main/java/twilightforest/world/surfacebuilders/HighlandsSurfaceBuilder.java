@@ -10,9 +10,9 @@ import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConf
 
 import java.util.Random;
 
-public class TFHighlandsSurfaceBuilder extends DefaultSurfaceBuilder {
+public class HighlandsSurfaceBuilder extends DefaultSurfaceBuilder {
 
-	public TFHighlandsSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> config) {
+	public HighlandsSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> config) {
 		super(config);
 	}
 

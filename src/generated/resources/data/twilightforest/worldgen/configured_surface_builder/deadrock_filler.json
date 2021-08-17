@@ -8,6 +8,9 @@
     },
     "underwater_material": {
       "Name": "twilightforest:deadrock_cracked"
+    },
+    "ground_filler": {
+      "Name": "twilightforest:deadrock"
     }
   },
   "type": "twilightforest:plateau"

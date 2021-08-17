@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -62,51 +61,17 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 		WorldGenRegion primer = (WorldGenRegion) world;
 
 		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
-		// FIXME Can we use Surface Builders for these instead?
-		addDarkForestCanopy2(primer);
+		addDarkForestCanopy(primer);
 
-		addGlaciers(primer);
+		// Can we
 		deformTerrainForFeature(primer);
-	}
-
-	private void addGlaciers(WorldGenRegion primer) {
-
-		BlockState glacierBase = Blocks.GRAVEL.defaultBlockState();
-		BlockState glacierMain = TFConfig.COMMON_CONFIG.PERFORMANCE.glacierPackedIce.get() ? Blocks.PACKED_ICE.defaultBlockState() : Blocks.ICE.defaultBlockState();
-		BlockState glacierTop = Blocks.ICE.defaultBlockState();
-
-		for (int z = 0; z < 16; z++) {
-			for (int x = 0; x < 16; x++) {
-				Biome biome = primer.getBiome(getPos(primer).getWorldPosition().offset(x, 0, z));
-				if (!BiomeKeys.GLACIER.location().equals(biome.getRegistryName())) continue;
-
-				// find the (current) top block
-				int gBase = -1;
-				for (int y = 127; y >= 0; y--) {
-					Block currentBlock = primer.getBlockState(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y)).getBlock();
-					if (currentBlock == Blocks.STONE) {
-						gBase = y + 1;
-						primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), glacierBase, 3);
-						break;
-					}
-				}
-
-				// raise the glacier from that top block
-				int gHeight = 32;
-				int gTop = Math.min(gBase + gHeight, 127);
-
-				for (int y = gBase; y < gTop; y++) {
-					primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), y), glacierMain, 3);
-				}
-				primer.setBlock(withY(getPos(primer).getWorldPosition().offset(x, 0, z), gTop), glacierTop, 3);
-			}
-		}
 	}
 
 	/**
 	 * Adds dark forest canopy.  This version uses the "unzoomed" array of biomes used in land generation to determine how many of the nearby blocks are dark forest
 	 */
-	private void addDarkForestCanopy2(WorldGenRegion primer) {
+	// Currently this is too sophisicated to be made into a SurfaceBuilder, it looks like
+	private void addDarkForestCanopy(WorldGenRegion primer) {
 		BlockPos blockpos = getPos(primer).getWorldPosition();
 		int[] thicks = new int[5 * 5];
 		boolean biomeFound = false;

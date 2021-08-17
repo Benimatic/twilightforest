@@ -82,6 +82,8 @@ public final class BlockConstants {
     public static final BlockState WEATHERED_DEADROCK = TFBlocks.deadrock_weathered.get().defaultBlockState();
     public static final BlockState CRACKED_DEADROCK = TFBlocks.deadrock_cracked.get().defaultBlockState();
     public static final BlockState SNOW = Blocks.SNOW_BLOCK.defaultBlockState();
+    public static final BlockState POWDER_SNOW = Blocks.POWDER_SNOW.defaultBlockState();
+    public static final BlockState ICE = Blocks.ICE.defaultBlockState();
     public static final BlockState PACKED_ICE = Blocks.PACKED_ICE.defaultBlockState();
     public static final BlockState MUSHROOM_STEM = Blocks.MUSHROOM_STEM.defaultBlockState();//.with(HugeMushroomBlock.UP, true).with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.NORTH, true).with(HugeMushroomBlock.SOUTH, true).with(HugeMushroomBlock.WEST, true).with(HugeMushroomBlock.EAST, true);
     public static final BlockState MUSHROOM_CAP_RED = Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.DOWN, false);//.with(HugeMushroomBlock.UP, true).with(HugeMushroomBlock.NORTH, true).with(HugeMushroomBlock.SOUTH, true).with(HugeMushroomBlock.WEST, true).with(HugeMushroomBlock.EAST, true);
