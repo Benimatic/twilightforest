@@ -16,6 +16,7 @@ public class DataGenerators {
 		evt.getGenerator().addProvider(blocktags);
 		evt.getGenerator().addProvider(new FluidTagGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
 		evt.getGenerator().addProvider(new ItemTagGenerator(evt.getGenerator(), blocktags, evt.getExistingFileHelper()));
+		evt.getGenerator().addProvider(new EntityTagGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
 		evt.getGenerator().addProvider(new LootGenerator(evt.getGenerator()));
 		evt.getGenerator().addProvider(new StonecuttingGenerator(evt.getGenerator()));
 		evt.getGenerator().addProvider(new CraftingGenerator(evt.getGenerator()));
