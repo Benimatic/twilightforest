@@ -2,8 +2,10 @@ package twilightforest.data;
 
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -579,38 +581,25 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Blocks.DIAMOND_BLOCK.asItem())))
-						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Blocks.IRON_BLOCK.asItem())))
-						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Blocks.EMERALD_BLOCK.asItem())))
-						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Blocks.LAPIS_BLOCK.asItem())))
-						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Blocks.GOLD_BLOCK.asItem())))
-						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(TFBlocks.quest_ram_trophy.get().asItem())))
-						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.crumble_horn.get())))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
-										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), Blocks.COAL_BLOCK.asItem()))
+								.add(LootItem.lootTableItem(Items.BUNDLE)
 										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:questing_ram");
-										})))))
-						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
-								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
-										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), Blocks.COAL_BLOCK.asItem())))));
+											ListTag items = new ListTag();
+
+											// Do NOT overstuff the bag.
+											items.add(new ItemStack(TFBlocks.quest_ram_trophy.get()).serializeNBT());
+											items.add(new ItemStack(Blocks.COAL_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.IRON_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.COPPER_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.LAPIS_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.GOLD_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.DIAMOND_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.EMERALD_BLOCK).serializeNBT());
+
+											nbt.put("Items", items);
+										}))))));
 	}
 
 	public LootTable.Builder emptyLootTable() {
