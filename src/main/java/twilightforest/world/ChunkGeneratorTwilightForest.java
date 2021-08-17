@@ -62,6 +62,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 		WorldGenRegion primer = (WorldGenRegion) world;
 
 		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
+		// FIXME Can we use Surface Builders for these instead?
 		addDarkForestCanopy2(primer);
 
 		addGlaciers(primer);

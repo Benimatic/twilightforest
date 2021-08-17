@@ -15,6 +15,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 
 import java.util.function.Supplier;
 
+@Deprecated // It appears we don't need any of this, since it's all delegated to noise settings now
 public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 	public static final Codec<ChunkGeneratorTwilightSky> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			BiomeSource.CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeSource),
@@ -59,14 +60,14 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 		//TODO: Is there a point to this?
 //		rand.setSeed(getSeed(x, z));
 
-		ChunkBitArray data = new ChunkBitArray();
+		//ChunkBitArray data = new ChunkBitArray();
 		//getBaseHeight(x, z, data);
 		//squishTerrain(data); Not required anymore; noise config
 
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		//this.biomesForGeneration = getBiomeProvider().getBiomesInArea(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		ProtoChunk primer = new DirectChunkPrimer(region.getCenter(), region.getLevel()); // Is this even correct?
+		//ProtoChunk primer = new DirectChunkPrimer(region.getCenter(), region.getLevel()); // Is this even correct?
 		//initPrimer(primer, data); TODO : Should be do SurfaceBuilder
 
 		//deformTerrainForFeature(x, z, region);

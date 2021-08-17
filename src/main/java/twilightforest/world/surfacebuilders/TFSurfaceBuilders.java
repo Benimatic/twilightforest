@@ -16,13 +16,13 @@ public class TFSurfaceBuilders {
 
 	static {
 		// setRegistryName for some dumb reason erases the type for SurfaceBuilder<> and we have to keep the type for later in the line, so the reg names are kept here instead
-		HIGHLANDS.setRegistryName(TwilightForestMod.ID, "highlands");
 		DEADROCK_FILLING.setRegistryName(TwilightForestMod.ID, "plateau");
+		HIGHLANDS.setRegistryName(TwilightForestMod.ID, "highlands");
 	}
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<SurfaceBuilder<?>> evt) {
-		evt.getRegistry().register(HIGHLANDS);
 		evt.getRegistry().register(DEADROCK_FILLING);
+		evt.getRegistry().register(HIGHLANDS);
 	}
 }

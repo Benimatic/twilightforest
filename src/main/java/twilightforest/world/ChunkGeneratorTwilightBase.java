@@ -1,6 +1,5 @@
 package twilightforest.world;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.block.Block;
@@ -68,6 +67,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		}
 	}
 
+	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
 	protected final void deformTerrainForFeature(WorldGenRegion primer) {
 		IntPair nearCenter = new IntPair();
 		TFFeature nearFeature = TFFeature.getNearestFeature(getPos(primer).x, getPos(primer).z, primer, nearCenter);

@@ -42,6 +42,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	private static final Map<ResourceLocation, BiConsumer<Player, Level>> BIOME_PROGRESSION_ENFORCEMENT = new HashMap<>();
 
 	static {
+		// TODO make this data-driven
 		registerBiomeAdvancementRestriction(BiomeKeys.DARK_FOREST, TwilightForestMod.prefix("progress_lich"));
 		registerBiomeAdvancementRestriction(BiomeKeys.DARK_FOREST_CENTER, TwilightForestMod.prefix("progress_knights"));
 		registerBiomeAdvancementRestriction(BiomeKeys.FINAL_PLATEAU, TwilightForestMod.prefix("progress_troll"));
@@ -142,7 +143,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		}
 	}
 
-	// FIXME Why are these three here - Can we get this from the World's Settings itself? Document here why not, if unable
+	// FIXME Why are these three here - Can we get this from the World's DimensionType itself? Document here why not, if unable
 	@Deprecated
 	public static final int SEALEVEL = 31;
 	@Deprecated

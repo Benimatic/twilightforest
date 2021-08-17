@@ -630,7 +630,7 @@ public enum TFFeature {
 
 		// get random value
 		// okay, well that takes care of most special cases
-		switch (new Random(seed + chunkX * 25117 + chunkZ * 151121).nextInt(16)) {
+		switch (new Random(seed + chunkX * 25117L + chunkZ * 151121L).nextInt(16)) {
 			default:
 			case 0:
 			case 1:
