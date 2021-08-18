@@ -55,7 +55,7 @@ import java.util.Random;
 public class TowerWingComponent extends TFStructureComponentOld {
 
 	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method HangingEntity_updateFacingWithBoundingBox = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "setDirection", Direction.class);
+	private static final Method HangingEntity_updateFacingWithBoundingBox = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "m_6022_", Direction.class);
 	private static final MethodHandle handle_HangingEntity_updateFacingWithBoundingBox;
 
 	static {
