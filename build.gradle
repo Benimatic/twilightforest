@@ -11,11 +11,13 @@ configFile.withReader {
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://sizableshrimp.me/maven' }
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        //classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'me.sizableshrimp.parchmenttest', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 apply plugin: 'java'
@@ -45,7 +47,10 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    mappings channel: "official", version: "1.17.1"
+    //mappings channel: "official", version: "1.17.1"
+    // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
+    mappings channel: 'parchment', version: '2021.08.15-1.17.1'
+
     //version = config.minecraft_version + "-" + config.forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
