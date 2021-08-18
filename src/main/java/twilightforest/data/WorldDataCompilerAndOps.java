@@ -117,6 +117,11 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
         cache.putNew(pathIn, s1);
     }
 
+    @Nullable
+    protected final <T> T getFromDynRegistry(ResourceKey<Registry<T>> key, ResourceLocation rl) {
+        return this.dynamicRegistries.registry(key).get().get(rl);
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes", "SameParameterValue"})
     @Nullable
     protected static <T> T getFromVanillaRegistryIllegally(Registry registry, ResourceKey<T> key) {
@@ -150,7 +155,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
         }
 
         // Check "Local" Registry
-        if (!instanceKey.isPresent()) {
+        if (instanceKey.isEmpty()) {
             try {
                 Registry<Resource> dynRegistry = dynamicRegistries.registryOrThrow(registryKey);
 
@@ -162,7 +167,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
         }
 
         // Check Vanilla Worldgen Registries
-        if (!instanceKey.isPresent()) {
+        if (instanceKey.isEmpty()) {
             Registry<Resource> registry = getFromVanillaRegistryIllegally(BuiltinRegistries.REGISTRY, registryKey);
 
             if (registry != null) {
@@ -171,7 +176,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
         }
 
         // Check Global Vanilla Registries
-        if (!instanceKey.isPresent()) {
+        if (instanceKey.isEmpty()) {
             Registry<Resource> registry = getFromVanillaRegistryIllegally(Registry.REGISTRY, registryKey);
 
             if (registry != null) {
@@ -180,7 +185,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
         }
 
         // Check Forge Registries
-        if (!instanceKey.isPresent()) {
+        if (instanceKey.isEmpty()) {
             instanceKey = getFromForgeRegistryIllegally(registryKey, resource);
         }
 

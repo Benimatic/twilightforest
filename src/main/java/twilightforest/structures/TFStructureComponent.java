@@ -27,11 +27,12 @@ import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
 
-public abstract class TFStructureComponent extends StructurePiece {
+@Deprecated // We keep rehashing Vanillacopies, we should be adding TwilightFeature to the StructurePiece class we use
+public abstract class TFStructureComponent extends StructurePiece implements TwilightFeature {
 
 	public TFStructureDecorator deco = null;
 	public int spawnListIndex = 0;
-	protected TFFeature feature = TFFeature.NOTHING;
+	private TFFeature feature = TFFeature.NOTHING;
 	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
 			.add(Blocks.NETHER_BRICK_FENCE)
 			.add(Blocks.TORCH)
@@ -89,8 +90,14 @@ public abstract class TFStructureComponent extends StructurePiece {
 		this.feature = feature;
 	}
 
+	@Override
 	public TFFeature getFeatureType() {
 		return feature;
+	}
+
+	@Override // Don't expect this to stay around
+	public void setFeature(TFFeature type) {
+		this.feature = type;
 	}
 
 	protected static boolean shouldDebug() {

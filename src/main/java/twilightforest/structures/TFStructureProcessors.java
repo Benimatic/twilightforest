@@ -20,6 +20,7 @@ public class TFStructureProcessors {
 	public static final StructureProcessorType<?> COURTYARD_STAIRS = registerProcessor("courtyard_stairs", CourtyardStairsTemplateProcessor.codecStairsProcessor);
 	public static final StructureProcessorType<?> COURTYARD_WALL = registerProcessor("courtyard_wall", CourtyardWallTemplateProcessor.codecWallProcessor);
 	public static final StructureProcessorType<?> MOSSY_COBBLE = registerProcessor("mossy_cobble", MossyCobbleTemplateProcessor.codecMossyProcessor);
+	public static final StructureProcessorType<?> STONE_BRICKS = registerProcessor("stone_bricks", StoneBricksTemplateProcessor.codecBricksProcessor);
 	public static final StructureProcessorType<?> HUT = registerProcessor("hut", GenDruidHut.HutTemplateProcessor.codecHutProcessor);
 	public static final StructureProcessorType<?> WEB = registerProcessor("web", TFGenGraveyard.WebTemplateProcessor.codecWebProcessor);
 

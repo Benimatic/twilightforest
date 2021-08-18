@@ -118,7 +118,7 @@
     ]
   ],
   "starts": [
-    "twilightforest:configured_mushroomtower"
+    "twilightforest:configured_mushroom_tower"
   ],
   "spawners": {
     "monster": [

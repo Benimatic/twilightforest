@@ -45,12 +45,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	public TFStructureComponentOld(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
 		super(type, i, new BoundingBox(x, y, z, x, y, z));
-		this.feature = feature;
-	}
-
-	@Override
-	public TFFeature getFeatureType() {
-		return feature;
+		setFeature(feature);
 	}
 
 	//Let's not use vanilla's weird rotation+mirror thing...

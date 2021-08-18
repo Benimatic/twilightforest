@@ -99,7 +99,7 @@
     ]
   ],
   "starts": [
-    "twilightforest:configured_finalcastle"
+    "twilightforest:configured_final_castle"
   ],
   "creature_spawn_probability": 0.3,
   "spawners": {

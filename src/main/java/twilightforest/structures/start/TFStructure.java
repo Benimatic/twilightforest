@@ -26,13 +26,10 @@ import twilightforest.TFFeature;
 import twilightforest.TFStructures;
 import twilightforest.structures.TFStructureComponent;
 import twilightforest.structures.TFStructureComponentTemplate;
-import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
-
-import net.minecraft.world.level.levelgen.feature.StructureFeature.StructureStartFactory;
 
 public class TFStructure<C extends FeatureConfiguration> extends StructureFeature<C> {
 
@@ -55,12 +52,12 @@ public class TFStructure<C extends FeatureConfiguration> extends StructureFeatur
 
 	@Override
 	public List<MobSpawnSettings.SpawnerData> getDefaultSpawnList() {
-		return feature.getCombinedMonsterSpawnableList();
+		return getFeature().getCombinedMonsterSpawnableList();
 	}
 
 	@Override
 	public List<MobSpawnSettings.SpawnerData> getDefaultCreatureSpawnList() {
-		return feature.getCombinedCreatureSpawnableList();
+		return getFeature().getCombinedCreatureSpawnableList();
 	}
 
 	@Override
@@ -70,7 +67,7 @@ public class TFStructure<C extends FeatureConfiguration> extends StructureFeatur
 
 	@Override
 	public GenerationStep.Decoration step() {
-		return feature.getDecorationStage();
+		return getFeature().getDecorationStage();
 	}
 
 	@Override
@@ -147,7 +144,7 @@ public class TFStructure<C extends FeatureConfiguration> extends StructureFeatur
 			int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 			int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
 			int y = chunkGenerator.getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
-			StructurePiece start = feature.provideStructureStart(random, x, y, z);
+			StructurePiece start = feature.provideStructureStart(structureManager, random, x, y, z);
 			if(start == null)
 				return;
 			this.addPiece(start);

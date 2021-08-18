@@ -92,7 +92,7 @@
     ]
   ],
   "starts": [
-    "twilightforest:configured_trollcave"
+    "twilightforest:configured_troll_cave"
   ],
   "spawners": {
     "monster": [

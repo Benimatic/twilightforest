@@ -33,9 +33,17 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 		LAZY_TEMPLATE_LOADER = () -> setup(level.getStructureManager());
     }
 
+    public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, BoundingBox boundingBox) {
+        super(type, i, boundingBox);
+        setFeature(feature);
+        this.mirror = Mirror.NONE;
+        this.templatePosition = new BlockPos(x, y, z);
+    }
+
+    @Deprecated
     public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(type, i, new BoundingBox(x, y, z, x, y, z));
-        this.feature = feature;
+        setFeature(feature);
         this.rotation = rotation;
         this.mirror = Mirror.NONE;
         this.placeSettings.setRotation(rotation);
@@ -43,9 +51,10 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     }
 
     //TODO: Unused. Remove?
+    @Deprecated
     public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
         super(type, i, new BoundingBox(x, y, z, x, y, z));
-        this.feature = feature;
+        setFeature(feature);
         this.rotation = rotation;
         this.mirror = mirror;
         this.placeSettings.setRotation(rotation);

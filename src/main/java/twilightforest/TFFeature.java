@@ -24,6 +24,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
@@ -61,7 +62,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 2, z);
 		}
 	},
@@ -82,7 +83,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
 		}
 	},
@@ -104,7 +105,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
 		}
 	},
@@ -113,7 +114,7 @@ public enum TFFeature {
 			this.enableTerrainAlterations();
 		}
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new HedgeMazeComponent(this, 0, x, y, z);
 		}
 	},
@@ -122,7 +123,7 @@ public enum TFFeature {
 			this.enableTerrainAlterations();
 		}
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new NagaCourtyardMainComponent(this, rand, 0, x, y, z);
 		}
 	},
@@ -147,7 +148,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new TowerMainComponent(this, rand, 0, x, y, z);
 		}
 	},
@@ -169,7 +170,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new IceTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	},
@@ -180,8 +181,8 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new QuestGroveComponent(this, 0, x, y, z);
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
+			return new QuestGroveComponent(structureManager, rand, new BlockPos(x, y, z));
 		}
 
 	},
@@ -203,7 +204,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new HydraLairComponent(this, rand, 0, x, y, z);
 		}
 	},
@@ -232,7 +233,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new MazeRuinsComponent(this, 0, x, y, z);
 		}
 
@@ -268,7 +269,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new DarkTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	},
@@ -297,7 +298,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new StrongholdEntranceComponent(this, 0, x, y, z);
 		}
 
@@ -325,7 +326,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new YetiCaveComponent(this, rand, 0, x, y, z);
 		}
 	},
@@ -359,7 +360,7 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new TrollCaveMainComponent(TrollCavePieces.TFTCMai, this, 0, x, y, z);
 		}
 	},
@@ -382,14 +383,14 @@ public enum TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new FinalCastleMainComponent(this, rand, 0, x, y, z);
 		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
 
 		@Override
-		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 			return new MushroomTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
@@ -411,7 +412,7 @@ public enum TFFeature {
 	//IStructurePieceTypes that can be referred to
 	public static final StructurePieceType TFHill = registerPiece("TFHill", HollowHillComponent::new);
 	public static final StructurePieceType TFHedge = registerPiece("TFHedge", HedgeMazeComponent::new);
-	public static final StructurePieceType TFQuest1 = registerPiece("TFQuest1", QuestGroveComponent::new);
+	public static final StructurePieceType TFQuestGrove = registerPiece("TFQuest1", QuestGroveComponent::new);
 	public static final StructurePieceType TFHydra = registerPiece("TFHydra", HydraLairComponent::new);
 	public static final StructurePieceType TFYeti = registerPiece("TFYeti", YetiCaveComponent::new);
 
@@ -952,7 +953,7 @@ public enum TFFeature {
 	}
 
 	@Nullable
-	public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+	public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
 		return null;
 	}
 

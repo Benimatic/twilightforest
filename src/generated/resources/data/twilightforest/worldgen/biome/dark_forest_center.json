@@ -93,7 +93,7 @@
     ]
   ],
   "starts": [
-    "twilightforest:configured_darktower"
+    "twilightforest:configured_dark_tower"
   ],
   "spawners": {
     "monster": [],

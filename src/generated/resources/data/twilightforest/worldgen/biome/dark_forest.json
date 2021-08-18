@@ -95,7 +95,7 @@
     ]
   ],
   "starts": [
-    "twilightforest:configured_knightstronghold"
+    "twilightforest:configured_knight_stronghold"
   ],
   "spawners": {
     "monster": [],

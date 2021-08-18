@@ -30,6 +30,7 @@ import twilightforest.world.*;
 import twilightforest.worldgen.ConfiguredSurfaceBuilders;
 import twilightforest.worldgen.biomes.BiomeMaker;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
@@ -44,7 +45,10 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 	public void generate(HashCache directoryCache) {
 		ConfiguredSurfaceBuilders.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_SURFACE_BUILDER_REGISTRY));
 
-		this.getBiomes().forEach((rl, biome) -> this.serialize(Registry.BIOME_REGISTRY, rl, biome, Biome.DIRECT_CODEC));
+		Map<ResourceLocation, Biome> biomes = this.getBiomes();
+		biomes.forEach((rl, biome) -> this.dynamicRegistries.registry(Registry.BIOME_REGISTRY).ifPresent(reg -> Registry.register(reg, rl, biome)));
+		biomes.forEach((rl, biome) -> this.serialize(Registry.BIOME_REGISTRY, rl, biome, Biome.DIRECT_CODEC));
+
 		this.getDimensions().forEach((rl, dimension) -> this.serialize(Registry.LEVEL_STEM_REGISTRY, rl, dimension, LevelStem.CODEC));
 	}
 
@@ -120,7 +124,10 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		TFDimensions.init();
 
 		//FIXME: The issue with generated files using 0 as the seed is here. We need to somehow just...not have it here?
-		NoiseBasedChunkGenerator forestChunkGen = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> forestDimensionSettings);
+		NoiseBasedChunkGenerator forestChunkGen =
+				new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> forestDimensionSettings);
+				//new ChunkGeneratorTwilightForest(new FixedBiomeSource(getFromDynRegistry(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("enchanted_forest"))), 0L, () -> forestDimensionSettings);
+
 		NoiseBasedChunkGenerator skyChunkGen = new NoiseBasedChunkGenerator(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> skyDimensionSettings);
 		//NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 4L, () -> WorldGenRegistries.NOISE_SETTINGS.getValueForKey(RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, new ResourceLocation("floating_islands"))));
 		//NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new CheckerboardBiomeProvider(BiomeMaker.BIOMES.values().stream().sorted((o1, o2) -> Float.compare(o1.getDepth(), o2.getDepth())).map(b -> (Supplier<Biome>) () -> b).collect(Collectors.toList()), 2), 4L, skyDimensionSettings::get);

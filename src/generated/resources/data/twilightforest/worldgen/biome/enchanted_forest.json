@@ -112,7 +112,7 @@
     ]
   ],
   "starts": [
-    "twilightforest:configured_questgrove"
+    "twilightforest:configured_quest_grove"
   ],
   "spawners": {
     "monster": [

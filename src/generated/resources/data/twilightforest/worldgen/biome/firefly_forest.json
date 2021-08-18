@@ -115,12 +115,12 @@
     ]
   ],
   "starts": [
-    "twilightforest:configured_hedgemaze",
-    "twilightforest:configured_hollowhillsmall",
-    "twilightforest:configured_hollowhillmedium",
-    "twilightforest:configured_hollowhilllarge",
+    "twilightforest:configured_hedge_maze",
+    "twilightforest:configured_hollow_hill_small",
+    "twilightforest:configured_hollow_hill_medium",
+    "twilightforest:configured_hollow_hill_large",
     "twilightforest:configured_courtyard",
-    "twilightforest:configured_lichtower"
+    "twilightforest:configured_lich_tower"
   ],
   "spawners": {
     "monster": [

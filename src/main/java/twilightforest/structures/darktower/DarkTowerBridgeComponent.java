@@ -105,6 +105,6 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
      */
 	public BoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(4, 1, 2, dSize, this.getOrientation());
-		return feature.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation());
+		return getFeatureType().getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation());
 	}
 }
