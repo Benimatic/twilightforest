@@ -7,7 +7,6 @@ import net.minecraft.world.level.newbiome.area.Area;
 import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer1;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.TFBiomeProvider;
-import twilightforest.world.TFDimensions;
 
 import java.util.Random;
 
@@ -20,12 +19,14 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	INSTANCE;
 
 	private Registry<Biome> registry;
+	private long seed;
 	private static final Random RANDOM = new Random();
 
 	GenLayerTFKeyBiomes() { }
 
-	public GenLayerTFKeyBiomes setup(Registry<Biome> registry) {
+	public GenLayerTFKeyBiomes setup(Registry<Biome> registry, long seed) {
 		this.registry = registry;
+		this.seed = seed;
 		return this;
 	}
 
@@ -41,10 +42,10 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 
 	@Override
 	public int applyPixel(BigContext<?> random, Area iArea, int x, int z) {
-		RANDOM.setSeed(TFDimensions.seed + (x & -4) * 25117 + (z & -4) * 151121);
+		RANDOM.setSeed(seed + (x & -4) * 25117 + (z & -4) * 151121);
 		int ox = RANDOM.nextInt(2) + 1;
 		int oz = RANDOM.nextInt(2) + 1;
-		RANDOM.setSeed(TFDimensions.seed + (x / 8) * 25117 + (z / 8) * 151121);
+		RANDOM.setSeed(seed + (x / 8) * 25117 + (z / 8) * 151121);
 		int offset = RANDOM.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4

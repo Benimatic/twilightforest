@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 	public static final Codec<ChunkGeneratorTwilightForest> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
-			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
+			Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
 			NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(ChunkGeneratorTwilightForest::getDimensionSettings)
 	).apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
 

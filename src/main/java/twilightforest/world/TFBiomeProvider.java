@@ -31,7 +31,7 @@ import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
+			Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
 			RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
@@ -87,9 +87,9 @@ public class TFBiomeProvider extends BiomeSource {
 		return registry.getId(registry.get(biome));
 	}
 
-	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, Registry<Biome> registry) {
+	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, Registry<Biome> registry, long rawSeed) {
 		AreaFactory<T> biomes = GenLayerTFBiomes.INSTANCE.setup(registry).run(seed.apply(1L));
-		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(registry).run(seed.apply(1000L), biomes);
+		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(registry, rawSeed).run(seed.apply(1000L), biomes);
 		biomes = GenLayerTFCompanionBiomes.INSTANCE.setup(registry).run(seed.apply(1000L), biomes);
 
 		biomes = ZoomLayer.NORMAL.run(seed.apply(1000L), biomes);
@@ -112,7 +112,7 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 	
 	public static Layer makeLayers(long seed, Registry<Biome> registry) {
-		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry);
+		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
 		// Debug code to render an image of the biome layout within the ide
 		/*final Map<Integer, Integer> remapColors = new HashMap<>();
 		remapColors.put(getBiomeId(TFBiomes.tfLake, registry), 0x0000FF);
