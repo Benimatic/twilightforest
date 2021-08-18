@@ -63,7 +63,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
 		addDarkForestCanopy(primer);
 
-		// Can we
+		// Can we use Beardifier instead
 		deformTerrainForFeature(primer);
 	}
 
