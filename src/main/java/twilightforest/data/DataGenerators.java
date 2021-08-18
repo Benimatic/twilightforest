@@ -1,6 +1,8 @@
 package twilightforest.data;
 
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
@@ -10,16 +12,20 @@ import twilightforest.TwilightForestMod;
 public class DataGenerators {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent evt) {
-		evt.getGenerator().addProvider(new BlockstateGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
-		evt.getGenerator().addProvider(new ItemModelGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
-		BlockTagsProvider blocktags = new BlockTagGenerator(evt.getGenerator(), evt.getExistingFileHelper());
-		evt.getGenerator().addProvider(blocktags);
-		evt.getGenerator().addProvider(new FluidTagGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
-		evt.getGenerator().addProvider(new ItemTagGenerator(evt.getGenerator(), blocktags, evt.getExistingFileHelper()));
-		evt.getGenerator().addProvider(new EntityTagGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
-		evt.getGenerator().addProvider(new LootGenerator(evt.getGenerator()));
-		evt.getGenerator().addProvider(new StonecuttingGenerator(evt.getGenerator()));
-		evt.getGenerator().addProvider(new CraftingGenerator(evt.getGenerator()));
-		evt.getGenerator().addProvider(new TwilightWorldDataCompiler(evt.getGenerator()));
+		DataGenerator generator = evt.getGenerator();
+		ExistingFileHelper helper = evt.getExistingFileHelper();
+
+		generator.addProvider(new AdvancementProvider(generator));
+		evt.getGenerator().addProvider(new BlockstateGenerator(generator, helper));
+		evt.getGenerator().addProvider(new ItemModelGenerator(generator, helper));
+		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
+		generator.addProvider(blocktags);
+		generator.addProvider(new FluidTagGenerator(generator, helper));
+		generator.addProvider(new ItemTagGenerator(generator, blocktags, helper));
+		generator.addProvider(new EntityTagGenerator(generator, helper));
+		generator.addProvider(new LootGenerator(generator));
+		generator.addProvider(new StonecuttingGenerator(generator));
+		generator.addProvider(new CraftingGenerator(generator));
+		generator.addProvider(new TwilightWorldDataCompiler(generator));
 	}
 }

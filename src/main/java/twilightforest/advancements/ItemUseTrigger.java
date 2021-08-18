@@ -26,6 +26,7 @@ import net.minecraft.advancements.CriterionTrigger.Listener;
 /**
  THIS WILL ONLY WORK ON SPECIFIC ITEMS
 */
+//TODO I think we can remove this once advancements are datagenned, vanilla has a better method to use
 public class ItemUseTrigger implements CriterionTrigger<ItemUseTrigger.Instance> {
 
     public static final ResourceLocation ID = TwilightForestMod.prefix("on_item_use");

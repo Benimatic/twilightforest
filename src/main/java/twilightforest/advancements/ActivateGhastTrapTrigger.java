@@ -18,6 +18,7 @@ import java.util.Set;
 
 import net.minecraft.advancements.CriterionTrigger.Listener;
 
+//can we move this to the block class itself rather than having this?
 public class ActivateGhastTrapTrigger implements CriterionTrigger<ActivateGhastTrapTrigger.Instance> {
 
     public static final ResourceLocation ID = TwilightForestMod.prefix("activate_ghast_trap");

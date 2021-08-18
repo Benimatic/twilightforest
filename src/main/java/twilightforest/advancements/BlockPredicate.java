@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Optional;
 
+//TODO remove this when we get rid of ItemUseTrigger, not needed
 public class BlockPredicate {
     public static final BlockPredicate ANY = new BlockPredicate(ImmutableSet.of(), Blocks.AIR, NbtPredicate.ANY) {
         @Override public boolean test(Level world, BlockPos pos) { return true; }

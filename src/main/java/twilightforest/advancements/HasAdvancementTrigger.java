@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -67,17 +68,24 @@ public class HasAdvancementTrigger implements CriterionTrigger<HasAdvancementTri
 		}
 	}
 
-	static class Instance extends AbstractCriterionTriggerInstance {
+	public static class Instance extends AbstractCriterionTriggerInstance {
 
 		private final ResourceLocation advancementLocation;
 
-		Instance(EntityPredicate.Composite player, ResourceLocation advancementLocation) {
+		public Instance(EntityPredicate.Composite player, ResourceLocation advancementLocation) {
 			super(HasAdvancementTrigger.ID, player);
 			this.advancementLocation = advancementLocation;
 		}
 
 		boolean test(Advancement advancement) {
 			return advancementLocation.equals(advancement.getId());
+		}
+
+		@Override
+		public JsonObject serializeToJson(SerializationContext serializer) {
+			JsonObject json = super.serializeToJson(serializer);
+			json.addProperty("advancement", advancementLocation.toString());
+			return json;
 		}
 	}
 

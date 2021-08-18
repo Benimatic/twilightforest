@@ -18,6 +18,7 @@ import java.util.Set;
 
 import net.minecraft.advancements.CriterionTrigger.Listener;
 
+//can we move this to the item class itself rather than having this?
 public class HydraChopTrigger implements CriterionTrigger<HydraChopTrigger.Instance> {
 
     public static final ResourceLocation ID = TwilightForestMod.prefix("consume_hydra_chop_on_low_hunger");
