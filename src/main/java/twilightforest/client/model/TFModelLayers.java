@@ -21,7 +21,6 @@ public class TFModelLayers {
 	public static final ModelLayerLocation ALPHA_YETI_TROPHY = register("alpha_yeti_trophy");
 	public static final ModelLayerLocation HYDRA_TROPHY = register("hydra_trophy");
 	public static final ModelLayerLocation KNIGHT_PHANTOM_TROPHY = register("knight_phantom_trophy");
-	public static final ModelLayerLocation KNIGHT_PHANTOM_ARMOR_TROPHY = register("knight_phantom_armor_trophy", "outer");
 	public static final ModelLayerLocation LICH_TROPHY = register("lich_trophy");
 	public static final ModelLayerLocation MINOSHROOM_TROPHY = register("minoshroom_trophy");
 	public static final ModelLayerLocation NAGA_TROPHY = register("naga_trophy");

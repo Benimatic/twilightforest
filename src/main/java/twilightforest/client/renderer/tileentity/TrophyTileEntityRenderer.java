@@ -55,9 +55,6 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 		trophyList.put(BossVariant.MINOSHROOM, new MinoshroomTrophyModel(set.bakeLayer(TFModelLayers.MINOSHROOM_TROPHY)));
 		trophyList.put(BossVariant.HYDRA, new HydraTrophyModel(set.bakeLayer(TFModelLayers.HYDRA_TROPHY)));
 		trophyList.put(BossVariant.KNIGHT_PHANTOM, new KnightPhantomTrophyModel(set.bakeLayer(TFModelLayers.KNIGHT_PHANTOM_TROPHY)));
-		// FIXME can I do this, or am I gonna have to do something else?
-		//  Yep -D
-		//trophyList.put(BossVariant.KNIGHT_PHANTOM, new PhantomArmorTrophyModel(set.bakeLayer(TFModelLayers.KNIGHT_PHANTOM_ARMOR_TROPHY)));
 		trophyList.put(BossVariant.UR_GHAST, new UrGhastTrophyModel(set.bakeLayer(TFModelLayers.UR_GHAST_TROPHY)));
 		trophyList.put(BossVariant.ALPHA_YETI, new AlphaYetiTrophyModel(set.bakeLayer(TFModelLayers.ALPHA_YETI_TROPHY)));
 		trophyList.put(BossVariant.SNOW_QUEEN, new SnowQueenTrophyModel(set.bakeLayer(TFModelLayers.SNOW_QUEEN_TROPHY)));
@@ -94,7 +91,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
 			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
 		} else {
-			matrixStackIn.translate(0.5F - directionIn.getStepX() * 0.25F, 0.25D, 0.5F - directionIn.getStepZ() * 0.25F);
+			matrixStackIn.translate(0.5F - directionIn.getStepX() * 0.249F, 0.25D, 0.5F - directionIn.getStepZ() * 0.249F);
 		}
 		matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
 		switch (variant) {
@@ -149,9 +146,8 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 			matrixStackIn.scale(1.1F, 1.1F, 1.1F);
 			matrixStackIn.translate(0.0F, 0.05F, 0.0F);
 			trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
-			// FIXME
-			//VertexConsumer phantomArmorVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocKnightPhantomArmor));
-			//((PhantomArmorTrophyModel)trophy).head.render(matrixStackIn, phantomArmorVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.0625F);
+			VertexConsumer phantomArmorVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocKnightPhantomArmor));
+			((KnightPhantomTrophyModel)trophy).helmet.render(matrixStackIn, phantomArmorVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.0625F);
 			break;
 		case ALPHA_YETI:
 			matrixStackIn.scale(0.2F, 0.2F, 0.2F);

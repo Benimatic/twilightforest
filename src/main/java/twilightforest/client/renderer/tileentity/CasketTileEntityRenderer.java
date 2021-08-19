@@ -81,7 +81,7 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBl
                         .addBox(6.0F, -10.0F, -6.0F, 1.0F, 6.0F, 4.0F)
                         .texOffs(0, 56)
                         .addBox(-7.0F, -4.0F, -6.0F, 14.0F, 4.0F, 4.0F),
-                PartPose.offset(0.0F, -6.0F, 6.0F));
+                PartPose.offset(0.0F, -0.01F, 0.0F));
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
