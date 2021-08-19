@@ -16,8 +16,8 @@ import net.minecraft.world.gen.feature.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.structures.StructureTFComponent;
-import twilightforest.structures.start.StructureStartTFFeatureAbstract;
+import twilightforest.world.components.structures.StructureTFComponent;
+import twilightforest.world.components.structures.start.StructureStartTFFeatureAbstract;
 import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;

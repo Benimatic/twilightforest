@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import twilightforest.TFFeature;
+import twilightforest.world.registration.TFFeature;
 
 public class CenterCommand {
     public static LiteralArgumentBuilder<CommandSourceStack> register() {

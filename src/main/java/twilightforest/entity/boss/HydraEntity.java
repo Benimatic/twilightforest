@@ -26,7 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.TFFeature;
+import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.EntityUtil;

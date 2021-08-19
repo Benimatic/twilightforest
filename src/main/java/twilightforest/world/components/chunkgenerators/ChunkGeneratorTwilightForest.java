@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.TFFeature;
+import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;

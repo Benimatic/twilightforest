@@ -15,9 +15,9 @@ import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraftforge.common.world.StructureSpawnManager;
-import twilightforest.TFFeature;
+import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.start.TFStructure;
+import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.util.IntPair;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -366,7 +366,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 
 	@Override
 	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Biome biome, StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
-		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructure.gatherPotentialSpawns(structureManager, classification, pos);
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructureStart.gatherPotentialSpawns(structureManager, classification, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
 		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);

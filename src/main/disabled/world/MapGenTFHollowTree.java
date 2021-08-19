@@ -8,7 +8,7 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
+import twilightforest.world.components.structures.hollowtree.StructureTFHollowTreeStart;
 
 import java.util.Random;
 

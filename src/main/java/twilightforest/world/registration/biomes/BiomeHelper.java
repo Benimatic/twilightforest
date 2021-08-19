@@ -6,7 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.data.worldgen.Features;
 import net.minecraft.data.worldgen.SurfaceBuilders;
-import twilightforest.TFStructures;
+import twilightforest.world.registration.TFStructures;
 import twilightforest.entity.TFEntities;
 import twilightforest.world.registration.ConfiguredFeatures;
 import twilightforest.world.registration.ConfiguredSurfaceBuilders;

@@ -23,10 +23,9 @@ import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFConfig;
-import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;
-import twilightforest.structures.start.TFStructure;
+import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
 import twilightforest.world.registration.biomes.BiomeKeys;
@@ -195,9 +194,9 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 		TFFeature featureCheck = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 		for (StructureFeature<?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
-			if (!(structureFeature instanceof TFStructure))
+			if (!(structureFeature instanceof TFStructureStart))
 				continue;
-			TFFeature feature = ((TFStructure<?>) structureFeature).getFeature();
+			TFFeature feature = ((TFStructureStart<?>) structureFeature).getFeature();
 			if (feature != featureCheck)
 				continue;
 

@@ -27,14 +27,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.TFFeature;
+import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.entity.boss.UrGhastEntity;
 
 import java.util.EnumSet;
 import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class CarminiteGhastguardEntity extends Ghast {
 	// 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball

@@ -59,6 +59,7 @@ import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFBiomeFeatures;
 import twilightforest.world.components.feature.TFGenCaveStalactite;
+import twilightforest.world.registration.TFStructures;
 import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.registration.biomes.BiomeKeys;

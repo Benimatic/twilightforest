@@ -33,8 +33,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.WraithEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.structures.RandomizedTemplateProcessor;
-import twilightforest.structures.TFStructureProcessors;
+import twilightforest.world.components.processors.RandomizedTemplateProcessor;
+import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

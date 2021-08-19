@@ -81,6 +81,7 @@ import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.KeepsakeCasketTileEntity;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nonnull;

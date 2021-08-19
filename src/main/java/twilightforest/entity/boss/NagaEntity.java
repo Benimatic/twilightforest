@@ -43,7 +43,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
-import twilightforest.TFFeature;
+import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.TFPacketHandler;
