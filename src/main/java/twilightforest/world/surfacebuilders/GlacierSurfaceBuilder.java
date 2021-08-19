@@ -12,7 +12,7 @@ import twilightforest.worldgen.BlockConstants;
 
 import java.util.Random;
 
-// TODO VanillaCopy and set up custom config for blocks and heights
+// TODO set up custom config for blocks and heights and delegation to different surface builder
 public class GlacierSurfaceBuilder extends DefaultSurfaceBuilder {
 	public GlacierSurfaceBuilder(Codec<SurfaceBuilderBaseConfiguration> config) {
 		super(config);
@@ -22,14 +22,24 @@ public class GlacierSurfaceBuilder extends DefaultSurfaceBuilder {
 	public void apply(Random random, ChunkAccess chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int minSurfaceLevel, long seed, SurfaceBuilderBaseConfiguration config) {
 		super.apply(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, minSurfaceLevel, seed, config);
 
-		final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, Math.max(startHeight - 1, seaLevel), z);
+		final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(x, startHeight - 1, z);
 
 		for (int y = 0; y < 30; y++) {
-			chunkIn.setBlockState(mutablePos.move(0, 1, 0), BlockConstants.PACKED_ICE, false);
+			chunkIn.setBlockState(mutablePos, BlockConstants.PACKED_ICE, false);
+			mutablePos.move(0, 1, 0);
 		}
 
 		for (int y = 0; y < 2; y++) {
-			chunkIn.setBlockState(mutablePos.move(0, 1, 0), BlockConstants.ICE, false);
+			chunkIn.setBlockState(mutablePos, BlockConstants.ICE, false);
+			mutablePos.move(0, 1, 0);
+		}
+
+		for (int y = startHeight; y >= minSurfaceLevel; y--) {
+			if (chunkIn.getBlockState(mutablePos).getMaterial().isReplaceable()) {
+				chunkIn.setBlockState(mutablePos, BlockConstants.PACKED_ICE, false);
+			} else {
+				return; // We're done here, return instead of breaking
+			}
 		}
 	}
 }
