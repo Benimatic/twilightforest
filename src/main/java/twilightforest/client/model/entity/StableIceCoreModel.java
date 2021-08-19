@@ -22,7 +22,7 @@ public class StableIceCoreModel extends UnstableIceCoreModel<StableIceCoreEntity
 
 			this.spikes[i].xRot += i * (Math.PI / 8F);
 
-			this.spikes[i].children.get(0).y = 9.5F + Mth.sin((i + entity.tickCount + partialTicks) / 3F) * 3F;
+			this.cubes[i].y = 9.5F + Mth.sin((i + entity.tickCount + partialTicks) / 3F) * 3F;
 		}
 	}
 }

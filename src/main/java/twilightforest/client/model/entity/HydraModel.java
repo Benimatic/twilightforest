@@ -1,8 +1,8 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -21,10 +21,12 @@ import twilightforest.entity.boss.HydraEntity;
 @OnlyIn(Dist.CLIENT)
 public class HydraModel extends HierarchicalModel<HydraEntity> {
 
-    public ModelPart root, rightLeg, leftLeg;
+    public ModelPart root, body, tail, rightLeg, leftLeg;
 
     public HydraModel(ModelPart root) {
         this.root = root;
+        this.body = root.getChild("torso");
+        this.tail = root.getChild("tail_1");
         this.rightLeg = root.getChild("right_leg");
         this.leftLeg = root.getChild("left_leg");
     }
@@ -179,14 +181,14 @@ public class HydraModel extends HierarchicalModel<HydraEntity> {
                         .addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(0.0F, 0.0F, 32.0F));
 
-        tail2.addOrReplaceChild("tail_3", CubeListBuilder.create()
+        var tail3 = tail2.addOrReplaceChild("tail_3", CubeListBuilder.create()
                         .texOffs(260, 0)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0)
                         .addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
                 PartPose.offset(0.0F, 0.0F, 32.0F));
 
-        partRoot.addOrReplaceChild("tail_4", CubeListBuilder.create()
+        tail3.addOrReplaceChild("tail_4", CubeListBuilder.create()
                         .texOffs(260, 0)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
                         .texOffs(0, 0)
@@ -199,6 +201,15 @@ public class HydraModel extends HierarchicalModel<HydraEntity> {
     @Override
     public ModelPart root() {
         return this.root;
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack p_170625_, VertexConsumer p_170626_, int p_170627_, int p_170628_, float p_170629_, float p_170630_, float p_170631_, float p_170632_) {
+        this.leftLeg.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+        this.rightLeg.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+        this.body.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+        this.tail.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+
     }
 
     @Override

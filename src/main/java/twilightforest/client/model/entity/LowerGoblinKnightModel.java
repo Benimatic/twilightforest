@@ -11,8 +11,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.LowerGoblinKnightEntity;
 
-import net.minecraft.client.model.HumanoidModel.ArmPose;
-
 /**
  * ModelTFGoblinKnightLower - MCVinnyq
  * Created using Tabula 8.0.0
@@ -23,16 +21,17 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightEntit
 
     public LowerGoblinKnightModel(ModelPart root) {
         super(root);
+        this.tunic = root.getChild("tunic");
     }
 
     public static LayerDefinition create() {
         MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 30)
                         .addBox(-2.5F, -5.0F, -3.5F, 5.0F, 5.0F, 5.0F),
-                PartPose.offset(0.0F, 10.0F, 1.0F));
+                PartPose.offset(0.0F, 8.0F, 1.0F));
 
         partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
                 PartPose.ZERO);
@@ -67,7 +66,7 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightEntit
                         .addBox(-1.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
                 PartPose.offset(2.5F, 16.0F, 0.0F));
 
-        return LayerDefinition.create(mesh, 64, 64);
+        return LayerDefinition.create(mesh, 128, 64);
     }
 
     @Override
@@ -122,12 +121,19 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightEntit
         this.rightArm.yRot = 0.0F;
         this.leftArm.yRot = 0.0F;
 
-
         this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
         this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
         this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
         this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 
         this.tunic.visible = entity.hasArmor();
+
+        //dont swing the arms if its still wearing its armor
+        if(entity.hasArmor()) {
+            this.leftArm.xRot = 0;
+            this.rightArm.xRot = 0;
+            this.leftArm.zRot = 0;
+            this.rightArm.zRot = 0;
+        }
     }
 }

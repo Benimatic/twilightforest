@@ -1,10 +1,13 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import twilightforest.entity.WraithEntity;
 
@@ -12,7 +15,7 @@ public class WraithModel extends HumanoidModel<WraithEntity> {
 	private final ModelPart dress;
 
 	public WraithModel(ModelPart root) {
-		super(root);
+		super(root, RenderType::entityTranslucent);
 
 		this.dress = root.getChild("dress");
 	}
@@ -42,6 +45,11 @@ public class WraithModel extends HumanoidModel<WraithEntity> {
 				this.leftArm,
 				this.dress
 		);
+	}
+
+	@Override
+	public void renderToBuffer(PoseStack p_102034_, VertexConsumer p_102035_, int p_102036_, int p_102037_, float p_102038_, float p_102039_, float p_102040_, float p_102041_) {
+		super.renderToBuffer(p_102034_, p_102035_, p_102036_, p_102037_, p_102038_, p_102039_, p_102040_, 0.6F);
 	}
 
 	@Override

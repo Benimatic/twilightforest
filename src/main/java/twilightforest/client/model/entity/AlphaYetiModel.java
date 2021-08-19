@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.ibm.icu.text.MessagePattern;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -113,7 +112,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiEntity> {
 
 	@Override
 	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(this.body, this.rightLeg, this.leftLeg);
+		return ImmutableList.of(this.body, this.rightArm, this.leftArm, this.rightLeg, this.leftLeg);
 	}
 
 	@Override

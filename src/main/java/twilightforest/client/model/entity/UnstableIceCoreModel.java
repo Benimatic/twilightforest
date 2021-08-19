@@ -1,37 +1,36 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import twilightforest.entity.IceMobEntity;
-
-import java.util.Arrays;
 
 public class UnstableIceCoreModel<T extends IceMobEntity> extends HierarchicalModel<T> {
 
 	public ModelPart[] spikes = new ModelPart[16];
+	public ModelPart[] cubes = new ModelPart[16];
 
-	private ModelPart root, head;
+	private final ModelPart root;
 	protected boolean alive;
 
 	public UnstableIceCoreModel(ModelPart root) {
 		super(RenderType::entityTranslucent);
 		this.root = root;
 
-		this.head = root.getChild("head");
-
 		for (int i = 0; i < spikes.length; i++) {
 			this.spikes[i] = root.getChild("spike_" + i);
+		}
+
+		for (int i = 0; i < cubes.length; i++) {
+			this.cubes[i] = spikes[i].getChild("cube_" + i);
 		}
 	}
 
@@ -68,7 +67,7 @@ public class UnstableIceCoreModel<T extends IceMobEntity> extends HierarchicalMo
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.root().getAllParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, alive ? 0.6F : alpha));
+		this.root().render(stack, builder, light, overlay, red, green, blue, alive ? 0.6F : alpha);
 	}
 
 	@Override
@@ -94,7 +93,7 @@ public class UnstableIceCoreModel<T extends IceMobEntity> extends HierarchicalMo
 			this.spikes[i].y = 5F + Mth.sin((entity.tickCount + partialTicks) / i) * 3F;
 			this.spikes[i].z = Mth.sin((entity.tickCount + partialTicks) / i) * 3F;
 
-			this.spikes[i].children.get(0).y = 10 + Mth.sin((i + entity.tickCount + partialTicks) / i) * 3F;
+			this.cubes[i].y = 10 + Mth.sin((i + entity.tickCount + partialTicks) / i) * 3F;
 		}
 	}
 }

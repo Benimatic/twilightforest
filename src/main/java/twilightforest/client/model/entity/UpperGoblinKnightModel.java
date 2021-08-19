@@ -1,7 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,8 +7,8 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.UpperGoblinKnightEntity;
@@ -37,19 +35,22 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(28, 0)
                         .addBox(-8.0F, -14.0F, -1.9F, 16.0F, 14.0F, 2.0F)
                         .texOffs(116, 0)
                         .addBox(-6.0F, -12.0F, -0.9F, 4.0F, 2.0F, 2.0F)
                         .texOffs(116, 4)
                         .addBox(2.0F, -12.0F, -1.0F, 4.0F, 2.0F, 2.0F),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -0.7853981633974483F, 0.0F));
+                PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 0.0F, -0.7853981633974483F, 0.0F));
 
-        partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+
+        //turns out, putting this as the hat doesnt allow us to rotate it at a 45 degree angle, so we have to make it its own piece
+        head.addOrReplaceChild("helm", CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(-3.5F, -11.0F, -3.5F, 7.0F, 11.0F, 7.0F),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
+                        .addBox(-3.5F, 0.0F, -3.5F, 7.0F, 11.0F, 7.0F),
+                PartPose.offsetAndRotation(0.0F, -11.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
 
         var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 18)
@@ -59,7 +60,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
         body.addOrReplaceChild("breastplate", CubeListBuilder.create()
                         .texOffs(64, 0)
                         .addBox(-6.5F, 0.0F, -3.0F, 13.0F, 12.0F, 6.0F),
-                PartPose.offset(0.0F, 11.5F, 0.0F));
+                PartPose.offset(0.0F, -0.5F, 0.0F));
 
         var rightArm = partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
                         .texOffs(44, 16)
@@ -96,13 +97,6 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
     }
 
     @Override
-    public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
-        super.renderToBuffer(stack, builder, light, overlay, red, green, blue, scale);
-
-        this.breastplate.render(stack, builder, light, overlay, red, green, blue, scale);
-    }
-
-    @Override
     public void setupAnim(UpperGoblinKnightEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean hasShield = entity.hasShield();
         boolean boat = entity.getVehicle() instanceof Boat;
@@ -116,7 +110,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
 
         this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
 
-        float leftConstraint = hasShield ? 0.2F : limbSwingAmount;
+        float leftConstraint = hasShield ? -0.2F : limbSwingAmount;
 
         this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * leftConstraint * 0.5F;
         this.rightArm.zRot = 0.0F;
@@ -163,9 +157,6 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
         this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
         this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 
-        // shield arm points somewhat inward
-        this.leftArm.zRot = -this.leftArm.zRot;
-
         // fix shield so that it's always perpendicular to the floor
         this.shield.xRot = (float) (Math.PI * 2 - this.leftArm.xRot);
 
@@ -199,14 +190,5 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
         }
 
         return 0;
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }
