@@ -15,8 +15,8 @@ function initializeCoreMod() {
                 'methodDesc': '(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ZI)V'
             },
             'transformer': function (/* org.objectweb.asm.tree.MethodNode */ methodNode) {
-                ASM.log('INFO', 'bruh');
-                methodNode.instructions.insertBefore(
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insertBefore(
                     ASM.findFirstInstruction(methodNode, Opcodes.ISTORE),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 1),
