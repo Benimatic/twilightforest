@@ -24,13 +24,9 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 	).apply(instance, instance.stable(ChunkGeneratorTwilightSky::new)));
 
 	//private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
-	private final long seed;
-	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
 
 	public ChunkGeneratorTwilightSky(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings) {
-		super(provider, seed, settings, false);
-		this.seed = seed;
-		this.dimensionSettings = settings;
+		super(provider, seed, settings);
 	}
 
 	@Override

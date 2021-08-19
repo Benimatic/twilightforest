@@ -25,18 +25,11 @@ public class OutOfStructurePlacement extends FeatureDecorator<NoneDecoratorConfi
 		//FIXME used to be worldDecoratingHelper.generator... not sure if this is right but im not getting an error anymore so
 		if (worldDecoratingHelper.getLevel() instanceof ChunkGeneratorTwilightBase) {
 			Optional<StructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange(worldDecoratingHelper.level, blockPos, 0);
-			if(struct.isPresent()) {
-				StructureStart<?> structure = struct.get();
-				if(structure.getBoundingBox().isInside(blockPos)) {
-					TFFeature nearbyFeature = TFFeature.getFeatureAt(blockPos.getX(), blockPos.getZ(), worldDecoratingHelper.level);
 
-						// TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
-						if (nearbyFeature == TFFeature.KNIGHT_STRONGHOLD && blockPos.getY() >= 33)
-							return Stream.of(blockPos);
-
-						return Stream.empty();
-				}
-			}
+			return struct.isPresent()
+					&& struct.get().getBoundingBox().isInside(blockPos)
+					&& TFFeature.getFeatureAt(blockPos.getX(), blockPos.getZ(), worldDecoratingHelper.level).areChunkDecorationsEnabled
+					? Stream.of(blockPos) : Stream.empty();
 		}
 		return Stream.of(blockPos);
 	}

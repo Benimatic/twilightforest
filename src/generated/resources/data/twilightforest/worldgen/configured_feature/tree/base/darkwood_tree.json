@@ -52,17 +52,17 @@
     "trunk_placer": {
       "branch_start_offset_down": 4,
       "branch_config": {
-        "random_add_length": 4.0,
+        "random_add_length": 2.0,
         "spacing_yaw": 0.23,
         "downwards_pitch": 0.23,
         "count_minimum": 4,
         "random_add_count": 0,
-        "length": 10.0
+        "length": 8.0
       },
       "perpendicular_branches": false,
       "base_height": 6,
-      "height_rand_a": 2,
-      "height_rand_b": 2,
+      "height_rand_a": 1,
+      "height_rand_b": 1,
       "type": "twilightforest:branching_trunk_placer"
     }
   },

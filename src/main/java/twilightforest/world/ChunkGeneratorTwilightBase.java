@@ -28,17 +28,11 @@ import java.util.function.Supplier;
 public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerator {
 	protected final long seed;
 	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
-	private final boolean shouldGenerateBedrock;
 
-	public ChunkGeneratorTwilightBase(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings, boolean shouldGenerateBedrock) {
+	public ChunkGeneratorTwilightBase(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings) {
 		super(provider, seed, settings);
 		this.seed = seed;
 		this.dimensionSettings = settings;
-		this.shouldGenerateBedrock = shouldGenerateBedrock;
-	}
-
-	public ChunkGeneratorTwilightBase(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings) {
-		this(provider, seed, settings, true);
 	}
 
 	@Override
@@ -48,23 +42,6 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 
 	protected static int getIndex(int x, int y, int z) {
 		return x << 12 | z << 8 | y;
-	}
-
-	/**
-	 * Crush the terrain to half the height
-	 */
-	protected final void squishTerrain(ChunkBitArray data) {
-		int squishHeight = TFGenerationSettings.MAXHEIGHT / 2;
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
-				for (int y = 0; y < squishHeight; y++) {
-					data.set(getIndex(x, y, z), data.get(getIndex(x, y * 2 + 1, z)));
-				}
-				for (int y = squishHeight; y < TFGenerationSettings.CHUNKHEIGHT; y++) {
-					data.clear(getIndex(x, y, z));
-				}
-			}
-		}
 	}
 
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
@@ -378,10 +355,6 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		}
 	}
 
-	public final boolean shouldGenerateBedrock() {
-		return shouldGenerateBedrock;
-	}
-	
 	protected final ChunkPos getPos(WorldGenRegion primer) {
 		return primer.getCenter();
 	}

@@ -1,6 +1,7 @@
 package twilightforest.worldgen;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.data.worldgen.Features;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
@@ -46,7 +47,7 @@ public final class TwilightFeatures {
     public static final FeatureDecorator<NoneDecoratorConfiguration> PLACEMENT_NOTFSTRUCTURE = new OutOfStructurePlacement(NoneDecoratorConfiguration.CODEC);
 
     public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE = PLACEMENT_NOTFSTRUCTURE.configured(NoneDecoratorConfiguration.INSTANCE);
-    public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE_WITHHEIGHTMAP = CONFIGURED_PLACEMENT_NOTFSTRUCTURE.decorated(FeatureDecorator.HEIGHTMAP.configured(new HeightmapConfiguration(Heightmap.Types.WORLD_SURFACE_WG)));
+    public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE_WITHHEIGHTMAP = CONFIGURED_PLACEMENT_NOTFSTRUCTURE.decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE);
 
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
