@@ -2,6 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -19,7 +21,7 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantomEnti
 	public KnightPhantomRenderer(EntityRendererProvider.Context manager, KnightPhantomModel model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new ItemInHandLayer<>(this));
-		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(manager.bakeLayer(ModelLayers.SKELETON_OUTER_ARMOR)), new KnightPhantomModel(manager.bakeLayer(ModelLayers.SKELETON_INNER_ARMOR))));
+		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new KnightPhantomModel(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 	}
 
 	@Override

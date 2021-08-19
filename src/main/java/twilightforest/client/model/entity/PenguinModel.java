@@ -10,84 +10,61 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.AgeableListModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.passive.PenguinEntity;
 
-public class PenguinModel extends AgeableListModel<PenguinEntity> {
-	private final ModelPart body, rightarm, leftarm, rightleg, leftleg, head, beak;
+public class PenguinModel extends HumanoidModel<PenguinEntity> {
 
 	public PenguinModel(ModelPart root) {
-		this.body = root.getChild("body");
-		this.head = this.body.getChild("head");
-		this.beak = this.head.getChild("beak");
-		this.rightarm = this.body.getChild("right_arm");
-		this.leftarm = this.body.getChild("left_arm");
-		this.rightleg = this.body.getChild("right_leg");
-		this.leftleg = this.body.getChild("left_leg");
+		super(root);
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
+		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partRoot = mesh.getRoot();
 
-		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 9.0F, 8.0F),
 				PartPose.offset(0.0F, 14.0F, 0.0F));
 
-		var head = body.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-3.5F, -4.0F, -3.5F, 7.0F, 5.0F, 7.0F),
 				PartPose.offset(0.0F, 13.0F, 0.0F));
+
+		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("beak", CubeListBuilder.create()
 						.texOffs(0, 13)
 						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 2.0F),
 				PartPose.offset(0.0F, -1.0F, -4.0F));
 
-		body.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
 						.texOffs(34, 18)
 						.addBox(-1.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
 				PartPose.offset(-4.0F, 15.0F, 0.0F));
 
-		body.addOrReplaceChild("left_arm", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
 						.texOffs(24, 18)
 						.addBox(0.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
 				PartPose.offset(4.0F, 15.0F, 0.0F));
 
-		body.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
 				PartPose.offset(-2.0F, 23.0F, 0.0F));
 
-		body.addOrReplaceChild("left_leg", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
 				PartPose.offset(2.0F, 23.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 32);
-	}
-
-	@Override
-	protected Iterable<ModelPart> headParts() {
-		return ImmutableList.of(this.head, this.beak);
-	}
-
-	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(
-				this.body,
-				this.rightleg,
-				this.leftleg,
-				this.rightarm,
-				this.leftarm
-		);
 	}
 
 	/**
@@ -118,12 +95,11 @@ public class PenguinModel extends AgeableListModel<PenguinEntity> {
 	public void setupAnim(PenguinEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.beak.copyFrom(this.head);
 
-		this.rightleg.xRot = Mth.cos(limbSwing) * 0.7F * limbSwingAmount;
-		this.leftleg.xRot = Mth.cos(limbSwing + (float) Math.PI) * 0.7F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(limbSwing) * 0.7F * limbSwingAmount;
+		this.leftLeg.xRot = Mth.cos(limbSwing + (float) Math.PI) * 0.7F * limbSwingAmount;
 
-		this.rightarm.zRot = ageInTicks;
-		this.leftarm.zRot = -ageInTicks;
+		this.rightArm.zRot = ageInTicks;
+		this.leftArm.zRot = -ageInTicks;
 	}
 }

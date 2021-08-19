@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.*;
 import twilightforest.entity.SkeletonDruidEntity;
 
 public class SkeletonDruidModel extends SkeletonModel<SkeletonDruidEntity> {
-	private ModelPart dress;
+	private final ModelPart dress;
 
 	public SkeletonDruidModel(ModelPart root) {
 		super(root);
@@ -38,12 +38,22 @@ public class SkeletonDruidModel extends SkeletonModel<SkeletonDruidEntity> {
 						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F, deformation),
 				PartPose.offset(-5.0F, 2.0F, 0.0F));
 
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 2.0F, 12.0F, 2.0F, deformation),
+				PartPose.offset(3.0F, 12.0F, 0.0F));
+
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-2.0F, 0.0F, -2.0F, 2.0F, 12.0F, 2.0F, deformation),
+				PartPose.offset(-1.0F, 12.0F, 0.0F));
+
 		partRoot.addOrReplaceChild("dress", CubeListBuilder.create()
 						.texOffs(32, 16)
 						.addBox(-4.0F, 12.0F, -2.0F, 8.0F, 12.0F, 4.0F, deformation),
 				PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 

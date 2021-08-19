@@ -27,7 +27,6 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetleEntity> {
     public ModelPart leftLeg1, leftLeg2, leftLeg3;
     public ModelPart rightAntenna, leftAntenna;
     public ModelPart rightEye, leftEye;
-    @Nullable //need this due to how the slime beetle tail works
     public ModelPart tailBottom, tailTop, slime, slimeCenter;
 
     private static boolean translucent;
@@ -53,15 +52,8 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetleEntity> {
         this.tailBottom = root.getChild("tail_bottom");
         this.tailTop = this.tailBottom.getChild("tail_top");
 
-        // FIXME Why do we branching the model definition - This is awful and not likely feasible when made into json.
-        //  For now let's put both and deal with the consequences later
-        //if (translucent) {
-            this.slime = this.tailTop.getChild("slime");
-        //    this.slimeCenter = this.root.getChild("slime_center");
-        //} else {
-        //    this.slime = this.root.getChild("slime");
-            this.slimeCenter = this.tailTop.getChild("slime_center");
-        //}
+        this.slime = this.tailTop.getChild("slime");
+        this.slimeCenter = this.tailTop.getChild("slime_center");
     }
 
     public static LayerDefinition create() {
@@ -138,12 +130,12 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetleEntity> {
                         .addBox(-3.0F, -9.0F, -1.0F, 6.0F, 6.0F, 6.0F),
                 PartPose.offset(0.0F, 0.0F, 3.0F));
 
-        /*(SlimeBeetleModel.translucent ? tailTop : partRoot)*/tailTop.addOrReplaceChild("slime", CubeListBuilder.create()
+        tailTop.addOrReplaceChild("slime", CubeListBuilder.create()
                         .texOffs(16, 40)
                         .addBox(-6.0F, -12.0F, -7.0F, 12.0F, 12.0F, 12.0F),
                 PartPose.offset(0.0F, -8.0F, 2.0F));
 
-        /*(SlimeBeetleModel.translucent ? partRoot : tailTop)*/tailTop.addOrReplaceChild("slime_center", CubeListBuilder.create()
+        tailTop.addOrReplaceChild("slime_center", CubeListBuilder.create()
                         .texOffs(0, 18)
                         .addBox(-4.0F, -9.0F, -5.0F, 8.0F, 8.0F, 8.0F),
                 PartPose.offset(0.0F, -9.0F, 2.0F));
@@ -158,11 +150,12 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetleEntity> {
 
     @Override
     public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
-        this.tailBottom.render(stack, builder, light, overlay, red, green, blue, alpha);
-
-        if (!translucent) {
+        root().render(stack, builder, light, overlay, red, green, blue, alpha);
+       /* if (!translucent) {
             root().getAllParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
-        }
+        } else {
+            this.slime.render(stack, builder, light, overlay, red, green, blue, alpha);
+        }*/
     }
 
     @Override
@@ -217,14 +210,5 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetleEntity> {
         this.tailTop.xRot = Mth.cos(ageInTicks * 0.4445F) * 0.20F;
         this.slime.xRot = Mth.cos(ageInTicks * 0.5555F) * 0.25F;
         this.slimeCenter.xRot = Mth.cos(ageInTicks * 0.5555F + 0.25F) * 0.25F;
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

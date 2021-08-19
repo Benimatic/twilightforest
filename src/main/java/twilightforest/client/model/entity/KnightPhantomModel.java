@@ -60,11 +60,9 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomEntity> {
 		this.knight = entity;
 
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		this.leftLeg.xRot = 0;
 		this.leftLeg.yRot = 0;
 		this.leftLeg.zRot = 0;
 
-		this.rightLeg.xRot = 0;
 		this.rightLeg.yRot = 0;
 		this.rightLeg.zRot = 0;
 

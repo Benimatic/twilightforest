@@ -33,12 +33,12 @@ public class RavenModel extends HierarchicalModel<RavenEntity> {
 
         this.head = root.getChild("head");
 
-        this.rightWing = root.getChild("right_wing");
-        this.leftWing = root.getChild("left_wing");
+        var body = root.getChild("torso");
+        this.rightWing = body.getChild("right_wing");
+        this.leftWing = body.getChild("left_wing");
         this.rightLeg = root.getChild("right_leg");
         this.leftLeg = root.getChild("left_leg");
-
-        this.tail = root.getChild("tail");
+        this.tail = body.getChild("tail");
     }
 
     public static LayerDefinition create() {
@@ -52,17 +52,17 @@ public class RavenModel extends HierarchicalModel<RavenEntity> {
                         .addBox(-0.5F, 0.0F, -3.0F, 1.0F, 2.0F, 1.0F),
                 PartPose.offset(0.0F, 18.5F, -2.0F));
 
-        partRoot.addOrReplaceChild("torso", CubeListBuilder.create()
+        var body = partRoot.addOrReplaceChild("torso", CubeListBuilder.create()
                         .texOffs(0, 6)
                         .addBox(-2.0F, -1.5F, 0.0F, 4.0F, 3.0F, 6.0F),
                 PartPose.offsetAndRotation(0.0F, 18.5F, -2.0F, -0.4363323129985824F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_wing", CubeListBuilder.create()
+        body.addOrReplaceChild("right_wing", CubeListBuilder.create()
                         .texOffs(0, 15)
                         .addBox(-1.0F, 0.0F, -1.0F, 1.0F, 3.0F, 6.0F),
                 PartPose.offsetAndRotation(-2.0F, -1.0F, 2.0F, 0.2617993877991494F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("left_wing", CubeListBuilder.create()
+        body.addOrReplaceChild("left_wing", CubeListBuilder.create()
                         .texOffs(14, 15)
                         .addBox(0.0F, 0.0F, -1.0F, 1.0F, 3.0F, 6.0F),
                 PartPose.offsetAndRotation(2.0F, -1.0F, 2.0F, 0.2617993877991494F, 0.0F, 0.0F));
@@ -77,7 +77,7 @@ public class RavenModel extends HierarchicalModel<RavenEntity> {
                         .addBox(0.0F, 0.0F, -1.0F, 1.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
+        body.addOrReplaceChild("tail", CubeListBuilder.create()
                         .texOffs(8, 0)
                         .addBox(-2.5F, 0.0F, 0.0F, 5.0F, 0.0F, 5.0F),
                 PartPose.offsetAndRotation(0.0F, -1.5F, 6.0F, -0.4363323129985824F, 0.0F, 0.0F));
@@ -109,14 +109,5 @@ public class RavenModel extends HierarchicalModel<RavenEntity> {
             rightLeg.y = 20F;
             leftLeg.y = 20F;
         }
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

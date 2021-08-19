@@ -3,14 +3,14 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.passive.QuestRamEntity;
@@ -22,7 +22,7 @@ import twilightforest.entity.passive.QuestRamEntity;
 @OnlyIn(Dist.CLIENT)
 public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
     public ModelPart horns;
-    public ModelPart backtorso;
+    public ModelPart backtorso, frontTorso;
 
     public ModelPart[] segments = new ModelPart[16];
     int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
@@ -33,7 +33,7 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
         this.horns = root.getChild("horns");
         this.backtorso = root.getChild("back_torso");
 
-        var frontTorso = root.getChild("front_torso");
+        this.frontTorso = root.getChild("front_torso");
 
         for(int i = 0; i < 16; i++) {
             this.segments[i] = frontTorso.getChild("segment_" + i);
@@ -44,14 +44,7 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
         MeshDefinition mesh = QuadrupedModel.createBodyMesh(16, CubeDeformation.NONE);
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(74, 70)
-                        .addBox(-6.0F, -2.0F, -13.0F, 12.0F, 8.0F, 15.0F)
-                        .texOffs(42, 71)
-                        .addBox(-6.0F, -5.0F, -9.0F, 12.0F, 3.0F, 11.0F),
-                PartPose.offsetAndRotation(0.0F, -4.0F, 3.0F, 0.4363323129985824F, 0.0F, 0.0F));
-
-        partRoot.addOrReplaceChild("horns", CubeListBuilder.create()
+        var horns = partRoot.addOrReplaceChild("horns", CubeListBuilder.create()
                         .texOffs(64, 0)
                         .addBox(-9.0F, -11.0F, -1.0F, 4.0F, 10.0F, 10.0F)
                         .texOffs(48, 0)
@@ -62,15 +55,22 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
                         .addBox(9.0F, -11.0F, 5.0F, 4.0F, 4.0F, 4.0F),
                 PartPose.offset(0.0F, -10.0F, -8.0F));
 
-        partRoot.addOrReplaceChild("neck", CubeListBuilder.create()
-                        .texOffs(84, 93)
-                        .addBox(-5.0F, -11.0F, -2.0F, 10.0F, 12.0F, 12.0F),
-                PartPose.offsetAndRotation(0.0F, 2.0F, -3.0F, 0.6108652381980153F, 0.0F, 0.0F));
+        horns.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(74, 70)
+                        .addBox(-6.0F, -2.0F, -13.0F, 12.0F, 8.0F, 15.0F)
+                        .texOffs(42, 71)
+                        .addBox(-6.0F, -5.0F, -9.0F, 12.0F, 3.0F, 11.0F),
+                PartPose.offsetAndRotation(0.0F, -4.0F, 3.0F, 0.4363323129985824F, 0.0F, 0.0F));
 
         var frontTorso = partRoot.addOrReplaceChild("front_torso", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-8.0F, -7.0F, -6.0F, 16.0F, 14.0F, 16.0F),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        frontTorso.addOrReplaceChild("neck", CubeListBuilder.create()
+                        .texOffs(84, 93)
+                        .addBox(-5.0F, -11.0F, -2.0F, 10.0F, 12.0F, 12.0F),
+                PartPose.offsetAndRotation(0.0F, 2.0F, -3.0F, 0.6108652381980153F, 0.0F, 0.0F));
 
         partRoot.addOrReplaceChild("back_torso", CubeListBuilder.create()
                         .texOffs(0, 30)
@@ -117,6 +117,16 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
     }
 
     @Override
+    protected Iterable<ModelPart> headParts() {
+        return ImmutableList.of(horns);
+    }
+
+    @Override
+    protected Iterable<ModelPart> bodyParts() {
+        return ImmutableList.of(horns, frontTorso, backtorso, rightFrontLeg, leftFrontLeg, rightHindLeg, leftHindLeg);
+    }
+
+    @Override
     public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
         super.renderToBuffer(stack, builder, light, overlay, red, green, blue, alpha);
 
@@ -130,8 +140,6 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
     public void setupAnim(QuestRamEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.horns.xRot = headPitch / (180F / (float) Math.PI);
         this.horns.yRot = netHeadYaw / (180F / (float) Math.PI);
-
-        //this.neck.rotateAngleY = this.head.rotateAngleY;
 
         this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
         this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;

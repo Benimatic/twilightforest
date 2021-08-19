@@ -64,7 +64,7 @@ public class RedcapModel<T extends RedcapEntity> extends HumanoidModel<T> {
 		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
 						.texOffs(0, 20)
 						.addBox(-2.0F, 0.0F, -1.5F, 3.0F, 9.0F, 3.0F),
-				PartPose.offset(5.0F, 8.0F, 0.0F));
+				PartPose.offset(3.0F, 15.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}

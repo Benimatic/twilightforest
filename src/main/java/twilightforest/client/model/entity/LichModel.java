@@ -65,13 +65,13 @@ public class LichModel extends HumanoidModel<LichEntity> {
 
 		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
-						.addBox(-1.0F, -2.0F, -2.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(-2.0F, 9.5F, 0.0F));
+						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(-2.0F, 12.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
 						.texOffs(0, 16)
-						.addBox(-1.0F, -2.0F, -2.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(2.0F, 9.5F, 0.0F));
+						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+				PartPose.offset(2.0F, 12.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 64);
 	}
@@ -117,7 +117,5 @@ public class LichModel extends HumanoidModel<LichEntity> {
 
 		head.y = -4.0F;
 		hat.y = -4.0F;
-		rightLeg.y = 9.5F;
-		leftLeg.y = 9.5F;
 	}
 }
