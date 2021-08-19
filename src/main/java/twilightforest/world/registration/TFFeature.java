@@ -116,7 +116,7 @@ public enum TFFeature {
 		}
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
-			return new HedgeMazeComponent(this, 0, x, y - 15, z);
+			return new HedgeMazeComponent(this, 0, x + 1, y + 1, z + 1);
 		}
 	},
 	NAGA_COURTYARD ( 3, "naga_courtyard", true ) {
@@ -125,7 +125,7 @@ public enum TFFeature {
 		}
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
-			return new NagaCourtyardMainComponent(this, rand, 0, x, y - 5, z);
+			return new NagaCourtyardMainComponent(this, rand, 0, x + 1, y + 1, z + 1);
 		}
 	},
 	LICH_TOWER ( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {

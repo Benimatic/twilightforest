@@ -143,7 +143,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 			boolean dontCenter = feature == TFFeature.LICH_TOWER || feature == TFFeature.TROLL_CAVE || feature == TFFeature.YETI_CAVE;
 			int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 			int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
-			int y = chunkGenerator.getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
+			int y = chunkGenerator.getSeaLevel();
 			StructurePiece start = feature.provideStructureStart(structureManager, random, x, y, z);
 			if(start == null)
 				return;
