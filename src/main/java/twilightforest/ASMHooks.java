@@ -48,7 +48,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.audio.MusicTicker#tick()}<br>
+	 * {@link net.minecraft.client.sounds.MusicManager#tick()}<br>
 	 * [AFTER FIRST INVOKEVIRTUAL]
 	 */
 	public static Music music(Music music) {

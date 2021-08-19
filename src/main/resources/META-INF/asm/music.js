@@ -13,7 +13,7 @@ function initializeCoreMod() {
                 'methodName': ASM.mapMethod('m_120183_'),
                 'methodDesc': '()V'
             },
-            'transformer': function (/* org.objectweb.asm.tree.MethodNode */ methodNode) {
+            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 instructions.insert(
                     ASM.findFirstInstruction(methodNode, Opcodes.INVOKEVIRTUAL),
@@ -22,7 +22,7 @@ function initializeCoreMod() {
                             Opcodes.INVOKESTATIC,
                             'twilightforest/ASMHooks',
                             'music',
-                            '(Lnet/minecraft/client/audio/BackgroundMusicSelector;)Lnet/minecraft/client/audio/BackgroundMusicSelector;',
+                            '(Lnet/minecraft/sounds/Music;)Lnet/minecraft/sounds/Music;',
                             false
                             )
                         )
