@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.DeathTomeEntity;
 
 public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
-    private final ModelPart root, book;
+    private final ModelPart root, book, paperStorm;
     private final ModelPart pagesRight, pagesLeft;
     private final ModelPart flippingPageRight, flippingPageLeft;
     private final ModelPart coverRight, coverLeft;
@@ -31,7 +31,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
         this.coverRight = this.book.getChild("cover_right");
         this.coverLeft = this.book.getChild("cover_left");
 
-        ModelPart paperStorm = this.root.getChild("paper_storm");
+        this.paperStorm = this.root.getChild("paper_storm");
 
         this.loosePage0 = paperStorm.getChild("loose_page_0");
         this.loosePage1 = paperStorm.getChild("loose_page_1");
@@ -113,8 +113,8 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
     public void setupAnim(DeathTomeEntity entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
         this.book.zRot = -0.8726646259971647F;
 
-        this.root.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;
-        this.root.zRot = 0.8726646259971647F;
+        this.paperStorm.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;
+        this.paperStorm.zRot = 0.8726646259971647F;
     }
 
     @Override

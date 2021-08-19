@@ -18,7 +18,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiEntity> {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partRoot = mesh.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head",
+		partRoot.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
@@ -28,22 +28,22 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiEntity> {
 						.texOffs(32, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
-		partRoot.addOrReplaceChild("body",
+		var body = partRoot.addOrReplaceChild("body",
 				CubeListBuilder.create()
 						.texOffs(80, 0)
 						.addBox(-24.0F, -60.0F, -18.0F, 48.0F, 72.0F, 36.0F),
 				PartPose.offset(0.0F, -6.0F, 0.0F));
-		partRoot.addOrReplaceChild("mouth",
+		body.addOrReplaceChild("mouth",
 				CubeListBuilder.create()
 						.texOffs(121, 50)
 						.addBox(-17.0F, -7.0F, -1.5F, 34.0F, 29.0F, 2.0F),
 				PartPose.offset(0.0F, -37.0F, -18.0F));
-		head.addOrReplaceChild("right_eye",
+		body.addOrReplaceChild("right_eye",
 				CubeListBuilder.create()
 						.texOffs(64, 0)
 						.addBox(-6.0F, -6.0F, -1.5F, 12.0F, 12.0F, 2.0F),
 				PartPose.offset(-14.0F, -50.0F, -18.0F));
-		head.addOrReplaceChild("left_eye",
+		body.addOrReplaceChild("left_eye",
 				CubeListBuilder.create()
 						.texOffs(64, 0)
 						.addBox(-6.0F, -6.0F, -1.5F, 12.0F, 12.0F, 2.0F),
@@ -63,15 +63,15 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiEntity> {
 						.texOffs(0, 66)
 						.addBox(-10.0F, 0.0F, -10.0F, 20.0F, 20.0F, 20.0F),
 				PartPose.offset(-13.5F, 4.0F, 0.0F));
-		partRoot.addOrReplaceChild("right_leg",
+		partRoot.addOrReplaceChild("left_leg",
 				CubeListBuilder.create().mirror()
 						.texOffs(0, 66)
 						.addBox(-10.0F, 0.0F, -10.0F, 20.0F, 20.0F, 20.0F),
 				PartPose.offset(13.5F, 4.0F, 0.0F));
 
-		addPairHorns(head, -58.0F, 35F, 1);
-		addPairHorns(head, -46.0F, 15F, 2);
-		addPairHorns(head, -36.0F, -5F, 3);
+		addPairHorns(body, -58.0F, 35F, 1);
+		addPairHorns(body, -46.0F, 15F, 2);
+		addPairHorns(body, -36.0F, -5F, 3);
 
 		return LayerDefinition.create(mesh, 256, 128);
 	}

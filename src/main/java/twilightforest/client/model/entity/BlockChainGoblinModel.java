@@ -190,7 +190,7 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
         block.addOrReplaceChild("spikes_23", CubeListBuilder.create()
                         .texOffs(56, 36)
                         .addBox(-1F, -1F, -1F, 2, 2, 2),
-                PartPose.offsetAndRotation(4, 0, -4, QUARTER_PI, 0, 0));
+                PartPose.offsetAndRotation(0, 0, -4, QUARTER_PI, 0, 0));
 
         block.addOrReplaceChild("spikes_24", CubeListBuilder.create()
                         .texOffs(56, 36)

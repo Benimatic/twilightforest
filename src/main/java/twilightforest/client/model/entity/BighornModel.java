@@ -6,10 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.passive.BighornEntity;
@@ -25,21 +22,15 @@ public class BighornModel<T extends BighornEntity> extends SheepModel<T> {
     }
 
     public static LayerDefinition create() {
-        MeshDefinition mesh = new MeshDefinition();
+        MeshDefinition mesh = SheepModel.createBodyMesh(0, CubeDeformation.NONE);
         PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head",
+        var head = partRoot.addOrReplaceChild("head",
                 CubeListBuilder.create()
                         .texOffs(38, 0)
                         .addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F),
                 PartPose.offset(0.0F, 5.0F, -8.0F));
-        partRoot.addOrReplaceChild("body",
-                CubeListBuilder.create()
-                        .texOffs(34, 13)
-                        .addBox(-4.5F, -14.0F, -3.0F, 9.0F, 16.0F, 6.0F),
-                PartPose.offsetAndRotation(0.0F, 10.0F, 6.0F,
-                        1.5707963267948966F, 0.0F, 0.0F));
-        partRoot.addOrReplaceChild("right_horn",
+        head.addOrReplaceChild("right_horn",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-3.0F, -1.0F, -7.0F, 3.0F, 3.0F, 5.0F)
@@ -49,7 +40,7 @@ public class BighornModel<T extends BighornEntity> extends SheepModel<T> {
                         .addBox(-4.0F, 0.0F, -11.0F, 2.0F, 3.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, -3.0F, -1.0F,
                         0.0F, 0.39269908169872414F, 0.2181661564992912F));
-        partRoot.addOrReplaceChild("left_horn",
+        head.addOrReplaceChild("left_horn",
                 CubeListBuilder.create()
                         .texOffs(16, 0)
                         .addBox(0.0F, -1.0F, -7.0F, 3.0F, 3.0F, 5.0F)
@@ -59,22 +50,28 @@ public class BighornModel<T extends BighornEntity> extends SheepModel<T> {
                         .addBox(2.0F, 0.0F, -11.0F, 2.0F, 3.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, -3.0F, -1.0F,
                         0.0F, -0.39269908169872414F, -0.2181661564992912F));
-        partRoot.addOrReplaceChild("left_hind_leg",
+        partRoot.addOrReplaceChild("body",
                 CubeListBuilder.create()
-                        .texOffs(0, 48).addBox(-1.5F, 0.0F, -4.0F, 4.0F, 12.0F, 4.0F),
-                PartPose.offset(-3.5F, 12.0F, 9.0F));
+                        .texOffs(34, 13)
+                        .addBox(-4.5F, -14.0F, -3.0F, 9.0F, 16.0F, 6.0F),
+                PartPose.offsetAndRotation(0.0F, 10.0F, 6.0F,
+                        1.5707963267948966F, 0.0F, 0.0F));
         partRoot.addOrReplaceChild("right_hind_leg",
                 CubeListBuilder.create()
-                        .texOffs(16, 48).addBox(-2.5F, 0.0F, -4.0F, 4.0F, 12.0F, 4.0F),
-                PartPose.offset(3.5F, 12.0F, 9.0F));
-        partRoot.addOrReplaceChild("left_front_leg",
+                        .texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offset(-3.0F, 12.0F, 7.0F));
+        partRoot.addOrReplaceChild("left_hind_leg",
                 CubeListBuilder.create()
-                        .texOffs(0, 32).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 12.0F, 4.0F),
-                PartPose.offset(-3.0F, 12.0F, -3.0F));
+                        .texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offset(3.0F, 12.0F, 7.0F));
         partRoot.addOrReplaceChild("right_front_leg",
                 CubeListBuilder.create()
-                        .texOffs(16, 32).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 12.0F, 4.0F),
-                PartPose.offset(3.0F, 12.0F, -3.0F));
+                        .texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offset(-3.0F, 12.0F, -5.0F));
+        partRoot.addOrReplaceChild("left_front_leg",
+                CubeListBuilder.create()
+                        .texOffs(16, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+                PartPose.offset(3.0F, 12.0F, -5.0F));
 
         return LayerDefinition.create(mesh, 64, 64);
     }
@@ -101,14 +98,5 @@ public class BighornModel<T extends BighornEntity> extends SheepModel<T> {
                 modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
         }
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
     }
 }

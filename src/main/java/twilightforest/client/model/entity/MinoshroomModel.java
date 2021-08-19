@@ -56,15 +56,15 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomEntity> {
                 .addBox(-5.0F, -3.0F, 0.0F, 10.0F, 12.0F, 5.0F),
                 PartPose.offset(0.0F, -6.0F, -9.0F));
 
-        partRoot.addOrReplaceChild("leftArm", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
                         .texOffs(46, 15)
-                        .addBox(0.0F, -3.0F, -0.0F, 4.0F, 14.0F, 5.0F),
-                PartPose.offset(5.0F, -6.0F, -9.0F));
+                        .addBox(0.0F, -1.0F, -2.0F, 4.0F, 14.0F, 5.0F),
+                PartPose.offset(5.0F, -8.0F, -7.0F));
 
-        partRoot.addOrReplaceChild("rightArm", CubeListBuilder.create()
+        partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
                         .texOffs(28, 15)
-                        .addBox(-4.0F, -3.0F, -0.0F, 4.0F, 14.0F, 5.0F),
-                PartPose.offset(-5.0F, -6.0F, -9.0F));
+                        .addBox(-4.0F, -1.0F, -2.0F, 4.0F, 14.0F, 5.0F),
+                PartPose.offset(-5.0F, -8.0F, -7.0F));
 
         partRoot.addOrReplaceChild("cow_torso", CubeListBuilder.create()
                         .texOffs(20, 36)
@@ -103,7 +103,7 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomEntity> {
 
     @Override
     public void setupAnim(MinoshroomEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        // copied from ModelBiped
+        // copied from HumanoidModel
 
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.head.xRot = headPitch / (180F / (float) Math.PI);
@@ -155,7 +155,7 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomEntity> {
             this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
         }
 
-        // copied from ModelQuadruped
+        // copied from QuadrepedModel
         this.cowTorso.xRot = ((float) Math.PI / 2F);
         this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
@@ -165,7 +165,6 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomEntity> {
         float f = ageInTicks - entity.tickCount;
         float f1 = entity.getChargeAnimationScale(f);
         f1 = f1 * f1;
-        float f2 = 1.0F - f1;
         if (f1 > 0) {
 
             if (entity.getMainArm() == HumanoidArm.RIGHT) {

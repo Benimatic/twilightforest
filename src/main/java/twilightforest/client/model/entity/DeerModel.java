@@ -18,11 +18,14 @@ import twilightforest.entity.passive.DeerEntity;
 @OnlyIn(Dist.CLIENT)
 public class DeerModel extends QuadrupedModel<DeerEntity> {
     private final ModelPart neck;
+    private final ModelPart realHead;
 
     public DeerModel(ModelPart root) {
         super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 10);
 
         this.neck = root.getChild("neck");
+        //cant assign a value to the head since its final so lets make a workaround
+        this.realHead = neck.getChild("head");
     }
 
     public static LayerDefinition create() {
@@ -54,7 +57,7 @@ public class DeerModel extends QuadrupedModel<DeerEntity> {
         partRoot.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(36, 6)
                         .addBox(-3.0F, -14.0F, -2.0F, 6.0F, 18.0F, 8.0F),
-                PartPose.offset(0.0F, 10.0F, 7.0F));
+                PartPose.offsetAndRotation(0.0F, 10.0F, 7.0F, 1.5707963267948966F, 0.0F, 0.0F));
 
         partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
                         .texOffs(0, 15)
@@ -102,5 +105,11 @@ public class DeerModel extends QuadrupedModel<DeerEntity> {
             this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
             this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
         }
+    }
+
+    public void setupAnim(DeerEntity p_103509_, float p_103510_, float p_103511_, float p_103512_, float p_103513_, float p_103514_) {
+        super.setupAnim(p_103509_, p_103510_, p_103511_, p_103512_, p_103513_, p_103514_);
+        realHead.xRot = head.xRot;
+        realHead.yRot = head.yRot;
     }
 }
