@@ -1,4 +1,4 @@
-package twilightforest.worldgen.structures;
+package twilightforest.worldgen.templates;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;

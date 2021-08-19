@@ -5,8 +5,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import twilightforest.TwilightForestMod;
-import twilightforest.worldgen.structures.GenDruidHut;
-import twilightforest.worldgen.structures.TFGenGraveyard;
+import twilightforest.worldgen.templates.HutTemplateProcessor;
+import twilightforest.worldgen.templates.TFGenGraveyard;
 import twilightforest.structures.courtyard.CourtyardStairsTemplateProcessor;
 import twilightforest.structures.courtyard.CourtyardTerraceTemplateProcessor;
 import twilightforest.structures.courtyard.CourtyardWallTemplateProcessor;
@@ -21,7 +21,7 @@ public class TFStructureProcessors {
 	public static final StructureProcessorType<?> COURTYARD_WALL = registerProcessor("courtyard_wall", CourtyardWallTemplateProcessor.codecWallProcessor);
 	public static final StructureProcessorType<?> MOSSY_COBBLE = registerProcessor("mossy_cobble", MossyCobbleTemplateProcessor.codecMossyProcessor);
 	public static final StructureProcessorType<?> STONE_BRICKS = registerProcessor("stone_bricks", StoneBricksTemplateProcessor.codecBricksProcessor);
-	public static final StructureProcessorType<?> HUT = registerProcessor("hut", GenDruidHut.HutTemplateProcessor.codecHutProcessor);
+	public static final StructureProcessorType<?> HUT = registerProcessor("hut", HutTemplateProcessor.codecHutProcessor);
 	public static final StructureProcessorType<?> WEB = registerProcessor("web", TFGenGraveyard.WebTemplateProcessor.codecWebProcessor);
 
 	public static <P extends StructureProcessor> StructureProcessorType<P> registerProcessor(String name, Codec<P> processor) {

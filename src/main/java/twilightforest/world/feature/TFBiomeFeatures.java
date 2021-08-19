@@ -11,8 +11,8 @@ import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.feature.tree.SnowTreePlacer;
 import twilightforest.world.feature.tree.SnowUnderTrees;
-import twilightforest.worldgen.structures.GenDruidHut;
-import twilightforest.worldgen.structures.TFGenGraveyard;
+import twilightforest.worldgen.templates.GenDruidHut;
+import twilightforest.worldgen.templates.TFGenGraveyard;
 
 //I'd call this TFFeatures, but that'd be confused with TFFeature.
 

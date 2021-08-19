@@ -55,7 +55,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 	private Map<ResourceLocation, LevelStem> getDimensions() {
 		NoiseGeneratorSettings forestDimensionSettings = makeDimensionSettings(
 				new StructureSettings(Optional.empty(), ImmutableMap.of()),
-				makeNoiseSettings(
+				NoiseSettings.create(
 						-32, // TODO Deliberate over this. For now it'll be -32
 						256,
 						new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
@@ -68,7 +68,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 						true,
 						true,
 						false,
-						false),
+						false
+				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
 				Integer.MIN_VALUE,
@@ -110,11 +111,11 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				0,
 				-32,
 				false,
+				false,
+				false,
+				false,
 				true,
-				true,
-				true,
-				true,
-				true
+				false
 		);
 
 		// Register the dimension noise settings in the local datagen registry.
