@@ -1,3 +1,5 @@
+// noinspection ES6ConvertVarToLetConst
+
 var ASM = Java.type('net.minecraftforge.coremod.api.ASMAPI');
 var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 

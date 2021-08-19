@@ -1,9 +1,7 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,12 +13,15 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.renderer.entity.NagaSegmentRenderer;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPartEntity;
 
 import java.util.List;
 
 public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
+
+	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("naga_segment");
+
 
 	private int deathCounter;
 
@@ -35,10 +36,9 @@ public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
 		deactivate();
 	}
 
-	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
-		return new NagaSegmentRenderer<>(manager);
+	public ResourceLocation renderer() {
+		return RENDERER;
 	}
 
 	@Override

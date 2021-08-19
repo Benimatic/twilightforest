@@ -1,16 +1,16 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.renderer.entity.HydraHeadRenderer;
+import twilightforest.TwilightForestMod;
 
 public class HydraHeadEntity extends HydraPartEntity {
+
+	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("hydra_head");
 
 	private static final EntityDataAccessor<Float> DATA_MOUTH_POSITION = SynchedEntityData.defineId(HydraHeadEntity.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Float> DATA_MOUTH_POSITION_LAST = SynchedEntityData.defineId(HydraHeadEntity.class, EntityDataSerializers.FLOAT);
@@ -20,10 +20,9 @@ public class HydraHeadEntity extends HydraPartEntity {
 		super(hydra, 4F, 4F);
 	}
 
-	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
-		return new HydraHeadRenderer(manager);
+	public ResourceLocation renderer() {
+		return RENDERER;
 	}
 
 	@Override

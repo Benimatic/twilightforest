@@ -1,8 +1,6 @@
 package twilightforest.entity;
 
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
@@ -12,9 +10,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
-import twilightforest.client.renderer.entity.NoopRenderer;
+import twilightforest.TwilightForestMod;
 
 public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
+
+	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
 
 	protected EntityDimensions realSize;
 
@@ -35,8 +35,8 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
-		return new NoopRenderer<>(manager);
+	public ResourceLocation renderer() {
+		return RENDERER;
 	}
 
 	@OnlyIn(Dist.CLIENT)

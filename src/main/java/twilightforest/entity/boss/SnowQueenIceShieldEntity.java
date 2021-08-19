@@ -1,28 +1,27 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
-import twilightforest.client.renderer.entity.SnowQueenIceShieldLayer;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPartEntity;
 
 public class SnowQueenIceShieldEntity extends TFPartEntity<SnowQueenEntity> {
+
+	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("snowqueen_iceshield");
 
     public SnowQueenIceShieldEntity(SnowQueenEntity parent) {
         super(parent);
         dimensions = EntityDimensions.scalable(0.75F, 0.75F);
     }
 
-	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
-		return new SnowQueenIceShieldLayer<>(manager);
+	public ResourceLocation renderer() {
+		return RENDERER;
 	}
 
 	@Override

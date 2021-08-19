@@ -1,13 +1,13 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.renderer.entity.HydraNeckRenderer;
+import twilightforest.TwilightForestMod;
 
 public class HydraNeckEntity extends HydraPartEntity {
+
+	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("hydra_neck");
 
 	public final HydraHeadEntity head;
 
@@ -16,9 +16,8 @@ public class HydraNeckEntity extends HydraPartEntity {
 		this.head = head;
 	}
 
-	@Override
 	@OnlyIn(Dist.CLIENT)
-	public EntityRenderer<?> renderer(EntityRendererProvider.Context manager) {
-		return new HydraNeckRenderer(manager);
+	public ResourceLocation renderer() {
+		return RENDERER;
 	}
 }

@@ -1,6 +1,8 @@
 package twilightforest.entity;
 
 import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -43,7 +45,9 @@ import twilightforest.item.TransformPowderItem;
 import twilightforest.item.TFItems;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -465,6 +469,24 @@ public class TFEntities {
 		event.registerEntityRenderer(slider, SlideBlockRenderer::new);
 		event.registerEntityRenderer(seeker_arrow, DefaultArrowRenderer::new);
 		event.registerEntityRenderer(ice_arrow, DefaultArrowRenderer::new);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static class BakedMultiPartRenderers {
+
+		private static final Map<ResourceLocation, EntityRenderer<?>> renderers = new HashMap<>();
+
+		public static void bakeMultiPartRenderers(EntityRendererProvider.Context context) {
+			renderers.put(TFPartEntity.RENDERER, new NoopRenderer<>(context));
+			renderers.put(HydraHeadEntity.RENDERER, new HydraHeadRenderer(context));
+			renderers.put(HydraNeckEntity.RENDERER, new HydraNeckRenderer(context));
+			renderers.put(SnowQueenIceShieldEntity.RENDERER, new SnowQueenIceShieldLayer<>(context));
+			renderers.put(NagaSegmentEntity.RENDERER, new NagaSegmentRenderer<>(context));
+		}
+
+		public static EntityRenderer<?> lookup(ResourceLocation location) {
+			return renderers.get(location);
+		}
 
 	}
 }

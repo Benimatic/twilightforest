@@ -1,12 +1,15 @@
 package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +22,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPartEntity;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
@@ -84,7 +88,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.World#getEntitiesInAABBexcluding }<br>
+	 * {@link net.minecraft.world.level.Level#getEntities(Entity, AABB, Predicate)}  }<br>
 	 * [BEFORE ARETURN]
 	 */
 	public static synchronized List<Entity> multipartHitbox(List<Entity> list, Level world, @Nullable Entity entityIn, AABB boundingBox, @Nullable Predicate<? super Entity> predicate) {
@@ -108,7 +112,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.TrackedEntity#sendMetadata }<br>
+	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData }<br>
 	 * [AFTER GETFIELD]
 	 */
 	public static Entity updateMultiparts(Entity entity) {
@@ -119,21 +123,32 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.entity.EntityRendererManager#getRenderer(Entity)}  }<br>
-	 * [AFTER GETFIELD]
+	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#getRenderer(Entity)}  }<br>
+	 * [BEFORE LAST ARETURN]
 	 */
 	@Nullable
 	@OnlyIn(Dist.CLIENT)
-	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity, EntityRendererProvider.Context manager) {
+	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
 		if(entity instanceof TFPartEntity<?>)
-			return ((TFPartEntity) entity).renderer(manager);
+			return TFEntities.BakedMultiPartRenderers.lookup(((TFPartEntity<?>) entity).renderer());
 		return renderer;
 	}
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.WorldRenderer#updateCameraAndRender(MatrixStack, float, long, boolean, ActiveRenderInfo, GameRenderer, LightTexture, Matrix4f)} )}  }<br>
-	 * [AFTER {@link net.minecraft.client.world.ClientWorld#getAllEntities}]
+	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#onResourceManagerReload(ResourceManager)} )}  }<br>
+	 * [AFTER FIRST INVOKESPECIAL]
+	 */
+	@OnlyIn(Dist.CLIENT)
+	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
+		TFEntities.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
+		return context;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(PoseStack, float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f)} )}  }<br>
+	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterable<Entity> renderMutiparts(Iterable<Entity> iter) {
 		List<Entity> list = new ArrayList<>();
