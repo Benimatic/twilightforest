@@ -37,7 +37,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.gui.MapItemRenderer.Instance#draw(MatrixStack, IRenderTypeBuffer, boolean, int)}<br>
+	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}<br>
 	 * [BEFORE FIRST ISTORE]
 	 */
 	public static void mapRenderContext(PoseStack stack, MultiBufferSource buffer, int light) {
