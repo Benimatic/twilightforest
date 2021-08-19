@@ -197,10 +197,10 @@ public final class TFSounds {
 	public static final SoundEvent SWARM_SPIDER_HURT = createEvent("entity.twilightforest.swarmspider.hurt");
 	public static final SoundEvent SWARM_SPIDER_STEP = createEvent("entity.twilightforest.swarmspider.step");
 	public static final SoundEvent TEAR_BREAK = createEvent("entity.twilightforest.tear.break");
-	public static final SoundEvent TERMITE_AMBIENT = createEvent("entity.twilightforest.termite.twilightforest.ambient");
-	public static final SoundEvent TERMITE_DEATH = createEvent("entity.twilightforest.termite.twilightforest.death");
-	public static final SoundEvent TERMITE_HURT = createEvent("entity.twilightforest.termite.twilightforest.hurt");
-	public static final SoundEvent TERMITE_STEP = createEvent("entity.twilightforest.termite.twilightforest.step");
+	public static final SoundEvent TERMITE_AMBIENT = createEvent("entity.twilightforest.termite.ambient");
+	public static final SoundEvent TERMITE_DEATH = createEvent("entity.twilightforest.termite.death");
+	public static final SoundEvent TERMITE_HURT = createEvent("entity.twilightforest.termite.hurt");
+	public static final SoundEvent TERMITE_STEP = createEvent("entity.twilightforest.termite.step");
 	public static final SoundEvent TIME_CORE = createEvent("block.twilightforest.core.time");
 	public static final SoundEvent TINYBIRD_CHIRP = createEvent("entity.twilightforest.tinybird.chirp");
 	public static final SoundEvent TINYBIRD_HURT = createEvent("entity.twilightforest.tinybird.hurt");
