@@ -55,8 +55,8 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
 	protected final void deformTerrainForFeature(WorldGenRegion primer, ChunkAccess chunk) {
-		IntPair nearCenter = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(this.getPos(primer).x, this.getPos(primer).z, primer, nearCenter);
+		IntPair featureRelativePos = new IntPair();
+		TFFeature nearFeature = TFFeature.getNearestFeature(this.getPos(primer).x, this.getPos(primer).z, primer, featureRelativePos);
 
 		//Optional<StructureStart<?>> structureStart = TFGenerationSettings.locateTFStructureInRange(primer.getLevel(), nearFeature, chunk.getPos().getWorldPosition(), nearFeature.size + 1);
 
@@ -64,47 +64,47 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 			return;
 		}
 
-		int hx = nearCenter.x;
-		int hz = nearCenter.z;
+		final int relativeFeatureX = featureRelativePos.x;
+		final int relativeFeatureZ = featureRelativePos.z;
 
 		switch (nearFeature) {
 			case SMALL_HILL, MEDIUM_HILL, LARGE_HILL, HYDRA_LAIR -> {
-				int hdiam = ((nearFeature.size * 2 + 1) * 16);
+				int hdiam = (nearFeature.size * 2 + 1) * 16;
 
-				for (int x = 0; x < 16; x++) {
-					for (int z = 0; z < 16; z++) {
-						int dx = x - hx;
-						int dz = z - hz;
+				for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
+					for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
+						int featureDX = xInChunk - relativeFeatureX;
+						int featureDZ = zInChunk - relativeFeatureZ;
 
-						int dist = (int) Mth.sqrt(dx * dx + dz * dz);
-						int hheight = (int) (Mth.cos((float) dist / (float) hdiam * Mth.PI) * ((float) hdiam / 3F));
-						this.raiseHills(primer, chunk, nearFeature, hdiam, x, z, dx, dz, hheight);
+						float dist = (int) Mth.sqrt(featureDX * featureDX + featureDZ * featureDZ);
+						float hheight = (int) (Mth.cos(dist / hdiam * Mth.PI) * (hdiam / 3F));
+						this.raiseHills(primer, chunk, nearFeature, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
 					}
 				}
 			}
 			case HEDGE_MAZE, NAGA_COURTYARD, QUEST_GROVE -> {
-				for (int x = 0; x < 16; x++) {
-					for (int z = 0; z < 16; z++) {
-						int dx = x - hx;
-						int dz = z - hz;
+				for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
+					for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
+						int featureDX = xInChunk - relativeFeatureX;
+						int featureDZ = zInChunk - relativeFeatureZ;
 
-						this.flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
+						this.flattenTerrainForFeature(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
 					}
 				}
 			}
 			case YETI_CAVE -> {
-				for (int x = 0; x < 16; x++) {
-					for (int z = 0; z < 16; z++) {
-						int dx = x - hx;
-						int dz = z - hz;
+				for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
+					for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
+						int featureDX = xInChunk - relativeFeatureX;
+						int featureDZ = zInChunk - relativeFeatureZ;
 
-						this.deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
+						this.deformTerrainForYetiLair(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
 					}
 				}
 			}
 			case TROLL_CAVE -> {
 				// troll cloud, more like
-				this.deformTerrainForTrollCloud2(primer, nearFeature, hx, hz);
+				this.deformTerrainForTrollCloud2(primer, nearFeature, relativeFeatureX, relativeFeatureZ);
 			}
 		}
 
@@ -115,14 +115,14 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	private void deformTerrainForTrollCloud2(WorldGenRegion primer, TFFeature nearFeature, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
 			for (int bz = 0; bz < 4; bz++) {
-				int dx = (bx * 4) - hx - 2;
-				int dz = (bz * 4) - hz - 2;
+				int dx = bx * 4 - hx - 2;
+				int dz = bz * 4 - hz - 2;
 
 				// generate several centers for other clouds
-				int regionX = (this.getPos(primer).x + 8) >> 4;
-				int regionZ = (this.getPos(primer).z + 8) >> 4;
+				int regionX = this.getPos(primer).x + 8 >> 4;
+				int regionZ = this.getPos(primer).z + 8 >> 4;
 
-				long seed = (regionX * 3129871L) ^ (regionZ * 116129781L);
+				long seed = regionX * 3129871L ^ regionZ * 116129781L;
 				seed = seed * seed * 42317861L + seed * 7L;
 
 				int num0 = (int) (seed >> 12 & 3L);
@@ -134,10 +134,10 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 				int num6 = (int) (seed >> 3 & 3L);
 				int num7 = (int) (seed >> 0 & 3L);
 
-				int dx2 = dx + (num0 * 5) - (num1 * 4);
-				int dz2 = dz + (num2 * 4) - (num3 * 5);
-				int dx3 = dx + (num4 * 5) - (num5 * 4);
-				int dz3 = dz + (num6 * 4) - (num7 * 5);
+				int dx2 = dx + num0 * 5 - num1 * 4;
+				int dz2 = dz + num2 * 4 - num3 * 5;
+				int dx3 = dx + num4 * 5 - num5 * 4;
+				int dz3 = dz + num6 * 4 - num7 * 5;
 
 				// take the minimum distance to any center
 				float dist0 = Mth.sqrt(dx * dx + dz * dz) / 4.0f;
@@ -147,7 +147,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 				double dist = Math.min(dist0, Math.min(dist2, dist3));
 
 				float pr = primer.getRandom().nextFloat();
-				double cv = (dist - 7F) - (pr * 3.0F);
+				double cv = dist - 7F - pr * 3.0F;
 
 				// randomize depth and height
 				int y = 166;
@@ -190,24 +190,26 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	/**
 	 * Raises up and hollows out the hollow hills.
 	 */ // TODO Add some surface noise
-	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, TFFeature nearFeature, int hdiam, int x, int z, int dX, int dZ, int hillHeight) {
+	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, TFFeature nearFeature, int hdiam, int xInChunk, int zInChunk, int featureDX, int featureDZ, float hillHeight) {
+		BlockPos.MutableBlockPos movingPos = this.getPos(world).getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
+
 		// raise the hill
-		int groundHeight = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
-		int raisedHeight = groundHeight + hillHeight;
+		int groundHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
+		float noiseRaw = (float) (this.surfaceNoise.getSurfaceNoiseValue(movingPos.getX() / 64f, movingPos.getZ() / 64f, 1.0f, 256) * 32f);
+		float totalHeightRaw = groundHeight * 0.5f + this.getSeaLevel() * 0.5f + hillHeight + noiseRaw;
+		int totalHeight = (int) (((int) totalHeightRaw >> 1) * 0.375f + totalHeightRaw * 0.625f);
 
-		BlockPos.MutableBlockPos movingPos = this.getPos(world).getWorldPosition().offset(x, 0, z).mutable();
-
-		for (int y = groundHeight; y <= raisedHeight; y++) {
+		for (int y = groundHeight; y <= totalHeight; y++) {
 			world.setBlock(movingPos.setY(y), this.defaultBlock, 3);
 		}
 
 		// add the hollow part. Also turn water into stone below that
-		int hollow = hillHeight - 4 - nearFeature.size;
+		int hollow = (int) hillHeight - 4 - nearFeature.size;
 
 		// hydra lair has a piece missing
 		if (nearFeature == TFFeature.HYDRA_LAIR) {
-			int mx = dX + 16;
-			int mz = dZ + 16;
+			int mx = featureDX + 16;
+			int mz = featureDZ + 16;
 			int mdist = (int) Mth.sqrt(mx * mx + mz * mz);
 			int mheight = (int) (Mth.cos(mdist / (hdiam / 1.5f) * Mth.PI) * (hdiam / 1.5f));
 
@@ -221,38 +223,29 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		// hollow out the hollow parts
 		int hollowFloor = nearFeature == TFFeature.HYDRA_LAIR ? this.getSeaLevel() : this.getSeaLevel() - 5 - (hollow >> 3);
 
-		if (hillHeight > world.getMinBuildHeight()) {
-			// put a base on hills that go over open space or water
-			for (int y = world.getMinBuildHeight(); y < groundHeight; y++) {
-				if (!this.defaultBlock.equals(world.getBlockState(movingPos.setY(y)))) {
-					world.setBlock(movingPos.setY(y), this.defaultBlock, 3);
-				}
-			}
-		}
-
 		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
 			world.setBlock(movingPos.setY(y), Blocks.AIR.defaultBlockState(), 3);
 		}
 	}
 
-	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
+	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int xInChunk, int zInChunk, int featureDX, int featureDZ) {
 		float squishFactor = 0f;
 		int featureHeight = this.getSeaLevel() + 1;
 		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
-		if (dx <= -FEATURE_BOUNDARY) {
-			squishFactor = (-dx - FEATURE_BOUNDARY) / 8.0f;
-		} else if (dx >= FEATURE_BOUNDARY) {
-			squishFactor = (dx - FEATURE_BOUNDARY) / 8.0f;
+		if (featureDX <= -FEATURE_BOUNDARY) {
+			squishFactor = (-featureDX - FEATURE_BOUNDARY) / 8.0f;
+		} else if (featureDX >= FEATURE_BOUNDARY) {
+			squishFactor = (featureDX - FEATURE_BOUNDARY) / 8.0f;
 		}
 
-		if (dz <= -FEATURE_BOUNDARY) {
-			squishFactor = Math.max(squishFactor, (-dz - FEATURE_BOUNDARY) / 8.0f);
-		} else if (dz >= FEATURE_BOUNDARY) {
-			squishFactor = Math.max(squishFactor, (dz - FEATURE_BOUNDARY) / 8.0f);
+		if (featureDZ <= -FEATURE_BOUNDARY) {
+			squishFactor = Math.max(squishFactor, (-featureDZ - FEATURE_BOUNDARY) / 8.0f);
+		} else if (featureDZ >= FEATURE_BOUNDARY) {
+			squishFactor = Math.max(squishFactor, (featureDZ - FEATURE_BOUNDARY) / 8.0f);
 		}
 
-		BlockPos.MutableBlockPos movingPos = this.getPos(primer).getWorldPosition().offset(x, 0, z).mutable();
+		BlockPos.MutableBlockPos movingPos = this.getPos(primer).getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
 
 		// FIXME swap for Heightmapper
 		if (squishFactor > 0f) {
@@ -282,54 +275,54 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		}
 	}
 
-	private void deformTerrainForYetiLair(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
+	private void deformTerrainForYetiLair(WorldGenRegion primer, TFFeature nearFeature, int xInChunk, int zInChunk, int featureDX, int featureDZ) {
 		float squishFactor = 0f;
 		int topHeight = this.getSeaLevel() + 24;
 		int outerBoundary = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		// outer boundary
-		if (dx <= -outerBoundary) {
-			squishFactor = (-dx - outerBoundary) / 8.0f;
-		} else if (dx >= outerBoundary) {
-			squishFactor = (dx - outerBoundary) / 8.0f;
+		if (featureDX <= -outerBoundary) {
+			squishFactor = (-featureDX - outerBoundary) / 8.0f;
+		} else if (featureDX >= outerBoundary) {
+			squishFactor = (featureDX - outerBoundary) / 8.0f;
 		}
 
-		if (dz <= -outerBoundary) {
-			squishFactor = Math.max(squishFactor, (-dz - outerBoundary) / 8.0f);
-		} else if (dz >= outerBoundary) {
-			squishFactor = Math.max(squishFactor, (dz - outerBoundary) / 8.0f);
+		if (featureDZ <= -outerBoundary) {
+			squishFactor = Math.max(squishFactor, (-featureDZ - outerBoundary) / 8.0f);
+		} else if (featureDZ >= outerBoundary) {
+			squishFactor = Math.max(squishFactor, (featureDZ - outerBoundary) / 8.0f);
 		}
 
 		// inner boundary
-		int caveBoundary = (nearFeature.size * 2) * 8 - 8;
+		int caveBoundary = nearFeature.size * 2 * 8 - 8;
 		int hollowCeiling;
 
-		int offset = Math.min(Math.abs(dx), Math.abs(dz));
-		hollowCeiling = (this.getSeaLevel() + 40) - (offset * 4);
+		int offset = Math.min(Math.abs(featureDX), Math.abs(featureDZ));
+		hollowCeiling = this.getSeaLevel() + 40 - offset * 4;
 
 		// center square cave
-		if (dx >= -caveBoundary && dz >= -caveBoundary && dx <= caveBoundary && dz <= caveBoundary) {
+		if (featureDX >= -caveBoundary && featureDZ >= -caveBoundary && featureDX <= caveBoundary && featureDZ <= caveBoundary) {
 			hollowCeiling = this.getSeaLevel() + 16;
 		}
 
 		// slope ceiling slightly
-		hollowCeiling -= (offset / 6);
+		hollowCeiling -= offset / 6;
 
 		// max out ceiling 8 blocks from roof
 		hollowCeiling = Math.min(hollowCeiling, this.getSeaLevel() + 16);
 
 		// floor, also with slight slope
-		int hollowFloor = this.getSeaLevel() - 4 + (offset / 6);
+		int hollowFloor = this.getSeaLevel() - 4 + offset / 6;
 
-		BlockPos.MutableBlockPos movingPos = this.getPos(primer).getWorldPosition().offset(x, 0, z).mutable();
+		BlockPos.MutableBlockPos movingPos = this.getPos(primer).getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
 
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
 			for (int y = primer.getMinBuildHeight(); y <= primer.getMaxBuildHeight(); y++) {
 				if (!this.defaultBlock.equals(primer.getBlockState(movingPos.setY(y)))) {
 					// we found the lowest chunk of earth
-					topHeight += ((y - topHeight) * squishFactor);
-					hollowFloor += ((y - hollowFloor) * squishFactor);
+					topHeight += (y - topHeight) * squishFactor;
+					hollowFloor += (y - hollowFloor) * squishFactor;
 					break;
 				}
 			}
