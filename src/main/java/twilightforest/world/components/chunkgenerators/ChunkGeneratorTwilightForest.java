@@ -3,7 +3,6 @@ package twilightforest.world.components.chunkgenerators;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.StructureFeatureManager;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
@@ -49,7 +47,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 
 	@Override
 	public void buildSurfaceAndBedrock(WorldGenRegion world, ChunkAccess chunk) {
-		this.deformTerrainForFeature(world);
+		this.deformTerrainForFeature(world, chunk);
 
 		super.buildSurfaceAndBedrock(world, chunk);
 

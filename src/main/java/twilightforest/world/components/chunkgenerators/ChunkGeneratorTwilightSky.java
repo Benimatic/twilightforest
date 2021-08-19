@@ -41,8 +41,8 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 	}
 
 	@Override
-	public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, ChunkAccess iChunk) {
-
+	public void buildSurfaceAndBedrock(WorldGenRegion world, ChunkAccess chunk) {
+		this.deformTerrainForFeature(world, chunk);
 	}
 
 	@Override
@@ -72,16 +72,6 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 //		}
 
 //		makeChunk(x, z, primer);
-	}
-
-	@Override
-	public void createReferences(WorldGenLevel world, StructureFeatureManager manager, ChunkAccess chunk) {
-		super.createReferences(world, manager, chunk);
-
-		if(!(world instanceof WorldGenRegion))
-			return;
-
-		deformTerrainForFeature((WorldGenRegion) world);
 	}
 
 	/*@Override
