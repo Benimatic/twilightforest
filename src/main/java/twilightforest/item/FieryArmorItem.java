@@ -1,6 +1,9 @@
 package twilightforest.item;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,15 +16,19 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.FieryArmorModel;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import net.minecraft.world.item.Item.Properties;
+import twilightforest.client.model.armor.TFArmorModel;
 
 public class FieryArmorItem extends ArmorItem {
 
@@ -45,5 +52,22 @@ public class FieryArmorItem extends ArmorItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
 		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
+	}
+
+	@Override
+	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+		consumer.accept(ArmorRender.INSTANCE);
+	}
+
+	private static final class ArmorRender implements IItemRenderProperties {
+		private static final ArmorRender INSTANCE = new ArmorRender();
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defModel) {
+			EntityModelSet models = Minecraft.getInstance().getEntityModels();
+			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.FIERY_ARMOR_INNER : TFModelLayers.FIERY_ARMOR_OUTER);
+			return (A) new FieryArmorModel(root);
+		}
 	}
 }

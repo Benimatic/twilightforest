@@ -6,8 +6,8 @@ import net.minecraft.client.model.geom.ModelPart;
 
 public class FieryArmorModel extends TFArmorModel {
 
-	public FieryArmorModel(ModelPart expand) {
-		super(expand);
+	public FieryArmorModel(ModelPart part) {
+		super(part);
 	}
 
 	@Override

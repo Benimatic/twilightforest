@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -29,8 +30,8 @@ public class YetiArmorModel extends TFArmorModel {
 		this.leftToe = this.leftLeg.getChild("left_toe");
 	}
 
-	public static LayerDefinition addPieces(CubeDeformation deformation, float expand) {
-		MeshDefinition meshdefinition = new MeshDefinition();
+	public static MeshDefinition addPieces(CubeDeformation deformation) {
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(deformation, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		//bigger head
@@ -38,12 +39,12 @@ public class YetiArmorModel extends TFArmorModel {
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.5F, -7.5F, -4.0F, 9, 8, 8, deformation),
-		PartPose.offset(0.0F, 0.0F + expand, 0.0F));
+		PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		// add horns
-		addPairHorns(head, -8.0F, 35F);
-		addPairHorns(head,-6.0F, 15F);
-		addPairHorns(head,-4.0F, -5F);
+		addPairHorns(head, 1, -8.0F, 35F);
+		addPairHorns(head, 2, -6.0F, 15F);
+		addPairHorns(head, 3, -4.0F, -5F);
 
 
 		// change leg texture
@@ -112,7 +113,7 @@ public class YetiArmorModel extends TFArmorModel {
 						.addBox(-1.0F, -2.0F, -2.0F, 4, 10, 4, deformation),
 				PartPose.offset(5.0F, 2.0F + 0.0f, 0.0F));
 
-		return LayerDefinition.create(meshdefinition, 64, 32);
+		return meshdefinition;
 	}
 
 	@Override
@@ -120,30 +121,30 @@ public class YetiArmorModel extends TFArmorModel {
 		return Iterables.concat(super.bodyParts(), ImmutableList.of(bipedLegBody));
 	}
 
-	private static void addPairHorns(PartDefinition partdefinition, float height, float zangle) {
+	private static void addPairHorns(PartDefinition partdefinition, int iter, float height, float zangle) {
 
-		var leftBottom = partdefinition.addOrReplaceChild("horn1a",
+		var leftBottom = partdefinition.addOrReplaceChild("horn_" + iter +"_left_bottom",
 				CubeListBuilder.create()
 						.texOffs(0, 19)
 						.addBox(-3.0F, -1.5F, -1.5F, 3, 3, 3),
 				PartPose.offsetAndRotation(-4.5F, height, -1.0F,
 						0.0F, -30F / (180F / (float) Math.PI), zangle / (180F / (float) Math.PI)));
 
-		leftBottom.addOrReplaceChild("horn1b",
+		leftBottom.addOrReplaceChild("horn_" + iter + "_left_top",
 				CubeListBuilder.create()
 						.texOffs(0, 26)
 						.addBox(-4.0F, -1.0F, -1.0F, 5, 2, 2),
 				PartPose.offsetAndRotation(-3.0F, 0.0F, 0.0F,
 						0.0F, -20F / (180F / (float) Math.PI), zangle / (180F / (float) Math.PI)));
 
-		var rightBottom = partdefinition.addOrReplaceChild("horn2a",
+		var rightBottom = partdefinition.addOrReplaceChild("horn_" + iter + "_right_bottom",
 				CubeListBuilder.create()
 						.texOffs(0, 19)
 						.addBox(0.0F, -1.5F, -1.5F, 3, 3, 3),
 				PartPose.offsetAndRotation(4.5F, height, -1.0F,
 						0.0F, 30F / (180F / (float) Math.PI), -zangle / (180F / (float) Math.PI)));
 
-		rightBottom.addOrReplaceChild("horn2b",
+		rightBottom.addOrReplaceChild("horn_" + iter + "_right_top",
 				CubeListBuilder.create()
 						.texOffs(0, 26)
 						.addBox(-1.0F, -1.0F, -1.0F, 5, 2, 2),

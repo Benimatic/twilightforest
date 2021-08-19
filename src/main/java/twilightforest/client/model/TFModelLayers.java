@@ -7,11 +7,16 @@ import twilightforest.TwilightForestMod;
 
 public class TFModelLayers {
 
-	public static final ModelLayerLocation ARCTIC_ARMOR = register("arctic_armor");
-	public static final ModelLayerLocation FIERY_ARMOR = register("fiery_armor");
-	public static final ModelLayerLocation KNIGHTMETAL_ARMOR = register("knightmetal_armor");
-	public static final ModelLayerLocation PHANTOM_ARMOR = register("phantom_armor");
-	public static final ModelLayerLocation YETI_ARMOR = register("yeti_armor");
+	public static final ModelLayerLocation ARCTIC_ARMOR_INNER = register("arctic_armor", "inner");
+	public static final ModelLayerLocation ARCTIC_ARMOR_OUTER = register("arctic_armor", "outer");
+	public static final ModelLayerLocation FIERY_ARMOR_INNER = register("fiery_armor", "inner");
+	public static final ModelLayerLocation FIERY_ARMOR_OUTER = register("fiery_armor", "outer");
+	public static final ModelLayerLocation KNIGHTMETAL_ARMOR_INNER = register("knightmetal_armor", "inner");
+	public static final ModelLayerLocation KNIGHTMETAL_ARMOR_OUTER = register("knightmetal_armor", "outer");
+	public static final ModelLayerLocation PHANTOM_ARMOR_INNER = register("phantom_armor", "inner");
+	public static final ModelLayerLocation PHANTOM_ARMOR_OUTER = register("phantom_armor", "outer");
+	public static final ModelLayerLocation YETI_ARMOR_INNER = register("yeti_armor", "inner");
+	public static final ModelLayerLocation YETI_ARMOR_OUTER = register("yeti_armor", "outer");
 
 	public static final ModelLayerLocation ALPHA_YETI_TROPHY = register("alpha_yeti_trophy");
 	public static final ModelLayerLocation HYDRA_TROPHY = register("hydra_trophy");

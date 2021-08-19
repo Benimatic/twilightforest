@@ -1,6 +1,9 @@
 package twilightforest.item;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -16,13 +19,17 @@ import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.ArcticArmorModel;
+import twilightforest.client.model.armor.TFArmorModel;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 
@@ -140,5 +147,22 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(new TranslatableComponent("item.twilightforest.arctic_armor.tooltip"));
+	}
+
+	@Override
+	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+		consumer.accept(ArmorRender.INSTANCE);
+	}
+
+	private static final class ArmorRender implements IItemRenderProperties {
+		private static final ArmorRender INSTANCE = new ArmorRender();
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defModel) {
+			EntityModelSet models = Minecraft.getInstance().getEntityModels();
+			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);
+			return (A) new TFArmorModel(root);
+		}
 	}
 }

@@ -5,19 +5,15 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class ArcticArmorModel extends TFArmorModel {
+public class ArcticArmorModel {
 
-	public ArcticArmorModel(ModelPart root) {
-		super(root);
-	}
-
-	public static LayerDefinition addPieces(CubeDeformation deformation) {
+	public static MeshDefinition addPieces(CubeDeformation deformation) {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deformation),
 				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		head.addOrReplaceChild("right_hood",
@@ -44,6 +40,6 @@ public class ArcticArmorModel extends TFArmorModel {
 						.addBox(-2.0F, -1.0F, -1.0F, 4, 1, 1, deformation),
 				PartPose.offset(0.0F, 0.5F, -5.0F));
 
-		return LayerDefinition.create(meshdefinition, 64, 32);
+		return meshdefinition;
 	}
 }
