@@ -18,19 +18,18 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkStatus;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -144,21 +143,8 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	// FIXME Why are these three here - Can we get this from the World's DimensionType itself? Document here why not, if unable
-	@Deprecated
-	public static final int SEALEVEL = 31;
-	@Deprecated
-	public static final int CHUNKHEIGHT = 256; // more like world generation height
-	@Deprecated
-	public static final int MAXHEIGHT = 256; // actual max height
-
-	@Nullable
-	public static ChunkGeneratorTwilightBase getChunkGenerator(Level world) {
-		if (world instanceof ServerLevel) {
-			ChunkGenerator chunkGenerator = ((ServerLevel) world).getChunkSource().generator;
-			return chunkGenerator instanceof ChunkGeneratorTwilightBase ? (ChunkGeneratorTwilightBase) chunkGenerator : null;
-		}
-		return null;
-	}
+	@Deprecated // Used in places where we can't access the sea level
+	public static final int SEALEVEL = 0;
 
 	public static boolean isStrictlyTwilightForest(Level world) {
 		return world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get());
@@ -180,7 +166,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static void markStructureConquered(Level world, BlockPos pos, TFFeature feature) {
-		ChunkGeneratorTwilightBase generator = getChunkGenerator(world);
+		ChunkGeneratorTwilightBase generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
 			//generator.setStructureConquered(pos, true);
 		}

@@ -22,6 +22,7 @@ import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.StructureBoundingBoxUtils;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -91,7 +92,7 @@ public class TFTickHandler {
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(Player player, Level world) {
 
-		ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
+		ChunkGeneratorTwilightBase chunkGenerator = WorldUtil.getChunkGenerator(world);
 		if (chunkGenerator == null)
 			return false;
 

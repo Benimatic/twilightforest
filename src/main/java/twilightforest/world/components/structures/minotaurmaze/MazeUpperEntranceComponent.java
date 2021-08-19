@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -90,8 +91,8 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 				BlockPos pos = new BlockPos(x, 64, z);
 
 				if (boundingBox.isInside(pos)) {
-					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
-					yTotal += Math.max(topPos.getY(), generator.getSpawnHeight(world));
+					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
+					yTotal += Math.max(topPos.getY(), WorldUtil.getSeaLevel(generator));
 					++count;
 				}
 			}

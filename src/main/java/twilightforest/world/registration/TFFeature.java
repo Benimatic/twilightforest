@@ -116,7 +116,7 @@ public enum TFFeature {
 		}
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
-			return new HedgeMazeComponent(this, 0, x, y, z);
+			return new HedgeMazeComponent(this, 0, x, y - 15, z);
 		}
 	},
 	NAGA_COURTYARD ( 3, "naga_courtyard", true ) {
@@ -125,7 +125,7 @@ public enum TFFeature {
 		}
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
-			return new NagaCourtyardMainComponent(this, rand, 0, x, y, z);
+			return new NagaCourtyardMainComponent(this, rand, 0, x, y - 5, z);
 		}
 	},
 	LICH_TOWER ( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
@@ -155,6 +155,9 @@ public enum TFFeature {
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
+			// FIXME This structure is too broken to be left alive
+			this.disableStructure();
+
 			this.addMonster(TFEntities.snow_guardian, 10, 4, 4)
 					.addMonster(TFEntities.stable_ice_core, 10, 4, 4)
 					.addMonster(TFEntities.unstable_ice_core, 5, 4, 4);
@@ -245,6 +248,9 @@ public enum TFFeature {
 	},
 	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
+			// FIXME Worldgen Stall
+			this.disableStructure();
+
 			this.addMonster(TFEntities.tower_golem, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
@@ -367,6 +373,9 @@ public enum TFFeature {
 	},
 	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
+			// FIXME Incomplete
+			this.disableStructure();
+
 			// plain parts of the castle, like the tower maze
 			this.addMonster(TFEntities.kobold, 10, 4, 4)
 					.addMonster(TFEntities.adherent, 10, 1, 1)
@@ -389,6 +398,10 @@ public enum TFFeature {
 		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
+		{
+			// FIXME Incomplete
+			this.disableStructure();
+		}
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, Random rand, int x, int y, int z) {
@@ -422,7 +435,7 @@ public enum TFFeature {
 	public final boolean centerBounds;
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
-	public boolean isTerrainAltered;
+	public boolean requiresTerraforming; // TODO Terraforming Type? Envelopment vs Flattening maybe?
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 
@@ -447,7 +460,7 @@ public enum TFFeature {
 		this.name = name;
 		this.areChunkDecorationsEnabled = false;
 		this.isStructureEnabled = true;
-		this.isTerrainAltered = false;
+		this.requiresTerraforming = false;
 		 this.spawnableMonsterLists = new ArrayList<>();
 		 this.ambientCreatureList = new ArrayList<>();
 		 this.waterCreatureList = new ArrayList<>();
@@ -529,6 +542,7 @@ public enum TFFeature {
 	 * Tell the chunkgenerator that we don't have an associated structure.
 	 */
 	public TFFeature disableStructure() {
+		this.enableDecorations();
 		this.isStructureEnabled = false;
 		return this;
 	}
@@ -537,7 +551,7 @@ public enum TFFeature {
 	 * Tell the chunkgenerator that we want the terrain changed nearby.
 	 */
 	public TFFeature enableTerrainAlterations() {
-		this.isTerrainAltered = true;
+		this.requiresTerraforming = true;
 		return this;
 	}
 

@@ -1,12 +1,20 @@
 package twilightforest.util;
 
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.registration.TFGenerationSettings;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public final class WorldUtil {
-
 	private WorldUtil() {}
 
 	/**
@@ -33,5 +41,27 @@ public final class WorldUtil {
 		int dy = random.nextInt(ry * 2 + 1) - ry;
 		int dz = random.nextInt(rz * 2 + 1) - rz;
 		return pos.offset(dx, dy, dz);
+	}
+
+	@Nullable
+	public static ChunkGeneratorTwilightBase getChunkGenerator(LevelAccessor level) {
+		if (level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().generator instanceof ChunkGeneratorTwilightBase chunkGenerator)
+			return chunkGenerator;
+
+		return null;
+	}
+
+	public static int getSeaLevel(Level world) {
+		return getSeaLevel(getChunkGenerator(world));
+	}
+
+	public static int getSeaLevel(ChunkSource source) {
+		return source instanceof ServerChunkCache serverCache ? getSeaLevel(serverCache.generator) : TFGenerationSettings.SEALEVEL;
+	}
+
+	public static int getSeaLevel(ChunkGenerator generator) {
+		if (generator instanceof ChunkGeneratorTwilightBase) {
+			return generator.getSeaLevel();
+		} else return TFGenerationSettings.SEALEVEL;
 	}
 }

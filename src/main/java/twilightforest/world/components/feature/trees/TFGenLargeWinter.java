@@ -32,7 +32,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 			}
 		}
 
-		if (pos.getY() >= TFGenerationSettings.MAXHEIGHT - treeHeight) {
+		if (world.isOutsideBuildHeight(pos.getY() + treeHeight)) {
 			return false;
 		}
 

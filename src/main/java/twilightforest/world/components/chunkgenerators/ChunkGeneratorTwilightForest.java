@@ -48,17 +48,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 	}
 
 	@Override
-	public void createReferences(WorldGenLevel world, StructureFeatureManager manager, ChunkAccess chunk) {
-		super.createReferences(world, manager, chunk);
-
-		if (world instanceof WorldGenRegion primer) { // TODO determine if this can be moved to buildSurfaceAndBedrock
-			// Can we use Beardifier instead
-			this.deformTerrainForFeature(primer);
-		}
-	}
-
-	@Override
 	public void buildSurfaceAndBedrock(WorldGenRegion world, ChunkAccess chunk) {
+		this.deformTerrainForFeature(world);
+
 		super.buildSurfaceAndBedrock(world, chunk);
 
 		this.addDarkForestCanopy(world, chunk);

@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
@@ -31,7 +32,7 @@ public class TFGenDarkForestFeature extends Feature<RandomPatchConfiguration> {
         Material materialUnder;
 
         if(pos.getY() <= 40) {
-            for (int dy = pos.getY(); dy >= TFGenerationSettings.SEALEVEL; dy--) {
+            for (int dy = pos.getY(); dy >= WorldUtil.getSeaLevel(ctx.chunkGenerator()); dy--) {
                 materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
                 if ((materialUnder == Material.GRASS || materialUnder == Material.DIRT) && reader.getBlockState(pos) == Blocks.AIR.defaultBlockState()) {
                     foundDirt = true;

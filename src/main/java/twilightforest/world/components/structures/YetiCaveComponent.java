@@ -13,7 +13,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -36,15 +35,6 @@ public class YetiCaveComponent extends HollowHillComponent {
 	boolean isInHill(int cx, int cz) {
 		// yeti cave is square
 		return cx < this.radius * 2 && cx > 0 && cz < this.radius * 2 && cz > 0;
-	}
-
-	/**
-	 * @return true if the coordinates are inside the hill in 3D
-	 */
-	@Override
-	boolean isInHill(int mapX, int mapY, int mapZ) {
-		// yeti cave is square and 16 blocks tall
-		return mapX < this.radius * 2 && mapX > 0 && mapZ < this.radius * 2 && mapZ > 0 && mapY > TFGenerationSettings.SEALEVEL && mapY < TFGenerationSettings.SEALEVEL + 20;
 	}
 
 	/**

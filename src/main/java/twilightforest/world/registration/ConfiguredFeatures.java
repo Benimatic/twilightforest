@@ -174,7 +174,9 @@ public final class ConfiguredFeatures {
 
     //selects a random feature to place down. This makes things more random and rare
     //List first
+    @Deprecated // These should be separate and removed from config
     private static TFConfig.Common.Dimension.WorldGenWeights weights = TFConfig.COMMON_CONFIG.DIMENSION.worldGenWeights;
+    @Deprecated
     private static final ImmutableList<Supplier<ConfiguredFeature<?, ?>>> COMMON_FEATURES = ImmutableList.of(
             () -> DRUID_HUT.rarity(weights.druidHutWeight.get() / 4), //make this a higher rarity because theyre SUPER rare otherwise
             () -> WELL.rarity(weights.wellWeight.get() / 2),
@@ -187,12 +189,14 @@ public final class ConfiguredFeatures {
             () -> HOLLOW_STUMP.rarity(weights.hollowStumpWeight.get() / 2),
             () -> SMALL_LOG.rarity(weights.fallenSmallLogWeight.get() / 2));
 
+    @Deprecated // These should be separated
     public static final ConfiguredFeature<?, ?> RANDOM_COMMON_FEATURE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("random_common"),
             Feature.SIMPLE_RANDOM_SELECTOR.configured(new SimpleRandomFeatureConfiguration(COMMON_FEATURES))
                     .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
                     .squared()
     );
 
+    @Deprecated // These should be separated
     public static final ConfiguredFeature<?, ?> RANDOM_FALLEN_FEATURE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("random_fallen"),
             Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(
                     FOUNDATION.weighted(0.05F),

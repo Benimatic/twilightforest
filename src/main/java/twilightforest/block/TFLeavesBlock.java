@@ -9,14 +9,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFConfig;
 
 public class TFLeavesBlock extends LeavesBlock {
-
 	protected TFLeavesBlock(BlockBehaviour.Properties props) {
 		super(props);
-	}
-
-	@Override
-	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
-		return TFConfig.COMMON_CONFIG.PERFORMANCE.leavesLightOpacity.get();
 	}
 
 	@Override

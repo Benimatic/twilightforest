@@ -44,7 +44,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			}
 		}
 
-		if (pos.getY() >= TFGenerationSettings.MAXHEIGHT - treeHeight) {
+		if (world.isOutsideBuildHeight(pos.getY() + treeHeight)) {
 			return false;
 		}
 

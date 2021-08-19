@@ -179,18 +179,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		return dist < radius;
 	}
 
-	/**
-	 * @return true if the coordinates are inside the hill in 3D
-	 * TODO: Unused. Remove?
-	 */
-	boolean isInHill(int mapX, int mapY, int mapZ) {
-		int dx = boundingBox.minX() + radius - mapX;
-		int dy = (boundingBox.minY() - mapY) * 2; // hill is half as high as it is wide, thus we just double y distance from center.  I *think* that math works!
-		int dz = boundingBox.minZ() + radius - mapZ;
-		int dist = dx * dx + dy * dy + dz * dz;
-		return dist < radius * radius;
-	}
-
 	int[] getCoordsInHill2D(Random rand) {
 		return getCoordsInHill2D(rand, radius);
 	}

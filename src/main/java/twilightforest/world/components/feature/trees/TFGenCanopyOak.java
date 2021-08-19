@@ -37,7 +37,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 			}
 		}
 
-		if (pos.getY() >= TFGenerationSettings.MAXHEIGHT - treeHeight) {
+		if (world.isOutsideBuildHeight(pos.getY() + treeHeight)) {
 			return false;
 		}
 
