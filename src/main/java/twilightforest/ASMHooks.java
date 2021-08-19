@@ -22,7 +22,6 @@ import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.entity.TFPartEntity;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
-import twilightforest.world.TFDimensions;
 
 import javax.annotation.Nullable;
 import java.util.*;

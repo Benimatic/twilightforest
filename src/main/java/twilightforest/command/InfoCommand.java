@@ -9,8 +9,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import twilightforest.TFFeature;
-import twilightforest.world.ChunkGeneratorTwilightBase;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.registration.TFGenerationSettings;
 
 public class InfoCommand {
     public static LiteralArgumentBuilder<CommandSourceStack> register() {

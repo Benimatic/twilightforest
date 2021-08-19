@@ -41,7 +41,7 @@ import twilightforest.entity.ai.YetiRampageGoal;
 import twilightforest.entity.ai.YetiTiredGoal;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 

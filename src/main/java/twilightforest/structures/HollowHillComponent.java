@@ -13,13 +13,12 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.feature.TFBiomeFeatures;
-import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.world.feature.config.CaveStalactiteConfig;
+import twilightforest.world.registration.TFBiomeFeatures;
+import twilightforest.world.components.feature.TFGenCaveStalactite;
+import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 
 import java.util.Random;
 

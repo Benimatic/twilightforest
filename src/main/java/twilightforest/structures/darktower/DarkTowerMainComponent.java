@@ -36,7 +36,7 @@ import twilightforest.structures.TFMaze;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.structures.TFStructureDecorator;
 import twilightforest.util.RotationUtil;
-import twilightforest.worldgen.ConfiguredFeatures;
+import twilightforest.world.registration.ConfiguredFeatures;
 
 import java.util.ArrayList;
 import java.util.List;

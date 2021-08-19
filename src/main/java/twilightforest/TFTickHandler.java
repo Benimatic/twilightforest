@@ -22,8 +22,8 @@ import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.StructureBoundingBoxUtils;
-import twilightforest.world.ChunkGeneratorTwilightBase;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
 import java.util.Random;

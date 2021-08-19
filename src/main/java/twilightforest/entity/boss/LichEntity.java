@@ -37,7 +37,7 @@ import twilightforest.entity.SwarmSpiderEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.LichMinionsGoal;
 import twilightforest.entity.ai.LichShadowsGoal;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.List;

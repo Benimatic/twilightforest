@@ -11,10 +11,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
 

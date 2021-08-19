@@ -1,4 +1,4 @@
-package twilightforest.worldgen.biomes;
+package twilightforest.world.registration.biomes;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeAmbience;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.surfacebuilders.TFSurfaceBuilders;
+import twilightforest.world.components.surfacebuilders.TFSurfaceBuilders;
 
 public class TFBiomes {
 	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);

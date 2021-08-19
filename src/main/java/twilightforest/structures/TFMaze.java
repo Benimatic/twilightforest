@@ -10,7 +10,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.worldgen.ConfiguredFeatures;
+import twilightforest.world.registration.ConfiguredFeatures;
 
 import java.util.Random;
 

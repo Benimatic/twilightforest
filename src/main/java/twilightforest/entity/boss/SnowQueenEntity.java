@@ -37,7 +37,7 @@ import twilightforest.entity.ai.HoverSummonGoal;
 import twilightforest.entity.ai.HoverThenDropGoal;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.List;

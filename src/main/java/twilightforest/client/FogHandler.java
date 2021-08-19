@@ -9,7 +9,7 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
-import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.Objects;
 import java.util.Optional;

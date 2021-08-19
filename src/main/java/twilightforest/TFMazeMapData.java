@@ -7,11 +7,10 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 

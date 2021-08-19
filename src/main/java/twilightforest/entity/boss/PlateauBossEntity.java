@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 

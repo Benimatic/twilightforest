@@ -1,6 +1,0 @@
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-package twilightforest.worldgen.treeplacers;
-
-import net.minecraft.MethodsReturnNonnullByDefault;
-import javax.annotation.ParametersAreNonnullByDefault;

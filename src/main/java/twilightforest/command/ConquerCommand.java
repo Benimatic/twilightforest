@@ -8,8 +8,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
-import twilightforest.world.ChunkGeneratorTwilightBase;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.registration.TFGenerationSettings;
 
 public class ConquerCommand {
     private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(new TranslatableComponent("commands.tffeature.structure.required"));

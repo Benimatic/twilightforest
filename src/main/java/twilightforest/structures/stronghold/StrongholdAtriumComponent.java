@@ -16,11 +16,9 @@ import net.minecraft.data.worldgen.Features;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
-import twilightforest.worldgen.ConfiguredFeatures;
+import twilightforest.world.registration.ConfiguredFeatures;
 
-import java.util.List;
 import java.util.Random;
 
 public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {

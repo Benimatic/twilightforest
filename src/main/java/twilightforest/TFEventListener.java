@@ -80,8 +80,8 @@ import twilightforest.network.*;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.KeepsakeCasketTileEntity;
 import twilightforest.util.TFItemStackUtils;
-import twilightforest.world.ChunkGeneratorTwilightBase;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nonnull;
 import java.util.*;

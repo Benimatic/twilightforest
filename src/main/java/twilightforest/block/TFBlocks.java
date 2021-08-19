@@ -14,7 +14,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.compat.TFCompat;
 import twilightforest.enums.*;
 import twilightforest.item.TFItems;
-import twilightforest.world.feature.tree.*;
+import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;
 

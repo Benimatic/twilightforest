@@ -23,8 +23,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.TFStructureComponentOld;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.feature.TFBiomeFeatures;
-import twilightforest.world.feature.config.CaveStalactiteConfig;
+import twilightforest.world.registration.TFBiomeFeatures;
+import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 
 import java.util.Random;
 import java.util.function.Predicate;

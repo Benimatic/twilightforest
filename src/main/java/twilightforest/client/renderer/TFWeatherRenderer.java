@@ -21,8 +21,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.TFGenerationSettings;
-import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.Random;
 

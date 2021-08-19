@@ -8,7 +8,7 @@ import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.LocationTrigger;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.HasAdvancementTrigger;
-import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.function.Consumer;
 

@@ -12,13 +12,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.TFStructureComponentOld;
-import twilightforest.world.TFGenerationSettings;
 
-import java.util.List;
 import java.util.Random;
 
 public class MazeEntranceShaftComponent extends TFStructureComponentOld {

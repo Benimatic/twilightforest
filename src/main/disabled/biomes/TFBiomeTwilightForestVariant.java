@@ -1,4 +1,4 @@
-package twilightforest.worldgen.biomes;
+package twilightforest.world.registration.biomes;
 
 public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 

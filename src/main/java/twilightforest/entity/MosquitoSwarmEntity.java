@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.TFSounds;
-import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.Objects;
 import java.util.Optional;

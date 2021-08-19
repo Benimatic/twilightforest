@@ -5,11 +5,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.world.feature.TFGenCaveStalactite;
+import twilightforest.world.components.feature.TFGenCaveStalactite;
 
 import java.util.*;
 

@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import twilightforest.world.feature.TFGenCaveStalactite;
+import twilightforest.world.components.feature.TFGenCaveStalactite;
 
 import java.util.function.Consumer;
 

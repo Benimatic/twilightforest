@@ -22,7 +22,7 @@ import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

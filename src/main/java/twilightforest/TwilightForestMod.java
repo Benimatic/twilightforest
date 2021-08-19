@@ -56,12 +56,12 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
-import twilightforest.world.TFDimensions;
-import twilightforest.world.feature.TFBiomeFeatures;
-import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.worldgen.TwilightFeatures;
-import twilightforest.worldgen.biomes.BiomeGrassColors;
-import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.registration.TFDimensions;
+import twilightforest.world.registration.TFBiomeFeatures;
+import twilightforest.world.components.feature.TFGenCaveStalactite;
+import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.world.components.BiomeGrassColors;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.Locale;
 

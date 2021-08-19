@@ -31,7 +31,7 @@ import twilightforest.item.OreMagnetItem;
 import twilightforest.network.ChangeBiomePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
-import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.ArrayList;
 import java.util.List;

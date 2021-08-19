@@ -27,11 +27,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock {
 

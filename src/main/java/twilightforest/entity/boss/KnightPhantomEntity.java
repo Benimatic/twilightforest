@@ -43,7 +43,7 @@ import twilightforest.entity.ai.PhantomUpdateFormationAndMoveGoal;
 import twilightforest.entity.ai.PhantomWatchAndAttackGoal;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;

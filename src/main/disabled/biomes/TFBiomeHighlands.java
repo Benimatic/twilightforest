@@ -1,4 +1,4 @@
-package twilightforest.worldgen.biomes;
+package twilightforest.world.registration.biomes;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;

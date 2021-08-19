@@ -41,8 +41,8 @@ import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
-import twilightforest.world.TFGenerationSettings;
-import twilightforest.world.TFTeleporter;
+import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.world.components.TFTeleporter;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

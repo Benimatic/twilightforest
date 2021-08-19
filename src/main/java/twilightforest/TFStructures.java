@@ -24,7 +24,7 @@ import twilightforest.structures.mushroomtower.MushroomTowerPieces;
 import twilightforest.structures.start.TFStructure;
 import twilightforest.structures.stronghold.StrongholdPieces;
 import twilightforest.structures.trollcave.TrollCavePieces;
-import twilightforest.world.ChunkGeneratorTwilightBase;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
 
 import java.util.HashMap;
 import java.util.Map;

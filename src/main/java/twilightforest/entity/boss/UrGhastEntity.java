@@ -41,15 +41,13 @@ import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.TFDamageSources;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class UrGhastEntity extends CarminiteGhastguardEntity {
 

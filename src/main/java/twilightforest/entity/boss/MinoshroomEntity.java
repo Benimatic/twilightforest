@@ -27,7 +27,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.MinotaurEntity;
 import twilightforest.entity.ai.GroundAttackGoal;
 import twilightforest.item.TFItems;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.registration.TFGenerationSettings;
 
 public class MinoshroomEntity extends MinotaurEntity {
 	private static final EntityDataAccessor<Boolean> GROUND_ATTACK = SynchedEntityData.defineId(MinoshroomEntity.class, EntityDataSerializers.BOOLEAN);

@@ -20,12 +20,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.world.ChunkGeneratorTwilightBase;
-import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class CastleDoorBlock extends Block {
 

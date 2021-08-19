@@ -1,4 +1,4 @@
-package twilightforest.worldgen.biomes;
+package twilightforest.world.registration.biomes;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -8,7 +8,7 @@ import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.feature.TFGenTallGrass;
+import twilightforest.world.components.feature.TFGenTallGrass;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;

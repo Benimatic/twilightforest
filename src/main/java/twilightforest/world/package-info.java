@@ -1,6 +1,0 @@
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-package twilightforest.world;
-
-import net.minecraft.MethodsReturnNonnullByDefault;
-import javax.annotation.ParametersAreNonnullByDefault;

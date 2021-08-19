@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.BreathAttackGoal;
-import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
