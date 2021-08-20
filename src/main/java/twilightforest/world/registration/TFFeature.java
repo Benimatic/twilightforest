@@ -460,9 +460,9 @@ public enum TFFeature {
 		this.areChunkDecorationsEnabled = false;
 		this.isStructureEnabled = true;
 		this.requiresTerraforming = false;
-		 this.spawnableMonsterLists = new ArrayList<>();
-		 this.ambientCreatureList = new ArrayList<>();
-		 this.waterCreatureList = new ArrayList<>();
+		this.spawnableMonsterLists = new ArrayList<>();
+		this.ambientCreatureList = new ArrayList<>();
+		this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
 
 		if(!name.equals("hydra_lair")) ambientCreatureList.add(new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
@@ -616,8 +616,8 @@ public enum TFFeature {
 	}
 
 	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
-		// FIXME Remove block comment start-marker to enable debug
-		if (true) {
+		// Remove block comment start-marker to enable debug
+		/*if (true) {
 			switch ((chunkX + chunkZ) % 3) {
 				case 1:
 					return MEDIUM_HILL;
