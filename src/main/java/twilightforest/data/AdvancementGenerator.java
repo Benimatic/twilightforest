@@ -251,6 +251,15 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("previous_progression", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, thornlands.getId()))
 				.save(consumer, "twilightforest:progress_castle");
 
+		Advancement.Builder.advancement().parent(root).display(
+						TFBlocks.quest_ram_trophy.get(),
+						new TranslatableComponent("advancement.twilightforest.quest_ram"),
+						new TranslatableComponent("advancement.twilightforest.quest_ram.desc",
+								new TranslatableComponent("entity.twilightforest.quest_ram")),
+						null, FrameType.GOAL, true, true, false)
+				.addCriterion("quest_ram_complete", new QuestRamCompletionTrigger.Instance(EntityPredicate.Composite.ANY))
+				.save(consumer, "twilightforest:quest_ram");
+
 		Advancement focus = Advancement.Builder.advancement().parent(silence).display(
 						TFItems.magic_map_focus.get(),
 						new TranslatableComponent("advancement.twilightforest.magic_map_focus"),
