@@ -296,6 +296,10 @@ public class TFConfig {
 					translation(config + "optifine").
 					comment("Disable the nag screen when Optifine is installed.").
 					define("disableOptifineNagScreen", false);
+			disableHereBeDragons = builder.
+					translation(config + "dragons").
+					comment("Disable the Here Be Dragons experimental warning screen.").
+					define("disableHereBeDragons", false);
 			builder.
 					comment("Client only: Controls for the Loading screen").
 					push("Loading Screen");
@@ -365,6 +369,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue firstPersonEffects;
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
+		public ForgeConfigSpec.BooleanValue disableHereBeDragons;
 
 		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
 

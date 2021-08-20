@@ -168,13 +168,12 @@ public class ASMHooks {
 	}
 
 	/**
-	 * [ IN DEV ONLY, SHOULD NOT BE INVOKED IN PROD ]
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.Minecraft#doLoadLevel(String, RegistryAccess.RegistryHolder, Function, Function4, boolean, Minecraft.ExperimentalDialogType, boolean)}  }<br>
 	 * [AFTER ALL ALOAD 6]
 	 */
 	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
-		return Minecraft.ExperimentalDialogType.NONE;
+		return TFConfig.CLIENT_CONFIG.disableHereBeDragons.get() ? Minecraft.ExperimentalDialogType.NONE : type;
 	}
 
 }

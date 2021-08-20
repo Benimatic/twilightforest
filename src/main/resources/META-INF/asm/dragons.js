@@ -13,7 +13,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.Minecraft',
-                'methodName': 'doLoadLevel', // DO NOT MAP THIS, this is dev instance only ASM, we do not want this in production!!!
+                'methodName': ASM.mapMethod('m_91219_'),
                 'methodDesc': '(Ljava/lang/String;Lnet/minecraft/core/RegistryAccess$RegistryHolder;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/client/Minecraft$ExperimentalDialogType;Z)V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
