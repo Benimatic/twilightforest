@@ -1,5 +1,6 @@
 {
   "maprendercontext": "META-INF/asm/maprendercontext.js",
   "music": "META-INF/asm/music.js",
-  "multipart": "META-INF/asm/multipart.js"
+  "multipart": "META-INF/asm/multipart.js",
+  "dragons": "META-INF/asm/dragons.js"
 }

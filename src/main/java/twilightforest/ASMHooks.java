@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Function4;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -9,6 +10,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -30,6 +32,7 @@ import twilightforest.network.UpdateTFMultipartPacket;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -162,6 +165,16 @@ public class ASMHooks {
 			}
 		});
 		return list;
+	}
+
+	/**
+	 * [ IN DEV ONLY, SHOULD NOT BE INVOKED IN PROD ]
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.Minecraft#doLoadLevel(String, RegistryAccess.RegistryHolder, Function, Function4, boolean, Minecraft.ExperimentalDialogType, boolean)}  }<br>
+	 * [AFTER ALL ALOAD 6]
+	 */
+	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
+		return Minecraft.ExperimentalDialogType.NONE;
 	}
 
 }
