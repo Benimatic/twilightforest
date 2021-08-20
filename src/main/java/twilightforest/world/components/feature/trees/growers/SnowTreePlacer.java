@@ -36,27 +36,19 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
     }
 
     public static boolean isFree(LevelSimulatedReader p_67263_, BlockPos p_67264_) {
-        return validTreePos(p_67263_, p_67264_) || p_67263_.isStateAtPosition(p_67264_, (p_67281_) -> {
-            return p_67281_.is(BlockTags.LOGS);
-        });
+        return validTreePos(p_67263_, p_67264_) || p_67263_.isStateAtPosition(p_67264_, (p_67281_) -> p_67281_.is(BlockTags.LOGS));
     }
 
     private static boolean isVine(LevelSimulatedReader p_67278_, BlockPos p_67279_) {
-        return p_67278_.isStateAtPosition(p_67279_, (p_67276_) -> {
-            return p_67276_.is(Blocks.VINE);
-        });
+        return p_67278_.isStateAtPosition(p_67279_, (p_67276_) -> p_67276_.is(Blocks.VINE));
     }
 
     private static boolean isBlockWater(LevelSimulatedReader p_67283_, BlockPos p_67284_) {
-        return p_67283_.isStateAtPosition(p_67284_, (p_67271_) -> {
-            return p_67271_.is(Blocks.WATER);
-        });
+        return p_67283_.isStateAtPosition(p_67284_, (p_67271_) -> p_67271_.is(Blocks.WATER));
     }
 
     public static boolean isAirOrLeaves(LevelSimulatedReader p_67268_, BlockPos p_67269_) {
-        return p_67268_.isStateAtPosition(p_67269_, (p_67266_) -> {
-            return p_67266_.isAir() || p_67266_.is(BlockTags.LEAVES);
-        });
+        return p_67268_.isStateAtPosition(p_67269_, (p_67266_) -> p_67266_.isAir() || p_67266_.is(BlockTags.LEAVES));
     }
 
     private static boolean isReplaceablePlant(LevelSimulatedReader p_67289_, BlockPos p_67290_) {
@@ -64,6 +56,10 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
             Material material = p_160551_.getMaterial();
             return material == Material.REPLACEABLE_PLANT;
         });
+    }
+
+    private static boolean isBlockUnderValid(LevelSimulatedReader reader, BlockPos pos) {
+        return reader.isStateAtPosition(pos, state -> state.is(BlockTags.SNOW)) || reader.isStateAtPosition(pos, state -> state.is(BlockTags.DIRT));
     }
 
     private static void setBlockKnownShape(LevelWriter p_67257_, BlockPos p_67258_, BlockState p_67259_) {
@@ -80,7 +76,7 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
         int k = i - j;
         int l = p_160516_.foliagePlacer.foliageRadius(p_160512_, k);
         if (p_160513_.getY() >= p_160511_.getMinBuildHeight() + 1 && p_160513_.getY() + i + 1 <= p_160511_.getMaxBuildHeight()) {
-            if (!p_160516_.saplingProvider.getState(p_160512_, p_160513_).canSurvive(p_160511_, p_160513_)) {
+            if (!isBlockUnderValid(p_160511_, p_160513_.below())) {
                 return false;
             } else {
                 OptionalInt optionalint = p_160516_.minimumSize.minClippedHeight();

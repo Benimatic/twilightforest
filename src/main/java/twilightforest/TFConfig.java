@@ -43,65 +43,16 @@ public class TFConfig {
 						worldRestart().
 						comment("Marked dimension ID for Twilight Portals and some other Twilight mod logic as well").
 						define("twilightDimensionID", "twilightforest:twilight_forest");
-				builder.
-						comment("Weights for various small features").
-						push("World-Gen Weights");
-				{
-					DIMENSION.worldGenWeights.stoneCircleWeight = builder.
-							translation(config + "stone_circle_weight").
-							worldRestart().
-							defineInRange("stoneCircleWeight", 10, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.wellWeight = builder.
-							translation(config + "well_weight").
-							worldRestart().
-							defineInRange("wellWeight", 10, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.stalagmiteWeight = builder.
-							translation(config + "stalagmite_weight").
-							worldRestart().
-							defineInRange("stalagmiteWeight", 12, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.foundationWeight = builder.
-							translation(config + "foundation_weight").
-							worldRestart().
-							defineInRange("foundationWeight", 10, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.monolithWeight = builder.
-							translation(config + "monolith_weight").
-							worldRestart().
-							defineInRange("monolithWeight", 10, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.groveRuinsWeight = builder.
-							translation(config + "grove_ruins_weight").
-							worldRestart().
-							defineInRange("groveRuinsWeight", 5, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.hollowStumpWeight = builder.
-							translation(config + "hollow_stump_weight").
-							worldRestart().
-							defineInRange("hollowStumpWeight", 12, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.fallenHollowLogWeight = builder.
-							translation(config + "fallen_hollow_log_weight").
-							worldRestart().
-							defineInRange("fallenHollowLogWeight", 10, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.fallenSmallLogWeight = builder.
-							translation(config + "fallen_small_log_weight").
-							worldRestart().
-							defineInRange("fallenSmallLogWeight", 10, 0, Integer.MAX_VALUE);
-					DIMENSION.worldGenWeights.druidHutWeight = builder.
-							translation(config + "druid_hut_weight").
-							worldRestart().
-							defineInRange("druidHutWeight", 10, 0, Integer.MAX_VALUE);
-				}
 				builder.pop().
-						comment("Defines custom stalactites generated in hollow hills." +
+						comment("""
+								Defines custom stalactites generated in hollow hills.
+								Format is "modid:block size maxLength minHeight weight", where the properties are:
+								Size - the maximum length of the stalactite relative to the space between hill floor and ceiling,
+								Max length - maximum length of a stalactite in blocks,
+								Min height - minimum space between the hill floor and the stalactite to let it generate,
+								Weight - how often it generates.
 
-								"\nFormat is \"modid:block size maxLength minHeight weight\", where the properties are:" +
-
-								"\nSize - the maximum length of the stalactite relative to the space between hill floor and ceiling," +
-
-								"\nMax length - maximum length of a stalactite in blocks," +
-
-								"\nMin height - minimum space between the hill floor and the stalactite to let it generate," +
-
-								"\nWeight - how often it generates." +
-
-								"\n\nFor example: \"minecraft:iron_ore 0.7 8 1 24\" would add a stalactite equal to the default iron ore stalactite.").
+								For example: "minecraft:iron_ore 0.7 8 1 24" would add a stalactite equal to the default iron ore stalactite.""").
 						push("Custom Hollow Hill Stalactites");
 				{
 					DIMENSION.hollowHillStalactites.largeHill = builder.
@@ -125,7 +76,6 @@ public class TFConfig {
 							comment("If true, default stalactites and stalactites defined by other mods will not be used.").
 							define("useConfigOnly", false);
 				}
-				builder.pop();
 			}
 			builder.pop();
 			doCompat = builder.
@@ -177,10 +127,6 @@ public class TFConfig {
 					translation(config + "portals").
 					comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.").
 					define("disablePortalCreation", false);
-			//portalCreationItems = builder.
-			//		translation(config + "portal_creator").
-			//		comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
-			//		define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
 			checkPortalDestination = builder.
 					translation(config + "check_portal_destination").
 					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
@@ -248,21 +194,6 @@ public class TFConfig {
 			// Reason this is needed is so users can reconfig portals to use Skylight Forest or a Void Forest or another dimension entirely
 			public ForgeConfigSpec.ConfigValue<String> twilightForestID;
 
-			public WorldGenWeights worldGenWeights = new WorldGenWeights();
-
-			public static class WorldGenWeights {
-				public ForgeConfigSpec.IntValue stoneCircleWeight;
-				public ForgeConfigSpec.IntValue wellWeight;
-				public ForgeConfigSpec.IntValue stalagmiteWeight;
-				public ForgeConfigSpec.IntValue foundationWeight;
-				public ForgeConfigSpec.IntValue monolithWeight;
-				public ForgeConfigSpec.IntValue groveRuinsWeight;
-				public ForgeConfigSpec.IntValue hollowStumpWeight;
-				public ForgeConfigSpec.IntValue fallenHollowLogWeight;
-				public ForgeConfigSpec.IntValue fallenSmallLogWeight;
-				public ForgeConfigSpec.IntValue druidHutWeight;
-			}
-
 			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
 
 			public static class HollowHillStalactites {
@@ -326,7 +257,6 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
 		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
 		public ForgeConfigSpec.BooleanValue disablePortalCreation;
-		public ForgeConfigSpec.ConfigValue<List<? extends String>> portalCreationItems;
 		public ForgeConfigSpec.BooleanValue checkPortalDestination;
 		public ForgeConfigSpec.BooleanValue portalLightning;
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
@@ -481,25 +411,8 @@ public class TFConfig {
 	}*/
 
 	public static void build() {
-		//buildPortalIngredient();
 		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();
 	}
-
-	/*public static Ingredient portalIngredient;
-
-	private static void buildPortalIngredient() {
-		List<ItemStack> stacks = new ArrayList<>();
-
-		for (String s : COMMON_CONFIG.portalCreationItems.get()) {
-			parseItemStack(s).ifPresent(stacks::add);
-		}
-
-		if (stacks.isEmpty()) {
-			stacks.add(new ItemStack(Items.DIAMOND));
-		}
-
-		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
-	}*/
 
 	private static Optional<ItemStack> parseItemStack(String string) {
 		ResourceLocation id = ResourceLocation.tryParse(string);

@@ -14,8 +14,30 @@
                         "decorator": {
                           "config": {
                             "outer": {
-                              "config": {},
-                              "type": "minecraft:square"
+                              "config": {
+                                "outer": {
+                                  "config": {},
+                                  "type": "minecraft:square"
+                                },
+                                "inner": {
+                                  "config": {
+                                    "outer": {
+                                      "config": {
+                                        "max_water_depth": 0
+                                      },
+                                      "type": "minecraft:water_depth_threshold"
+                                    },
+                                    "inner": {
+                                      "config": {
+                                        "heightmap": "OCEAN_FLOOR"
+                                      },
+                                      "type": "minecraft:heightmap"
+                                    }
+                                  },
+                                  "type": "minecraft:decorated"
+                                }
+                              },
+                              "type": "minecraft:decorated"
                             },
                             "inner": {
                               "config": {
@@ -47,8 +69,30 @@
                         "decorator": {
                           "config": {
                             "outer": {
-                              "config": {},
-                              "type": "minecraft:square"
+                              "config": {
+                                "outer": {
+                                  "config": {},
+                                  "type": "minecraft:square"
+                                },
+                                "inner": {
+                                  "config": {
+                                    "outer": {
+                                      "config": {
+                                        "max_water_depth": 0
+                                      },
+                                      "type": "minecraft:water_depth_threshold"
+                                    },
+                                    "inner": {
+                                      "config": {
+                                        "heightmap": "OCEAN_FLOOR"
+                                      },
+                                      "type": "minecraft:heightmap"
+                                    }
+                                  },
+                                  "type": "minecraft:decorated"
+                                }
+                              },
+                              "type": "minecraft:decorated"
                             },
                             "inner": {
                               "config": {
@@ -80,8 +124,30 @@
                     "decorator": {
                       "config": {
                         "outer": {
-                          "config": {},
-                          "type": "minecraft:square"
+                          "config": {
+                            "outer": {
+                              "config": {},
+                              "type": "minecraft:square"
+                            },
+                            "inner": {
+                              "config": {
+                                "outer": {
+                                  "config": {
+                                    "max_water_depth": 0
+                                  },
+                                  "type": "minecraft:water_depth_threshold"
+                                },
+                                "inner": {
+                                  "config": {
+                                    "heightmap": "OCEAN_FLOOR"
+                                  },
+                                  "type": "minecraft:heightmap"
+                                }
+                              },
+                              "type": "minecraft:decorated"
+                            }
+                          },
+                          "type": "minecraft:decorated"
                         },
                         "inner": {
                           "config": {

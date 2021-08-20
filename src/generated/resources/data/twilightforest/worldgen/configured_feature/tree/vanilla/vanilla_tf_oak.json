@@ -77,9 +77,20 @@
         },
         "inner": {
           "config": {
-            "heightmap": "MOTION_BLOCKING"
+            "outer": {
+              "config": {
+                "max_water_depth": 0
+              },
+              "type": "minecraft:water_depth_threshold"
+            },
+            "inner": {
+              "config": {
+                "heightmap": "OCEAN_FLOOR"
+              },
+              "type": "minecraft:heightmap"
+            }
           },
-          "type": "minecraft:heightmap"
+          "type": "minecraft:decorated"
         }
       },
       "type": "minecraft:decorated"

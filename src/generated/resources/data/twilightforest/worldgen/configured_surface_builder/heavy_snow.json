@@ -1,7 +1,7 @@
 {
   "config": {
     "top_material": {
-      "Name": "minecraft:powder_snow"
+      "Name": "minecraft:snow_block"
     },
     "under_material": {
       "Name": "minecraft:snow_block"

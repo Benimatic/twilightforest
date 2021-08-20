@@ -6,37 +6,39 @@
           "config": {
             "feature": {
               "config": {
-                "max_length": 5,
-                "min_height": 10,
-                "hanging": false,
-                "state": {
-                  "Name": "minecraft:stone"
+                "feature": {
+                  "config": {
+                    "max_length": 5,
+                    "min_height": 10,
+                    "hanging": false,
+                    "state": {
+                      "Name": "minecraft:stone"
+                    },
+                    "size_factor": 3.0
+                  },
+                  "type": "twilightforest:outside_stalagmite"
                 },
-                "size_factor": 3.0
+                "decorator": {
+                  "config": {},
+                  "type": "twilightforest:nostructure"
+                }
               },
-              "type": "twilightforest:outside_stalagmite"
+              "type": "minecraft:decorated"
             },
             "decorator": {
-              "config": {},
-              "type": "twilightforest:nostructure"
+              "config": {
+                "heightmap": "WORLD_SURFACE_WG"
+              },
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {
-            "outer": {
-              "config": {},
-              "type": "minecraft:square"
-            },
-            "inner": {
-              "config": {
-                "heightmap": "MOTION_BLOCKING"
-              },
-              "type": "minecraft:heightmap"
-            }
+            "chance": 88
           },
-          "type": "minecraft:decorated"
+          "type": "minecraft:chance"
         }
       },
       "type": "minecraft:decorated"

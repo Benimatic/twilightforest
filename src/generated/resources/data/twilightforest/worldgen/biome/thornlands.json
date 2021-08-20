@@ -29,8 +29,16 @@
     [],
     [],
     [
-      "twilightforest:random_common",
-      "twilightforest:thorns"
+      "twilightforest:stone_circle",
+      "twilightforest:well",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:foundation",
+      "twilightforest:monolith",
+      "twilightforest:grove_ruins",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:small_log",
+      "twilightforest:druid_hut"
     ]
   ],
   "starts": [],

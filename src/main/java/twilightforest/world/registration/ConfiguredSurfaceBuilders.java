@@ -10,7 +10,7 @@ import twilightforest.world.components.surfacebuilders.FillingSurfaceBuilder;
 public class ConfiguredSurfaceBuilders {
 	public static final FillingSurfaceBuilder.FillingSurfaceBuilderConfig DEADROCK_CONFIG = new FillingSurfaceBuilder.FillingSurfaceBuilderConfig(BlockConstants.WEATHERED_DEADROCK, BlockConstants.CRACKED_DEADROCK, BlockConstants.CRACKED_DEADROCK, BlockConstants.DEADROCK);
 	public static final SurfaceBuilderBaseConfiguration HIGHLANDS_CONFIG = new SurfaceBuilderBaseConfiguration(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.SAND);
-	public static final SurfaceBuilderBaseConfiguration SNOW_CONFIG = new SurfaceBuilderBaseConfiguration(BlockConstants.POWDER_SNOW, BlockConstants.SNOW, BlockConstants.PACKED_ICE);
+	public static final SurfaceBuilderBaseConfiguration SNOW_CONFIG = new SurfaceBuilderBaseConfiguration(BlockConstants.SNOW, BlockConstants.SNOW, BlockConstants.PACKED_ICE);
 
 	public static final ConfiguredSurfaceBuilder<SurfaceBuilderBaseConfiguration> CONFIGURED_HIGHLANDS = TwilightSurfaceBuilders.HIGHLANDS.configured(HIGHLANDS_CONFIG);
 	public static final ConfiguredSurfaceBuilder<FillingSurfaceBuilder.FillingSurfaceBuilderConfig> CONFIGURED_PLATEAU = TwilightSurfaceBuilders.DEADROCK_FILLING.configured(DEADROCK_CONFIG);

@@ -98,8 +98,16 @@
       "minecraft:spring_lava",
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer",
-      "twilightforest:random_common",
-      "twilightforest:random_fallen",
+      "twilightforest:stone_circle",
+      "twilightforest:well",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:foundation",
+      "twilightforest:monolith",
+      "twilightforest:grove_ruins",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:small_log",
+      "twilightforest:druid_hut",
       "twilightforest:tree/oak_trees_sparse"
     ]
   ],

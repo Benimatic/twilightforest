@@ -5,30 +5,32 @@
         "feature": {
           "config": {
             "feature": {
-              "config": {},
-              "type": "twilightforest:fallen_small_log"
+              "config": {
+                "feature": {
+                  "config": {},
+                  "type": "twilightforest:fallen_small_log"
+                },
+                "decorator": {
+                  "config": {},
+                  "type": "twilightforest:nostructure"
+                }
+              },
+              "type": "minecraft:decorated"
             },
             "decorator": {
-              "config": {},
-              "type": "twilightforest:nostructure"
+              "config": {
+                "heightmap": "WORLD_SURFACE_WG"
+              },
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {
-            "outer": {
-              "config": {},
-              "type": "minecraft:square"
-            },
-            "inner": {
-              "config": {
-                "heightmap": "MOTION_BLOCKING"
-              },
-              "type": "minecraft:heightmap"
-            }
+            "chance": 90
           },
-          "type": "minecraft:decorated"
+          "type": "minecraft:chance"
         }
       },
       "type": "minecraft:decorated"

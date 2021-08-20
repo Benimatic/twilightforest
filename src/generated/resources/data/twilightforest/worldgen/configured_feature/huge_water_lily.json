@@ -3,23 +3,25 @@
     "feature": {
       "config": {
         "feature": {
-          "config": {},
-          "type": "twilightforest:huge_water_lily"
-        },
-        "decorator": {
           "config": {
-            "outer": {
+            "feature": {
               "config": {},
-              "type": "minecraft:square"
+              "type": "twilightforest:huge_water_lily"
             },
-            "inner": {
+            "decorator": {
               "config": {
-                "heightmap": "MOTION_BLOCKING"
+                "heightmap": "WORLD_SURFACE_WG"
               },
               "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {
+            "chance": 65
+          },
+          "type": "minecraft:chance"
         }
       },
       "type": "minecraft:decorated"
