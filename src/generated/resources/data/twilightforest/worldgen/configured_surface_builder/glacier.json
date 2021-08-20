@@ -1,14 +1,14 @@
 {
   "config": {
-    "top_material": {
-      "Name": "minecraft:gravel"
+    "top_thickness": 2,
+    "main_state": {
+      "Name": "minecraft:packed_ice"
     },
-    "under_material": {
-      "Name": "minecraft:gravel"
+    "top_state": {
+      "Name": "minecraft:ice"
     },
-    "underwater_material": {
-      "Name": "minecraft:gravel"
-    }
+    "wrapped_surface_builder": "twilightforest:all_gravel",
+    "main_thickness": 30
   },
-  "type": "twilightforest:glacer"
+  "type": "twilightforest:glacier"
 }
