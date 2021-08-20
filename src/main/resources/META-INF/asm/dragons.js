@@ -9,7 +9,7 @@ var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
     return {
-        'music': {
+        'dragons': {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.Minecraft',
