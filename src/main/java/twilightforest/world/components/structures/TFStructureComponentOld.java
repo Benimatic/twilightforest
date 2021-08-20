@@ -95,14 +95,16 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		}
 	}
 
+	protected void setSpawner(WorldGenLevel world, Vec3i pos, BoundingBox sbb, EntityType<?> monsterID) {
+		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, v -> {});
+	}
+
 	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID) {
 		setSpawner(world, x, y, z, sbb, monsterID, v -> {});
 	}
 
 	// [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
-	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID, Consumer<CompoundTag> nbtModifier) {
-		if (true) return;
-
+	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID, Consumer<SpawnerBlockEntity> spawnerModifier) {
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
 		int dz = getWorldZ(x, z);
@@ -116,13 +118,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 			BlockEntity tileEntitySpawner = world.getBlockEntity(pos);
 			if (tileEntitySpawner instanceof SpawnerBlockEntity spawner) {
 				spawner.getSpawner().setEntityId(monsterID);
-
-				CompoundTag tags = new CompoundTag();
-				spawner.save(tags);
-
-				nbtModifier.accept(tags);
-
-				spawner.getSpawner().load(world.getLevel(), spawner.getBlockPos(), tags);
+				spawnerModifier.accept(spawner);
 			}
 		}
 	}

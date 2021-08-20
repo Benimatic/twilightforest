@@ -1,6 +1,8 @@
 package twilightforest.world.components.structures;
 
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.EntityType;
@@ -23,9 +25,12 @@ import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 import java.util.Random;
 
 public class HollowHillComponent extends TFStructureComponentOld {
+	private final static int[] stalactitesForSizes = {0, 128, 256, 512};
+	private final static int[] spawnersForSizes = {0, 1, 4, 9};
+	private final static int[] chestsForSizes = {0, 2, 6, 12};
 
-	int hillSize;
-	int radius;
+	private final int hillSize;
+	final int radius;
 
 	public HollowHillComponent(ServerLevel level, CompoundTag nbt) {
 		this(TFFeature.TFHill, nbt);
@@ -61,46 +66,39 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 */
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		int[] sna = {0, 128, 256, 512};
-		int sn = sna[hillSize]; // number of stalactites mga = {0, 3, 9, 18}
-		int[] mga = {0, 1, 4, 9};
-		int mg = mga[hillSize]; // number of monster generators mga = {0, 3, 9, 18} (reduced due to "natural" spawning)
-		int[] tca = {0, 2, 6, 12};
-		int tc = tca[hillSize];  // number of treasure chests tca = {0, 2, 6, 12};
+		int stalactites = stalactitesForSizes[this.hillSize]; // number of stalactites mga = {0, 3, 9, 18}
 
 		// fill in features
 
-		// monster generators!
-		for (int i = 0; i < mg; i++) {
-			int[] dest = getCoordsInHill2D(rand);
-			EntityType<?> mobID = getMobID(rand);
-
-			setSpawner(world, dest[0], rand.nextInt(4), dest[1], sbb, mobID);
-		}
-		// treasure chests!!
-		for (int i = 0; i < tc; i++) {
-			int[] dest = getCoordsInHill2D(rand);
-			generateTreasureChest(world, dest[0], 0, dest[1], sbb);
-		}
-
 		// ore or glowing stalactites! (smaller, less plentiful)
-		for (int i = 0; i < sn; i++) {
-			int[] dest = getCoordsInHill2D(rand);
-			generateOreStalactite(world, generator, manager, dest[0], 1, dest[1], sbb);
+		for (int i = 0; i < stalactites; i++) {
+			BlockPos.MutableBlockPos dest = this.randomPolarCoordinates(rand, this.radius);
+			this.generateOreStalactite(world, generator, manager, dest.move(0, 1, 0), sbb);
 		}
 		// stone stalactites!
-		for (int i = 0; i < sn; i++) {
-			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, generator, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
+		for (int i = 0; i < stalactites; i++) {
+			BlockPos.MutableBlockPos dest = this.randomPolarCoordinates(rand, this.radius);
+			this.generateBlockStalactite(world, generator, manager, Blocks.STONE, 1.0F, true, dest.move(0, 1, 0), sbb);
 		}
 		// stone stalagmites!
-		for (int i = 0; i < sn; i++) {
-			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, generator, manager, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
+		for (int i = 0; i < stalactites; i++) {
+			BlockPos.MutableBlockPos dest = this.randomPolarCoordinates(rand, this.radius);
+			this.generateBlockStalactite(world, generator, manager, Blocks.STONE, 0.9F, false, dest.move(0, 1, 0), sbb);
 		}
 
-		// level 3 hills get 2 mid-air wraith spawners
-		if (hillSize == 3) {
+		// Place these important blocks last so they don't get overwritten by generation
+
+		// monster generators!
+		for (int i = 0; i < spawnersForSizes[this.hillSize]; i++) {
+			BlockPos.MutableBlockPos dest = this.randomPolarCoordinates(rand, this.radius);
+			EntityType<?> mobID = this.getMobID(rand);
+
+			this.setSpawner(world, dest.move(0, 1, 0), sbb, mobID);
+		}
+		// treasure chests!!
+		for (int i = 0; i < chestsForSizes[this.hillSize]; i++) {
+			BlockPos.MutableBlockPos dest = this.randomPolarCoordinates(rand, this.radius);
+			this.generateTreasureChest(world, dest.move(0, 1, 0), sbb);
 		}
 
 		return true;
@@ -109,16 +107,25 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * Make an RNG and attempt to use it to place a treasure chest
 	 */
+
+	protected void generateTreasureChest(WorldGenLevel world, Vec3i pos, BoundingBox sbb) {
+		generateTreasureChest(world, pos.getX(), pos.getY(), pos.getZ(), sbb);
+	}
+
 	protected void generateTreasureChest(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
 		// generate an RNG for this chest
 		//TODO: MOAR RANDOM!
-		Random chestRNG = new Random(world.getSeed() + x * z);
+		Random chestRNG = new Random(world.getSeed() + (long) x * z);
 
 		// try placing it
 		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
 
 		// make something for it to stand on, if necessary
 		placeBlock(world, Blocks.COBBLESTONE.defaultBlockState(), x, y - 1, z, sbb);
+	}
+
+	protected void generateOreStalactite(WorldGenLevel world, ChunkGenerator generator, StructureFeatureManager manager, Vec3i pos, BoundingBox sbb) {
+		this.generateOreStalactite(world, generator, manager, pos.getX(), pos.getY(), pos.getZ(), sbb);
 	}
 
 	/**
@@ -139,6 +146,10 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
 			TFBiomeFeatures.CAVE_STALACTITE.get().configured(stalag).place(world, generator, stalRNG, pos);
 		}
+	}
+
+	protected void generateBlockStalactite(WorldGenLevel world, ChunkGenerator generator, StructureFeatureManager manager, Block blockToGenerate, float length, boolean up, Vec3i pos, BoundingBox sbb) {
+		this.generateBlockStalactite(world, generator, manager, blockToGenerate, length, up, pos.getX(), pos.getY(), pos.getZ(), sbb);
 	}
 
 	/**
@@ -172,27 +183,33 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	boolean isInHill(int cx, int cz) {
 		int dx = radius - cx;
 		int dz = radius - cz;
-		int dist = (int) Math.sqrt(dx * dx + dz * dz);
 
-		return dist < radius;
+		return Mth.sqrt(dx * dx + dz * dz) < radius;
 	}
 
-	int[] getCoordsInHill2D(Random rand) {
-		return getCoordsInHill2D(rand, radius);
+	@Deprecated // Use randomPolarCoordinates
+	int[] randomCoordinatesInHill2D(Random rand) {
+		return this.randomCoordinatesInHill2D(rand, radius);
 	}
 
 	/**
 	 * @return a two element array containing some coordinates in the hill
 	 */
-	int[] getCoordsInHill2D(Random rand, int rad) {
-		int rx, rz;
-		do {
-			rx = rand.nextInt(2 * rad);
-			rz = rand.nextInt(2 * rad);
-		} while (!isInHill(rx, rz));
+	@Deprecated // Use randomPolarCoordinates
+	int[] randomCoordinatesInHill2D(Random rand, int maximumRadius) {
+		Vec3i pos = this.randomPolarCoordinates(rand, maximumRadius);
 
-		int[] coords = {rx, rz};
-		return coords;
+		return new int[]{pos.getX(), pos.getZ()};
+	}
+
+	BlockPos.MutableBlockPos randomPolarCoordinates(Random rand, float maximumRadius) {
+		float degree = rand.nextFloat() * Mth.TWO_PI;
+		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
+		float radius = rand.nextFloat() * (maximumRadius * 0.7f);
+		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
+		float height = (maximumRadius - Mth.sqrt(maximumRadius * maximumRadius - radius * radius)) / 3f;
+
+		return new BlockPos.MutableBlockPos(maximumRadius + Mth.cos(degree) * radius, height, maximumRadius + Mth.sin(degree) * radius);
 	}
 
 	/**
