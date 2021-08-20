@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TwilightFeatures;
 
 import java.util.List;
@@ -44,6 +45,11 @@ public class TrunkSideDecorator extends TreeDecorator {
     @Override
     public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
         int blockCount = trunkBlocks.size();
+
+        if (blockCount <= 0) {
+            TwilightForestMod.LOGGER.error("[TrunkSideDecorator] Trunk Blocks were empty! Why?");
+            return;
+        }
 
         for (int attempt = 0; attempt < this.count; attempt++) {
             if (random.nextFloat() >= this.probability) continue;

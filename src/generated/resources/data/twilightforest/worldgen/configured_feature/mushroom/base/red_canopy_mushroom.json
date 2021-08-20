@@ -27,7 +27,7 @@
     },
     "minimum_size": {
       "limit": 11,
-      "lower_size": 0,
+      "lower_size": 1,
       "upper_size": 5,
       "type": "minecraft:two_layers_feature_size"
     },

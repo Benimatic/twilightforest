@@ -10,7 +10,7 @@
       "type": "minecraft:simple_state_provider"
     },
     "minimum_size": {
-      "limit": 1,
+      "limit": 4,
       "lower_size": 1,
       "upper_size": 2,
       "type": "minecraft:two_layers_feature_size"

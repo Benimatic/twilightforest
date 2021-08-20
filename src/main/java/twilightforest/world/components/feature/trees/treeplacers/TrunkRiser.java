@@ -40,6 +40,6 @@ public class TrunkRiser extends TrunkPlacer {
 
     @Override
     public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
-        return this.placer.placeTrunk(worldReader, worldPlacer, random, height, startPos, treeConfig);
+        return this.placer.placeTrunk(worldReader, worldPlacer, random, height, startPos.above(this.offset), treeConfig);
     }
 }

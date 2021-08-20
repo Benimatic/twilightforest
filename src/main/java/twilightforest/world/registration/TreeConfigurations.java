@@ -71,7 +71,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.CANOPY_LEAVES),
             new SimpleStateProvider(BlockConstants.CANOPY_SAPLING),
             new LeafSpheroidFoliagePlacer(4.5f, 1.5f, ConstantInt.of(0), 1, 0, -0.25f, LEAF_SHAG_FACTOR),
-            new TwoLayersFeatureSize(20, 0, canopyDistancing)
+            new TwoLayersFeatureSize(20, 1, canopyDistancing)
     )
             .decorators(ImmutableList.of(
                     TreeDecorators.LIVING_ROOTS,
@@ -122,7 +122,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.MANGROVE_LEAVES),
             new SimpleStateProvider(BlockConstants.MANGROVE_SAPLING),
             new LeafSpheroidFoliagePlacer(2.5f, 1.5f, ConstantInt.of(0), 2, 0, -0.25f, (int) (LEAF_SHAG_FACTOR * 0.666f)),
-            new TwoLayersFeatureSize(1, 0, 1)
+            new TwoLayersFeatureSize(4, 1, 1)
     )
             // .maxWaterDepth(6) // FIXME Verify if this tree will still generate in water
             .decorators(ImmutableList.of(
@@ -141,7 +141,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.DARKWOOD_LEAVES),
             new SimpleStateProvider(BlockConstants.DARKWOOD_SAPLING),
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
-            new TwoLayersFeatureSize(1, 0, 1)
+            new TwoLayersFeatureSize(4, 1, 1)
     )
             //.setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS)) //TODO roots grow EVERYWHERE in strongholds, lets disable for now
             .ignoreVines()
@@ -153,7 +153,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.DARKWOOD_LEAVES),
             new SimpleStateProvider(BlockConstants.DARKWOOD_SAPLING),
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f,  (int) (LEAF_SHAG_FACTOR * 1.5f)),
-            new TwoLayersFeatureSize(1, 0, 1)
+            new TwoLayersFeatureSize(4, 1, 1)
     )
             .decorators(ImmutableList.of(
                     TreeDecorators.LIVING_ROOTS,
@@ -180,7 +180,7 @@ public final class TreeConfigurations {
                     ConstantInt.of(0),
                     UniformInt.of(13, 17)),
 
-            new TwoLayersFeatureSize(1, 1, 2))
+            new TwoLayersFeatureSize(4, 1, 2))
         .build();
 
     // Requires Hollowtree gen
@@ -199,7 +199,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.TRANSFORM_LEAVES),
             new SimpleStateProvider(BlockConstants.TRANSFORM_SAPLING),
             new LeafSpheroidFoliagePlacer(4.5f, 1.5f, ConstantInt.of(0), 1, 0, -0.25f, 0),
-            new TwoLayersFeatureSize(20, 0, canopyDistancing)
+            new TwoLayersFeatureSize(4, 1, canopyDistancing)
     )
             .ignoreVines()
             .decorators(ImmutableList.of(new TreeCorePlacer(3, new SimpleStateProvider(TFBlocks.transformation_log_core.get().defaultBlockState().setValue(TFLogBlock.AXIS, Direction.Axis.Y)))))
@@ -220,7 +220,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.SORT_LEAVES),
             new SimpleStateProvider(BlockConstants.SORT_SAPLING),
             new LeafSpheroidFoliagePlacer(1.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.5f, 0),
-            new TwoLayersFeatureSize(1, 0, 1)
+            new TwoLayersFeatureSize(1, 1, 1)
     )
             .ignoreVines()
             .decorators(ImmutableList.of(new TreeCorePlacer(1, new SimpleStateProvider(TFBlocks.sorting_log_core.get().defaultBlockState().setValue(TFLogBlock.AXIS, Direction.Axis.Y)))))
@@ -250,7 +250,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.RAINBOW_LEAVES),
             new SimpleStateProvider(BlockConstants.RAINBOW_SAPLING),
             new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
-            new TwoLayersFeatureSize(1, 0, 1)
+            new TwoLayersFeatureSize(1, 1, 1)
     )
             .decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
             .build();
@@ -261,7 +261,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.RAINBOW_LEAVES),
             new SimpleStateProvider(BlockConstants.RAINBOW_SAPLING),
             new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
-            new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+            new TwoLayersFeatureSize(4, 1, 0, OptionalInt.of(4))
     )
             .decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
             .build();
@@ -273,7 +273,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.MUSHROOM_CAP_BROWN),
             new SimpleStateProvider(BlockConstants.BROWN_MUSHROOM),
             new LeafSpheroidFoliagePlacer(4.25f, 0f, ConstantInt.of(1), 1, 0, 0f, 0),
-            new TwoLayersFeatureSize(11, 0, canopyDistancing)
+            new TwoLayersFeatureSize(11, 1, canopyDistancing)
     )
             .decorators(ImmutableList.of(TreeDecorators.FIREFLY))
             .ignoreVines()
@@ -285,7 +285,7 @@ public final class TreeConfigurations {
             new SimpleStateProvider(BlockConstants.MUSHROOM_CAP_RED),
             new SimpleStateProvider(BlockConstants.RED_MUSHROOM),
             new LeafSpheroidFoliagePlacer(4.25f, 1.75f, ConstantInt.of(1), 0, 0, -0.45f, 0),
-            new TwoLayersFeatureSize(11, 0, canopyDistancing)
+            new TwoLayersFeatureSize(11, 1, canopyDistancing)
     )
             .decorators(ImmutableList.of(TreeDecorators.FIREFLY))
             .ignoreVines()

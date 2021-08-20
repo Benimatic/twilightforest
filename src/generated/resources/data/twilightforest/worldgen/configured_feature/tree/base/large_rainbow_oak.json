@@ -34,8 +34,8 @@
       "type": "minecraft:simple_state_provider"
     },
     "minimum_size": {
-      "limit": 0,
-      "lower_size": 0,
+      "limit": 4,
+      "lower_size": 1,
       "upper_size": 0,
       "min_clipped_height": 4,
       "type": "minecraft:two_layers_feature_size"
