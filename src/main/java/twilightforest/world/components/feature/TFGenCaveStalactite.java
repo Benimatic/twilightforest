@@ -1,6 +1,8 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
@@ -69,10 +71,10 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 	 * Diamonds and lapis only appear in size 3 and larger caves.
 	 */
 	public static CaveStalactiteConfig makeRandomOreStalactite(Random rand, int hillSize) {
-		if (hillSize >= 3 || (hillSize >= 2 && rand.nextInt(5) == 0)) {
+		if (hillSize >= 3 || hillSize >= 2 && rand.nextInt(5) == 0) {
 			return WeighedRandom.getRandomItem(rand, largeHillStalactites).get().stalactite;
 		}
-		if (hillSize >= 2 || (hillSize >= 1 && rand.nextInt(5) == 0)) {
+		if (hillSize >= 2 || hillSize >= 1 && rand.nextInt(5) == 0) {
 			return WeighedRandom.getRandomItem(rand, mediumHillStalactites).get().stalactite;
 		}
 		return WeighedRandom.getRandomItem(rand, smallHillStalactites).get().stalactite;
@@ -87,46 +89,51 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 	@Override
 	public boolean place(FeaturePlaceContext<CaveStalactiteConfig> ctx) {
 		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
+		BlockPos placementPos = ctx.origin();
 		Random random = ctx.random();
 		CaveStalactiteConfig config = ctx.config();
+		final int topHeight = world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, placementPos.getX(), placementPos.getZ());
 
-		int ceiling = Integer.MAX_VALUE;
-		int floor = -1;
+		int ceiling = topHeight;
+		int floor = world.getMinBuildHeight();
 
-		BlockPos.MutableBlockPos iterPos = new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+		if (ceiling <= floor) return false; // Failed: Ceiling is lower or same level as floor
+
+		BlockPos.MutableBlockPos movingPos = placementPos.mutable();
 		// find a ceiling
-		for (int ty = pos.getY(); ty < WorldUtil.getSeaLevel(ctx.chunkGenerator()); ty++) {
-			iterPos.setY(ty);
-			Material m = world.getBlockState(iterPos).getMaterial();
-			// if we're in air, continue
-			if (m == Material.AIR) {
-				continue;
-			}
-			// if we get something that's not cave material, fail!
-			if (m != Material.DIRT && m != Material.STONE) {
-				return false;
-			}
+		for (int ty = topHeight; ty > floor; ty--) {
+			movingPos.setY(ty);
+
+			BlockState stateAt = world.getBlockState(movingPos);
+
+			// Keep scanning until we find air
+			if (!stateAt.isAir()) continue;
+
+			//Material m = stateAt.getMaterial();
+			// Keep scanning if it's not time to place yet
+			//if (m != Material.DIRT && m != Material.STONE) continue;
+
+			// Still traversing through the generator's default blocks
+			//if (ctx.chunkGenerator() instanceof NoiseBasedChunkGenerator noiseGen && (stateAt.equals(noiseGen.defaultBlock) || stateAt.equals(noiseGen.defaultFluid))) continue;
+
 			// okay, we found a valid ceiling.
 			ceiling = ty;
 			break;
 		}
-		// if we didn't find a ceiling, fail.
-		if (ceiling == Integer.MAX_VALUE) {
-			return false;
-		}
+
+		if (ceiling >= topHeight) return false; // Failed: No ceiling found
 
 		// find a floor
-		for (int ty = pos.getY(); ty > 4; ty--) {
-			iterPos.setY(ty);
-			Material m = world.getBlockState(iterPos).getMaterial();
+		for (int ty = ceiling; ty > floor; ty--) {
+			movingPos.setY(ty);
+			Material m = world.getBlockState(movingPos).getMaterial();
 			// if we're in air, continue
 			if (m == Material.AIR) {
 				continue;
 			}
 			// if we get something that's not cave material, fail!
 			// actually stalactites can hang above water or lava
-			if (m != Material.DIRT && m != Material.STONE && (!config.hang && m != Material.WATER) && (!config.hang && m != Material.LAVA)) {
+			if (m != Material.DIRT && m != Material.STONE && !config.hang && m != Material.WATER && m != Material.LAVA) {
 				return false;
 			}
 			// okay, we found a valid floor.
@@ -146,7 +153,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 			return false;
 		}
 
-		return makeSpike(world, random, new BlockPos(pos.getX(), config.hang ? ceiling : floor, pos.getZ()), length, config);
+		return makeSpike(world, random, new BlockPos(placementPos.getX(), config.hang ? ceiling : floor, placementPos.getZ()), length, config);
 	}
 
 	public boolean makeSpike(LevelAccessor world, Random random, BlockPos pos, int maxLength, CaveStalactiteConfig config) {
@@ -159,7 +166,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 				// determine how long this spike will be.
 				int absx = Math.abs(dx);
 				int absz = Math.abs(dz);
-				int dist = (int) (Math.max(absx, absz) + (Math.min(absx, absz) * 0.5));
+				int dist = (int) (Math.max(absx, absz) + Math.min(absx, absz) * 0.5);
 				int spikeLength = 0;
 
 				if (dist == 0) {
@@ -177,7 +184,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 					spikeLength = 0;
 				}
 
-				for (int dy = 0; dy != (spikeLength * dir); dy += dir) {
+				for (int dy = 0; dy != spikeLength * dir; dy += dir) {
 					setBlock(world, pos.offset(dx, dy, dz), config.blockState);
 				}
 			}

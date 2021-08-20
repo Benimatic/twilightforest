@@ -1250,19 +1250,11 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	 * Make a mini ghast spawner and then set the spawn range and max entities for that spawner
 	 */
 	private void makeMiniGhastSpawner(WorldGenLevel world, int y, int sx, int sz, BoundingBox sbb) {
-		SpawnerBlockEntity spawner = setSpawner(world, sx, y + 2, sz, sbb, TFEntities.mini_ghast);
-
-		if (spawner != null) {
-			// change the spawner detection range by this goofy process of writing to and reading from NBT tags
-			CompoundTag tags = new CompoundTag();
-			spawner.save(tags);
-
+		setSpawner(world, sx, y + 2, sz, sbb, TFEntities.mini_ghast, tags -> {
 			tags.putShort("SpawnRange", (short) 16);
 			tags.putShort("MaxNearbyEntities", (short) 2);//(short) (world.difficultySetting));
 			tags.putShort("SpawnCount", (short) 1);
-
-			spawner.getSpawner().load(world.getLevel(), spawner.getBlockPos(), tags);
-		}
+		});
 	}
 
 	/**

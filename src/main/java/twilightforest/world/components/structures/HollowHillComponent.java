@@ -62,7 +62,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int[] sna = {0, 128, 256, 512};
-
 		int sn = sna[hillSize]; // number of stalactites mga = {0, 3, 9, 18}
 		int[] mga = {0, 1, 4, 9};
 		int mg = mga[hillSize]; // number of monster generators mga = {0, 3, 9, 18} (reduced due to "natural" spawning)
@@ -77,7 +76,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			EntityType<?> mobID = getMobID(rand);
 
 			setSpawner(world, dest[0], rand.nextInt(4), dest[1], sbb, mobID);
-//			placeMobSpawner(dest[0], hy + rand.nextInt(4), dest[1]);
 		}
 		// treasure chests!!
 		for (int i = 0; i < tc; i++) {

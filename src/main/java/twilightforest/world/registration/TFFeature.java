@@ -49,7 +49,6 @@ import java.util.*;
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
 public enum TFFeature {
-
 	NOTHING    ( 0, "no_feature"       , false) { { this.enableDecorations().disableStructure(); } },
 	SMALL_HILL ( 1, "small_hollow_hill", true, true ) {
 		{
@@ -618,8 +617,15 @@ public enum TFFeature {
 
 	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
 		// FIXME Remove block comment start-marker to enable debug
-		/*if (true) {
-			return NAGA_COURTYARD;
+		if (true) {
+			switch ((chunkX + chunkZ) % 3) {
+				case 1:
+					return MEDIUM_HILL;
+				case 2:
+					return LARGE_HILL;
+				default:
+					return SMALL_HILL;
+			}
 		}//*/
 
 		// set the chunkX and chunkZ to the center of the biome in case they arent already

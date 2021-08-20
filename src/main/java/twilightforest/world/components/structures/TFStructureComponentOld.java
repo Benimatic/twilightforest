@@ -10,6 +10,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,6 +31,7 @@ import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Deprecated
@@ -93,23 +95,36 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		}
 	}
 
+	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID) {
+		setSpawner(world, x, y, z, sbb, monsterID, v -> {});
+	}
+
 	// [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
-	protected SpawnerBlockEntity setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID) {
-		SpawnerBlockEntity tileEntitySpawner = null;
+	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID, Consumer<CompoundTag> nbtModifier) {
+		if (true) return;
 
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
 		int dz = getWorldZ(x, z);
+
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
-			world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 2);
-			tileEntitySpawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
-			if (tileEntitySpawner != null) {
-				tileEntitySpawner.getSpawner().setEntityId(monsterID);
+
+		if (sbb.isInside(pos)) {
+			if (world.getBlockState(pos).getBlock() != Blocks.SPAWNER)
+				world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 2);
+
+			BlockEntity tileEntitySpawner = world.getBlockEntity(pos);
+			if (tileEntitySpawner instanceof SpawnerBlockEntity spawner) {
+				spawner.getSpawner().setEntityId(monsterID);
+
+				CompoundTag tags = new CompoundTag();
+				spawner.save(tags);
+
+				nbtModifier.accept(tags);
+
+				spawner.getSpawner().load(world.getLevel(), spawner.getBlockPos(), tags);
 			}
 		}
-
-		return tileEntitySpawner;
 	}
 
 	protected void surroundBlockCardinal(WorldGenLevel world, BlockState block, int x, int y, int z, BoundingBox sbb) {
@@ -133,11 +148,10 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		placeBlock(world, block, x + 1, y, z + 1, sbb);
 	}
 
-	protected SpawnerBlockEntity setSpawnerRotated(WorldGenLevel world, int x, int y, int z, Rotation rotation, EntityType<?> monsterID, BoundingBox sbb) {
+	protected void setSpawnerRotated(WorldGenLevel world, int x, int y, int z, Rotation rotation, EntityType<?> monsterID, BoundingBox sbb) {
 		Direction oldBase = fakeBaseMode(rotation);
-		SpawnerBlockEntity ret = setSpawner(world, x, y, z, sbb, monsterID);
+		setSpawner(world, x, y, z, sbb, monsterID);
 		setOrientation(oldBase);
-		return ret;
 	}
 
 	/**
