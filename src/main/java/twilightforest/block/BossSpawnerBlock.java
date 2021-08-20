@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,6 +23,11 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 	protected BossSpawnerBlock(BlockBehaviour.Properties props, BossVariant variant) {
 		super(props);
 		boss = variant;
+	}
+
+	@Override
+	public RenderShape getRenderShape(BlockState p_49232_) {
+		return RenderShape.MODEL;
 	}
 
 	@Nullable

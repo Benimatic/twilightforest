@@ -15,6 +15,8 @@
     "twilightforest:reactor_debris",
     "twilightforest:carminite_reactor",
     "twilightforest:reappearing_block",
-    "twilightforest:ghast_trap"
+    "twilightforest:ghast_trap",
+    "twilightforest:fake_diamond",
+    "twilightforest:fake_gold"
   ]
 }

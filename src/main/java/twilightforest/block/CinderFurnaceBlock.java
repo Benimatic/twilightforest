@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -43,6 +44,11 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	CinderFurnaceBlock() {
 		super(Properties.of(Material.WOOD)/*.harvestTool(ToolType.PICKAXE)*/.requiresCorrectToolForDrops().strength(7.0F).lightLevel((state) -> 15));
 		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
+	}
+
+	@Override
+	public RenderShape getRenderShape(BlockState p_49232_) {
+		return RenderShape.MODEL;
 	}
 
 	@Override

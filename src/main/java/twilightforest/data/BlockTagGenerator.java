@@ -251,8 +251,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.force_field_green.get(),
                 TFBlocks.force_field_blue.get(),
                 TFBlocks.force_field_purple.get(),
-                TFBlocks.fake_diamond.get(),
-                TFBlocks.fake_gold.get(),
                 TFBlocks.keepsake_casket.get()
         ).add( // [VanillaCopy] WITHER_IMMUNE - Do NOT include that tag in this tag
                 Blocks.BARRIER,
@@ -269,9 +267,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
         );
 
         // TODO Test behavior with giant blocks for immunity stuffs
-        tag(BlockTags.DRAGON_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.giant_obsidian.get());
+        tag(BlockTags.DRAGON_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.giant_obsidian.get(), TFBlocks.fake_diamond.get(),  TFBlocks.fake_gold.get());
 
-        tag(BlockTags.WITHER_IMMUNE).addTag(COMMON_PROTECTIONS);
+        tag(BlockTags.WITHER_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.fake_diamond.get(), TFBlocks.fake_gold.get());
 
         tag(CARMINITE_REACTOR_IMMUNE).addTag(COMMON_PROTECTIONS);
 
@@ -292,7 +290,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.reactor_debris.get(),
                 TFBlocks.carminite_reactor.get(),
                 TFBlocks.reappearing_block.get(),
-                TFBlocks.ghast_trap.get()
+                TFBlocks.ghast_trap.get(),
+                TFBlocks.fake_diamond.get(),
+                TFBlocks.fake_gold.get()
         );
 
         tag(STRUCTURE_BANNED_INTERACTIONS)

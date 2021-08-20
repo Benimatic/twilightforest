@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -30,6 +31,11 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	public GhastTrapBlock(Properties props) {
 		super(props);
 		this.registerDefaultState(stateDefinition.any().setValue(ACTIVE, false));
+	}
+
+	@Override
+	public RenderShape getRenderShape(BlockState p_49232_) {
+		return RenderShape.MODEL;
 	}
 
 	@Override

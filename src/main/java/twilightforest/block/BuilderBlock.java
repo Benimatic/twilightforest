@@ -3,6 +3,7 @@ package twilightforest.block;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,6 +37,11 @@ public class BuilderBlock extends BaseEntityBlock {
 	public BuilderBlock(Properties props) {
 		super(props);
 		this.registerDefaultState(stateDefinition.any().setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
+	}
+
+	@Override
+	public RenderShape getRenderShape(BlockState p_49232_) {
+		return RenderShape.MODEL;
 	}
 
 	@Override
