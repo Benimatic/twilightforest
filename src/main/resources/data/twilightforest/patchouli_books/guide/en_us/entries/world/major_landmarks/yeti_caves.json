@@ -2,7 +2,7 @@
   "name": "Yeti Caves",
   "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
-  "advancement": "twilightforest:alt/major_landmarks/yeti_lairs",
+  "advancement": "twilightforest:alt/major_landmarks/yeti_cave",
   "sortnum": 7010,
   "pages": [
     {

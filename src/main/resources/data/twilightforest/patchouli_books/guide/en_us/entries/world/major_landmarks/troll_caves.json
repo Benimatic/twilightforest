@@ -2,7 +2,7 @@
   "name": "Troll Caves",
   "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
-  "advancement": "twilightforest:alt/major_landmarks/troll_lairs",
+  "advancement": "twilightforest:alt/major_landmarks/troll_cave",
   "sortnum": 8010,
   "pages": [
     {
