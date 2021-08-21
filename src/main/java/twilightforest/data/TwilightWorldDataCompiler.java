@@ -55,7 +55,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				new StructureSettings(Optional.empty(), ImmutableMap.of()),
 				NoiseSettings.create(
 						-32, // TODO Deliberate over this. For now it'll be -32
-						256,
+						128,
 						new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
 						new NoiseSlideSettings(-10, 3, 0),
 						new NoiseSlideSettings(15, 3, 0),

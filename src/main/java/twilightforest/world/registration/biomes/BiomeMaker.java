@@ -36,7 +36,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(defaultAmbientBuilder().waterColor(0x005522), defaultMobSpawning().setPlayerCanSpawn(), denseForestGen())
 						.temperature(0.7F)
 						.downfall(0.8F)
-						.depth(0.2F)
+						.depth(0.1f)
 						.scale(0.2F)
 						.build()
 		);
@@ -45,7 +45,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().setPlayerCanSpawn(), fireflyForestGen())
 						.temperature(0.5F)
 						.downfall(1)
-						.depth(0.125F)
+						.depth(0.0625f)
 						.scale(0.05F)
 						.build()
 		);
@@ -55,7 +55,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.PLAINS)
 						.temperature(0.8F)
 						.downfall(0.4F)
-						.depth(0.125F)
+						.depth(0.0625f)
 						.scale(0.05F)
 						.build()
 		);
@@ -65,7 +65,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.SAVANNA)
 						.temperature(0.9F)
 						.downfall(0)
-						.depth(0.2F)
+						.depth(0.1f)
 						.scale(0.2F)
 						.build()
 		);
@@ -83,7 +83,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().setPlayerCanSpawn(), denseMushroomForestGen())
 						.temperature(0.8F)
 						.downfall(1)
-						.depth(0.125F)
+						.depth(0.0625f)
 						.scale(0.05F)
 						.build()
 		);
@@ -94,7 +94,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0xC45123).foliageColorOverride(0xFF8501).waterColor(0xFA9111),  spookSpawning(), spookyForestGen())
 						.temperature(0.5F)
 						.downfall(1)
-						.depth(0.125F)
+						.depth(0.0625f)
 						.scale(0.05F)
 						.build()
 		);
@@ -109,7 +109,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.RIVER)
 						.temperature(0.5F)
 						.downfall(0.1F)
-						.depth(-0.8F)
+						.depth(-0.8f)
 						.scale(0)
 						.build()
 		);
@@ -119,7 +119,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.OCEAN)
 						.temperature(0.66F)
 						.downfall(1)
-						.depth(-1.8F)
+						.depth(-0.9f)
 						.scale(0.1F)
 						.build()
 		);
@@ -131,7 +131,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
-						.depth(-0.25F)
+						.depth(-0.125f)
 						.scale(0.25F)
 						.build()
 		);
@@ -141,7 +141,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.SWAMP)
 						.temperature(1)
 						.downfall(0.4F)
-						.depth(0.1F)
+						.depth(0.05f)
 						.scale(0.2F)
 						.build()
 		);
@@ -152,14 +152,14 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeGrassColors.DARK_FOREST), darkForestSpawning(), darkForestGen())
 						.temperature(0.7F)
 						.downfall(0.8F)
-						.depth(0.125F)
+						.depth(0.0625f)
 						.scale(0.05F)
 						.build()
 		);
 
 		biomes.put(BiomeKeys.DARK_FOREST_CENTER, // FIXME: colors
 				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x667540).foliageColorOverride(0xF9821E).grassColorModifier(BiomeGrassColors.DARK_FOREST_CENTER), new MobSpawnSettings.Builder(), darkForestCenterGen())
-						.depth(0.125F)
+						.depth(0.0625f)
 						.scale(0.05F)
 						.build()
 		);
@@ -171,7 +171,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.precipitation(Biome.Precipitation.SNOW)
 						.temperature(0.09F)
 						.downfall(0.9F)
-						.depth(0.2F)
+						.depth(0.1f)
 						.scale(0.2F)
 						.build()
 		);
@@ -192,7 +192,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)
-						.depth(3.5F)
+						.depth(1.75f)
 						.scale(0.05F)
 						.build()
 		);
@@ -202,7 +202,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.NONE)
 						.temperature(0.3F)
 						.downfall(0.2F)
-						.depth(6F)
+						.depth(3.0f)
 						.scale(0.1F)
 						.build()
 		);
@@ -212,7 +212,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.MESA)
 						.temperature(0.3F)
 						.downfall(0.2F)
-						.depth(10.5F)
+						.depth(5.25f)
 						.scale(0.025F)
 						.build()
 		);

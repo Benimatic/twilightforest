@@ -162,6 +162,6 @@
   "temperature": 0.7,
   "downfall": 0.8,
   "category": "forest",
-  "depth": 0.125,
+  "depth": 0.0625,
   "scale": 0.05
 }
