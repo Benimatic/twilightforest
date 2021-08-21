@@ -16,6 +16,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.TwilightForestMod;
@@ -30,6 +33,18 @@ import java.util.function.Consumer;
 public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 
 	private static final EntityType<?>[] TF_KILLABLE = new EntityType<?>[]{TFEntities.adherent, TFEntities.armored_giant, TFEntities.bighorn_sheep, TFEntities.blockchain_goblin, TFEntities.bunny, TFEntities.death_tome, TFEntities.deer, TFEntities.fire_beetle, TFEntities.giant_miner, TFEntities.goblin_knight_lower, TFEntities.goblin_knight_upper, TFEntities.harbinger_cube, TFEntities.hedge_spider, TFEntities.helmet_crab, TFEntities.hostile_wolf, TFEntities.hydra, TFEntities.king_spider, TFEntities.knight_phantom, TFEntities.kobold, TFEntities.lich, TFEntities.lich_minion, TFEntities.maze_slime, TFEntities.mini_ghast, TFEntities.minoshroom, TFEntities.minotaur, TFEntities.mist_wolf, TFEntities.mosquito_swarm, TFEntities.naga, TFEntities.penguin, TFEntities.pinch_beetle, TFEntities.plateau_boss, TFEntities.quest_ram, TFEntities.raven, TFEntities.redcap, TFEntities.redcap_sapper, TFEntities.skeleton_druid, TFEntities.slime_beetle, TFEntities.snow_guardian, TFEntities.snow_queen, TFEntities.squirrel, TFEntities.stable_ice_core, TFEntities.swarm_spider, TFEntities.tiny_bird, TFEntities.tower_broodling, TFEntities.tower_ghast, TFEntities.tower_golem, TFEntities.tower_termite, TFEntities.troll, TFEntities.unstable_ice_core, TFEntities.ur_ghast, TFEntities.wild_boar, TFEntities.winter_wolf, TFEntities.wraith, TFEntities.yeti, TFEntities.yeti_alpha};
+	//man this is a pain
+	private static final Block[] DENDROLOGIST_BLOCKS = new Block[]{
+			TFBlocks.oak_log.get(), TFBlocks.oak_wood.get(), TFBlocks.stripped_oak_log.get(), TFBlocks.stripped_oak_wood.get(), TFBlocks.oak_leaves.get(), TFBlocks.oak_sapling.get(), TFBlocks.twilight_oak_planks.get(), TFBlocks.twilight_oak_slab.get(), TFBlocks.twilight_oak_stairs.get(), TFBlocks.twilight_oak_button.get(), TFBlocks.twilight_oak_fence.get(), TFBlocks.twilight_oak_gate.get(), TFBlocks.twilight_oak_plate.get(), TFBlocks.twilight_oak_door.get(), TFBlocks.twilight_oak_trapdoor.get(), TFBlocks.twilight_oak_sign.get(),
+			TFBlocks.canopy_log.get(), TFBlocks.canopy_wood.get(), TFBlocks.stripped_canopy_log.get(), TFBlocks.stripped_canopy_wood.get(), TFBlocks.canopy_leaves.get(), TFBlocks.canopy_sapling.get(), TFBlocks.canopy_planks.get(), TFBlocks.canopy_slab.get(), TFBlocks.canopy_stairs.get(), TFBlocks.canopy_button.get(), TFBlocks.canopy_fence.get(), TFBlocks.canopy_gate.get(), TFBlocks.canopy_plate.get(), TFBlocks.canopy_door.get(), TFBlocks.canopy_trapdoor.get(), TFBlocks.canopy_sign.get(),
+			TFBlocks.mangrove_log.get(), TFBlocks.mangrove_wood.get(), TFBlocks.stripped_mangrove_log.get(), TFBlocks.stripped_mangrove_wood.get(), TFBlocks.mangrove_leaves.get(), TFBlocks.mangrove_sapling.get(), TFBlocks.mangrove_planks.get(), TFBlocks.mangrove_slab.get(), TFBlocks.mangrove_stairs.get(), TFBlocks.mangrove_button.get(), TFBlocks.mangrove_fence.get(), TFBlocks.mangrove_gate.get(), TFBlocks.mangrove_plate.get(), TFBlocks.mangrove_door.get(), TFBlocks.mangrove_trapdoor.get(), TFBlocks.mangrove_sign.get(),
+			TFBlocks.dark_log.get(), TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_log.get(), TFBlocks.stripped_dark_wood.get(), TFBlocks.dark_leaves.get(), TFBlocks.darkwood_sapling.get(), TFBlocks.dark_planks.get(), TFBlocks.dark_slab.get(), TFBlocks.dark_stairs.get(), TFBlocks.dark_button.get(), TFBlocks.dark_fence.get(), TFBlocks.dark_gate.get(), TFBlocks.dark_plate.get(), TFBlocks.dark_door.get(), TFBlocks.dark_trapdoor.get(), TFBlocks.darkwood_sign.get(),
+			TFBlocks.time_log.get(), TFBlocks.time_wood.get(), TFBlocks.stripped_time_log.get(), TFBlocks.stripped_time_wood.get(), TFBlocks.time_leaves.get(), TFBlocks.time_sapling.get(), TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_fence.get(), TFBlocks.time_gate.get(), TFBlocks.time_plate.get(), TFBlocks.time_door.get(), TFBlocks.time_trapdoor.get(), TFBlocks.time_sign.get(),
+			TFBlocks.transformation_log.get(), TFBlocks.transformation_wood.get(), TFBlocks.stripped_transformation_log.get(), TFBlocks.stripped_transformation_wood.get(), TFBlocks.transformation_leaves.get(), TFBlocks.transformation_sapling.get(), TFBlocks.trans_planks.get(), TFBlocks.trans_slab.get(), TFBlocks.trans_stairs.get(), TFBlocks.trans_button.get(), TFBlocks.trans_fence.get(), TFBlocks.trans_gate.get(), TFBlocks.trans_plate.get(), TFBlocks.trans_door.get(), TFBlocks.trans_trapdoor.get(), TFBlocks.trans_sign.get(),
+			TFBlocks.mining_log.get(), TFBlocks.mining_wood.get(), TFBlocks.stripped_mining_log.get(), TFBlocks.stripped_mining_wood.get(), TFBlocks.mining_leaves.get(), TFBlocks.mining_sapling.get(), TFBlocks.mine_planks.get(), TFBlocks.mine_slab.get(), TFBlocks.mine_stairs.get(), TFBlocks.mine_button.get(), TFBlocks.mine_fence.get(), TFBlocks.mine_gate.get(), TFBlocks.mine_plate.get(), TFBlocks.mine_door.get(), TFBlocks.mine_trapdoor.get(), TFBlocks.mine_sign.get(),
+			TFBlocks.sorting_log.get(), TFBlocks.sorting_wood.get(), TFBlocks.stripped_sorting_log.get(), TFBlocks.stripped_sorting_wood.get(), TFBlocks.sorting_leaves.get(), TFBlocks.sorting_sapling.get(), TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_fence.get(), TFBlocks.sort_gate.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get(), TFBlocks.sort_trapdoor.get(), TFBlocks.sort_sign.get(),
+			TFBlocks.root.get(), TFBlocks.root_strand.get(), TFBlocks.liveroot_block.get(), TFBlocks.hollow_oak_sapling.get(), TFBlocks.rainboak_sapling.get(), TFBlocks.rainboak_leaves.get(), TFBlocks.tower_wood.get(), TFBlocks.giant_log.get(), TFBlocks.giant_leaves.get(), TFBlocks.huge_stalk.get(), TFBlocks.beanstalk_leaves.get(), TFBlocks.thorn_leaves.get(), TFBlocks.thorn_rose.get(), TFBlocks.hedge.get(), TFBlocks.fallen_leaves.get()
+	};
 
 	@Override
 	public void accept(Consumer<Advancement> consumer) {
@@ -457,6 +472,15 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.rewards(AdvancementRewards.Builder.experience(42).addLootTable(TwilightForestMod.prefix("glass_sword")))
 				.save(consumer, "twilightforest:break_glass_sword");
 
+		this.addDendrologistBlock(Advancement.Builder.advancement().parent(root)
+				.display(TFBlocks.twilight_oak_fence.get(),
+						new TranslatableComponent("advancement.twilightforest.arborist"),
+						new TranslatableComponent("advancement.twilightforest.arborist.desc"),
+						null, FrameType.CHALLENGE, true, true, false)
+				.requirements(RequirementsStrategy.AND))
+				.addCriterion("liveroot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.liveroot.get()))
+				.save(consumer, "twilightforest:arborist");
+
 	}
 
 	private ItemStack e115Tag(String nbt) {
@@ -483,6 +507,13 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 									LocationPredicate.inDimension(
 											ResourceKey.create(Registry.DIMENSION_REGISTRY,
 													new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()))))));
+		}
+		return builder;
+	}
+
+	private Advancement.Builder addDendrologistBlock(Advancement.Builder builder) {
+		for (Block dendrologistBlock : DENDROLOGIST_BLOCKS) {
+			builder.addCriterion(dendrologistBlock.getRegistryName().getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
 		}
 		return builder;
 	}
