@@ -221,7 +221,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             artifact jar
-            //artifact sourceJar
+            artifact sourceJar
             setGroupId 'teamtwilight'
             setArtifactId mod_id
         }
