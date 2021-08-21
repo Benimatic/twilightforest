@@ -29,7 +29,7 @@ public class TFBiomeFeatures {
 	public static final RegistryObject<Feature<CaveStalactiteConfig>> CAVE_STALACTITE = FEATURES.register("cave_stalactite", () ->
 			new TFGenCaveStalactite(CaveStalactiteConfig.caveStalactiteCodec));
 	public static final RegistryObject<Feature<TreeConfiguration>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
-			new TreeFeature(TreeConfiguration.CODEC)); // FIXME change back to TFGenDarkCanopyTree. Super weird crash, best see the log for yourself
+			new TFGenDarkCanopyTree(TreeConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> DRUID_HUT = FEATURES.register("druid_hut", () ->
 			new GenDruidHut(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_HOLLOW_LOG = FEATURES.register("fallen_hollow_log", () ->

@@ -1,5 +1,6 @@
 package twilightforest.world.components.feature.trees;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
@@ -76,41 +77,42 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 		}
 
 		//Taken from TreeFeature.generate, adjusting our BoundingBox to fit where the dirt is
-		Set<BlockPos> set = Sets.newHashSet();
 		Set<BlockPos> set1 = Sets.newHashSet();
 		Set<BlockPos> set2 = Sets.newHashSet();
+		Set<BlockPos> set3 = Sets.newHashSet();
 		BoundingBox mutableboundingbox = BoundingBox.infinite();
-		BiConsumer<BlockPos, BlockState> biconsumer = (p_160555_, p_160556_) -> {
-			set.add(p_160555_.immutable());
+		BiConsumer<BlockPos, BlockState> biConsumer = (p_160555_, p_160556_) -> {
+			set1.add(p_160555_.immutable());
 			reader.setBlock(p_160555_, p_160556_, 19);
 		};
-		BiConsumer<BlockPos, BlockState> biconsumer1 = (p_160548_, p_160549_) -> {
-			set1.add(p_160548_.immutable());
+		BiConsumer<BlockPos, BlockState> biConsumer1 = (p_160548_, p_160549_) -> {
+			set2.add(p_160548_.immutable());
 			reader.setBlock(p_160548_, p_160549_, 19);
 		};
-		BiConsumer<BlockPos, BlockState> biconsumer2 = (p_160543_, p_160544_) -> {
-			set2.add(p_160543_.immutable());
+		BiConsumer<BlockPos, BlockState> biConsumer2 = (p_160543_, p_160544_) -> {
+			set3.add(p_160543_.immutable());
 			reader.setBlock(p_160543_, p_160544_, 19);
 		};
-		boolean flag = doPlace(reader, rand, pos, biconsumer, biconsumer1, config);
+		boolean flag = this.doPlace(reader, rand, pos, biConsumer, biConsumer1, config);
 		difference = mutableboundingbox.minY() - pos.getY();
+		mutableboundingbox.move(0, pos.getY(), 0);
 		//what do
 		//mutableboundingbox.minY() = pos.getY();
 		//mutableboundingbox.maxY() = mutableboundingbox.maxY() - difference;
-		if(flag && !set.isEmpty()) {
+		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
 			if (!config.decorators.isEmpty()) {
-				List<BlockPos> list = Lists.newArrayList(set);
 				List<BlockPos> list1 = Lists.newArrayList(set1);
-				list.sort(Comparator.comparingInt(Vec3i::getY));
+				List<BlockPos> list2 = Lists.newArrayList(set2);
 				list1.sort(Comparator.comparingInt(Vec3i::getY));
-				config.decorators.forEach((p_236405_6_) -> {
-					p_236405_6_.place(reader, biconsumer2, rand, list, list1);
-				});
+				list2.sort(Comparator.comparingInt(Vec3i::getY));
+				config.decorators.forEach((p_160528_) -> p_160528_.place(reader, biConsumer2, rand, list1, list2));
 			}
 
-			DiscreteVoxelShape voxelshapepart = updateLeaves(reader, mutableboundingbox, set, set2);
-			StructureTemplate.updateShapeAtEdge(reader, 3, voxelshapepart, mutableboundingbox.minX(), mutableboundingbox.minY(), mutableboundingbox.minZ());
-			return true;
+			return BoundingBox.encapsulatingPositions(Iterables.concat(set1, set2, set3)).map((p_160521_) -> {
+				DiscreteVoxelShape shape = updateLeaves(reader, p_160521_, set1, set3);
+				StructureTemplate.updateShapeAtEdge(reader, 3, shape, p_160521_.minX(), p_160521_.minY(), p_160521_.minZ());
+				return true;
+			}).orElse(false);
 		} else {
 			return false;
 		}
