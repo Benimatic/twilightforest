@@ -15,6 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -40,6 +41,10 @@ import java.util.Random;
 public class TFPlantBlock extends BushBlock {
 	private static final VoxelShape MAYAPPLE_SHAPE = box(4, 0, 4, 13, 6, 13);
 	private static final VoxelShape FALLEN_LEAVES_SHAPE = box(0, 0, 0, 16, 1, 16);
+	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
+	private static final VoxelShape ROOT_SHAPE = box(2, 0, 2, 14, 16, 14);
+	private static final VoxelShape TORCHBERRY_SHAPE = box(1, 2, 1, 15, 16, 15);
+	private static final VoxelShape FIDDLEHEAD_SHAPE = box(3, 0, 3, 13, 14, 13);
 
 	public final PlantVariant plantVariant;
 
@@ -52,62 +57,45 @@ public class TFPlantBlock extends BushBlock {
 	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
 		BlockState soil = world.getBlockState(pos.below());
 
-		switch (plantVariant) {
-		case TORCHBERRY:
-		case ROOT_STRAND:
-			return TFPlantBlock.canPlaceRootAt(world, pos);
-		case FALLEN_LEAVES:
-		case MUSHGLOOM:
-		case MOSSPATCH:
-			return soil.isFaceSturdy(world, pos, Direction.UP);
-		default:
-			return (world.getMaxLocalRawBrightness(pos) >= 3 || world.canSeeSkyFromBelowWater(pos)) && soil.canSustainPlant(world, pos.below(), Direction.UP, this);
-		}
+		return switch (plantVariant) {
+			case TORCHBERRY, ROOT_STRAND -> TFPlantBlock.canPlaceRootAt(world, pos);
+			case FALLEN_LEAVES, MUSHGLOOM, MOSSPATCH -> soil.isFaceSturdy(world, pos, Direction.UP);
+			default -> (world.getMaxLocalRawBrightness(pos) >= 3 || world.canSeeSkyFromBelowWater(pos)) && soil.canSustainPlant(world, pos.below(), Direction.UP, this);
+		};
 	}
 
 	@Override
 	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter access, BlockPos pos, CollisionContext context) {
-		long seed = pos.getX() * 3129871 ^ pos.getY() * 116129781L ^ pos.getZ();
+		switch(plantVariant) {
+			case MOSSPATCH -> { return createCTMShape(TFBlocks.moss_patch.get(), access, pos); }
+			case MAYAPPLE -> { return MAYAPPLE_SHAPE; }
+			case CLOVERPATCH -> { return createCTMShape(TFBlocks.clover_patch.get(), access, pos); }
+			case FIDDLEHEAD -> { return FIDDLEHEAD_SHAPE; }
+			case MUSHGLOOM -> { return MUSHGLOOM_SHAPE; }
+			case TORCHBERRY -> { return TORCHBERRY_SHAPE; }
+			case ROOT_STRAND -> { return ROOT_SHAPE; }
+			case FALLEN_LEAVES -> { return FALLEN_LEAVES_SHAPE; }
+			default -> { return Shapes.block(); }
+		}
+	}
+
+	private VoxelShape createCTMShape(Block block, BlockGetter access, BlockPos pos) {
+		long seed = pos.getX() * 3129871L ^ pos.getY() * 116129781L ^ pos.getZ();
 		seed = seed * seed * 42317861L + seed * 11L;
 
-		if (plantVariant == PlantVariant.MOSSPATCH) {
-			int xOff0 = (int) (seed >> 12 & 3L);
-			int xOff1 = (int) (seed >> 15 & 3L);
-			int zOff0 = (int) (seed >> 18 & 3L);
-			int zOff1 = (int) (seed >> 21 & 3L);
+		int xOff0 = (int) (seed >> 12 & 3L);
+		int xOff1 = (int) (seed >> 15 & 3L);
+		int zOff0 = (int) (seed >> 18 & 3L);
+		int zOff1 = (int) (seed >> 21 & 3L);
 
-			boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getBlock() == TFBlocks.moss_patch.get();
-			boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getBlock() == TFBlocks.moss_patch.get();
-			boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.north()).getBlock() == TFBlocks.moss_patch.get();
-			boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.south()).getBlock() == TFBlocks.moss_patch.get();
+		boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getBlock() == block;
+		boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getBlock() == block;
+		boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.north()).getBlock() == block;
+		boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.south()).getBlock() == block;
 
-			return Shapes.create(new AABB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
-					xConnect0 ? 1F : (15F - xOff0) / 16F, 1F / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F));
-
-		} else if (plantVariant == PlantVariant.CLOVERPATCH) {
-			int xOff0 = (int) (seed >> 12 & 3L);
-			int xOff1 = (int) (seed >> 15 & 3L);
-			int zOff0 = (int) (seed >> 18 & 3L);
-			int zOff1 = (int) (seed >> 21 & 3L);
-
-			int yOff0 = (int) (seed >> 24 & 1L);
-			int yOff1 = (int) (seed >> 27 & 1L);
-
-			boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getBlock() == TFBlocks.clover_patch.get();
-			boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getBlock() == TFBlocks.clover_patch.get();
-			boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.north()).getBlock() == TFBlocks.clover_patch.get();
-			boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.south()).getBlock() == TFBlocks.clover_patch.get();
-
-			return Shapes.create(new AABB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
-					xConnect0 ? 1F : (15F - xOff0) / 16F, (1F + yOff0 + yOff1) / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F));
-		} else if (plantVariant == PlantVariant.MAYAPPLE) {
-			return MAYAPPLE_SHAPE;
-		} else if (plantVariant == PlantVariant.FALLEN_LEAVES) {
-			return FALLEN_LEAVES_SHAPE;
-		} else {
-			return Shapes.block();
-		}
+		return Shapes.create(new AABB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
+				xConnect0 ? 1F : (15F - xOff0) / 16F, 1F / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F));
 	}
 
 	public static boolean canPlaceRootAt(LevelReader world, BlockPos pos) {
@@ -125,13 +113,10 @@ public class TFPlantBlock extends BushBlock {
 	public PlantType getPlantType(BlockGetter world, BlockPos pos) {
 		BlockState blockState = world.getBlockState(pos);
 		if (blockState.getBlock() == this) {
-			switch (plantVariant) {
-				case MOSSPATCH:
-				case MUSHGLOOM:
-					return PlantType.CAVE;
-				default:
-					return PlantType.PLAINS;
-			}
+			return switch (plantVariant) {
+				case MOSSPATCH, MUSHGLOOM -> PlantType.CAVE;
+				default -> PlantType.PLAINS;
+			};
 		}
 		return PlantType.PLAINS;
 	}
