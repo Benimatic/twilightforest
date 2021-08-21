@@ -163,6 +163,21 @@ public abstract class BiomeHelper {
 
 		return biome;
 	}
+
+	public static BiomeGenerationSettings.Builder streamsAndLakes(boolean isLake) {
+		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
+				.surfaceBuilder(SurfaceBuilders.OCEAN_SAND);
+
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, isLake ? Features.SEAGRASS_DEEP : Features.SEAGRASS_NORMAL);
+
+		BiomeDefaultFeatures.addDefaultOres(biome);
+		BiomeDefaultFeatures.addDefaultSeagrass(biome);
+		BiomeDefaultFeatures.addDefaultSoftDisks(biome);
+
+		addSmallStoneClusters(biome);
+
+		return biome;
+	}
 	
 	public static BiomeGenerationSettings.Builder swampGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder()
@@ -246,7 +261,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SNOW_SPRUCE_SNOWY);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MEGA_SPRUCE_TREES);
 		biome.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, ConfiguredFeatures.SNOW_UNDER_TREES);
-		
+
 		BiomeDefaultFeatures.addDefaultOres(biome);
 		BiomeDefaultFeatures.addSurfaceFreezing(biome);
 
@@ -378,11 +393,13 @@ public abstract class BiomeHelper {
 		biome.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.TFCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.PLANT_ROOTS);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.TORCH_BERRIES);
+		BiomeDefaultFeatures.addDefaultOres(biome);
 	}
 
 	public static void addHighlandCaves(BiomeGenerationSettings.Builder biome) {
 		biome.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.HIGHLANDCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.TROLL_ROOTS);
+		BiomeDefaultFeatures.addDefaultOres(biome);
 	}
 
 	//Special mob spawns. EntityClassification.MONSTER is forced underground, so use CREATURE for above ground spawns.
@@ -469,13 +486,10 @@ public abstract class BiomeHelper {
         BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
                 .surfaceBuilder(SurfaceBuilders.OCEAN_SAND);
 
-        BiomeDefaultFeatures.addDefaultOres(biome);
         BiomeDefaultFeatures.addSwampClayDisk(biome);
         BiomeDefaultFeatures.addForestGrass(biome);
         BiomeDefaultFeatures.addSavannaGrass(biome);
         biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_SUGAR_CANE);
-
-        BiomeDefaultFeatures.addDefaultSprings(biome);
 
         addSmallStoneClusters(biome);
         withWoodRoots(biome);

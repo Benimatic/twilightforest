@@ -25,6 +25,7 @@ import net.minecraft.world.level.levelgen.NoiseSlideSettings;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightForest;
 import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.registration.ConfiguredWorldCarvers;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.ConfiguredSurfaceBuilders;
 import twilightforest.world.registration.biomes.BiomeMaker;
@@ -42,6 +43,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 	@Override
 	public void generate(HashCache directoryCache) {
 		ConfiguredSurfaceBuilders.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_SURFACE_BUILDER_REGISTRY));
+		ConfiguredWorldCarvers.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_CARVER_REGISTRY));
 
 		Map<ResourceLocation, Biome> biomes = this.getBiomes();
 		biomes.forEach((rl, biome) -> this.dynamicRegistries.registry(Registry.BIOME_REGISTRY).ifPresent(reg -> Registry.register(reg, rl, biome)));
@@ -71,14 +73,14 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
 				Integer.MIN_VALUE,
-				-32,
 				0,
-				-16,
+				0,
+				-32,
 				false,
 				false,
 				false,
 				false,
-				true,
+				false,
 				false
 		);
 
@@ -112,7 +114,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				false,
 				false,
 				false,
-				true,
+				false,
 				false
 		);
 

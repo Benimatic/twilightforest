@@ -12,16 +12,35 @@
                 },
                 "decorator": {
                   "config": {
-                    "heightmap": "WORLD_SURFACE_WG"
+                    "outer": {
+                      "config": {},
+                      "type": "minecraft:square"
+                    },
+                    "inner": {
+                      "config": {
+                        "heightmap": "OCEAN_FLOOR_WG"
+                      },
+                      "type": "minecraft:heightmap"
+                    }
                   },
-                  "type": "minecraft:heightmap"
+                  "type": "minecraft:decorated"
                 }
               },
               "type": "minecraft:decorated"
             },
             "decorator": {
-              "config": {},
-              "type": "minecraft:square"
+              "config": {
+                "height": {
+                  "min_inclusive": {
+                    "above_bottom": 0
+                  },
+                  "max_inclusive": {
+                    "absolute": 60
+                  },
+                  "type": "minecraft:uniform"
+                }
+              },
+              "type": "minecraft:range"
             }
           },
           "type": "minecraft:decorated"

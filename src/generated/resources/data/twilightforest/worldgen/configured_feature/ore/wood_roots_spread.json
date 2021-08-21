@@ -7,12 +7,31 @@
             "feature": {
               "config": {
                 "feature": {
-                  "config": {},
-                  "type": "twilightforest:wood_roots"
+                  "config": {
+                    "feature": {
+                      "config": {},
+                      "type": "twilightforest:wood_roots"
+                    },
+                    "decorator": {
+                      "config": {},
+                      "type": "twilightforest:nostructure"
+                    }
+                  },
+                  "type": "minecraft:decorated"
                 },
                 "decorator": {
-                  "config": {},
-                  "type": "twilightforest:nostructure"
+                  "config": {
+                    "height": {
+                      "min_inclusive": {
+                        "above_bottom": 0
+                      },
+                      "max_inclusive": {
+                        "absolute": 60
+                      },
+                      "type": "minecraft:uniform"
+                    }
+                  },
+                  "type": "minecraft:range"
                 }
               },
               "type": "minecraft:decorated"

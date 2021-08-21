@@ -18,53 +18,7 @@
     "water_fog_color": 329011
   },
   "surface_builder": "minecraft:ocean_sand",
-  "carvers": {
-    "air": [
-      {
-        "config": {
-          "lava_level": {
-            "above_bottom": 10
-          },
-          "aquifers_enabled": false,
-          "debug_settings": {
-            "water_state": {
-              "Properties": {
-                "waterlogged": "false",
-                "lit": "false",
-                "candles": "1"
-              },
-              "Name": "minecraft:candle"
-            },
-            "lava_state": {
-              "Name": "minecraft:orange_stained_glass"
-            },
-            "barrier_state": {
-              "Name": "minecraft:glass"
-            },
-            "air_state": {
-              "Name": "minecraft:diamond_block"
-            }
-          },
-          "probability": 0.03,
-          "y": {
-            "min_inclusive": {
-              "absolute": 0
-            },
-            "max_inclusive": {
-              "absolute": 127
-            },
-            "inner": 8,
-            "type": "minecraft:biased_to_bottom"
-          },
-          "yScale": 0.5,
-          "horizontal_radius_multiplier": 1.0,
-          "vertical_radius_multiplier": 1.0,
-          "floor_level": -0.7
-        },
-        "type": "twilightforest:tf_caves"
-      }
-    ]
-  },
+  "carvers": {},
   "features": [
     [],
     [],
@@ -80,22 +34,17 @@
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
       "minecraft:ore_copper",
+      "minecraft:disk_sand",
       "minecraft:disk_clay",
+      "minecraft:disk_gravel",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
-      "twilightforest:small_granite",
-      "twilightforest:ore/wood_roots_spread"
+      "twilightforest:small_granite"
     ],
+    [],
     [
-      "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
-    ],
-    [
-      "minecraft:patch_grass_forest",
-      "minecraft:patch_tall_grass",
-      "minecraft:patch_sugar_cane",
-      "minecraft:spring_water",
-      "minecraft:spring_lava"
+      "minecraft:seagrass_normal",
+      "minecraft:seagrass_simple"
     ]
   ],
   "starts": [],

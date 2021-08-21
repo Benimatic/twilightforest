@@ -3,6 +3,7 @@ package twilightforest.world.registration.biomes;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.registration.TFStructures;
@@ -105,7 +106,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.STREAM,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder())
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), streamsAndLakes(false))
 						.biomeCategory(Biome.BiomeCategory.RIVER)
 						.temperature(0.5F)
 						.downfall(0.1F)
@@ -115,7 +116,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.LAKE,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder())
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), streamsAndLakes(true))
 						.biomeCategory(Biome.BiomeCategory.OCEAN)
 						.temperature(0.66F)
 						.downfall(1)

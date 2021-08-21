@@ -6,27 +6,46 @@
           "config": {
             "feature": {
               "config": {
-                "targets": [
-                  {
-                    "target": {
-                      "tag": "minecraft:base_stone_overworld",
-                      "predicate_type": "minecraft:tag_match"
-                    },
-                    "state": {
-                      "Name": "minecraft:granite"
-                    }
-                  }
-                ],
-                "size": 16,
-                "discard_chance_on_air_exposure": 0.0
+                "feature": {
+                  "config": {
+                    "targets": [
+                      {
+                        "target": {
+                          "tag": "minecraft:base_stone_overworld",
+                          "predicate_type": "minecraft:tag_match"
+                        },
+                        "state": {
+                          "Name": "minecraft:granite"
+                        }
+                      }
+                    ],
+                    "size": 16,
+                    "discard_chance_on_air_exposure": 0.0
+                  },
+                  "type": "minecraft:ore"
+                },
+                "decorator": {
+                  "config": {
+                    "chance": 60
+                  },
+                  "type": "minecraft:chance"
+                }
               },
-              "type": "minecraft:ore"
+              "type": "minecraft:decorated"
             },
             "decorator": {
               "config": {
-                "chance": 60
+                "height": {
+                  "min_inclusive": {
+                    "above_bottom": 0
+                  },
+                  "max_inclusive": {
+                    "below_top": 0
+                  },
+                  "type": "minecraft:uniform"
+                }
               },
-              "type": "minecraft:chance"
+              "type": "minecraft:range"
             }
           },
           "type": "minecraft:decorated"
