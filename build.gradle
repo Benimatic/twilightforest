@@ -1,12 +1,3 @@
-// define the properties file
-ext.configFile = file "gradle.properties"
-configFile.withReader {
-    // read config.  it shall from now on be referenced as simply config or as project.config
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.config = new ConfigSlurper().parse prop
-}
-
 // For those who want the bleeding edge
 buildscript {
     repositories {
@@ -33,16 +24,16 @@ apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remappe
 ///////////////////////////////////////////////////
 idea {
     project {
-        languageLevel = '1.16' // Not sure this is proper or even needed anymore, verify it
+        languageLevel = '16' // Not sure this is proper or even needed anymore, verify it
     }
 }
 
 ///////////////////////////////////////////////////
 // ForgeGradle
 ///////////////////////////////////////////////////
-version = (hasProperty("CIRevision") ? CIRevision : config.mod_version)
-group = config.group_name
-archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
+version = (hasProperty("CIRevision") ? CIRevision : mod_version)
+group = group_name
+archivesBaseName = "${mod_id}-${minecraft_version}"
 java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
@@ -52,12 +43,12 @@ minecraft {
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
     mappings channel: 'parchment', version: '2021.08.15-1.17.1'
 
-    //version = config.minecraft_version + "-" + config.forge_version // grab latest forge
+    //version = minecraft_version + "-" + forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     //replace '@mod_version@', version
-    //replace '@mod_id@', config.mod_id
+    //replace '@mod_id@', mod_id
     //replace '@ci_build@', hasProperty("CIRevision") ? 'true' : 'false'
 
     //replaceIn 'TwilightForestMod.java'
@@ -136,10 +127,10 @@ processResources {
         expand ([
                 'version':project.version,
                 'mcversion':project.minecraft.version,
-                'forge_version': config.forge_version,
-                'mod_version': config.mod_version,
-                'minecraft_version': config.minecraft_version,
-                'edition': (project.version - (config.mod_version + '.')),
+                'forge_version': forge_version,
+                'mod_version': mod_version,
+                'minecraft_version': minecraft_version,
+                'edition': (project.version - (mod_version + '.')),
                 's': '$'
         ])
     }
