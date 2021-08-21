@@ -106,7 +106,11 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 						access.setBlockState(pos, CAVE_AIR, false);
 
 						if ((access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
-							access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
+							switch(rand.nextInt(5)) {
+								case 0, 1, 2 -> access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
+								case 3 -> access.setBlockState(pos.above(), Blocks.ROOTED_DIRT.defaultBlockState(), false);
+								case 4 -> access.setBlockState(pos.above(), Blocks.COARSE_DIRT.defaultBlockState(), false);
+							}
 						}
 						if (isSurface.isTrue()) {
 							BlockPos posDown = pos.setWithOffset(pos, Direction.DOWN).below();
@@ -185,7 +189,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	@Override
 	protected boolean canReplaceBlock(BlockState state) {
-		return super.canReplaceBlock(state) || state.is(TFBlocks.trollsteinn.get());
+		return super.canReplaceBlock(state) || state.is(TFBlocks.trollsteinn.get()) || state.is(Blocks.ROOTED_DIRT) || state.is(Blocks.COARSE_DIRT);
 	}
 
 	private static boolean shouldSkip(double posX, double posY, double posZ, double minY) {
