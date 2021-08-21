@@ -220,10 +220,12 @@ jar.finalizedBy('reobfJar')
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact jar
-            artifact sourceJar
+            afterEvaluate {
+                artifact project.jar
+                artifact project.sourceJar
+            }
             setGroupId 'teamtwilight'
-            setArtifactId mod_id
+            setArtifactId project.mod_id
         }
     }
     repositories {
