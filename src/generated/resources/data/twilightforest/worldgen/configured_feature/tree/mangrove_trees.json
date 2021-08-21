@@ -4,42 +4,22 @@
     "decorator": {
       "config": {
         "outer": {
-          "config": {
-            "outer": {
-              "config": {},
-              "type": "minecraft:square"
-            },
-            "inner": {
-              "config": {
-                "outer": {
-                  "config": {
-                    "max_water_depth": 0
-                  },
-                  "type": "minecraft:water_depth_threshold"
-                },
-                "inner": {
-                  "config": {
-                    "heightmap": "OCEAN_FLOOR"
-                  },
-                  "type": "minecraft:heightmap"
-                }
-              },
-              "type": "minecraft:decorated"
-            }
-          },
-          "type": "minecraft:decorated"
+          "config": {},
+          "type": "minecraft:square"
         },
         "inner": {
           "config": {
             "outer": {
               "config": {
-                "heightmap": "WORLD_SURFACE_WG"
+                "max_water_depth": 6
               },
-              "type": "minecraft:heightmap"
+              "type": "minecraft:water_depth_threshold"
             },
             "inner": {
-              "config": {},
-              "type": "twilightforest:nostructure"
+              "config": {
+                "heightmap": "OCEAN_FLOOR"
+              },
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"

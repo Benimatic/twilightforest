@@ -109,6 +109,7 @@ public abstract class BiomeHelper {
 		addForestVegetation(biome);
 		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
+		addCanopyTrees(biome);
 		addCanopyMushrooms(biome, false);
 		addDefaultStructures(biome);
 
@@ -123,6 +124,7 @@ public abstract class BiomeHelper {
 		addForestVegetation(biome);
 		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
+		addCanopyTrees(biome);
 		addCanopyMushrooms(biome, true);
 
 		return biome;

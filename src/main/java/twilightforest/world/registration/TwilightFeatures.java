@@ -46,8 +46,6 @@ public final class TwilightFeatures {
     public static final FeatureDecorator<NoneDecoratorConfiguration> PLACEMENT_NOTFSTRUCTURE = new OutOfStructurePlacement(NoneDecoratorConfiguration.CODEC);
 
     public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE = PLACEMENT_NOTFSTRUCTURE.configured(NoneDecoratorConfiguration.INSTANCE);
-    public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE_WITHHEIGHTMAP = CONFIGURED_PLACEMENT_NOTFSTRUCTURE.decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE);
-
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
         FoliagePlacerType<P> type = new FoliagePlacerType<>(codec);
