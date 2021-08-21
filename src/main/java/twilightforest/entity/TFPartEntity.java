@@ -76,7 +76,7 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 	}
 
 	public final void updateLastPos() {
-		setPosRaw(getX(), getY(), getZ());
+		moveTo(getX(), getY(), getZ());
 		yRotO = yRot;
 		xRotO = xRot;
 		tickCount++;
