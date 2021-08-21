@@ -5,7 +5,7 @@ license="GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
 
 [[mods]]
 modId="twilightforest"
-version="${file.jarVersion}"
+version="${version}"
 displayName="The Twilight Forest"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest" #optional
 updateJSONURL="https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.17.x/update.json"
