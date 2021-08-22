@@ -59,7 +59,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 	 */
 	// Currently this is too sophisicated to be made into a SurfaceBuilder, it looks like
 	private void addDarkForestCanopy(WorldGenRegion primer, ChunkAccess chunk) {
-		BlockPos blockpos = getPos(primer).getWorldPosition();
+		BlockPos blockpos = primer.getCenter().getWorldPosition();
 		int[] thicks = new int[5 * 5];
 		boolean biomeFound = false;
 
@@ -81,7 +81,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 		if (!biomeFound) return;
 
 		IntPair nearCenter = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(getPos(primer).x, getPos(primer).z, primer, nearCenter);
+		TFFeature nearFeature = TFFeature.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
 
 		double d = 0.03125D;
 		//depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
@@ -118,7 +118,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 				if (thickness > 1) {
 					// We can use the Deltas here because the methods called will just
 					final int dY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
-					BlockPos pos = this.getPos(primer).getWorldPosition().offset(dX, dY, dZ);
+					BlockPos pos = primer.getCenter().getWorldPosition().offset(dX, dY, dZ);
 
 					// Skip any blocks over water
 					if (chunk.getBlockState(pos).getMaterial().isLiquid())
@@ -137,7 +137,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 					BlockState darkLeaves = TFBlocks.dark_leaves.get().defaultBlockState();
 
 					for (int y = treeBottom; y < treeTop; y++) {
-						primer.setBlock(this.withY(pos, y), darkLeaves, 3);
+						primer.setBlock(pos.atY(y), darkLeaves, 3);
 					}
 
 					// What are you gonna do, call the cops?

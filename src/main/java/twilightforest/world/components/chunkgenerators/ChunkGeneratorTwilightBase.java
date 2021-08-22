@@ -60,7 +60,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
 	protected final void deformTerrainForFeature(WorldGenRegion primer, ChunkAccess chunk) {
 		IntPair featureRelativePos = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(this.getPos(primer).x, this.getPos(primer).z, primer, featureRelativePos);
+		TFFeature nearFeature = TFFeature.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
 
 		//Optional<StructureStart<?>> structureStart = TFGenerationSettings.locateTFStructureInRange(primer.getLevel(), nearFeature, chunk.getPos().getWorldPosition(), nearFeature.size + 1);
 
@@ -123,8 +123,8 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 				int dz = bz * 4 - hz - 2;
 
 				// generate several centers for other clouds
-				int regionX = this.getPos(primer).x + 8 >> 4;
-				int regionZ = this.getPos(primer).z + 8 >> 4;
+				int regionX = primer.getCenter().x + 8 >> 4;
+				int regionZ = primer.getCenter().z + 8 >> 4;
 
 				long seed = regionX * 3129871L ^ regionZ * 116129781L;
 				seed = seed * seed * 42317861L + seed * 7L;
@@ -173,16 +173,17 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 						int lx = bx * 4 + sx;
 						int lz = bz * 4 + sz;
 
-						if (dist < 7 || cv < 0.05F) {
+						BlockPos.MutableBlockPos movingPos = primer.getCenter().getWorldPosition().mutable().move(lx, 0, lz);
 
-							primer.setBlock(this.withY(this.getPos(primer).getWorldPosition().offset(lx, 0, lz), y), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
+						if (dist < 7 || cv < 0.05F) {
+							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(this.withY(this.getPos(primer).getWorldPosition().offset(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
 							}
-							primer.setBlock(this.withY(this.getPos(primer).getWorldPosition().offset(lx, 0, lz), y - depth), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y - depth), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(this.withY(this.getPos(primer).getWorldPosition().offset(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
 							}
 						}
 					}
@@ -195,7 +196,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	 * Raises up and hollows out the hollow hills.
 	 */ // TODO Add some surface noise
 	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, TFFeature nearFeature, int hdiam, int xInChunk, int zInChunk, int featureDX, int featureDZ, float hillHeight) {
-		BlockPos.MutableBlockPos movingPos = this.getPos(world).getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
+		BlockPos.MutableBlockPos movingPos = world.getCenter().getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
 
 		// raise the hill
 		int groundHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
@@ -249,19 +250,12 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 			squishFactor = Math.max(squishFactor, (featureDZ - FEATURE_BOUNDARY) / 8.0f);
 		}
 
-		BlockPos.MutableBlockPos movingPos = this.getPos(primer).getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
+		BlockPos.MutableBlockPos movingPos = primer.getCenter().getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
 
-		// FIXME swap for Heightmapper
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
-			for (int y = primer.getMinBuildHeight(); y <= primer.getMaxBuildHeight(); y++) {
-				// we're still in ground
-				if (!this.defaultBlock.equals(primer.getBlockState(movingPos.setY(y)))) {
-					// we found the lowest chunk of earth
-					featureHeight += (y - featureHeight) * squishFactor;
-					break;
-				}
-			}
+
+			featureHeight += (primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ()) - featureHeight) * squishFactor;
 		}
 
 		// sets the ground level to the maze height
@@ -318,7 +312,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		// floor, also with slight slope
 		int hollowFloor = this.getSeaLevel() - 4 + offset / 6;
 
-		BlockPos.MutableBlockPos movingPos = this.getPos(primer).getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
+		BlockPos.MutableBlockPos movingPos = primer.getCenter().getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
 
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
@@ -351,16 +345,6 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		if (hollowFloor < hollowCeiling && hollowFloor < this.getSeaLevel() + 3) {
 			primer.setBlock(movingPos.setY(hollowFloor), Blocks.PACKED_ICE.defaultBlockState(), 3);
 		}
-	}
-
-	@Deprecated // Verbosity
-	protected final ChunkPos getPos(WorldGenRegion primer) {
-		return primer.getCenter();
-	}
-
-	@Deprecated // Verbosity
-	protected final BlockPos withY(BlockPos old, int y) {
-		return new BlockPos(old.getX(), y, old.getZ());
 	}
 
 	@Override
