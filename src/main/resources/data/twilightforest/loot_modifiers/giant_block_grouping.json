@@ -6,7 +6,7 @@
         {
           "condition": "minecraft:match_tool",
           "predicate": {
-            "item": "twilightforest:giant_pickaxe"
+            "items": [ "twilightforest:giant_pickaxe" ]
           }
         }
       ]
