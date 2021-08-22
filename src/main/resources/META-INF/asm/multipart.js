@@ -38,6 +38,79 @@ function initializeCoreMod() {
                 return methodNode;
             }
         },
+        'id': {
+            'target': {
+                'type': 'METHOD',
+                'class': 'net.minecraft.server.level.ServerLevel',
+                'methodName': ASM.mapMethod('m_143317_'),
+                'methodDesc': '(I)Lnet/minecraft/world/entity/Entity;'
+            },
+            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insertBefore(
+                    ASM.findFirstInstruction(methodNode, Opcodes.ARETURN),
+                    ASM.listOf(
+                        new VarInsnNode(Opcodes.ILOAD, 1),
+                        new MethodInsnNode(
+                            Opcodes.INVOKESTATIC,
+                            'twilightforest/ASMHooks',
+                            'multipartFromID',
+                            '(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/world/entity/Entity;',
+                            false
+                            )
+                        )
+                    );
+                return methodNode;
+            }
+        },
+        'trackingstart': {
+            'target': {
+                'type': 'METHOD',
+                'class': 'net.minecraft.server.level.ServerLevel$EntityCallbacks',
+                'methodName': ASM.mapMethod('m_141985_'),
+                'methodDesc': '(Lnet/minecraft/world/entity/Entity;)V'
+            },
+            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insert(
+                    ASM.listOf(
+                        new VarInsnNode(Opcodes.ALOAD, 1),
+                        new MethodInsnNode(
+                            Opcodes.INVOKESTATIC,
+                            'twilightforest/ASMHooks',
+                            'trackingStart',
+                            '(Lnet/minecraft/world/entity/Entity;)V',
+                            false
+                            )
+                        )
+                    );
+                return methodNode;
+            }
+        },
+        'trackingend': {
+            'target': {
+                'type': 'METHOD',
+                'class': 'net.minecraft.server.level.ServerLevel$EntityCallbacks',
+                'methodName': ASM.mapMethod('m_141981_'),
+                'methodDesc': '(Lnet/minecraft/world/entity/Entity;)V'
+            },
+            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insert(
+                    ASM.listOf(
+                        new VarInsnNode(Opcodes.ALOAD, 1),
+                        new MethodInsnNode(
+                            Opcodes.INVOKESTATIC,
+                            'twilightforest/ASMHooks',
+                            'trackingEnd',
+                            '(Lnet/minecraft/world/entity/Entity;)V',
+                            false
+                            )
+                        )
+                    );
+                return methodNode;
+            }
+        },
         'sync': {
             'target': {
                 'type': 'METHOD',

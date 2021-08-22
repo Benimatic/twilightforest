@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -325,6 +326,12 @@ public class BlockChainGoblinEntity extends Monster {
 	@Override
 	public boolean isMultipartEntity() {
 		return true;
+	}
+
+	@Override
+	public void recreateFromPacket(ClientboundAddMobPacket p_147206_) {
+		super.recreateFromPacket(p_147206_);
+		TFPartEntity.assignPartIDs(this);
 	}
 
 	/**

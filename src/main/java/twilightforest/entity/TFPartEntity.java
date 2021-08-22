@@ -12,6 +12,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 import twilightforest.TwilightForestMod;
 
+import java.util.Objects;
+
 public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 
 	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
@@ -121,5 +123,13 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 		final float h = buffer.readFloat();
 		setSize(buffer.readBoolean() ? EntityDimensions.fixed(w, h) : EntityDimensions.scalable(w, h));
 		refreshDimensions();
+	}
+
+	public static void assignPartIDs(Entity parent) {
+		PartEntity<?>[] parts = parent.getParts();
+		for (int i = 0, partsLength = Objects.requireNonNull(parts).length; i < partsLength; i++) {
+			PartEntity<?> part = parts[i];
+			part.setId(parent.getId() + i);
+		}
 	}
 }

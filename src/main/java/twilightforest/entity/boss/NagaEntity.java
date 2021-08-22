@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -43,6 +44,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import twilightforest.entity.TFPartEntity;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -847,6 +849,12 @@ public class NagaEntity extends Monster {
 	@Override
 	public boolean isMultipartEntity() {
 		return true;
+	}
+
+	@Override
+	public void recreateFromPacket(ClientboundAddMobPacket p_147206_) {
+		super.recreateFromPacket(p_147206_);
+		TFPartEntity.assignPartIDs(this);
 	}
 
 	@Nullable

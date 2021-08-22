@@ -3,6 +3,8 @@ package twilightforest;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Function4;
 import com.mojang.math.Matrix4f;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -30,13 +32,17 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression"})
+@SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
 
 	/**
@@ -62,10 +68,12 @@ public class ASMHooks {
 	}
 
 	private static final WeakHashMap<Level, List<TFPartEntity<?>>> cache = new WeakHashMap<>();
+	private static final Int2ObjectMap<TFPartEntity<?>> multiparts = new Int2ObjectOpenHashMap<>();
 
+	// This only works on the client side in 1.17...
 	public static void registerMultipartEvents(IEventBus bus) {
 		bus.addListener((Consumer<EntityJoinWorldEvent>) event -> {
-			if(event.getEntity().isMultipartEntity())
+			if(event.getWorld().isClientSide() && event.getEntity().isMultipartEntity())
 			synchronized (cache) {
 				cache.computeIfAbsent(event.getWorld(), (w) -> new ArrayList<>());
 				cache.get(event.getWorld()).addAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
@@ -75,11 +83,11 @@ public class ASMHooks {
 			}
 		});
 		bus.addListener((Consumer<EntityLeaveWorldEvent>) event -> {
-			if(event.getEntity().isMultipartEntity())
+			if(event.getWorld().isClientSide() && event.getEntity().isMultipartEntity())
 			synchronized (cache) {
 				cache.computeIfPresent(event.getWorld(), (world, list) -> {
 					list.removeAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
-							filter(TFPartEntity.class::isInstance).map(TFPartEntity.class::cast).
+							filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
 							collect(Collectors.toList()));
 					return list;
 				});
@@ -89,7 +97,45 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.Level#getEntities(Entity, AABB, Predicate)}  }<br>
+	 * {@link net.minecraft.server.level.ServerLevel#onTrackingStart(Entity)}<br>
+	 * [FIRST INST]
+	 */
+	public static void trackingStart(Entity entity) {
+		if (entity.isMultipartEntity()) {
+			List<TFPartEntity<?>> list = Arrays.stream(Objects.requireNonNull(entity.getParts())).
+					filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
+					collect(Collectors.toList());
+			list.forEach(part -> multiparts.put(part.getId(), part));
+			synchronized (cache) {
+				cache.computeIfAbsent(entity.level, (w) -> new ArrayList<>());
+				cache.get(entity.level).addAll(list);
+			}
+		}
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.server.level.ServerLevel#onTrackingEnd(Entity)}<br>
+	 * [FIRST INST]
+	 */
+	public static void trackingEnd(Entity entity) {
+		if (entity.isMultipartEntity()) {
+			List<TFPartEntity<?>> list = Arrays.stream(Objects.requireNonNull(entity.getParts())).
+					filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
+					collect(Collectors.toList());
+			list.forEach(part -> multiparts.remove(part.getId()));
+			synchronized (cache) {
+				cache.computeIfPresent(entity.level, (world, parts) -> {
+					parts.removeAll(list);
+					return parts;
+				});
+			}
+		}
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.Level#getEntities(Entity, AABB, Predicate)}<br>
 	 * [BEFORE ARETURN]
 	 */
 	public static synchronized List<Entity> multipartHitbox(List<Entity> list, Level world, @Nullable Entity entityIn, AABB boundingBox, @Nullable Predicate<? super Entity> predicate) {
@@ -113,7 +159,16 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData }<br>
+	 * {@link net.minecraft.server.level.ServerLevel#getEntityOrPart(int)}<br>
+	 * [BEFORE ARETURN]
+	 */
+	public static Entity multipartFromID(@Nullable Entity o, int id) {
+		return o == null ? multiparts.get(id) : o;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData}<br>
 	 * [AFTER GETFIELD]
 	 */
 	public static Entity updateMultiparts(Entity entity) {
@@ -124,7 +179,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#getRenderer(Entity)}  }<br>
+	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#getRenderer(Entity)}<br>
 	 * [BEFORE LAST ARETURN]
 	 */
 	@Nullable
@@ -137,7 +192,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#onResourceManagerReload(ResourceManager)} )}  }<br>
+	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#onResourceManagerReload(ResourceManager)}<br>
 	 * [AFTER FIRST INVOKESPECIAL]
 	 */
 	@OnlyIn(Dist.CLIENT)
@@ -148,7 +203,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(PoseStack, float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f)} )}  }<br>
+	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(PoseStack, float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterable<Entity> renderMutiparts(Iterable<Entity> iter) {
@@ -167,7 +222,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.Minecraft#doLoadLevel(String, RegistryAccess.RegistryHolder, Function, Function4, boolean, Minecraft.ExperimentalDialogType, boolean)}  }<br>
+	 * {@link net.minecraft.client.Minecraft#doLoadLevel(String, RegistryAccess.RegistryHolder, Function, Function4, boolean, Minecraft.ExperimentalDialogType, boolean)}<br>
 	 * [AFTER ALL ALOAD 6]
 	 */
 	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
