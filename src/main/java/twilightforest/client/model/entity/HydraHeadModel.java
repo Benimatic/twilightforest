@@ -77,6 +77,6 @@ public class HydraHeadModel extends ListModel<HydraHeadEntity> {
 
 	@Override
 	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(head, mouth);
+		return ImmutableList.of(head);
 	}
 }
