@@ -79,7 +79,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 	}
 
 	private void makeLeafBlob(BiConsumer<BlockPos, BlockState> leafPlacer, Random rand, BlockPos leafPos, TFTreeFeatureConfig config) {
-		FeaturePlacers.placeSpheroid(leafPlacer, rand, leafPos, 2, 2, config.leavesProvider);
+		FeaturePlacers.placeSpheroid(leafPlacer, rand, leafPos, 2.5f, 2.5f, config.leavesProvider);
 	}
 
 	private static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {

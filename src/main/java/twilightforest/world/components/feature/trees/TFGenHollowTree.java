@@ -278,7 +278,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			*/
 
 			// and a blob at the end
-			FeaturePlacers.placeSpheroid(leavesPlacer, random, dest, 2, 2, config.leavesProvider);
+			FeaturePlacers.placeSpheroid(leavesPlacer, random, dest, 2.5f, 2.5f, config.leavesProvider);
 		}
 
 		// and several small branches
@@ -310,7 +310,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, config.branchProvider);
 
 		if (leafy) {
-			byte leafRad = (byte) (random.nextInt(2) + 1);
+			float leafRad = random.nextInt(2) + 1.5f;
 			FeaturePlacers.placeSpheroid(leavesPlacer, random, dest, leafRad, leafRad, config.leavesProvider);
 		}
 	}
@@ -367,7 +367,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		if (leafy) {
 			// add a leaf blob at the end
-			FeaturePlacers.placeSpheroid(leavesPlacer, random, dest.above(), 3, 3, config.leavesProvider);
+			FeaturePlacers.placeSpheroid(leavesPlacer, random, dest.above(), 3.5f, 3.5f, config.leavesProvider);
 		}
 
 		// go about halfway out and make a few medium branches.
@@ -402,7 +402,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	private void makeLeafDungeon(LevelAccessor world, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {
 		// make leaves
-		FeaturePlacers.placeSpheroid(leavesPlacer, random, pos, 4, 4, config.leavesProvider);
+		FeaturePlacers.placeSpheroid(leavesPlacer, random, pos, 4.5f, 4.5f, config.leavesProvider);
 		// wood support
 		FeatureUtil.drawBlob(world, pos, 3, config.branchProvider.getState(random, pos));
 		// air
