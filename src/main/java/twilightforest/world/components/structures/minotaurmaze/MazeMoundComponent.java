@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -30,10 +31,8 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 	private MazeUpperEntranceComponent mazeAbove;
 
 	public MazeMoundComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMMound, feature, i, x, y, z);
+		super(MinotaurMazePieces.TFMMMound, feature, i, new BoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER));
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
-
-		this.boundingBox = new BoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER);
 	}
 
 	/**
@@ -51,7 +50,6 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-
 		if (this.averageGroundLevel < 0) {
 			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
 
@@ -75,8 +73,8 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 				int cx = x - DIAMETER / 2;
 				int cz = z - DIAMETER / 2;
 
-				int dist = (int) Math.sqrt(cx * cx + cz * cz);
-				int hheight = (int) (Math.cos((double) dist / DIAMETER * Math.PI) * (DIAMETER / 3));
+				int dist = (int) Mth.sqrt(cx * cx + cz * cz);
+				int hheight = (int) (Mth.cos((float) dist / DIAMETER * Mth.PI) * (DIAMETER / 3));
 
 				// leave a hole in the middle
 				if (!(cx <= 2 && cx >= -1 && cz <= 2 && cz >= -1) && ((!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) || hheight > 6)) {
@@ -109,7 +107,7 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 				BlockPos pos = new BlockPos(x, 64, z);
 
 				if (boundingBox.isInside(pos)) {
-					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
+					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
 					totalHeight += Math.max(topPos.getY(), generator.getSpawnHeight(world));
 					++totalMeasures;
 				}

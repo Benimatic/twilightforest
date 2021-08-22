@@ -27,10 +27,8 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 	private int averageGroundLevel = -1;
 
 	public MazeEntranceShaftComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMES, feature, i, x, y, z);
+		super(MinotaurMazePieces.TFMMES, feature, i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1)); // Flat, expand later
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
-
-		this.boundingBox = new BoundingBox(x, y, z, x + 6 - 1, y + 14, z + 6 - 1);
 	}
 
 	/**
@@ -43,6 +41,8 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		BlockPos.MutableBlockPos pos = chunkPosIn.getWorldPosition().mutable().setX(this.boundingBox.minX()).setZ(this.boundingBox.minZ());
+
 		if (this.averageGroundLevel < 0) {
 			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
 
@@ -50,9 +50,12 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 				return true;
 			}
 
-			//this.boundingBox.maxY() = this.averageGroundLevel;
-			//this.boundingBox.minY() = TFGenerationSettings.SEALEVEL - 10;
+			pos.setY(this.averageGroundLevel);
+
+			this.boundingBox.encapsulate(pos);
 		}
+
+		this.boundingBox.encapsulate(pos.setY(generator.getSeaLevel() - 11));
 
 		this.generateBox(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSpan(), 5, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, true);
 		this.generateAirBox(world, sbb, 1, 0, 1, 4, this.boundingBox.getYSpan(), 4);

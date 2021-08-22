@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.start;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -144,7 +143,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 			int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 			int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
 			int y = chunkGenerator.getSeaLevel();
-			StructurePiece start = feature.provideStructureStart(structureManager, random, x, y, z);
+			StructurePiece start = feature.provideStructureStart(structureManager, chunkGenerator, random, x, y, z);
 			if(start == null)
 				return;
 			this.addPiece(start);

@@ -28,11 +28,8 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	}
 
 	public MazeRuinsComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRuins, feature, i, x, y, z);
+		super(MinotaurMazePieces.TFMMRuins, feature, i, feature.getComponentToAddBoundingBox(x, y - 2, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH));
 		this.setOrientation(Direction.SOUTH);
-
-		// I have no bounding box
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y - 2, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH);
 	}
 
 	/**
@@ -53,7 +50,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 		mazeEnter.addChildren(this, list, random);
 
 		// add aboveground maze entrance building
-		MazeMoundComponent mazeAbove = new MazeMoundComponent(getFeatureType(), 2, random, boundingBox.minX() - 14, boundingBox.minY(), boundingBox.minZ() - 14);
+		MazeMoundComponent mazeAbove = new MazeMoundComponent(getFeatureType(), 2, random, boundingBox.minX() - 14, boundingBox.maxY(), boundingBox.minZ() - 14);
 		list.addPiece(mazeAbove);
 		mazeAbove.addChildren(this, list, random);
 	}
