@@ -59,7 +59,7 @@ public class TFTickHandler {
 		// check the player for being in a forbidden progression area, only every 20 ticks
 		if (!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0
 				&& TFGenerationSettings.isProgressionEnforced(world)
-				&& TFGenerationSettings.isTwilightChunk(world)
+				&& TFGenerationSettings.usesTwilightChunkGenerator(world)
 				&& !player.isCreative() && !player.isSpectator()) {
 
 			TFGenerationSettings.enforceBiomeProgression(player, world);
@@ -67,7 +67,7 @@ public class TFTickHandler {
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
-			if (TFGenerationSettings.isTwilightChunk(world)) {
+			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
 				} else {

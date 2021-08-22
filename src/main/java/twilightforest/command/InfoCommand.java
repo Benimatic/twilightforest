@@ -21,7 +21,7 @@ public class InfoCommand {
     private static int run(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         CommandSourceStack source = ctx.getSource();
 
-        if (!TFGenerationSettings.isTwilightChunk(source.getLevel())) {
+        if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
             throw TFCommand.NOT_IN_TF.create();
         }
 

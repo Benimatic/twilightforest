@@ -150,7 +150,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		return world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get());
 	}
 
-	public static boolean isTwilightChunk(ServerLevel world) {
+	public static boolean usesTwilightChunkGenerator(ServerLevel world) {
 		return world.getChunkSource().generator instanceof ChunkGeneratorTwilightBase;
 	}
 

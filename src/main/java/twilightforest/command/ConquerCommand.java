@@ -22,7 +22,7 @@ public class ConquerCommand {
     }
 
     private static int changeStructureActivity(CommandSourceStack source, boolean flag) throws CommandSyntaxException {
-        if (!TFGenerationSettings.isTwilightChunk(source.getLevel())) {
+        if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
             throw TFCommand.NOT_IN_TF.create();
         }
 

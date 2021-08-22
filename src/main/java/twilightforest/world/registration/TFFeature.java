@@ -518,13 +518,13 @@ public enum TFFeature {
 		return getFeatureAt(mapX, mapZ, world).ordinal();
 	}
 
-	public static TFFeature getFeatureAt(int mapX, int mapZ, WorldGenLevel world) {
-		return generateFeature(mapX >> 4, mapZ >> 4, world);
+	public static TFFeature getFeatureAt(int regionX, int regionZ, WorldGenLevel world) {
+		return generateFeature(regionX >> 4, regionZ >> 4, world);
 	}
 
-	public static boolean isInFeatureChunk(int mapX, int mapZ) {
-		int chunkX = mapX >> 4;
-		int chunkZ = mapZ >> 4;
+	public static boolean isInFeatureChunk(int regionX, int regionZ) {
+		int chunkX = regionX >> 4;
+		int chunkZ = regionZ >> 4;
 		BlockPos cc = getNearestCenterXYZ(chunkX, chunkZ);
 
 		return chunkX == (cc.getX() >> 4) && chunkZ == (cc.getZ() >> 4);
@@ -635,7 +635,7 @@ public enum TFFeature {
 
 		// does the biome have a feature?
 		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
-		if(biomeFeature != null)
+		if(biomeFeature != null && biomeFeature.isStructureEnabled)
 			return biomeFeature;
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
@@ -813,10 +813,10 @@ public enum TFFeature {
 	 * <p>
 	 * Maybe in the future we'll have to actually search for a feature chunk nearby, but for now this will work.
 	 */
-	public static BlockPos getNearestCenterXYZ(int cx, int cz) {
+	public static BlockPos getNearestCenterXYZ(int chunkX, int chunkZ) {
 		// generate random number for the whole biome area
-		int regionX = (cx + 8) >> 4;
-		int regionZ = (cz + 8) >> 4;
+		int regionX = (chunkX + 8) >> 4;
+		int regionZ = (chunkZ + 8) >> 4;
 
 		long seed = regionX * 3129871 ^ regionZ * 116129781L;
 		seed = seed * seed * 42317861L + seed * 7L;
@@ -845,7 +845,7 @@ public enum TFFeature {
 			ccx = (regionX * 16 + (16 - centerX) - 8) * 16 + 9;
 		}
 
-		return new BlockPos(ccx, 31, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ; FIXME (set sea level hard)
+		return new BlockPos(ccx, TFGenerationSettings.SEALEVEL, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ; FIXME (set sea level hard)
 	}
 
 	public List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList() {

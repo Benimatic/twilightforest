@@ -3,6 +3,7 @@ package twilightforest.world.components.chunkgenerators;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.MobCategory;
@@ -25,6 +26,7 @@ import twilightforest.util.IntPair;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
@@ -33,6 +35,8 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	protected final long seed;
 	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
 	public final NoiseGeneratorSettings settings;
+
+	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
 
 	public ChunkGeneratorTwilightBase(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings) {
 		super(provider, seed, settings);
@@ -370,4 +374,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		return classification == MobCategory.MONSTER && pos.getY() >= TFGenerationSettings.SEALEVEL ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, classification, pos);
 	}
 
+	public TFFeature getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
+		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFFeature.generateFeature(chunkPos.x, chunkPos.z, world));
+	}
 }

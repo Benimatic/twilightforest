@@ -44,7 +44,7 @@ public class TFMazeMapData extends MapItemSavedData {
 		this.yCenter = y;
 
 		// when we are in a labyrinth, snap to the LABYRINTH
-		if (world instanceof ServerLevel && TFGenerationSettings.isTwilightChunk((ServerLevel) world)) {
+		if (world instanceof ServerLevel && TFGenerationSettings.usesTwilightChunkGenerator((ServerLevel) world)) {
 			if (TFFeature.getFeatureForRegion(x >> 4, z >> 4, (ServerLevel) world) == TFFeature.LABYRINTH) {
 				BlockPos mc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
 				this.x = mc.getX();
