@@ -44,7 +44,7 @@ public class TFGhastModel<T extends CarminiteGhastguardEntity> extends Hierarchi
 			makeTentacle(body, "tentacle_" + i, rand, i);
 		}
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	@Override
@@ -56,8 +56,8 @@ public class TFGhastModel<T extends CarminiteGhastguardEntity> extends Hierarchi
 		final int length = random.nextInt(7) + 8;
 
 		// Please ensure the model is working accurately before we port
-		float xPoint = ((((((i % 3) - (((i / 3.0F) % 2) * 0.5F)) + 0.25F) / 2.0F) * 2.0F) - 1.0F) * 5.0F;
-		float zPoint = (((i / 1.5F) * 2.0F) - 1.0F) * 5.0F;
+		float xPoint = ((i % 3 - i / 3 % 2 * 0.5F + 0.25F) / 2.0F * 2.0F - 1.0F) * 5.0F;
+		float zPoint = (i / 3 / 2.0F * 2.0F - 1.0F) * 5.0F;
 
 		return parent.addOrReplaceChild(name, CubeListBuilder.create()
 						.addBox(-1.0F, 0.0F, -1.0F, 2, length, 2),
