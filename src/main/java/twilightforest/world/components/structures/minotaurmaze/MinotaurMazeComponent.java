@@ -258,7 +258,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 		// add a second story
 		if (this.level == 1) {
-			int centerX = boundingBox.minX() + ((boundingBox.minX() - boundingBox.minX()) / 2);
+			int centerX = boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2);
 			int centerZ = boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2);
 
 			MinotaurMazeComponent maze = new MinotaurMazeComponent(getFeatureType(), 1, centerX, boundingBox.minY() - 10, centerZ, rcoords[2], rcoords[3], 2);
