@@ -43,9 +43,9 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 
-		if (y > 17) {
+		if (y > -15) {
 			this.enterBottom = false;
-		} else if (y < 11) {
+		} else if (y < -21) {
 			this.enterBottom = true;
 		} else {
 			this.enterBottom = (z & 1) == 0;

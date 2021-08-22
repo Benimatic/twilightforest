@@ -15,6 +15,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -39,10 +40,10 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		if (y < 36) {
+		if (y < TFGenerationSettings.SEALEVEL - 7) { // FIXME Fix this when we overhaul this structure
 			this.exitTop = true;
 			return BoundingBox.orientBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
-		} else {
+		} else /*if (y < -32)*/ { // FIXME world.minBuildHeight
 			this.exitTop = false;
 			return BoundingBox.orientBox(x, y, z, -2, -6, 0, 5, 10, 10, facing);
 		}

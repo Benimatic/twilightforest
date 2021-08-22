@@ -140,8 +140,8 @@ public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent 
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), false), x - 1, y, z + 1, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), false), x - 1, y, z + 2, rotation, sbb);
 
-		this.setBlockStateRotated(world, Blocks.STONE_SLAB.defaultBlockState(), x, y + 1, z + 1, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.STONE_SLAB.defaultBlockState(), x, y + 1, z + 2, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), x, y + 1, z + 1, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), x, y + 1, z + 2, rotation, sbb);
 	}
 
 	protected void placePillarDecorations(WorldGenLevel world, BoundingBox sbb, Rotation rotation) {

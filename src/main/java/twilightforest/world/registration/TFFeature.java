@@ -306,7 +306,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new StrongholdEntranceComponent(this, 0, x, y, z);
+			return new StrongholdEntranceComponent(this, 0, x, chunkGenerator.getSeaLevel(), z);
 		}
 
 		@Override
