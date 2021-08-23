@@ -43,6 +43,7 @@ public class BiomeKeys {
 	public static final ResourceKey<Biome> FINAL_PLATEAU = makeKey("final_plateau");
 
 	private static ResourceKey<Biome> makeKey(String name) {
+		// Apparently this resolves biome shuffling /shrug
 		BIOMES.register(name, () -> new Biome.BiomeBuilder()
 				.precipitation(Biome.Precipitation.NONE)
 				.biomeCategory(Biome.BiomeCategory.NONE)

@@ -1,10 +1,10 @@
 package twilightforest.world.registration;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.data.worldgen.Features;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.level.levelgen.placement.ConfiguredDecorator;
@@ -22,11 +22,13 @@ import twilightforest.world.components.feature.trees.treeplacers.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import twilightforest.world.components.OutOfStructurePlacement;
+import twilightforest.world.components.placements.ChunkBlanketingDecorator;
+import twilightforest.world.components.placements.OutOfStructureFilter;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TwilightFeatures {
@@ -43,9 +45,11 @@ public final class TwilightFeatures {
     public static final TreeDecoratorType<TreeRootsDecorator> TREE_ROOTS = registerTreeFeature(TwilightForestMod.prefix("tree_roots"), TreeRootsDecorator.CODEC);
     public static final TreeDecoratorType<DangleFromTreeDecorator> DANGLING_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("dangle_from_tree_decorator"), DangleFromTreeDecorator.CODEC);
 
-    public static final FeatureDecorator<NoneDecoratorConfiguration> PLACEMENT_NOTFSTRUCTURE = new OutOfStructurePlacement(NoneDecoratorConfiguration.CODEC);
+    public static final FeatureDecorator<NoneDecoratorConfiguration> PLACEMENT_NOTFSTRUCTURE = new OutOfStructureFilter(NoneDecoratorConfiguration.CODEC);
+    public static final FeatureDecorator<ChunkBlanketingDecorator.ChunkBlanketingConfig> PLACEMENT_CHUNK_BLANKETING = new ChunkBlanketingDecorator(ChunkBlanketingDecorator.ChunkBlanketingConfig.CODEC);
 
     public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE = PLACEMENT_NOTFSTRUCTURE.configured(NoneDecoratorConfiguration.INSTANCE);
+    public static final ConfiguredDecorator<?> CONFIGURED_THORNLANDS_BLANKETING = PLACEMENT_CHUNK_BLANKETING.configured(new ChunkBlanketingDecorator.ChunkBlanketingConfig(0.7f, Heightmap.Types.OCEAN_FLOOR_WG, Optional.of(TwilightForestMod.prefix("thornlands"))));
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
         FoliagePlacerType<P> type = new FoliagePlacerType<>(codec);
@@ -84,5 +88,6 @@ public final class TwilightFeatures {
     @SubscribeEvent
     public static void registerPlacementConfigs(RegistryEvent.Register<FeatureDecorator<?>> evt) {
         evt.getRegistry().register(PLACEMENT_NOTFSTRUCTURE.setRegistryName(TwilightForestMod.prefix("nostructure")));
+        evt.getRegistry().register(PLACEMENT_CHUNK_BLANKETING.setRegistryName(TwilightForestMod.prefix("chunk_blanketing")));
     }
 }

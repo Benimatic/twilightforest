@@ -1,4 +1,4 @@
-package twilightforest.world.components;
+package twilightforest.world.components.placements;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -12,8 +12,8 @@ import twilightforest.world.registration.TFFeature;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public class OutOfStructurePlacement extends FeatureDecorator<NoneDecoratorConfiguration> {
-	public OutOfStructurePlacement(Codec<NoneDecoratorConfiguration> codec) {
+public class OutOfStructureFilter extends FeatureDecorator<NoneDecoratorConfiguration> {
+	public OutOfStructureFilter(Codec<NoneDecoratorConfiguration> codec) {
 		super(codec);
 	}
 

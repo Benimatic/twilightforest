@@ -142,6 +142,7 @@ public abstract class BiomeHelper {
 				.surfaceBuilder(ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
 
 		commonFeatures(biome);
+		addThorns(biome);
 		
 		return biome;
 	}
@@ -402,6 +403,10 @@ public abstract class BiomeHelper {
 		biome.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.HIGHLANDCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.TROLL_ROOTS);
 		BiomeDefaultFeatures.addDefaultOres(biome);
+	}
+
+	public static void addThorns(BiomeGenerationSettings.Builder biome) {
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.THORNS);
 	}
 
 	//Special mob spawns. EntityClassification.MONSTER is forced underground, so use CREATURE for above ground spawns.
