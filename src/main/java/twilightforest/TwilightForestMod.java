@@ -91,7 +91,14 @@ public class TwilightForestMod {
 	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
 
 	public TwilightForestMod() {
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> (DistExecutor.SafeRunnable) twilightforest.client.TFClientSetup::addLegacyPack);
+		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
+		//noinspection Convert2Lambda,Anonymous2MethodRef
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new Runnable() {
+			@Override
+			public void run() {
+				twilightforest.client.TFClientSetup.addLegacyPack();
+			}
+		});
 
 		{
 			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
