@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class SwarmSpiderEntity extends Spider {
@@ -168,5 +170,26 @@ public class SwarmSpiderEntity extends Spider {
 	@Override
 	public int getMaxSpawnClusterSize() {
 		return 16;
+	}
+
+	@Nullable
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
+		livingData = super.finalizeSpawn(worldIn, difficulty, reason, livingData, dataTag);
+
+		if (this.getFirstPassenger() != null || worldIn.getRandom().nextInt(20) <= difficulty.getDifficulty().getId()) {
+			SkeletonDruidEntity druid = TFEntities.skeleton_druid.create(this.level);
+			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
+			druid.setBaby(true);
+			druid.finalizeSpawn(worldIn, difficulty, MobSpawnType.JOCKEY, null, null);
+
+			if (this.hasPassenger(e -> true)) {
+				this.ejectPassengers();
+			}
+
+			druid.startRiding(this);
+		}
+
+		return livingData;
 	}
 }
