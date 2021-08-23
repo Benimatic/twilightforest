@@ -17,8 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.TwilightForestMod;
@@ -60,7 +58,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 						LocationTrigger.TriggerInstance.located(
 								LocationPredicate.inDimension(
 										ResourceKey.create(Registry.DIMENSION_REGISTRY,
-												new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())))))
+												new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())))))
 				.addCriterion("make_portal",
 						new MakePortalTrigger.Instance(EntityPredicate.Composite.ANY))
 				.save(consumer, "twilightforest:root");
@@ -506,7 +504,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 							.located(
 									LocationPredicate.inDimension(
 											ResourceKey.create(Registry.DIMENSION_REGISTRY,
-													new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()))))));
+													new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get()))))));
 		}
 		return builder;
 	}

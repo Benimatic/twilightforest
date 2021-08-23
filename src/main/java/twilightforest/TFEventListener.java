@@ -780,7 +780,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (!event.getPlayer().level.isClientSide && event.getPlayer() instanceof ServerPlayer) {
-			if (event.getTo().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) {
+			if (event.getTo().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())) {
 				sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().level));
 			}
 

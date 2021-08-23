@@ -21,7 +21,7 @@ public class LoadingScreenListener {
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof ReceivingLevelScreen && client.player != null) {
-			ResourceKey<Level> tfDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
+			ResourceKey<Level> tfDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get()));
 			if (client.player.getCommandSenderWorld().getBlockState(client.player.blockPosition().below()) == TFBlocks.twilight_portal.get().defaultBlockState() || client.player.getCommandSenderWorld().dimension() == tfDimension) {
 				LoadingScreenGui guiLoading = new LoadingScreenGui();
 				guiLoading.setEntering(client.player.getCommandSenderWorld().dimension() == Level.OVERWORLD);
