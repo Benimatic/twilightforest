@@ -1,4 +1,4 @@
-package twilightforest.world.components.feature.templates;
+package twilightforest.world.components.processors;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -11,26 +11,25 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.enums.StructureWoodVariant;
-import twilightforest.world.components.processors.RandomizedTemplateProcessor;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class HutTemplateProcessor extends RandomizedTemplateProcessor {
+public class DruidHutTemplateProcessor extends RandomizedTemplateProcessor {
     private final StructureWoodVariant OAK_SWIZZLE;
     private final StructureWoodVariant SPRUCE_SWIZZLE;
     private final StructureWoodVariant BIRCH_SWIZZLE;
 
-    public static final Codec<HutTemplateProcessor> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+    public static final Codec<DruidHutTemplateProcessor> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
             Codec.FLOAT.fieldOf("integrity").orElse(1.0F).forGetter((obj) -> obj.integrity),
             Codec.INT.fieldOf("oak_to_type").orElse(0).forGetter((obj) -> obj.OAK_SWIZZLE.ordinal()),
             Codec.INT.fieldOf("spruce_to_type").orElse(0).forGetter((obj) -> obj.SPRUCE_SWIZZLE.ordinal()),
             Codec.INT.fieldOf("birch_to_type").orElse(0).forGetter((obj) -> obj.BIRCH_SWIZZLE.ordinal())
-    ).apply(instance, HutTemplateProcessor::new));
+    ).apply(instance, DruidHutTemplateProcessor::new));
 
 
-    public HutTemplateProcessor(float integrity, int oakSwizzle, int spruceSwizzle, int birchSwizzle) {
+    public DruidHutTemplateProcessor(float integrity, int oakSwizzle, int spruceSwizzle, int birchSwizzle) {
         super(integrity);
         int limit = StructureWoodVariant.values().length;
         this.OAK_SWIZZLE = StructureWoodVariant.values()[Math.floorMod(oakSwizzle, limit)];

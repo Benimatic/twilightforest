@@ -11,6 +11,7 @@ import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.components.feature.templates.DruidHutFeature;
 import twilightforest.world.components.feature.templates.GroveRuinsFeature;
+import twilightforest.world.components.feature.templates.StoneCircleFeature;
 import twilightforest.world.components.feature.trees.*;
 import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
 import twilightforest.world.components.feature.trees.growers.SnowUnderTrees;
@@ -67,7 +68,7 @@ public class TFBiomeFeatures {
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> PLANT_ROOTS = FEATURES.register("plant_roots", () ->
 			new TFGenPlantRoots(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> STONE_CIRCLE = FEATURES.register("stone_circle", () ->
-			new TFGenStoneCircle(NoneFeatureConfiguration.CODEC));
+			new StoneCircleFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> THORNS = FEATURES.register("thorns", () ->
 			new TFGenThorns(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TORCH_BERRIES = FEATURES.register("torch_berries", () ->

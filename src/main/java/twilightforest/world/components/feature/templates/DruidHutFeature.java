@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
+import twilightforest.world.components.processors.DruidHutTemplateProcessor;
 
 import java.util.Random;
 
@@ -34,7 +35,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
     @Override
     protected void modifySettings(StructurePlaceSettings settings, Random random) {
-        settings.addProcessor(new HutTemplateProcessor(0.0F, random.nextInt(), random.nextInt(), random.nextInt()));
+        settings.addProcessor(new DruidHutTemplateProcessor(0.0F, random.nextInt(), random.nextInt(), random.nextInt()));
     }
 
     @Override
@@ -47,7 +48,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
             placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, random.nextInt(14), random.nextInt(14), random.nextInt(14))), random, 20);
+            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new DruidHutTemplateProcessor(0.0F, random.nextInt(14), random.nextInt(14), random.nextInt(14))), random, 20);
 
             for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
                 this.processData(info, world, rotation, mirror);

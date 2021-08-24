@@ -2,7 +2,6 @@ package twilightforest.world.components.processors;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
@@ -15,8 +14,9 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
-
 	public static final Codec<MossyCobbleTemplateProcessor> codecMossyProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(MossyCobbleTemplateProcessor::new, (obj) -> obj.integrity).codec();
+
+	public static final MossyCobbleTemplateProcessor INSTANCE = new MossyCobbleTemplateProcessor(1.0f);
 
 	public MossyCobbleTemplateProcessor(float integrity) {
         super(integrity);
@@ -33,14 +33,13 @@ public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
 		Random random = placementSettingsIn.getRandom(pos);
 
 		if (shouldPlaceBlock(random)) {
-			BlockState state = blockInfo.state;
-			Block block = state.getBlock();
+			Block block = blockInfo.state.getBlock();
 
 			if (block == Blocks.COBBLESTONE)
-				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(pos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), null);
+				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), null);
 
 			if (block == Blocks.COBBLESTONE_WALL)
-				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(pos, Blocks.MOSSY_COBBLESTONE_WALL.defaultBlockState(), null);
+				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE_WALL.defaultBlockState(), null);
 
 			return blockInfo;
 		}
