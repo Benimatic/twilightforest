@@ -707,6 +707,8 @@
   "item.twilightforest.yeti_chestplate.tooltip": "Chills attackers",
   "item.twilightforest.yeti_leggings.tooltip": "Chills attackers",
   "item.twilightforest.yeti_boots.tooltip": "Chills attackers",
+  "item.twilightforest.glass_sword.tooltip.1": "Creative Mode only",
+  "item.twilightforest.glass_sword.tooltip.2": "Will never generate as loot",
 
   "item.twilightforest.arctic_armor.tooltip": "Dyeable like Leather Armor",
 

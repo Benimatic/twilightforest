@@ -40,8 +40,8 @@ public class GlassSwordItem extends SwordItem {
 			tags.putBoolean("Unbreakable", true);
 
 			ListTag lore = new ListTag();
-			lore.add(StringTag.valueOf("{\"text\":\"Creative Mode only\"}"));
-			lore.add(StringTag.valueOf("{\"text\":\"Will never generate as loot\"}"));
+			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\"}"));
+			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\"}"));
 
 			CompoundTag display = new CompoundTag();
 			display.put("Lore", lore);
