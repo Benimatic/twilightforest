@@ -3,6 +3,7 @@ package twilightforest.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
@@ -11,11 +12,14 @@ import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 /**
  * Feature Utility methods that invoke placement. For non-placement see FeatureLogic
  */
 public final class FeaturePlacers {
+    public static final BiFunction<LevelSimulatedReader, BlockPos, Boolean> VALID_TREE_POS = TreeFeature::validTreePos;
+
     /**
      * Draws a line from {x1, y1, z1} to {x2, y2, z2}
      * This takes all variables for setting Branch
@@ -52,12 +56,18 @@ public final class FeaturePlacers {
         worldPlacer.accept(pos, config.getState(random, pos));
     }
 
+    public static void placeProvidedBlock(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> worldPlacer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos pos, BlockStateProvider config, Random random) {
+        if (predicate.apply(world, pos)) {
+            worldPlacer.accept(pos, config.getState(random, pos));
+        }
+    }
+
     // Use for trunks with Odd-count widths
-    public static void placeCircleOdd(BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos centerPos, float radius, BlockStateProvider config) {
+    public static void placeCircleOdd(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, Random random, BlockPos centerPos, float radius, BlockStateProvider config) {
         // Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
         // the pos to be immutable causing multiple same BlockPos instances to exist.
         float radiusSquared = radius * radius;
-        FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos, config, random);
+        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos, config, random);
 
         // trace out a quadrant
         for (int x = 0; x <= radius; x++) {
@@ -65,10 +75,10 @@ public final class FeaturePlacers {
                 // if we're inside the blob, fill it
                 if (x * x + z * z <= radiusSquared) {
                     // do four at a time for easiness!
-                    FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos.offset(  x, 0,  z), config, random);
-                    FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos.offset( -x, 0, -z), config, random);
-                    FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos.offset( -z, 0,  x), config, random);
-                    FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos.offset(  z, 0, -x), config, random);
+                    FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x, 0,  z), config, random);
+                    FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, 0, -z), config, random);
+                    FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z, 0,  x), config, random);
+                    FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z, 0, -x), config, random);
                     // Confused how this circle pixel-filling algorithm works exactly? https://www.desmos.com/calculator/psqynhk21k
                 }
             }
@@ -77,11 +87,11 @@ public final class FeaturePlacers {
 
     // Use for trunks with Even-count widths
     // TODO Verify that it works correctly, haven't gotten to a compiling state yet to test
-    public static void placeCircleEven(BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos centerPos, float radius, BlockStateProvider config) {
+    public static void placeCircleEven(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, Random random, BlockPos centerPos, float radius, BlockStateProvider config) {
         // Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
         // the pos to be immutable causing multiple same BlockPos instances to exist.
         float radiusSquared = radius * radius;
-        FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos, config, random);
+        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos, config, random);
 
         // trace out a quadrant
         for (int x = 0; x <= radius; x++) {
@@ -89,60 +99,53 @@ public final class FeaturePlacers {
                 // if we're inside the blob, fill it
                 if (x * x + z * z <= radiusSquared) {
                     // do four at a time for easiness!
-                    FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos.offset( 1+x, 0, 1+z), config, random);
-                    FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos.offset( -x, 0, -z), config, random);
-                    FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos.offset( -x, 0, 1+z), config, random);
-                    FeaturePlacers.placeProvidedBlock(worldPlacer, centerPos.offset( 1+x, 0, -z), config, random);
+                    FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( 1+x, 0, 1+z), config, random);
+                    FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, 0, -z), config, random);
+                    FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, 0, 1+z), config, random);
+                    FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( 1+x, 0, -z), config, random);
                     // Confused how this circle pixel-filling algorithm works exactly? https://www.desmos.com/calculator/psqynhk21k
                 }
             }
         }
     }
 
-    public static void placeSpheroid(BiConsumer<BlockPos, BlockState> placer, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider config) {
+    public static void placeSpheroid(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider config) {
         float xzRadiusSquared = xzRadius * xzRadius;
         float yRadiusSquared = yRadius * yRadius;
         float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
-        FeaturePlacers.placeProvidedBlock(placer, centerPos, config, random);
+        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos, config, random);
 
         for (int y = 0; y <= yRadius; y++) {
             if (y > yRadius) continue;
 
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
+            FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( 0,  y, 0), config, random);
+            FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( 0, -y, 0), config, random);
         }
 
         for (int x = 0; x <= xzRadius; x++) {
             for (int z = 1; z <= xzRadius; z++) {
                 if (x * x + z * z > xzRadiusSquared) continue;
 
-                FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  x, 0,  z), config, random);
-                FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -x, 0, -z), config, random);
-                FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -z, 0,  x), config, random);
-                FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  z, 0, -x), config, random);
+                FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x, 0,  z), config, random);
+                FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, 0, -z), config, random);
+                FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z, 0,  x), config, random);
+                FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z, 0, -x), config, random);
 
                 for (int y = 1; y <= yRadius; y++) {
                     float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
                     if (xzSquare + (((y - verticalBias) * (y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  x,  y,  z), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -x,  y, -z), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -z,  y,  x), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  z,  y, -x), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x,  y,  z), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x,  y, -z), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z,  y,  x), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z,  y, -x), config, random);
                     }
 
                     if (xzSquare + (((y + verticalBias) * (y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  x, -y,  z), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -x, -y, -z), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -z, -y,  x), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  z, -y, -x), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x, -y,  z), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, -y, -z), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z, -y,  x), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z, -y, -x), config, random);
                     }
                 }
             }
@@ -150,7 +153,7 @@ public final class FeaturePlacers {
     }
 
     // Version without the `verticalBias` unlike above
-    public static void placeSpheroid(BiConsumer<BlockPos, BlockState> placer, Random random, BlockPos centerPos, float xzRadius, float yRadius, BlockStateProvider config) {
+    public static void placeSpheroid(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, Random random, BlockPos centerPos, float xzRadius, float yRadius, BlockStateProvider config) {
         float xzRadiusSquared = xzRadius * xzRadius;
         float yRadiusSquared = yRadius * yRadius;
         float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
@@ -160,13 +163,6 @@ public final class FeaturePlacers {
             if (y > yRadius) continue;
 
             FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
             FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
         }
 

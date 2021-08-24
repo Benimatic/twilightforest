@@ -1,5 +1,6 @@
 package twilightforest.world.registration;
 
+import net.minecraft.world.level.levelgen.feature.BaseDiskFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -62,7 +63,7 @@ public class TFBiomeFeatures {
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> MONOLITH = FEATURES.register("monolith", () ->
 			new TFGenMonolith(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<DiskConfiguration>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () ->
-			new TFGenMyceliumBlob(DiskConfiguration.CODEC));
+			new BaseDiskFeature(DiskConfiguration.CODEC));
 	public static final RegistryObject<Feature<CaveStalactiteConfig>> OUTSIDE_STALAGMITE = FEATURES.register("outside_stalagmite", () ->
 			new TFGenOutsideStalagmite(CaveStalactiteConfig.caveStalactiteCodec));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> PLANT_ROOTS = FEATURES.register("plant_roots", () ->

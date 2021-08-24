@@ -248,9 +248,6 @@ public enum TFFeature {
 	},
 	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
-			// FIXME Worldgen Stall
-			this.disableStructure();
-
 			this.addMonster(TFEntities.tower_golem, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
@@ -306,7 +303,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new StrongholdEntranceComponent(this, 0, x, chunkGenerator.getSeaLevel(), z);
+			return new StrongholdEntranceComponent(this, 0, x, chunkGenerator.getSeaLevel() + 7, z);
 		}
 
 		@Override

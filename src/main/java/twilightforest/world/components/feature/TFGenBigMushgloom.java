@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -34,8 +35,8 @@ public class TFGenBigMushgloom extends Feature<NoneFeatureConfiguration> {
 			return false;
 		}
 
-		Block blockUnder = world.getBlockState(pos.below()).getBlock();
-		if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS_BLOCK && blockUnder != Blocks.MYCELIUM) {
+		BlockState blockUnder = world.getBlockState(pos.below());
+		if (!isDirt(blockUnder) && !blockUnder.is(BlockTags.MUSHROOM_GROW_BLOCK)) {
 			return false;
 		}
 

@@ -61,12 +61,11 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     protected void createFoliage(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, TreeConfiguration baseTreeFeatureConfig, int trunkHeight, FoliageAttachment foliage, int foliageHeight, int radius, int offset) {
         BlockPos center = foliage.pos().above(offset); // foliage.getCenter
 
-        FeaturePlacers.placeSpheroid(worldPlacer, random, center, foliage.radiusOffset() + this.horizontalRadius + random.nextInt(this.randomHorizontal + 1), foliage.radiusOffset() + this.verticalRadius + random.nextInt(this.randomVertical + 1), this.verticalBias, baseTreeFeatureConfig.foliageProvider);
+        FeaturePlacers.placeSpheroid(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, random, center, foliage.radiusOffset() + this.horizontalRadius + random.nextInt(this.randomHorizontal + 1), foliage.radiusOffset() + this.verticalRadius + random.nextInt(this.randomVertical + 1), this.verticalBias, baseTreeFeatureConfig.foliageProvider);
 
         if (this.shag_factor > 0) {
             for (int i = 0; i < this.shag_factor; i++) {
-                float TWO_PI = (float) (2.0 * Math.PI);
-                float randomYaw = random.nextFloat() * TWO_PI;
+                float randomYaw = random.nextFloat() * Mth.TWO_PI;
                 float randomPitch = random.nextFloat() * 2f - 1f; //random.nextFloat() * 0.75f + 0.25f;
                 float yUnit = Mth.sqrt(1 - randomPitch * randomPitch); // Inverse Trigonometry identity (sin(arcos(t)) == sqrt(1 - t*t))
                 float xCircleOffset = yUnit * Mth.cos(randomYaw) * (this.horizontalRadius - 1f); // We do radius minus 1 here so the leaf 2x2 generates overlapping the existing foilage

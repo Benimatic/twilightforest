@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import twilightforest.util.FeaturePlacers;
-import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
@@ -66,7 +65,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 			int radius = leafRadius(treeHeight, dy, leafType);
 
-			FeaturePlacers.placeCircleEven(leavesPlacer, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
+			FeaturePlacers.placeCircleEven(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
 			this.makePineBranches(world, trunkPlacer, random, pos.above(offGround + treeHeight - dy), radius, config);
 		}
 	}
