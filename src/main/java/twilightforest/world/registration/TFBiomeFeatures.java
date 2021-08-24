@@ -10,6 +10,7 @@ import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.components.feature.templates.DruidHutFeature;
+import twilightforest.world.components.feature.templates.GroveRuinsFeature;
 import twilightforest.world.components.feature.trees.*;
 import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
 import twilightforest.world.components.feature.trees.growers.SnowUnderTrees;
@@ -44,7 +45,7 @@ public class TFBiomeFeatures {
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> GRAVEYARD = FEATURES.register("graveyard", () ->
 			new GraveyardFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> GROVE_RUINS = FEATURES.register("grove_ruins", () ->
-			new TFGenGroveRuins(NoneFeatureConfiguration.CODEC));
+			new GroveRuinsFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> HOLLOW_STUMP = FEATURES.register("hollow_stump", () ->
 			new TFGenHollowStump(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> HOLLOW_TREE = FEATURES.register("hollow_tree", () ->
