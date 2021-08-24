@@ -15,7 +15,7 @@ public class SnowGuardianRenderer extends TFBipedRenderer<SnowGuardianEntity, No
 
 	public SnowGuardianRenderer(EntityRendererProvider.Context manager, NoopModel<SnowGuardianEntity> model) {
 		super(manager, model, new NoopModel<>(manager.bakeLayer(TFModelLayers.NOOP)), new NoopModel<>(manager.bakeLayer(TFModelLayers.NOOP)), 0.25F, "textures/entity/zombie/zombie.png");
-		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR))));
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 	}
 
 	@Override

@@ -15,6 +15,7 @@ public class SwarmSpiderRenderer extends SpiderRenderer<SwarmSpiderEntity> {
 
 	public SwarmSpiderRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
+		this.shadowRadius = 0.25F;
 	}
 
 	@Override

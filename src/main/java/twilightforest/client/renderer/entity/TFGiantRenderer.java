@@ -25,7 +25,7 @@ public class TFGiantRenderer<T extends GiantMinerEntity> extends HumanoidMobRend
 		normalModel = getModel();
 		slimModel = new PlayerModel<>(manager.bakeLayer(ModelLayers.PLAYER_SLIM), true);
 
-		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR))));
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 	}
 
 	@Override

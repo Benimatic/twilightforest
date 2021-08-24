@@ -34,7 +34,6 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWepEntity> {
 		stack.popPose();
 	}
 
-	// todo recheck transformations
 	private void renderDroppedItem(PoseStack matrix, MultiBufferSource buffer, int light, ItemStack stack, float rotation, float spin) {
 		matrix.pushPose();
 
