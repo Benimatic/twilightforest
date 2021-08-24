@@ -108,7 +108,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 			}
 			case TROLL_CAVE -> {
 				// troll cloud, more like
-				this.deformTerrainForTrollCloud2(primer, nearFeature, relativeFeatureX, relativeFeatureZ);
+				this.deformTerrainForTrollCloud2(primer, chunk, nearFeature, relativeFeatureX, relativeFeatureZ);
 			}
 		}
 
@@ -116,7 +116,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 	}
 
 	//TODO: Parameter "nearFeature" is unused. Remove?
-	private void deformTerrainForTrollCloud2(WorldGenRegion primer, TFFeature nearFeature, int hx, int hz) {
+	private void deformTerrainForTrollCloud2(WorldGenRegion primer, ChunkAccess chunkAccess, TFFeature nearFeature, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
 			for (int bz = 0; bz < 4; bz++) {
 				int dx = bx * 4 - hx - 2;
@@ -175,6 +175,9 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 
 						BlockPos.MutableBlockPos movingPos = primer.getCenter().getWorldPosition().mutable().move(lx, 0, lz);
 
+						final int dY = primer.getHeight(Heightmap.Types.WORLD_SURFACE_WG, movingPos.getX(), movingPos.getZ());
+						final int oceanFloor = primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
+
 						if (dist < 7 || cv < 0.05F) {
 							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
@@ -186,6 +189,12 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
 							}
 						}
+
+						// What are you gonna do, call the cops?
+						forceHeightMapLevel(chunkAccess, Heightmap.Types.WORLD_SURFACE_WG, movingPos, dY);
+						forceHeightMapLevel(chunkAccess, Heightmap.Types.WORLD_SURFACE, movingPos, dY);
+						forceHeightMapLevel(chunkAccess, Heightmap.Types.OCEAN_FLOOR_WG, movingPos, oceanFloor);
+						forceHeightMapLevel(chunkAccess, Heightmap.Types.OCEAN_FLOOR, movingPos, oceanFloor);
 					}
 				}
 			}
@@ -360,5 +369,9 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 
 	public TFFeature getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
 		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFFeature.generateFeature(chunkPos.x, chunkPos.z, world));
+	}
+
+	static void forceHeightMapLevel(ChunkAccess chunk, Heightmap.Types type, BlockPos pos, int dY) {
+		chunk.getOrCreateHeightmapUnprimed(type).setHeight(pos.getX() & 15, pos.getZ() & 15, dY + 1);
 	}
 }

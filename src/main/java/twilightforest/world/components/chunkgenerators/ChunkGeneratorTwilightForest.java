@@ -118,6 +118,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 				if (thickness > 1) {
 					// We can use the Deltas here because the methods called will just
 					final int dY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
+					final int oceanFloor = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, dX, dZ);
 					BlockPos pos = primer.getCenter().getWorldPosition().offset(dX, dY, dZ);
 
 					// Skip any blocks over water
@@ -143,12 +144,10 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 					// What are you gonna do, call the cops?
 					forceHeightMapLevel(chunk, Heightmap.Types.WORLD_SURFACE_WG, pos, dY);
 					forceHeightMapLevel(chunk, Heightmap.Types.WORLD_SURFACE, pos, dY);
+					forceHeightMapLevel(chunk, Heightmap.Types.OCEAN_FLOOR_WG, pos, oceanFloor);
+					forceHeightMapLevel(chunk, Heightmap.Types.OCEAN_FLOOR, pos, oceanFloor);
 				}
 			}
 		}
-	}
-
-	private static void forceHeightMapLevel(ChunkAccess chunk, Heightmap.Types type, BlockPos pos, int dY) {
-		chunk.getOrCreateHeightmapUnprimed(type).setHeight(pos.getX() & 15, pos.getZ() & 15, dY + 1);
 	}
 }
