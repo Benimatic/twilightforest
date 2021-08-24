@@ -5,7 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -152,7 +151,7 @@ public class LoadingScreenGui extends Screen {
 			void postRenderBackground(float width, float height) {
 				Tesselator tessellator = Tesselator.getInstance();
 				BufferBuilder buffer = tessellator.getBuilder();
-				Minecraft.getInstance().getTextureManager().getTexture(mazestoneDecor);
+				RenderSystem.setShaderTexture(0, mazestoneDecor);
 
 				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				buffer.vertex(0, 24F, 0F)
@@ -224,7 +223,7 @@ public class LoadingScreenGui extends Screen {
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					for (float y = backgroundScale + headerDepthHeight; y < footerDepthHeight + backgroundScale; y += backgroundScale) {
-						Minecraft.getInstance().getTextureManager().getTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
+						RenderSystem.setShaderTexture(0, this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
 						buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 						buffer.vertex(x - backgroundScale, y, 0)
 								.uv(0, 1)
@@ -251,7 +250,7 @@ public class LoadingScreenGui extends Screen {
 			void postRenderBackground(float width, float height) {
 				Tesselator tessellator = Tesselator.getInstance();
 				BufferBuilder buffer = tessellator.getBuilder();
-				Minecraft.getInstance().getTextureManager().getTexture(towerwoodEncased);
+				RenderSystem.setShaderTexture(0, towerwoodEncased);
 
                 float offset = 0.4F;
                 final float textureHeaderXMin = stretch * offset;
@@ -383,7 +382,7 @@ public class LoadingScreenGui extends Screen {
 				int b = color & 255;
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
-					Minecraft.getInstance().getTextureManager().getTexture(this.magic[random.nextInt(this.magic.length)]);
+					RenderSystem.setShaderTexture(0, this.magic[random.nextInt(this.magic.length)]);
 					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, backgroundScale + (backgroundScale / 2), 0)
 							.uv(0, 1)
@@ -405,7 +404,7 @@ public class LoadingScreenGui extends Screen {
 				}
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
-					Minecraft.getInstance().getTextureManager().getTexture(this.magic[random.nextInt(this.magic.length)]);
+					RenderSystem.setShaderTexture(0, this.magic[random.nextInt(this.magic.length)]);
 					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, height - (backgroundScale / 2), 0)
 							.uv(0, 1)
@@ -439,13 +438,14 @@ public class LoadingScreenGui extends Screen {
 		}
 
 		void renderBackground(float width, float height) {
+			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			Tesselator tessellator = Tesselator.getInstance();
 			BufferBuilder buffer = tessellator.getBuilder();
 			RenderSystem.setShaderColor(0.9F, 0.9F, 0.9F, 1.0F);
 
 			for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 				for (float y = backgroundScale; y < height + backgroundScale; y += backgroundScale) {
-					Minecraft.getInstance().getTextureManager().getTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
+					RenderSystem.setShaderTexture(0, this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
 					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, y, 0)
 							.uv(0, 1)
