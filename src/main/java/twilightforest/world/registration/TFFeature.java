@@ -373,9 +373,6 @@ public enum TFFeature {
 	},
 	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
-			// FIXME Incomplete
-			this.disableStructure();
-
 			// plain parts of the castle, like the tower maze
 			this.addMonster(TFEntities.kobold, 10, 4, 4)
 					.addMonster(TFEntities.adherent, 10, 1, 1)

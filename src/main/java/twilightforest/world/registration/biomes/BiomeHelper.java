@@ -19,6 +19,7 @@ public abstract class BiomeHelper {
     public static BiomeGenerationSettings.Builder twilightForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		addForestVegetation(biome);
+		commonFeatures(biome);
 		addCanopyTrees(biome);
 		addTwilightOakTrees(biome);
 		addTwilightOakTrees(biome);
@@ -34,6 +35,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.JUNGLE_BUSH);
 
 		addForestVegetation(biome);
+		commonFeatures(biome);
 		addCanopyTrees(biome);
 		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
@@ -51,6 +53,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FOREST_FLOWER_VEGETATION_COMMON);
 
 		addForestVegetation(biome);
+		commonFeatures(biome);
 		addFireflyCanopyTrees(biome);
 		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
@@ -63,6 +66,7 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 
 		addForestVegetation(biome);
+		commonFeatures(biome);
 		addRareOakTrees(biome);
 		addDefaultStructures(biome);
 
@@ -76,6 +80,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.VINES);
 
 		addForestVegetation(biome);
+		commonFeatures(biome);
 		addRainbowOaks(biome);
 		addCanopyTrees(biome);
 		addHollowOakTrees(biome);
@@ -107,6 +112,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MYCELIUM_BLOB);
 
 		addForestVegetation(biome);
+		commonFeatures(biome);
 		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
 		addCanopyTrees(biome);
@@ -122,6 +128,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MYCELIUM_BLOB);
 
 		addForestVegetation(biome);
+		commonFeatures(biome);
 		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
 		addCanopyTrees(biome);
@@ -131,7 +138,6 @@ public abstract class BiomeHelper {
 	}
 
 	public static BiomeGenerationSettings.Builder plateauGen() {
-
 		return new BiomeGenerationSettings.Builder()
 				.surfaceBuilder(ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU)
 				.addStructureStart(TFStructures.CONFIGURED_FINAL_CASTLE);
@@ -141,7 +147,7 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
 				.surfaceBuilder(ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
 
-		//commonFeatures(biome);
+		commonFeaturesWithoutBuildings(biome);
 		addThorns(biome);
 		
 		return biome;
@@ -191,10 +197,10 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_DEAD_BUSH);
 
 		addForestVegetation(biome);
+		commonFeatures(biome);
 		addMangroveTrees(biome);
 		addSwampTrees(biome);
 		addHollowOakTrees(biome);
-		commonFeatures(biome);
 		lilypads(biome);
 		
 		return biome;
@@ -296,16 +302,21 @@ public abstract class BiomeHelper {
 	}
 
 	public static void commonFeatures(BiomeGenerationSettings.Builder biome) {
-    	biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.STONE_CIRCLE);
+		commonFeaturesWithoutBuildings(biome);
+
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.WELL);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OUTSIDE_STALAGMITE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FOUNDATION);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MONOLITH);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GROVE_RUINS);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DRUID_HUT);
+	}
+
+	public static void commonFeaturesWithoutBuildings(BiomeGenerationSettings.Builder biome) {
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.STONE_CIRCLE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OUTSIDE_STALAGMITE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MONOLITH);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.HOLLOW_STUMP);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.HOLLOW_LOG);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SMALL_LOG);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DRUID_HUT);
 	}
 
 	public static void lilypads(BiomeGenerationSettings.Builder biome) {
@@ -317,7 +328,6 @@ public abstract class BiomeHelper {
     public static void addForestVegetation(BiomeGenerationSettings.Builder biome) {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FOREST_GRASS_PLACER);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FLOWER_PLACER);
-		commonFeatures(biome);
 	}
 
     //Canopies, trees, and anything resembling a forest thing

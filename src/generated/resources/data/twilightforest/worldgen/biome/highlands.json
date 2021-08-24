@@ -54,14 +54,14 @@
       "minecraft:forest_rock",
       "minecraft:patch_grass_taiga",
       "twilightforest:stone_circle",
-      "twilightforest:well",
       "twilightforest:outside_stalagmite",
-      "twilightforest:foundation",
       "twilightforest:monolith",
-      "twilightforest:grove_ruins",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
       "twilightforest:small_log",
+      "twilightforest:well",
+      "twilightforest:foundation",
+      "twilightforest:grove_ruins",
       "twilightforest:druid_hut"
     ]
   ],
