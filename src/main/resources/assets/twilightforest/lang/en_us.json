@@ -1021,7 +1021,7 @@
   "subtitles.twilightforest.te.smoker.start": "Smoker starts",
   "subtitles.twilightforest.te.reactor.idle": "Carminite Reactor wooshes",
 
-  "subtitles.random.slider": "Sliding Trap moves",
+  "subtitles.twilightforest.random.slider": "Sliding Trap moves",
 
   // Death Messages
   "death.attack.twilightforest.ghastTear": "%1$s was scalded by fiery tears",

@@ -141,7 +141,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 			}
 
 			if (source.getEntity() instanceof LivingEntity) {
-				this.setOwner(source.getEntity()); //TODO: Verify
+				this.setOwner(source.getEntity());
 			}
 			return true;
 		} else {

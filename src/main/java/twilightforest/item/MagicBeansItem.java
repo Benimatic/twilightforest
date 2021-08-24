@@ -1,6 +1,8 @@
 package twilightforest.item;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -153,7 +155,7 @@ public class MagicBeansItem extends Item {
 	private void tryToPlaceLeaves(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			world.setBlock(pos, TFBlocks.beanstalk_leaves.get().defaultBlockState(), 2);
+			world.setBlock(pos, TFBlocks.beanstalk_leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 2);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.tags.BlockTags;
@@ -58,7 +59,7 @@ public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
 						if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isEmptyBlock(dPos.relative(dir))) {
 							if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 								// leaf
-								world.setBlock(dPos.relative(dir), TFBlocks.thorn_leaves.get().defaultBlockState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+								world.setBlock(dPos.relative(dir), TFBlocks.thorn_leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 3);
 							} else {
 								// rose
 								world.setBlock(dPos.relative(dir), TFBlocks.thorn_rose.get().defaultBlockState(), 3);

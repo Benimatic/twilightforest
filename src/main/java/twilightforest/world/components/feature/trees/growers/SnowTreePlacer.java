@@ -29,7 +29,6 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 //[VanillaCopy] of TreeFeature but allows trees on snow
-// TODO Is this still needed or is this fixed in 1.17?
 public class SnowTreePlacer extends Feature<TreeConfiguration> {
     public SnowTreePlacer(Codec<TreeConfiguration> p_67201_) {
         super(p_67201_);
