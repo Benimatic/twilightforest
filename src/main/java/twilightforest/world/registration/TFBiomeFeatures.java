@@ -1,7 +1,6 @@
 package twilightforest.world.registration;
 
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -10,11 +9,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.components.feature.templates.DruidHutFeature;
 import twilightforest.world.components.feature.trees.*;
 import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
 import twilightforest.world.components.feature.trees.growers.SnowUnderTrees;
-import twilightforest.world.components.feature.templates.GenDruidHut;
-import twilightforest.world.components.feature.templates.TFGenGraveyard;
+import twilightforest.world.components.feature.templates.GraveyardFeature;
 
 //I'd call this TFFeatures, but that'd be confused with TFFeature.
 
@@ -31,7 +30,7 @@ public class TFBiomeFeatures {
 	public static final RegistryObject<Feature<TreeConfiguration>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
 			new TFGenDarkCanopyTree(TreeConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> DRUID_HUT = FEATURES.register("druid_hut", () ->
-			new GenDruidHut(NoneFeatureConfiguration.CODEC));
+			new DruidHutFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_HOLLOW_LOG = FEATURES.register("fallen_hollow_log", () ->
 			new TFGenFallenHollowLog(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_LEAVES = FEATURES.register("fallen_leaves", () ->
@@ -43,7 +42,7 @@ public class TFBiomeFeatures {
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FOUNDATION = FEATURES.register("foundation", () ->
 			new TFGenFoundation(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> GRAVEYARD = FEATURES.register("graveyard", () ->
-			new TFGenGraveyard(NoneFeatureConfiguration.CODEC));
+			new GraveyardFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> GROVE_RUINS = FEATURES.register("grove_ruins", () ->
 			new TFGenGroveRuins(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> HOLLOW_STUMP = FEATURES.register("hollow_stump", () ->

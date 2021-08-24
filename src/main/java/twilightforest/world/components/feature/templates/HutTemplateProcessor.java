@@ -21,14 +21,13 @@ public class HutTemplateProcessor extends RandomizedTemplateProcessor {
     private final StructureWoodVariant OAK_SWIZZLE;
     private final StructureWoodVariant SPRUCE_SWIZZLE;
     private final StructureWoodVariant BIRCH_SWIZZLE;
-    public int dummy = 0;
-    public static final Codec<HutTemplateProcessor> codecHutProcessor = RecordCodecBuilder.create((instance) ->
-            instance.group(
-                            Codec.FLOAT.fieldOf("integrity").orElse(1.0F).forGetter((obj) -> obj.integrity),
-                            Codec.INT.fieldOf("oak_to_type").orElse(0).forGetter((obj) -> obj.dummy),
-                            Codec.INT.fieldOf("spruce_to_type").orElse(0).forGetter((obj) -> obj.dummy),
-                            Codec.INT.fieldOf("birch_to_type").orElse(0).forGetter((obj) -> obj.dummy))
-                    .apply(instance, HutTemplateProcessor::new));
+
+    public static final Codec<HutTemplateProcessor> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+            Codec.FLOAT.fieldOf("integrity").orElse(1.0F).forGetter((obj) -> obj.integrity),
+            Codec.INT.fieldOf("oak_to_type").orElse(0).forGetter((obj) -> obj.OAK_SWIZZLE.ordinal()),
+            Codec.INT.fieldOf("spruce_to_type").orElse(0).forGetter((obj) -> obj.SPRUCE_SWIZZLE.ordinal()),
+            Codec.INT.fieldOf("birch_to_type").orElse(0).forGetter((obj) -> obj.BIRCH_SWIZZLE.ordinal())
+    ).apply(instance, HutTemplateProcessor::new));
 
 
     public HutTemplateProcessor(float integrity, int oakSwizzle, int spruceSwizzle, int birchSwizzle) {

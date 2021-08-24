@@ -41,12 +41,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class TFGenGraveyard extends Feature<NoneFeatureConfiguration> {
+public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("landscape/graveyard/graveyard");
 	private static final ResourceLocation TRAP = TwilightForestMod.prefix("landscape/graveyard/grave_trap");
 	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.DIRT, Material.GRASS, Material.LEAVES, Material.WOOD, Material.PLANT, Material.STONE);
 
-	public TFGenGraveyard(Codec<NoneFeatureConfiguration> config) {
+	public GraveyardFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);
 	}
 
