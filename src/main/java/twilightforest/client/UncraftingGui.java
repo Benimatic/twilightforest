@@ -89,7 +89,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 	@Override
 	protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
-		this.minecraft.getTextureManager().getTexture(textureLoc);
+		RenderSystem._setShaderTexture(0, textureLoc);
 		int frameX = (this.width - this.imageWidth) / 2;
 		int frameY = (this.height - this.imageHeight) / 2;
 		this.blit(ms, frameX, frameY, 0, 0, this.imageWidth, this.imageHeight);
@@ -170,7 +170,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 		@Override
 		public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
-				Minecraft.getInstance().getTextureManager().getTexture(UncraftingGui.textureLoc);
+				RenderSystem._setShaderTexture(0, UncraftingGui.textureLoc);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
@@ -219,7 +219,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 		@Override
 		public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
-				Minecraft.getInstance().getTextureManager().getTexture(UncraftingGui.textureLoc);
+				RenderSystem._setShaderTexture(0, UncraftingGui.textureLoc);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
