@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
@@ -30,12 +29,12 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
 	@Override
     protected StructureTemplate getTemplate(StructureManager templateManager, Random random) {
-	    return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).RL);
+	    return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).resourceLocation);
     }
 
     @Override
-    protected StructureProcessor getProcessor(Random random) {
-        return new HutTemplateProcessor(0.0F, random.nextInt(), random.nextInt(), random.nextInt());
+    protected void modifySettings(StructurePlaceSettings settings, Random random) {
+        settings.addProcessor(new HutTemplateProcessor(0.0F, random.nextInt(), random.nextInt(), random.nextInt()));
     }
 
     @Override
@@ -122,35 +121,28 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
     }
 
     private enum HutType {
-        REGULAR    (TwilightForestMod.prefix("landscape/druid_hut/druid_hut"       )),
-        SIDEWAYS   (TwilightForestMod.prefix("landscape/druid_hut/druid_sideways"  )),
-        DOUBLE_DECK(TwilightForestMod.prefix("landscape/druid_hut/druid_doubledeck"));
+        REGULAR    (TwilightForestMod.prefix("feature/druid_hut/druid_hut"       )),
+        SIDEWAYS   (TwilightForestMod.prefix("feature/druid_hut/druid_sideways"  )),
+        DOUBLE_DECK(TwilightForestMod.prefix("feature/druid_hut/druid_doubledeck"));
 
-        private final ResourceLocation RL;
+        private final ResourceLocation resourceLocation;
 
         HutType(ResourceLocation rl) {
-            this.RL = rl;
-            increment();
-        }
-
-        private static int size;
-
-        private static void increment() {
-            ++size;
+            this.resourceLocation = rl;
         }
     }
 
     private enum BasementType {
-        STUDY  (TwilightForestMod.prefix("landscape/druid_hut/basement_study"  ), TwilightForestMod.prefix("landscape/druid_hut/basement_study_trap"  )),
-        SHELVES(TwilightForestMod.prefix("landscape/druid_hut/basement_shelves"), TwilightForestMod.prefix("landscape/druid_hut/basement_shelves_trap")),
-        GALLERY(TwilightForestMod.prefix("landscape/druid_hut/basement_gallery"), TwilightForestMod.prefix("landscape/druid_hut/basement_gallery_trap"));
+        STUDY  (TwilightForestMod.prefix("feature/druid_hut/basement_study"  ), TwilightForestMod.prefix("feature/druid_hut/basement_study_trap"  )),
+        SHELVES(TwilightForestMod.prefix("feature/druid_hut/basement_shelves"), TwilightForestMod.prefix("feature/druid_hut/basement_shelves_trap")),
+        GALLERY(TwilightForestMod.prefix("feature/druid_hut/basement_gallery"), TwilightForestMod.prefix("feature/druid_hut/basement_gallery_trap"));
 
-        private final ResourceLocation RL;
-        private final ResourceLocation RL_TRAP;
+        private final ResourceLocation resourceLocation;
+        private final ResourceLocation resourceLocationTrap;
 
         BasementType(ResourceLocation rl, ResourceLocation rlTrap) {
-            this.RL = rl;
-            this.RL_TRAP = rlTrap;
+            this.resourceLocation = rl;
+            this.resourceLocationTrap = rlTrap;
             increment();
         }
 
@@ -161,7 +153,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
         }
 
         private ResourceLocation getBasement(boolean trapped) {
-            return trapped ? RL_TRAP : RL;
+            return trapped ? resourceLocationTrap : resourceLocation;
         }
     }
 }

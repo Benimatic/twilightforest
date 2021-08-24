@@ -49,9 +49,8 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
 		ChunkPos chunkpos = new ChunkPos(pos);
 		BoundingBox structureMask = new BoundingBox(chunkpos.getMinBlockX(), world.getMinBuildHeight(), chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), world.getMaxBuildHeight(), chunkpos.getMaxBlockZ());
-		StructurePlaceSettings placementsettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureMask).setRandom(random);
 
-		BlockPos posSnap = chunkpos.getWorldPosition().offset(0, pos.getY() - 1, 0); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
+		BlockPos posSnap = chunkpos.getWorldPosition().offset(0, pos.getY() + this.yLevelMod(), 0);
 
 		Vec3i transformedSize = template.getSize(rotation);
 		int dx = random.nextInt(16 - transformedSize.getX());
@@ -65,13 +64,17 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		}
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-		template.placeInWorld(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(this.getProcessor(random)), random, 20);
 
-		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK)) {
+        StructurePlaceSettings placementSettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureMask).setRandom(random);
+        this.modifySettings(placementSettings.clearProcessors(), random);
+
+		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
+
+		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
             this.processData(info, world, rotation, mirror);
         }
 
-        this.postProcess(world, random, templateManager, rotation, mirror, placementsettings, placementPos);
+        this.postProcess(world, random, templateManager, rotation, mirror, placementSettings, placementPos);
 
 		return true;
 	}
@@ -79,11 +82,18 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
     @Nullable
 	protected abstract StructureTemplate getTemplate(StructureManager templateManager, Random random);
 
-	protected abstract StructureProcessor getProcessor(Random random);
+	protected void modifySettings(StructurePlaceSettings settings, Random random) {
+    }
 
-	protected abstract void processData(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror);
+	protected void processData(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror) {
+    }
 
-    protected abstract void postProcess(WorldGenLevel world, Random random, StructureManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos);
+    protected void postProcess(WorldGenLevel world, Random random, StructureManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    }
+
+    protected int yLevelMod() {
+        return -1;
+    }
 
     private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, Vec3i size) {
         StatsAccumulator heights = new StatsAccumulator();
