@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 
@@ -28,10 +29,12 @@ public class SeekerArrowEntity extends TFArrowEntity {
 
 	public SeekerArrowEntity(EntityType<? extends SeekerArrowEntity> type, Level world) {
 		super(type, world);
+		setBaseDamage(1.0D);
 	}
 
 	public SeekerArrowEntity(EntityType<? extends SeekerArrowEntity> type, Level world, LivingEntity shooter) {
 		super(type, world, shooter);
+		setBaseDamage(1.0D);
 	}
 
 	@Override
@@ -169,5 +172,11 @@ public class SeekerArrowEntity extends TFArrowEntity {
 
 	private boolean isThisArrowFlying() {
 		return !inGround && getDeltaMovement().lengthSqr() > 1.0;
+	}
+
+	@Override
+	protected void onHitEntity(EntityHitResult pResult) {
+		this.setCritArrow(false);
+		super.onHitEntity(pResult);
 	}
 }
