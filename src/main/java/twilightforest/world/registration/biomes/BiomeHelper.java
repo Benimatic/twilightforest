@@ -43,7 +43,7 @@ public abstract class BiomeHelper {
 		
 		return biome;
 	}
-	
+
 	public static BiomeGenerationSettings.Builder fireflyForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 
@@ -58,7 +58,18 @@ public abstract class BiomeHelper {
 		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
 		addDefaultStructures(biome);
-		
+
+		return biome;
+	}
+
+	public static BiomeGenerationSettings.Builder clearingGen() {
+		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FOREST_FLOWER_VEGETATION_COMMON);
+
+		addForestVegetation(biome);
+		commonFeatures(biome);
+		addDefaultStructures(biome);
+
 		return biome;
 	}
 	

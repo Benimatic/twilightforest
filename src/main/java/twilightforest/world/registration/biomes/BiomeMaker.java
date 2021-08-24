@@ -52,7 +52,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.CLEARING,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().setPlayerCanSpawn(), addDefaultStructures(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().setPlayerCanSpawn(), clearingGen())
 						.biomeCategory(Biome.BiomeCategory.PLAINS)
 						.temperature(0.8F)
 						.downfall(0.4F)
