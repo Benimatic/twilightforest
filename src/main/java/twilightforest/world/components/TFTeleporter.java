@@ -345,13 +345,13 @@ public class TFTeleporter implements ITeleporter {
 			for (int rz = entityZ - range; rz <= entityZ + range; rz++) {
 				double zWeight = (rz + 0.5D) - loc.z;
 
-				for (int ry = getScanHeight(world, rx, rz); ry >= 0; ry--) {
+				for (int ry = getScanHeight(world, rx, rz); ry >= world.getMinBuildHeight(); ry--) {
 
 					if (!world.isEmptyBlock(pos.set(rx, ry, rz))) {
 						continue;
 					}
 
-					while (ry > 0 && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
+					while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
 						ry--;
 					}
 
@@ -398,13 +398,6 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static BlockPos makePortalAt(Level world, BlockPos pos) {
-
-		if (pos.getY() < 30) {
-			pos = new BlockPos(pos.getX(), 30, pos.getZ());
-		} else if (pos.getY() > 128 - 10) {
-			pos = new BlockPos(pos.getX(), 128 - 10, pos.getZ());
-		}
-
 		// grass all around it
 		BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
 
