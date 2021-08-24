@@ -141,7 +141,7 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
 				.surfaceBuilder(ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
 
-		commonFeatures(biome);
+		//commonFeatures(biome);
 		addThorns(biome);
 		
 		return biome;
