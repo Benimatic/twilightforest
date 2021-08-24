@@ -5,21 +5,32 @@
         "feature": {
           "config": {
             "feature": {
-              "config": {},
-              "type": "twilightforest:stone_circle"
+              "config": {
+                "feature": {
+                  "config": {},
+                  "type": "twilightforest:stone_circle"
+                },
+                "decorator": {
+                  "config": {},
+                  "type": "twilightforest:nostructure"
+                }
+              },
+              "type": "minecraft:decorated"
             },
             "decorator": {
-              "config": {},
-              "type": "twilightforest:nostructure"
+              "config": {
+                "heightmap": "WORLD_SURFACE_WG"
+              },
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {
-            "heightmap": "WORLD_SURFACE_WG"
+            "chance": 90
           },
-          "type": "minecraft:heightmap"
+          "type": "minecraft:chance"
         }
       },
       "type": "minecraft:decorated"
