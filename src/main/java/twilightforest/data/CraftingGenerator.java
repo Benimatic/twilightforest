@@ -150,9 +150,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(TFItems.borer_essence.get()))
 				.save(consumer, TwilightForestMod.prefix("material/" + TFItems.carminite.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(TFItems.ironwood_raw.get())
+		ShapelessRecipeBuilder.shapeless(TFItems.ironwood_raw.get(), 2)
 				.requires(Ingredient.of(TFItems.liveroot.get()))
-				.requires(Tags.Items.INGOTS_IRON)
+				.requires(Ingredient.of(Items.RAW_IRON))
 				.requires(Tags.Items.NUGGETS_GOLD)
 				.unlockedBy("has_item", has(TFItems.liveroot.get()))
 				.save(consumer, TwilightForestMod.prefix("material/" + TFItems.ironwood_raw.getId().getPath()));
