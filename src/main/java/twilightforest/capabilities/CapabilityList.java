@@ -4,11 +4,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,11 +20,6 @@ public class CapabilityList {
 
 	static {
 		SHIELDS = null;
-	}
-
-	public static void registerCapabilities() {
-		CapabilityManager.INSTANCE.register(IShieldCapability.class);
-		MinecraftForge.EVENT_BUS.register(CapabilityList.class);
 	}
 
 	@SubscribeEvent

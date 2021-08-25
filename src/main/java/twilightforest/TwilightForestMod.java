@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -39,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
@@ -158,14 +160,17 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
+	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		event.register(IShieldCapability.class);
+	}
+
+	@SubscribeEvent
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		TFCompat.IMCSender();
 	}
 
 	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent evt) {
-
-		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		BiomeKeys.addBiomeTypes();
