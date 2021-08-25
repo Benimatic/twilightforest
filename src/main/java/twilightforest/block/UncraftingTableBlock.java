@@ -27,7 +27,8 @@ public class UncraftingTableBlock extends Block {
 		super(Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD));
 	}
 
-	@Override
+	// FIXME Menu is unresponsive to clicking
+	/*@Override
 	@Deprecated
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if (!world.isClientSide) {
@@ -42,5 +43,5 @@ public class UncraftingTableBlock extends Block {
 	public MenuProvider getMenuProvider(BlockState state, Level world, BlockPos pos) {
 		return new SimpleMenuProvider((id, inv, player) -> new UncraftingContainer(id, inv, player.level, ContainerLevelAccess.create(world, pos)),
 						new TranslatableComponent(getDescriptionId()));
-	}
+	}*/
 }

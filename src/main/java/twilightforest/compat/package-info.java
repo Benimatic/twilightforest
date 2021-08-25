@@ -2,6 +2,6 @@
 @ParametersAreNonnullByDefault
 package twilightforest.compat;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;
