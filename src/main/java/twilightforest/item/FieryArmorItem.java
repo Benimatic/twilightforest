@@ -1,9 +1,12 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,8 +34,8 @@ import net.minecraft.world.item.Item.Properties;
 import twilightforest.client.model.armor.TFArmorModel;
 
 public class FieryArmorItem extends ArmorItem {
-
-	private static final Map<EquipmentSlot, HumanoidModel<?>> fieryArmorModel = new EnumMap<>(EquipmentSlot.class);
+	@OnlyIn(Dist.CLIENT)
+	private static final MutableComponent TOOLTIP_TEXT = new TranslatableComponent("item.twilightforest.fiery_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public FieryArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
 		super(armorMaterial, armorType, props);
@@ -51,7 +54,7 @@ public class FieryArmorItem extends ArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
+		tooltip.add(TOOLTIP_TEXT);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -32,8 +33,8 @@ public class SeekerArrowEntity extends TFArrowEntity {
 		setBaseDamage(1.0D);
 	}
 
-	public SeekerArrowEntity(EntityType<? extends SeekerArrowEntity> type, Level world, LivingEntity shooter) {
-		super(type, world, shooter);
+	public SeekerArrowEntity(Level world, Entity shooter) {
+		super(TFEntities.seeker_arrow, world, shooter);
 		setBaseDamage(1.0D);
 	}
 

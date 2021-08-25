@@ -120,10 +120,4 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
 	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	}
 }

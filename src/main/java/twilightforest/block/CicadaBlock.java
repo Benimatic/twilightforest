@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,6 +27,8 @@ import java.util.List;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class CicadaBlock extends CritterBlock {
+	@OnlyIn(Dist.CLIENT)
+	private static final MutableComponent TOOLTIP = new TranslatableComponent("block.twilightforest.cicada.desc").withStyle(TwilightForestMod.getRarity().color).withStyle(ChatFormatting.ITALIC);
 
 	protected CicadaBlock(BlockBehaviour.Properties props) {
 		super(props);
@@ -54,9 +57,7 @@ public class CicadaBlock extends CritterBlock {
 		super.appendHoverText(stack, world, tooltip, flag);
 
 		if (ModList.get().isLoaded("immersiveengineering")) {
-			tooltip.add(new TranslatableComponent("block.twilightforest.cicada.desc")
-					.withStyle(TwilightForestMod.getRarity().color)
-					.withStyle(ChatFormatting.ITALIC));
+			tooltip.add(TOOLTIP);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.EntityType;
@@ -19,7 +20,7 @@ public class IceArrowEntity extends TFArrowEntity {
 		super(type, world);
 	}
 
-	public IceArrowEntity(Level world, LivingEntity shooter) {
+	public IceArrowEntity(Level world, Entity shooter) {
 		super(TFEntities.ice_arrow, world, shooter);
 	}
 

@@ -26,8 +26,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class FieryPickItem extends PickaxeItem {
 
 	protected FieryPickItem(Tier toolMaterial, Properties props) {

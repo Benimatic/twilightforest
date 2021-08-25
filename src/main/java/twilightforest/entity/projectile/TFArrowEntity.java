@@ -1,7 +1,7 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -15,8 +15,9 @@ public abstract class TFArrowEntity extends AbstractArrow implements ITFProjecti
 		super(type, worldIn);
 	}
 
-	public TFArrowEntity(EntityType<? extends TFArrowEntity> type, Level worldIn, LivingEntity shooter) {
-		super(type, shooter, worldIn);
+	public TFArrowEntity(EntityType<? extends TFArrowEntity> type, Level worldIn, Entity shooter) {
+		super(type, worldIn);
+		this.setOwner(shooter);
 	}
 
 	@Override

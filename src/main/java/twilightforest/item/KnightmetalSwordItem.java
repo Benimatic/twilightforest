@@ -21,8 +21,6 @@ import twilightforest.TwilightForestMod;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import net.minecraft.world.item.Item.Properties;
-
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class KnightmetalSwordItem extends SwordItem {
 

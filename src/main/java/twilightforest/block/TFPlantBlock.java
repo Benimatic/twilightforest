@@ -171,15 +171,4 @@ public class TFPlantBlock extends BushBlock {
 				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
 		}
 	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		if(stack.getItem() == TFBlocks.clover_patch.get().asItem()) {
-			tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-		} else if (stack.getItem() == TFBlocks.moss_patch.get().asItem()) {
-			tooltip.add(new TranslatableComponent("twilightforest.misc.wip0"));
-			tooltip.add(new TranslatableComponent("twilightforest.misc.wip1"));
-		}
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	}
 }

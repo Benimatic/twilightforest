@@ -1,10 +1,13 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,8 +35,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class PhantomArmorItem extends ArmorItem {
-
-	private static final Map<EquipmentSlot, HumanoidModel<?>> phantomArmorModel = new EnumMap<>(EquipmentSlot.class);
+	@OnlyIn(Dist.CLIENT)
+	private static final MutableComponent TOOLTIP_TEXT = new TranslatableComponent("item.twilightforest.phantom_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public PhantomArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
 		super(armorMaterial, armorType, props);
@@ -53,7 +56,7 @@ public class PhantomArmorItem extends ArmorItem {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
+		tooltip.add(TOOLTIP_TEXT);
 	}
 
 	@Override

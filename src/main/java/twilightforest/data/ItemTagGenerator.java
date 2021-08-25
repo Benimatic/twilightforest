@@ -53,6 +53,9 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	public static final Tag.Named<Item> PORTAL_ACTIVATOR = ItemTags.bind(TwilightForestMod.prefix("portal/activator").toString());
 
+	public static final Tag.Named<Item> WIP = ItemTags.bind(TwilightForestMod.prefix("wip").toString());
+	public static final Tag.Named<Item> NYI = ItemTags.bind(TwilightForestMod.prefix("nyi").toString());
+
 	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
 		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);
 	}
@@ -157,6 +160,29 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFItems.yeti_chestplate.get(),
 				TFItems.yeti_leggings.get(),
 				TFItems.yeti_boots.get()
+		);
+
+		tag(WIP).add(
+				TFBlocks.moss_patch.get().asItem(),
+				TFBlocks.underbrick_floor.get().asItem(),
+				TFBlocks.keepsake_casket.get().asItem(),
+				TFItems.cube_of_annihilation.get()
+		);
+
+		tag(NYI).add(
+				TFBlocks.cinder_furnace.get().asItem(),
+				TFBlocks.cinder_log.get().asItem(),
+				TFBlocks.cinder_wood.get().asItem(),
+				TFBlocks.twilight_portal_miniature_structure.get().asItem(),
+				TFBlocks.naga_courtyard_miniature_structure.get().asItem(),
+				TFBlocks.lich_tower_miniature_structure.get().asItem(),
+				TFBlocks.clover_patch.get().asItem(),
+				TFBlocks.auroralized_glass.get().asItem(),
+				TFBlocks.slider.get().asItem(),
+				TFBlocks.stone_twist.get().asItem(),
+				TFBlocks.stone_twist_thin.get().asItem(),
+				TFBlocks.uncrafting_table.get().asItem(),
+				TFItems.ore_meter.get()
 		);
 	}
 }

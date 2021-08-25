@@ -87,13 +87,6 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(new TranslatableComponent("twilightforest.misc.wip0"));
-		tooltip.add(new TranslatableComponent("twilightforest.misc.wip1"));
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	}
-
-	@Override
 	public RenderShape getRenderShape(BlockState state) {
 		return (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() != Blocks.AIR && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
 	}

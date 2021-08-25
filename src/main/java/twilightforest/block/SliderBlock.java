@@ -168,10 +168,4 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 			((LivingEntity) entity).knockback(2, kx, kz);
 		}
 	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	}
 }

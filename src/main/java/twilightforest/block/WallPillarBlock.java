@@ -73,11 +73,6 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
-    }
-
     public boolean canConnectTo(BlockState state, boolean solidSide) {
         Block block = state.getBlock();
         return block instanceof WallPillarBlock;

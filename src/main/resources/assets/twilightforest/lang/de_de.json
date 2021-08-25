@@ -697,17 +697,9 @@
   "item.twilightforest.giant_pickaxe.tooltip": "Zum Abbauen von Riesenblöcken",
   "item.twilightforest.fiery_pickaxe.tooltip": "Automatisches Schmelzen",
   "item.twilightforest.fiery_sword.tooltip": "Setzt den Gegner in Brand",
-  "item.twilightforest.fiery_helmet.tooltip": "Setzt den Angreifer in Brand",
-  "item.twilightforest.fiery_chestplate.tooltip": "Setzt den Angreifer in Brand",
-  "item.twilightforest.fiery_leggings.tooltip": "Setzt den Angreifer in Brand",
-  "item.twilightforest.fiery_boots.tooltip": "Setzt den Angreifer in Brand",
-  "item.twilightforest.phantom_helmet.tooltip": "Nie verloren im Tod",
-  "item.twilightforest.phantom_chestplate.tooltip": "Nie verloren im Tod",
-  "item.twilightforest.yeti_helmet.tooltip": "Friert Angreifer ein",
-  "item.twilightforest.yeti_chestplate.tooltip": "Friert Angreifer ein",
-  "item.twilightforest.yeti_leggings.tooltip": "Friert Angreifer ein",
-  "item.twilightforest.yeti_boots.tooltip": "Friert Angreifer ein",
-
+  "item.twilightforest.fiery_armor.tooltip": "Setzt den Angreifer in Brand",
+  "item.twilightforest.phantom_armor.tooltip": "Nie verloren im Tod",
+  "item.twilightforest.yeti_armor.tooltip": "Friert Angreifer ein",
   "item.twilightforest.arctic_armor.tooltip": "Einfärbbar wie Lederrüstungen",
 
   // Entitäten
