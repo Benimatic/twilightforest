@@ -155,9 +155,6 @@ public enum TFFeature {
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
-			// FIXME This structure is too broken to be left alive
-			this.disableStructure();
-
 			this.addMonster(TFEntities.snow_guardian, 10, 4, 4)
 					.addMonster(TFEntities.stable_ice_core, 10, 4, 4)
 					.addMonster(TFEntities.unstable_ice_core, 5, 4, 4);

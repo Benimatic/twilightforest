@@ -2,9 +2,7 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.util.WeighedRandom;
@@ -15,8 +13,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 
 import java.util.ArrayList;
@@ -92,73 +88,71 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 		BlockPos placementPos = ctx.origin();
 		Random random = ctx.random();
 		CaveStalactiteConfig config = ctx.config();
-		final int topHeight = world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, placementPos.getX(), placementPos.getZ());
 
-		int ceiling = topHeight;
+		return startStalactite(world, placementPos, random, config.blockState, config.sizeFactor, config.maxLength, config.minHeight, config.hang);
+	}
+
+	public static boolean startStalactite(WorldGenLevel world, BlockPos placementPos, Random random, BlockState blockState, float sizeFactor, int maxLength, int minHeight, boolean hang) {
+		return startStalactite(world, placementPos, random, blockState, sizeFactor, maxLength, minHeight, hang, world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, placementPos.getX(), placementPos.getZ()) - 1);
+	}
+
+	// Abstracted out so various Structures can use this without creating a new Feature Configuration
+	public static boolean startStalactite(WorldGenLevel world, BlockPos placementPos, Random random, BlockState blockState, float sizeFactor, int maxLength, int minHeight, boolean hang, final int startHeight) {
+		int ceiling = startHeight;
 		int floor = world.getMinBuildHeight();
 
 		if (ceiling <= floor) return false; // Failed: Ceiling is lower or same level as floor
 
 		BlockPos.MutableBlockPos movingPos = placementPos.mutable();
 		// find a ceiling
-		for (int ty = topHeight; ty > floor; ty--) {
+		for (int ty = startHeight; ty > floor; ty--) {
 			movingPos.setY(ty);
 
-			BlockState stateAt = world.getBlockState(movingPos);
+			BlockState state = world.getBlockState(movingPos);
 
 			// Keep scanning until we find air
-			if (!stateAt.isAir()) continue;
-
-			//Material m = stateAt.getMaterial();
-			// Keep scanning if it's not time to place yet
-			//if (m != Material.DIRT && m != Material.STONE) continue;
-
-			// Still traversing through the generator's default blocks
-			//if (ctx.chunkGenerator() instanceof NoiseBasedChunkGenerator noiseGen && (stateAt.equals(noiseGen.defaultBlock) || stateAt.equals(noiseGen.defaultFluid))) continue;
+			if (!state.isAir())
+				continue;
 
 			// okay, we found a valid ceiling.
 			ceiling = ty;
 			break;
 		}
 
-		if (ceiling >= topHeight) return false; // Failed: No ceiling found
+		if (ceiling >= startHeight) return false; // Failed: No ceiling found
 
 		// find a floor
-		for (int ty = ceiling; ty > floor; ty--) {
+		for (int ty = ceiling - 1; ty > floor; ty--) {
 			movingPos.setY(ty);
-			Material m = world.getBlockState(movingPos).getMaterial();
+
+			BlockState state = world.getBlockState(movingPos);
+
 			// if we're in air, continue
-			if (m == Material.AIR) {
+			if (state.isAir())
 				continue;
-			}
-			// if we get something that's not cave material, fail!
-			// actually stalactites can hang above water or lava
-			if (m != Material.DIRT && m != Material.STONE && !config.hang && m != Material.WATER && m != Material.LAVA) {
-				return false;
-			}
+
 			// okay, we found a valid floor.
 			floor = ty;
 			break;
 		}
 
-		int length = (int) ((ceiling - floor) * config.sizeFactor * random.nextFloat());
+		int length = (int) ((ceiling - floor) * sizeFactor * random.nextFloat());
 
 		// check max length
-		if (config.maxLength > -1 && length > config.maxLength) {
-			length = config.maxLength;
+		if (maxLength > -1 && length > maxLength) {
+			length = maxLength;
 		}
 
 		// check minimum height
-		if (config.minHeight > -1 && ceiling - floor - length < config.minHeight) {
+		if (minHeight > -1 && ceiling - floor - length < minHeight) {
 			return false;
 		}
 
-		return makeSpike(world, random, new BlockPos(placementPos.getX(), config.hang ? ceiling : floor, placementPos.getZ()), length, config);
+		return makeSpike(world, random, new BlockPos(placementPos.getX(), hang ? ceiling : floor, placementPos.getZ()), length, hang, blockState);
 	}
 
-	public boolean makeSpike(LevelAccessor world, Random random, BlockPos pos, int maxLength, CaveStalactiteConfig config) {
-
-		int diameter = (int) (maxLength / 4.5); // diameter of the base
+	public static boolean makeSpike(LevelAccessor world, Random random, BlockPos pos, int maxLength, boolean hang, BlockState state) {
+		int diameter = (int) (maxLength / 4.5F); // diameter of the base
 
 		// let's see...
 		for (int dx = -diameter; dx <= diameter; dx++) {
@@ -166,7 +160,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 				// determine how long this spike will be.
 				int absx = Math.abs(dx);
 				int absz = Math.abs(dz);
-				int dist = (int) (Math.max(absx, absz) + Math.min(absx, absz) * 0.5);
+				int dist = (int) (Math.max(absx, absz) + Math.min(absx, absz) * 0.5F);
 				int spikeLength = 0;
 
 				if (dist == 0) {
@@ -174,10 +168,10 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 				}
 
 				if (dist > 0) {
-					spikeLength = random.nextInt((int) (maxLength / (dist + 0.25)));
+					spikeLength = random.nextInt((int) (maxLength / (dist + 0.25F)));
 				}
 
-				int dir = config.hang ? -1 : 1;
+				int dir = hang ? -1 : 1;
 
 				// check if we're generating over anything
 				if (!world.getBlockState(pos.offset(dx, -dir, dz)).getMaterial().isSolid()) {
@@ -185,7 +179,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 				}
 
 				for (int dy = 0; dy != spikeLength * dir; dy += dir) {
-					setBlock(world, pos.offset(dx, dy, dz), config.blockState);
+					world.setBlock(pos.offset(dx, dy, dz), state, 3);
 				}
 			}
 		}
@@ -207,13 +201,13 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 		}
 	}
 
-	public static void addStalactite(int hillSize, BlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
+	public static void registerStalactite(int hillSize, BlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
 		if (itemWeight > 0) {
-			addStalactite(hillSize, new StalactiteEntry(blockState, size, maxLength, minHeight, itemWeight));
+			registerStalactite(hillSize, new StalactiteEntry(blockState, size, maxLength, minHeight, itemWeight));
 		}
 	}
 
-	private static void addStalactite(int hillSize, StalactiteEntry entry) {
+	private static void registerStalactite(int hillSize, StalactiteEntry entry) {
 		if (hillSize <= 1)
 			smallHillStalactites.add(entry);
 		if (hillSize <= 2)
@@ -241,16 +235,16 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 	 * 1/5 glowstone
 	 */
 	private static void addDefaultStalactites() {
-		addStalactite(3, Blocks.DIAMOND_ORE.defaultBlockState(), 0.5F, 4, 16, 30);
-		addStalactite(3, Blocks.LAPIS_ORE.defaultBlockState(), 0.8F, 8, 1, 30);
-		addStalactite(3, Blocks.EMERALD_ORE.defaultBlockState(), 0.5F, 3, 12, 15);
+		registerStalactite(3, Blocks.DIAMOND_ORE.defaultBlockState(), 0.5F, 4, 16, 30);
+		registerStalactite(3, Blocks.LAPIS_ORE.defaultBlockState(), 0.8F, 8, 1, 30);
+		registerStalactite(3, Blocks.EMERALD_ORE.defaultBlockState(), 0.5F, 3, 12, 15);
 
-		addStalactite(2, Blocks.GOLD_ORE.defaultBlockState(), 0.6F, 6, 1, 20);
-		addStalactite(2, Blocks.REDSTONE_ORE.defaultBlockState(), 0.8F, 8, 1, 40);
+		registerStalactite(2, Blocks.GOLD_ORE.defaultBlockState(), 0.6F, 6, 1, 20);
+		registerStalactite(2, Blocks.REDSTONE_ORE.defaultBlockState(), 0.8F, 8, 1, 40);
 
-		addStalactite(1, Blocks.IRON_ORE.defaultBlockState(), 0.7F, 8, 1, 24);
-		addStalactite(1, Blocks.COAL_ORE.defaultBlockState(), 0.8F, 12, 1, 24);
-		addStalactite(1, Blocks.GLOWSTONE.defaultBlockState(), 0.5F, 8, 1, 12);
+		registerStalactite(1, Blocks.IRON_ORE.defaultBlockState(), 0.7F, 8, 1, 24);
+		registerStalactite(1, Blocks.COAL_ORE.defaultBlockState(), 0.8F, 12, 1, 24);
+		registerStalactite(1, Blocks.GLOWSTONE.defaultBlockState(), 0.5F, 8, 1, 12);
 	}
 
 	public static void loadStalactites() {
@@ -262,11 +256,11 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 		if (TFConfig.COMMON_CONFIG.DIMENSION.hollowHillStalactites.useConfigOnly.get()) {
 			if (smallHillStalactites.isEmpty()) {
 				TwilightForestMod.LOGGER.info("Not all hollow hills are populated with the config, adding fallback");
-				addStalactite(1, Blocks.STONE.defaultBlockState(), 0.7F, 8, 1, 1);
+				registerStalactite(1, Blocks.STONE.defaultBlockState(), 0.7F, 8, 1, 1);
 			}
 			return;
 		}
 		addDefaultStalactites();
-		IMCHandler.getStalactites().forEach(TFGenCaveStalactite::addStalactite);
+		IMCHandler.getStalactites().forEach(TFGenCaveStalactite::registerStalactite);
 	}
 }

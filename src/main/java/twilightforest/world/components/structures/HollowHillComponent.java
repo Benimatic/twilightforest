@@ -171,7 +171,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			}
 
 			// make the actual stalactite
-			TFBiomeFeatures.CAVE_STALACTITE.get().configured(new CaveStalactiteConfig(blockToGenerate.defaultBlockState(), length, -1, -1, up)).place(world, generator, stalRNG, pos);
+			TFGenCaveStalactite.startStalactite(world, pos, stalRNG, blockToGenerate.defaultBlockState(), length, 128, -1, up);
 		}
 	}
 

@@ -225,7 +225,7 @@ public class TFConfig {
 					if (!block.isPresent()) return false;
 
 					try {
-						TFGenCaveStalactite.addStalactite(tier, block.get().defaultBlockState(),
+						TFGenCaveStalactite.registerStalactite(tier, block.get().defaultBlockState(),
 								Float.parseFloat(split[1]),
 								Integer.parseInt(split[2]),
 								Integer.parseInt(split[3]),

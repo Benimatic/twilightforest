@@ -89,12 +89,12 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), this.height, dest.getZ(), sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 8; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), this.height, dest.getZ(), sbb);
 		}
 
 		// possible treasure

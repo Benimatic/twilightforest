@@ -34,6 +34,6 @@ public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 		}
 
 		// I think we already have code for this! :D
-		return makeSpike(world, rand, pos.below(), length, config);
+		return makeSpike(world, rand, pos.below(), length, config.hang, config.blockState);
 	}
 }
