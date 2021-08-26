@@ -224,11 +224,8 @@ public class TFClientEvents {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private static final MutableComponent WIP_TEXT_0 = new TranslatableComponent("twilightforest.misc.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	@OnlyIn(Dist.CLIENT)
 	private static final MutableComponent WIP_TEXT_1 = new TranslatableComponent("twilightforest.misc.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	@OnlyIn(Dist.CLIENT)
 	private static final MutableComponent NYI_TEXT = new TranslatableComponent("twilightforest.misc.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 
 	@SubscribeEvent

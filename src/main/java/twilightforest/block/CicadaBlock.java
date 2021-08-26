@@ -27,7 +27,6 @@ import java.util.List;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class CicadaBlock extends CritterBlock {
-	@OnlyIn(Dist.CLIENT)
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("block.twilightforest.cicada.desc").withStyle(TwilightForestMod.getRarity().color).withStyle(ChatFormatting.ITALIC);
 
 	protected CicadaBlock(BlockBehaviour.Properties props) {

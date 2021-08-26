@@ -26,10 +26,7 @@ import twilightforest.util.TFDamageSources;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class KnightmetalBlock extends Block {
-	@OnlyIn(Dist.CLIENT)
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("block.knightmetal.tooltip").withStyle(TwilightForestMod.getRarity().color).withStyle(ChatFormatting.ITALIC);
 
 	private static final VoxelShape SHAPE = Shapes.create(new AABB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F));
