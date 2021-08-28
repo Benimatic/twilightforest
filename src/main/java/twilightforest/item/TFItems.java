@@ -55,12 +55,15 @@ public class TFItems {
 	public static final RegistryObject<Item> shield_scepter = ITEMS.register("shield_scepter", () -> new FortificationWandItem(defaultBuilder().durability(9).rarity(Rarity.UNCOMMON)));
 	//items.register("Wand of Pacification [NYI]", new Item().setIconIndex(6).setTranslationKey("wandPacification").setMaxStackSize(1));
 	public static final RegistryObject<Item> ore_meter = ITEMS.register("ore_meter", () -> new OreMeterItem(defaultBuilder()));
-	public static final RegistryObject<Item> magic_map = ITEMS.register("magic_map", () -> new MagicMapItem(unstackable()));
-	public static final RegistryObject<Item> maze_map = ITEMS.register("maze_map", () -> new MazeMapItem(false, unstackable()));
-	public static final RegistryObject<Item> ore_map = ITEMS.register("ore_map", () -> new MazeMapItem(true, unstackable().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> magic_map = ITEMS.register("magic_map", () -> new MagicMapItem(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> maze_map = ITEMS.register("maze_map", () -> new MazeMapItem(false, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> ore_map = ITEMS.register("ore_map", () -> new MazeMapItem(true, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> raven_feather = ITEMS.register("raven_feather", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> magic_map_focus = ITEMS.register("magic_map_focus", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> maze_map_focus = ITEMS.register("maze_map_focus", () -> new Item(defaultBuilder()));
+	public static final RegistryObject<Item> magic_map_empty = ITEMS.register("magic_map_empty", () -> new EmptyMagicMapItem(defaultBuilder()));
+	public static final RegistryObject<Item> maze_map_empty = ITEMS.register("maze_map_empty", () -> new EmptyMazeMapItem(false, defaultBuilder()));
+	public static final RegistryObject<Item> ore_map_empty = ITEMS.register("ore_map_empty", () -> new EmptyMazeMapItem(true, defaultBuilder()));
 	public static final RegistryObject<Item> liveroot = ITEMS.register("liveroot", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> ironwood_raw = ITEMS.register("ironwood_raw", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> ironwood_ingot = ITEMS.register("ironwood_ingot", () -> new Item(defaultBuilder()));
@@ -104,9 +107,6 @@ public class TFItems {
 	public static final RegistryObject<Item> cooked_meef = ITEMS.register("cooked_meef", () -> new Item(defaultBuilder().food(TFItems.MEEF_COOKED)));
 	public static final RegistryObject<Item> meef_stroganoff = ITEMS.register("meef_stroganoff", () -> new BowlFoodItem(defaultBuilder().food(TFItems.MEEF_STROGANOFF).stacksTo(1)));
 	public static final RegistryObject<Item> maze_wafer = ITEMS.register("maze_wafer", () -> new Item(defaultBuilder().food(TFItems.MAZE_WAFER)));
-	public static final RegistryObject<Item> magic_map_empty = ITEMS.register("magic_map_empty", () -> new EmptyMagicMapItem(defaultBuilder()));
-	public static final RegistryObject<Item> maze_map_empty = ITEMS.register("maze_map_empty", () -> new EmptyMazeMapItem(false, defaultBuilder()));
-	public static final RegistryObject<Item> ore_map_empty = ITEMS.register("ore_map_empty", () -> new EmptyMazeMapItem(true, defaultBuilder()));
 	public static final RegistryObject<Item> ore_magnet = ITEMS.register("ore_magnet", () -> new OreMagnetItem(defaultBuilder().durability(12)));
 	public static final RegistryObject<Item> crumble_horn = ITEMS.register("crumble_horn", () -> new CrumbleHornItem(defaultBuilder().durability(1024).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> peacock_fan = ITEMS.register("peacock_fan", () -> new PeacockFanItem(defaultBuilder().durability(1024).rarity(Rarity.RARE)));
