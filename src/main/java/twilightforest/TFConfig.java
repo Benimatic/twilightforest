@@ -155,6 +155,10 @@ public class TFConfig {
 					translation(config + "casket_uuid_locking").
 					comment("If true, Keepsake Caskets that are spawned when a player dies will not be accessible by other players. Use this if you dont want people taking from other people's death caskets. NOTE: server operators will still be able to open locked caskets.")
 					.define("uuid_locking", false);
+			disableSkullCandles = builder.
+					translation(config + "disable_skull_candles").
+					comment("If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.").
+					define("skull_candles", false);
 			builder.
 					comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
 					push("Shield Parrying");
@@ -263,6 +267,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue progressionRuleDefault;
 		public ForgeConfigSpec.BooleanValue disableUncrafting;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
+		public ForgeConfigSpec.BooleanValue disableSkullCandles;
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 

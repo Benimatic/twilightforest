@@ -1,10 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -93,6 +90,11 @@ public class TFBlockItems {
 				});
 			}
 		}, TFBlocks.keepsake_casket));
+		r.register(skullCandleItem(TFBlocks.zombie_skull_candle, TFBlocks.zombie_wall_skull_candle));
+		r.register(skullCandleItem(TFBlocks.skeleton_skull_candle, TFBlocks.skeleton_wall_skull_candle));
+		r.register(skullCandleItem(TFBlocks.wither_skele_skull_candle, TFBlocks.wither_skele_wall_skull_candle));
+		r.register(skullCandleItem(TFBlocks.creeper_skull_candle, TFBlocks.creeper_wall_skull_candle));
+		r.register(skullCandleItem(TFBlocks.player_skull_candle, TFBlocks.player_wall_skull_candle));
 		r.register(makeBlockItem(new HugeWaterLilyItem(TFBlocks.huge_waterlily.get(), TFItems.defaultBuilder()), TFBlocks.huge_waterlily));
 		r.register(makeBlockItem(new HugeLilyPadItem(TFBlocks.huge_lilypad.get(), TFItems.defaultBuilder()), TFBlocks.huge_lilypad));
 		r.register(blockItem(TFBlocks.maze_stone));
@@ -354,6 +356,20 @@ public class TFBlockItems {
 
 	private static <B extends Block> Item blockItem(RegistryObject<B> block) {
 		return makeBlockItem(new BlockItem(block.get(), TFItems.defaultBuilder()), block);
+	}
+
+	private static <B extends AbstractSkullCandleBlock> Item skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
+		return makeBlockItem(new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)) {
+			@Override
+			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+				consumer.accept(new IItemRenderProperties() {
+					@Override
+					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+						return new ISTER(TFTileEntities.SKULL_CANDLE.getId());
+					}
+				});
+			}
+		}, floor);
 	}
 
 	private static <B extends Block> Item burningItem(RegistryObject<B> block, int burntime) {

@@ -77,6 +77,14 @@ public class TFTileEntities {
 					TFBlocks.mine_sign.get(), TFBlocks.mine_wall_sign.get(),
 					TFBlocks.sort_sign.get(), TFBlocks.sort_wall_sign.get()).build(null));
 
+	public static final RegistryObject<BlockEntityType<SkullCandleTileEntity>> SKULL_CANDLE = TILE_ENTITIES.register("skull_candle", () ->
+			BlockEntityType.Builder.of(SkullCandleTileEntity::new,
+					TFBlocks.zombie_skull_candle.get(), TFBlocks.zombie_wall_skull_candle.get(),
+					TFBlocks.skeleton_skull_candle.get(), TFBlocks.skeleton_wall_skull_candle.get(),
+					TFBlocks.wither_skele_skull_candle.get(), TFBlocks.wither_skele_wall_skull_candle.get(),
+					TFBlocks.creeper_skull_candle.get(), TFBlocks.creeper_wall_skull_candle.get(),
+					TFBlocks.player_skull_candle.get(), TFBlocks.player_wall_skull_candle.get()).build(null));
+
 	@OnlyIn(Dist.CLIENT)
 	public static void registerTileEntityRenders() {
 		// tile entities
@@ -86,5 +94,6 @@ public class TFTileEntities {
 		BlockEntityRenderers.register(TROPHY.get(), TrophyTileEntityRenderer::new);
 		BlockEntityRenderers.register(TF_SIGN.get(), SignRenderer::new);
 		BlockEntityRenderers.register(KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
+		BlockEntityRenderers.register(SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);
 	}
 }

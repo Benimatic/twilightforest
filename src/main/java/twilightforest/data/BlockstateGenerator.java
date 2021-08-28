@@ -137,6 +137,17 @@ public class BlockstateGenerator extends BlockStateProvider {
         simpleBlock(TFBlocks.knight_phantom_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.ur_ghast_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.quest_ram_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+
+		simpleBlock(TFBlocks.zombie_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.zombie_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.skeleton_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.skeleton_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.wither_skele_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.wither_skele_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.creeper_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.creeper_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.player_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.player_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         
 		ModelFile shieldModel = models().cubeTop(TFBlocks.stronghold_shield.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
 		getVariantBuilder(TFBlocks.stronghold_shield.get())

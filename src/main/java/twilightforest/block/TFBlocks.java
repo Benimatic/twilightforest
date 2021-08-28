@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.item.Item;
@@ -18,25 +19,6 @@ import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.HalfTransparentBlock;
-import net.minecraft.world.level.block.HugeMushroomBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SaplingBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.StandingSignBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.WoodButtonBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
@@ -288,6 +270,17 @@ public class TFBlocks {
 	public static final RegistryObject<Block> stone_twist_thin           = BLOCKS.register("stone_twist_thin", () -> new WallPillarBlock(Material.STONE, 12, 16));
 	//public static final RegistryObject<Block> lapis_block                = BLOCKS.register("lapis_block", () -> new Block(Block.Properties.create(Material.IRON).setRequiresTool().hardnessAndResistance(3.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<KeepsakeCasketBlock> keepsake_casket = BLOCKS.register("keepsake_casket", KeepsakeCasketBlock::new);
+
+	public static final RegistryObject<AbstractSkullCandleBlock> zombie_skull_candle = BLOCKS.register("zombie_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.ZOMBIE, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> zombie_wall_skull_candle = BLOCKS.register("zombie_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.ZOMBIE, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> skeleton_skull_candle = BLOCKS.register("skeleton_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.SKELETON, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> skeleton_wall_skull_candle = BLOCKS.register("skeleton_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.SKELETON, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> wither_skele_skull_candle = BLOCKS.register("wither_skeleton_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.WITHER_SKELETON, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> wither_skele_wall_skull_candle = BLOCKS.register("wither_skeleton_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.WITHER_SKELETON, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> creeper_skull_candle = BLOCKS.register("creeper_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.CREEPER, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> creeper_wall_skull_candle = BLOCKS.register("creeper_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.CREEPER, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> player_skull_candle = BLOCKS.register("player_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.PLAYER, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
+	public static final RegistryObject<AbstractSkullCandleBlock> player_wall_skull_candle = BLOCKS.register("player_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.PLAYER, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
 
 	//Pot all the things!
 	public static final RegistryObject<FlowerPotBlock> potted_twilight_oak_sapling = BLOCKS.register("potted_twilight_oak_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, oak_sapling, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
