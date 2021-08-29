@@ -48,6 +48,13 @@ public class StonecuttingGenerator extends RecipeProvider {
 		consumer.accept(stonecutting(TFBlocks.etched_nagastone_mossy.get(), TFBlocks.nagastone_stairs_mossy_right.get()));
 		consumer.accept(stonecutting(TFBlocks.etched_nagastone_weathered.get(), TFBlocks.nagastone_stairs_weathered_left.get()));
 		consumer.accept(stonecutting(TFBlocks.etched_nagastone_weathered.get(), TFBlocks.nagastone_stairs_weathered_right.get()));
+
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_right.get(), TFBlocks.nagastone_stairs_left.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_mossy_left.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_weathered_right.get(), TFBlocks.nagastone_stairs_weathered_left.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()));
 		
 		consumer.accept(stonecutting(TFBlocks.dark_log.get(), TFBlocks.tower_wood.get()));
 		consumer.accept(stonecutting(TFBlocks.dark_wood.get(), TFBlocks.tower_wood.get()));
