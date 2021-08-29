@@ -90,6 +90,7 @@ public class TFBlockItems {
 				});
 			}
 		}, TFBlocks.keepsake_casket));
+		r.register(blockItem(TFBlocks.stone_bold));
 		r.register(skullCandleItem(TFBlocks.zombie_skull_candle, TFBlocks.zombie_wall_skull_candle));
 		r.register(skullCandleItem(TFBlocks.skeleton_skull_candle, TFBlocks.skeleton_wall_skull_candle));
 		r.register(skullCandleItem(TFBlocks.wither_skele_skull_candle, TFBlocks.wither_skele_wall_skull_candle));

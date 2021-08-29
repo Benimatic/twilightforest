@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
@@ -82,6 +83,9 @@ public class StonecuttingGenerator extends RecipeProvider {
 		consumer.accept(stonecutting(TFBlocks.maze_stone_mosaic.get(), TFBlocks.maze_stone_chiseled.get()));
 		consumer.accept(stonecutting(TFBlocks.maze_stone_mosaic.get(), TFBlocks.maze_stone_decorative.get()));
 		consumer.accept(stonecutting(TFBlocks.maze_stone_mosaic.get(), TFBlocks.maze_stone_brick.get()));
+
+		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.stone_twist.get()));
+		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.stone_bold.get()));
 	}
 
 	@Override

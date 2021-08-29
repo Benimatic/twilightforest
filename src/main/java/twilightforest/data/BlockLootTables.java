@@ -202,6 +202,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.iron_ladder.get());
 		dropSelf(TFBlocks.stone_twist.get());
 		dropSelf(TFBlocks.stone_twist_thin.get());
+		dropSelf(TFBlocks.stone_bold.get());
 		//registerDropSelfLootTable(TFBlocks.lapis_block.get());
 		add(TFBlocks.keepsake_casket.get(), casketInfo(TFBlocks.keepsake_casket.get()));
 		dropPottedContents(TFBlocks.potted_twilight_oak_sapling.get());

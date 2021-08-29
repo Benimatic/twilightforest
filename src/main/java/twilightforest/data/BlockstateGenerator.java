@@ -295,7 +295,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("side", prefix("block/uncrafting_side")));
 		registerSmokersAndJets();
 		axisBlock(TFBlocks.stone_twist.get(), prefix("block/stone_twist/twist_side"), prefix("block/stone_twist/twist_end"));
-		ConfiguredModel[] lapisModels = new ConfiguredModel[4];
+		axisBlock(TFBlocks.stone_bold.get(), prefix("block/stone_pillar_side"), prefix("block/stone_pillar_end"));
+		//ConfiguredModel[] lapisModels = new ConfiguredModel[4];
 		//for (int i = 0; i < 4; i++) {
 		//	String modelName = TFBlocks.lapis_block.getId().getPath();
 		//	if (i != 0) {

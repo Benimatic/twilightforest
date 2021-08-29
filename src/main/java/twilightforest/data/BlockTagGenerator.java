@@ -469,7 +469,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.stone_twist.get(),
                 TFBlocks.stone_twist_thin.get(),
                 //TFBlocks.lapis_block.get(),
-                TFBlocks.keepsake_casket.get()
+                TFBlocks.keepsake_casket.get(),
+                TFBlocks.stone_bold.get()
         );
 
         tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
