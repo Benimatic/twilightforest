@@ -40,8 +40,8 @@ public class GlassSwordItem extends SwordItem {
 			tags.putBoolean("Unbreakable", true);
 
 			ListTag lore = new ListTag();
-			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\"}"));
-			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\"}"));
+			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\",\"italic\":false,\"color\":\"gray\"}"));
+			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\",\"italic\":false,\"color\":\"gray\"}"));
 
 			CompoundTag display = new CompoundTag();
 			display.put("Lore", lore);
