@@ -314,16 +314,17 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 	private void startTantrum() {
 		this.setInTantrum(true);
 
+		// FIXME Use custom rain rendering instead like we do for blocking-off biomes, this is ridiculous especially for multiplayer
 		// start raining
-		int rainTime = 300 * 20;
+		//int rainTime = 300 * 20;
 
-		PrimaryLevelData worldInfo = (PrimaryLevelData) level.getServer().getLevel(Level.OVERWORLD).getLevelData(); // grab the overworld to set weather properly
+		//PrimaryLevelData worldInfo = (PrimaryLevelData) level.getServer().getLevel(Level.OVERWORLD).getLevelData(); // grab the overworld to set weather properly
 
-		worldInfo.setClearWeatherTime(0);
-		worldInfo.setRainTime(rainTime);
-		worldInfo.setThunderTime(rainTime);
-		worldInfo.setRaining(true);
-		worldInfo.setThundering(true);
+		//worldInfo.setClearWeatherTime(0);
+		//worldInfo.setRainTime(rainTime);
+		//worldInfo.setThunderTime(rainTime);
+		//worldInfo.setRaining(true);
+		//worldInfo.setThundering(true);
 
 		spawnGhastsAtTraps();
 	}
