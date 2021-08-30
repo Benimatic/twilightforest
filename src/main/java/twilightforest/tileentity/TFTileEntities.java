@@ -85,6 +85,9 @@ public class TFTileEntities {
 					TFBlocks.creeper_skull_candle.get(), TFBlocks.creeper_wall_skull_candle.get(),
 					TFBlocks.player_skull_candle.get(), TFBlocks.player_wall_skull_candle.get()).build(null));
 
+	public static final RegistryObject<BlockEntityType<TomeSpawnerTileEntity>> TOME_SPAWNER = TILE_ENTITIES.register("tome_spawner", () ->
+			BlockEntityType.Builder.of(TomeSpawnerTileEntity::new, TFBlocks.tome_spawner.get()).build(null));
+
 	@OnlyIn(Dist.CLIENT)
 	public static void registerTileEntityRenders() {
 		// tile entities

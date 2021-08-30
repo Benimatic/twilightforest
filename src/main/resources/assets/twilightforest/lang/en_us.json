@@ -353,6 +353,8 @@
   "block.twilightforest.stone_twist": "Twisted Stone",
   "block.twilightforest.stone_twist_thin": "Twisted Stone Pillar",
   "block.twilightforest.stone_pillar_bold": "Bold Stone Pillar",
+  "block.twilightforest.empty_bookshelf": "Empty Bookshelf",
+  "block.twilightforest.death_tome_spawner": "Death Tome Spawner",
   "block.twilightforest.etched_nagastone": "Etched Nagastone",
   "block.twilightforest.nagastone_pillar": "Nagastone Pillar",
   "block.twilightforest.nagastone_stairs_left": "Nagastone Stairs (Left)",
@@ -422,6 +424,7 @@
   "block.twilightforest.canopy_door": "Canopy Door",
   "block.twilightforest.canopy_sign": "Canopy Sign",
   "block.twilightforest.canopy_wall_sign": "Canopy Wall Sign",
+  "block.twilightforest.canopy_bookshelf": "Canopy Bookshelf",
 
   "block.twilightforest.dark_planks": "Darkwood Planks",
   "block.twilightforest.dark_stairs": "Darkwood Stairs",

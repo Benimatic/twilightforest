@@ -203,6 +203,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.stone_twist.get());
 		dropSelf(TFBlocks.stone_twist_thin.get());
 		dropSelf(TFBlocks.stone_bold.get());
+		registerEmpty(TFBlocks.tome_spawner.get());
+		dropWhenSilkTouch(TFBlocks.empty_bookshelf.get());
 		//registerDropSelfLootTable(TFBlocks.lapis_block.get());
 		add(TFBlocks.keepsake_casket.get(), casketInfo(TFBlocks.keepsake_casket.get()));
 		dropPottedContents(TFBlocks.potted_twilight_oak_sapling.get());
@@ -260,6 +262,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.canopy_trapdoor.get());
 		add(TFBlocks.canopy_sign.get(), createSingleItemTable(TFBlocks.canopy_sign.get().asItem()));
 		add(TFBlocks.canopy_wall_sign.get(), createSingleItemTable(TFBlocks.canopy_sign.get().asItem()));
+		add(TFBlocks.canopy_bookshelf.get(), createSingleItemTableWithSilkTouch(TFBlocks.canopy_bookshelf.get(), Items.BOOK, ConstantValue.exactly(3.0F)));
 
 		dropSelf(TFBlocks.mangrove_log.get());
 		dropSelf(TFBlocks.stripped_mangrove_log.get());

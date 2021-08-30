@@ -361,7 +361,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.huge_mushgloom_stem.get(),
                 TFBlocks.cinder_log.get(),
                 TFBlocks.cinder_wood.get(),
-                TFBlocks.ironwood_block.get()
+                TFBlocks.ironwood_block.get(),
+                TFBlocks.tome_spawner.get(),
+                TFBlocks.empty_bookshelf.get(),
+                TFBlocks.canopy_bookshelf.get()
         );
 
         //vanilla doesnt use the leaves tag

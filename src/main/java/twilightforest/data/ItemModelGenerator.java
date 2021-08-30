@@ -184,6 +184,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.stone_twist.get());
 		toBlockModel(TFBlocks.stone_twist_thin.get(), prefix("block/pillar/pillar_inventory"));
 		toBlock(TFBlocks.stone_bold.get());
+		toBlockModel(TFBlocks.tome_spawner.get(), prefix("block/death_tome_spawner_10"));
+		toBlock(TFBlocks.empty_bookshelf.get());
+		toBlock(TFBlocks.canopy_bookshelf.get());
 		//toBlock(TFBlocks.lapis_block.get());
 
 		toBlock(TFBlocks.oak_log.get());

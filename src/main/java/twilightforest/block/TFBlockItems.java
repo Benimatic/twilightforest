@@ -91,6 +91,8 @@ public class TFBlockItems {
 			}
 		}, TFBlocks.keepsake_casket));
 		r.register(blockItem(TFBlocks.stone_bold));
+		r.register(blockItem(TFBlocks.tome_spawner));
+		r.register(blockItem(TFBlocks.empty_bookshelf));
 		r.register(skullCandleItem(TFBlocks.zombie_skull_candle, TFBlocks.zombie_wall_skull_candle));
 		r.register(skullCandleItem(TFBlocks.skeleton_skull_candle, TFBlocks.skeleton_wall_skull_candle));
 		r.register(skullCandleItem(TFBlocks.wither_skele_skull_candle, TFBlocks.wither_skele_wall_skull_candle));
@@ -293,6 +295,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.canopy_trapdoor));
 		r.register(tallBlock(TFBlocks.canopy_door));
 		r.register(signBlock(TFBlocks.canopy_sign, TFBlocks.canopy_wall_sign));
+		r.register(blockItem(TFBlocks.canopy_bookshelf));
 		r.register(blockItem(TFBlocks.mangrove_planks));
 		r.register(blockItem(TFBlocks.mangrove_stairs));
 		r.register(blockItem(TFBlocks.mangrove_slab));
