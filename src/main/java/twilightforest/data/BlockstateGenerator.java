@@ -284,6 +284,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.boss_spawner_alpha_yeti.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlock(TFBlocks.boss_spawner_final_boss.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlockExisting(TFBlocks.firefly_jar.get());
+		simpleBlockExisting(TFBlocks.firefly_spawner.get());
 		simpleBlockExisting(TFBlocks.cicada_jar.get());
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.root.get());

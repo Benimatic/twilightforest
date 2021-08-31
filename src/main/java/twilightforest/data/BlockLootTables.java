@@ -141,6 +141,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(TFBlocks.liveroot_block.get(), createSingleItemTableWithSilkTouch(TFBlocks.liveroot_block.get(), TFItems.liveroot.get()));
 		dropSelf(TFBlocks.uncrafting_table.get());
 		dropSelf(TFBlocks.firefly_jar.get());
+		dropSelf(TFBlocks.firefly_spawner.get());
 		dropSelf(TFBlocks.cicada_jar.get());
 		add(TFBlocks.moss_patch.get(), createShearsOnlyDrop(TFBlocks.moss_patch.get()));
 		add(TFBlocks.mayapple.get(), createShearsOnlyDrop(TFBlocks.mayapple.get()));

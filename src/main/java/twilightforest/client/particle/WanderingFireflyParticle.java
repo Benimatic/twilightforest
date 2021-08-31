@@ -29,7 +29,7 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 		this.bCol = 0.0F;
 		this.pickSprite(set);
 		this.quadSize = 0.2f + (random.nextFloat() * 0.1f);
-		this.lifetime = 10 + random.nextInt(21);
+		this.lifetime = 30 + random.nextInt(21);
 		this.halfLife = lifetime / 2;
 		this.speedUpWhenYMotionIsBlocked = true;
 		this.hasPhysics = true;

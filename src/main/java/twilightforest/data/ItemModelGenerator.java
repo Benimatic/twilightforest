@@ -153,6 +153,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.boss_spawner_alpha_yeti.get(), new ResourceLocation("block/spawner"));
 		toBlockModel(TFBlocks.boss_spawner_final_boss.get(), new ResourceLocation("block/spawner"));
 		toBlock(TFBlocks.firefly_jar.get());
+		toBlock(TFBlocks.firefly_spawner.get());
 		toBlock(TFBlocks.cicada_jar.get());
 		generated(TFBlocks.moss_patch.getId().getPath(), prefix("block/patch/moss"));
 		generated(TFBlocks.mayapple.getId().getPath(), prefix("block/mayapple"));

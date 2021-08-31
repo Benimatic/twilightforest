@@ -215,6 +215,7 @@ public class TFBlockItems {
 		r.register(wearableBlock(TFBlocks.cicada, TFTileEntities.CICADA));
 		r.register(wearableBlock(TFBlocks.moonworm, TFTileEntities.MOONWORM));
 		r.register(blockItem(TFBlocks.firefly_jar));
+		r.register(blockItem(TFBlocks.firefly_spawner));
 		r.register(blockItem(TFBlocks.cicada_jar));
 		r.register(blockItem(TFBlocks.hedge));
 		r.register(blockItem(TFBlocks.root));

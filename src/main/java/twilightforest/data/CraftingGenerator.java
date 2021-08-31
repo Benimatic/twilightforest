@@ -69,6 +69,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(TFBlocks.firefly.get()))
 				.save(consumer);
 
+		ShapelessRecipeBuilder.shapeless(TFBlocks.firefly_spawner.get())
+				.requires(Ingredient.of(TFBlocks.firefly_jar.get()))
+				.requires(Ingredient.of(TFBlocks.firefly.get()))
+				.requires(Ingredient.of(Blocks.POPPY))
+				.unlockedBy("has_jar", has(TFBlocks.firefly_jar.get()))
+				.save(consumer);
+
 		ShapelessRecipeBuilder.shapeless(TFBlocks.cicada_jar.get())
 				.requires(Ingredient.of(TFBlocks.cicada.get()))
 				.requires(Ingredient.of(Items.GLASS_BOTTLE))
