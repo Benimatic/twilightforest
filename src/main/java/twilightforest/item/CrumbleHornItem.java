@@ -1,5 +1,10 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +27,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.WorldUtil;
@@ -175,7 +181,7 @@ public class CrumbleHornItem extends Item {
 				world.setBlock(pos, transform.getRight().apply(state), 3);
 				world.levelEvent(2001, pos, Block.getId(state));
 
-				postTrigger(living, stack, world, pos);
+				postTrigger(living);
 
 				return true;
 			}
@@ -189,14 +195,14 @@ public class CrumbleHornItem extends Item {
 						block.playerDestroy(world, (Player) living, pos, state, world.getBlockEntity(pos), ItemStack.EMPTY);
 						world.levelEvent(2001, pos, Block.getId(state));
 
-						postTrigger(living, stack, world, pos);
+						postTrigger(living);
 
 						return true;
 					}
 				} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
 					world.destroyBlock(pos, true);
 
-					postTrigger(living, stack, world, pos);
+					postTrigger(living);
 
 					return true;
 				}
@@ -205,8 +211,18 @@ public class CrumbleHornItem extends Item {
 		return false;
 	}
 
-	private void postTrigger(LivingEntity living, ItemStack stack, Level world, BlockPos pos) {
-		if (living instanceof ServerPlayer)
-			TFAdvancements.ITEM_USE_TRIGGER.trigger((ServerPlayer) living, stack, world, pos);
+	private void postTrigger(LivingEntity living) {
+		if (living instanceof ServerPlayer) {
+			Player player = (Player) living;
+			player.awardStat(Stats.ITEM_USED.get(this));
+
+			//fallback if the other part doesnt work since its inconsistent
+			PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
+			ServerAdvancementManager manager = ((ServerLevel) player.getCommandSenderWorld()).getServer().getAdvancements();
+			Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("alt/treasures/crumble_horn_used"));
+			if (advancement != null) {
+				advancements.award(advancement, "used");
+			}
+		}
 	}
 }
