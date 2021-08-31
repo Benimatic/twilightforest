@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -162,20 +163,22 @@ public class MazeMapItem extends MapItem {
 
 									if (mapOres) {
 										// recolor ores
-										if (state.getBlock() == Blocks.COAL_ORE) {
+										if (state.getBlock() == BlockTags.COAL_ORES) {
 											multiset.add(MaterialColor.COLOR_BLACK, 1000);
-										} else if (state.getBlock() == Blocks.GOLD_ORE) {
+										} else if (state.getBlock() == BlockTags.GOLD_ORES) {
 											multiset.add(MaterialColor.GOLD, 1000);
-										} else if (state.getBlock() == Blocks.IRON_ORE) {
+										} else if (state.getBlock() == BlockTags.IRON_ORES) {
 											multiset.add(MaterialColor.METAL, 1000);
-										} else if (state.getBlock() == Blocks.LAPIS_ORE) {
+										} else if (state.getBlock() == BlockTags.LAPIS_ORES) {
 											multiset.add(MaterialColor.LAPIS, 1000);
-										} else if (state.getBlock() == Blocks.REDSTONE_ORE) {
+										} else if (state.getBlock() == BlockTags.REDSTONE_ORES) {
 											multiset.add(MaterialColor.COLOR_RED, 1000);
-										} else if (state.getBlock() == Blocks.DIAMOND_ORE) {
+										} else if (state.getBlock() == BlockTags.DIAMOND_ORES) {
 											multiset.add(MaterialColor.DIAMOND, 1000);
-										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
+										} else if (state.getBlock() == BlockTags.EMERALD_ORES) {
 											multiset.add(MaterialColor.EMERALD, 1000);
+										}else if (state.getBlock() == BlockTags.COPPER_ORES) {
+												multiset.add(MaterialColor.COLOR_ORANGE, 1000);
 										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
 											multiset.add(MaterialColor.COLOR_PINK, 1000);
 										}
