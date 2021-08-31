@@ -71,6 +71,7 @@ import twilightforest.data.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.CharmEffectEntity;
 import twilightforest.entity.IHostileMount;
+import twilightforest.entity.KoboldEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.enums.BlockLoggingEnum;
@@ -802,7 +803,7 @@ public class TFEventListener {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntityLiving();
 		// cancel attacks in protected areas
-		if (!living.level.isClientSide && living instanceof Enemy && event.getSource().getEntity() instanceof Player
+		if (!living.level.isClientSide && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof KoboldEntity)
 				&& isAreaProtected(living.level, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);
