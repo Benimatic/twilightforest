@@ -4,6 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.core.Direction;
+import net.minecraft.data.models.blockstates.Condition;
+import net.minecraft.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -205,7 +212,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath()),
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath() + "_top")));
 		perFaceBlock(TFBlocks.huge_mushgloom.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
-		simpleBlock(TFBlocks.huge_mushgloom_stem.get());
+		perFaceBlock(TFBlocks.huge_mushgloom_stem.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_mushgloom_stem"));
 		simpleBlock(TFBlocks.trollvidr.get(), models().cross(TFBlocks.trollvidr.getId().getPath(), blockTexture(TFBlocks.trollvidr.get())));
 		simpleBlock(TFBlocks.unripe_trollber.get(), models().cross(TFBlocks.unripe_trollber.getId().getPath(), blockTexture(TFBlocks.unripe_trollber.get())));
 		ModelFile trollber = models().withExistingParent(TFBlocks.trollber.getId().getPath(), prefix("block/util/cross_2_layer"))
@@ -581,9 +588,14 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.mushgloom.get(), models().withExistingParent(TFBlocks.mushgloom.getId().getPath(), prefix("block/util/cross_2_layer"))
 						.texture("cross", blockTexture(TFBlocks.mushgloom.get()))
 						.texture("cross2", prefix("block/" + TFBlocks.mushgloom.getId().getPath() + "_head")));
-		simpleBlock(TFBlocks.torchberry_plant.get(), models().withExistingParent(TFBlocks.torchberry_plant.getId().getPath(), prefix("block/util/cross_2_layer"))
-						.texture("cross", blockTexture(TFBlocks.torchberry_plant.get()))
-						.texture("cross2", prefix("block/" + TFBlocks.torchberry_plant.getId().getPath() + "_glow")));
+
+		ModelFile berry = models().withExistingParent(TFBlocks.torchberry_plant.getId().getPath(), prefix("block/util/cross_2_layer"))
+				.texture("cross", blockTexture(TFBlocks.torchberry_plant.get()))
+				.texture("cross2", prefix("block/" + TFBlocks.torchberry_plant.getId().getPath() + "_glow"));
+		ModelFile noBerry = models().withExistingParent(TFBlocks.torchberry_plant.getId().getPath() + "_no_berries", new ResourceLocation("block/cross"))
+				.texture("cross", blockTexture(TFBlocks.torchberry_plant.get()));
+		getVariantBuilder(TFBlocks.torchberry_plant.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(TorchberryPlantBlock.HAS_BERRIES) ? berry : noBerry).build());
+
 		simpleBlockExisting(TFBlocks.root_strand.get());
 		simpleBlockExisting(TFBlocks.fallen_leaves.get());
 	}
@@ -1475,9 +1487,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void perFaceBlock(Block b, ResourceLocation inside, ResourceLocation outside) {
-		ModelFile modelInside = models().withExistingParent(b.getRegistryName().getPath() + "_inside", prefix("block/util/north_face"))
+		ModelFile modelInside = models().withExistingParent(b.getRegistryName().getPath() + "_inside", new ResourceLocation("block/template_single_face"))
 						.texture("texture", inside);
-		ModelFile modelOutside = models().withExistingParent(b.getRegistryName().getPath() + "_outside", prefix("block/util/north_face"))
+		ModelFile modelOutside = models().withExistingParent(b.getRegistryName().getPath() + "_outside", new ResourceLocation("block/template_single_face"))
 						.texture("texture", outside);
 		getMultipartBuilder(b).part().modelFile(modelInside).addModel().condition(HugeMushroomBlock.NORTH, false).end();
 		getMultipartBuilder(b).part().modelFile(modelOutside).addModel().condition(HugeMushroomBlock.NORTH, true).end();

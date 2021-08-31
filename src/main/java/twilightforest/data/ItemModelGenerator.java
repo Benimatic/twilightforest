@@ -78,7 +78,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.huge_stalk.get());
 		getBuilder(TFBlocks.huge_mushgloom.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
 						.texture("all", prefix("block/huge_gloom_cap"));
-		toBlock(TFBlocks.huge_mushgloom_stem.get());
+		getBuilder(TFBlocks.huge_mushgloom_stem.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
+				.texture("all", prefix("block/huge_mushgloom_stem"));
 		generated(TFBlocks.trollvidr.getId().getPath(), prefix("block/" + TFBlocks.trollvidr.getId().getPath()));
 		generated(TFBlocks.unripe_trollber.getId().getPath(), prefix("block/" + TFBlocks.unripe_trollber.getId().getPath()));
 		generated(TFBlocks.trollber.getId().getPath(), prefix("block/" + TFBlocks.trollber.getId().getPath()));
