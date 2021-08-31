@@ -41,6 +41,7 @@ public class TFItems {
 	public static final FoodProperties MEEF_STROGANOFF = new FoodProperties.Builder().nutrition(8).saturationMod(0.6F).build();
 	public static final FoodProperties VENISON_COOKED = new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build();
 	public static final FoodProperties VENISON_RAW = new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).meat().build();
+	public static final FoodProperties TORCHBERRIES = new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(MobEffects.GLOWING, 100, 0), 0.75F).build();
 
 	public static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
 
@@ -76,7 +77,7 @@ public class TFItems {
 	public static final RegistryObject<Item> ironwood_pickaxe = ITEMS.register("ironwood_pickaxe", () -> new IronwoodPickItem(TwilightItemTier.TOOL_IRONWOOD, defaultBuilder()));
 	public static final RegistryObject<Item> ironwood_axe = ITEMS.register("ironwood_axe", () -> new IronwoodAxeItem(TwilightItemTier.TOOL_IRONWOOD, defaultBuilder()));
 	public static final RegistryObject<Item> ironwood_hoe = ITEMS.register("ironwood_hoe", () -> new IronwoodHoeItem(TwilightItemTier.TOOL_IRONWOOD, defaultBuilder()));
-	public static final RegistryObject<Item> torchberries = ITEMS.register("torchberries", () -> new Item(defaultBuilder()));
+	public static final RegistryObject<Item> torchberries = ITEMS.register("torchberries", () -> new Item(defaultBuilder().food(TFItems.TORCHBERRIES)));
 	public static final RegistryObject<Item> raw_venison = ITEMS.register("raw_venison", () -> new Item(defaultBuilder().food(TFItems.VENISON_RAW)));
 	public static final RegistryObject<Item> cooked_venison = ITEMS.register("cooked_venison", () -> new Item(defaultBuilder().food(TFItems.VENISON_COOKED)));
 	public static final RegistryObject<Item> hydra_chop = ITEMS.register("hydra_chop", () -> new HydraChopItem(defaultBuilder().fireResistant().food(TFItems.HYDRA_CHOP).rarity(Rarity.UNCOMMON)));
