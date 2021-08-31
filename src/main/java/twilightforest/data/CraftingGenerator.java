@@ -119,6 +119,23 @@ public class CraftingGenerator extends CraftingDataHelper {
 		crackedWoodRecipes(consumer, "smoked", RecipeSerializer.SMOKING_RECIPE, 100);
 		crackedStoneRecipes(consumer, "smelted", RecipeSerializer.SMELTING_RECIPE, 200);
 
+		ShapedRecipeBuilder.shaped(TFBlocks.empty_bookshelf.get())
+				.pattern("---")
+				.pattern("   ")
+				.pattern("---")
+				.define('-', TFBlocks.canopy_slab.get())
+				.unlockedBy("has_item", has(TFBlocks.canopy_slab.get()))
+				.save(consumer);
+
+		ShapedRecipeBuilder.shaped(TFBlocks.canopy_bookshelf.get())
+				.pattern("---")
+				.pattern("BBB")
+				.pattern("---")
+				.define('-', TFBlocks.canopy_planks.get())
+				.define('B', Items.BOOK)
+				.unlockedBy("has_item", has(TFBlocks.canopy_planks.get()))
+				.save(consumer);
+
 		ShapelessRecipeBuilder.shapeless(TFItems.armor_shard_cluster.get())
 				.requires(Ingredient.of(TFItems.armor_shard.get()))
 				.requires(Ingredient.of(TFItems.armor_shard.get()))
