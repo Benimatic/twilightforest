@@ -64,7 +64,7 @@ public class MagicMapPacket {
 						//	}
 						//}
 
-						TFMagicMapData.registerMagicMapData(Minecraft.getInstance().level, mapdata);
+						TFMagicMapData.registerMagicMapData(Minecraft.getInstance().level, mapdata, s);
 					}
 
 					message.inner.applyToMap(mapdata);
@@ -85,7 +85,7 @@ public class MagicMapPacket {
 						mapdata.decorations.putAll(saveVanilla);
 					}
 
-					//mapitemrenderer.update(mapdata);
+					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}
 			});
 

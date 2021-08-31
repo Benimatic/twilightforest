@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,8 +17,13 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -28,6 +34,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPartEntity;
+import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 
@@ -54,6 +61,33 @@ public class ASMHooks {
 		TFMagicMapData.TFMapDecoration.RenderContext.stack = stack;
 		TFMagicMapData.TFMapDecoration.RenderContext.buffer = buffer;
 		TFMagicMapData.TFMapDecoration.RenderContext.light = light;
+	}
+
+	private static boolean isOurMap(ItemStack stack) {
+		return stack.is(TFItems.magic_map.get()) || stack.is(TFItems.maze_map.get()) || stack.is(TFItems.ore_map.get());
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)} <br>
+	 * [AFTER INST AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
+	 */
+	public static boolean shouldMapRender(boolean o, ItemStack stack) {
+		return o || isOurMap(stack);
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderMap(PoseStack, MultiBufferSource, int, ItemStack)}<br>
+	 * [BEFORE FIRST ASTORE 6]
+	 * <p></p>
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.item.MapItem#appendHoverText(ItemStack, Level, List, TooltipFlag)}<br>
+	 * [AFTER INVOKESTATIC {@link net.minecraft.world.item.MapItem#getSavedData(Integer, Level)}]
+	 */
+	@Nullable
+	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, Level level) {
+		return o == null && isOurMap(stack) ? MapItem.getSavedData(stack, level) : o;
 	}
 
 	/**
