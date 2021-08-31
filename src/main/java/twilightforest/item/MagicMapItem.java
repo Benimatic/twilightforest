@@ -31,6 +31,7 @@ import java.util.Map;
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 
 public class MagicMapItem extends MapItem {
+
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
