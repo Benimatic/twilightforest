@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.network.chat.*;
+import net.minecraft.tags.StaticTagHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -232,9 +233,15 @@ public class TFClientEvents {
 	public static void tooltipEvent(ItemTooltipEvent event) {
 		ItemStack item = event.getItemStack();
 
+		/*
+			There's some kinda crash here where the "Tag % used before it was bound" crash happens from
+			StaticTagHelper$Wrapper.resolve() because the tag wrapped is null. I assume this crash happens because
+			somehow the game attempts to load a tooltip for an item in the main menu or something upon
+			resourcepack reload when the player has not loaded into a save. See Issue #1270 for crashlog
+		*/
+		boolean wip = (ItemTagGenerator.WIP instanceof StaticTagHelper.Wrapper<Item> wrappedWIP) && wrappedWIP.tag != null && item.is(wrappedWIP);
 		// WIP takes precedence over NYI
-		boolean wip = item.is(ItemTagGenerator.WIP);
-		boolean nyi = !wip && item.is(ItemTagGenerator.NYI);
+		boolean nyi = !wip && (ItemTagGenerator.NYI instanceof StaticTagHelper.Wrapper<Item> wrappedNYI) && wrappedNYI.tag != null && item.is(wrappedNYI);
 
 		if (!wip && !nyi)
 			return;
