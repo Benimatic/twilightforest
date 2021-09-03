@@ -1,21 +1,23 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.vertex.*;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.math.Vector3d;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
@@ -26,7 +28,7 @@ public class LoadingScreenGui extends Screen {
 
 	private boolean isEntering;
 	private boolean contentNeedsAssignment = false;
-	private long lastWorldUpdateTick = 0L;
+	private long ticks = 0L;
 	private long seed;
 	private BackgroundThemes backgroundTheme;
 	private ItemStack item;
@@ -57,30 +59,29 @@ public class LoadingScreenGui extends Screen {
         return false;
     }
 
-    @Override
+	@Override
+	public void tick() {
+		if (minecraft != null && minecraft.level != null && LOADING_SCREEN.cycleLoadingScreenFrequency.get() != 0 && ++ticks % LOADING_SCREEN.cycleLoadingScreenFrequency.get() == 0)
+			assignContent();
+	}
+
+	@Override
 	public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 		if (this.contentNeedsAssignment) {
 			this.assignContent();
 			this.contentNeedsAssignment = false;
 		}
 
-		if (minecraft.level != null && LOADING_SCREEN.cycleLoadingScreenFrequency.get() != 0) {
-			if (lastWorldUpdateTick != minecraft.level.getGameTime() % 240000) {
-
-				lastWorldUpdateTick = minecraft.level.getGameTime() % 240000;
-
-				if (lastWorldUpdateTick % LOADING_SCREEN.cycleLoadingScreenFrequency.get() == 0) {
-					assignContent();
-				}
-			}
-		}
-
 		Font fontRenderer = minecraft.font;
 		Window resolution = minecraft.getWindow();
 
+
 		drawBackground(resolution.getGuiScaledWidth(), resolution.getGuiScaledHeight());
 
-		drawBouncingWobblyItem(partialTicks, resolution.getGuiScaledWidth(), resolution.getGuiScaledHeight());
+		PoseStack stack = RenderSystem.getModelViewStack();
+		RenderSystem.applyModelViewMatrix();
+		drawBouncingWobblyItem(stack, partialTicks, resolution.getGuiScaledWidth(), resolution.getGuiScaledHeight());
+		RenderSystem.applyModelViewMatrix();
 
 		String loadTitle = I18n.get(TwilightForestMod.ID + ".loading.title." + (isEntering ? "enter" : "leave"));
 		ms.pushPose();
@@ -108,11 +109,9 @@ public class LoadingScreenGui extends Screen {
 		backgroundTheme.postRenderBackground(width, height);
 	}
 
-	private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
+	private void drawBouncingWobblyItem(PoseStack stack, float partialTicks, float width, float height) {
 		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * LOADING_SCREEN.frequency.get().floatValue();
 		float sineTicker2 = (TFClientEvents.sineTicker + 314f + partialTicks) * LOADING_SCREEN.frequency.get().floatValue();
-
-		PoseStack stack = RenderSystem.getModelViewStack();
 
 		stack.pushPose();
 
@@ -121,7 +120,7 @@ public class LoadingScreenGui extends Screen {
 
 		if (LOADING_SCREEN.enable.get()) {
 			// Wobble it!
-			stack.mulPose(Vector3f.XP.rotation(Mth.sin(sineTicker / LOADING_SCREEN.tiltRange.get().floatValue()) * LOADING_SCREEN.tiltConstant.get().floatValue()));
+			stack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(sineTicker / LOADING_SCREEN.tiltRange.get().floatValue()) * LOADING_SCREEN.tiltConstant.get().floatValue()));
 
 			// Bounce it!
 			stack.scale(((Mth.sin(((sineTicker2 + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), ((Mth.sin(((sineTicker + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), 1F);
