@@ -39,6 +39,7 @@ public final class TFSounds {
 	public static final SoundEvent BUILDER_OFF = createEvent("block.twilightforest.builder.off");
 	public static final SoundEvent BUILDER_ON = createEvent("block.twilightforest.builder.on");
 	public static final SoundEvent BUILDER_REPLACE = createEvent("block.twilightforest.builder.replace");
+	public static final SoundEvent BUILDER_CREATE = createEvent("block.twilightforest.builder.create");
 	public static final SoundEvent BUG_SQUISH = createEvent("block.twilightforest.bug.squish");
 	public static final SoundEvent CARMINITE_GOLEM_ATTACK = createEvent("entity.twilightforest.carminitegolem.attack");
 	public static final SoundEvent CARMINITE_GOLEM_DEATH = createEvent("entity.twilightforest.carminitegolem.death");
@@ -96,9 +97,9 @@ public final class TFSounds {
 	public static final SoundEvent ICE_GUARDIAN_AMBIENT = createEvent("entity.twilightforest.iceguardian.ambient");
 	public static final SoundEvent ICE_GUARDIAN_DEATH = createEvent("entity.twilightforest.iceguardian.death");
 	public static final SoundEvent ICE_GUARDIAN_HURT = createEvent("entity.twilightforest.iceguardian.hurt");
-	public static final SoundEvent JET_ACTIVE = createEvent("te.twilightforest.jet.active");
-	public static final SoundEvent JET_POP = createEvent("te.twilightforest.jet.pop");
-	public static final SoundEvent JET_START = createEvent("te.twilightforest.jet.start");
+	public static final SoundEvent JET_ACTIVE = createEvent("block.twilightforest.jet.active");
+	public static final SoundEvent JET_POP = createEvent("block.twilightforest.jet.pop");
+	public static final SoundEvent JET_START = createEvent("block.twilightforest.jet.start");
 	public static final SoundEvent KING_SPIDER_AMBIENT = createEvent("entity.twilightforest.kingspider.ambient");
 	public static final SoundEvent KING_SPIDER_DEATH = createEvent("entity.twilightforest.kingspider.death");
 	public static final SoundEvent KING_SPIDER_HURT = createEvent("entity.twilightforest.kingspider.hurt");
@@ -166,7 +167,7 @@ public final class TFSounds {
 	public static final SoundEvent QUEST_RAM_STEP = createEvent("entity.twilightforest.quest.step");
 	public static final SoundEvent RAVEN_CAW = createEvent("entity.twilightforest.raven.caw");
 	public static final SoundEvent RAVEN_SQUAWK = createEvent("entity.twilightforest.raven.squawk");
-	public static final SoundEvent REACTOR_AMBIENT = createEvent("te.twilightforest.reactor.idle");
+	public static final SoundEvent REACTOR_AMBIENT = createEvent("block.twilightforest.reactor.idle");
 	public static final SoundEvent REAPPEAR_BLOCK = createEvent("block.twilightforest.reappear.reappear");
 	public static final SoundEvent REAPPEAR_POOF = createEvent("block.twilightforest.reappear.vanish");
 	public static final SoundEvent REDCAP_AMBIENT = createEvent("entity.twilightforest.redcap.ambient");
@@ -186,7 +187,7 @@ public final class TFSounds {
 	public static final SoundEvent SLIME_BEETLE_HURT = createEvent("entity.twilightforest.slimebeetle.hurt");
 	public static final SoundEvent SLIME_BEETLE_SQUISH_SMALL = createEvent("entity.twilightforest.slimebeetle.squish");
 	public static final SoundEvent SLIME_BEETLE_STEP = createEvent("entity.twilightforest.slimebeetle.step");
-	public static final SoundEvent SMOKER_START = createEvent("te.twilightforest.smoker.start");
+	public static final SoundEvent SMOKER_START = createEvent("block.twilightforest.smoker.start");
 	public static final SoundEvent SNOW_QUEEN_AMBIENT = createEvent("entity.twilightforest.snowqueen.ambient");
 	public static final SoundEvent SNOW_QUEEN_ATTACK = createEvent("entity.twilightforest.snowqueen.attack");
 	public static final SoundEvent SNOW_QUEEN_BREAK = createEvent("entity.twilightforest.snowqueen.break");
@@ -267,7 +268,7 @@ public final class TFSounds {
 				BLOCKCHAIN_AMBIENT, BLOCKCHAIN_COLLIDE, BLOCKCHAIN_DEATH, BLOCKCHAIN_FIRED, BLOCKCHAIN_HIT, BLOCKCHAIN_HURT,
 				BOAR_AMBIENT, BOAR_DEATH, BOAR_HURT, BOAR_STEP,
 				BROODLING_AMBIENT, BROODLING_DEATH, BROODLING_HURT, BROODLING_STEP,
-				BUILDER_OFF, BUILDER_ON, BUILDER_REPLACE,
+				BUILDER_OFF, BUILDER_ON, BUILDER_REPLACE, BUILDER_CREATE,
 				CARMINITE_GOLEM_ATTACK, CARMINITE_GOLEM_DEATH, CARMINITE_GOLEM_HURT, CARMINITE_GOLEM_STEP,
 				CHARM_KEEP, CHARM_LIFE,
 				CICADA,
