@@ -29,6 +29,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -176,7 +177,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
-		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
+		if (!this.canRampage && !this.isTired() && (source.isProjectile() || source.getDirectEntity() instanceof TwilightWandBoltEntity)) {
 			return false;
 		}
 
