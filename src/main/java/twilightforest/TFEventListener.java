@@ -700,7 +700,7 @@ public class TFEventListener {
 				}
 			}
 
-			if (allCobble && !player.abilities.instabuild) {
+			if (allCobble && !player.getAbilities().instabuild) {
 				shouldMakeGiantCobble = true;
 				amountOfCobbleToReplace = 64;
 			} else {
@@ -758,7 +758,7 @@ public class TFEventListener {
 	 */
 	private static boolean isAreaProtected(Level world, Player player, BlockPos pos) {
 
-		if (player.abilities.instabuild || !TFGenerationSettings.isProgressionEnforced(world) || player instanceof FakePlayer) {
+		if (player.getAbilities().instabuild || !TFGenerationSettings.isProgressionEnforced(world) || player instanceof FakePlayer) {
 			return false;
 		}
 

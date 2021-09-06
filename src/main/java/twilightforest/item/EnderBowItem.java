@@ -29,10 +29,10 @@ public class EnderBowItem extends BowItem {
 
 			if (arrow.getPersistentData().contains(KEY) && player.getVehicle() == null) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
-				float sourceYaw = player.yRot, sourcePitch = player.xRot;
+				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
 
-				player.yRot = living.yRot;
-				player.xRot = living.xRot;
+				player.yRot = living.getYRot();
+				player.xRot = living.getXRot();
 				player.teleportTo(living.getX(), living.getY(), living.getZ());
 				player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 

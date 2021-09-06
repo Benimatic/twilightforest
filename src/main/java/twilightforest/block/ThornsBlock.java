@@ -70,7 +70,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Override
 	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!player.abilities.instabuild) {
+		if (!player.getAbilities().instabuild) {
 			if (!world.isClientSide) {
 				// grow more
 				this.doThornBurst(world, pos, state);
