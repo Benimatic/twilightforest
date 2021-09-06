@@ -32,6 +32,8 @@ public final class TFSounds {
 	public static final SoundEvent BOAR_DEATH = createEvent("entity.twilightforest.boar.death");
 	public static final SoundEvent BOAR_HURT = createEvent("entity.twilightforest.boar.hurt");
 	public static final SoundEvent BOAR_STEP = createEvent("entity.twilightforest.boar.step");
+	public static final SoundEvent BRITTLE_FLASK_BREAK = createEvent("item.twilightforest.flask.break");
+	public static final SoundEvent BRITTLE_FLASK_CRACK = createEvent("item.twilightforest.flask.crack");
 	public static final SoundEvent BROODLING_AMBIENT = createEvent("entity.twilightforest.broodling.ambient");
 	public static final SoundEvent BROODLING_DEATH = createEvent("entity.twilightforest.broodling.death");
 	public static final SoundEvent BROODLING_HURT = createEvent("entity.twilightforest.broodling.hurt");
@@ -59,6 +61,7 @@ public final class TFSounds {
 	public static final SoundEvent FIRE_BEETLE_HURT = createEvent("entity.twilightforest.firebeetle.hurt");
 	public static final SoundEvent FIRE_BEETLE_SHOOT = createEvent("entity.twilightforest.firebeetle.shoot");
 	public static final SoundEvent FIRE_BEETLE_STEP = createEvent("entity.twilightforest.firebeetle.step");
+	public static final SoundEvent FLASK_FILL = createEvent("item.twilightforest.flask.fill");
 	public static final SoundEvent GHASTGUARD_AMBIENT = createEvent("entity.twilightforest.ghastguard.ambient");
 	public static final SoundEvent GHASTGUARD_DEATH = createEvent("entity.twilightforest.ghastguard.death");
 	public static final SoundEvent GHASTGUARD_HURT = createEvent("entity.twilightforest.ghastguard.hurt");
@@ -267,6 +270,7 @@ public final class TFSounds {
 				BIGHORN_AMBIENT, BIGHORN_DEATH, BIGHORN_HURT, BIGHORN_STEP,
 				BLOCKCHAIN_AMBIENT, BLOCKCHAIN_COLLIDE, BLOCKCHAIN_DEATH, BLOCKCHAIN_FIRED, BLOCKCHAIN_HIT, BLOCKCHAIN_HURT,
 				BOAR_AMBIENT, BOAR_DEATH, BOAR_HURT, BOAR_STEP,
+				BRITTLE_FLASK_BREAK, BRITTLE_FLASK_CRACK,
 				BROODLING_AMBIENT, BROODLING_DEATH, BROODLING_HURT, BROODLING_STEP,
 				BUILDER_OFF, BUILDER_ON, BUILDER_REPLACE, BUILDER_CREATE,
 				CARMINITE_GOLEM_ATTACK, CARMINITE_GOLEM_DEATH, CARMINITE_GOLEM_HURT, CARMINITE_GOLEM_STEP,
@@ -276,6 +280,7 @@ public final class TFSounds {
 				DOOR_ACTIVATED, DOOR_REAPPEAR, DOOR_VANISH,
 				FAN_WOOSH,
 				FIRE_BEETLE_DEATH, FIRE_BEETLE_HURT, FIRE_BEETLE_SHOOT, FIRE_BEETLE_STEP,
+				FLASK_FILL,
 				GHASTGUARD_AMBIENT, GHASTGUARD_DEATH, GHASTGUARD_HURT,
 				GHASTLING_AMBIENT, GHASTLING_DEATH, GHASTLING_HURT,
 				GLASS_SWORD_BREAK,

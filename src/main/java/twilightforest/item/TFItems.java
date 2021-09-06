@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -112,6 +113,8 @@ public class TFItems {
 	public static final RegistryObject<Item> crumble_horn = ITEMS.register("crumble_horn", () -> new CrumbleHornItem(defaultBuilder().durability(1024).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> peacock_fan = ITEMS.register("peacock_fan", () -> new PeacockFanItem(defaultBuilder().durability(1024).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> moonworm_queen = ITEMS.register("moonworm_queen", () -> new MoonwormQueenItem(defaultBuilder().setNoRepair().durability(256).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> brittle_flask = ITEMS.register("brittle_potion_flask", () -> new BrittleFlaskItem(defaultBuilder().stacksTo(1)));
+	public static final RegistryObject<Item> greater_flask = ITEMS.register("greater_potion_flask", () -> new GreaterFlaskItem(defaultBuilder().rarity(Rarity.UNCOMMON).fireResistant().stacksTo(1)));
 	public static final RegistryObject<Item> charm_of_life_1 = ITEMS.register("charm_of_life_1", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_life_2 = ITEMS.register("charm_of_life_2", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_keeping_1 = ITEMS.register("charm_of_keeping_1", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
@@ -272,5 +275,14 @@ public class TFItems {
 
 		ItemProperties.register(experiment_115.get(), Experiment115Item.FULL, (stack, world, entity, idk) ->
 				stack.hasTag() && stack.getTag().contains("full") ? 1 : 0);
+
+		ItemProperties.register(TFItems.brittle_flask.get(), TwilightForestMod.prefix("breakage"), (stack, world, entity, i) ->
+				stack.getOrCreateTag().getInt("Breakage"));
+
+		ItemProperties.register(TFItems.brittle_flask.get(), TwilightForestMod.prefix("potion_level"), (stack, world, entity, i) ->
+				stack.getOrCreateTag().getInt("Uses"));
+
+		ItemProperties.register(TFItems.greater_flask.get(), TwilightForestMod.prefix("potion_level"), (stack, world, entity, i) ->
+				stack.getOrCreateTag().getInt("Uses"));
 	}
 }

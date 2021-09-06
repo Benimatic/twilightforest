@@ -471,6 +471,58 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(new ResourceLocation("phase"), 0.75F).model(quarter1).end()
 				.override().predicate(new ResourceLocation("phase"), 0.875F).model(waxing_gib).end();
 
+		ModelFile fill1 = generated("brittle_flask_0", prefix("items/brittle_potion_flask_1"), prefix("items/brittle_potion_flask_labelled"));
+		ModelFile fill2 = generated("brittle_flask_1", prefix("items/brittle_potion_flask_2"), prefix("items/brittle_potion_flask_labelled"));
+		ModelFile fill3 = generated("brittle_flask_2", prefix("items/brittle_potion_flask_3"), prefix("items/brittle_potion_flask_labelled"));
+		ModelFile fill4 = generated("brittle_flask_3", prefix("items/brittle_potion_flask_4"), prefix("items/brittle_potion_flask_labelled"));
+		ModelFile splintered = generated("brittle_flask_splintered", prefix("items/brittle_potion_flask_splintered"));
+		ModelFile fill1_splintered = generated("brittle_flask_0_splintered", prefix("items/brittle_potion_flask_1"), prefix("items/brittle_potion_flask_splintered"));
+		ModelFile fill2_splintered = generated("brittle_flask_1_splintered", prefix("items/brittle_potion_flask_2"), prefix("items/brittle_potion_flask_splintered"));
+		ModelFile fill3_splintered = generated("brittle_flask_2_splintered", prefix("items/brittle_potion_flask_3"), prefix("items/brittle_potion_flask_splintered"));
+		ModelFile fill4_splintered = generated("brittle_flask_3_splintered", prefix("items/brittle_potion_flask_4"), prefix("items/brittle_potion_flask_splintered"));
+		ModelFile cracked = generated("brittle_flask_cracked", prefix("items/brittle_potion_flask_cracked"));
+		ModelFile fill1_cracked = generated("brittle_flask_0_cracked", prefix("items/brittle_potion_flask_1"), prefix("items/brittle_potion_flask_cracked"));
+		ModelFile fill2_cracked = generated("brittle_flask_1_cracked", prefix("items/brittle_potion_flask_2"), prefix("items/brittle_potion_flask_cracked"));
+		ModelFile fill3_cracked = generated("brittle_flask_2_cracked", prefix("items/brittle_potion_flask_3"), prefix("items/brittle_potion_flask_cracked"));
+		ModelFile fill4_cracked = generated("brittle_flask_3_cracked", prefix("items/brittle_potion_flask_4"), prefix("items/brittle_potion_flask_cracked"));
+		ModelFile damaged = generated("brittle_flask_damaged", prefix("items/brittle_potion_flask_damaged"));
+		ModelFile fill1_damaged = generated("brittle_flask_0_damaged", prefix("items/brittle_potion_flask_1"), prefix("items/brittle_potion_flask_damaged"));
+		ModelFile fill2_damaged = generated("brittle_flask_1_damaged", prefix("items/brittle_potion_flask_2"), prefix("items/brittle_potion_flask_damaged"));
+		ModelFile fill3_damaged = generated("brittle_flask_2_damaged", prefix("items/brittle_potion_flask_3"), prefix("items/brittle_potion_flask_damaged"));
+		ModelFile fill4_damaged = generated("brittle_flask_3_damaged", prefix("items/brittle_potion_flask_4"), prefix("items/brittle_potion_flask_damaged"));
+		
+		generated(TFItems.brittle_flask.getId().getPath(), prefix("block/stone_twist/twist_blank"), prefix("items/brittle_potion_flask"))
+				.override().predicate(prefix("potion_level"), 1).model(fill1).end()
+				.override().predicate(prefix("potion_level"), 2).model(fill2).end()
+				.override().predicate(prefix("potion_level"), 3).model(fill3).end()
+				.override().predicate(prefix("potion_level"), 4).model(fill4).end()
+				.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 1).model(splintered).end()
+				.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 1).model(fill1_splintered).end()
+				.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 1).model(fill2_splintered).end()
+				.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 1).model(fill3_splintered).end()
+				.override().predicate(prefix("potion_level"), 4).predicate(prefix("breakage"), 1).model(fill4_splintered).end()
+				.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 2).model(cracked).end()
+				.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 2).model(fill1_cracked).end()
+				.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 2).model(fill2_cracked).end()
+				.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 2).model(fill3_cracked).end()
+				.override().predicate(prefix("potion_level"), 4).predicate(prefix("breakage"), 2).model(fill4_cracked).end()
+				.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 3).model(damaged).end()
+				.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 3).model(fill1_damaged).end()
+				.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 3).model(fill2_damaged).end()
+				.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 3).model(fill3_damaged).end()
+				.override().predicate(prefix("potion_level"), 4).predicate(prefix("breakage"), 3).model(fill4_damaged).end();
+
+		ModelFile gfill1 = generated("greater_flask_0", prefix("items/greater_potion_flask_1"), prefix("items/greater_potion_flask"));
+		ModelFile gfill2 = generated("greater_flask_1", prefix("items/greater_potion_flask_2"), prefix("items/greater_potion_flask"));
+		ModelFile gfill3 = generated("greater_flask_2", prefix("items/greater_potion_flask_3"), prefix("items/greater_potion_flask"));
+		ModelFile gfill4 = generated("greater_flask_3", prefix("items/greater_potion_flask_4"), prefix("items/greater_potion_flask"));
+
+		generated(TFItems.greater_flask.getId().getPath(), prefix("block/stone_twist/twist_blank"), prefix("items/greater_potion_flask"))
+				.override().predicate(prefix("potion_level"), 1).model(gfill1).end()
+				.override().predicate(prefix("potion_level"), 2).model(gfill2).end()
+				.override().predicate(prefix("potion_level"), 3).model(gfill3).end()
+				.override().predicate(prefix("potion_level"), 4).model(gfill4).end();
+
 		//compat stuff
 		ModelFile freshBook = generated("logbook_0", prefix("items/logbook/fresh"));
 		ModelFile usedBook = generated("logbook_1", prefix("items/logbook/used"));

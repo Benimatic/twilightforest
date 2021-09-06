@@ -1,5 +1,6 @@
 package twilightforest;
 
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -18,9 +19,11 @@ import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
+import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.PlayerHelper;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
@@ -54,6 +57,11 @@ public class TFTickHandler {
 				// normal check, no special options
 				checkForPortalCreation(player, world, 32.0F);
 			}
+		}
+
+		//tick every second for the advancement bit of the flask, but only if we dont have the advancement
+		if(!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("full_mettle_alchemist"))) {
+			BrittleFlaskItem.ticker();
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks

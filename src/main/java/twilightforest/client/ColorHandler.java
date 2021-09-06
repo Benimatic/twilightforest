@@ -1,27 +1,25 @@
 package twilightforest.client;
 
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColors;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
-import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.*;
+import twilightforest.block.AuroraBrickBlock;
+import twilightforest.block.TFBlocks;
 import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.TFItems;
 
-import java.awt.Color;
-import java.util.Locale;
+import java.awt.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ColorHandler {
@@ -375,6 +373,10 @@ public final class ColorHandler {
 						? ((ArcticArmorItem) stack.getItem()).getColor(stack, tintIndex)
 						: 0xFFFFFF,
 				TFItems.arctic_helmet.get(), TFItems.arctic_chestplate.get(), TFItems.arctic_leggings.get(), TFItems.arctic_boots.get());
+
+		itemColors.register((stack, tintIndex) ->
+				tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
+				TFItems.brittle_flask.get(), TFItems.greater_flask.get());
 
 		//FIXME IE Compat
 		/*if (ModList.get().isLoaded("immersiveengineering")) {
