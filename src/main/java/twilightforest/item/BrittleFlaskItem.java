@@ -10,7 +10,6 @@ import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -53,8 +52,18 @@ public class BrittleFlaskItem extends Item {
 	}
 
 	@Override
-	public boolean isBarVisible(ItemStack pStack) {
-		return true;
+	public boolean showDurabilityBar(ItemStack stack) {
+		return stack.getOrCreateTag().contains("Potion");
+	}
+
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		return PotionUtils.getColor(stack);
+	}
+
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return super.isFoil(stack) || !PotionUtils.getMobEffects(stack).isEmpty();
 	}
 
 	@Override
@@ -125,24 +134,23 @@ public class BrittleFlaskItem extends Item {
 				}
 				addTowardsAdvancement(tag.getString("Potion"), player);
 			}
-			level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
 			player.awardStat(Stats.ITEM_USED.get(this));
 			if (!player.getAbilities().instabuild) {
 				tag.putInt("Uses", tag.getInt("Uses") - 1);
 			}
 
 			if(tag.getInt("Uses") <= 0) {
-				tag.putString("Potion", Potions.EMPTY.getRegistryName().toString());
+				tag.remove("Potion");
 			}
 
 			if (canBreak() && !player.getAbilities().instabuild) {
 				if (tag.getInt("Uses") <= 0) {
 					stack.shrink(1);
-					level.playSound(null, entity.blockPosition(), TFSounds.BRITTLE_FLASK_BREAK, SoundSource.PLAYERS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
+					level.playSound(null, entity.blockPosition(), TFSounds.BRITTLE_FLASK_BREAK, SoundSource.PLAYERS, 1.5F, 0.7F);
 				} else {
 					tag.putInt("Breakage", tag.getInt("Breakage") + 1);
 					tag.putBoolean("Refillable", false);
-					level.playSound(null, entity.blockPosition(), TFSounds.BRITTLE_FLASK_CRACK, SoundSource.PLAYERS, tag.getInt("Uses") * 0.33F, level.random.nextFloat() * 0.1F + 0.9F);
+					level.playSound(null, entity.blockPosition(), TFSounds.BRITTLE_FLASK_CRACK, SoundSource.PLAYERS, 1.5F, 2.0F);
 				}
 			}
 		}
@@ -194,12 +202,13 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
-		tooltip.add(new TranslatableComponent("item.twilightforest.flask_capacity", stack.getOrCreateTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TranslatableComponent("item.twilightforest.flask_doses", stack.getOrCreateTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+		if(!stack.getOrCreateTag().getBoolean("Refillable")) tooltip.add(new TranslatableComponent("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
 	}
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return (stack.hasTag() && stack.getTag() != null) ? stack.getTag().getInt("Breakage") : super.getDurabilityForDisplay(stack);
+		return Math.abs((double)stack.getOrCreateTag().getInt("Uses") - 4) / 4;
 	}
 
 	@Override
