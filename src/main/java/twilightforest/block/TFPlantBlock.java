@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.BlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,9 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -36,9 +35,10 @@ import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
-public class TFPlantBlock extends BushBlock {
+public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 	private static final VoxelShape MAYAPPLE_SHAPE = box(4, 0, 4, 13, 6, 13);
 	private static final VoxelShape FALLEN_LEAVES_SHAPE = box(0, 0, 0, 16, 1, 16);
 	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
@@ -170,5 +170,37 @@ public class TFPlantBlock extends BushBlock {
 			} else if (world instanceof ServerLevel)
 				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
 		}
+	}
+
+	@Override
+	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
+		return state.getBlock() == TFBlocks.root_strand.get() && isBottomOpen(level, pos);
+	}
+
+	@Override
+	public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {
+		return state.getBlock() == TFBlocks.root_strand.get() && isBottomOpen(level, pos);
+	}
+
+	@Override
+	public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
+		if(state.getBlock() == TFBlocks.root_strand.get()) {
+			BlockPos.MutableBlockPos mutable = pos.mutable();
+			do {
+				mutable.move(Direction.DOWN);
+			} while(level.getBlockState(mutable).is(TFBlocks.root_strand.get()));
+			if(level.getBlockState(mutable).isAir() || level.getBlockState(mutable).getMaterial().isReplaceable()) {
+				level.setBlockAndUpdate(mutable, TFBlocks.root_strand.get().defaultBlockState());
+			}
+		}
+	}
+
+	private boolean isBottomOpen(BlockGetter level, BlockPos pos) {
+		BlockPos.MutableBlockPos mutable = pos.mutable();
+		do {
+			mutable.move(Direction.DOWN);
+		} while(level.getBlockState(mutable).is(TFBlocks.root_strand.get()));
+
+		return level.getBlockState(mutable).isAir() || level.getBlockState(mutable).getMaterial().isReplaceable();
 	}
 }

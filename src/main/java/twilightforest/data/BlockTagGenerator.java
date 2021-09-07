@@ -169,7 +169,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
         tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.fiery_block.get());
         tag(BlockTags.PORTALS).add(TFBlocks.twilight_portal.get());
-        tag(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder.get());
+        tag(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder.get(), TFBlocks.root_strand.get());
 
         tag(BlockTags.STANDING_SIGNS).add(TFBlocks.twilight_oak_sign.get(), TFBlocks.canopy_sign.get(),
                 TFBlocks.mangrove_sign.get(), TFBlocks.darkwood_sign.get(),

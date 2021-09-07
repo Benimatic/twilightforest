@@ -1809,7 +1809,7 @@ b46619288c25b03d804d08e7a346199a7ea10584 data/forge/tags/items/storage_blocks/ir
 ce978eb7b0d7b3818c727f89885495607c0a9935 data/forge/tags/items/storage_blocks/knightmetal.json
 860fef57503636556a38177bd5325f6fad222200 data/forge/tags/items/storage_blocks/steeleaf.json
 4f56dbc1eaf69d9ee0a5e16974f867d88d6873d8 data/minecraft/tags/blocks/beacon_base_blocks.json
-a991bee26c8ca4de7b317a098117df57a7984f6e data/minecraft/tags/blocks/climbable.json
+f4e8b4b7b5cf2d9cd13de62877bb1a183dbd96b3 data/minecraft/tags/blocks/climbable.json
 37ad5686f1317adcfb31418e82641cfb7479be44 data/minecraft/tags/blocks/dirt.json
 0e28273ebf57fa79fcbaab818a55763210cf4e15 data/minecraft/tags/blocks/dragon_immune.json
 34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/minecraft/tags/blocks/fence_gates.json
