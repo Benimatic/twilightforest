@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
@@ -179,6 +181,11 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
         } else {
             return super.canOpen(user);
         }
+    }
+
+    @Override
+    protected IItemHandler createUnSidedHandler() {
+        return new EmptyHandler();
     }
 
     //remove stored player when chest is broken
