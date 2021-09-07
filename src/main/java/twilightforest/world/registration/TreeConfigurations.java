@@ -223,7 +223,7 @@ public final class TreeConfigurations {
             new TwoLayersFeatureSize(1, 1, 1)
     )
             .ignoreVines()
-            .decorators(ImmutableList.of(new TreeCorePlacer(1, new SimpleStateProvider(TFBlocks.sorting_log_core.get().defaultBlockState().setValue(TFLogBlock.AXIS, Direction.Axis.Y)))))
+            .decorators(ImmutableList.of(new TreeCorePlacer(2, new SimpleStateProvider(TFBlocks.sorting_log_core.get().defaultBlockState().setValue(TFLogBlock.AXIS, Direction.Axis.Y)))))
             .build();
 
     public static final TFTreeFeatureConfig DENSE_OAK = new TFTreeFeatureConfig.Builder(
