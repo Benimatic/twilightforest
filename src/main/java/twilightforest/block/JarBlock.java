@@ -45,13 +45,18 @@ public class JarBlock extends Block {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		ItemEntity jarStuff = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), this == TFBlocks.firefly_jar.get() ? TFBlocks.firefly.get().asItem().getDefaultInstance() : TFBlocks.cicada.get().asItem().getDefaultInstance());
 		if(player.isShiftKeyDown()) {
 			worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			jarStuff.spawnAtLocation(jarStuff.getItem());
 			jarStuff.spawnAtLocation(Items.GLASS_BOTTLE);
 			return InteractionResult.SUCCESS;
+		} else {
+			if(player.getItemInHand(hand).getItem() == Blocks.POPPY.asItem() && this == TFBlocks.firefly_jar.get()) {
+				worldIn.setBlockAndUpdate(pos, TFBlocks.firefly_spawner.get().defaultBlockState().setValue(AbstractParticleSpawnerBlock.RADIUS, 1));
+				return InteractionResult.SUCCESS;
+			}
 		}
 		return InteractionResult.PASS;
 	}

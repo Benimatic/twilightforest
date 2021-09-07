@@ -22,6 +22,7 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import twilightforest.block.AbstractParticleSpawnerBlock;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFBlocks;
@@ -141,7 +142,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(TFBlocks.liveroot_block.get(), createSingleItemTableWithSilkTouch(TFBlocks.liveroot_block.get(), TFItems.liveroot.get()));
 		dropSelf(TFBlocks.uncrafting_table.get());
 		dropSelf(TFBlocks.firefly_jar.get());
-		dropSelf(TFBlocks.firefly_spawner.get());
+		add(TFBlocks.firefly_spawner.get(), particleSpawner());
 		dropSelf(TFBlocks.cicada_jar.get());
 		add(TFBlocks.moss_patch.get(), createShearsOnlyDrop(TFBlocks.moss_patch.get()));
 		add(TFBlocks.mayapple.get(), createShearsOnlyDrop(TFBlocks.mayapple.get()));
@@ -396,6 +397,22 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 
 	private static LootTable.Builder casketInfo(Block block) {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).apply(CopyBlockState.copyState(block).copy(KeepsakeCasketBlock.BREAKAGE)));
+	}
+
+	private static LootTable.Builder particleSpawner() {
+		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(applyExplosionDecay(TFBlocks.firefly_spawner.get(), LootItem.lootTableItem(TFBlocks.firefly_spawner.get()))))
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(TFBlocks.firefly.get())
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 2))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 3))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(3.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 4))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(4.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 5))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(5.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 6))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(6.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 7))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(7.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 8))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(8.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 9))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(9.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 10))))));
 	}
 
 	private static LootTable.Builder dropWithoutSilk(Block block) {
