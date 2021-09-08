@@ -30,7 +30,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
-	private static EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlockEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlockEntity.class, EntityDataSerializers.BOOLEAN);
 	private boolean isReturning = false;
 	private int blocksSmashed = 0;
 	private double velX;
@@ -97,8 +97,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 			return;
 		}
 
-		if (ray instanceof EntityHitResult) {
-			EntityHitResult entityRay = (EntityHitResult) ray;
+		if (ray instanceof EntityHitResult entityRay) {
 
 			// only hit living things
 			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getOwner()) {
@@ -109,8 +108,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 			}
 		}
 
-		if (ray instanceof BlockHitResult) {
-			BlockHitResult blockRay = (BlockHitResult) ray;
+		if (ray instanceof BlockHitResult blockRay) {
 
 			if (blockRay.getBlockPos() != null && !this.level.isEmptyBlock(blockRay.getBlockPos())) {
 				if (!this.isReturning) {
@@ -161,7 +159,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 					}
 
 					// demolish some blocks
-					this.affectBlocksInAABB(this.getBoundingBox());
+					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.25D));
 				}
 
 				this.isReturning = true;
@@ -183,8 +181,7 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < 7F
 					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this)) {
 
-				if (getOwner() instanceof Player) {
-					Player player = (Player) getOwner();
+				if (getOwner() instanceof Player player) {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
 						if (block.canHarvestBlock(state, level, pos, player)) {
 							block.playerDestroy(level, player, pos, state, level.getBlockEntity(pos), player.getItemInHand(getHand()));
