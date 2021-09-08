@@ -290,6 +290,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.stripped_dark_wood.get());
 		dropSelf(TFBlocks.darkwood_sapling.get());
 		add(TFBlocks.dark_leaves.get(), createLeavesDrops(TFBlocks.dark_leaves.get(), TFBlocks.darkwood_sapling.get(), RARE_SAPLING_DROP_RATES));
+		add(TFBlocks.hardened_dark_leaves.get(), createLeavesDrops(TFBlocks.dark_leaves.get(), TFBlocks.darkwood_sapling.get(), RARE_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.dark_planks.get());
 		dropSelf(TFBlocks.dark_stairs.get());
 		add(TFBlocks.dark_slab.get(), createSlabItemTable(TFBlocks.dark_slab.get()));

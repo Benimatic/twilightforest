@@ -624,6 +624,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		logWoodSapling(TFBlocks.dark_log.get(), TFBlocks.stripped_dark_log.get(), TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_wood.get(), TFBlocks.darkwood_sapling.get());
 		plankBlocks("darkwood", TFBlocks.dark_planks.get(), TFBlocks.dark_slab.get(), TFBlocks.dark_stairs.get(), TFBlocks.dark_button.get(), TFBlocks.dark_fence.get(), TFBlocks.dark_gate.get(), TFBlocks.dark_plate.get(), TFBlocks.dark_door.get(), TFBlocks.dark_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.dark_leaves.get(), "block/leaves", m -> m.texture("all", "block/darkwood_leaves"));
+		singleBlockBoilerPlate(TFBlocks.hardened_dark_leaves.get(), "block/leaves", m -> m.texture("all", "block/darkwood_leaves"));
 
 		logWoodSapling(TFBlocks.time_log.get(), TFBlocks.stripped_time_log.get(), TFBlocks.time_wood.get(), TFBlocks.stripped_time_wood.get(), TFBlocks.time_sapling.get());
 		plankBlocks("time", TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_fence.get(), TFBlocks.time_gate.get(), TFBlocks.time_plate.get(), TFBlocks.time_door.get(), TFBlocks.time_trapdoor.get());

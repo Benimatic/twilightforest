@@ -26,6 +26,7 @@ public final class BlockConstants {
     public static final BlockState MANGROVE_SAPLING = TFBlocks.mangrove_sapling.get().defaultBlockState();
     public static final BlockState DARKWOOD_LOG = TFBlocks.dark_log.get().defaultBlockState();
     public static final BlockState DARKWOOD_LEAVES = TFBlocks.dark_leaves.get().defaultBlockState();
+    public static final BlockState HARDENED_DARK_LEAVES = TFBlocks.hardened_dark_leaves.get().defaultBlockState();
     public static final BlockState DARKWOOD_SAPLING = TFBlocks.darkwood_sapling.get().defaultBlockState();
     public static final BlockState TIME_LOG = TFBlocks.time_log.get().defaultBlockState();
     public static final BlockState TIME_WOOD = TFBlocks.time_wood.get().defaultBlockState();

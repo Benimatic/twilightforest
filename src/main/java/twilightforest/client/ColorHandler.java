@@ -65,7 +65,7 @@ public final class ColorHandler {
 			}
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
-		}, TFBlocks.dark_leaves.get(), TFBlocks.giant_leaves.get());
+		}, TFBlocks.dark_leaves.get(), TFBlocks.hardened_dark_leaves.get(), TFBlocks.giant_leaves.get());
 		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : blockColors.getColor(Blocks.GRASS.defaultBlockState(), worldIn, pos, tintIndex), TFBlocks.smoker.get(), TFBlocks.fire_jet.get());
 		blockColors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? 2129968 : 7455580, TFBlocks.huge_lilypad.get());
 		blockColors.register((state, worldIn, pos, tintIndex) -> {

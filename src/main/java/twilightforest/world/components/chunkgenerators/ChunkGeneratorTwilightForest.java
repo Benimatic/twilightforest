@@ -135,7 +135,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 
 					treeBottom -= noise;
 
-					BlockState darkLeaves = TFBlocks.dark_leaves.get().defaultBlockState();
+					BlockState darkLeaves = TFBlocks.hardened_dark_leaves.get().defaultBlockState();
 
 					for (int y = treeBottom; y < treeTop; y++) {
 						primer.setBlock(pos.atY(y), darkLeaves, 3);
