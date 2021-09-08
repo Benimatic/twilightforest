@@ -130,8 +130,6 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.antibuilder));
 		r.register(blockItem(TFBlocks.carminite_reactor));
 		r.register(blockItem(TFBlocks.ghast_trap));
-		r.register(blockItem(TFBlocks.fake_gold));
-		r.register(blockItem(TFBlocks.fake_diamond));
 		r.register(blockItem(TFBlocks.aurora_block));
 		r.register(blockItem(TFBlocks.aurora_pillar));
 		r.register(blockItem(TFBlocks.aurora_slab));
