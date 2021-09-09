@@ -475,6 +475,7 @@ public class TFBlocks {
 		FireBlock fireblock = (FireBlock)Blocks.FIRE;
 		fireblock.setFlammable(root.get(), 5, 20);
 		fireblock.setFlammable(liveroot_block.get(), 5, 20);
+		fireblock.setFlammable(empty_bookshelf.get(), 30, 20);
 		fireblock.setFlammable(oak_wood.get(), 5, 5);
 		fireblock.setFlammable(twilight_oak_planks.get(), 5, 20);
 		fireblock.setFlammable(twilight_oak_slab.get(), 5, 20);
