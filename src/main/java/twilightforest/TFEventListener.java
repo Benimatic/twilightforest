@@ -603,6 +603,7 @@ public class TFEventListener {
 				player.level.addFreshEntity(effect2);
 
 				player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP, player.getSoundSource(), 1.5F, 1.0F);
+				keepInventory.getSelected().shrink(1);
 			}
 		}
 
