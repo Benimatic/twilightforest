@@ -82,35 +82,6 @@ public class TFConfig {
 					worldRestart().
 					comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.").
 					define("doCompat", true);
-			builder.
-					comment("Lets you sacrifice various things to improve world performance.").
-					push("Performance Tweaks");
-			{
-				PERFORMANCE.canopyCoverage = builder.
-						translation(config + "canopy_coverage").
-						comment("Amount of canopy coverage. Lower numbers improve chunk generation speed at the cost of a thinner forest.").
-						defineInRange("canopyCoverage", 1.7F, 0, Double.MAX_VALUE);
-				PERFORMANCE.twilightOakChance = builder.
-						translation(config + "twilight_oaks").
-						comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.").
-						defineInRange("twilightOakChance", 48, 1, Integer.MAX_VALUE);
-				PERFORMANCE.leavesLightOpacity = builder.
-						translation(config + "leaves_light_opacity").
-						comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.").
-						defineInRange("leavesLightOpacity", 1, 0, 255);
-				PERFORMANCE.glacierPackedIce = builder.
-						translation(config + "glacier_packed_ice").
-						comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.").
-						define("glacierPackedIce", false);
-				PERFORMANCE.enableSkylight = builder.
-						translation(config + "enable_skylight").
-						comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
-
-								"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!").
-						worldRestart().
-						define("enableSkylight", true);
-			}
-			builder.pop();
 			originDimension = builder.
 					translation(config + "origin_dimension").
 					comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld. (domain:regname).").
@@ -141,10 +112,6 @@ public class TFConfig {
 					translation(config + "portal_return").
 					comment("If false, the return portal will require the activation item.").
 					define("shouldReturnPortalBeUsable", true);
-			progressionRuleDefault = builder.
-					translation(config + "progression_default").
-					comment("Sets the default value of the game rule controlling enforced progression.").
-					define("progressionRuleDefault", true);
 			disableUncrafting = builder.
 					worldRestart().
 					translation(config + "uncrafting").
@@ -245,18 +212,6 @@ public class TFConfig {
 
 		public ForgeConfigSpec.BooleanValue doCompat;
 
-		public Performance PERFORMANCE = new Performance();
-
-		public static class Performance {
-			public ForgeConfigSpec.DoubleValue canopyCoverage;
-			public ForgeConfigSpec.IntValue twilightOakChance;
-			public ForgeConfigSpec.IntValue leavesLightOpacity;
-			public ForgeConfigSpec.BooleanValue glacierPackedIce;
-			public ForgeConfigSpec.BooleanValue enableSkylight;
-
-			public boolean shadersSupported = true;
-		}
-
 		public ForgeConfigSpec.ConfigValue<String> originDimension;
 		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
 		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
@@ -264,7 +219,6 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue checkPortalDestination;
 		public ForgeConfigSpec.BooleanValue portalLightning;
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
-		public ForgeConfigSpec.BooleanValue progressionRuleDefault;
 		public ForgeConfigSpec.BooleanValue disableUncrafting;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public ForgeConfigSpec.BooleanValue disableSkullCandles;

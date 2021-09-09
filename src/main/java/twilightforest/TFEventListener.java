@@ -864,19 +864,6 @@ public class TFEventListener {
 		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
 	}
 
-	/**
-	 * When world is loaded, check if the game rule is defined
-	 */
-	@SubscribeEvent
-	public static void worldLoaded(WorldEvent.Load event) {
-		LevelAccessor world = event.getWorld();
-
-		if (!world.isClientSide() && world instanceof Level && !((Level) world).getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).get()) {
-			TwilightForestMod.LOGGER.info("Loaded a world with the {} game rule not defined. Defining it.", TwilightForestMod.ENFORCED_PROGRESSION_RULE);
-			((Level) world).getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(TFConfig.COMMON_CONFIG.progressionRuleDefault.get(), ((Level) world).getServer());
-		}
-	}
-
 	// Teleport first-time players to Twilight Forest
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
