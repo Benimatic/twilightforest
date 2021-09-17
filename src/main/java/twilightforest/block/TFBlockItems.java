@@ -274,6 +274,16 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.mining_sapling));
 		r.register(blockItem(TFBlocks.sorting_sapling));
 		r.register(blockItem(TFBlocks.rainboak_sapling));
+
+		r.register(blockItem(TFBlocks.oak_banister));
+		r.register(blockItem(TFBlocks.spruce_banister));
+		r.register(blockItem(TFBlocks.birch_banister));
+		r.register(blockItem(TFBlocks.jungle_banister));
+		r.register(blockItem(TFBlocks.acacia_banister));
+		r.register(blockItem(TFBlocks.dark_oak_banister));
+		r.register(blockItem(TFBlocks.crimson_banister));
+		r.register(blockItem(TFBlocks.warped_banister));
+
 		r.register(blockItem(TFBlocks.twilight_oak_planks));
 		r.register(blockItem(TFBlocks.twilight_oak_stairs));
 		r.register(blockItem(TFBlocks.twilight_oak_slab));
@@ -284,6 +294,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.twilight_oak_trapdoor));
 		r.register(tallBlock(TFBlocks.twilight_oak_door));
 		r.register(signBlock(TFBlocks.twilight_oak_sign, TFBlocks.twilight_wall_sign));
+		r.register(blockItem(TFBlocks.twilight_oak_banister));
 		r.register(blockItem(TFBlocks.canopy_planks));
 		r.register(blockItem(TFBlocks.canopy_stairs));
 		r.register(blockItem(TFBlocks.canopy_slab));
@@ -294,6 +305,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.canopy_trapdoor));
 		r.register(tallBlock(TFBlocks.canopy_door));
 		r.register(signBlock(TFBlocks.canopy_sign, TFBlocks.canopy_wall_sign));
+		r.register(blockItem(TFBlocks.canopy_banister));
 		r.register(blockItem(TFBlocks.canopy_bookshelf));
 		r.register(blockItem(TFBlocks.mangrove_planks));
 		r.register(blockItem(TFBlocks.mangrove_stairs));
@@ -305,6 +317,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.mangrove_trapdoor));
 		r.register(tallBlock(TFBlocks.mangrove_door));
 		r.register(signBlock(TFBlocks.mangrove_sign, TFBlocks.mangrove_wall_sign));
+		r.register(blockItem(TFBlocks.mangrove_banister));
 		r.register(blockItem(TFBlocks.dark_planks));
 		r.register(blockItem(TFBlocks.dark_stairs));
 		r.register(blockItem(TFBlocks.dark_slab));
@@ -315,6 +328,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.dark_trapdoor));
 		r.register(tallBlock(TFBlocks.dark_door));
 		r.register(signBlock(TFBlocks.darkwood_sign, TFBlocks.darkwood_wall_sign));
+		r.register(blockItem(TFBlocks.darkwood_banister));
 		r.register(blockItem(TFBlocks.time_planks));
 		r.register(blockItem(TFBlocks.time_stairs));
 		r.register(blockItem(TFBlocks.time_slab));
@@ -325,6 +339,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.time_trapdoor));
 		r.register(tallBlock(TFBlocks.time_door));
 		r.register(signBlock(TFBlocks.time_sign, TFBlocks.time_wall_sign));
+		r.register(blockItem(TFBlocks.time_banister));
 		r.register(blockItem(TFBlocks.trans_planks));
 		r.register(blockItem(TFBlocks.trans_stairs));
 		r.register(blockItem(TFBlocks.trans_slab));
@@ -335,6 +350,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.trans_trapdoor));
 		r.register(tallBlock(TFBlocks.trans_door));
 		r.register(signBlock(TFBlocks.trans_sign, TFBlocks.trans_wall_sign));
+		r.register(blockItem(TFBlocks.trans_banister));
 		r.register(blockItem(TFBlocks.mine_planks));
 		r.register(blockItem(TFBlocks.mine_stairs));
 		r.register(blockItem(TFBlocks.mine_slab));
@@ -345,6 +361,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.mine_trapdoor));
 		r.register(tallBlock(TFBlocks.mine_door));
 		r.register(signBlock(TFBlocks.mine_sign, TFBlocks.mine_wall_sign));
+		r.register(blockItem(TFBlocks.mine_banister));
 		r.register(blockItem(TFBlocks.sort_planks));
 		r.register(blockItem(TFBlocks.sort_stairs));
 		r.register(blockItem(TFBlocks.sort_slab));
@@ -355,6 +372,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.sort_trapdoor));
 		r.register(tallBlock(TFBlocks.sort_door));
 		r.register(signBlock(TFBlocks.sort_sign, TFBlocks.sort_wall_sign));
+		r.register(blockItem(TFBlocks.sort_banister));
 	}
 
 	private static <B extends Block> Item blockItem(RegistryObject<B> block) {

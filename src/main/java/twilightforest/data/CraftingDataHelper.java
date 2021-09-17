@@ -306,6 +306,20 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locWood(name + "_wood"));
 	}
 
+	protected final void banisterBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		this.banisterBlock(consumer, name, result, material.get());
+	}
+
+	protected final void banisterBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Block material) {
+		ShapedRecipeBuilder.shaped(result.get(), 3)
+				.pattern("---")
+				.pattern("| |")
+				.define('-', material)
+				.define('|', Tags.Items.RODS_WOODEN)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locWood(name + "_banister"));
+	}
+
 	protected final void fieryConversion(Consumer<FinishedRecipe> consumer, Supplier<? extends Item> result, Item armor, int vials) {
 		ShapelessRecipeBuilder.shapeless(result.get())
 				.requires(armor)

@@ -571,6 +571,24 @@ public class CraftingGenerator extends CraftingDataHelper {
 		signBlock(consumer, "trans_sign", TFBlocks.trans_sign, TFBlocks.trans_planks);
 		signBlock(consumer, "twilight_oak_sign", TFBlocks.twilight_oak_sign, TFBlocks.twilight_oak_planks);
 
+		banisterBlock(consumer, "canopy", TFBlocks.canopy_banister, TFBlocks.canopy_slab);
+		banisterBlock(consumer, "darkwood", TFBlocks.darkwood_banister, TFBlocks.dark_slab);
+		banisterBlock(consumer, "mangrove", TFBlocks.mangrove_banister, TFBlocks.mangrove_slab);
+		banisterBlock(consumer, "mine", TFBlocks.mine_banister, TFBlocks.mine_slab);
+		banisterBlock(consumer, "sort", TFBlocks.sort_banister, TFBlocks.sort_slab);
+		banisterBlock(consumer, "time", TFBlocks.time_banister, TFBlocks.time_slab);
+		banisterBlock(consumer, "trans", TFBlocks.trans_banister, TFBlocks.trans_slab);
+		banisterBlock(consumer, "twilight_oak", TFBlocks.twilight_oak_banister, TFBlocks.twilight_oak_slab);
+
+		banisterBlock(consumer, "oak", TFBlocks.oak_banister, Blocks.OAK_SLAB);
+		banisterBlock(consumer, "spruce", TFBlocks.spruce_banister, Blocks.SPRUCE_SLAB);
+		banisterBlock(consumer, "birch", TFBlocks.birch_banister, Blocks.BIRCH_SLAB);
+		banisterBlock(consumer, "jungle", TFBlocks.jungle_banister, Blocks.JUNGLE_SLAB);
+		banisterBlock(consumer, "acacia", TFBlocks.acacia_banister, Blocks.ACACIA_SLAB);
+		banisterBlock(consumer, "dark_oak", TFBlocks.dark_oak_banister, Blocks.DARK_OAK_SLAB);
+		banisterBlock(consumer, "crimson", TFBlocks.crimson_banister, Blocks.CRIMSON_SLAB);
+		banisterBlock(consumer, "warped", TFBlocks.warped_banister, Blocks.WARPED_SLAB);
+
 	}
 
 	private void nagastoneRecipes(Consumer<FinishedRecipe> consumer) {

@@ -33,6 +33,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final Tag.Named<Block> TF_LOGS = BlockTags.bind(TwilightForestMod.prefix("logs").toString());
     public static final Tag.Named<Block> TF_FENCES = BlockTags.bind(TwilightForestMod.prefix("fences").toString());
     public static final Tag.Named<Block> TF_FENCE_GATES = BlockTags.bind(TwilightForestMod.prefix("fence_gates").toString());
+    public static final Tag.Named<Block> BANISTERS = BlockTags.bind(TwilightForestMod.prefix("banisters").toString());
 
     public static final Tag.Named<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.bind("forge:storage_blocks/arctic_fur");
     public static final Tag.Named<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.bind("forge:storage_blocks/carminite");
@@ -166,6 +167,25 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .add(TFBlocks.potted_twilight_oak_sapling.get(), TFBlocks.potted_canopy_sapling.get(), TFBlocks.potted_mangrove_sapling.get(), TFBlocks.potted_darkwood_sapling.get(), TFBlocks.potted_rainboak_sapling.get())
                 .add(TFBlocks.potted_hollow_oak_sapling.get(), TFBlocks.potted_time_sapling.get(), TFBlocks.potted_trans_sapling.get(), TFBlocks.potted_mine_sapling.get(), TFBlocks.potted_sort_sapling.get())
                 .add(TFBlocks.potted_mayapple.get(), TFBlocks.potted_fiddlehead.get(), TFBlocks.potted_mushgloom.get(), TFBlocks.potted_thorn.get(), TFBlocks.potted_green_thorn.get(), TFBlocks.potted_dead_thorn.get());
+
+        tag(BANISTERS).add(
+                TFBlocks.oak_banister.get(),
+                TFBlocks.spruce_banister.get(),
+                TFBlocks.birch_banister.get(),
+                TFBlocks.jungle_banister.get(),
+                TFBlocks.acacia_banister.get(),
+                TFBlocks.dark_oak_banister.get(),
+                TFBlocks.crimson_banister.get(),
+                TFBlocks.warped_banister.get(),
+                TFBlocks.twilight_oak_banister.get(),
+                TFBlocks.canopy_banister.get(),
+                TFBlocks.mangrove_banister.get(),
+                TFBlocks.darkwood_banister.get(),
+                TFBlocks.time_banister.get(),
+                TFBlocks.trans_banister.get(),
+                TFBlocks.mine_banister.get(),
+                TFBlocks.sort_banister.get()
+        );
 
         tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.fiery_block.get());
         tag(BlockTags.PORTALS).add(TFBlocks.twilight_portal.get());
@@ -335,7 +355,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
         tag(ORE_MAGNET_ROOT).add(TFBlocks.liveroot_block.get());
 
-        tag(BlockTags.MINEABLE_WITH_AXE).add(
+        tag(BlockTags.MINEABLE_WITH_AXE).addTag(BANISTERS).add(
                 TFBlocks.hedge.get(),
                 TFBlocks.root.get(),
                 TFBlocks.liveroot_block.get(),
