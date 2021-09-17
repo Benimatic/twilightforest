@@ -1116,6 +1116,8 @@
   "death.attack.twilightforest.leafBrain.item": "%1$s's brain was turned into leaves by %2$s using %3$s",
   "death.attack.twilightforest.lostWords": "%1$s was at a loss for words after being killed by %2$s",
   "death.attack.twilightforest.lostWords.item": "%1$s was at a loss for words after being killed by %2$s using %3$s",
+  "death.attack.twilightforest.schooled": "%1$s was schooled by %2$s",
+  "death.attack.twilightforest.schooled.item": "%1$s was schooled by %2$s using %3$s",
   "death.attack.twilightforest.snowballFight": "%1$s lost a snowball fight to %2$s",
   "death.attack.twilightforest.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",
   "death.attack.twilightforest.yeeted": "%1$s was yeeted for the last time by %2$s",
