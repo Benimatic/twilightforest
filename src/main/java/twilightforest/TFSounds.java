@@ -107,6 +107,7 @@ public final class TFSounds {
 	public static final SoundEvent KING_SPIDER_DEATH = createEvent("entity.twilightforest.kingspider.death");
 	public static final SoundEvent KING_SPIDER_HURT = createEvent("entity.twilightforest.kingspider.hurt");
 	public static final SoundEvent KING_SPIDER_STEP = createEvent("entity.twilightforest.kingspider.step");
+	public static final SoundEvent KNIGHTMETAL_EQUIP = createEvent("item.twilightforest.armor.equip_knightmetal");
 	public static final SoundEvent KOBOLD_AMBIENT = createEvent("entity.twilightforest.kobold.ambient");
 	public static final SoundEvent KOBOLD_DEATH = createEvent("entity.twilightforest.kobold.death");
 	public static final SoundEvent KOBOLD_HURT = createEvent("entity.twilightforest.kobold.hurt");
@@ -296,6 +297,7 @@ public final class TFSounds {
 				ICE_GUARDIAN_AMBIENT, ICE_GUARDIAN_DEATH, ICE_GUARDIAN_HURT,
 				JET_ACTIVE, JET_POP, JET_START,
 				KING_SPIDER_AMBIENT, KING_SPIDER_DEATH, KING_SPIDER_HURT, KING_SPIDER_STEP,
+				KNIGHTMETAL_EQUIP,
 				KOBOLD_AMBIENT, KOBOLD_DEATH, KOBOLD_HURT, KOBOLD_MUNCH,
 				LAMP_BURN,
 				LICH_AMBIENT, LICH_CLONE_HURT, LICH_DEATH, LICH_HURT, LICH_SHOOT, LICH_TELEPORT,
