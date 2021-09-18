@@ -54,8 +54,13 @@ public class LifedrainScepterItem extends Item {
 	}
 
 	@Override
-	public float getXpRepairRatio(ItemStack stack) {
-		return 1f;
+	public boolean isEnchantable(ItemStack pStack) {
+		return false;
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
 	}
 
 	/**
