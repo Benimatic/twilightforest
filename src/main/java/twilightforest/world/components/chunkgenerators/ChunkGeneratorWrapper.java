@@ -41,11 +41,12 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
         this.delegate.applyCarvers(seed, biomeManager, chunkAccess, carving);
     }
 
-    // If this ends up causing problems because we're delegating this protected method then just delete it
-    @Override
-    public Aquifer createAquifer(ChunkAccess chunkAccess) {
-        return this.delegate.createAquifer(chunkAccess);
-    }
+    // I'd rather cut our losses than to attempt delegating this method because reflection would likely end up being
+    // worse than accepting the potential problems of not delegating this method
+    //@Override
+    //public Aquifer createAquifer(ChunkAccess chunkAccess) {
+    //    return this.delegate.createAquifer(chunkAccess);
+    //}
 
     @Override
     @Nullable
