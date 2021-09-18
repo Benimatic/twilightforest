@@ -3115,6 +3115,7 @@ ee8688ecef9188c0273db8cacf2d56e70c36175b data/twilightforest/tags/entity_types/b
 34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/twilightforest/tags/items/fence_gates.json
 582f0cd48d428219bf2a684ca764880337688177 data/twilightforest/tags/items/fences.json
 c472903588ff5fc0086542f83a8d73059a3f08e6 data/twilightforest/tags/items/fiery_vial.json
+a9c6ca6829cd484bbfa78c09806e381a4761eac8 data/twilightforest/tags/items/kobold_pacification_breads.json
 a37b73dfad5c44955a5937b4b3a3ffdbb00be92b data/twilightforest/tags/items/logs.json
 84260beae7e3103b490b14db8e75029fecccc738 data/twilightforest/tags/items/mangrove_logs.json
 42aae51d05e2cf26bc4c7badb73a3f881dfc04f9 data/twilightforest/tags/items/mining_logs.json

@@ -56,6 +56,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	public static final Tag.Named<Item> WIP = ItemTags.bind(TwilightForestMod.prefix("wip").toString());
 	public static final Tag.Named<Item> NYI = ItemTags.bind(TwilightForestMod.prefix("nyi").toString());
 
+	public static final Tag.Named<Item> KOBOLD_PACIFICATION_BREADS = ItemTags.bind(TwilightForestMod.prefix("kobold_pacification_breads").toString());
+
 	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
 		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);
 	}
@@ -183,5 +185,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.stone_twist_thin.get().asItem(),
 				TFItems.ore_meter.get()
 		);
+
+		tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
 	}
 }
