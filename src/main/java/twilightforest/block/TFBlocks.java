@@ -468,6 +468,7 @@ public class TFBlocks {
 		ComposterBlock.add(0.5F, transformation_sapling.get());
 		ComposterBlock.add(0.5F, mining_sapling.get());
 		ComposterBlock.add(0.5F, sorting_sapling.get());
+		ComposterBlock.add(0.5F, torchberry_plant.get());
 		ComposterBlock.add(0.65F, huge_mushgloom_stem.get());
 		ComposterBlock.add(0.65F, huge_waterlily.get());
 		ComposterBlock.add(0.65F, liveroot_block.get());
