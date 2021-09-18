@@ -25,9 +25,9 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.WorldUtil;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.HashMap;
@@ -151,7 +151,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean usesTwilightChunkGenerator(ServerLevel world) {
-		return world.getChunkSource().generator instanceof ChunkGeneratorTwilightBase;
+		return world.getChunkSource().generator instanceof ChunkGeneratorTwilight;
 	}
 
 	public static boolean isProgressionEnforced(Level world) {
@@ -166,7 +166,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static void markStructureConquered(Level world, BlockPos pos, TFFeature feature) {
-		ChunkGeneratorTwilightBase generator = WorldUtil.getChunkGenerator(world);
+		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
 			//generator.setStructureConquered(pos, true);
 		}

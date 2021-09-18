@@ -27,7 +27,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -250,7 +250,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkStructure(Level world, BlockPos pos) {
-		ChunkGeneratorTwilightBase generator = WorldUtil.getChunkGenerator(world);
+		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null)
 			return !TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0).isPresent();
 		return true;

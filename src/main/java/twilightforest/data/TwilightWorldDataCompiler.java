@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
 import net.minecraft.world.level.levelgen.NoiseSlideSettings;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.ConfiguredWorldCarvers;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.ConfiguredSurfaceBuilders;
@@ -158,7 +158,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		this.getOrCreateInRegistry(this.dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), () -> twilightType);
 
 		return ImmutableMap.of(
-				TwilightForestMod.prefix("twilight_forest"), new LevelStem(() -> twilightType, new ChunkGeneratorTwilightBase(forestChunkGen, true, true))//,
+				TwilightForestMod.prefix("twilight_forest"), new LevelStem(() -> twilightType, new ChunkGeneratorTwilight(forestChunkGen, true, true))//,
 				//TwilightForestMod.prefix("skylight_forest"), new LevelStem(() -> twilightType, skyChunkGen)
 				// TODO add *actual* twilightforest:void world without islands
 		);
