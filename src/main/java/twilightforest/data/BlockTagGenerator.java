@@ -393,6 +393,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.canopy_leaves.get(),
                 TFBlocks.mangrove_leaves.get(),
                 TFBlocks.dark_leaves.get(),
+                TFBlocks.rainboak_leaves.get(),
                 TFBlocks.time_leaves.get(),
                 TFBlocks.transformation_leaves.get(),
                 TFBlocks.mining_leaves.get(),

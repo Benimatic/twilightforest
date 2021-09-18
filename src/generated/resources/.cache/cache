@@ -2095,7 +2095,7 @@ e5853a42bab532833b32f26e9ae96a91419ffaf9 data/minecraft/tags/blocks/flower_pots.
 7e0b55c221c967b9b9d96fdc65d02dc6d65d40fe data/minecraft/tags/blocks/logs.json
 13e8b297acb446ab4973b0b0e90ebf3ba946d27a data/minecraft/tags/blocks/logs_that_burn.json
 19e18e2740450d9845c8e4befe49a0014162f2bc data/minecraft/tags/blocks/mineable/axe.json
-d24c8071672d7bcfb638389497d5dcb0fb7ac76e data/minecraft/tags/blocks/mineable/hoe.json
+8cfa624c24b51fce179af575f70284474860af27 data/minecraft/tags/blocks/mineable/hoe.json
 59762283c18e4ec1e709a0f22f2c1208134784fd data/minecraft/tags/blocks/mineable/pickaxe.json
 cc30a9b7b3771bd7245b4df42b3f94e715f79df8 data/minecraft/tags/blocks/mineable/shovel.json
 c4f2826cb96d47f4f256f7f394846f4e0e17aed6 data/minecraft/tags/blocks/planks.json
