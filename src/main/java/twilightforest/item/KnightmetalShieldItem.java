@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.tags.ItemTags;
@@ -13,6 +12,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import twilightforest.data.ItemTagGenerator;
 
 public class KnightmetalShieldItem extends ShieldItem {
@@ -32,7 +33,7 @@ public class KnightmetalShieldItem extends ShieldItem {
     }
 
     @Override
-    public boolean isShield(ItemStack stack, @Nullable LivingEntity entity) {
-        return true;
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return ToolActions.DEFAULT_SHIELD_ACTIONS.contains(toolAction) || super.canPerformAction(stack, toolAction);
     }
 }
