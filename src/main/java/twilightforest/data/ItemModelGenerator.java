@@ -410,7 +410,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
 		singleTexTool(TFItems.crumble_horn);
 		singleTexTool(TFItems.peacock_fan);
-		ModelFile queenAlt =  generated("moonworm_queen_alt", prefix("items/moonworm_queen_alt"));
+		ModelFile queenAlt =  tool("moonworm_queen_alt", prefix("items/moonworm_queen_alt"));
 		singleTexTool(TFItems.moonworm_queen).override().predicate(prefix("alt"), 1).model(queenAlt).end();
 		singleTex(TFItems.charm_of_keeping_1);
 		singleTex(TFItems.charm_of_keeping_2);
