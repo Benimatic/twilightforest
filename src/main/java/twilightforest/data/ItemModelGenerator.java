@@ -540,6 +540,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(prefix("potion_level"), 3).model(gfill3).end()
 				.override().predicate(prefix("potion_level"), 4).model(gfill4).end();
 
+		generated(TFItems.naga_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+		generated(TFItems.lich_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+		generated(TFItems.minoshroom_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+		generated(TFItems.hydra_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+		generated(TFItems.knight_phantom_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+		generated(TFItems.ur_ghast_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+		generated(TFItems.alpha_yeti_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+		generated(TFItems.snow_queen_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+		generated(TFItems.questing_ram_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
+
 		//compat stuff
 		ModelFile freshBook = generated("logbook_0", prefix("items/logbook/fresh"));
 		ModelFile usedBook = generated("logbook_1", prefix("items/logbook/used"));

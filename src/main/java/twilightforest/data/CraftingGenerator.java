@@ -46,6 +46,16 @@ public class CraftingGenerator extends CraftingDataHelper {
 		nagastoneRecipes(consumer);
 		darkTowerRecipes(consumer);
 		castleRecipes(consumer);
+		
+		bannerPattern(consumer, "naga_banner_pattern", TFBlocks.naga_trophy, TFItems.naga_banner_pattern);
+		bannerPattern(consumer, "lich_banner_pattern", TFBlocks.lich_trophy, TFItems.lich_banner_pattern);
+		bannerPattern(consumer, "minoshroom_banner_pattern", TFBlocks.minoshroom_trophy, TFItems.minoshroom_banner_pattern);
+		bannerPattern(consumer, "hydra_banner_pattern", TFBlocks.hydra_trophy, TFItems.hydra_banner_pattern);
+		bannerPattern(consumer, "knight_phantom_banner_pattern", TFBlocks.knight_phantom_trophy, TFItems.knight_phantom_banner_pattern);
+		bannerPattern(consumer, "ur_ghast_banner_pattern", TFBlocks.ur_ghast_trophy, TFItems.ur_ghast_banner_pattern);
+		bannerPattern(consumer, "alpha_yeti_banner_pattern", TFBlocks.yeti_trophy, TFItems.alpha_yeti_banner_pattern);
+		bannerPattern(consumer, "snow_queen_banner_pattern", TFBlocks.snow_queen_trophy, TFItems.snow_queen_banner_pattern);
+		bannerPattern(consumer, "questing_ram_banner_pattern", TFBlocks.quest_ram_trophy, TFItems.questing_ram_banner_pattern);
 
 		slabBlock(consumer, "aurora_slab", TFBlocks.aurora_slab, TFBlocks.aurora_block);
 		ShapedRecipeBuilder.shaped(TFBlocks.aurora_pillar.get(), 2)

@@ -8,7 +8,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -25,12 +27,6 @@ import java.util.UUID;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BowlFoodItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.Tiers;
 
 public class TFItems {
 	public static final FoodProperties EXPERIMENT_115 = new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).build();
@@ -162,6 +158,15 @@ public class TFItems {
 	public static final RegistryObject<Item> cube_talisman = ITEMS.register("cube_talisman", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> cube_of_annihilation = ITEMS.register("cube_of_annihilation", () -> new CubeOfAnnihilationItem(unstackable().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> moon_dial = ITEMS.register("moon_dial", () -> new Item(defaultBuilder()));
+	public static final RegistryObject<Item> naga_banner_pattern = ITEMS.register("naga_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_NAGA", "tf_naga", "tfn", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> lich_banner_pattern = ITEMS.register("lich_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_LICH", "tf_lich", "tfl", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> minoshroom_banner_pattern = ITEMS.register("minoshroom_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_MINOSHROOM", "tf_minoshroom", "tfm", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> hydra_banner_pattern = ITEMS.register("hydra_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_HYDRA", "tf_hydra", "tfh", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> knight_phantom_banner_pattern = ITEMS.register("knight_phantom_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_PHANTOMS", "tf_phantoms", "tfp", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> ur_ghast_banner_pattern = ITEMS.register("ur_ghast_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_UR_GHAST", "tf_ur_ghast", "tfg", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> alpha_yeti_banner_pattern = ITEMS.register("alpha_yeti_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_ALPHA_YETI", "tf_alpha_yeti", "tfy", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> snow_queen_banner_pattern = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_SNOW_QUEEN", "tf_snow_queen", "tfq", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> questing_ram_banner_pattern = ITEMS.register("questing_ram_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_QUEST_RAM", "tf_quest_ram", "tfr", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
 
 	public static CreativeModeTab creativeTab = new CreativeModeTab(TwilightForestMod.ID) {
 		@Override

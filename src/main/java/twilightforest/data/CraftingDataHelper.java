@@ -14,11 +14,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -266,6 +268,14 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.define('#', material.get())
 				.unlockedBy("has_item", has(material.get()))
 				.save(consumer, locWood(name + "_slab"));
+	}
+
+	protected final void bannerPattern(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> trophy, Supplier<? extends Item> result) {
+		ShapelessRecipeBuilder.shapeless(result.get())
+				.requires(Ingredient.of(ItemTagGenerator.PAPER))
+				.requires(Ingredient.of(trophy.get().asItem()))
+				.unlockedBy("has_trophy", has(trophy.get()))
+				.save(consumer);
 	}
 
 	protected final void trapdoorBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
