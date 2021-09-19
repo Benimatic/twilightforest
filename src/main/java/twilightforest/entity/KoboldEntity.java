@@ -26,6 +26,7 @@ import twilightforest.TFSounds;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.entity.ai.FlockToSameKindGoal;
 import twilightforest.entity.ai.PanicOnFlockDeathGoal;
+import twilightforest.item.TFItems;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -189,9 +190,9 @@ public class KoboldEntity extends Monster {
 	//change the timer based on difficulty
 	private int difficultyTime() {
 		switch (level.getDifficulty()) {
-			case EASY -> { return 20; }
-			case NORMAL -> { return 10; }
-			case HARD -> { return 5; }
+			case EASY -> { return 400; }
+			case NORMAL -> { return 200; }
+			case HARD -> { return 100; }
 		}
 		return 10;
 	}
@@ -216,8 +217,11 @@ public class KoboldEntity extends Monster {
 	}
 
 	@Override
-	protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit) {
-		super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
+	protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
+		super.dropCustomDeathLoot(source, looting, recentlyHit);
+		if(source.getEntity() instanceof Player player && !player.isCreative() && player.getMainHandItem().is(TFItems.glass_sword.get()) && !player.getMainHandItem().getOrCreateTag().contains("Unbreakable")) {
+			this.spawnAtLocation(ItemTagGenerator.TF_MUSIC_DISCS.getRandomElement(random));
+		}
 	}
 
 	@Override
