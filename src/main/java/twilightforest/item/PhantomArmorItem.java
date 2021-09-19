@@ -16,9 +16,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.BindingCurseEnchantment;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.VanishingCurseEnchantment;
+import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -26,9 +24,11 @@ import net.minecraftforge.client.IItemRenderProperties;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
+import twilightforest.data.CustomTagGenerator;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class PhantomArmorItem extends ArmorItem {
@@ -46,7 +46,19 @@ public class PhantomArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !(enchantment instanceof VanishingCurseEnchantment) && !(enchantment instanceof BindingCurseEnchantment) && enchantment.category.canEnchant(stack.getItem());
+		return !CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS.contains(enchantment);
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
+
+		for (Enchantment ench : enchants.keySet()) {
+			if (CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS.contains(ench)) {
+				return false;
+			}
+		}
+		return super.isBookEnchantable(stack, book);
 	}
 
 	@Override
