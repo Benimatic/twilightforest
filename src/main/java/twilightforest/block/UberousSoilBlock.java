@@ -27,16 +27,8 @@ import twilightforest.item.TFItems;
 import java.util.Random;
 
 public class UberousSoilBlock extends Block implements BonemealableBlock {
-	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F));
-
 	protected UberousSoilBlock(Properties props) {
 		super(props);
-	}
-
-	@Override
-	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		return AABB;
 	}
 
 	@Override
