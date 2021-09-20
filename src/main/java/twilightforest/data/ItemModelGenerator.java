@@ -189,6 +189,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.tome_spawner.get(), prefix("block/death_tome_spawner_10"));
 		toBlock(TFBlocks.empty_bookshelf.get());
 		toBlock(TFBlocks.canopy_bookshelf.get());
+		toBlockModel(TFBlocks.candelabra.get(), "candelabra_4_5_4_plain");
 		//toBlock(TFBlocks.lapis_block.get());
 
 		withExistingParent(TFBlocks.oak_banister.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/oak_planks");

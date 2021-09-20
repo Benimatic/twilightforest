@@ -2,10 +2,11 @@ package twilightforest.data;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.core.Direction;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -17,38 +18,10 @@ import twilightforest.enums.HugeLilypadPiece;
 import twilightforest.enums.TowerDeviceVariant;
 
 import javax.annotation.Nonnull;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import static twilightforest.TwilightForestMod.prefix;
-
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ButtonBlock;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.HugeMushroomBlock;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.state.properties.AttachFace;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.block.state.properties.StairsShape;
 
 public class BlockstateGenerator extends BlockStateProvider {
 	public BlockstateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
@@ -369,6 +342,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 		casketStuff();
 		stonePillar();
+		candelabra();
 	}
 
 	private void registerForceFields() {
@@ -1545,6 +1519,92 @@ public class BlockstateGenerator extends BlockStateProvider {
 			ModelFile model = m.get(state.getValue(HugeLilyPadBlock.PIECE));
 			return ConfiguredModel.builder().rotationY(rotY).modelFile(model).build();
 		});
+	}
+
+	@SuppressWarnings("SuspiciousNameCombination")
+	private void candelabra() {
+		// TODO variants
+		final ModelFile candelabra = this.buildCandelabra(4, 5, 4);
+		final ModelFile candelabraWall = this.buildWallCandelabra(4, 5, 4);
+		final List<ModelFile> candelabras = new ArrayList<>();
+		final List<ModelFile> wallCandelabras = new ArrayList<>();
+
+		final int minHeight = 4;
+		final int maxHeight = 5;
+		for (int right = minHeight; right <= maxHeight; right++) {
+			for (int center = minHeight; center <= maxHeight; center++) {
+				for (int left = minHeight; left <= maxHeight; left++) {
+					candelabras.add(this.buildCandelabra(left, center, right));
+					wallCandelabras.add(this.buildWallCandelabra(left, center, right));
+				}
+			}
+		}
+
+		/*ConfiguredModel[] plankModels = ConfiguredModel.builder()
+				.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath(), tex0)).nextModel()
+				.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_1", tex1)).nextModel()
+				.weight(1).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_2", tex2)).nextModel()
+				.weight(1).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_3", tex3)).build();*/
+
+		this.getVariantBuilder(TFBlocks.candelabra.get()).forAllStates(state -> {
+			Direction direction = state.getValue(CandelabraBlock.FACING);
+			boolean onWall = state.getValue(CandelabraBlock.ON_WALL);
+			boolean lit = state.getValue(CandelabraBlock.LIT);
+
+			ConfiguredModel.Builder<?> stateBuilder = ConfiguredModel.builder();
+
+			Iterator<ModelFile> models = onWall ? wallCandelabras.iterator() : candelabras.iterator();
+
+			while (models.hasNext()) {
+				ModelFile model = models.next();
+				stateBuilder.modelFile(this.models().getBuilder(model.getLocation().toString() + "_plain" + (lit ? "_lit" : "")).parent(model).texture("candle", lit ? "minecraft:block/candle_lit" : "minecraft:block/candle")).rotationY((int) direction.toYRot());
+
+				if (models.hasNext())
+					stateBuilder = stateBuilder.nextModel();
+			}
+
+			return stateBuilder.build();
+		});
+	}
+
+	private ModelFile buildCandelabra(final int leftHeight, final int centerHeight, final int rightHeight) {
+		return this.models().withExistingParent("candelabra_" + leftHeight + "_" + centerHeight + "_" + rightHeight, "minecraft:block/block").texture("candelabra", "block/candelabra")
+				.element().from(0, 1, 8).to(16, 7, 8).face(Direction.NORTH).uvs(0, 0, 16, 6).texture("#candelabra").end().face(Direction.SOUTH).uvs(16, 0, 0, 6).texture("#candelabra").end().end()
+				.element().from(8, 1, 5).to(8, 7, 11).face(Direction.EAST).uvs(0, 6, 6, 12).texture("#candelabra").end().face(Direction.WEST).uvs(6, 6, 0, 12).texture("#candelabra").end().end()
+				.element().from(1, 7, 6).to(5, 8, 10).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
+				.element().from(6, 7, 6).to(10, 8, 10).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
+				.element().from(11, 7, 6).to(15, 8, 10).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
+				.element().from(6, 0, 6).to(10, 1, 10).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
+				.element().from(2, 8, 7).to(4, 8 + leftHeight, 9).face(Direction.NORTH).end().face(Direction.SOUTH).end().face(Direction.WEST).end().face(Direction.EAST).end().faces((direction, builder) -> builder.uvs(0, 8, 2, 8 + leftHeight).texture("#candle")).face(Direction.UP).uvs(0, 6, 2, 8).texture("#candle").end().end()
+				.element().from(7, 8, 7).to(9, 8 + centerHeight, 9).face(Direction.NORTH).end().face(Direction.SOUTH).end().face(Direction.WEST).end().face(Direction.EAST).end().faces((direction, builder) -> builder.uvs(0, 8, 2, 8 + centerHeight).texture("#candle")).face(Direction.UP).uvs(0, 6, 2, 8).texture("#candle").end().end()
+				.element().from(12, 8, 7).to(14, 8 + rightHeight, 9).face(Direction.NORTH).end().face(Direction.SOUTH).end().face(Direction.WEST).end().face(Direction.EAST).end().faces((direction, builder) -> builder.uvs(0, 8, 2, 8 + rightHeight).texture("#candle")).face(Direction.UP).uvs(0, 6, 2, 8).texture("#candle").end().end()
+				.element().from(2.5f, 8 + leftHeight, 8).to(3.5f, 9 + leftHeight, 8).rotation().angle(45).axis(Direction.Axis.Y).origin(3, 8 + leftHeight, 8).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(2.5f, 8 + leftHeight, 8).to(3.5f, 9 + leftHeight, 8).rotation().angle(-45).axis(Direction.Axis.Y).origin(3, 8 + leftHeight, 8).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(7.5f, 8 + centerHeight, 8).to(8.5f, 9 + centerHeight, 8).rotation().angle(45).axis(Direction.Axis.Y).origin(8, 8 + centerHeight, 8).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(7.5f, 8 + centerHeight, 8).to(8.5f, 9 + centerHeight, 8).rotation().angle(-45).axis(Direction.Axis.Y).origin(8, 8 + centerHeight, 8).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(12.5f, 8 + rightHeight, 8).to(13.5f, 9 + rightHeight, 8).rotation().angle(45).axis(Direction.Axis.Y).origin(13, 8 + rightHeight, 8).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(12.5f, 8 + rightHeight, 8).to(13.5f, 9 + rightHeight, 8).rotation().angle(-45).axis(Direction.Axis.Y).origin(13, 8 + rightHeight, 8).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				;
+	}
+
+	private ModelFile buildWallCandelabra(final int leftHeight, final int centerHeight, final int rightHeight) {
+		return this.models().withExistingParent("candelabra_wall_" + leftHeight + "_" + centerHeight + "_" + rightHeight, "minecraft:block/block").texture("candelabra", "block/candelabra")
+				.element().from(0, 1, 12).to(16, 7, 12).face(Direction.NORTH).uvs(0, 0, 16, 6).texture("#candelabra").end().face(Direction.SOUTH).uvs(16, 0, 0, 6).texture("#candelabra").end().end()
+				.element().from(8, 1, 9).to(8, 7, 15).face(Direction.EAST).uvs(0, 6, 6, 12).texture("#candelabra").end().face(Direction.WEST).uvs(6, 6, 0, 12).texture("#candelabra").end().end()
+				.element().from(1, 7, 10).to(5, 8, 14).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
+				.element().from(6, 7, 10).to(10, 8, 14).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
+				.element().from(11, 7, 10).to(15, 8, 14).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
+				.element().from(6, 2, 15).to(10, 6, 16).allFaces((direction, builder) -> builder.uvs(direction.getAxis() == Direction.Axis.X ? 3 : 0, 12, 4, direction.getAxis() == Direction.Axis.Y ? 13 : 16).texture("#candelabra")).end()
+				.element().from(2, 8, 11).to(4, 8 + leftHeight, 13).face(Direction.NORTH).end().face(Direction.SOUTH).end().face(Direction.WEST).end().face(Direction.EAST).end().faces((direction, builder) -> builder.uvs(0, 8, 2, 8 + leftHeight).texture("#candle")).face(Direction.UP).uvs(0, 6, 2, 8).texture("#candle").end().end()
+				.element().from(7, 8, 11).to(9, 8 + centerHeight, 13).face(Direction.NORTH).end().face(Direction.SOUTH).end().face(Direction.WEST).end().face(Direction.EAST).end().faces((direction, builder) -> builder.uvs(0, 8, 2, 8 + centerHeight).texture("#candle")).face(Direction.UP).uvs(0, 6, 2, 8).texture("#candle").end().end()
+				.element().from(12, 8, 11).to(14, 8 + rightHeight, 13).face(Direction.NORTH).end().face(Direction.SOUTH).end().face(Direction.WEST).end().face(Direction.EAST).end().faces((direction, builder) -> builder.uvs(0, 8, 2, 8 + rightHeight).texture("#candle")).face(Direction.UP).uvs(0, 6, 2, 8).texture("#candle").end().end()
+				.element().from(2.5f, 8 + leftHeight, 12).to(3.5f, 9 + leftHeight, 12).rotation().angle(45).axis(Direction.Axis.Y).origin(3, 8 + leftHeight, 12).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(2.5f, 8 + leftHeight, 12).to(3.5f, 9 + leftHeight, 12).rotation().angle(-45).axis(Direction.Axis.Y).origin(3, 8 + leftHeight, 12).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(7.5f, 8 + centerHeight, 12).to(8.5f, 9 + centerHeight, 12).rotation().angle(45).axis(Direction.Axis.Y).origin(8, 8 + centerHeight, 12).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(7.5f, 8 + centerHeight, 12).to(8.5f, 9 + centerHeight, 12).rotation().angle(-45).axis(Direction.Axis.Y).origin(8, 8 + centerHeight, 12).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(12.5f, 8 + rightHeight, 12).to(13.5f, 9 + rightHeight, 12).rotation().angle(45).axis(Direction.Axis.Y).origin(13, 8 + rightHeight, 12).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				.element().from(12.5f, 8 + rightHeight, 12).to(13.5f, 9 + rightHeight, 12).rotation().angle(-45).axis(Direction.Axis.Y).origin(13, 8 + rightHeight, 12).end().face(Direction.NORTH).uvs(0, 5, 1, 6).texture("#candle").end().face(Direction.SOUTH).uvs(0, 5, 1, 6).texture("#candle").end().end()
+				;
 	}
 
 	private void perFaceBlock(Block b, ResourceLocation inside, ResourceLocation outside) {

@@ -393,6 +393,8 @@
   "block.twilightforest.keepsake_casket": "Keepsake Casket",
   "block.twilightforest.casket.broken": "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.",
   "block.twilightforest.casket.locked": "This Casket can only be opened by %s!",
+  
+  "block.twilightforest.candelabra": "Candelabra",
 
   "block.twilightforest.zombie_skull_candle": "Zombie Skull Candle",
   "block.twilightforest.zombie_wall_skull_candle": "Zombie Wall Skull Candle",

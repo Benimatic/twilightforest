@@ -275,6 +275,7 @@ public class TFBlocks {
 	public static final RegistryObject<RotatedPillarBlock> stone_bold = BLOCKS.register("stone_pillar_bold", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final RegistryObject<Block> tome_spawner = BLOCKS.register("death_tome_spawner", () -> new TomeSpawnerBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> empty_bookshelf = BLOCKS.register("empty_bookshelf", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(1.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<CandelabraBlock> candelabra = BLOCKS.register("candelabra", () -> new CandelabraBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.STONE).lightLevel(state -> state.getValue(CandelabraBlock.LIT) ? 15 : 0)));
 
 	public static final RegistryObject<AbstractSkullCandleBlock> zombie_skull_candle = BLOCKS.register("zombie_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.ZOMBIE, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));
 	public static final RegistryObject<AbstractSkullCandleBlock> zombie_wall_skull_candle = BLOCKS.register("zombie_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.ZOMBIE, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD).lightLevel(AbstractSkullCandleBlock.LIGHT_EMISSION)));

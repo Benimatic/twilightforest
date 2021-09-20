@@ -90,6 +90,7 @@ public class TFBlockItems {
 				});
 			}
 		}, TFBlocks.keepsake_casket));
+		r.register(blockItem(TFBlocks.candelabra));
 		r.register(blockItem(TFBlocks.stone_bold));
 		r.register(blockItem(TFBlocks.tome_spawner));
 		r.register(blockItem(TFBlocks.empty_bookshelf));
