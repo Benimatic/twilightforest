@@ -69,7 +69,13 @@
       "minecraft:vines",
       "minecraft:brown_mushroom_swamp",
       "twilightforest:tree/swampy_oak_trees",
-      "twilightforest:tree/hollow_placer"
+      "twilightforest:tree/hollow_placer",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:small_log"
     ]
   ],
   "starts": [

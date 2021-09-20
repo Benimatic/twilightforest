@@ -52,23 +52,23 @@
       "twilightforest:troll_roots"
     ],
     [
-      "minecraft:mega_spruce",
-      "twilightforest:tree/mega_spruce_no_podzol",
-      "minecraft:spruce",
-      "minecraft:mega_spruce",
-      "minecraft:spruce",
-      "minecraft:forest_rock",
-      "minecraft:patch_grass_taiga",
+      "twilightforest:druid_hut",
+      "twilightforest:well",
+      "twilightforest:grove_ruins",
+      "twilightforest:foundation",
       "twilightforest:stone_circle",
       "twilightforest:outside_stalagmite",
       "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
       "twilightforest:small_log",
-      "twilightforest:well",
-      "twilightforest:foundation",
-      "twilightforest:grove_ruins",
-      "twilightforest:druid_hut"
+      "minecraft:mega_spruce",
+      "twilightforest:tree/mega_spruce_no_podzol",
+      "minecraft:spruce",
+      "minecraft:mega_spruce",
+      "minecraft:spruce",
+      "minecraft:forest_rock",
+      "minecraft:patch_grass_taiga"
     ]
   ],
   "starts": [

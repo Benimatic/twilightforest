@@ -10,13 +10,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
-import twilightforest.world.components.feature.templates.DruidHutFeature;
-import twilightforest.world.components.feature.templates.GroveRuinsFeature;
-import twilightforest.world.components.feature.templates.StoneCircleFeature;
+import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
 import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
 import twilightforest.world.components.feature.trees.growers.SnowUnderTrees;
-import twilightforest.world.components.feature.templates.GraveyardFeature;
 
 //I'd call this TFFeatures, but that'd be confused with TFFeature.
 
@@ -81,7 +78,7 @@ public class TFBiomeFeatures {
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WEBS = FEATURES.register("webs", () ->
 			new TFGenWebs(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WELL = FEATURES.register("well", () ->
-			new TFGenWell(NoneFeatureConfiguration.CODEC));
+			new WellFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WOOD_ROOTS = FEATURES.register("wood_roots", () ->
 			new TFGenWoodRoots(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SNOW_UNDER_TREES = FEATURES.register("snow_under_trees", () ->
