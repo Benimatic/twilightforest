@@ -1568,7 +1568,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private ModelFile buildCandelabra(final int leftHeight, final int centerHeight, final int rightHeight) {
-		return this.models().withExistingParent("candelabra_" + leftHeight + "_" + centerHeight + "_" + rightHeight, "minecraft:block/block").texture("candelabra", "block/candelabra")
+		return this.models().withExistingParent("candelabra_" + leftHeight + "_" + centerHeight + "_" + rightHeight, "minecraft:block/block").texture("particle", "#candelabra").texture("candelabra", "block/candelabra")
 				.element().from(0, 1, 8).to(16, 7, 8).face(Direction.NORTH).uvs(0, 0, 16, 6).texture("#candelabra").end().face(Direction.SOUTH).uvs(16, 0, 0, 6).texture("#candelabra").end().end()
 				.element().from(8, 1, 5).to(8, 7, 11).face(Direction.EAST).uvs(0, 6, 6, 12).texture("#candelabra").end().face(Direction.WEST).uvs(6, 6, 0, 12).texture("#candelabra").end().end()
 				.element().from(1, 7, 6).to(5, 8, 10).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
@@ -1588,7 +1588,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private ModelFile buildWallCandelabra(final int leftHeight, final int centerHeight, final int rightHeight) {
-		return this.models().withExistingParent("candelabra_wall_" + leftHeight + "_" + centerHeight + "_" + rightHeight, "minecraft:block/block").texture("candelabra", "block/candelabra")
+		return this.models().withExistingParent("candelabra_wall_" + leftHeight + "_" + centerHeight + "_" + rightHeight, "minecraft:block/block").texture("particle", "#candelabra").texture("candelabra", "block/candelabra")
 				.element().from(0, 1, 12).to(16, 7, 12).face(Direction.NORTH).uvs(0, 0, 16, 6).texture("#candelabra").end().face(Direction.SOUTH).uvs(16, 0, 0, 6).texture("#candelabra").end().end()
 				.element().from(8, 1, 9).to(8, 7, 15).face(Direction.EAST).uvs(0, 6, 6, 12).texture("#candelabra").end().face(Direction.WEST).uvs(6, 6, 0, 12).texture("#candelabra").end().end()
 				.element().from(1, 7, 10).to(5, 8, 14).allFaces((direction, builder) -> builder.uvs(0, 12, 4, direction.getAxis().isHorizontal() ? 13 : 16).texture("#candelabra")).end()
