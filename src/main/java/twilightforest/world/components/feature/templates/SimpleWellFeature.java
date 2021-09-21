@@ -5,10 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.BarrelBlock;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
@@ -21,11 +18,11 @@ import twilightforest.world.components.processors.CobblePlankSwizzler;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class WellFeature extends TemplateFeature<NoneFeatureConfiguration> {
-    private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/well_top");
-    private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/well_bottom");
+public class SimpleWellFeature extends TemplateFeature<NoneFeatureConfiguration> {
+    private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/simple_well_top");
+    private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/simple_well_bottom");
 
-    public WellFeature(Codec<NoneFeatureConfiguration> config) {
+    public SimpleWellFeature(Codec<NoneFeatureConfiguration> config) {
         super(config);
     }
 
@@ -33,6 +30,11 @@ public class WellFeature extends TemplateFeature<NoneFeatureConfiguration> {
     @Override
     protected StructureTemplate getTemplate(StructureManager templateManager, Random random) {
         return templateManager.getOrCreate(WELL_TOP);
+    }
+
+    @Override
+    protected int yLevelOffset() {
+        return 1;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class WellFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
         if (template == null) return;
 
-        placementPos = placementPos.below(11);//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
+        placementPos = placementPos.below(20);//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
         template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
@@ -58,12 +60,29 @@ public class WellFeature extends TemplateFeature<NoneFeatureConfiguration> {
     @Override
     protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, Random random) {
         String s = info.nbt.getString("metadata");
+        BlockPos blockPos = info.pos;
 
+        // removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
         if (!s.startsWith("loot")) return;
 
-        world.removeBlock(info.pos, false);
+        if (random.nextBoolean()) {
+            world.setBlock(blockPos, random.nextBoolean() ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 16 | 2);
+            return;
+        }
 
-        if (random.nextBoolean()) TFTreasure.basement.generateLootContainer(world, info.pos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
-        else world.setBlock(info.pos, random.nextBoolean() ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 16 | 2);
+        world.removeBlock(blockPos, false);
+
+        Direction dir = switch (s.substring(4, 5)) {
+            case "W" -> rotation.rotate(mirror.mirror(Direction.WEST));
+            case "E" -> rotation.rotate(mirror.mirror(Direction.EAST));
+            case "S" -> rotation.rotate(mirror.mirror(Direction.SOUTH));
+            default  -> rotation.rotate(mirror.mirror(Direction.NORTH));
+        };
+
+        TFTreasure.basement.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
+
+        if (random.nextBoolean()) return;
+
+        world.setBlock(blockPos.relative(dir), Blocks.HOPPER.defaultBlockState().setValue(HopperBlock.FACING, dir.getOpposite()), 16 | 2);
     }
 }

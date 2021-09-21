@@ -35,16 +35,11 @@ public enum StructureWoodVariant implements StringRepresentable {
 
 	private final List<Block> blocks;
 
-	StructureWoodVariant(
-			Block planks,
-			Block stairs,
-			Block slab,
-			Block button,
-			Block fence,
-			Block gate,
-			Block plate,
-			BanisterBlock banister
-	) {
+	StructureWoodVariant(Supplier<Block> planks, Supplier<StairBlock> stairs, Supplier<Block> slab, Supplier<Block> button, Supplier<Block> fence, Supplier<Block> gate, Supplier<Block> plate, Supplier<BanisterBlock> banister) {
+		this(planks.get(), stairs.get(), slab.get(), button.get(), fence.get(), gate.get(), plate.get(), banister.get());
+	}
+
+	StructureWoodVariant(Block planks, Block stairs, Block slab, Block button, Block fence, Block gate, Block plate, BanisterBlock banister) {
 		this.planks = planks;
 		this.stairs = stairs;
 		this.slab = slab;
@@ -53,28 +48,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 		this.gate = gate;
 		this.plate = plate;
 		this.banister = banister;
-		this.blocks = Arrays.asList(planks, stairs, slab, button, fence, gate, plate);
-	}
-
-	StructureWoodVariant(
-			Supplier<Block> planks,
-			Supplier<StairBlock> stairs,
-			Supplier<Block> slab,
-			Supplier<Block> button,
-			Supplier<Block> fence,
-			Supplier<Block> gate,
-			Supplier<Block> plate,
-			Supplier<BanisterBlock> banister
-	) {
-		this.planks = planks.get();
-		this.stairs = stairs.get();
-		this.slab = slab.get();
-		this.button = button.get();
-		this.fence = fence.get();
-		this.gate = gate.get();
-		this.plate = plate.get();
-		this.banister = banister.get();
-		this.blocks = Arrays.asList(planks.get(), stairs.get(), slab.get(), button.get(), fence.get(), gate.get(), plate.get());
+		this.blocks = Arrays.asList(this.planks, this.stairs, this.slab, this.button, this.fence, this.gate, this.plate, this.banister);
 	}
 
 	@Override
@@ -99,6 +73,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 			}
 		}
 
+		// None of these wood types
 		return null;
 	}
 
