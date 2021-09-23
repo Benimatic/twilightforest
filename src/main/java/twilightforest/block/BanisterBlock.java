@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -28,6 +30,8 @@ import net.minecraftforge.common.ToolActions;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
+
+import javax.annotation.Nullable;
 
 public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -76,6 +80,12 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
                 default -> { yield extended ? SOUTH_TALL_EXTENDED : SOUTH_TALL; }
             }}
         };
+    }
+
+    @Nullable
+    @Override
+    public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
+        return BlockPathTypes.BLOCKED;
     }
 
     @Override
