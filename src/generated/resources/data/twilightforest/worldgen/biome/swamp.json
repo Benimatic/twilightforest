@@ -37,7 +37,10 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "minecraft:disk_clay",
@@ -61,9 +64,6 @@
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
-      "twilightforest:druid_hut",
-      "twilightforest:fancy_well",
-      "twilightforest:simple_well",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",
@@ -72,14 +72,14 @@
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
       "twilightforest:small_log",
+      "twilightforest:tree/mangrove_trees",
+      "twilightforest:tree/swampy_oak_trees",
+      "twilightforest:tree/hollow_placer",
       "minecraft:patch_sugar_cane_swamp",
       "minecraft:vines",
       "minecraft:patch_dead_bush",
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer",
-      "twilightforest:tree/mangrove_trees",
-      "twilightforest:tree/swampy_oak_trees",
-      "twilightforest:tree/hollow_placer",
       "twilightforest:huge_lily_pad",
       "twilightforest:huge_water_lily",
       "minecraft:patch_waterlilly"
@@ -125,5 +125,5 @@
   "downfall": 0.9,
   "category": "swamp",
   "depth": -0.125,
-  "scale": 0.25
+  "scale": 0.15
 }

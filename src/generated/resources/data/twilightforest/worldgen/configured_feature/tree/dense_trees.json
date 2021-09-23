@@ -1,13 +1,13 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/rainbow_oak",
+    "feature": "twilightforest:tree/base/twilight_oak",
     "decorator": {
       "config": {
         "outer": {
           "config": {
-            "count": 2,
-            "extra_chance": 0.4,
-            "extra_count": 2
+            "count": 7,
+            "extra_chance": 0.1,
+            "extra_count": 1
           },
           "type": "minecraft:count_extra"
         },

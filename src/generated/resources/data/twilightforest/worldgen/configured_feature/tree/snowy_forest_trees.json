@@ -1,11 +1,22 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/swampy_oak",
+    "feature": {
+      "config": {
+        "features": [
+          {
+            "feature": "twilightforest:tree/base/mega_spruce_no_podzol",
+            "chance": 0.5
+          }
+        ],
+        "default": "twilightforest:snow_spruce_snowy"
+      },
+      "type": "minecraft:random_selector"
+    },
     "decorator": {
       "config": {
         "outer": {
           "config": {
-            "count": 4,
+            "count": 10,
             "extra_chance": 0.1,
             "extra_count": 1
           },

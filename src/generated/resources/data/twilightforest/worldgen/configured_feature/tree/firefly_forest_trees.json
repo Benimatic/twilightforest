@@ -1,11 +1,26 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/swampy_oak",
+    "feature": {
+      "config": {
+        "features": [
+          {
+            "feature": "twilightforest:tree/base/canopy_tree",
+            "chance": 0.33
+          },
+          {
+            "feature": "twilightforest:tree/base/firefly_canopy_tree",
+            "chance": 0.33
+          }
+        ],
+        "default": "twilightforest:tree/base/twilight_oak"
+      },
+      "type": "minecraft:random_selector"
+    },
     "decorator": {
       "config": {
         "outer": {
           "config": {
-            "count": 4,
+            "count": 5,
             "extra_chance": 0.1,
             "extra_count": 1
           },

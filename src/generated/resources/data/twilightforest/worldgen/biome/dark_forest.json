@@ -53,17 +53,13 @@
       "twilightforest:torch_berries"
     ],
     [
+      "twilightforest:tree/dark_forest_trees",
       "twilightforest:dark_grass",
       "twilightforest:dark_ferns",
       "twilightforest:dark_mushglooms",
-      "twilightforest:dark_mushrooms",
-      "twilightforest:dark_pumpkins",
       "twilightforest:dark_dead_bushes",
-      "twilightforest:tree/bush_dark_forest_trees",
-      "twilightforest:tree/darkwood_trees",
-      "twilightforest:tree/bush_dark_forest_trees",
-      "twilightforest:tree/oak_dark_forest_trees",
-      "twilightforest:tree/birch_dark_forest_trees"
+      "twilightforest:dark_pumpkins",
+      "twilightforest:dark_mushrooms"
     ]
   ],
   "starts": [
@@ -134,6 +130,6 @@
   "temperature": 0.7,
   "downfall": 0.8,
   "category": "forest",
-  "depth": 0.0625,
-  "scale": 0.05
+  "depth": 0.025,
+  "scale": 0.025
 }

@@ -1,11 +1,30 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/swampy_oak",
+    "feature": {
+      "config": {
+        "features": [
+          {
+            "feature": "twilightforest:tree/vanilla/vanilla_tf_oak",
+            "chance": 0.15
+          },
+          {
+            "feature": "twilightforest:tree/vanilla/vanilla_tf_birch",
+            "chance": 0.15
+          },
+          {
+            "feature": "twilightforest:tree/base/large_rainbow_oak",
+            "chance": 0.1
+          }
+        ],
+        "default": "twilightforest:tree/base/rainbow_oak"
+      },
+      "type": "minecraft:random_selector"
+    },
     "decorator": {
       "config": {
         "outer": {
           "config": {
-            "count": 4,
+            "count": 10,
             "extra_chance": 0.1,
             "extra_count": 1
           },

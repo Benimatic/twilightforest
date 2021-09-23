@@ -34,7 +34,10 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "twilightforest:small_andesite",
@@ -52,9 +55,6 @@
       "twilightforest:troll_roots"
     ],
     [
-      "twilightforest:druid_hut",
-      "twilightforest:fancy_well",
-      "twilightforest:simple_well",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",
@@ -63,11 +63,7 @@
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
       "twilightforest:small_log",
-      "minecraft:mega_spruce",
-      "twilightforest:tree/mega_spruce_no_podzol",
-      "minecraft:spruce",
-      "minecraft:mega_spruce",
-      "minecraft:spruce",
+      "twilightforest:tree/highlands_trees",
       "minecraft:forest_rock",
       "minecraft:patch_grass_taiga"
     ]
