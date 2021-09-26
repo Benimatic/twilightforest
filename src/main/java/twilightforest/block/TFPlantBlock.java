@@ -1,22 +1,20 @@
 package twilightforest.block;
 
-import net.minecraft.BlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -33,9 +31,6 @@ import twilightforest.enums.PlantVariant;
 import twilightforest.network.SpawnFallenLeafFromPacket;
 import twilightforest.network.TFPacketHandler;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 public class TFPlantBlock extends BushBlock implements BonemealableBlock {
@@ -105,7 +100,8 @@ public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 			return true;
 		} else {
 			return (state.getBlock() == TFBlocks.root_strand.get()
-					|| state == TFBlocks.root.get().defaultBlockState());
+					|| state.is(TFBlocks.root.get())
+					|| state.is(TFBlocks.liveroot_block.get()));
 		}
 	}
 
