@@ -92,6 +92,16 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(TFBlocks.cicada.get()))
 				.save(consumer);
 
+		ShapelessRecipeBuilder.shapeless(Items.MAGENTA_DYE)
+				.requires(Ingredient.of(TFBlocks.huge_waterlily.get()))
+				.unlockedBy("has_item", has(TFBlocks.huge_waterlily.get()))
+				.save(consumer, TwilightForestMod.prefix("waterlily_to_magenta"));
+
+		ShapelessRecipeBuilder.shapeless(Items.RED_DYE)
+				.requires(Ingredient.of(TFBlocks.thorn_rose.get()))
+				.unlockedBy("has_item", has(TFBlocks.thorn_rose.get()))
+				.save(consumer, TwilightForestMod.prefix("thorn_rose_to_red"));
+
 		ShapelessRecipeBuilder.shapeless(Items.STICK)
 				.requires(Ingredient.of(TFBlocks.root_strand.get()))
 				.unlockedBy("has_item", has(TFBlocks.root_strand.get()))
