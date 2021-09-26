@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -135,7 +136,7 @@ public class LifedrainScepterItem extends Item {
 			// is the player looking at an entity
 			Entity pointedEntity = getPlayerLookTarget(world, living);
 
-			if (pointedEntity instanceof LivingEntity target) {
+			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
 				if(target instanceof AlphaYetiEntity alpha && !alpha.isRampaging() && !alpha.isTired()) return;
 
 				if (target.getEffect(MobEffects.MOVEMENT_SLOWDOWN) != null || target.getHealth() < 1) {
