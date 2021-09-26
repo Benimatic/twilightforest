@@ -8,8 +8,6 @@ import twilightforest.entity.passive.QuestRamEntity;
 import java.util.EnumSet;
 import java.util.List;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class EatLooseGoal extends Goal {
 	private final QuestRamEntity temptedQuestRam;
 
