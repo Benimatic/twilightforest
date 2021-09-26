@@ -139,6 +139,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 				&& state.getValue(CANDLES) < 4 && !player.isShiftKeyDown()) {
 
 			level.setBlockAndUpdate(pos, state.setValue(CANDLES, state.getValue(CANDLES) + 1));
+			level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
 			return InteractionResult.sidedSuccess(level.isClientSide);
 

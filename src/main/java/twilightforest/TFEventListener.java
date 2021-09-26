@@ -11,6 +11,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
@@ -281,14 +283,18 @@ public class TFEventListener {
 	}
 
 	private static void makeFloorSkull(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
+		event.getWorld().playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		event.getWorld().setBlockAndUpdate(event.getPos(), newBlock.defaultBlockState()
+				.setValue(AbstractSkullCandleBlock.LIT, false)
 				.setValue(AbstractSkullCandleBlock.CANDLES, 1)
 				.setValue(AbstractSkullCandleBlock.COLOR, AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()))
 				.setValue(SkullCandleBlock.ROTATION, event.getWorld().getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)));
 	}
 
 	private static void makeWallSkull(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
+		event.getWorld().playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		event.getWorld().setBlockAndUpdate(event.getPos(), newBlock.defaultBlockState()
+				.setValue(AbstractSkullCandleBlock.LIT, false)
 				.setValue(AbstractSkullCandleBlock.CANDLES, 1)
 				.setValue(AbstractSkullCandleBlock.COLOR, AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()))
 				.setValue(WallSkullCandleBlock.FACING, event.getWorld().getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)));
