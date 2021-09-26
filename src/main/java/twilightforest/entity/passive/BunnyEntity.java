@@ -6,6 +6,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -19,7 +21,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import twilightforest.TFSounds;
 
 import javax.annotation.Nullable;
 
@@ -27,7 +31,6 @@ import javax.annotation.Nullable;
 
 public class BunnyEntity extends Animal {
 
-	// Loot tables aren't done like this any more.
 	private static final EntityDataAccessor<Byte> DATA_TYPE = SynchedEntityData.defineId(BunnyEntity.class, EntityDataSerializers.BYTE);
 
 	public BunnyEntity(EntityType<? extends BunnyEntity> type, Level world) {
@@ -113,5 +116,23 @@ public class BunnyEntity extends Animal {
 		}
 		// default to just prefering lighter areas
 		return this.level.getMaxLocalRawBrightness(pos) - 0.5F;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.DWARF_DEATH;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+		return TFSounds.DWARF_HURT;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.DWARF_IDLE;
 	}
 }
