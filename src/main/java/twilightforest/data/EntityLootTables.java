@@ -407,9 +407,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.naga_scale.get())
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.naga_scale.get()))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:naga");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:naga"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.naga_scale.get())
@@ -454,9 +452,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), Items.GOLD_NUGGET))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:lich");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:lich"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
@@ -478,9 +474,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.meef_stroganoff.get())
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.meef_stroganoff.get()))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:minoshroom");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:minoshroom"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.meef_stroganoff.get())
@@ -507,9 +501,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.fiery_blood.get())
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.fiery_blood.get()))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:hydra");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:hydra"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.fiery_blood.get())
@@ -536,9 +528,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.ice_bomb.get()))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:alpha_yeti");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:alpha_yeti"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
@@ -568,9 +558,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.ice_bomb.get()))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:snow_queen");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:snow_queen"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.ice_bomb.get())
@@ -599,7 +587,18 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 											items.add(new ItemStack(Blocks.EMERALD_BLOCK).serializeNBT());
 
 											nbt.put("Items", items);
-										}))))));
+										})))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), Blocks.COAL_BLOCK.asItem()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:questing_ram"))))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), Blocks.COAL_BLOCK.asItem())))));
 	}
 
 	public LootTable.Builder emptyLootTable() {
