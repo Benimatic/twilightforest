@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.world.components.feature.TFGenCaveStalactite;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.*;
 
@@ -196,7 +196,7 @@ public class TFConfig {
 					if (!block.isPresent()) return false;
 
 					try {
-						TFGenCaveStalactite.registerStalactite(tier, block.get().defaultBlockState(),
+						BlockSpikeFeature.registerStalactite(tier, block.get().defaultBlockState(),
 								Float.parseFloat(split[1]),
 								Integer.parseInt(split[2]),
 								Integer.parseInt(split[3]),

@@ -39,18 +39,18 @@ public class HydraLairComponent extends HollowHillComponent {
 		// fill in features
 		// ore or glowing stalactites! (smaller, less plentiful)
 		for (int i = 0; i < stalacts; i++) {
-			int[] dest = randomCoordinatesInHill2D(rand);
-			generateOreStalactite(world, generator, manager, dest[0], 1, dest[1], sbb);
+			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, this.radius);
+			this.generateOreStalactite(world, dest.move(0, 1, 0), sbb);
 		}
 		// stone stalactites!
 		for (int i = 0; i < stalacts; i++) {
-			int[] dest = randomCoordinatesInHill2D(rand);
-			generateBlockStalactite(world, generator, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, this.radius);
+			this.generateBlockSpike(world, STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < stalags; i++) {
-			int[] dest = randomCoordinatesInHill2D(rand);
-			generateBlockStalactite(world, generator, manager, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
+			BlockPos.MutableBlockPos dest = this.randomFloorCoordinates(rand, this.radius);
+			this.generateBlockSpike(world, STONE_STALAGMITE, dest.getX(), dest.getY(), dest.getZ(), sbb);
 		}
 
 		// boss spawner seems important

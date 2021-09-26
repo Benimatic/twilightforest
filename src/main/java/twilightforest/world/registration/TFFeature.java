@@ -65,7 +65,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 2, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 3, y - 2, z - 3);
 		}
 	};
 	public static final TFFeature MEDIUM_HILL = new TFFeature( 2, "medium_hollow_hill", true, true ) {
@@ -86,7 +86,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 7, y - 5, z - 7);
 		}
 	};
 	public static final TFFeature LARGE_HILL = new TFFeature( 3, "large_hollow_hill", true, true ) {
@@ -108,7 +108,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 11, y - 5, z - 11);
 		}
 	};
 	public static final TFFeature HEDGE_MAZE = new TFFeature( 2, "hedge_maze", true ) {

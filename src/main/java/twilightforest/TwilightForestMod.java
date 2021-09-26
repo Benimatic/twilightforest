@@ -39,7 +39,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
-import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
@@ -58,9 +57,9 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFBiomeFeatures;
-import twilightforest.world.components.feature.TFGenCaveStalactite;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.components.BiomeGrassColors;
@@ -197,7 +196,7 @@ public class TwilightForestMod {
 		}
 
 		TFConfig.build();
-		TFGenCaveStalactite.loadStalactites();
+		BlockSpikeFeature.loadStalactites();
 
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();

@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
-import twilightforest.world.components.feature.config.CaveStalactiteConfig;
+import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
@@ -25,8 +25,8 @@ public class TFBiomeFeatures {
 			new TFGenBigMushgloom(NoneFeatureConfiguration.CODEC));
 	//public static final RegistryObject<Feature<TFTreeFeatureConfig>> CANOPY_OAK = FEATURES.register("canopy_oak", () ->
 	//		new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final RegistryObject<Feature<CaveStalactiteConfig>> CAVE_STALACTITE = FEATURES.register("cave_stalactite", () ->
-			new TFGenCaveStalactite(CaveStalactiteConfig.caveStalactiteCodec));
+	public static final RegistryObject<Feature<SpikeConfig>> CAVE_STALACTITE = FEATURES.register("block_spike", () ->
+			new BlockSpikeFeature(SpikeConfig.CODEC));
 	public static final RegistryObject<Feature<TreeConfiguration>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
 			new TFGenDarkCanopyTree(TreeConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> DRUID_HUT = FEATURES.register("druid_hut", () ->
@@ -61,8 +61,6 @@ public class TFBiomeFeatures {
 			new TFGenMonolith(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<DiskConfiguration>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () ->
 			new BaseDiskFeature(DiskConfiguration.CODEC));
-	public static final RegistryObject<Feature<CaveStalactiteConfig>> OUTSIDE_STALAGMITE = FEATURES.register("outside_stalagmite", () ->
-			new TFGenOutsideStalagmite(CaveStalactiteConfig.caveStalactiteCodec));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> PLANT_ROOTS = FEATURES.register("plant_roots", () ->
 			new TFGenPlantRoots(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> STONE_CIRCLE = FEATURES.register("stone_circle", () ->
