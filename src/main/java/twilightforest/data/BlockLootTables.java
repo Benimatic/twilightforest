@@ -4,28 +4,27 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntry;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import twilightforest.block.AbstractParticleSpawnerBlock;
-import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.TorchberryPlantBlock;
 import twilightforest.item.TFItems;
 
 import java.util.HashSet;
@@ -149,7 +148,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(TFBlocks.clover_patch.get(), createShearsOnlyDrop(TFBlocks.clover_patch.get()));
 		add(TFBlocks.fiddlehead.get(), createShearsOnlyDrop(TFBlocks.fiddlehead.get()));
 		dropSelf(TFBlocks.mushgloom.get());
-		add(TFBlocks.torchberry_plant.get(), createShearsDispatchTable(TFBlocks.torchberry_plant.get(), LootItem.lootTableItem(TFItems.torchberries.get())));
+		add(TFBlocks.torchberry_plant.get(), torchberryPlant(TFBlocks.torchberry_plant.get()));
 		add(TFBlocks.root_strand.get(), createShearsOnlyDrop(TFBlocks.root_strand.get()));
 		add(TFBlocks.fallen_leaves.get(), createShearsOnlyDrop(TFBlocks.fallen_leaves.get()));
 		dropSelf(TFBlocks.smoker.get());
@@ -384,8 +383,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 
 	private void registerLeavesNoSapling(Block leaves) {
 		LootPoolEntryContainer.Builder<?> sticks = applyExplosionDecay(leaves, LootItem.lootTableItem(Items.STICK)
-						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
-						.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
+				.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
+				.when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
 		add(leaves, createSilkTouchOrShearsDispatchTable(leaves, sticks));
 	}
 
@@ -402,9 +401,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 
 	private static LootTable.Builder particleSpawner() {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-				.add(applyExplosionDecay(TFBlocks.firefly_spawner.get(), LootItem.lootTableItem(TFBlocks.firefly_spawner.get()))))
+						.add(applyExplosionDecay(TFBlocks.firefly_spawner.get(), LootItem.lootTableItem(TFBlocks.firefly_spawner.get()))))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-				.add(LootItem.lootTableItem(TFBlocks.firefly.get())
+						.add(LootItem.lootTableItem(TFBlocks.firefly.get())
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 2))))
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 3))))
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(3.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 4))))
@@ -414,6 +413,16 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(7.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 8))))
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(8.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 9))))
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(9.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.firefly_spawner.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 10))))));
+	}
+
+	protected static LootTable.Builder torchberryPlant(Block pBlock) {
+		LootItemCondition.Builder HAS_SHEARS = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLoot.class, null, "f_124064_");
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+						.add(LootItem.lootTableItem(pBlock).when(HAS_SHEARS)))
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+						.add(LootItem.lootTableItem(TFItems.torchberries.get())
+								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(pBlock).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TorchberryPlantBlock.HAS_BERRIES, true)))));
 	}
 
 	private static LootTable.Builder dropWithoutSilk(Block block) {
