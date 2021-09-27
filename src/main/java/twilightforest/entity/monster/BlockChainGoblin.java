@@ -70,7 +70,7 @@ public class BlockChainGoblin extends Monster {
 		partsArray = new MultipartGenericsAreDumb[]{block, chain1, chain2, chain3};
 	}
 
-	static abstract class MultipartGenericsAreDumb extends TFPart<Entity> {
+	public static abstract class MultipartGenericsAreDumb extends TFPart<Entity> {
 
 		public MultipartGenericsAreDumb(Entity parent) {
 			super(parent);
