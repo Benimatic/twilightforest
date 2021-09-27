@@ -5,14 +5,9 @@
     "##"
   ],
   "key": {
-    "#": [
-      {
-        "item": "twilightforest:castle_pillar_bold"
-      },
-      {
-        "item": "twilightforest:castle_pillar_bold_tile"
-      }
-    ]
+    "#": {
+      "item": "twilightforest:castle_pillar_bold"
+    }
   },
   "result": {
     "item": "twilightforest:castle_pillar_bold_tile",

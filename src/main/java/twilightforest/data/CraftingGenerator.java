@@ -624,24 +624,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 		stairsBlock(consumer, locNaga("nagastone_stairs_left"), TFBlocks.nagastone_stairs_left, TFBlocks.etched_nagastone, TFBlocks.etched_nagastone.get());
 		stairsRightBlock(consumer, locNaga("nagastone_stairs_right"), TFBlocks.nagastone_stairs_right, TFBlocks.etched_nagastone, TFBlocks.etched_nagastone.get());
 
-		ShapelessRecipeBuilder.shapeless(TFBlocks.etched_nagastone.get(), 3)
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()))
-				.unlockedBy("has_item", has(TFBlocks.etched_nagastone.get()))
-				.save(consumer, locNaga("nagastone_stairs_reverse"));
-
 		stairsBlock(consumer, locNaga("nagastone_stairs_left_mossy"), TFBlocks.nagastone_stairs_mossy_left, TFBlocks.etched_nagastone_mossy, TFBlocks.etched_nagastone_mossy.get());
 		stairsRightBlock(consumer, locNaga("nagastone_stairs_right_mossy"), TFBlocks.nagastone_stairs_mossy_right, TFBlocks.etched_nagastone_mossy, TFBlocks.etched_nagastone_mossy.get());
-
-		ShapelessRecipeBuilder.shapeless(TFBlocks.etched_nagastone_mossy.get(), 3)
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()))
-				.unlockedBy("has_item", has(TFBlocks.etched_nagastone_mossy.get()))
-				.save(consumer, locNaga("nagastone_stairs_mossy_reverse"));
 		
 		ShapelessRecipeBuilder.shapeless(TFBlocks.etched_nagastone_mossy.get(), 1)
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
@@ -657,46 +641,40 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		stairsBlock(consumer, locNaga("nagastone_stairs_left_weathered"), TFBlocks.nagastone_stairs_weathered_left, TFBlocks.etched_nagastone_weathered, TFBlocks.etched_nagastone_weathered.get());
 		stairsRightBlock(consumer, locNaga("nagastone_stairs_right_weathered"), TFBlocks.nagastone_stairs_weathered_right, TFBlocks.etched_nagastone_weathered, TFBlocks.etched_nagastone_weathered.get());
-
-		ShapelessRecipeBuilder.shapeless(TFBlocks.etched_nagastone_weathered.get(), 3)
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()))
-				.requires(Ingredient.of(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()))
-				.unlockedBy("has_item", has(TFBlocks.etched_nagastone_weathered.get()))
-				.save(consumer, locNaga("nagastone_stairs_weathered_reverse"));
 	}
 
 	private void castleRecipes(Consumer<FinishedRecipe> consumer) {
-		castleBlock(consumer, "castle_paver", TFBlocks.castle_brick_frame, TFBlocks.castle_brick, TFBlocks.castle_brick.get(), TFBlocks.castle_brick_worn.get(), TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_brick_mossy.get());
-		castleBlock(consumer, "castle_pillar_bold", TFBlocks.castle_pillar_bold, TFBlocks.castle_brick_frame, TFBlocks.castle_brick_frame.get());
-		castleBlock(consumer, "castle_pillar_bold_none", TFBlocks.castle_pillar_bold_tile, TFBlocks.castle_pillar_bold, TFBlocks.castle_pillar_bold_tile.get());
 		ShapelessRecipeBuilder.shapeless(TFBlocks.castle_brick_mossy.get(), 1)
 				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 				.requires(Ingredient.of(TFBlocks.castle_brick.get()))
 				.unlockedBy("has_item", has(TFBlocks.castle_brick.get()))
 				.save(consumer, locCastle("castle_brick_mossy"));
 
+		castleBlock(consumer, TFBlocks.castle_brick_frame, TFBlocks.castle_brick.get(), TFBlocks.castle_brick_worn.get(), TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_brick_mossy.get());
+		castleBlock(consumer, TFBlocks.castle_pillar_bold, TFBlocks.castle_brick_frame.get());
+		castleBlock(consumer, TFBlocks.castle_pillar_bold_tile, TFBlocks.castle_pillar_bold.get());
+
+		ShapedRecipeBuilder.shaped(TFBlocks.castle_pillar_bold.get(), 4)
+				.pattern("##")
+				.pattern("##")
+				.define('#', Ingredient.of(TFBlocks.castle_pillar_bold_tile.get()))
+				.unlockedBy("has_castle_brick", has(TFBlocks.castle_brick.get()))
+				.save(consumer, locCastle("castle_pillar_bold_from_tile"));
+
 		ShapedRecipeBuilder.shaped(TFBlocks.castle_pillar_encased.get(), 6)
 				.pattern("#H#")
 				.pattern("#H#")
 				.define('#', Ingredient.of(TFBlocks.castle_brick.get(), TFBlocks.castle_brick_worn.get(), TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_brick_mossy.get(), TFBlocks.castle_brick_frame.get()))
-				.define('H', Ingredient.of(TFBlocks.castle_pillar_encased.get(), TFBlocks.castle_pillar_encased_tile.get(), TFBlocks.castle_pillar_bold_tile.get()))
-				.unlockedBy("has_" + TFBlocks.castle_pillar_encased.get().getRegistryName().getPath(), has(TFBlocks.castle_pillar_encased.get()))
+				.define('H', Ingredient.of(TFBlocks.castle_pillar_encased.get(), TFBlocks.castle_pillar_encased_tile.get(), TFBlocks.castle_pillar_bold.get(), TFBlocks.castle_pillar_bold_tile.get()))
+				.unlockedBy("has_castle_brick", has(TFBlocks.castle_brick.get()))
 				.save(consumer, locCastle("castle_pillar_encased"));
-		castleBlock(consumer, "castle_pillar_encased_none", TFBlocks.castle_pillar_bold_tile, TFBlocks.castle_pillar_bold_tile, TFBlocks.castle_pillar_bold.get(), TFBlocks.castle_pillar_bold_tile.get());
+
 		stairsBlock(consumer, locCastle("castleblock_stairs_bold"), TFBlocks.castle_stairs_bold, TFBlocks.castle_pillar_bold, TFBlocks.castle_pillar_bold.get(), TFBlocks.castle_pillar_bold_tile.get());
-		reverseStairsBlock(consumer, locCastle("castleblock_stairs_bold_reverse"), TFBlocks.castle_pillar_bold, TFBlocks.castle_stairs_bold, TFBlocks.castle_stairs_bold.get());
 		stairsBlock(consumer, locCastle("castleblock_stairs_brick"), TFBlocks.castle_stairs_brick, TFBlocks.castle_brick, TFBlocks.castle_brick.get());
-		reverseStairsBlock(consumer, locCastle("castleblock_stairs_brick_reverse"), TFBlocks.castle_brick, TFBlocks.castle_stairs_brick, TFBlocks.castle_stairs_brick.get());
 		stairsBlock(consumer, locCastle("castleblock_stairs_cracked"), TFBlocks.castle_stairs_cracked, TFBlocks.castle_brick_cracked, TFBlocks.castle_brick_cracked.get());
-		reverseStairsBlock(consumer, locCastle("castleblock_stairs_cracked_reverse"), TFBlocks.castle_brick_cracked, TFBlocks.castle_brick_cracked, TFBlocks.castle_stairs_cracked.get());
 		stairsBlock(consumer, locCastle("castleblock_stairs_encased"), TFBlocks.castle_stairs_encased, TFBlocks.castle_pillar_encased, TFBlocks.castle_pillar_encased.get(), TFBlocks.castle_pillar_encased_tile.get());
-		reverseStairsBlock(consumer, locCastle("castleblock_stairs_encased_reverse"), TFBlocks.castle_pillar_encased, TFBlocks.castle_stairs_encased, TFBlocks.castle_stairs_encased.get());
 		stairsBlock(consumer, locCastle("castleblock_stairs_mossy"), TFBlocks.castle_stairs_mossy, TFBlocks.castle_brick_mossy, TFBlocks.castle_brick_mossy.get());
-		reverseStairsBlock(consumer, locCastle("castleblock_stairs_mossy_reverse"), TFBlocks.castle_brick_mossy, TFBlocks.castle_brick_mossy, TFBlocks.castle_stairs_mossy.get());
 		stairsBlock(consumer, locCastle("castleblock_stairs_worn"), TFBlocks.castle_stairs_worn, TFBlocks.castle_brick_worn, TFBlocks.castle_brick_worn.get());
-		reverseStairsBlock(consumer, locCastle("castleblock_stairs_worn_reverse"), TFBlocks.castle_brick_worn, TFBlocks.castle_brick_worn, TFBlocks.castle_stairs_worn.get());
 	}
 
 	private void fieryConversions(Consumer<FinishedRecipe> consumer) {
@@ -720,6 +698,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
 				.save(consumer, locEquip("fiery_" + Items.IRON_PICKAXE.getRegistryName().getPath()));
 	}
+
 	private void cookingRecipes(Consumer<FinishedRecipe> consumer, String processName, SimpleCookingSerializer<?> process, int smeltingTime) {
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFItems.raw_meef.get()), TFItems.cooked_meef.get(), 0.3f, smeltingTime, process).unlockedBy("has_food", has(TFItems.raw_meef.get())).save(consumer, TwilightForestMod.prefix("food/" + processName + "_meef").toString());
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFItems.raw_venison.get()), TFItems.cooked_venison.get(), 0.3f, smeltingTime, process).unlockedBy("has_food", has(TFItems.raw_venison.get())).save(consumer, TwilightForestMod.prefix("food/" + processName + "_venison").toString());
