@@ -170,13 +170,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer, TwilightForestMod.prefix("material/" + TFItems.armor_shard_cluster.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFBlocks.underbrick_mossy.get(), 1)
-				.requires(Ingredient.of(Blocks.VINE))
+				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 				.requires(Ingredient.of(TFBlocks.underbrick.get()))
 				.unlockedBy("has_item", has(TFBlocks.underbrick.get()))
 				.save(consumer, TwilightForestMod.prefix("underbrick_mossy"));
 
 		ShapelessRecipeBuilder.shapeless(TFBlocks.maze_stone_mossy.get(), 1)
-				.requires(Ingredient.of(Blocks.VINE))
+				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 				.requires(Ingredient.of(TFBlocks.maze_stone_brick.get()))
 				.unlockedBy("has_item", has(TFBlocks.maze_stone_brick.get()))
 				.save(consumer, TwilightForestMod.prefix("maze_stone/maze_stone_mossy"));
@@ -265,7 +265,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer);
 		ShapelessRecipeBuilder.shapeless(TFBlocks.tower_wood_mossy.get())
 			.requires(Ingredient.of(TFBlocks.tower_wood.get()))
-			.requires(Items.VINE)
+			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.unlockedBy("has_item", has(TFBlocks.tower_wood.get()))
 			.save(consumer, TwilightForestMod.prefix("wood/" + TFBlocks.tower_wood_mossy.getId().getPath()));
 
@@ -644,13 +644,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer, locNaga("nagastone_stairs_mossy_reverse"));
 		
 		ShapelessRecipeBuilder.shapeless(TFBlocks.etched_nagastone_mossy.get(), 1)
-			.requires(Ingredient.of(Blocks.VINE))
+			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.requires(Ingredient.of(TFBlocks.etched_nagastone.get()))
 			.unlockedBy("has_item", has(TFBlocks.etched_nagastone.get()))
 			.save(consumer, locNaga("etched_nagastone_mossy"));
 		
 		ShapelessRecipeBuilder.shapeless(TFBlocks.nagastone_pillar_mossy.get(), 1)
-			.requires(Ingredient.of(Blocks.VINE))
+			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.requires(Ingredient.of(TFBlocks.nagastone_pillar.get()))
 			.unlockedBy("has_item", has(TFBlocks.nagastone_pillar.get()))
 			.save(consumer, locNaga("nagastone_pillar_mossy"));
@@ -671,6 +671,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 		castleBlock(consumer, "castle_paver", TFBlocks.castle_brick_frame, TFBlocks.castle_brick, TFBlocks.castle_brick.get(), TFBlocks.castle_brick_worn.get(), TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_brick_mossy.get());
 		castleBlock(consumer, "castle_pillar_bold", TFBlocks.castle_pillar_bold, TFBlocks.castle_brick_frame, TFBlocks.castle_brick_frame.get());
 		castleBlock(consumer, "castle_pillar_bold_none", TFBlocks.castle_pillar_bold_tile, TFBlocks.castle_pillar_bold, TFBlocks.castle_pillar_bold_tile.get());
+		ShapelessRecipeBuilder.shapeless(TFBlocks.castle_brick_mossy.get(), 1)
+				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
+				.requires(Ingredient.of(TFBlocks.castle_brick.get()))
+				.unlockedBy("has_item", has(TFBlocks.castle_brick.get()))
+				.save(consumer, locCastle("castle_brick_mossy"));
+
 		ShapedRecipeBuilder.shaped(TFBlocks.castle_pillar_encased.get(), 6)
 				.pattern("#H#")
 				.pattern("#H#")
@@ -691,11 +697,6 @@ public class CraftingGenerator extends CraftingDataHelper {
 		reverseStairsBlock(consumer, locCastle("castleblock_stairs_mossy_reverse"), TFBlocks.castle_brick_mossy, TFBlocks.castle_brick_mossy, TFBlocks.castle_stairs_mossy.get());
 		stairsBlock(consumer, locCastle("castleblock_stairs_worn"), TFBlocks.castle_stairs_worn, TFBlocks.castle_brick_worn, TFBlocks.castle_brick_worn.get());
 		reverseStairsBlock(consumer, locCastle("castleblock_stairs_worn_reverse"), TFBlocks.castle_brick_worn, TFBlocks.castle_brick_worn, TFBlocks.castle_stairs_worn.get());
-		ShapelessRecipeBuilder.shapeless(TFBlocks.castle_brick_mossy.get(), 1)
-		.requires(Ingredient.of(Blocks.VINE))
-		.requires(Ingredient.of(TFBlocks.castle_brick.get()))
-		.unlockedBy("has_item", has(TFBlocks.castle_brick.get()))
-		.save(consumer, locCastle("castle_brick_mossy"));
 	}
 
 	private void fieryConversions(Consumer<FinishedRecipe> consumer) {
