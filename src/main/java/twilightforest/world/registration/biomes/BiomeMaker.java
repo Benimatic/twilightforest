@@ -128,7 +128,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void swampBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SWAMP,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeGrassColors.SWAMP), swampSpawning(), swampGen())
+				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeGrassColors.SWAMP), swampSpawning(), swampGen())
 						.biomeCategory(Biome.BiomeCategory.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
@@ -151,7 +151,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void darkForestBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.DARK_FOREST,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeGrassColors.DARK_FOREST), darkForestSpawning(), darkForestGen())
+				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeGrassColors.DARK_FOREST), darkForestSpawning(), darkForestGen())
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.025f)
@@ -190,7 +190,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void highlandsBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.HIGHLANDS,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()), defaultMobSpawning(), highlandsGen())
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen())
 						.biomeCategory(Biome.BiomeCategory.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)

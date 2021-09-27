@@ -17,7 +17,7 @@
       "options": {
         "type": "twilightforest:wandering_firefly"
       },
-      "probability": 5.0E-4
+      "probability": 2.5E-4
     },
     "sky_color": 2105930,
     "foliage_color": 65535,

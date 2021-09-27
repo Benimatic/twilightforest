@@ -65,7 +65,7 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock{
 
 	@Override
 	public ParticleType<?> getParticlesToSpawn() {
-		return TFParticleType.WANDERING_FIREFLY.get();
+		return TFParticleType.JAR_WANDERING_FIREFLY.get();
 	}
 
 	@Override
