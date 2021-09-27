@@ -6,6 +6,8 @@ import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -45,19 +48,21 @@ public class CrumbleHornItem extends Item {
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
-	private final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = new ArrayList<>();
-	private final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
+	public static final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = new ArrayList<>();
+	public static final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
 
 	CrumbleHornItem(Properties props) {
 		super(props);
 		this.addCrumbleTransforms();
 	}
 
-	private void addCrumbleTransforms() {
+	public void addCrumbleTransforms() {
 		addCrumble(() -> Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS::defaultBlockState);
 		addCrumble(() -> Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS::defaultBlockState);
 		addCrumble(() -> Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE::defaultBlockState);
 		addCrumble(() -> Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS::defaultBlockState);
+		addCrumble(() -> Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS::defaultBlockState);
+		addCrumble(() -> Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES::defaultBlockState);
 		addCrumble(TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.get().defaultBlockState());
 		addCrumble(TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.get().defaultBlockState());
 		addCrumble(TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.get().defaultBlockState());
@@ -76,6 +81,9 @@ public class CrumbleHornItem extends Item {
 		addCrumble(() -> Blocks.CRIMSON_NYLIUM, Blocks.NETHERRACK::defaultBlockState);
 		addCrumble(() -> Blocks.WARPED_NYLIUM, Blocks.NETHERRACK::defaultBlockState);
 		addCrumble(() -> Blocks.QUARTZ_BLOCK, Blocks.SAND::defaultBlockState);
+		addCrumble(() -> Blocks.ROOTED_DIRT, Blocks.DIRT::defaultBlockState);
+		addCopperCrumble(() -> Blocks.OXIDIZED_COPPER, () -> Blocks.WEATHERED_COPPER, () -> Blocks.EXPOSED_COPPER, () -> Blocks.COPPER_BLOCK);
+		addCopperCrumble(() -> Blocks.OXIDIZED_CUT_COPPER, () -> Blocks.WEATHERED_CUT_COPPER, () -> Blocks.EXPOSED_CUT_COPPER, () -> Blocks.CUT_COPPER);
 		addHarvest(() -> Blocks.GRAVEL);
 		addHarvest(() -> Blocks.DIRT);
 		addHarvest(() -> Blocks.SAND);
@@ -85,6 +93,12 @@ public class CrumbleHornItem extends Item {
 		addHarvest(() -> Blocks.GRANITE);
 		addHarvest(() -> Blocks.DIORITE);
 
+	}
+
+	private void addCopperCrumble(Supplier<Block> oxidized, Supplier<Block> weathered, Supplier<Block> exposed, Supplier<Block> normal) {
+		addCrumble(state -> state.is(oxidized.get()), state -> weathered.get().defaultBlockState());
+		addCrumble(state -> state.is(weathered.get()), state -> exposed.get().defaultBlockState());
+		addCrumble(state -> state.is(exposed.get()), state -> normal.get().defaultBlockState());
 	}
 
 	private void addCrumble(Supplier<Block> block, Supplier<BlockState> result) {
