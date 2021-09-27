@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
@@ -57,5 +58,28 @@ public class HydraLairComponent extends HollowHillComponent {
 		placeBlock(world, TFBlocks.boss_spawner_hydra.get().defaultBlockState(), 27, 3, 27, sbb);
 
 		return true;
+	}
+
+	@Override
+	BlockPos.MutableBlockPos randomFloorCoordinates(Random rand, float maximumRadius) {
+		float degree = rand.nextFloat() * 4.712389f + Mth.HALF_PI;
+		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
+		float radius = maximumRadius * 0.9f * (rand.nextFloat() * 0.35f + 0.65f); // 0.9 (max width) * 0.65 minimum radius
+
+		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
+		float height = (maximumRadius - Mth.sqrt(maximumRadius * maximumRadius - radius * radius)) / 4f;
+
+		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height - 1, maximumRadius - Mth.sin(degree) * radius);
+	}
+
+	@Override
+	BlockPos.MutableBlockPos randomCeilingCoordinates(Random rand, float maximumRadius) {
+		float degree = rand.nextFloat() * 4.712389f + Mth.HALF_PI;
+		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
+		float radius = rand.nextFloat() * (maximumRadius * 0.9f);
+		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
+		float height = Mth.sqrt(Mth.square(maximumRadius + 2) - radius * radius) - (maximumRadius / 2);
+
+		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height, maximumRadius - Mth.sin(degree) * radius);
 	}
 }
