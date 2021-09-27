@@ -27,6 +27,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.monster.Kobold;
 import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.entity.*;
@@ -939,7 +940,7 @@ public class TFFeature {
 		int dz = world.random.nextInt(16) - world.random.nextInt(16);
 
 		// make our hint monster
-		KoboldEntity hinty = new KoboldEntity(TFEntities.kobold, world);
+		Kobold hinty = new Kobold(TFEntities.kobold, world);
 		hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear

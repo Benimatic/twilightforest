@@ -33,8 +33,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.world.item.Item.Properties;
-import twilightforest.entity.boss.AlphaYetiEntity;
+import twilightforest.entity.boss.AlphaYeti;
 
 public class LifedrainScepterItem extends Item {
 
@@ -137,7 +136,7 @@ public class LifedrainScepterItem extends Item {
 			Entity pointedEntity = getPlayerLookTarget(world, living);
 
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
-				if(target instanceof AlphaYetiEntity alpha && !alpha.isRampaging() && !alpha.isTired()) return;
+				if(target instanceof AlphaYeti alpha && !alpha.isRampaging() && !alpha.isTired()) return;
 
 				if (target.getEffect(MobEffects.MOVEMENT_SLOWDOWN) != null || target.getHealth() < 1) {
 

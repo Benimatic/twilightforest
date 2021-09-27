@@ -10,9 +10,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.util.Mth;
-import twilightforest.entity.RedcapEntity;
+import twilightforest.entity.monster.Redcap;
 
-public class RedcapModel<T extends RedcapEntity> extends HumanoidModel<T> {
+public class RedcapModel<T extends Redcap> extends HumanoidModel<T> {
 
 	public RedcapModel(ModelPart root) {
 		super(root);

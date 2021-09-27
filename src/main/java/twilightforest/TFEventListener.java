@@ -69,9 +69,9 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
-import twilightforest.entity.CharmEffectEntity;
+import twilightforest.entity.CharmEffect;
 import twilightforest.entity.IHostileMount;
-import twilightforest.entity.KoboldEntity;
+import twilightforest.entity.monster.Kobold;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.enums.BlockLoggingEnum;
@@ -79,7 +79,7 @@ import twilightforest.item.PhantomArmorItem;
 import twilightforest.item.TFItems;
 import twilightforest.network.*;
 import twilightforest.potions.TFPotions;
-import twilightforest.tileentity.KeepsakeCasketTileEntity;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -345,8 +345,8 @@ public class TFEventListener {
 			if (world.setBlockAndUpdate(immutablePos, TFBlocks.keepsake_casket.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
 				BlockEntity te = world.getBlockEntity(immutablePos);
 
-				if (te instanceof KeepsakeCasketTileEntity) {
-					KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
+				if (te instanceof KeepsakeCasketBlockEntity) {
+					KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) te;
 
 					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
 						//make it so only the player who died can open the chest if our config allows us
@@ -405,12 +405,12 @@ public class TFEventListener {
 		BlockEntity te = event.getWorld().getBlockEntity(event.getPos());
 		UUID checker;
 		if(block == TFBlocks.keepsake_casket.get()) {
-			if(te instanceof KeepsakeCasketTileEntity) {
-				KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
+			if(te instanceof KeepsakeCasketBlockEntity) {
+				KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) te;
 				 checker = casket.playeruuid;
 			} else checker = null;
 			if(checker != null) {
-				if (!((KeepsakeCasketTileEntity) te).isEmpty()) {
+				if (!((KeepsakeCasketBlockEntity) te).isEmpty()) {
 					if(!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
 						event.setCanceled(true);
 					}
@@ -438,10 +438,10 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			CharmEffect effect = new CharmEffect(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
 			player.level.addFreshEntity(effect);
 
-			CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			CharmEffect effect2 = new CharmEffect(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
 			effect2.offset = (float) Math.PI;
 			player.level.addFreshEntity(effect2);
 
@@ -599,10 +599,10 @@ public class TFEventListener {
 
 			// spawn effect thingers
 			if (!keepInventory.getSelected().isEmpty()) {
-				CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
+				CharmEffect effect = new CharmEffect(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
 				player.level.addFreshEntity(effect);
 
-				CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
+				CharmEffect effect2 = new CharmEffect(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
 				effect2.offset = (float) Math.PI;
 				player.level.addFreshEntity(effect2);
 
@@ -808,7 +808,7 @@ public class TFEventListener {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntityLiving();
 		// cancel attacks in protected areas
-		if (!living.level.isClientSide && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof KoboldEntity)
+		if (!living.level.isClientSide && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
 				&& isAreaProtected(living.level, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);

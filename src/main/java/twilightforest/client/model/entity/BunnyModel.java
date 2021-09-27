@@ -14,9 +14,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.BunnyEntity;
+import twilightforest.entity.passive.DwarfRabbit;
 
-public class BunnyModel extends QuadrupedModel<BunnyEntity> {
+public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 	public BunnyModel(ModelPart root) {
 		// FIXME if the baby model looks weird, you're gonna want to tweak these values
 		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
@@ -102,7 +102,7 @@ public class BunnyModel extends QuadrupedModel<BunnyEntity> {
 	}
 
 	@Override
-	public void setupAnim(BunnyEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(DwarfRabbit entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
 		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

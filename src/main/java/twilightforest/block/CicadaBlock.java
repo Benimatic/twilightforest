@@ -18,8 +18,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 import twilightforest.TwilightForestMod;
-import twilightforest.tileentity.CicadaTileEntity;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.CicadaBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,13 +36,13 @@ public class CicadaBlock extends CritterBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CicadaTileEntity(pos, state);
+		return new CicadaBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.CICADA.get(), CicadaTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.CICADA.get(), CicadaBlockEntity::tick);
 	}
 
 	@Override

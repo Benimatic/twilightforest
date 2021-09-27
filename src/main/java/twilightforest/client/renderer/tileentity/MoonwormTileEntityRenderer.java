@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
@@ -16,11 +15,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
-import twilightforest.tileentity.MoonwormTileEntity;
+import twilightforest.block.entity.MoonwormBlockEntity;
 
 import javax.annotation.Nullable;
 
-public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormTileEntity> {
+public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormBlockEntity> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel;
@@ -30,7 +29,7 @@ public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormT
 	}
 
 	@Override
-	public void render(@Nullable MoonwormTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+	public void render(@Nullable MoonwormBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentRotation;
 		if (te == null) partialTicks = Minecraft.getInstance().getFrameTime();
 

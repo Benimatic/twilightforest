@@ -26,7 +26,7 @@ import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.TFBlockEntities;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class TFClientSetup {
 
         MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         RenderLayerRegistration.init();
-        TFTileEntities.registerTileEntityRenders();
+        TFBlockEntities.registerTileEntityRenders();
         TFContainers.renderScreens();
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);

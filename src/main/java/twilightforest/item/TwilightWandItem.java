@@ -14,12 +14,10 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
-import twilightforest.entity.projectile.TwilightWandBoltEntity;
+import twilightforest.entity.projectile.TwilightWandBolt;
 
 import javax.annotation.Nullable;
 import java.util.List;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class TwilightWandItem extends Item {
 
@@ -37,7 +35,7 @@ public class TwilightWandItem extends Item {
 			player.playSound(TFSounds.SCEPTER_PEARL, 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
 
 			if (!world.isClientSide) {
-				world.addFreshEntity(new TwilightWandBoltEntity(world, player));
+				world.addFreshEntity(new TwilightWandBolt(world, player));
 				stack.hurt(1, world.random, (ServerPlayer) null);
 			}
 

@@ -35,7 +35,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.tileentity.SkullCandleTileEntity;
+import twilightforest.block.entity.SkullCandleBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -68,7 +68,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return new SkullCandleTileEntity(blockPos, blockState);
+		return new SkullCandleBlockEntity(blockPos, blockState);
 	}
 
 	//input one of the enum names to convert it into a candle block

@@ -21,8 +21,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import twilightforest.TFSounds;
-import twilightforest.tileentity.TFTileEntities;
-import twilightforest.tileentity.TomeSpawnerTileEntity;
+import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.block.entity.TomeSpawnerBlockEntity;
 
 import javax.annotation.Nullable;
 
@@ -68,13 +68,13 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return blockState.getValue(SPAWNER) ? new TomeSpawnerTileEntity(blockPos, blockState) : null;
+		return blockState.getValue(SPAWNER) ? new TomeSpawnerBlockEntity(blockPos, blockState) : null;
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return state.getValue(SPAWNER) ? createTickerHelper(type, TFTileEntities.TOME_SPAWNER.get(), TomeSpawnerTileEntity::tick) : null;
+		return state.getValue(SPAWNER) ? createTickerHelper(type, TFBlockEntities.TOME_SPAWNER.get(), TomeSpawnerBlockEntity::tick) : null;
 	}
 
 	@Override

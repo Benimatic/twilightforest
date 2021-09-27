@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -13,9 +12,9 @@ import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
-import twilightforest.entity.projectile.MoonwormShotEntity;
+import twilightforest.entity.projectile.MoonwormShot;
 
-public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
+public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel wormModel;
@@ -28,7 +27,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
 	}
 
 	@Override
-	public void render(MoonwormShotEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(MoonwormShot entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
 		stack.translate(0.0, 0.5, 0.0);
 		stack.scale(-1f, -1f, -1f);
@@ -43,7 +42,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(MoonwormShotEntity entity) {
+	public ResourceLocation getTextureLocation(MoonwormShot entity) {
 		return textureLoc;
 	}
 }

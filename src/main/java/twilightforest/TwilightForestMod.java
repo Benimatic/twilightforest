@@ -47,8 +47,8 @@ import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.dispenser.TransformationDispenseBehavior;
-import twilightforest.entity.projectile.MoonwormShotEntity;
-import twilightforest.entity.projectile.TwilightWandBoltEntity;
+import twilightforest.entity.projectile.MoonwormShot;
+import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.FieryPickItem;
 import twilightforest.item.TFItems;
@@ -56,7 +56,7 @@ import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFBiomeFeatures;
@@ -121,7 +121,7 @@ public class TwilightForestMod {
 		TFPotions.POTIONS.register(modbus);
 		BiomeKeys.BIOMES.register(modbus);
 		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
-		TFTileEntities.TILE_ENTITIES.register(modbus);
+		TFBlockEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
 		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
@@ -226,7 +226,7 @@ public class TwilightForestMod {
 			DispenserBlock.registerBehavior(TFItems.moonworm_queen.get(), new MoonwormDispenseBehavior() {
 				@Override
 				protected Projectile getProjectileEntity(Level worldIn, Position position, ItemStack stackIn) {
-					return new MoonwormShotEntity(worldIn, position.x(), position.y(), position.z());
+					return new MoonwormShot(worldIn, position.x(), position.y(), position.z());
 				}
 			});
 
@@ -263,7 +263,7 @@ public class TwilightForestMod {
 			DispenserBlock.registerBehavior(TFItems.twilight_scepter.get(), new MoonwormDispenseBehavior() {
 				@Override
 				protected Projectile getProjectileEntity(Level worldIn, Position position, ItemStack stackIn) {
-					return new TwilightWandBoltEntity(worldIn, position.x(), position.y(), position.z());
+					return new TwilightWandBolt(worldIn, position.x(), position.y(), position.z());
 				}
 
 				@Override

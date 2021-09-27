@@ -10,23 +10,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,10 +26,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.tileentity.KeepsakeCasketTileEntity;
-
-import java.util.Locale;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 
 /**
  * Keepsake Casket Model - MCVinnyq
@@ -46,7 +34,7 @@ import java.util.Locale;
  */
 //Most of the other stuff is derived from ChestTileEntityRenderer
 @OnlyIn(Dist.CLIENT)
-public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
+public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
     public ModelPart base;
     public ModelPart lid;
 
@@ -115,7 +103,7 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBl
             matrixStackIn.translate(-0.5D, 0.0D, -0.5D);
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-facing));
 
-            DoubleBlockCombiner.NeighborCombineResult<? extends KeepsakeCasketTileEntity> icallbackwrapper = DoubleBlockCombiner.Combiner::acceptNone;
+            DoubleBlockCombiner.NeighborCombineResult<? extends KeepsakeCasketBlockEntity> icallbackwrapper = DoubleBlockCombiner.Combiner::acceptNone;
             float f1 = icallbackwrapper.apply(KeepsakeCasketBlock.getLidRotationCallback(tileEntityIn)).get(partialTicks);
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;

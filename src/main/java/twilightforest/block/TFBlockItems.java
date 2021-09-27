@@ -12,10 +12,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ISTER;
 import twilightforest.item.*;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.TFBlockEntities;
 
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 public class TFBlockItems {
@@ -85,7 +84,7 @@ public class TFBlockItems {
 				consumer.accept(new IItemRenderProperties() {
 					@Override
 					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER(TFTileEntities.KEEPSAKE_CASKET.getId());
+						return new ISTER(TFBlockEntities.KEEPSAKE_CASKET.getId());
 					}
 				});
 			}
@@ -210,9 +209,9 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.torchberry_plant));
 		r.register(blockItem(TFBlocks.root_strand));
 		r.register(blockItem(TFBlocks.fallen_leaves));
-		r.register(wearableBlock(TFBlocks.firefly, TFTileEntities.FIREFLY));
-		r.register(wearableBlock(TFBlocks.cicada, TFTileEntities.CICADA));
-		r.register(wearableBlock(TFBlocks.moonworm, TFTileEntities.MOONWORM));
+		r.register(wearableBlock(TFBlocks.firefly, TFBlockEntities.FIREFLY));
+		r.register(wearableBlock(TFBlocks.cicada, TFBlockEntities.CICADA));
+		r.register(wearableBlock(TFBlocks.moonworm, TFBlockEntities.MOONWORM));
 		r.register(blockItem(TFBlocks.firefly_jar));
 		r.register(blockItem(TFBlocks.firefly_spawner));
 		r.register(blockItem(TFBlocks.cicada_jar));
@@ -387,7 +386,7 @@ public class TFBlockItems {
 				consumer.accept(new IItemRenderProperties() {
 					@Override
 					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER(TFTileEntities.SKULL_CANDLE.getId());
+						return new ISTER(TFBlockEntities.SKULL_CANDLE.getId());
 					}
 				});
 			}
@@ -405,7 +404,7 @@ public class TFBlockItems {
 				consumer.accept(new IItemRenderProperties() {
 					@Override
 					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER(TFTileEntities.TROPHY.getId());
+						return new ISTER(TFBlockEntities.TROPHY.getId());
 					}
 				});
 			}

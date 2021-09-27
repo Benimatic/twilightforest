@@ -7,7 +7,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import twilightforest.entity.passive.QuestRamEntity;
+import twilightforest.entity.passive.QuestRam;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -46,8 +46,8 @@ public class FindLooseGoal extends Goal {
 	}
 
 	protected boolean isTempting(ItemStack stack) {
-		if (creature instanceof QuestRamEntity ram && stack.is(ItemTags.WOOL)) {
-			DyeColor color = QuestRamEntity.guessColor(stack);
+		if (creature instanceof QuestRam ram && stack.is(ItemTags.WOOL)) {
+			DyeColor color = QuestRam.guessColor(stack);
 			return color != null && !ram.isColorPresent(color);
 		}
 		return this.temptItem.test(stack);

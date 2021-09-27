@@ -11,21 +11,18 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
+import twilightforest.block.entity.CarminiteBuilderBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.tileentity.*;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -102,7 +99,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	private void letsBuild(Level world, BlockPos pos) {
-		CarminiteBuilderTileEntity tileEntity = (CarminiteBuilderTileEntity) world.getBlockEntity(pos);
+		CarminiteBuilderBlockEntity tileEntity = (CarminiteBuilderBlockEntity) world.getBlockEntity(pos);
 
 		if (tileEntity != null && !tileEntity.makingBlocks) {
 			tileEntity.startBuilding();
@@ -180,12 +177,12 @@ public class BuilderBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CarminiteBuilderTileEntity(pos, state);
+		return new CarminiteBuilderBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.TOWER_BUILDER.get(), CarminiteBuilderTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.TOWER_BUILDER.get(), CarminiteBuilderBlockEntity::tick);
 	}
 }
