@@ -16,7 +16,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import twilightforest.TFSounds;
+import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 
@@ -45,7 +48,8 @@ public class BunnyEntity extends Animal {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0F));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION), true));
+		this.goalSelector.addGoal(2, new BreedGoal(this, 0.8D));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION), false));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 2.0F, 0.8F, 1.33F));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8F));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0F));
@@ -62,7 +66,18 @@ public class BunnyEntity extends Animal {
 	@Nullable
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableEntity) {
-		return null;
+		BunnyEntity rabbit = TFEntities.bunny.create(world);
+		int i = world.random.nextInt(4);
+		if (this.random.nextInt(20) != 0) {
+			if (ageableEntity instanceof BunnyEntity && this.random.nextBoolean()) {
+				i = ((BunnyEntity)ageableEntity).getBunnyType();
+			} else {
+				i = this.getBunnyType();
+			}
+		}
+
+		rabbit.setBunnyType(i);
+		return rabbit;
 	}
 
 	@Override
@@ -116,6 +131,15 @@ public class BunnyEntity extends Animal {
 		}
 		// default to just prefering lighter areas
 		return this.level.getMaxLocalRawBrightness(pos) - 0.5F;
+	}
+
+	private static boolean isTemptingItem(ItemStack stack) {
+		return stack.is(Items.CARROT) || stack.is(Items.GOLDEN_CARROT) || stack.is(Blocks.DANDELION.asItem());
+	}
+
+	@Override
+	public boolean isFood(ItemStack stack) {
+		return isTemptingItem(stack);
 	}
 
 	@Nullable
