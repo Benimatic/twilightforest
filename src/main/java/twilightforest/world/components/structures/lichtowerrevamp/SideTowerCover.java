@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.lichtowerrevamp;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -35,7 +34,7 @@ public final class SideTowerCover extends TwilightTemplateStructurePiece {
     private final int thickness = 2;
 
     public SideTowerCover(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
+        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
@@ -44,7 +43,7 @@ public final class SideTowerCover extends TwilightTemplateStructurePiece {
     }
 
     private SideTowerCover(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {
-        super(LichTowerPieces.CENTRAL_TO_SIDE_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
         this.width = width;
     }
 

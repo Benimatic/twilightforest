@@ -28,7 +28,7 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     static final int ATTACHMENT_POINT_RANGE = 13;
 
     public CentralTowerSegment(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerPieces.CENTRAL_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
+        super(LichTowerRevampPieces.CENTRAL_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
     }
 
     public CentralTowerSegment(StructureManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
@@ -36,7 +36,7 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     }
 
     private CentralTowerSegment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
-        super(LichTowerPieces.CENTRAL_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(LichTowerRevampPieces.CENTRAL_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
     }
 
     @Override

@@ -20,6 +20,7 @@ import twilightforest.world.components.structures.darktower.DarkTowerPieces;
 import twilightforest.world.components.structures.finalcastle.FinalCastlePieces;
 import twilightforest.world.components.structures.icetower.IceTowerPieces;
 import twilightforest.world.components.structures.lichtower.LichTowerPieces;
+import twilightforest.world.components.structures.lichtowerrevamp.LichTowerRevampPieces;
 import twilightforest.world.components.structures.minotaurmaze.MinotaurMazePieces;
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerPieces;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -88,6 +89,7 @@ public class TFStructures {
 		new MushroomTowerPieces();
 		new NagaCourtyardPieces();
 		new LichTowerPieces();
+		new LichTowerRevampPieces();
 		new MinotaurMazePieces();
 		new StrongholdPieces();
 		new DarkTowerPieces();
