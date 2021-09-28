@@ -438,8 +438,8 @@ public class TFFeature {
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 	protected boolean adjustToTerrain;
-	// Seeing this is only used by maps, we could make it a hash of the structure's string name instead
-	public final int id;
+
+	private static int count;
 
 	private List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists;
 	private List<MobSpawnSettings.SpawnerData> ambientCreatureList;
@@ -448,12 +448,6 @@ public class TFFeature {
 	private long lastSpawnedHintMonsterTime;
 
 	private static final String BOOK_AUTHOR = "A Forgotten Explorer";
-
-	private static final TFFeature[] VALUES = new TFFeature[] { NOTHING, HEDGE_MAZE, SMALL_HILL, MEDIUM_HILL, LARGE_HILL, QUEST_GROVE, NAGA_COURTYARD, LICH_TOWER, LABYRINTH, HYDRA_LAIR, KNIGHT_STRONGHOLD, DARK_TOWER, YETI_CAVE, ICE_TOWER, TROLL_CAVE, FINAL_CASTLE, MUSHROOM_TOWER };
-
-	private static final int maxSize = Arrays.stream(VALUES).mapToInt(v -> v.size).max().orElse(0);
-
-	private static int accumulator = 0;
 
 	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
 		this(size, name, featureGenerator, false, requiredAdvancements);
@@ -477,17 +471,14 @@ public class TFFeature {
 
 		this.centerBounds = centerBounds;
 
-		this.id = accumulator++;
+		count++;
+
 	}
 
 	static void init() {}
 
-	public static int getCount() {
-		return VALUES.length;
-	}
-
 	public static int getMaxSize() {
-		return maxSize;
+		return count;
 	}
 
 	public boolean shouldAdjustToTerrain() {
@@ -498,36 +489,6 @@ public class TFFeature {
 //	public MapGenTFMajorFeature createFeatureGenerator() {
 //		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
 //	}
-
-	/**
-	 * doesn't require modid
-	 */
-	public static TFFeature getFeatureByName(String name) {
-		for (TFFeature feature : VALUES) {
-			if (feature.name.equalsIgnoreCase(name)) {
-				return feature;
-			}
-		}
-		return NOTHING;
-	}
-
-	/**
-	 * modid sensitive
-	 */
-	public static TFFeature getFeatureByName(ResourceLocation name) {
-		if (name.getNamespace().equalsIgnoreCase(TwilightForestMod.ID)) {
-			return getFeatureByName(name.getPath());
-		}
-		return NOTHING;
-	}
-
-	public static TFFeature getFeatureByID(int id) {
-		return id < VALUES.length ? VALUES[id] : NOTHING;
-	}
-
-	public static int getFeatureID(int mapX, int mapZ, WorldGenLevel world) {
-		return getFeatureAt(mapX, mapZ, world).id;
-	}
 
 	public static TFFeature getFeatureAt(int regionX, int regionZ, WorldGenLevel world) {
 		return generateFeature(regionX >> 4, regionZ >> 4, world);
@@ -700,6 +661,7 @@ public class TFFeature {
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, WorldGenLevel world, @Nullable IntPair center) {
 
+		int maxSize = getMaxSize();
 		int diam = maxSize * 2 + 1;
 		TFFeature[] features = new TFFeature[diam * diam];
 

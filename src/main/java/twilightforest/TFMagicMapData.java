@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import it.unimi.dsi.fastutil.ints.Int2ObjectRBTreeMap;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.CompoundTag;
@@ -79,7 +81,7 @@ public class TFMagicMapData extends MapItemSavedData {
 			int worldX = (coord.getX() << this.scale - 1) + this.x;
 			int worldZ = (coord.getY() << this.scale - 1) + this.z;
 
-			int trueId = TFFeature.getFeatureID(worldX, worldZ, (ServerLevel) world);
+			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(TFFeature.getFeatureAt(worldX, worldZ, (ServerLevel) world));
 			if (coord.featureId != trueId) {
 				toRemove.add(coord);
 				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRot()));
@@ -137,6 +139,28 @@ public class TFMagicMapData extends MapItemSavedData {
 
 	public static class TFMapDecoration extends MapDecoration {
 
+		private static final Int2ObjectRBTreeMap<TFFeature> ICONS = new Int2ObjectRBTreeMap<>(){{
+			defaultReturnValue(TFFeature.NOTHING);
+			put(0, TFFeature.NOTHING);
+			put(1, TFFeature.SMALL_HILL);
+			put(2, TFFeature.MEDIUM_HILL);
+			put(3, TFFeature.LARGE_HILL);
+			put(4, TFFeature.HEDGE_MAZE);
+			put(5, TFFeature.NAGA_COURTYARD);
+			put(6, TFFeature.LICH_TOWER);
+			put(7, TFFeature.ICE_TOWER);
+			put(9, TFFeature.QUEST_GROVE);
+			put(12, TFFeature.HYDRA_LAIR);
+			put(13, TFFeature.LABYRINTH);
+			put(14, TFFeature.DARK_TOWER);
+			put(15, TFFeature.KNIGHT_STRONGHOLD);
+			put(17, TFFeature.YETI_CAVE);
+			put(18, TFFeature.TROLL_CAVE);
+			put(19, TFFeature.FINAL_CASTLE);
+		}};
+		private static final Object2IntArrayMap<TFFeature> ICONS_FLIPPED = new Object2IntArrayMap<>(){{
+			ICONS.forEach((k, v) -> put(v, k.intValue()));
+		}};
 
 		@OnlyIn(Dist.CLIENT)
 		public static class RenderContext {
@@ -148,6 +172,10 @@ public class TFMagicMapData extends MapItemSavedData {
 
 		final int featureId;
 
+		public TFMapDecoration(TFFeature featureId, byte xIn, byte yIn, byte rotationIn) {
+			this(ICONS_FLIPPED.getInt(featureId), xIn, yIn, rotationIn);
+		}
+
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
 			super(Type.TARGET_X, xIn, yIn, rotationIn, new TranslatableComponent("map.magic.text")); //TODO: Shush for now
 			this.featureId = featureId;
@@ -157,7 +185,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		@OnlyIn(Dist.CLIENT)
 		public boolean render(int idx) {
 			// TODO: Forge needs to pass in the ms and buffers, but for now this works
-			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
+			if (ICONS.get(featureId).isStructureEnabled) {
 				RenderContext.stack.pushPose();
 				RenderContext.stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
 				RenderContext.stack.mulPose(Vector3f.ZP.rotationDegrees(getRot() * 360 / 16.0F));
