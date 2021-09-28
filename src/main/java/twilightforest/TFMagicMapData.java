@@ -21,16 +21,14 @@ import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.WeakHashMap;
 
 public class TFMagicMapData extends MapItemSavedData {
-	private static final Map<Level, Map<String, TFMagicMapData>> CLIENT_DATA = new WeakHashMap<>();
+	private static final Map<String, TFMagicMapData> CLIENT_DATA = new HashMap<>();
 
 	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
 
@@ -122,7 +120,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMagicMapData getMagicMapData(Level world, String name) {
 		if (world.isClientSide) {
-			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
+			return CLIENT_DATA.get(name);
 		} else {
 			return world.getServer().overworld().getDataStorage().get(TFMagicMapData::load, name);
 		}
@@ -131,7 +129,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level world, TFMagicMapData data, String id) {
 		if (world.isClientSide) {
-			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(id, data);
+			CLIENT_DATA.put(id, data);
 		} else {
 			world.getServer().overworld().getDataStorage().set(id, data);
 		}

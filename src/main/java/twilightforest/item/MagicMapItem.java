@@ -27,6 +27,7 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import javax.annotation.Nullable;
@@ -107,7 +108,7 @@ public class MagicMapItem extends MapItem {
 
 	@Override
 	public void update(Level world, Entity viewer, MapItemSavedData data) {
-		if (world.dimension() == data.dimension && viewer instanceof Player) {
+		if (world.dimension() == data.dimension && viewer instanceof Player && world instanceof ServerLevel serverLevel && TFGenerationSettings.usesTwilightChunkGenerator(serverLevel)) {
 			int biomesPerPixel = 4;
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.x;
