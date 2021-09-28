@@ -37,7 +37,7 @@ public class CicadaTileEntityRenderer implements BlockEntityRenderer<CicadaBlock
 		ms.mulPose(facing.getRotation());
 		ms.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
 		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-		ms.mulPose(Vector3f.YP.rotationDegrees(yaw));
+		ms.mulPose(Vector3f.YN.rotationDegrees(yaw));
 
 		//ms.push();
 		VertexConsumer vertex = buffers.getBuffer(cicadaModel.renderType(textureLoc));

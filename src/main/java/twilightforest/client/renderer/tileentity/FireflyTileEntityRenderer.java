@@ -62,7 +62,7 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlo
 		ms.mulPose(facing.getRotation());
 		ms.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
 		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-		ms.mulPose(Vector3f.YP.rotationDegrees(yaw));
+		ms.mulPose(Vector3f.YN.rotationDegrees(yaw));
 
 		ms.pushPose();
 
