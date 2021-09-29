@@ -121,7 +121,7 @@ public class TFFeature {
 			return new HedgeMazeComponent(this, 0, x + 1, y + 1, z + 1);
 		}
 	};
-	public static final TFFeature QUEST_GROVE = new TFFeature( 1, "quest_grove" , true  ) {
+	public static final TFFeature QUEST_GROVE = new TFFeature( 1, "quest_grove" , true ) {
 		{
 			this.enableTerrainAlterations();
 		}
@@ -150,7 +150,7 @@ public class TFFeature {
 					.addMonster(TFEntities.death_tome, 10, 4, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 
-			this.adjustToTerrain = true;
+			this.adjustToTerrainHeight = true;
 		}
 
 		@Override
@@ -437,7 +437,7 @@ public class TFFeature {
 	public boolean requiresTerraforming; // TODO Terraforming Type? Envelopment vs Flattening maybe?
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
-	protected boolean adjustToTerrain;
+	protected boolean adjustToTerrainHeight;
 
 	private static int count;
 
@@ -463,7 +463,7 @@ public class TFFeature {
 		this.ambientCreatureList = new ArrayList<>();
 		this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
-		this.adjustToTerrain = false;
+		this.adjustToTerrainHeight = false;
 
 		if(!name.equals("hydra_lair")) ambientCreatureList.add(new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
 
@@ -482,7 +482,7 @@ public class TFFeature {
 	}
 
 	public boolean shouldAdjustToTerrain() {
-		return this.adjustToTerrain;
+		return this.adjustToTerrainHeight;
 	}
 
 	//	@Nullable
@@ -959,26 +959,26 @@ public class TFFeature {
 		return Registry.register(Registry.STRUCTURE_PIECE, TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)), piece);
 	}
 
-	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable Direction dir) {
+	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir) {
 		if(centerBounds) {
-			x += (maxX + minX) / 4;
-			y += (maxY + minY) / 4;
-			z += (maxZ + minZ) / 4;
+			x += (spanX + minX) / 4;
+			y += (spanY + minY) / 4;
+			z += (spanZ + minZ) / 4;
 		}
 		switch (dir) {
 
 			case SOUTH: // '\0'
 			default:
-				return new BoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+				return new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
 
 			case WEST: // '\001'
-				return new BoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
+				return new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
 
 			case NORTH: // '\002'
-				return new BoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
+				return new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
 
 			case EAST: // '\003'
-				return new BoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
+				return new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
 		}
 	}
 
