@@ -275,6 +275,7 @@ public class TFEventListener {
 						}
 					}
 					if(!event.getPlayer().getAbilities().instabuild) stack.shrink(1);
+					event.getPlayer().swing(event.getHand());
 					//this is to prevent anything from being placed afterwords
 					event.setCanceled(true);
 				}
