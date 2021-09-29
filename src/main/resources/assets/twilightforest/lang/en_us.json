@@ -1309,6 +1309,8 @@
   "twilightforest.loading.title.enter": "Whisking you off to the Twilight Forest...",
   "twilightforest.loading.title.leave": "Whisking you from the Twilight Forest...",
 
+  "twilightforest.ui.magicmap.fail": "The Magic faltered. Perhaps it doesn't work here?",
+
   // Config
   "twilightforest.config.dimension": "Dimension Settings",
   "twilightforest.config.dimension.tooltip": "You won't be able to change these settings without some kind of relaunch.",
