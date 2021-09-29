@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
@@ -261,6 +262,15 @@ public class ASMHooks {
 	 */
 	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
 		return TFConfig.CLIENT_CONFIG.disableHereBeDragons.get() ? Minecraft.ExperimentalDialogType.NONE : type;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}<br>
+	 * [BEFORE IRETURN]
+	 */
+	public static int foliage(int o, Biome biome, double x, double z) {
+		return FoliageColorHandler.get(o, biome, x, z);
 	}
 
 }
