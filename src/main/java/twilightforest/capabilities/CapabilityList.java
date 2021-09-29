@@ -22,31 +22,34 @@ public class CapabilityList {
 		SHIELDS = null;
 	}
 
-	@SubscribeEvent
+	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		event.register(IShieldCapability.class);
+	}
+
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e) {
 		if (e.getObject() instanceof LivingEntity) {
 			e.addCapability(IShieldCapability.ID, new ICapabilitySerializable<CompoundTag>() {
 
-				IShieldCapability inst = new ShieldCapabilityHandler();
-
-				{
-					inst.setEntity((LivingEntity) e.getObject());
-				}
+				LazyOptional<IShieldCapability> inst = LazyOptional.of(() -> {
+					ShieldCapabilityHandler i = new ShieldCapabilityHandler();
+					i.setEntity((LivingEntity) e.getObject());
+					return i;
+				});
 
 				@Nonnull
 				@Override
 				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) {
-					return SHIELDS.orEmpty(capability, LazyOptional.of(() -> inst));
+					return SHIELDS.orEmpty(capability, inst.cast());
 				}
 
 				@Override
 				public CompoundTag serializeNBT() {
-					return inst.serializeNBT();
+					return inst.orElseThrow(NullPointerException::new).serializeNBT();
 				}
 
 				@Override
 				public void deserializeNBT(CompoundTag nbt) {
-					inst.deserializeNBT(nbt);
+					inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
 				}
 			});
 		}

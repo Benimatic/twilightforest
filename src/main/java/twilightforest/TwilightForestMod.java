@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.Maps;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.core.BlockSource;
@@ -39,7 +40,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
-import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
@@ -66,6 +67,7 @@ import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.Locale;
+import java.util.function.Consumer;
 
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
@@ -116,6 +118,8 @@ public class TwilightForestMod {
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+		modbus.addListener(CapabilityList::registerCapabilities);
+		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
@@ -156,11 +160,6 @@ public class TwilightForestMod {
 	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
 		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
 		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
-	}
-
-	@SubscribeEvent
-	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		event.register(IShieldCapability.class);
 	}
 
 	@SubscribeEvent
