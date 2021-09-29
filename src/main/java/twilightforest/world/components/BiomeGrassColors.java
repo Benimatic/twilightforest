@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class BiomeGrassColors {
 	private static final Random COLOR_RNG = new Random();
-	private static int getEnchantedColor(int x, int z) {
+	public static int getEnchantedColor(int x, int z) {
 		// center of the biome is at % 256 - 8
 		int cx = 256 * Math.round((x - 8) / 256F) + 8;
 		int cz = 256 * Math.round((z - 8) / 256F) + 8;
