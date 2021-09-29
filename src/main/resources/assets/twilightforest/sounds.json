@@ -254,6 +254,16 @@
   "block.twilightforest.casket.locked": { "subtitle": "subtitles.twilightforest.block.casket.locked", "sounds": [ "block/wooden_door/close", "block/wooden_door/open" ] },
   "block.twilightforest.casket.repair": { "subtitle": "subtitles.twilightforest.block.casket.repair", "sounds": [ "twilightforest:random/casket/repair" ] },
 
+  "music_disc.twilightforest.radiance": {  "sounds": [{ "name": "twilightforest:music/radiance", "stream": true }]},
+  "music_disc.twilightforest.steps": {  "sounds": [{ "name": "twilightforest:music/steps", "stream": true }]},
+  "music_disc.twilightforest.superstitious": {  "sounds": [{ "name": "twilightforest:music/superstitious", "stream": true }]},
+  "music_disc.twilightforest.home": {  "sounds": [{ "name": "twilightforest:music/home", "stream": true }]},
+  "music_disc.twilightforest.wayfarer": {  "sounds": [{ "name": "twilightforest:music/wayfarer", "stream": true }]},
+  "music_disc.twilightforest.findings": {  "sounds": [{ "name": "twilightforest:music/findings", "stream": true }]},
+  "music_disc.twilightforest.maker": {  "sounds": [{ "name": "twilightforest:music/maker", "stream": true }]},
+  "music_disc.twilightforest.thread": {  "sounds": [{ "name": "twilightforest:music/thread", "stream": true }]},
+  "music_disc.twilightforest.motion": {  "sounds": [{ "name": "twilightforest:music/motion", "stream": true }]},
+
   "music.bg": { "sounds": [
 	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },
 	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25 },

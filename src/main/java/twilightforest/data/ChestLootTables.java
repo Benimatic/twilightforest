@@ -29,7 +29,6 @@ import java.util.function.Consumer;
 
 public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, LootTable.Builder>> {
 
-
     @Override
     public void accept(BiConsumer<ResourceLocation, LootTable.Builder> register) {
         register.accept(TFTreasure.USELESS_LOOT,
@@ -87,7 +86,9 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.GOLDEN_CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.CAKE).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.OAK_BOAT).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.hollow_oak_sapling.get().asItem()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFBlocks.hollow_oak_sapling.get().asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_home.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_radiance.get()).setWeight(25))));
 
         register.accept(TFTreasure.hedgemaze.lootTable,
                 LootTable.lootTable()
@@ -121,7 +122,8 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.MUSHROOM_STEW).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
-                                .add(LootItem.lootTableItem(Items.DIAMOND_HOE).setWeight(25))));
+                                .add(LootItem.lootTableItem(Items.DIAMOND_HOE).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_motion.get()).setWeight(25))));
 
         register.accept(TFTreasure.tree_cache.lootTable,
                 LootTable.lootTable()
@@ -157,7 +159,8 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFBlocks.time_sapling.get().asItem()).setWeight(25))
                                 .add(LootItem.lootTableItem(TFBlocks.transformation_sapling.get().asItem()).setWeight(25))
                                 .add(LootItem.lootTableItem(TFBlocks.mining_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.sorting_sapling.get().asItem()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFBlocks.sorting_sapling.get().asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_superstitious.get()).setWeight(25))));
 
         register.accept(TFTreasure.graveyard.lootTable,
                 LootTable.lootTable()
@@ -206,7 +209,8 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 //ultrarare loot
                                 .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
                                 .add(LootItem.lootTableItem(TFItems.transformation_powder.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.steeleaf_ingot.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFItems.steeleaf_ingot.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_findings.get()).setWeight(25))));
 
         register.accept(TFTreasure.hill2.lootTable,
                 LootTable.lootTable()
@@ -236,7 +240,8 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(25))
                                 .add(LootItem.lootTableItem(TFItems.peacock_fan.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.charm_of_life_1.get()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFItems.charm_of_life_1.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_wayfarer.get()).setWeight(25))));
 
         register.accept(TFTreasure.hill3.lootTable,
                 LootTable.lootTable()
@@ -264,11 +269,12 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.ironwood_pickaxe.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 1).apply(Enchantments.BLOCK_FORTUNE, 1)).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.naga_scale.get()).setWeight(75))
                                 //ultrarare loot
-                                .add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(20))
-                                .add(LootItem.lootTableItem(TFItems.moonworm_queen.get()).setWeight(20))
-                                .add(LootItem.lootTableItem(TFItems.charm_of_life_1.get()).setWeight(20))
-                                .add(LootItem.lootTableItem(TFItems.charm_of_keeping_1.get()).setWeight(20))
-                                .add(LootItem.lootTableItem(TFBlocks.mangrove_sapling.get().asItem()).setWeight(25))));
+                                .add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.moonworm_queen.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.charm_of_life_1.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.charm_of_keeping_1.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFBlocks.mangrove_sapling.get().asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_maker.get()).setWeight(25))));
 
         register.accept(TFTreasure.quest_grove.lootTable,
                 LootTable.lootTable()
@@ -566,9 +572,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.carminite.get())
                                         .when(ModExists.builder("immersiveengineering"))
                                         .apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.knightmetal_ingot.get()))
-                                        .apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-                                            nbt.putString("shader_name", "twilightforest:knight_phantom");
-                                        })))))
+                                        .apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:knight_phantom"))))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.carminite.get())
@@ -653,9 +657,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.carminite.get())
                                         .when(ModExists.builder("immersiveengineering"))
                                         .apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.carminite.get()))
-                                        .apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-                                            nbt.putString("shader_name", "twilightforest:ur-ghast");
-                                        })))))
+                                        .apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:ur-ghast"))))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.carminite.get())

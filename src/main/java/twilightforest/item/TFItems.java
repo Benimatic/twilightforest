@@ -16,6 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.TwilightArmorMaterial;
@@ -158,6 +159,16 @@ public class TFItems {
 	public static final RegistryObject<Item> cube_talisman = ITEMS.register("cube_talisman", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> cube_of_annihilation = ITEMS.register("cube_of_annihilation", () -> new CubeOfAnnihilationItem(unstackable().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> moon_dial = ITEMS.register("moon_dial", () -> new Item(defaultBuilder()));
+	public static final RegistryObject<Item> music_disc_radiance = ITEMS.register("music_disc_radiance", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_RADIANCE, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> music_disc_steps = ITEMS.register("music_disc_steps", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_STEPS, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> music_disc_superstitious = ITEMS.register("music_disc_superstitious", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_SUPERSTITIOUS, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> music_disc_home = ITEMS.register("music_disc_home", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_HOME, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> music_disc_wayfarer = ITEMS.register("music_disc_wayfarer", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_WAYFARER, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> music_disc_findings = ITEMS.register("music_disc_findings", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_FINDINGS, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> music_disc_maker = ITEMS.register("music_disc_maker", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_MAKER, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> music_disc_thread = ITEMS.register("music_disc_thread", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_THREAD, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> music_disc_motion = ITEMS.register("music_disc_motion", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_MOTION, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+
 	public static final RegistryObject<Item> naga_banner_pattern = ITEMS.register("naga_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_NAGA", "tf_naga", "tfn", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
 	public static final RegistryObject<Item> lich_banner_pattern = ITEMS.register("lich_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_LICH", "tf_lich", "tfl", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
 	public static final RegistryObject<Item> minoshroom_banner_pattern = ITEMS.register("minoshroom_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_MINOSHROOM", "tf_minoshroom", "tfm", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));

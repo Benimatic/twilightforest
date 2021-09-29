@@ -58,6 +58,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	public static final Tag.Named<Item> KOBOLD_PACIFICATION_BREADS = ItemTags.bind(TwilightForestMod.prefix("kobold_pacification_breads").toString());
 
+	public static final Tag.Named<Item> TF_MUSIC_DISCS = ItemTags.bind(TwilightForestMod.prefix("tf_music_discs").toString());
+
 	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
 		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);
 	}
@@ -187,5 +189,18 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		);
 
 		tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
+
+		tag(TF_MUSIC_DISCS).add(
+				TFItems.music_disc_findings.get(),
+				TFItems.music_disc_home.get(),
+				TFItems.music_disc_maker.get(),
+				TFItems.music_disc_motion.get(),
+				TFItems.music_disc_radiance.get(),
+				TFItems.music_disc_steps.get(),
+				TFItems.music_disc_superstitious.get(),
+				TFItems.music_disc_thread.get(),
+				TFItems.music_disc_wayfarer.get());
+
+		tag(ItemTags.MUSIC_DISCS).addTag(TF_MUSIC_DISCS);
 	}
 }

@@ -541,6 +541,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(prefix("potion_level"), 3).model(gfill3).end()
 				.override().predicate(prefix("potion_level"), 4).model(gfill4).end();
 
+		singleTex(TFItems.music_disc_findings);
+		singleTex(TFItems.music_disc_home);
+		singleTex(TFItems.music_disc_maker);
+		singleTex(TFItems.music_disc_motion);
+		singleTex(TFItems.music_disc_radiance);
+		singleTex(TFItems.music_disc_steps);
+		singleTex(TFItems.music_disc_superstitious);
+		singleTex(TFItems.music_disc_thread);
+		singleTex(TFItems.music_disc_wayfarer);
+
 		generated(TFItems.naga_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
 		generated(TFItems.lich_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
 		generated(TFItems.minoshroom_banner_pattern.getId().getPath(), prefix("items/tf_banner_pattern"));
