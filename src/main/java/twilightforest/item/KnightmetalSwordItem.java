@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Tier;
@@ -13,6 +14,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,19 +34,33 @@ public class KnightmetalSwordItem extends SwordItem {
 	}
 
 	@SubscribeEvent
-	public static void onDamage(LivingAttackEvent evt) {
+	public static void onDamage(LivingHurtEvent evt) {
 		LivingEntity target = evt.getEntityLiving();
 
-		if (!target.level.isClientSide && evt.getSource().getDirectEntity() instanceof LivingEntity) {
-			ItemStack weapon = ((LivingEntity) evt.getSource().getDirectEntity()).getMainHandItem();
+		if (!target.level.isClientSide && evt.getSource().getDirectEntity() instanceof LivingEntity living) {
+			ItemStack weapon = living.getMainHandItem();
 
-			if (!weapon.isEmpty() && ((target.getArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe.get() || weapon.getItem() == TFItems.knightmetal_sword.get())) || (target.getArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe.get()))) {
-				// TODO scale bonus dmg with the amount of armor?
-				target.hurt(DamageSource.MAGIC, BONUS_DAMAGE);
-				// don't prevent main damage from applying
-				target.invulnerableTime = 0;
-				// enchantment attack sparkles
-				((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+			if (!weapon.isEmpty()) {
+				if (target.getArmorValue() > 0 && (weapon.is(TFItems.knightmetal_pickaxe.get()) || weapon.is(TFItems.knightmetal_sword.get()))) {
+					if(target.getArmorCoverPercentage() > 0) {
+						int moreBonus = (int) (BONUS_DAMAGE * target.getArmorCoverPercentage());
+						evt.setAmount(evt.getAmount() + moreBonus);
+						if (living instanceof Player player) {
+							player.displayClientMessage(new TranslatableComponent("dealt " + (evt.getAmount() + moreBonus) + " damage to entity"), true);
+						}
+					} else {
+						evt.setAmount(evt.getAmount() + BONUS_DAMAGE);
+					}
+					// enchantment attack sparkles
+					((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+				} else if(target.getArmorValue() == 0 && weapon.is(TFItems.knightmetal_axe.get())) {
+					evt.setAmount(evt.getAmount() + BONUS_DAMAGE);
+					if (living instanceof Player player) {
+						player.displayClientMessage(new TranslatableComponent("dealt " + (evt.getAmount() + BONUS_DAMAGE) + " damage to entity"), true);
+					}
+					// enchantment attack sparkles
+					((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+				}
 			}
 		}
 	}
