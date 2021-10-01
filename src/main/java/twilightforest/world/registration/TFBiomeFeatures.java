@@ -1,5 +1,6 @@
 package twilightforest.world.registration;
 
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.BaseDiskFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
@@ -61,18 +62,16 @@ public class TFBiomeFeatures {
 			new TFGenMonolith(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<DiskConfiguration>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () ->
 			new BaseDiskFeature(DiskConfiguration.CODEC));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> PLANT_ROOTS = FEATURES.register("plant_roots", () ->
-			new TFGenPlantRoots(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<BlockStateConfiguration>> UNDERGROUND_PLANTS = FEATURES.register("underground_plants", () ->
+			new UndergroundPlantFeature(BlockStateConfiguration.CODEC, false));
+	public static final RegistryObject<Feature<BlockStateConfiguration>> TROLL_VINES = FEATURES.register("troll_vines", () ->
+			new UndergroundPlantFeature(BlockStateConfiguration.CODEC, true));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> STONE_CIRCLE = FEATURES.register("stone_circle", () ->
 			new StoneCircleFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> THORNS = FEATURES.register("thorns", () ->
 			new TFGenThorns(NoneFeatureConfiguration.CODEC));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TORCH_BERRIES = FEATURES.register("torch_berries", () ->
-			new TFGenTorchBerries(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> TREE_OF_TIME = FEATURES.register("tree_of_time", () ->
 			new TFGenTreeOfTime(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TROLL_ROOTS = FEATURES.register("troll_roots", () ->
-			new TFGenTrollRoots(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WEBS = FEATURES.register("webs", () ->
 			new TFGenWebs(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SIMPLE_WELL = FEATURES.register("simple_well", () ->
