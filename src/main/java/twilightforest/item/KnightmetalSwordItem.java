@@ -45,9 +45,6 @@ public class KnightmetalSwordItem extends SwordItem {
 					if(target.getArmorCoverPercentage() > 0) {
 						int moreBonus = (int) (BONUS_DAMAGE * target.getArmorCoverPercentage());
 						evt.setAmount(evt.getAmount() + moreBonus);
-						if (living instanceof Player player) {
-							player.displayClientMessage(new TranslatableComponent("dealt " + (evt.getAmount() + moreBonus) + " damage to entity"), true);
-						}
 					} else {
 						evt.setAmount(evt.getAmount() + BONUS_DAMAGE);
 					}
@@ -55,9 +52,6 @@ public class KnightmetalSwordItem extends SwordItem {
 					((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 				} else if(target.getArmorValue() == 0 && weapon.is(TFItems.knightmetal_axe.get())) {
 					evt.setAmount(evt.getAmount() + BONUS_DAMAGE);
-					if (living instanceof Player player) {
-						player.displayClientMessage(new TranslatableComponent("dealt " + (evt.getAmount() + BONUS_DAMAGE) + " damage to entity"), true);
-					}
 					// enchantment attack sparkles
 					((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 				}
