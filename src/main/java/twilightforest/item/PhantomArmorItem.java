@@ -46,7 +46,7 @@ public class PhantomArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS.contains(enchantment);
+		return !CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS.contains(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
