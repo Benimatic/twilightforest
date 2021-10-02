@@ -26,6 +26,7 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 // TODO override getBaseHeight and getBaseColumn for our advanced structure terraforming
@@ -33,22 +34,25 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
-			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel)
+			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
+			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight)
 	).apply(instance, instance.stable(ChunkGeneratorTwilight::new)));
 
 	private final boolean genDarkForestCanopy;
 	private final boolean monsterSpawnsBelowSeaLevel;
+	private final Optional<Integer> darkForestCanopyHeight;
 
 	private final BlockState defaultBlock;
 	private final SurfaceNoise surfaceNoiseGetter;
 
 	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel) {
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight) {
 		//super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
 		super(delegate);
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
+		this.darkForestCanopyHeight = darkForestCanopyHeight;
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
 			this.defaultBlock = noiseGen.defaultBlock;
@@ -66,7 +70,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Override
 	public ChunkGenerator withSeed(long newSeed) {
-		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel);
+		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel, this.darkForestCanopyHeight);
 	}
 
 	@Override
@@ -75,7 +79,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		super.buildSurfaceAndBedrock(world, chunk);
 
-		this.addDarkForestCanopy(world, chunk);
+		if (this.darkForestCanopyHeight.isPresent())
+			this.addDarkForestCanopy(world, chunk, this.darkForestCanopyHeight.get());
 	}
 
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
@@ -372,7 +377,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	 * Adds dark forest canopy.  This version uses the "unzoomed" array of biomes used in land generation to determine how many of the nearby blocks are dark forest
 	 */
 	// Currently this is too sophisicated to be made into a SurfaceBuilder, it looks like
-	private void addDarkForestCanopy(WorldGenRegion primer, ChunkAccess chunk) {
+	private void addDarkForestCanopy(WorldGenRegion primer, ChunkAccess chunk, int height) {
 		BlockPos blockpos = primer.getCenter().getWorldPosition();
 		int[] thicks = new int[5 * 5];
 		boolean biomeFound = false;
@@ -444,7 +449,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					int noise = Math.min(3, (int) (this.surfaceNoiseGetter.getSurfaceNoiseValue((blockpos.getX() + dX) * 0.0625D, (blockpos.getZ() + dZ) * 0.0625D, 0.0625D, dX * 0.0625D) * 15F / 1.25F));
 
 					// manipulate top and bottom
-					int treeBottom = pos.getY() + 12 - (int) (thickness * 0.5F);
+					int treeBottom = pos.getY() + height - (int) (thickness * 0.5F);
 					int treeTop = treeBottom + (int) (thickness * 1.5F);
 
 					treeBottom -= noise;

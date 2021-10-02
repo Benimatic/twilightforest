@@ -12,6 +12,7 @@
     },
     "generate_dark_forest_canopy": true,
     "monster_spawns_below_sealevel": true,
+    "dark_forest_canopy_height": 12,
     "type": "twilightforest:structure_locating_wrapper"
   }
 }
