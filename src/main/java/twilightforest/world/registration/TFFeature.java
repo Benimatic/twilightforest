@@ -32,7 +32,7 @@ import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.world.components.structures.*;
-import twilightforest.world.components.structures.courtyard.NagaCourtyardMainComponent;
+import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
 import twilightforest.world.components.structures.finalcastle.FinalCastleMainComponent;
 import twilightforest.world.components.structures.icetower.IceTowerMainComponent;
@@ -124,21 +124,25 @@ public class TFFeature {
 	public static final TFFeature QUEST_GROVE = new TFFeature( 1, "quest_grove" , true ) {
 		{
 			this.enableTerrainAlterations();
+
+			this.adjustToTerrainHeight = true;
 		}
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new QuestGroveComponent(structureManager, rand, new BlockPos(x, y, z));
+			return new QuestGroveComponent(structureManager, rand, new BlockPos(x + 14, y, z + 14));
 		}
 
 	};
 	public static final TFFeature NAGA_COURTYARD = new TFFeature( 3, "naga_courtyard", true ) {
 		{
 			this.enableTerrainAlterations();
+
+			this.adjustToTerrainHeight = true;
 		}
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new NagaCourtyardMainComponent(this, rand, 0, x + 1, y + 1, z + 1);
+			return new CourtyardMain(this, rand, 0, x + 1, y + 1, z + 1, structureManager);
 		}
 	};
 	public static final TFFeature LICH_TOWER = new TFFeature( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
@@ -237,7 +241,7 @@ public class TFFeature {
 					// aquarium squids (only in aquariums between y = 35 and y = 64. :/
 					.addWaterCreature(EntityType.SQUID, 10, 4, 4);
 
-			this.adjustToTerrain = true;
+			this.adjustToTerrainHeight = true;
 		}
 
 		@Override
@@ -395,7 +399,7 @@ public class TFFeature {
 			// FIXME Incomplete
 			this.disableStructure();
 
-			this.adjustToTerrain = true;
+			this.adjustToTerrainHeight = true;
 		}
 
 		@Override
