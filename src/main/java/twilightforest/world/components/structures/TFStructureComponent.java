@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.nbt.CompoundTag;
@@ -202,5 +203,10 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	 */
 	public boolean isComponentProtected() {
 		return true;
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.NONE;
 	}
 }

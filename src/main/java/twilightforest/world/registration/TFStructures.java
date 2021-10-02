@@ -116,7 +116,7 @@ public class TFStructures {
 		register(event, FINAL_CASTLE, CONFIGURED_FINAL_CASTLE, TwilightForestMod.prefix("final_castle"), 1, 2);
 
 		// TODO Beardify more structures (Or bury)
-		StructureFeature.NOISE_AFFECTING_FEATURES = ImmutableList.<StructureFeature<?>>builder().addAll(StructureFeature.NOISE_AFFECTING_FEATURES).add(QUEST_GROVE, NAGA_COURTYARD, KNIGHT_STRONGHOLD).build();
+		StructureFeature.NOISE_AFFECTING_FEATURES = ImmutableList.<StructureFeature<?>>builder().addAll(StructureFeature.NOISE_AFFECTING_FEATURES).add(QUEST_GROVE, NAGA_COURTYARD, KNIGHT_STRONGHOLD, DARK_TOWER).build();
 	}
 
 	private static void register(RegistryEvent.Register<StructureFeature<?>> event, StructureFeature<?> structure, ConfiguredStructureFeature<?, ?> config, ResourceLocation name, int min, int max) {
