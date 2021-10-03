@@ -110,15 +110,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					this.raiseHills(primer, chunk, nearFeature, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
 				}
 			}
-		} else if (nearFeature == TFFeature.HEDGE_MAZE) {
-			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
-				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
-					int featureDX = xInChunk - relativeFeatureX;
-					int featureDZ = zInChunk - relativeFeatureZ;
-
-					this.flattenTerrainForFeature(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
-				}
-			}
 		} else if (nearFeature == TFFeature.YETI_CAVE) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
 				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
@@ -256,46 +247,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
 			world.setBlock(movingPos.setY(y), Blocks.AIR.defaultBlockState(), 3);
-		}
-	}
-
-	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int xInChunk, int zInChunk, int featureDX, int featureDZ) {
-		float squishFactor = 0f;
-		int featureHeight = this.getSeaLevel() + 1;
-		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
-
-		if (featureDX <= -FEATURE_BOUNDARY) {
-			squishFactor = (-featureDX - FEATURE_BOUNDARY) / 8.0f;
-		} else if (featureDX >= FEATURE_BOUNDARY) {
-			squishFactor = (featureDX - FEATURE_BOUNDARY) / 8.0f;
-		}
-
-		if (featureDZ <= -FEATURE_BOUNDARY) {
-			squishFactor = Math.max(squishFactor, (-featureDZ - FEATURE_BOUNDARY) / 8.0f);
-		} else if (featureDZ >= FEATURE_BOUNDARY) {
-			squishFactor = Math.max(squishFactor, (featureDZ - FEATURE_BOUNDARY) / 8.0f);
-		}
-
-		BlockPos.MutableBlockPos movingPos = primer.getCenter().getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
-
-		if (squishFactor > 0f) {
-			// blend the old terrain height to arena height
-
-			featureHeight += (primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ()) - featureHeight) * squishFactor;
-		}
-
-		// sets the ground level to the maze height
-		for (int y = primer.getMinBuildHeight(); y < featureHeight; y++) {
-			Block b = primer.getBlockState(movingPos.setY(y)).getBlock();
-			if (b == Blocks.AIR || b == Blocks.WATER) {
-				primer.setBlock(movingPos.setY(y), this.defaultBlock, 3);
-			}
-		}
-		for (int y = featureHeight; y <= primer.getMaxBuildHeight(); y++) {
-			Block b = primer.getBlockState(movingPos.setY(y)).getBlock();
-			if (b != Blocks.AIR && b != Blocks.WATER) {
-				primer.setBlock(movingPos.setY(y), Blocks.AIR.defaultBlockState(), 3);
-			}
 		}
 	}
 

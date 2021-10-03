@@ -30,8 +30,10 @@ public class BoundingBoxUtils {
 	}
 
 	public static CompoundTag boundingBoxToNBT(BoundingBox box) {
-		CompoundTag tag = new CompoundTag();
+		return boundingBoxToExistingNBT(box, new CompoundTag());
+	}
 
+	public static CompoundTag boundingBoxToExistingNBT(BoundingBox box, CompoundTag tag) {
 		tag.putInt("minX", box.minX());
 		tag.putInt("minY", box.minY());
 		tag.putInt("minZ", box.minZ());

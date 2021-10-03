@@ -118,10 +118,12 @@ public class TFFeature {
 	public static final TFFeature HEDGE_MAZE = new TFFeature( 2, "hedge_maze", true ) {
 		{
 			this.enableTerrainAlterations();
+
+			this.adjustToTerrainHeight = true;
 		}
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HedgeMazeComponent(this, 0, x + 1, y + 1, z + 1);
+			return new HedgeMazeComponent(this, 0, x + 1, y + 4, z + 1);
 		}
 	};
 	public static final TFFeature QUEST_GROVE = new TFFeature( 1, "quest_grove" , true ) {
