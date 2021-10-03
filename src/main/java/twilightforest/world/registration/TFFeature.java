@@ -52,7 +52,7 @@ import java.util.*;
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
 public class TFFeature {
-	public static final TFFeature NOTHING = new TFFeature( 0, "no_feature"       , false){ { this.enableDecorations().disableStructure(); } };
+	public static final TFFeature NOTHING = new TFFeature( 0, "no_feature"       , false){ { this.enableDecorations(); } };
 	public static final TFFeature SMALL_HILL = new TFFeature( 1, "small_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
@@ -443,19 +443,19 @@ public class TFFeature {
 	public final int size;
 	public final String name;
 	public final boolean centerBounds;
-	public boolean surfaceDecorationsAllowed;
-	public boolean undergroundDecoAllowed;
-	public boolean isStructureEnabled;
-	public boolean requiresTerraforming; // TODO Terraforming Type? Envelopment vs Flattening maybe?
+	public boolean surfaceDecorationsAllowed = false;
+	public boolean undergroundDecoAllowed = true;
+	public boolean isStructureEnabled = true;
+	public boolean requiresTerraforming = false; // TODO Terraforming Type? Envelopment vs Flattening maybe?
 	private final ResourceLocation[] requiredAdvancements;
-	public boolean hasProtectionAura;
-	protected boolean adjustToTerrainHeight;
+	public boolean hasProtectionAura = true;
+	protected boolean adjustToTerrainHeight = false;
 
-	private static int count;
+	private static int maxPossibleSize = 1;
 
-	private List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists;
-	private List<MobSpawnSettings.SpawnerData> ambientCreatureList;
-	private List<MobSpawnSettings.SpawnerData> waterCreatureList;
+	private List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists = new ArrayList<>();
+	private List<MobSpawnSettings.SpawnerData> ambientCreatureList = new ArrayList<>();
+	private List<MobSpawnSettings.SpawnerData> waterCreatureList = new ArrayList<>();
 
 	private long lastSpawnedHintMonsterTime;
 
@@ -468,27 +468,18 @@ public class TFFeature {
 	TFFeature(int size, String name, boolean featureGenerator, boolean centerBounds, ResourceLocation... requiredAdvancements) {
 		this.size = size;
 		this.name = name;
-		this.surfaceDecorationsAllowed = false;
-		this.isStructureEnabled = true;
-		this.requiresTerraforming = false;
-		this.spawnableMonsterLists = new ArrayList<>();
-		this.ambientCreatureList = new ArrayList<>();
-		this.waterCreatureList = new ArrayList<>();
-		this.hasProtectionAura = true;
-		this.adjustToTerrainHeight = false;
 
 		this.requiredAdvancements = requiredAdvancements;
 
 		this.centerBounds = centerBounds;
 
-		count++;
-
+		maxPossibleSize = Math.max(size, maxPossibleSize);
 	}
 
 	static void init() {}
 
 	public static int getMaxSize() {
-		return count;
+		return maxPossibleSize;
 	}
 
 	public boolean shouldAdjustToTerrain() {
@@ -610,8 +601,8 @@ public class TFFeature {
 
 		// does the biome have a feature?
 		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
-		if(biomeFeature != null && biomeFeature.isStructureEnabled)
-			return biomeFeature;
+		if(biomeFeature != null)
+			return biomeFeature.isStructureEnabled ? biomeFeature : NOTHING;
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
 		int regionOffsetZ = Math.abs((chunkZ + 64 >> 4) % 8);
