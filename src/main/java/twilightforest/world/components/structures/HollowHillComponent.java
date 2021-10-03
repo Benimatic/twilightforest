@@ -36,6 +36,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 	private final int hillSize;
 	final int radius;
+	final int hdiam;
 
 	public HollowHillComponent(ServerLevel level, CompoundTag nbt) {
 		this(TFFeature.TFHill, nbt);
@@ -45,6 +46,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		super(piece, nbt);
 		hillSize = nbt.getInt("hillSize");
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
+		this.hdiam = (hillSize * 2 + 1) * 16;
 	}
 
 	public HollowHillComponent(StructurePieceType piece, TFFeature feature, int i, int size, int x, int y, int z) {
@@ -54,7 +56,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 		// get the size of this hill?
 		this.hillSize = size;
-		radius = ((hillSize * 2 + 1) * 8) - 6;
+		this.radius = ((hillSize * 2 + 1) * 8) - 6;
+		this.hdiam = (hillSize * 2 + 1) * 16;
 
 		// can we determine the size here?
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / 2, radius * 2, Direction.SOUTH);
@@ -90,7 +93,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		for (int i = 0; i < stalactiteCount; i++) {
 			BlockPos.MutableBlockPos dest = this.randomFloorCoordinates(rand, this.radius);
 			this.generateBlockSpike(world, STONE_STALAGMITE, dest.getX(), dest.getY(), dest.getZ(), sbb);
-			//this.setBlockStateRotated(world, Blocks.EMERALD_BLOCK.defaultBlockState(), dest.getX(), dest.getY(), dest.getZ(), Rotation.NONE, sbb);
+			//this.setBlockStateRotated(world, Blocks.SCAFFOLDING.defaultBlockState(), dest.getX(), dest.getY(), dest.getZ(), Rotation.NONE, sbb);
 		}
 
 		// Place these important blocks last so they don't get overwritten by generation
@@ -224,19 +227,21 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	BlockPos.MutableBlockPos randomFloorCoordinates(Random rand, float maximumRadius) {
 		float degree = rand.nextFloat() * Mth.TWO_PI;
 		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
-		float radius = rand.nextFloat() * (maximumRadius * 0.9f);
+		float radius = rand.nextFloat() * 0.9f * maximumRadius;
 		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
-		float height = (maximumRadius - Mth.sqrt(maximumRadius * maximumRadius - radius * radius)) / 4f;
+		float dist = Mth.sqrt(radius * radius);
+		float height = (this.hillSize * 2) - Mth.cos(dist / this.hdiam * Mth.PI) * (this.hdiam / 20f);
 
-		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height - 1, maximumRadius - Mth.sin(degree) * radius);
+		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height, maximumRadius - Mth.sin(degree) * radius);
 	}
 
 	BlockPos.MutableBlockPos randomCeilingCoordinates(Random rand, float maximumRadius) {
 		float degree = rand.nextFloat() * Mth.TWO_PI;
 		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
-		float radius = rand.nextFloat() * (maximumRadius * 0.9f);
+		float radius = rand.nextFloat() * 0.9f * maximumRadius;
 		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
-		float height = Mth.sqrt(Mth.square(maximumRadius + 2) - radius * radius) - (maximumRadius / 2);
+		float dist = Mth.sqrt(radius * radius);
+		float height = Mth.cos(dist / this.hdiam * Mth.PI) * (this.hdiam / 4f);
 
 		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height, maximumRadius - Mth.sin(degree) * radius);
 	}

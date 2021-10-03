@@ -189,7 +189,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HydraLairComponent(this, rand, 0, x, y, z);
+			return new HydraLairComponent(this, rand, 0, x - 7, y, z - 7);
 		}
 	};
 	public static final TFFeature LABYRINTH = new TFFeature( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {

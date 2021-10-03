@@ -8,6 +8,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -89,7 +90,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
                 for (int i = 0; i < spikeLength; i++) {
                     BlockPos placement = startPos.offset(dx, i * dY, dz);
 
-                    if (level.isEmptyBlock(placement))
+                    if (level.isEmptyBlock(placement) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))
                         level.setBlock(placement, blockState.getState(random, placement), 3);
                 }
             }
