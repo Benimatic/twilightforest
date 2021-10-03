@@ -2,11 +2,7 @@ package twilightforest.world.components.structures.lichtowerrevamp;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.util.IntPair;
 
 import java.util.Random;
@@ -38,26 +34,5 @@ public final class LichTowerUtil {
             case SOUTH -> origin.offset(mirror == Mirror.LEFT_RIGHT ? pair.x : CentralTowerSegment.SIDE_LENGTH - pair.x, pair.z, -1);
             default -> origin.offset(mirror == Mirror.LEFT_RIGHT ? CentralTowerSegment.SIDE_LENGTH - pair.x : pair.x, pair.z, CentralTowerSegment.SIDE_LENGTH);
         };
-    }
-
-    // TODO All below - Move to a general TemplateUtils class
-
-    public static <T> T boundedArrayAccess(int index, T[] values) {
-        return values[index % values.length];
-    }
-
-    public static StructurePlaceSettings readSettings(CompoundTag compoundTag) {
-        return new StructurePlaceSettings()
-                .setRotation(boundedArrayAccess(compoundTag.getInt("rotation"), Rotation.values()))
-                .setMirror(boundedArrayAccess(compoundTag.getInt("mirror"), Mirror.values()))
-                .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
-    }
-
-    public static StructurePlaceSettings makeSettings(Rotation rotation) {
-        return new StructurePlaceSettings().setRotation(rotation).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
-    }
-
-    public static StructurePlaceSettings makeSettings(Rotation rotation, Mirror mirror) {
-        return new StructurePlaceSettings().setRotation(rotation).setMirror(mirror).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
     }
 }

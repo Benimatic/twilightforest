@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.ArrayUtil;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.registration.TFFeature;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -49,16 +49,16 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     private final Rotation externalRotation;
 
     public SideTowerRoom(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.SIDE_TOWER_ROOM, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
+        super(LichTowerRevampPieces.SIDE_TOWER_ROOM, compoundTag, serverLevel, readSettings(compoundTag));
         this.squareDiameter = compoundTag.getInt("square_diameter");
-        this.externalRotation = LichTowerUtil.boundedArrayAccess(compoundTag.getInt("ext_rotation"), Rotation.values());
+        this.externalRotation = ArrayUtil.wrapped(Rotation.values(), compoundTag.getInt("ext_rotation"));
     }
 
     private SideTowerRoom(StructureManager structureManager, Rotation roomRotation, Rotation exteriorRotation, String name, BlockPos startPosition, int squareDiameter) {
         this(
                 structureManager,
                 TwilightForestMod.prefix("lich_tower/side_tower_rooms/" + name),
-                LichTowerUtil.makeSettings(roomRotation),
+                makeSettings(roomRotation),
                 startPosition.offset(OFFSETS.get(roomRotation).multiply(squareDiameter - 1)).offset(OFFSETS.get(exteriorRotation).multiply(1 - squareDiameter)),
                 squareDiameter,
                 exteriorRotation

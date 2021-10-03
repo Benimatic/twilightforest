@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.courtyard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureMana
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.MossyCobbleTemplateProcessor;
 import twilightforest.world.components.structures.TwilightDoubleTemplateStructurePiece;
-import twilightforest.world.components.structures.lichtowerrevamp.LichTowerUtil;
 
 import java.util.Random;
 
@@ -22,8 +20,8 @@ public class CourtyardWallCornerOuter extends TwilightDoubleTemplateStructurePie
         super(NagaCourtyardPieces.TFNCWC,
                 nbt,
                 level,
-                LichTowerUtil.readSettings(nbt).addProcessor(CourtyardMain.WALL_PROCESSOR).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(BlockIgnoreProcessor.AIR),
-                LichTowerUtil.readSettings(nbt).addProcessor(MossyCobbleTemplateProcessor.INSTANCE).addProcessor(CourtyardMain.WALL_DECAY_PROCESSOR)
+                readSettings(nbt).addProcessor(CourtyardMain.WALL_PROCESSOR).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(BlockIgnoreProcessor.AIR),
+                readSettings(nbt).addProcessor(MossyCobbleTemplateProcessor.INSTANCE).addProcessor(CourtyardMain.WALL_DECAY_PROCESSOR)
         );
     }
 
@@ -31,10 +29,10 @@ public class CourtyardWallCornerOuter extends TwilightDoubleTemplateStructurePie
         super(NagaCourtyardPieces.TFNCWC,
                 i,
                 structureManager,
-                new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_corner"),
-                LichTowerUtil.makeSettings(rotation).addProcessor(CourtyardMain.WALL_PROCESSOR).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(BlockIgnoreProcessor.AIR),
-                new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_corner_decayed"),
-                LichTowerUtil.makeSettings(rotation).addProcessor(MossyCobbleTemplateProcessor.INSTANCE).addProcessor(CourtyardMain.WALL_DECAY_PROCESSOR),
+                TwilightForestMod.prefix("courtyard/courtyard_wall_corner"),
+                makeSettings(rotation).addProcessor(CourtyardMain.WALL_PROCESSOR).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(BlockIgnoreProcessor.AIR),
+                TwilightForestMod.prefix("courtyard/courtyard_wall_corner_decayed"),
+                makeSettings(rotation).addProcessor(MossyCobbleTemplateProcessor.INSTANCE).addProcessor(CourtyardMain.WALL_DECAY_PROCESSOR),
                 new BlockPos(x, y, z)
         );
     }

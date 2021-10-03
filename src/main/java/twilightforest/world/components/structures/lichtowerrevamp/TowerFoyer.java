@@ -23,17 +23,16 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.BoxCuttingProcessor;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.registration.TFFeature;
 
 import java.util.*;
 
 public final class TowerFoyer extends TwilightTemplateStructurePiece {
     public TowerFoyer(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.TOWER_FOYER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
+        super(LichTowerRevampPieces.TOWER_FOYER, compoundTag, serverLevel, readSettings(compoundTag));
     }
 
     public TowerFoyer(StructureManager structureManager, BlockPos startPosition) {
-        super(LichTowerRevampPieces.TOWER_FOYER, 0, structureManager, TwilightForestMod.prefix("lich_tower/foyer"), LichTowerUtil.makeSettings(Rotation.NONE), startPosition.above(3));
+        super(LichTowerRevampPieces.TOWER_FOYER, 0, structureManager, TwilightForestMod.prefix("lich_tower/foyer"), makeSettings(Rotation.NONE), startPosition.above(3));
     }
 
     @Override

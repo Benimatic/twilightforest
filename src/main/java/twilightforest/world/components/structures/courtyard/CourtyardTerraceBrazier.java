@@ -10,17 +10,16 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.components.structures.lichtowerrevamp.LichTowerUtil;
 
 import java.util.Random;
 
 public class CourtyardTerraceBrazier extends TwilightTemplateStructurePiece {
     public CourtyardTerraceBrazier(ServerLevel level, CompoundTag nbt) {
-        super(NagaCourtyardPieces.TFNCTr, nbt, level, LichTowerUtil.readSettings(nbt).addProcessor(CourtyardMain.TERRACE_PROCESSOR));
+        super(NagaCourtyardPieces.TFNCTr, nbt, level, readSettings(nbt).addProcessor(CourtyardMain.TERRACE_PROCESSOR));
     }
 
     public CourtyardTerraceBrazier(int i, int x, int y, int z, Rotation rotation, StructureManager structureManager) {
-        super(NagaCourtyardPieces.TFNCTr, i, structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"), LichTowerUtil.makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y, z));
+        super(NagaCourtyardPieces.TFNCTr, i, structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y, z));
     }
 
     @Override

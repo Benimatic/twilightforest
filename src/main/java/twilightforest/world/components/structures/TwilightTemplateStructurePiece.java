@@ -7,13 +7,17 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import twilightforest.util.ArrayUtil;
 import twilightforest.util.BoundingBoxUtils;
 
 import java.util.Random;
@@ -71,6 +75,26 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 
         return result;
     }
+
+    public static StructurePlaceSettings readSettings(CompoundTag compoundTag) {
+        return new StructurePlaceSettings()
+                .setRotation(ArrayUtil.wrapped(Rotation.values(), compoundTag.getInt("rotation")))
+                .setMirror(ArrayUtil.wrapped(Mirror.values(), compoundTag.getInt("mirror")))
+                .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+    }
+
+    public static StructurePlaceSettings makeSettings(Rotation rotation) {
+        return new StructurePlaceSettings().setRotation(rotation).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+    }
+
+    public static StructurePlaceSettings makeSettings(Rotation rotation, Mirror mirror) {
+        return new StructurePlaceSettings().setRotation(rotation).setMirror(mirror).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+    }
+
+    public static StructurePlaceSettings randomRotation(Random random) {
+        return makeSettings(Rotation.getRandom(random));
+    }
+
 
     // Worse case scenario if the terrain still isn't being risen for the Lich Tower,
     // then we'll need to do via this. I still have other solutions I'd like to explore first

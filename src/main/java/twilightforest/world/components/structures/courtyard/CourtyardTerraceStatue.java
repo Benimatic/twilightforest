@@ -10,17 +10,16 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.components.structures.lichtowerrevamp.LichTowerUtil;
 
 import java.util.Random;
 
 public class CourtyardTerraceStatue extends TwilightTemplateStructurePiece {
     public CourtyardTerraceStatue(ServerLevel level, CompoundTag nbt) {
-        super(NagaCourtyardPieces.TFNCSt, nbt, level, LichTowerUtil.readSettings(nbt).addProcessor(CourtyardMain.TERRACE_PROCESSOR));
+        super(NagaCourtyardPieces.TFNCSt, nbt, level, readSettings(nbt).addProcessor(CourtyardMain.TERRACE_PROCESSOR));
     }
 
     public CourtyardTerraceStatue(int i, int x, int y, int z, Rotation rotation, StructureManager structureManager) {
-        super(NagaCourtyardPieces.TFNCSt, i, structureManager, TwilightForestMod.prefix("terrace_statue/terrace_fire"), LichTowerUtil.makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y, z));
+        super(NagaCourtyardPieces.TFNCSt, i, structureManager, TwilightForestMod.prefix("terrace_statue/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y, z));
     }
 
     @Override

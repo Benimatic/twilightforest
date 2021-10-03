@@ -16,7 +16,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.processors.BoxCuttingProcessor;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.registration.TFFeature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +28,11 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     static final int ATTACHMENT_POINT_RANGE = 13;
 
     public CentralTowerSegment(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.CENTRAL_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
+        super(LichTowerRevampPieces.CENTRAL_TOWER, compoundTag, serverLevel, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
     }
 
     public CentralTowerSegment(StructureManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
-        this(structureManager, TwilightForestMod.prefix("lich_tower/central_tower"), LichTowerUtil.makeSettings(rotation).addProcessor(sideTowerStarts), startPosition);
+        this(structureManager, TwilightForestMod.prefix("lich_tower/central_tower"), makeSettings(rotation).addProcessor(sideTowerStarts), startPosition);
     }
 
     private CentralTowerSegment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {

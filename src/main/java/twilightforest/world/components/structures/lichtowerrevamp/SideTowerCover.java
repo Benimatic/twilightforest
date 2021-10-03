@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureMana
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.registration.TFFeature;
 
 import java.util.List;
 import java.util.Random;
@@ -34,12 +33,12 @@ public final class SideTowerCover extends TwilightTemplateStructurePiece {
     private final int thickness = 2;
 
     public SideTowerCover(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
+        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
     private SideTowerCover(StructureManager structureManager, Rotation rotation, String name, BlockPos startPosition, int width) {
-        this(structureManager, TwilightForestMod.prefix("lich_tower/side_tower_covers/" + name), LichTowerUtil.makeSettings(rotation), startPosition, width);
+        this(structureManager, TwilightForestMod.prefix("lich_tower/side_tower_covers/" + name), makeSettings(rotation), startPosition, width);
     }
 
     private SideTowerCover(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {

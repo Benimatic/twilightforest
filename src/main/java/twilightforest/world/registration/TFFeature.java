@@ -133,9 +133,8 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new QuestGroveComponent(structureManager, rand, new BlockPos(x + 14, y, z + 14));
+			return new QuestGrove(structureManager, new BlockPos(x - 12, y, z - 12));
 		}
-
 	};
 	public static final TFFeature NAGA_COURTYARD = new TFFeature( 3, "naga_courtyard", true ) {
 		{
@@ -436,7 +435,7 @@ public class TFFeature {
 	//IStructurePieceTypes that can be referred to
 	public static final StructurePieceType TFHill = registerPiece("TFHill", HollowHillComponent::new);
 	public static final StructurePieceType TFHedge = registerPiece("TFHedge", HedgeMazeComponent::new);
-	public static final StructurePieceType TFQuestGrove = registerPiece("TFQuest1", QuestGroveComponent::new);
+	public static final StructurePieceType TFQuestGrove = registerPiece("TFQuest1", QuestGrove::new);
 	public static final StructurePieceType TFHydra = registerPiece("TFHydra", HydraLairComponent::new);
 	public static final StructurePieceType TFYeti = registerPiece("TFYeti", YetiCaveComponent::new);
 

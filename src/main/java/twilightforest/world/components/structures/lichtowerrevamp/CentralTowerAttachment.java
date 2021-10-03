@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureMana
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -24,12 +23,12 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     private final int length = 2; // Determines how far out the piece should gen
 
     public CentralTowerAttachment(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
+        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, TwilightTemplateStructurePiece.readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
     private CentralTowerAttachment(StructureManager structureManager, Rotation rotation, String name, BlockPos startPosition, int width) {
-        this(structureManager, TwilightForestMod.prefix("lich_tower/attachments/central/" + name), LichTowerUtil.makeSettings(rotation), startPosition.relative(rotation.rotate(Direction.EAST), -(width - 5 >> 1)), width);
+        this(structureManager, TwilightForestMod.prefix("lich_tower/attachments/central/" + name), makeSettings(rotation), startPosition.relative(rotation.rotate(Direction.EAST), -(width - 5 >> 1)), width);
     }
 
     private CentralTowerAttachment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {
