@@ -56,6 +56,7 @@ public class TFFeature {
 	public static final TFFeature SMALL_HILL = new TFFeature( 1, "small_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
+			this.undergroundDecoAllowed = false;
 
 			this.addMonster(EntityType.SPIDER, 10, 4, 4)
 					.addMonster(EntityType.ZOMBIE, 10, 4, 4)
@@ -72,6 +73,7 @@ public class TFFeature {
 	public static final TFFeature MEDIUM_HILL = new TFFeature( 2, "medium_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
+			this.undergroundDecoAllowed = false;
 
 			this.addMonster(TFEntities.redcap, 10, 4, 4)
 					.addMonster(TFEntities.redcap_sapper, 1, 1, 4)
@@ -93,6 +95,7 @@ public class TFFeature {
 	public static final TFFeature LARGE_HILL = new TFFeature( 3, "large_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
+			this.undergroundDecoAllowed = false;
 
 			this.addMonster(TFEntities.redcap, 10, 4, 4)
 					.addMonster(TFEntities.redcap_sapper, 2, 1, 4)
@@ -175,6 +178,7 @@ public class TFFeature {
 	public static final TFFeature HYDRA_LAIR = new TFFeature( 2, "hydra_lair"    , true, true, TwilightForestMod.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
+			this.undergroundDecoAllowed = false;
 		}
 
 		@Override
@@ -195,6 +199,7 @@ public class TFFeature {
 	public static final TFFeature LABYRINTH = new TFFeature( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations();
+			this.undergroundDecoAllowed = false;
 
 			this.addMonster(TFEntities.minotaur, 20, 2, 4)
 					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
@@ -262,6 +267,7 @@ public class TFFeature {
 	public static final TFFeature KNIGHT_STRONGHOLD = new TFFeature( 3, "knight_stronghold", true, TwilightForestMod.prefix("progress_trophy_pedestal") ) {
 		{
 			this.enableDecorations().disableProtectionAura();
+			this.undergroundDecoAllowed = false;
 
 			this.addMonster(TFEntities.blockchain_goblin, 10, 4, 4)
 					.addMonster(TFEntities.goblin_knight_lower, 5, 1, 2)
@@ -296,6 +302,7 @@ public class TFFeature {
 	public static final TFFeature YETI_CAVE = new TFFeature( 2, "yeti_lairs", true, true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
+			this.undergroundDecoAllowed = false;
 
 			this.addMonster(TFEntities.yeti, 10, 4, 4);
 		}
@@ -436,7 +443,8 @@ public class TFFeature {
 	public final int size;
 	public final String name;
 	public final boolean centerBounds;
-	public boolean areChunkDecorationsEnabled;
+	public boolean surfaceDecorationsAllowed;
+	public boolean undergroundDecoAllowed;
 	public boolean isStructureEnabled;
 	public boolean requiresTerraforming; // TODO Terraforming Type? Envelopment vs Flattening maybe?
 	private final ResourceLocation[] requiredAdvancements;
@@ -460,7 +468,7 @@ public class TFFeature {
 	TFFeature(int size, String name, boolean featureGenerator, boolean centerBounds, ResourceLocation... requiredAdvancements) {
 		this.size = size;
 		this.name = name;
-		this.areChunkDecorationsEnabled = false;
+		this.surfaceDecorationsAllowed = false;
 		this.isStructureEnabled = true;
 		this.requiresTerraforming = false;
 		this.spawnableMonsterLists = new ArrayList<>();
@@ -508,7 +516,7 @@ public class TFFeature {
 	 * Turns on biome-specific decorations like grass and trees near this feature.
 	 */
 	public TFFeature enableDecorations() {
-		this.areChunkDecorationsEnabled = true;
+		this.surfaceDecorationsAllowed = true;
 		return this;
 	}
 

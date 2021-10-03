@@ -17,6 +17,6 @@ public class ChunkCenterDecorator extends FeatureDecorator<NoneDecoratorConfigur
 
 	@Override
 	public Stream<BlockPos> getPositions(DecorationContext pContext, Random pRandom, NoneDecoratorConfiguration pConfig, BlockPos pos) {
-		return Stream.of(new BlockPos(pos.getX() + 8, pos.getY(), pos.getZ() + 8));
+		return Stream.of(new BlockPos((pos.getX() & 0xfffffff0) + 8, pos.getY(), (pos.getZ() & 0xfffffff0) + 8));
 	}
 }

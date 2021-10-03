@@ -13,8 +13,11 @@
                       "type": "twilightforest:wood_roots"
                     },
                     "decorator": {
-                      "config": {},
-                      "type": "twilightforest:nostructure"
+                      "config": {
+                        "occupies_surface": true,
+                        "occupies_underground": false
+                      },
+                      "type": "twilightforest:no_structure"
                     }
                   },
                   "type": "minecraft:decorated"
