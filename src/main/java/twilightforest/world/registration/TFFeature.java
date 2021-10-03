@@ -469,8 +469,6 @@ public class TFFeature {
 		this.hasProtectionAura = true;
 		this.adjustToTerrainHeight = false;
 
-		if(!name.equals("hydra_lair")) ambientCreatureList.add(new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
-
 		this.requiredAdvancements = requiredAdvancements;
 
 		this.centerBounds = centerBounds;
