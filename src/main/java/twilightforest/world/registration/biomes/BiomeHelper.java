@@ -201,7 +201,6 @@ public abstract class BiomeHelper {
 
 		BiomeDefaultFeatures.addDefaultOres(biome);
 		BiomeDefaultFeatures.addDefaultSeagrass(biome);
-		BiomeDefaultFeatures.addDefaultSoftDisks(biome);
 
 		addSmallStoneClusters(biome);
 
@@ -251,6 +250,7 @@ public abstract class BiomeHelper {
 				.addStructureStart(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD);
 
 		addDarkForestVegetation(biome);
+		addForestVegetation(biome);
 		addCaves(biome);
 		
 		return biome;
@@ -337,6 +337,7 @@ public abstract class BiomeHelper {
 	}
 
 	public static void addDarkForestVegetation(BiomeGenerationSettings.Builder biome) {
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FOREST_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
@@ -490,6 +491,7 @@ public abstract class BiomeHelper {
                 .surfaceBuilder(SurfaceBuilders.OCEAN_SAND);
 
         BiomeDefaultFeatures.addSwampClayDisk(biome);
+		BiomeDefaultFeatures.addDefaultSoftDisks(biome);
         BiomeDefaultFeatures.addForestGrass(biome);
         BiomeDefaultFeatures.addSavannaGrass(biome);
         biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_SUGAR_CANE);

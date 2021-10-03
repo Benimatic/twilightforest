@@ -50,7 +50,7 @@
       "type": "minecraft:simple_state_provider"
     },
     "trunk_placer": {
-      "branch_start_offset_down": 4,
+      "branch_start_offset_down": 3,
       "branch_config": {
         "random_add_length": 2.0,
         "spacing_yaw": 0.23,

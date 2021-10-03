@@ -136,7 +136,7 @@ public final class TreeConfigurations {
 
     public static final TreeConfiguration DARKWOOD_TREE = new TreeConfiguration.TreeConfigurationBuilder(
             new SimpleStateProvider(BlockConstants.DARKWOOD_LOG),
-            new BranchingTrunkPlacer(6, 1, 1, 4, new BranchesConfig(4, 0, 8, 2, 0.23, 0.23), false),
+            new BranchingTrunkPlacer(6, 1, 1, 3, new BranchesConfig(4, 0, 8, 2, 0.23, 0.23), false),
             new SimpleStateProvider(BlockConstants.HARDENED_DARK_LEAVES),
             new SimpleStateProvider(BlockConstants.DARKWOOD_SAPLING),
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
@@ -148,7 +148,7 @@ public final class TreeConfigurations {
 
     public static final TreeConfiguration HOMEGROWN_DARKWOOD_TREE = new TreeConfiguration.TreeConfigurationBuilder(
             new SimpleStateProvider(BlockConstants.DARKWOOD_LOG),
-            new BranchingTrunkPlacer(6, 1, 1, 4, new BranchesConfig(4, 0, 8, 2, 0.23, 0.23), false),
+            new BranchingTrunkPlacer(6, 1, 1, 3, new BranchesConfig(4, 0, 8, 2, 0.23, 0.23), false),
             new SimpleStateProvider(BlockConstants.DARKWOOD_LEAVES),
             new SimpleStateProvider(BlockConstants.DARKWOOD_SAPLING),
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
@@ -160,7 +160,7 @@ public final class TreeConfigurations {
 
     public static final TreeConfiguration DARKWOOD_LANTERN_TREE = new TreeConfiguration.TreeConfigurationBuilder(
             new SimpleStateProvider(BlockConstants.DARKWOOD_LOG),
-            new BranchingTrunkPlacer(6, 1, 1, 4, new BranchesConfig(4, 0, 8, 2, 0.23, 0.23), false),
+            new BranchingTrunkPlacer(6, 1, 1, 3, new BranchesConfig(4, 0, 8, 2, 0.23, 0.23), false),
             new SimpleStateProvider(BlockConstants.DARKWOOD_LEAVES),
             new SimpleStateProvider(BlockConstants.DARKWOOD_SAPLING),
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f,  (int) (LEAF_SHAG_FACTOR * 1.5f)),
