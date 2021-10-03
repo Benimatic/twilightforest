@@ -24,6 +24,7 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.components.feature.config.ThornsConfig;
 
 import java.util.function.Supplier;
 
@@ -112,7 +113,7 @@ public final class ConfiguredFeatures {
     public static final ConfiguredFeature<?, ?> SMALL_LOG = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("small_log"), TFBiomeFeatures.FALLEN_SMALL_LOG.get().configured(FeatureConfiguration.NONE).decorated(TwilightFeatures.OCCUPIES_SURFACE_CLEARANCE).decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE).rarity(90).squared());
     public static final ConfiguredFeature<?, ?> SMOKER = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("smoker"), TFBiomeFeatures.FIRE_JET.get().configured(new BlockStateConfiguration(BlockConstants.SMOKER)).decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE));
     public static final ConfiguredFeature<?, ?> STONE_CIRCLE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("stone_circle"), TFBiomeFeatures.STONE_CIRCLE.get().configured(FeatureConfiguration.NONE).decorated(TwilightFeatures.OCCUPIES_SURFACE_CLEARANCE).decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE).rarity(105).squared());
-    public static final ConfiguredFeature<?, ?> THORNS = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("thorns"), TFBiomeFeatures.THORNS.get().configured(FeatureConfiguration.NONE).decorated(TwilightFeatures.CONFIGURED_THORNLANDS_BLANKETING));
+    public static final ConfiguredFeature<?, ?> THORNS = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("thorns"), TFBiomeFeatures.THORNS.get().configured(new ThornsConfig(7, 3, 3, 50)).decorated(TwilightFeatures.CONFIGURED_THORNLANDS_BLANKETING));
     public static final ConfiguredFeature<?, ?> TORCH_BERRIES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("torch_berries"), TFBiomeFeatures.UNDERGROUND_PLANTS.get().configured(new BlockStateConfiguration(BlockConstants.TORCHBERRIES)).decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).range(Features.Decorators.RANGE_BOTTOM_TO_60).count(4).decorated(TwilightFeatures.OCCUPIES_UNDERGROUND_CLEARANCE));
     public static final ConfiguredFeature<?, ?> TROLL_ROOTS = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("troll_roots"), TFBiomeFeatures.TROLL_VINES.get().configured(new BlockStateConfiguration(BlockConstants.TROLLVIDR)).decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).range(Features.Decorators.RANGE_BOTTOM_TO_60).count(4).countRandom(8));
     public static final ConfiguredFeature<?, ?> WEBS = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("webs"), TFBiomeFeatures.WEBS.get().configured(FeatureConfiguration.NONE).decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE).squared().count(60));

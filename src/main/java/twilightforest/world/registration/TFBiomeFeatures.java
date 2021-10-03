@@ -1,6 +1,5 @@
 package twilightforest.world.registration;
 
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.BaseDiskFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
@@ -11,6 +10,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.components.feature.config.ThornsConfig;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
 import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
@@ -68,8 +68,8 @@ public class TFBiomeFeatures {
 			new UndergroundPlantFeature(BlockStateConfiguration.CODEC, true));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> STONE_CIRCLE = FEATURES.register("stone_circle", () ->
 			new StoneCircleFeature(NoneFeatureConfiguration.CODEC));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> THORNS = FEATURES.register("thorns", () ->
-			new TFGenThorns(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<ThornsConfig>> THORNS = FEATURES.register("thorns", () ->
+			new TwilightThorns(ThornsConfig.CODEC));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> TREE_OF_TIME = FEATURES.register("tree_of_time", () ->
 			new TFGenTreeOfTime(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WEBS = FEATURES.register("webs", () ->

@@ -13,22 +13,17 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
+import twilightforest.world.components.feature.config.ThornsConfig;
 
 import java.util.Random;
 
-public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
-
-	private static final int MAX_SPREAD = 7;
-	private static final int CHANCE_OF_BRANCH = 3;
-	private static final int CHANCE_OF_LEAF = 3;
-	private static final int CHANCE_LEAF_IS_ROSE = 50;
-
-	public TFGenThorns(Codec<NoneFeatureConfiguration> config) {
+public class TwilightThorns extends Feature<ThornsConfig> {
+	public TwilightThorns(Codec<ThornsConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+	public boolean place(FeaturePlaceContext<ThornsConfig> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
 		Random rand = ctx.random();
@@ -38,26 +33,26 @@ public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
 		int nextLength = 2 + rand.nextInt(4);
 		int maxLength = 2 + rand.nextInt(4) + rand.nextInt(4) + rand.nextInt(4);
 
-		placeThorns(world, rand, pos, nextLength, Direction.UP, maxLength, pos);
+		placeThorns(world, rand, pos, nextLength, Direction.UP, maxLength, pos, ctx.config());
 
 		return true;
 	}
 
-	private void placeThorns(WorldGenLevel world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos) {
+	private void placeThorns(WorldGenLevel world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos, ThornsConfig config) {
 		boolean complete = false;
 		for (int i = 0; i < length; i++) {
 			BlockPos dPos = pos.relative(dir, i);
 
 			if (world.canSeeSkyFromBelowWater(pos)) {
-				if (Math.abs(dPos.getX() - oPos.getX()) < MAX_SPREAD && Math.abs(dPos.getZ() - oPos.getZ()) < MAX_SPREAD && canPlaceThorns(world, dPos)) {
+				if (Math.abs(dPos.getX() - oPos.getX()) < config.maxSpread() && Math.abs(dPos.getZ() - oPos.getZ()) < config.maxSpread() && canPlaceThorns(world, dPos)) {
 					world.setBlock(dPos, TFBlocks.brown_thorns.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
 
 					// did we make it to the end?
 					if (i == length - 1) {
 						complete = true;
 						// maybe a leaf?  or a rose?
-						if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isEmptyBlock(dPos.relative(dir))) {
-							if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
+						if (rand.nextInt(config.chanceOfLeaf()) == 0 && world.isEmptyBlock(dPos.relative(dir))) {
+							if (rand.nextInt(config.chanceLeafIsRose()) > 0) {
 								// leaf
 								world.setBlock(dPos.relative(dir), TFBlocks.thorn_leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 3);
 							} else {
@@ -82,11 +77,11 @@ public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
 			BlockPos nextPos = pos.relative(dir, length - 1).relative(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
 
-			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos);
+			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos, config);
 		}
 
 		// maybe another branch off the middle
-		if (complete && length > 3 && rand.nextInt(CHANCE_OF_BRANCH) == 0) {
+		if (complete && length > 3 && rand.nextInt(config.chanceOfBranch()) == 0) {
 
 			int middle = rand.nextInt(length);
 
@@ -95,11 +90,11 @@ public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
 			BlockPos nextPos = pos.relative(dir, middle).relative(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
 
-			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos);
+			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos, config);
 		}
 
 		// maybe a leaf
-		if (complete && length > 3 && rand.nextInt(CHANCE_OF_LEAF) == 0) {
+		if (complete && length > 3 && rand.nextInt(config.chanceOfLeaf()) == 0) {
 
 			int middle = rand.nextInt(length);
 
