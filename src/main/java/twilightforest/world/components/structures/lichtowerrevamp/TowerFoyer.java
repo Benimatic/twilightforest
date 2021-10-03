@@ -128,11 +128,6 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    public TFFeature getFeatureType() {
-        return TFFeature.LICH_TOWER;
-    }
-
-    @Override
     public NoiseEffect getNoiseEffect() {
         return NoiseEffect.BEARD;
     }

@@ -9,7 +9,5 @@ public interface TwilightFeature {
     }
 
     @Deprecated // Remove this whole class - These TFFeature labels inside StructComps serve no purpose
-    default TFFeature getFeatureType() {
-        return TFFeature.NOTHING;
-    }
+    TFFeature getFeatureType();
 }

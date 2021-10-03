@@ -46,11 +46,6 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    public TFFeature getFeatureType() {
-        return TFFeature.LICH_TOWER;
-    }
-
-    @Override
     protected void addAdditionalSaveData(ServerLevel level, CompoundTag structureTag) {
         super.addAdditionalSaveData(level, structureTag);
 

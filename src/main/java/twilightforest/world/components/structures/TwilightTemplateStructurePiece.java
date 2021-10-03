@@ -18,7 +18,7 @@ import twilightforest.util.BoundingBoxUtils;
 
 import java.util.Random;
 
-public abstract class TwilightTemplateStructurePiece extends TemplateStructurePiece implements TwilightFeature {
+public abstract class TwilightTemplateStructurePiece extends TemplateStructurePiece {
     protected StructureManager structureManager;
     private final BlockPos originalPlacement;
     private final BoundingBox originalBox;

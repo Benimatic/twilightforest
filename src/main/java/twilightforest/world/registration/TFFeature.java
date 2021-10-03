@@ -52,7 +52,7 @@ import java.util.*;
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
 public class TFFeature {
-	public static final TFFeature NOTHING = new TFFeature( 0, "no_feature"       , false){ { this.enableDecorations(); } };
+	public static final TFFeature NOTHING = new TFFeature( 0, "no_feature"       , false){ { this.enableDecorations().disableStructure(); } };
 	public static final TFFeature SMALL_HILL = new TFFeature( 1, "small_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
@@ -430,7 +430,7 @@ public class TFFeature {
 		.put(BiomeKeys.HIGHLANDS.location(), TROLL_CAVE)
 		.put(BiomeKeys.SNOWY_FOREST.location(), YETI_CAVE)
 		.put(BiomeKeys.SWAMP.location(), LABYRINTH)
-		.put(BiomeKeys.LAKE.location(), QUEST_ISLAND)
+		//.put(BiomeKeys.LAKE.location(), QUEST_ISLAND)
 		.build();
 
 	//IStructurePieceTypes that can be referred to
@@ -451,7 +451,7 @@ public class TFFeature {
 	public boolean hasProtectionAura = true;
 	protected boolean adjustToTerrainHeight = false;
 
-	private static int maxPossibleSize = 1;
+	private static int maxPossibleSize;
 
 	private List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists = new ArrayList<>();
 	private List<MobSpawnSettings.SpawnerData> ambientCreatureList = new ArrayList<>();
@@ -473,7 +473,7 @@ public class TFFeature {
 
 		this.centerBounds = centerBounds;
 
-		maxPossibleSize = Math.max(size, maxPossibleSize);
+		maxPossibleSize = Math.max(this.size, maxPossibleSize);
 	}
 
 	static void init() {}
@@ -602,7 +602,7 @@ public class TFFeature {
 		// does the biome have a feature?
 		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
 		if(biomeFeature != null)
-			return biomeFeature.isStructureEnabled ? biomeFeature : NOTHING;
+			return biomeFeature;
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
 		int regionOffsetZ = Math.abs((chunkZ + 64 >> 4) % 8);

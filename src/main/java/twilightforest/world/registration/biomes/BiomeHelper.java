@@ -145,7 +145,7 @@ public abstract class BiomeHelper {
 	}
 	
 	public static BiomeGenerationSettings.Builder denseMushroomForestGen() {
-		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder().addStructureStart(TFStructures.CONFIGURED_MUSHROOM_TOWER);
+		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder()/*.addStructureStart(TFStructures.CONFIGURED_MUSHROOM_TOWER)*/;
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MYCELIUM_BLOB);

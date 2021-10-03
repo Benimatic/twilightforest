@@ -88,9 +88,7 @@
       "twilightforest:flower_placer"
     ]
   ],
-  "starts": [
-    "twilightforest:configured_mushroom_tower"
-  ],
+  "starts": [],
   "spawners": {
     "monster": [
       {
