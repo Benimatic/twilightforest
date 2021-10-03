@@ -86,8 +86,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.disableBlend();
 		ms.popPose();
 		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
-		/** world.getWorldInfo().getVoidFogHeight() -> 27, because the sea level for TF is lower TODO: Keep an eye on Forge PR #7528*/
-		double d0 = mc.player.getEyePosition(partialTicks).y - 30;
+		double d0 = mc.player.getEyePosition(partialTicks).y + (world.getSeaLevel() - 10);
 
 		if (d0 < 0.0D) {
 			ms.pushPose();
