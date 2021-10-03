@@ -679,6 +679,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 	private void fieryConversions(Consumer<FinishedRecipe> consumer) {
 		UpgradeRecipeBuilder.smithing(Ingredient.of(Items.IRON_INGOT), Ingredient.of(ItemTagGenerator.FIERY_VIAL), TFItems.fiery_ingot.get()).unlocks("has_item", has(TFItems.fiery_ingot.get())).save(consumer, TwilightForestMod.prefix("material/fiery_iron_ingot"));
+		UpgradeRecipeBuilder.smithing(Ingredient.of(ItemTagGenerator.FIERY_VIAL), Ingredient.of(Items.IRON_INGOT), TFItems.fiery_ingot.get()).unlocks("has_item", has(TFItems.fiery_ingot.get())).save(consumer, TwilightForestMod.prefix("material/fiery_iron_ingot_reversed"));
 
 		fieryConversion(consumer, TFItems.fiery_helmet, Items.IRON_HELMET, 5);
 		fieryConversion(consumer, TFItems.fiery_chestplate, Items.IRON_CHESTPLATE, 8);
