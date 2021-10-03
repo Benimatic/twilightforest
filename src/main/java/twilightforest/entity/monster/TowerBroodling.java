@@ -1,5 +1,9 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -11,6 +15,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
+
+import javax.annotation.Nullable;
 
 public class TowerBroodling extends SwarmSpider {
 
@@ -65,5 +71,12 @@ public class TowerBroodling extends SwarmSpider {
 		another.spawnAnim();
 
 		return true;
+	}
+
+	//no skeleton druid jockeys for us
+	@Nullable
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
+		return livingData;
 	}
 }

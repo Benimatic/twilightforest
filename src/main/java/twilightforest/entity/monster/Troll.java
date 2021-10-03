@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -164,6 +165,8 @@ public class Troll extends Monster implements RangedAttackMob {
 
 	public static boolean canSpawn(EntityType<? extends Troll> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
 		BlockPos blockpos = pos.below();
-		return !(world.getBlockState(blockpos).getBlock() == TFBlocks.giant_obsidian.get()) && !world.canSeeSky(pos) && pos.getY() < 60;
+		return  world.getDifficulty() != Difficulty.PEACEFUL &&
+				world.getBlockState(blockpos).getBlock() != TFBlocks.giant_obsidian.get() &&
+				!world.canSeeSky(pos);
 	}
 }

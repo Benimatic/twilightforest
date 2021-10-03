@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -154,6 +155,6 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
 		Optional<ResourceKey<Biome>> key = world.getBiomeName(pos);
-		return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(world, pos, random);
+		return world.getDifficulty() != Difficulty.PEACEFUL && Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(world, pos, random);
 	}
 }

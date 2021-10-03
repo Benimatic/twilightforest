@@ -83,13 +83,7 @@ public class MosquitoSwarm extends Monster {
 	}
 
 	public static boolean canSpawn(EntityType<? extends Monster> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
-		Optional<ResourceKey<Biome>> key = world.getBiomeName(pos);
-		if (Objects.equals(key, Optional.of(BiomeKeys.SWAMP))) {
-			// no light level check
-			return world.getDifficulty() != Difficulty.PEACEFUL && Mob.checkMobSpawnRules(type, world, reason, pos, rand);
-		} else {
-			return Monster.checkAnyLightMonsterSpawnRules(type, world, reason, pos, rand);
-		}
+		return world.getDifficulty() != Difficulty.PEACEFUL && Monster.checkAnyLightMonsterSpawnRules(type, world, reason, pos, rand);
 	}
 
 	@Override
