@@ -14,6 +14,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -32,7 +33,7 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
     }
 
     public TowerFoyer(StructureManager structureManager, BlockPos startPosition) {
-        super(LichTowerRevampPieces.TOWER_FOYER, 0, structureManager, TwilightForestMod.prefix("lich_tower/foyer"), LichTowerUtil.makeSettings(Rotation.NONE), startPosition);
+        super(LichTowerRevampPieces.TOWER_FOYER, 0, structureManager, TwilightForestMod.prefix("lich_tower/foyer"), LichTowerUtil.makeSettings(Rotation.NONE), startPosition.above(3));
     }
 
     @Override
@@ -99,13 +100,13 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    public boolean postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-        boolean result = super.postProcess(pLevel, pStructureManager, pChunkGenerator, pRandom, pBox, pChunkPos, pPos);
+    public boolean postProcess(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
+        boolean result = this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
 
         BlockPos placement = new BlockPos(this.boundingBox.getCenter().getX() + 1, this.boundingBox.minY() + 7, this.boundingBox.minZ() + 16);
 
-        if (pBox.isInside(placement)) {
-            final ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, pLevel.getLevel());
+        if (boundingBox.isInside(placement)) {
+            final ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, level.getLevel());
             armorStand.setCustomName(new TextComponent("Welcome to the new Lich Tower! The design is heavily WIP and will be fleshed out significantly in later development builds"));
             armorStand.moveTo(placement.getX(), placement.getY() + 0.5, placement.getZ() + 0.5, 0, 0);
             armorStand.setInvulnerable(true);
@@ -115,7 +116,7 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
             armorStand.setNoGravity(true);
             // set marker flag
             armorStand.getEntityData().set(ArmorStand.DATA_CLIENT_FLAGS, (byte) (armorStand.getEntityData().get(ArmorStand.DATA_CLIENT_FLAGS) | 16));
-            pLevel.addFreshEntity(armorStand);
+            level.addFreshEntity(armorStand);
         }
 
         return result;
@@ -129,5 +130,10 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
     @Override
     public TFFeature getFeatureType() {
         return TFFeature.LICH_TOWER;
+    }
+
+    @Override
+    public NoiseEffect getNoiseEffect() {
+        return NoiseEffect.BEARD;
     }
 }

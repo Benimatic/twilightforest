@@ -53,4 +53,8 @@ public class StructureBoundingBoxUtils {
 				nbt.getInt("maxZ")
 		);
 	}
+
+	public static BoundingBox clone(BoundingBox box) {
+		return new BoundingBox(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ());
+	}
 }

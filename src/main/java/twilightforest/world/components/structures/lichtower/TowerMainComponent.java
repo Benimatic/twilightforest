@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.EntityType;
@@ -477,5 +478,10 @@ public class TowerMainComponent extends TowerWingComponent {
 				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), 2);
 			}
 		}
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.BEARD;
 	}
 }

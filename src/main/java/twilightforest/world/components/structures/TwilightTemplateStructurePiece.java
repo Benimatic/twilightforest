@@ -4,13 +4,24 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import twilightforest.util.StructureBoundingBoxUtils;
+
+import java.util.Random;
 
 public abstract class TwilightTemplateStructurePiece extends TemplateStructurePiece implements TwilightFeature {
     protected StructureManager structureManager;
+    private final BlockPos originalPlacement;
+    private final BoundingBox originalBox;
 
     public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, ServerLevel serverLevel, StructurePlaceSettings rl2SettingsFunction) {
         super(structurePieceType, compoundTag, serverLevel, rl -> rl2SettingsFunction);
@@ -18,6 +29,9 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         this.mirror = this.getMirror();
 
         this.structureManager = serverLevel.getStructureManager();
+
+        this.originalPlacement = this.templatePosition;
+        this.originalBox = StructureBoundingBoxUtils.clone(this.boundingBox);
     }
 
     public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
@@ -26,6 +40,9 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         this.mirror = this.getMirror();
 
         this.structureManager = structureManager;
+
+        this.originalPlacement = this.templatePosition;
+        this.originalBox = StructureBoundingBoxUtils.clone(this.boundingBox);
     }
 
     @Override
@@ -35,4 +52,30 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         structureTag.putInt("rotation", this.placeSettings.getRotation().ordinal());
         structureTag.putInt("mirror", this.placeSettings.getMirror().ordinal());
     }
+
+    @Override
+    public NoiseEffect getNoiseEffect() {
+        return NoiseEffect.NONE;
+    }
+
+    // This will be required if you want to dig a piece into a noise beard
+    protected boolean placePieceAdjusted(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos, int dY) {
+        this.templatePosition = this.templatePosition.above(dY);
+
+        boolean result = super.postProcess(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos.above(dY));
+
+        this.templatePosition = this.originalPlacement;
+        this.boundingBox = StructureBoundingBoxUtils.clone(this.originalBox);
+
+        this.placeSettings.setBoundingBox(this.boundingBox);
+
+        return result;
+    }
+
+    // Worse case scenario if the terrain still isn't being risen for the Lich Tower,
+    // then we'll need to do via this. I still have other solutions I'd like to explore first
+    //@Override
+    //public BoundingBox getBoundingBox() {
+    //    return this.boundingBox = StructureBoundingBoxUtils.clone(this.originalBox);
+    //}
 }
