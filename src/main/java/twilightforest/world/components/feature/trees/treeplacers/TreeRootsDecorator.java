@@ -86,7 +86,7 @@ public class TreeRootsDecorator extends TreeDecorator {
 
         if (this.hasSurfaceRoots) {
             for (int i = 0; i < numBranches; i++) {
-                buildRootExposed(worldReader, worldPlacer, random, startPos, offset, i, this.length, this.surfaceBlock, this.rootBlock);
+                buildRootExposed(worldReader, worldPlacer, random, startPos.below(), offset, i, this.length, this.surfaceBlock, this.rootBlock);
             }
         } else {
             for (int i = 0; i < numBranches; i++) {
@@ -108,7 +108,7 @@ public class TreeRootsDecorator extends TreeDecorator {
                 stillAboveGround = false;
                 if (FeatureLogic.canRootGrowIn(worldReader, coord)) {
                     worldPlacer.accept(coord, dirtRoot.getState(random, coord));
-                }
+                } else break;
             }
         }
     }
@@ -122,7 +122,7 @@ public class TreeRootsDecorator extends TreeDecorator {
         for (BlockPos coord : lineArray) {
             if (FeatureLogic.canRootGrowIn(world, coord)) {
                 worldPlacer.accept(coord, dirtRoot.getState(random, coord));
-            }
+            } else break;
         }
     }
 }

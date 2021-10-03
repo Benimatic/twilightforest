@@ -142,7 +142,7 @@ public final class TreeConfigurations {
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
             new TwoLayersFeatureSize(4, 1, 1)
     )
-            //.setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS)) //TODO roots grow EVERYWHERE in strongholds, lets disable for now
+            .decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
             .ignoreVines()
             .build();
 
