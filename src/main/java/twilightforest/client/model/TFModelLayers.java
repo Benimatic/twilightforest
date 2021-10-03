@@ -124,6 +124,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation LEGACY_SNOW_QUEEN = register("legacy_snow_queen");
 	public static final ModelLayerLocation LEGACY_SQUIRREL = register("legacy_squirrel");
 	public static final ModelLayerLocation LEGACY_TINY_BIRD = register("legacy_tiny_bird");
+	public static final ModelLayerLocation LEGACY_TROLL = register("legacy_troll");
 	public static final ModelLayerLocation LEGACY_UPPER_GOBLIN_KNIGHT = register("legacy_upper_goblin_knight");
 	public static final ModelLayerLocation LEGACY_UR_GHAST = register("legacy_ur_ghast");
 

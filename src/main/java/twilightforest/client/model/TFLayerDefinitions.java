@@ -2,14 +2,12 @@ package twilightforest.client.model;
 
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
@@ -145,6 +143,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.LEGACY_SNOW_QUEEN, SnowQueenLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_SQUIRREL, SquirrelLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_TINY_BIRD, TinyBirdLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_TROLL, TrollLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_UPPER_GOBLIN_KNIGHT, UpperGoblinKnightLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_UR_GHAST, UrGhastLegacyModel::create);
 
