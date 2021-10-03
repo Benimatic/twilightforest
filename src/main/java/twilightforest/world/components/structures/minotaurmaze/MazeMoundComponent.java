@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -50,7 +51,7 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.averageGroundLevel < generator.getMinY()) {
+		/*if (this.averageGroundLevel < generator.getMinY()) {
 			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
 
 			if (this.averageGroundLevel < generator.getMinY()) {
@@ -64,7 +65,7 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 			if (this.mazeAbove != null) {
 				mazeAbove.getBoundingBox().encapsulate(blockPos.atY(offset));
 			}
-		}
+		}*/
 
 		//this.fillWithBlocks(world, sbb, 0, 0, 0, 25, 8, 25, Blocks.DIRT, 0, false);
 
@@ -91,34 +92,5 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
-	 * levels in the BB's horizontal rectangle).
-	 */
-	@Override
-	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox boundingBox) {
-		int totalHeight = 0;
-		int totalMeasures = 0;
-		int yStart = Mth.clamp(generator.getSeaLevel(), this.boundingBox.minY(), this.boundingBox.maxY());
-
-		for (int z = this.boundingBox.minZ(); z <= this.boundingBox.maxZ(); ++z) {
-			for (int x = this.boundingBox.minX(); x <= this.boundingBox.maxX(); ++x) {
-				BlockPos pos = new BlockPos(x, yStart, z);
-
-				if (boundingBox.isInside(pos)) {
-					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
-					totalHeight += Math.max(topPos.getY(), generator.getSeaLevel());
-					++totalMeasures;
-				}
-			}
-		}
-
-		if (totalMeasures == 0) {
-			return Integer.MIN_VALUE;
-		} else {
-			return totalHeight / totalMeasures;
-		}
 	}
 }

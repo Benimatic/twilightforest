@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -78,32 +79,8 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 		return true;
 	}
 
-	/**
-	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
-	 * levels in the BB's horizontal rectangle).
-	 */
 	@Override
-	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox boundingBox) {
-		int yTotal = 0;
-		int count = 0;
-		int yStart = Mth.clamp(generator.getSeaLevel(), this.boundingBox.minY(), this.boundingBox.maxY());
-
-		for (int z = this.boundingBox.minZ(); z <= this.boundingBox.maxZ(); ++z) {
-			for (int x = this.boundingBox.minX(); x <= this.boundingBox.maxX(); ++x) {
-				BlockPos pos = new BlockPos(x, yStart, z);
-
-				if (boundingBox.isInside(pos)) {
-					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
-					yTotal += Math.max(topPos.getY(), generator.getSeaLevel());
-					++count;
-				}
-			}
-		}
-
-		if (count == 0) {
-			return Integer.MIN_VALUE;
-		} else {
-			return yTotal / count;
-		}
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.BEARD;
 	}
 }
