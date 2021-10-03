@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.enums.Diagonals;
-import twilightforest.util.StructureBoundingBoxUtils;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.registration.TFFeature;
 
@@ -44,7 +44,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 				for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((ListTag) mazeY).getInt(y);
 		}
 
-        this.sizeConstraints = StructureBoundingBoxUtils.NBTToBoundingBox(nbt.getCompound("constraints"));
+        this.sizeConstraints = BoundingBoxUtils.NBTToBoundingBox(nbt.getCompound("constraints"));
         this.structureManager = structureManager;
     }
 
@@ -648,6 +648,6 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 		tagCompound.putInt("mazeWidth", widthInCellCount);
 		tagCompound.putInt("mazeHeight", heightInCellCount);
 		tagCompound.put("maze", mazeX);
-        tagCompound.put("constraints", StructureBoundingBoxUtils.boundingBoxToNBT(this.sizeConstraints));
+        tagCompound.put("constraints", BoundingBoxUtils.boundingBoxToNBT(this.sizeConstraints));
 	}
 }

@@ -22,8 +22,8 @@ import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.PlayerHelper;
-import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFFeature;
@@ -106,7 +106,7 @@ public class TFTickHandler {
 
 		return TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, player.blockPosition(), 100).map(structure -> {
 			BoundingBox fullSBB = structure.getBoundingBox();
-			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
+			Vec3i center = BoundingBoxUtils.getCenter(fullSBB);
 
 			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerLevel) world);
 

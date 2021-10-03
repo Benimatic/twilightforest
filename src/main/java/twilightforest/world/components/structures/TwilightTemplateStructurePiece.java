@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import twilightforest.util.StructureBoundingBoxUtils;
+import twilightforest.util.BoundingBoxUtils;
 
 import java.util.Random;
 
@@ -31,7 +31,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         this.structureManager = serverLevel.getStructureManager();
 
         this.originalPlacement = this.templatePosition;
-        this.originalBox = StructureBoundingBoxUtils.clone(this.boundingBox);
+        this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
     }
 
     public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
@@ -42,7 +42,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         this.structureManager = structureManager;
 
         this.originalPlacement = this.templatePosition;
-        this.originalBox = StructureBoundingBoxUtils.clone(this.boundingBox);
+        this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
     }
 
     @Override
@@ -65,7 +65,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         boolean result = super.postProcess(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos.above(dY));
 
         this.templatePosition = this.originalPlacement;
-        this.boundingBox = StructureBoundingBoxUtils.clone(this.originalBox);
+        this.boundingBox = BoundingBoxUtils.clone(this.originalBox);
 
         this.placeSettings.setBoundingBox(this.boundingBox);
 

@@ -6,8 +6,7 @@ import net.minecraft.core.Vec3i;
 
 import javax.annotation.Nullable;
 
-// TODO Do we need to keep this class? Delete if this remains untouched by 1.19
-public class StructureBoundingBoxUtils {
+public class BoundingBoxUtils {
 	@Deprecated // Use `BoundingBox#getCenter` directly
 	public static Vec3i getCenter(BoundingBox sbb) {
 		return sbb.getCenter();

@@ -23,10 +23,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFTreasure;
-import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -527,7 +527,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 */
 	protected int findGroundLevel(WorldGenLevel world, BoundingBox sbb, int start, Predicate<BlockState> predicate) {
 
-		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
+		Vec3i center = BoundingBoxUtils.getCenter(sbb);
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
 		for (int y = start; y > 0; y--) {

@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.StructureBoundingBoxUtils;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
@@ -54,7 +54,7 @@ public final class BoxCuttingProcessor extends StructureProcessor {
             if (!(tagElement instanceof CompoundTag boxCompound)) continue;
 
             try {
-                boxes.add(StructureBoundingBoxUtils.NBTToBoundingBox(boxCompound));
+                boxes.add(BoundingBoxUtils.NBTToBoundingBox(boxCompound));
             } catch (Throwable e) {
                 TwilightForestMod.LOGGER.error("Invalid BoundingBox found in list", e);
             }

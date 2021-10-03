@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureMana
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.StructureBoundingBoxUtils;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.processors.BoxCuttingProcessor;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 import twilightforest.world.registration.TFFeature;
@@ -70,7 +70,7 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
 
         ListTag boxTagList = new ListTag();
 
-        for (BoundingBox box : filtering) boxTagList.add(StructureBoundingBoxUtils.boundingBoxToNBT(box));
+        for (BoundingBox box : filtering) boxTagList.add(BoundingBoxUtils.boundingBoxToNBT(box));
 
         structureTag.put("cutouts", boxTagList);
     }

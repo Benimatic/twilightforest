@@ -14,10 +14,10 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.util.StructureBoundingBoxUtils;
 
 import java.util.Random;
 
@@ -71,7 +71,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	public Rotation findStairDirectionTowards(int x, int z) {
-		Vec3i center = StructureBoundingBoxUtils.getCenter(this.boundingBox);
+		Vec3i center = BoundingBoxUtils.getCenter(this.boundingBox);
 		// difference
 		int dx = center.getX() - x;
 		int dz = center.getZ() - z;
