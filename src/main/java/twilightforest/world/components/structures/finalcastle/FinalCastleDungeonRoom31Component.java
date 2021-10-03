@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.material.Material;
@@ -213,5 +214,10 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			return TFBlocks.force_field_green.get().defaultBlockState();
 		else
 			return TFBlocks.force_field_blue.get().defaultBlockState();
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.BURY;
 	}
 }
