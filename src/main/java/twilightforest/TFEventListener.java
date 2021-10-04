@@ -224,7 +224,7 @@ public class TFEventListener {
 		Entity trueSource = damageSource.getEntity();
 
 		// fire aura
-		if (living instanceof Player && damageType.equals("mob") && trueSource != null) {
+		if (living instanceof Player && (damageType.equals("mob") || damageType.equals("player")) && trueSource != null) {
 			Player player = (Player) living;
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.getInventory(), damageSource);
 
@@ -234,7 +234,7 @@ public class TFEventListener {
 		}
 
 		// chill aura
-		if (living instanceof Player && damageType.equals("mob") && trueSource instanceof LivingEntity) {
+		if (living instanceof Player && (damageType.equals("mob") || damageType.equals("player")) && trueSource instanceof LivingEntity) {
 			Player player = (Player) living;
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.getInventory(), damageSource);
 
@@ -258,8 +258,7 @@ public class TFEventListener {
 		if (damageSource != DamageSource.FALL && damageSource != DamageSource.DROWN && damageSource != DamageSource.SWEET_BERRY_BUSH) {
 			ItemStack stack = living.getItemBySlot(EquipmentSlot.HEAD);
 			Block block = Block.byItem(stack.getItem());
-			if (block instanceof CritterBlock) {
-				CritterBlock poorBug = (CritterBlock) block;
+			if (block instanceof CritterBlock poorBug) {
 				living.setItemSlot(EquipmentSlot.HEAD, poorBug.getSquishResult());
 				living.level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.BUG_SQUISH, living.getSoundSource(), 1, 1);
 			}
