@@ -42,7 +42,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
-		this.generateBox(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.get().defaultBlockState(), TFBlocks.giant_obsidian.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.GIANT_OBSIDIAN.get().defaultBlockState(), TFBlocks.GIANT_OBSIDIAN.get().defaultBlockState(), false);
 
 		// clear inside
 		this.generateAirBox(world, sbb, 4, 4, 4, 7, 7, 7);
@@ -51,8 +51,8 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE.defaultBlockState(), Blocks.COBBLESTONE.defaultBlockState(), false);
 
 		// chests
-		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getOrientation().getClockWise(), TFTreasure.troll_vault, sbb, false);
-		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getOrientation().getClockWise(), TFTreasure.troll_garden, sbb, false);
+		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getOrientation().getClockWise(), TFTreasure.TROLL_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getOrientation().getClockWise(), TFTreasure.TROLL_GARDEN, sbb, false);
 
 		return true;
 	}

@@ -62,7 +62,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 			}
 
 			if (chargeLevel >= 1 && te.counter % 10 == 0) {
-				TFBlocks.ghast_trap.get().sparkle(level, pos);
+				TFBlocks.GHAST_TRAP.get().sparkle(level, pos);
 				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			}
 			if (chargeLevel >= 2) {
@@ -73,7 +73,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 			}
 			if (chargeLevel >= 3) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.05, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
-				TFBlocks.ghast_trap.get().sparkle(level, pos);
+				TFBlocks.GHAST_TRAP.get().sparkle(level, pos);
 				if (te.counter % 5 == 0) {
 					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.5F, 2F, false);
 				}

@@ -18,7 +18,7 @@ public class MagicLeavesBlock extends LeavesBlock {
 
 	@Override
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
-		if (state.getBlock() == TFBlocks.transformation_leaves.get()) {
+		if (state.getBlock() == TFBlocks.TRANSFORMATION_LEAVES.get()) {
 			for (int i = 0; i < 1; ++i) {
 				this.sparkleRunes(world, pos, random);
 			}

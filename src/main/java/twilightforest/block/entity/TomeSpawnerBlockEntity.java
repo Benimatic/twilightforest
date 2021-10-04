@@ -51,7 +51,7 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 
 			if (te.tomesLeft <= 0) {
 				te.invalidateCaps();
-				level.setBlockAndUpdate(pos, TFBlocks.empty_bookshelf.get().defaultBlockState());
+				level.setBlockAndUpdate(pos, TFBlocks.EMPTY_CANOPY_BOOKSHELF.get().defaultBlockState());
 			} else {
 				level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, te.tomesLeft));
 			}
@@ -69,8 +69,8 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 					double y = (double) pos.getY() + (level.random.nextDouble() - level.random.nextDouble());
 					double z = pos.relative(dir).getZ() + (level.random.nextDouble() - level.random.nextDouble()) * 2.0D;
 
-					if (level.noCollision(mob.orElse(TFEntities.death_tome).getAABB(x, y, z)) && mob.isPresent()) {
-						Entity entity = mob.orElse(TFEntities.death_tome).create(level);
+					if (level.noCollision(mob.orElse(TFEntities.DEATH_TOME).getAABB(x, y, z)) && mob.isPresent()) {
+						Entity entity = mob.orElse(TFEntities.DEATH_TOME).create(level);
 						entity.moveTo(new BlockPos(x, y, z), entity.getYRot(), entity.getXRot());
 						level.addFreshEntity(entity);
 						tomesLeft--;

@@ -122,7 +122,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
     //[VanillaCopy] of EnderChestTileEntity, with some small adaptations
     public static void tick(Level level, BlockPos pos, BlockState state, KeepsakeCasketBlockEntity te) {
         if (++te.ticksSinceSync % 20 * 4 == 0) {
-            level.blockEvent(pos, TFBlocks.keepsake_casket.get(), 1, te.numPlayersUsing);
+            level.blockEvent(pos, TFBlocks.KEEPSAKE_CASKET.get(), 1, te.numPlayersUsing);
         }
         te.prevLidAngle = te.lidAngle;
         if (te.numPlayersUsing > 0 && te.lidAngle == 0.0F) {
@@ -202,7 +202,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
                 this.numPlayersUsing = 0;
             }
             ++this.numPlayersUsing;
-            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+            this.level.blockEvent(this.worldPosition, TFBlocks.KEEPSAKE_CASKET.get(), 1, this.numPlayersUsing);
         }
 
     }
@@ -210,7 +210,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
     public void stopOpen(Player player) {
         if (!player.isSpectator()) {
             --this.numPlayersUsing;
-            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+            this.level.blockEvent(this.worldPosition, TFBlocks.KEEPSAKE_CASKET.get(), 1, this.numPlayersUsing);
         }
 
     }

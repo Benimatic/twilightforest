@@ -2,7 +2,7 @@
   "parent": "twilightforest:magic_map",
   "display": {
     "icon": {
-      "item": "twilightforest:maze_map"
+      "item": "twilightforest:filled_maze_map"
     },
     "title": {
       "translate": "advancement.twilightforest.maze_map"
@@ -27,7 +27,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:maze_map"
+              "twilightforest:filled_maze_map"
             ]
           }
         ]

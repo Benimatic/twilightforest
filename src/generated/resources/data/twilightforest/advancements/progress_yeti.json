@@ -2,7 +2,7 @@
   "parent": "twilightforest:progress_lich",
   "display": {
     "icon": {
-      "item": "twilightforest:alpha_fur"
+      "item": "twilightforest:alpha_yeti_fur"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_yeti"
@@ -28,7 +28,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:yeti_alpha"
+              "type": "twilightforest:alpha_yeti"
             },
             "entity": "this"
           }
@@ -41,7 +41,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:yeti_trophy"
+              "twilightforest:alpha_yeti_trophy"
             ]
           }
         ]
@@ -53,7 +53,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:alpha_fur"
+              "twilightforest:alpha_yeti_fur"
             ]
           }
         ]

@@ -41,7 +41,7 @@ public class Penguin extends Bird {
 
 	@Override
 	public Animal getBreedOffspring(ServerLevel world, AgeableMob entityanimal) {
-		return TFEntities.penguin.create(world);
+		return TFEntities.PENGUIN.create(world);
 	}
 
 	@Override

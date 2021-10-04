@@ -167,7 +167,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean isPortal(BlockState state) {
-		return state.getBlock() == TFBlocks.twilight_portal.get();
+		return state.getBlock() == TFBlocks.TWILIGHT_PORTAL.get();
 	}
 
 	// from the start point, builds a set of all directly adjacent non-portal blocks
@@ -426,7 +426,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south().below(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.twilight_portal.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);

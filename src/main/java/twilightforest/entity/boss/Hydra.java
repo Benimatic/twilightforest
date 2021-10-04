@@ -123,7 +123,7 @@ public class Hydra extends Mob implements Enemy {
 	@Override
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
-			level.setBlockAndUpdate(blockPosition().offset(0, 2, 0), TFBlocks.boss_spawner_hydra.get().defaultBlockState());
+			level.setBlockAndUpdate(blockPosition().offset(0, 2, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
 			discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {

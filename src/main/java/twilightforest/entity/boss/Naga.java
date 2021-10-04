@@ -708,7 +708,7 @@ public class Naga extends Monster {
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			if (getRestrictCenter() != BlockPos.ZERO) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_naga.get().defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			discard();
 		} else {

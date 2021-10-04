@@ -109,7 +109,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void addReach(ItemAttributeModifierEvent event) {
 		Item item = event.getItemStack().getItem();
-		if((item == TFItems.giant_pickaxe.get() || item == TFItems.giant_sword.get()) && event.getSlotType() == EquipmentSlot.MAINHAND) {
+		if((item == TFItems.GIANT_PICKAXE.get() || item == TFItems.GIANT_SWORD.get()) && event.getSlotType() == EquipmentSlot.MAINHAND) {
 			event.addModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Tool modifier", 2.5, AttributeModifier.Operation.ADDITION));
 		}
 	}
@@ -129,7 +129,7 @@ public class TFEventListener {
 	}
 
 	private static boolean doesCraftMatrixHaveGiantLog(Container inv) {
-		Item giantLogItem = Item.byBlock(TFBlocks.giant_log.get());
+		Item giantLogItem = Item.byBlock(TFBlocks.GIANT_LOG.get());
 		for (int i = 0; i < inv.getContainerSize(); i++) {
 			if (inv.getItem(i).getItem() == giantLogItem) {
 				return true;
@@ -157,7 +157,7 @@ public class TFEventListener {
 				if (generatedLoot.get(0).getItem() == Item.byBlock(Blocks.COBBLESTONE)) {
 					generatedLoot.remove(0);
 					if (amountOfCobbleToReplace == 64) {
-						newLoot.add(new ItemStack(TFBlocks.giant_cobblestone.get()));
+						newLoot.add(new ItemStack(TFBlocks.GIANT_COBBLESTONE.get()));
 						flag = true;
 					}
 					amountOfCobbleToReplace--;
@@ -215,7 +215,7 @@ public class TFEventListener {
 		if (damageType.equals("arrow") && trueSource instanceof Player) {
 			Player player = (Player) trueSource;
 
-			if (player.getMainHandItem().getItem() == TFItems.triple_bow.get() || player.getOffhandItem().getItem() == TFItems.triple_bow.get()) {
+			if (player.getMainHandItem().getItem() == TFItems.TRIPLE_BOW.get() || player.getOffhandItem().getItem() == TFItems.TRIPLE_BOW.get()) {
 				living.invulnerableTime = 0;
 			}
 		}
@@ -254,24 +254,24 @@ public class TFEventListener {
 					boolean wall = state.getBlock() instanceof WallSkullBlock;
 					switch (type) {
 						case SKELETON -> {
-							if (wall) makeWallSkull(event, TFBlocks.skeleton_wall_skull_candle.get());
-							else makeFloorSkull(event, TFBlocks.skeleton_skull_candle.get());
+							if (wall) makeWallSkull(event, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.SKELETON_SKULL_CANDLE.get());
 						}
 						case WITHER_SKELETON -> {
-							if (wall) makeWallSkull(event, TFBlocks.wither_skele_wall_skull_candle.get());
-							else makeFloorSkull(event, TFBlocks.wither_skele_skull_candle.get());
+							if (wall) makeWallSkull(event, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get());
 						}
 						case PLAYER -> {
-							if (wall) makeWallSkull(event, TFBlocks.player_wall_skull_candle.get());
-							else makeFloorSkull(event, TFBlocks.player_skull_candle.get());
+							if (wall) makeWallSkull(event, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.PLAYER_SKULL_CANDLE.get());
 						}
 						case ZOMBIE -> {
-							if (wall) makeWallSkull(event, TFBlocks.zombie_wall_skull_candle.get());
-							else makeFloorSkull(event, TFBlocks.zombie_skull_candle.get());
+							if (wall) makeWallSkull(event, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.ZOMBIE_SKULL_CANDLE.get());
 						}
 						case CREEPER -> {
-							if (wall) makeWallSkull(event, TFBlocks.creeper_wall_skull_candle.get());
-							else makeFloorSkull(event, TFBlocks.creeper_skull_candle.get());
+							if (wall) makeWallSkull(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
 						}
 					}
 					if(!event.getPlayer().getAbilities().instabuild) stack.shrink(1);
@@ -323,7 +323,7 @@ public class TFEventListener {
 
 	private static boolean casketExpiration = false;
 	private static void keepsakeCasket(Player player) {
-		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.keepsake_casket.get().asItem());
+		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET.get().asItem());
 
 		if (casketConsumed) {
 			Level world = player.getCommandSenderWorld();
@@ -343,7 +343,7 @@ public class TFEventListener {
 			BlockPos immutablePos = pos.immutable();
 			FluidState fluidState = world.getFluidState(immutablePos);
 
-			if (world.setBlockAndUpdate(immutablePos, TFBlocks.keepsake_casket.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
+			if (world.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
 				BlockEntity te = world.getBlockEntity(immutablePos);
 
 				if (te instanceof KeepsakeCasketBlockEntity) {
@@ -373,7 +373,7 @@ public class TFEventListener {
 							TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and dropping extra items", player.getName().getString());
 						} else {
 							damage = damage + 1;
-							world.setBlockAndUpdate(immutablePos, TFBlocks.keepsake_casket.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage));
+							world.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage));
 							TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
 						}
 					}
@@ -405,7 +405,7 @@ public class TFEventListener {
 		Player player = event.getPlayer();
 		BlockEntity te = event.getWorld().getBlockEntity(event.getPos());
 		UUID checker;
-		if(block == TFBlocks.keepsake_casket.get()) {
+		if(block == TFBlocks.KEEPSAKE_CASKET.get()) {
 			if(te instanceof KeepsakeCasketBlockEntity) {
 				KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) te;
 				 checker = casket.playeruuid;
@@ -421,8 +421,8 @@ public class TFEventListener {
 	}
 
 	private static boolean charmOfLife(Player player) {
-		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_life_2.get());
-		boolean charm1 = !charm2 && TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_life_1.get());
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2.get());
+		boolean charm1 = !charm2 && TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1.get());
 
 		if (charm2 || charm1) {
 			if (charm1) {
@@ -439,10 +439,10 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			CharmEffect effect = new CharmEffect(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
 			player.level.addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
 			effect2.offset = (float) Math.PI;
 			player.level.addFreshEntity(effect2);
 
@@ -459,9 +459,9 @@ public class TFEventListener {
 		dropStoredItems(player);
 
 		// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
-		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_keeping_3.get());
-		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_keeping_2.get());
-		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_keeping_1.get());
+		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_3.get());
+		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_2.get());
+		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_1.get());
 
 		Inventory keepInventory = new Inventory(null);
 
@@ -478,14 +478,14 @@ public class TFEventListener {
 				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setPickedItem(new ItemStack(TFItems.charm_of_keeping_3.get()));
+			keepInventory.setPickedItem(new ItemStack(TFItems.CHARM_OF_KEEPING_3.get()));
 
 		} else if (tier2) {
 			for (int i = 0; i < 9; i++) {
 				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setPickedItem(new ItemStack(TFItems.charm_of_keeping_2.get()));
+			keepInventory.setPickedItem(new ItemStack(TFItems.CHARM_OF_KEEPING_2.get()));
 
 		} else if (tier1) {
 			int i = player.getInventory().selected;
@@ -493,7 +493,7 @@ public class TFEventListener {
 				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setPickedItem(new ItemStack(TFItems.charm_of_keeping_1.get()));
+			keepInventory.setPickedItem(new ItemStack(TFItems.CHARM_OF_KEEPING_1.get()));
 		}
 
 		//TODO: Baubles is dead, replace with curios
@@ -504,7 +504,7 @@ public class TFEventListener {
 		// always keep tower keys and held phantom armor
 		for (int i = 0; i < player.getInventory().items.size(); i++) {
 			ItemStack stack = player.getInventory().items.get(i);
-			if (stack.getItem() == TFItems.tower_key.get()) {
+			if (stack.getItem() == TFItems.TOWER_KEY.get()) {
 				keepInventory.items.set(i, stack.copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
@@ -600,10 +600,10 @@ public class TFEventListener {
 
 			// spawn effect thingers
 			if (!keepInventory.getSelected().isEmpty()) {
-				CharmEffect effect = new CharmEffect(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
+				CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, keepInventory.getSelected().getItem());
 				player.level.addFreshEntity(effect);
 
-				CharmEffect effect2 = new CharmEffect(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
+				CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, keepInventory.getSelected().getItem());
 				effect2.offset = (float) Math.PI;
 				player.level.addFreshEntity(effect2);
 
@@ -732,7 +732,7 @@ public class TFEventListener {
 	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
 		ItemStack heldStack = player.getMainHandItem();
 		Item heldItem = heldStack.getItem();
-		return heldItem == TFItems.giant_pickaxe.get()/* && heldItem.canHarvestBlock(heldStack, state)*/;
+		return heldItem == TFItems.GIANT_PICKAXE.get()/* && heldItem.canHarvestBlock(heldStack, state)*/;
 	}
 
 	@SubscribeEvent
@@ -755,7 +755,7 @@ public class TFEventListener {
 
 	private static boolean isBlockProtectedFromBreaking(Level world, BlockPos pos) {
 		// todo improve
-		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave") || !world.getBlockState(pos).is(TFBlocks.keepsake_casket.get());
+		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave") || !world.getBlockState(pos).is(TFBlocks.KEEPSAKE_CASKET.get());
 	}
 
 	/**

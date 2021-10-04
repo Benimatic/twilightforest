@@ -120,7 +120,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		if (this.level.hasChunkAt(pos)) {
 			Block nearbyBlock = this.getLevel().getBlockState(pos).getBlock();
 
-			if (nearbyBlock != TFBlocks.cinder_log.get() && BlockTags.LOGS.contains(nearbyBlock)) {
+			if (nearbyBlock != TFBlocks.CINDER_LOG.get() && BlockTags.LOGS.contains(nearbyBlock)) {
 				this.getLevel().setBlock(pos, getCinderLog(dx, dy, dz), 2);
 				this.getLevel().levelEvent(2004, pos, 0);
 				this.getLevel().levelEvent(2004, pos, 0);
@@ -144,8 +144,8 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			direction = dy == 0 ? Direction.Axis.Y : null; //We return null so we can get Cinder Wood.
 		}
 
-		return direction != null ? TFBlocks.cinder_log.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction)
-				: TFBlocks.cinder_wood.get().defaultBlockState();
+		return direction != null ? TFBlocks.CINDER_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction)
+				: TFBlocks.CINDER_WOOD.get().defaultBlockState();
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
 					BlockPos pos = getBlockPos().offset(dx, dy, dz);
-					if (this.level.hasChunkAt(pos) && this.getLevel().getBlockState(pos).getBlock() == TFBlocks.cinder_log.get()) {
+					if (this.level.hasChunkAt(pos) && this.getLevel().getBlockState(pos).getBlock() == TFBlocks.CINDER_LOG.get()) {
 						count++;
 					}
 				}

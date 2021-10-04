@@ -31,7 +31,7 @@ public class Bighorn extends Sheep {
 	}
 
 	public Bighorn(Level world, double x, double y, double z) {
-		this(TFEntities.bighorn_sheep, world);
+		this(TFEntities.BIGHORN_SHEEP, world);
 		this.setPos(x, y, z);
 	}
 
@@ -100,7 +100,7 @@ public class Bighorn extends Sheep {
 		}
 
 		Bighorn otherParent = (Bighorn) ageable;
-		Bighorn babySheep = TFEntities.bighorn_sheep.create(world);
+		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.create(world);
 		babySheep.setColor(getOffspringColor(this, otherParent));
 		return babySheep;
 	}

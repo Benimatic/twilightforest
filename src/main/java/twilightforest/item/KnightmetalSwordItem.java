@@ -41,7 +41,7 @@ public class KnightmetalSwordItem extends SwordItem {
 			ItemStack weapon = living.getMainHandItem();
 
 			if (!weapon.isEmpty()) {
-				if (target.getArmorValue() > 0 && (weapon.is(TFItems.knightmetal_pickaxe.get()) || weapon.is(TFItems.knightmetal_sword.get()))) {
+				if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.get()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.get()))) {
 					if(target.getArmorCoverPercentage() > 0) {
 						int moreBonus = (int) (BONUS_DAMAGE * target.getArmorCoverPercentage());
 						evt.setAmount(evt.getAmount() + moreBonus);
@@ -50,7 +50,7 @@ public class KnightmetalSwordItem extends SwordItem {
 					}
 					// enchantment attack sparkles
 					((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-				} else if(target.getArmorValue() == 0 && weapon.is(TFItems.knightmetal_axe.get())) {
+				} else if(target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
 					evt.setAmount(evt.getAmount() + BONUS_DAMAGE);
 					// enchantment attack sparkles
 					((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));

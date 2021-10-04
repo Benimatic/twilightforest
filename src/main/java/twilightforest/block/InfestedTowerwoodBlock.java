@@ -21,7 +21,7 @@ public class InfestedTowerwoodBlock extends FlammableBlock {
 	public void spawnAfterBreak(BlockState state, ServerLevel world, BlockPos pos, ItemStack stack) {
 		super.spawnAfterBreak(state, world, pos, stack);
 		if (!world.isClientSide && world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) {
-			TowerwoodBorer termite = new TowerwoodBorer(TFEntities.tower_termite, world);
+			TowerwoodBorer termite = new TowerwoodBorer(TFEntities.TOWERWOOD_BORER, world);
 			termite.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
 			world.addFreshEntity(termite);
 			termite.spawnAnim();

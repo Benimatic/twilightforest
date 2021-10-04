@@ -34,7 +34,7 @@ public class SeekerArrow extends TFArrow {
 	}
 
 	public SeekerArrow(Level world, Entity shooter) {
-		super(TFEntities.seeker_arrow, world, shooter);
+		super(TFEntities.SEEKER_ARROW, world, shooter);
 		setBaseDamage(1.0D);
 	}
 

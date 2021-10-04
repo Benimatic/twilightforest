@@ -53,14 +53,14 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void modelBake(ModelBakeEvent event) {
-			fullbrightItem(event, TFItems.fiery_ingot);
-			fullbrightItem(event, TFItems.fiery_boots);
-			fullbrightItem(event, TFItems.fiery_chestplate);
-			fullbrightItem(event, TFItems.fiery_helmet);
-			fullbrightItem(event, TFItems.fiery_leggings);
-			fullbrightItem(event, TFItems.fiery_pickaxe);
-			fullbrightItem(event, TFItems.fiery_sword);
-			fullbright(event, TFBlocks.fiery_block.getId(), "");
+			fullbrightItem(event, TFItems.FIERY_INGOT);
+			fullbrightItem(event, TFItems.FIERY_BOOTS);
+			fullbrightItem(event, TFItems.FIERY_CHESTPLATE);
+			fullbrightItem(event, TFItems.FIERY_HELMET);
+			fullbrightItem(event, TFItems.FIERY_LEGGINGS);
+			fullbrightItem(event, TFItems.FIERY_PICKAXE);
+			fullbrightItem(event, TFItems.FIERY_SWORD);
+			fullbright(event, TFBlocks.FIERY_BLOCK.getId(), "");
 		}
 
 		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {

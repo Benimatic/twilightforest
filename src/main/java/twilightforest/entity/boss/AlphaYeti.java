@@ -308,7 +308,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage) {
-			IceBomb ice = new IceBomb(TFEntities.thrown_ice, this.level, this);
+			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE, this.level, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getX() - this.getX();
@@ -331,7 +331,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			if (getRestrictCenter() != BlockPos.ZERO) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_alpha_yeti.get().defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			remove(RemovalReason.DISCARDED);
 		} else {

@@ -19,7 +19,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:maze_map_empty"
+              "twilightforest:maze_map"
             ]
           }
         ]
@@ -31,7 +31,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:maze_map"
+              "twilightforest:filled_maze_map"
             ]
           }
         ]

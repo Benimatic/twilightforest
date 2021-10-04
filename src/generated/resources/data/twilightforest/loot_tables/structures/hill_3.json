@@ -186,11 +186,6 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
-          "name": "twilightforest:naga_scale"
-        },
-        {
-          "type": "minecraft:item",
           "weight": 25,
           "functions": [
             {
@@ -219,11 +214,6 @@
           "type": "minecraft:item",
           "weight": 25,
           "name": "twilightforest:charm_of_keeping_1"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 25,
-          "name": "twilightforest:mangrove_sapling"
         },
         {
           "type": "minecraft:item",

@@ -191,14 +191,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 						final int oceanFloor = primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
 
 						if (dist < 7 || cv < 0.05F) {
-							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
 							}
-							primer.setBlock(movingPos.setY(y - depth), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y - depth), TFBlocks.WISPY_CLOUD.get().defaultBlockState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), 3);
 							}
 						}
 
@@ -405,7 +405,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 					treeBottom -= noise;
 
-					BlockState darkLeaves = TFBlocks.hardened_dark_leaves.get().defaultBlockState();
+					BlockState darkLeaves = TFBlocks.HARDENED_DARK_LEAVES.get().defaultBlockState();
 
 					for (int y = treeBottom; y < treeTop; y++) {
 						primer.setBlock(pos.atY(y), darkLeaves, 3);

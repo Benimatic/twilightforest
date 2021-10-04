@@ -78,7 +78,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
                 BlockEntity tile = world.getBlockEntity(blockPos);
 
                 if (tile instanceof SpawnerBlockEntity ms) {
-                    ms.getSpawner().setEntityId(TFEntities.skeleton_druid);
+                    ms.getSpawner().setEntityId(TFEntities.SKELETON_DRUID);
                 }
             }
         } else if (s.startsWith("loot")) {
@@ -112,7 +112,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
                     break;
             }
 
-            TFTreasure.basement.generateLootContainer(world, blockPos, chest, 16 | 2);
+            TFTreasure.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
         }
     }
 

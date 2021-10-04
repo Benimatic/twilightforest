@@ -18,7 +18,7 @@ public class TrophyBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, TrophyBlockEntity te) {
-		if (state.is(TFBlocks.ur_ghast_trophy.get()) || state.is(TFBlocks.ur_ghast_wall_trophy.get())) {
+		if (state.is(TFBlocks.UR_GHAST_TROPHY.get()) || state.is(TFBlocks.UR_GHAST_WALL_TROPHY.get())) {
 			te.animated = true;
 			++te.animatedTicks;
 		}

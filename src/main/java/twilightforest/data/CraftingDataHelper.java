@@ -87,7 +87,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.pattern("##")
 				.pattern("##")
 				.define('#', Ingredient.of(ingredients))
-				.unlockedBy("has_castle_brick", has(TFBlocks.castle_brick.get()))
+				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.get()))
 				.save(consumer, locCastle(result.get().getRegistryName().getPath()));
 	}
 

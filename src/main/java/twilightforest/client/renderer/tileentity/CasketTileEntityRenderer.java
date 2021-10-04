@@ -79,7 +79,7 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidB
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         Level world = tileEntityIn.getLevel();
         boolean flag = world != null;
-        BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.keepsake_casket.get().defaultBlockState();
+        BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState();
         Block block = blockstate.getBlock();
         if (block instanceof KeepsakeCasketBlock) {
             int damage = blockstate.getValue(KeepsakeCasketBlock.BREAKAGE);

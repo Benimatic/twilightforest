@@ -131,7 +131,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		boolean flag = false;
 		if(state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
 			ItemStack stack = player.getItemInHand(handIn);
-			if (!(stack.getItem() == TFItems.charm_of_keeping_3.get())) {
+			if (!(stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get())) {
 				if (worldIn.isClientSide) {
 					return InteractionResult.SUCCESS;
 				} else {
@@ -143,7 +143,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 					flag = true;
 				}
 			} else {
-				if (stack.getItem() == TFItems.charm_of_keeping_3.get() && state.getValue(BREAKAGE) > 0) {
+				if (stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get() && state.getValue(BREAKAGE) > 0) {
 					if (!player.isCreative()) stack.shrink(1);
 					worldIn.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
 					worldIn.playSound(null, pos, TFSounds.CASKET_REPAIR, SoundSource.BLOCKS, 0.5F, worldIn.random.nextFloat() * 0.1F + 0.9F);

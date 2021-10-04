@@ -190,7 +190,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 						break;
 					case KNIGHT_PHANTOM:
 						for (int brek = 0; brek < 10; brek++) {
-							((ServerLevel)world).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.knightmetal_sword.get())),
+							((ServerLevel)world).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get())),
 									pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
 									pos.getY() + rand.nextFloat() + 0.5,
 									pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),

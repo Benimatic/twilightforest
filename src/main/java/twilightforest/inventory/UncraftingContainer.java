@@ -600,6 +600,6 @@ public class UncraftingContainer extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(positionData, player, TFBlocks.uncrafting_table.get());
+		return stillValid(positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
 	}
 }

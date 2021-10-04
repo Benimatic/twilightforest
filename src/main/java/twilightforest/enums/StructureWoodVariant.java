@@ -18,23 +18,23 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public enum StructureWoodVariant implements StringRepresentable {
-	OAK(Blocks.OAK_PLANKS, Blocks.OAK_STAIRS, Blocks.OAK_SLAB, Blocks.OAK_BUTTON, Blocks.OAK_FENCE, Blocks.OAK_FENCE_GATE, Blocks.OAK_PRESSURE_PLATE, TFBlocks.oak_banister.get()),
-	SPRUCE(Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_STAIRS, Blocks.SPRUCE_SLAB, Blocks.SPRUCE_BUTTON, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_FENCE_GATE, Blocks.SPRUCE_PRESSURE_PLATE, TFBlocks.spruce_banister.get()),
-	BIRCH(Blocks.BIRCH_PLANKS, Blocks.BIRCH_STAIRS, Blocks.BIRCH_SLAB, Blocks.BIRCH_BUTTON, Blocks.BIRCH_FENCE, Blocks.BIRCH_FENCE_GATE, Blocks.BIRCH_PRESSURE_PLATE, TFBlocks.birch_banister.get()),
-	JUNGLE(Blocks.JUNGLE_PLANKS, Blocks.JUNGLE_STAIRS, Blocks.JUNGLE_SLAB, Blocks.JUNGLE_BUTTON, Blocks.JUNGLE_FENCE, Blocks.JUNGLE_FENCE_GATE, Blocks.JUNGLE_PRESSURE_PLATE, TFBlocks.jungle_banister.get()),
-	ACACIA(Blocks.ACACIA_PLANKS, Blocks.ACACIA_STAIRS, Blocks.ACACIA_SLAB, Blocks.ACACIA_BUTTON, Blocks.ACACIA_FENCE, Blocks.ACACIA_FENCE_GATE, Blocks.ACACIA_PRESSURE_PLATE, TFBlocks.acacia_banister.get()),
-	DARK_OAK(Blocks.DARK_OAK_PLANKS, Blocks.DARK_OAK_STAIRS, Blocks.DARK_OAK_SLAB, Blocks.DARK_OAK_BUTTON, Blocks.DARK_OAK_FENCE, Blocks.DARK_OAK_FENCE_GATE, Blocks.DARK_OAK_PRESSURE_PLATE, TFBlocks.dark_oak_banister.get()),
-	CRIMSON(Blocks.CRIMSON_PLANKS, Blocks.CRIMSON_STAIRS, Blocks.CRIMSON_SLAB, Blocks.CRIMSON_BUTTON, Blocks.CRIMSON_FENCE, Blocks.CRIMSON_FENCE_GATE, Blocks.CRIMSON_PRESSURE_PLATE, TFBlocks.crimson_banister.get()),
-	WARPED(Blocks.WARPED_PLANKS, Blocks.WARPED_STAIRS, Blocks.WARPED_SLAB, Blocks.WARPED_BUTTON, Blocks.WARPED_FENCE, Blocks.WARPED_FENCE_GATE, Blocks.WARPED_PRESSURE_PLATE, TFBlocks.warped_banister.get()),
+	OAK(Blocks.OAK_PLANKS, Blocks.OAK_STAIRS, Blocks.OAK_SLAB, Blocks.OAK_BUTTON, Blocks.OAK_FENCE, Blocks.OAK_FENCE_GATE, Blocks.OAK_PRESSURE_PLATE, TFBlocks.OAK_BANISTER.get()),
+	SPRUCE(Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_STAIRS, Blocks.SPRUCE_SLAB, Blocks.SPRUCE_BUTTON, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_FENCE_GATE, Blocks.SPRUCE_PRESSURE_PLATE, TFBlocks.SPRUCE_BANISTER.get()),
+	BIRCH(Blocks.BIRCH_PLANKS, Blocks.BIRCH_STAIRS, Blocks.BIRCH_SLAB, Blocks.BIRCH_BUTTON, Blocks.BIRCH_FENCE, Blocks.BIRCH_FENCE_GATE, Blocks.BIRCH_PRESSURE_PLATE, TFBlocks.BIRCH_BANISTER.get()),
+	JUNGLE(Blocks.JUNGLE_PLANKS, Blocks.JUNGLE_STAIRS, Blocks.JUNGLE_SLAB, Blocks.JUNGLE_BUTTON, Blocks.JUNGLE_FENCE, Blocks.JUNGLE_FENCE_GATE, Blocks.JUNGLE_PRESSURE_PLATE, TFBlocks.JUNGLE_BANISTER.get()),
+	ACACIA(Blocks.ACACIA_PLANKS, Blocks.ACACIA_STAIRS, Blocks.ACACIA_SLAB, Blocks.ACACIA_BUTTON, Blocks.ACACIA_FENCE, Blocks.ACACIA_FENCE_GATE, Blocks.ACACIA_PRESSURE_PLATE, TFBlocks.ACACIA_BANISTER.get()),
+	DARK_OAK(Blocks.DARK_OAK_PLANKS, Blocks.DARK_OAK_STAIRS, Blocks.DARK_OAK_SLAB, Blocks.DARK_OAK_BUTTON, Blocks.DARK_OAK_FENCE, Blocks.DARK_OAK_FENCE_GATE, Blocks.DARK_OAK_PRESSURE_PLATE, TFBlocks.DARK_OAK_BANISTER.get()),
+	CRIMSON(Blocks.CRIMSON_PLANKS, Blocks.CRIMSON_STAIRS, Blocks.CRIMSON_SLAB, Blocks.CRIMSON_BUTTON, Blocks.CRIMSON_FENCE, Blocks.CRIMSON_FENCE_GATE, Blocks.CRIMSON_PRESSURE_PLATE, TFBlocks.CRIMSON_BANISTER.get()),
+	WARPED(Blocks.WARPED_PLANKS, Blocks.WARPED_STAIRS, Blocks.WARPED_SLAB, Blocks.WARPED_BUTTON, Blocks.WARPED_FENCE, Blocks.WARPED_FENCE_GATE, Blocks.WARPED_PRESSURE_PLATE, TFBlocks.WARPED_BANISTER.get()),
 
-	TWILIGHT_OAK(TFBlocks.twilight_oak_planks, TFBlocks.twilight_oak_stairs, TFBlocks.twilight_oak_slab, TFBlocks.twilight_oak_button, TFBlocks.twilight_oak_fence, TFBlocks.twilight_oak_gate, TFBlocks.twilight_oak_plate, TFBlocks.twilight_oak_banister),
-	CANOPY(TFBlocks.canopy_planks, TFBlocks.canopy_stairs, TFBlocks.canopy_slab, TFBlocks.canopy_button, TFBlocks.canopy_fence, TFBlocks.canopy_gate, TFBlocks.canopy_plate, TFBlocks.canopy_banister),
-	MANGROVE(TFBlocks.mangrove_planks, TFBlocks.mangrove_stairs, TFBlocks.mangrove_slab, TFBlocks.mangrove_button, TFBlocks.mangrove_fence, TFBlocks.mangrove_gate, TFBlocks.mangrove_plate, TFBlocks.mangrove_banister),
-	DARK(TFBlocks.dark_planks, TFBlocks.dark_stairs, TFBlocks.dark_slab, TFBlocks.dark_button, TFBlocks.dark_fence, TFBlocks.dark_gate, TFBlocks.dark_plate, TFBlocks.darkwood_banister),
-	TIME(TFBlocks.time_planks, TFBlocks.time_stairs, TFBlocks.time_slab, TFBlocks.time_button, TFBlocks.time_fence, TFBlocks.time_gate, TFBlocks.time_plate, TFBlocks.time_banister),
-	TRANS(TFBlocks.trans_planks, TFBlocks.trans_stairs, TFBlocks.trans_slab, TFBlocks.trans_button, TFBlocks.trans_fence, TFBlocks.trans_gate, TFBlocks.trans_plate, TFBlocks.trans_banister),
-	MINE(TFBlocks.mine_planks, TFBlocks.mine_stairs, TFBlocks.mine_slab, TFBlocks.mine_button, TFBlocks.mine_fence, TFBlocks.mine_gate, TFBlocks.mine_plate, TFBlocks.mine_banister),
-	SORT(TFBlocks.sort_planks, TFBlocks.sort_stairs, TFBlocks.sort_slab, TFBlocks.sort_button, TFBlocks.sort_fence, TFBlocks.sort_gate, TFBlocks.sort_plate, TFBlocks.sort_banister);
+	TWILIGHT_OAK(TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_STAIRS, TFBlocks.TWILIGHT_OAK_SLAB, TFBlocks.TWILIGHT_OAK_BUTTON, TFBlocks.TWILIGHT_OAK_FENCE, TFBlocks.TWILIGHT_OAK_GATE, TFBlocks.TWILIGHT_OAK_PLATE, TFBlocks.TWILIGHT_OAK_BANISTER),
+	CANOPY(TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_STAIRS, TFBlocks.CANOPY_SLAB, TFBlocks.CANOPY_BUTTON, TFBlocks.CANOPY_FENCE, TFBlocks.CANOPY_GATE, TFBlocks.CANOPY_PLATE, TFBlocks.CANOPY_BANISTER),
+	MANGROVE(TFBlocks.MANGROVE_PLANKS, TFBlocks.MANGROVE_STAIRS, TFBlocks.MANGROVE_SLAB, TFBlocks.MANGROVE_BUTTON, TFBlocks.MANGROVE_FENCE, TFBlocks.MANGROVE_GATE, TFBlocks.MANGROVE_PLATE, TFBlocks.MANGROVE_BANISTER),
+	DARK(TFBlocks.DARK_PLANKS, TFBlocks.DARK_STAIRS, TFBlocks.DARK_SLAB, TFBlocks.DARK_BUTTON, TFBlocks.DARK_FENCE, TFBlocks.DARK_GATE, TFBlocks.DARK_PLATE, TFBlocks.DARKWOOD_BANISTER),
+	TIME(TFBlocks.TIME_PLANKS, TFBlocks.TIME_STAIRS, TFBlocks.TIME_SLAB, TFBlocks.TIME_BUTTON, TFBlocks.TIME_FENCE, TFBlocks.TIME_GATE, TFBlocks.TIME_PLATE, TFBlocks.TIME_BANISTER),
+	TRANS(TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.TRANSFORMATION_STAIRS, TFBlocks.TRANSFORMATION_SLAB, TFBlocks.TRANSFORMATION_BUTTON, TFBlocks.TRANSFORMATION_FENCE, TFBlocks.TRANSFORMATION_GATE, TFBlocks.TRANSFORMATION_PLATE, TFBlocks.TRANSFORMATION_BANISTER),
+	MINE(TFBlocks.MINING_PLANKS, TFBlocks.MINING_STAIRS, TFBlocks.MINING_SLAB, TFBlocks.MINING_BUTTON, TFBlocks.MINING_FENCE, TFBlocks.MINING_GATE, TFBlocks.MINING_PLATE, TFBlocks.MINING_BANISTER),
+	SORT(TFBlocks.SORTING_PLANKS, TFBlocks.SORTING_STAIRS, TFBlocks.SORTING_SLAB, TFBlocks.SORTING_BUTTON, TFBlocks.SORTING_FENCE, TFBlocks.SORTING_GATE, TFBlocks.SORTING_PLATE, TFBlocks.SORTING_BANISTER);
 
 	private final List<Block> blocks;
 	private static final StructureWoodVariant[] COMMON = new StructureWoodVariant[] { SPRUCE, CANOPY };
@@ -123,26 +123,17 @@ public enum StructureWoodVariant implements StringRepresentable {
 			return stateIn; // Block not recognized
 		}
 
-		switch (shape) {
-			case BLOCK:
-				return target.planks.defaultBlockState();
-			case STAIRS:
-				return FeaturePlacers.transferAllStateKeys(stateIn, target.stairs);
-			case SLAB:
-				return FeaturePlacers.transferAllStateKeys(stateIn, target.slab);
-			case FENCE:
-				return FeaturePlacers.transferAllStateKeys(stateIn, target.fence);
-			case GATE:
-				return FeaturePlacers.transferAllStateKeys(stateIn, target.gate);
-			case BUTTON:
-				return FeaturePlacers.transferAllStateKeys(stateIn, target.button);
-			case PLATE:
-				return FeaturePlacers.transferAllStateKeys(stateIn, target.plate);
-			case BANISTER:
-				return FeaturePlacers.transferAllStateKeys(stateIn, target.banister);
-			default:
-				return stateIn; // Block not recognized
-		}
+		return switch (shape) {
+			case BLOCK -> target.planks.defaultBlockState();
+			case STAIRS -> FeaturePlacers.transferAllStateKeys(stateIn, target.stairs);
+			case SLAB -> FeaturePlacers.transferAllStateKeys(stateIn, target.slab);
+			case FENCE -> FeaturePlacers.transferAllStateKeys(stateIn, target.fence);
+			case GATE -> FeaturePlacers.transferAllStateKeys(stateIn, target.gate);
+			case BUTTON -> FeaturePlacers.transferAllStateKeys(stateIn, target.button);
+			case PLATE -> FeaturePlacers.transferAllStateKeys(stateIn, target.plate);
+			case BANISTER -> FeaturePlacers.transferAllStateKeys(stateIn, target.banister);
+			default -> stateIn; // Block not recognized
+		};
 	}
 
 	public static WoodShapes getWoodShapeFromBlock(Block b) {

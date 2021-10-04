@@ -89,7 +89,7 @@ public class Lich extends Monster {
 	}
 
 	public Lich(Level world, Lich otherLich) {
-		this(TFEntities.lich, world);
+		this(TFEntities.LICH, world);
 
 		setShadowClone(true);
 		this.masterLich = otherLich;
@@ -172,7 +172,7 @@ public class Lich extends Monster {
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL && !isShadowClone()) {
 			if (hasRestriction()) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_lich.get().defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			discard();
 		} else {
@@ -340,7 +340,7 @@ public class Lich extends Monster {
 
 		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
 
-		LichBolt projectile = new LichBolt(TFEntities.lich_bolt, level, this);
+		LichBolt projectile = new LichBolt(TFEntities.LICH_BOLT, level, this);
 		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
@@ -359,7 +359,7 @@ public class Lich extends Monster {
 
 		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
 
-		LichBomb projectile = new LichBomb(TFEntities.lich_bomb, level, this);
+		LichBomb projectile = new LichBomb(TFEntities.LICH_BOMB, level, this);
 		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 

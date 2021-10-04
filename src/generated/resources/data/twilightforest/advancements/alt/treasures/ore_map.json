@@ -7,7 +7,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:ore_map_empty"
+              "twilightforest:ore_map"
             ]
           }
         ]
@@ -19,7 +19,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:ore_map"
+              "twilightforest:filled_ore_map"
             ]
           }
         ]

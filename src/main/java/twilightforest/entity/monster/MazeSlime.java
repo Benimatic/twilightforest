@@ -95,7 +95,7 @@ public class MazeSlime extends Slime {
 			Level world = this.level;
 			double d0 = this.getX() + f2;
 			double d1 = this.getZ() + f3;
-			BlockState state = TFBlocks.maze_stone_brick.get().defaultBlockState();
+			BlockState state = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
 			world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
 		}
 		return true;

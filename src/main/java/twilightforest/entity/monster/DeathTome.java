@@ -112,7 +112,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableProjectile projectile = new TomeBolt(TFEntities.tome_bolt, this.level, this);
+		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT, this.level, this);
 		double tx = target.getX() - this.getX();
 		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();
 		double tz = target.getZ() - this.getZ();

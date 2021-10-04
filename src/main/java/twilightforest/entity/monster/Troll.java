@@ -140,8 +140,8 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.level.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber.get() && this.random.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.level.setBlockAndUpdate(pos, TFBlocks.trollber.get().defaultBlockState());
+		if (this.level.getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER.get() && this.random.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.level.setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
 			level.levelEvent(2004, pos, 0);
 		}
 	}
@@ -149,7 +149,7 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.hasRock()) {
-			IceBomb ice = new IceBomb(TFEntities.thrown_ice, this.level, this);
+			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE, this.level, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getX() - this.getX();
@@ -166,7 +166,7 @@ public class Troll extends Monster implements RangedAttackMob {
 	public static boolean canSpawn(EntityType<? extends Troll> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
 		BlockPos blockpos = pos.below();
 		return  world.getDifficulty() != Difficulty.PEACEFUL &&
-				world.getBlockState(blockpos).getBlock() != TFBlocks.giant_obsidian.get() &&
+				world.getBlockState(blockpos).getBlock() != TFBlocks.GIANT_OBSIDIAN.get() &&
 				!world.canSeeSky(pos);
 	}
 }

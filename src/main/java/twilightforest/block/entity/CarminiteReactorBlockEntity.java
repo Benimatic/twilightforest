@@ -59,8 +59,8 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 				if (te.counter % 5 == 0) {
 					if (te.counter == 5) {
-						BlockState fakeGold = TFBlocks.fake_gold.get().defaultBlockState();
-						BlockState fakeDiamond = TFBlocks.fake_diamond.get().defaultBlockState();
+						BlockState fakeGold = TFBlocks.FAKE_GOLD.get().defaultBlockState();
+						BlockState fakeDiamond = TFBlocks.FAKE_DIAMOND.get().defaultBlockState();
 
 						// transformation!
 						te.createFakeBlock(pos.offset(1, 1, 1), fakeDiamond);
@@ -105,7 +105,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 						te.drawBlob(pos, (primary - offset) / 40, Blocks.AIR.defaultBlockState(), primary - offset, false);
 					}
 					if (primary <= 200) {
-						te.drawBlob(pos, primary / 40, TFBlocks.reactor_debris.get().defaultBlockState(), te.counter, false);
+						te.drawBlob(pos, primary / 40, TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), te.counter, false);
 					}
 
 					// secondary burst
@@ -153,7 +153,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 
 	private void spawnGhastNear(int x, int y, int z) {
-		CarminiteGhastling ghast = new CarminiteGhastling(TFEntities.mini_ghast, level);
+		CarminiteGhastling ghast = new CarminiteGhastling(TFEntities.CARMINITE_GHASTLING, level);
 		ghast.moveTo(x - 1.5 + level.random.nextFloat() * 3.0, y - 1.5 + level.random.nextFloat() * 3.0, z - 1.5 + level.random.nextFloat() * 3.0, level.random.nextFloat() * 360F, 0.0F);
 		level.addFreshEntity(ghast);
 	}

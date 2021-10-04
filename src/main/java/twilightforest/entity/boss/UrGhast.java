@@ -193,7 +193,7 @@ public class UrGhast extends CarminiteGhastguard {
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_ur_ghast.get().defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			discard();
 		} else {
@@ -363,7 +363,7 @@ public class UrGhast extends CarminiteGhastguard {
 		this.level.addFreshEntity(bolt);
 
 		for (int i = 0; i < tries; i++) {
-			CarminiteGhastling minion = new CarminiteGhastling(TFEntities.mini_ghast, level);
+			CarminiteGhastling minion = new CarminiteGhastling(TFEntities.CARMINITE_GHASTLING, level);
 
 			double sx = x + ((random.nextDouble() - random.nextDouble()) * rangeXZ);
 			double sy = y + (random.nextDouble() * rangeY);
@@ -522,8 +522,8 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	private boolean isTrapAt(BlockPos pos) {
-		BlockState inactive = TFBlocks.ghast_trap.get().defaultBlockState().setValue(GhastTrapBlock.ACTIVE, false);
-		BlockState active = TFBlocks.ghast_trap.get().defaultBlockState().setValue(GhastTrapBlock.ACTIVE, true);
+		BlockState inactive = TFBlocks.GHAST_TRAP.get().defaultBlockState().setValue(GhastTrapBlock.ACTIVE, false);
+		BlockState active = TFBlocks.GHAST_TRAP.get().defaultBlockState().setValue(GhastTrapBlock.ACTIVE, true);
 		return level.hasChunkAt(pos)
 				&& (level.getBlockState(pos) == inactive || level.getBlockState(pos) == active);
 	}
@@ -588,7 +588,7 @@ public class UrGhast extends CarminiteGhastguard {
 	protected void tickDeath() {
 		super.tickDeath();
 		if (this.deathTime == 20 && level instanceof ServerLevel serverLevel) {
-			TFTreasure.darktower_boss.generateChest(serverLevel, findChestCoords(), Direction.NORTH, false);
+			TFTreasure.DARKTOWER_BOSS.generateChest(serverLevel, findChestCoords(), Direction.NORTH, false);
 		}
 	}
 

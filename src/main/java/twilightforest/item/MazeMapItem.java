@@ -44,7 +44,7 @@ public class MazeMapItem extends MapItem {
 	}
 
 	public static ItemStack setupNewMap(Level world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
-		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map.get() : TFItems.maze_map.get());
+		ItemStack itemstack = new ItemStack(mapOres ? TFItems.FILLED_ORE_MAP.get() : TFItems.FILLED_MAZE_MAP.get());
 		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension(), worldY);
 		return itemstack;
 	}

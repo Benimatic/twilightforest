@@ -20,7 +20,7 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 	private int spawned = 0;
 
 	public KnightPhantomSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.get(), TFEntities.knight_phantom, pos, state);
+		super(TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.get(), TFEntities.KNIGHT_PHANTOM, pos, state);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 			myCreature.finalizeSpawn(world, world.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), MobSpawnType.SPAWNER, null, null);
 
 			if(i == 5 && world.getDifficulty() == Difficulty.HARD){
-				myCreature.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(TFItems.knightmetal_shield.get()));
+				myCreature.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(TFItems.KNIGHTMETAL_SHIELD.get()));
 			}
 
 			// set creature's home to this

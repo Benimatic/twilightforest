@@ -38,15 +38,15 @@ public class TrollRootBlock extends Block {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		return state.is(BlockTags.BASE_STONE_OVERWORLD) || block == TFBlocks.trollvidr.get() || block == TFBlocks.trollber.get() || block == TFBlocks.unripe_trollber.get();
+		return state.is(BlockTags.BASE_STONE_OVERWORLD) || block == TFBlocks.TROLLVIDR.get() || block == TFBlocks.TROLLBER.get() || block == TFBlocks.UNRIPE_TROLLBER.get();
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if(state.getBlock() == TFBlocks.trollber.get()) {
-			level.setBlock(pos, TFBlocks.trollvidr.get().defaultBlockState(), 2);
+		if(state.getBlock() == TFBlocks.TROLLBER.get()) {
+			level.setBlock(pos, TFBlocks.TROLLVIDR.get().defaultBlockState(), 2);
 			level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
-			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.torchberries.get()));
+			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.TORCHBERRIES.get()));
 			level.addFreshEntity(torchberries);
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}

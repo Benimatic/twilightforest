@@ -265,7 +265,7 @@ public class TowerMainComponent extends TowerWingComponent {
 				mobID = EntityType.ZOMBIE;
 				break;
 			case 3:
-				mobID = TFEntities.swarm_spider;
+				mobID = TFEntities.SWARM_SPIDER;
 				break;
 		}
 		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
@@ -299,7 +299,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		decorateTorches(world, rand, floorLevel, sbb);
 
 		// seems like we should have a spawner
-		placeBlock(world, TFBlocks.boss_spawner_lich.get().defaultBlockState(), size / 2, floorLevel + 2, size / 2, sbb);
+		placeBlock(world, TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState(), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
 	protected void makeTowerPaintings(WorldGenLevel world, Random rand, BoundingBox sbb) {

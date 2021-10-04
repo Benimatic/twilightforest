@@ -82,7 +82,7 @@ public class Experiment115Block extends Block {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!player.isShiftKeyDown()) {
-			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115.get()) {
+			if (bitesTaken > 0 && stack.getItem() == TFItems.EXPERIMENT_115.get()) {
 				worldIn.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
@@ -110,7 +110,7 @@ public class Experiment115Block extends Block {
 				} else {
 					worldIn.removeBlock(pos, false);
 				}
-				if(!player.isCreative()) ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.experiment_115.get()));
+				if(!player.isCreative()) ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -132,8 +132,8 @@ public class Experiment115Block extends Block {
             }
 
             if (player instanceof ServerPlayer) {
-				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
-				player.awardStat(Stats.ITEM_USED.get(TFItems.experiment_115.get()));
+				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.EXPERIMENT_115.get(), 8 - i));
+				player.awardStat(Stats.ITEM_USED.get(TFItems.EXPERIMENT_115.get()));
 			}
 
             return InteractionResult.SUCCESS;

@@ -78,68 +78,37 @@ public class SnowGuardian extends BaseIceMob {
 	}
 
 	private Item makeItemForSlot(EquipmentSlot slot, int type) {
-		switch (slot) {
-			case MAINHAND:
-			default:
-				switch (type) {
-					case 0:
-					default:
-						return TFItems.ironwood_sword.get();
-					case 1:
-						return TFItems.steeleaf_sword.get();
-					case 2:
-					case 3:
-						return TFItems.knightmetal_sword.get();
-				}
-			case FEET:
-				switch (type) {
-					case 0:
-					default:
-						return TFItems.ironwood_boots.get();
-					case 1:
-						return TFItems.steeleaf_boots.get();
-					case 2:
-						return TFItems.knightmetal_boots.get();
-					case 3:
-						return TFItems.arctic_boots.get();
-				}
-			case LEGS:
-				switch (type) {
-					case 0:
-					default:
-						return TFItems.ironwood_leggings.get();
-					case 1:
-						return TFItems.steeleaf_leggings.get();
-					case 2:
-						return TFItems.knightmetal_leggings.get();
-					case 3:
-						return TFItems.arctic_leggings.get();
-				}
-			case CHEST:
-				switch (type) {
-					case 0:
-					default:
-						return TFItems.ironwood_chestplate.get();
-					case 1:
-						return TFItems.steeleaf_chestplate.get();
-					case 2:
-						return TFItems.knightmetal_chestplate.get();
-					case 3:
-						return TFItems.arctic_chestplate.get();
-				}
-			case HEAD:
-				switch (type) {
-					case 0:
-					default:
-						return TFItems.ironwood_helmet.get();
-					case 1:
-						return TFItems.steeleaf_helmet.get();
-					case 2:
-						return TFItems.knightmetal_helmet.get();
-					case 3:
-						return TFItems.arctic_helmet.get();
-				}
-		}
+		return switch (slot) {
+			default -> switch (type) {
+				default -> TFItems.IRONWOOD_SWORD.get();
+				case 1 -> TFItems.STEELEAF_SWORD.get();
+				case 2, 3 -> TFItems.KNIGHTMETAL_SWORD.get();
+			};
+			case FEET -> switch (type) {
+				default -> TFItems.IRONWOOD_BOOTS.get();
+				case 1 -> TFItems.STEELEAF_BOOTS.get();
+				case 2 -> TFItems.KNIGHTMETAL_BOOTS.get();
+				case 3 -> TFItems.ARCTIC_BOOTS.get();
+			};
+			case LEGS -> switch (type) {
+				default -> TFItems.IRONWOOD_LEGGINGS.get();
+				case 1 -> TFItems.STEELEAF_LEGGINGS.get();
+				case 2 -> TFItems.KNIGHTMETAL_LEGGINGS.get();
+				case 3 -> TFItems.ARCTIC_LEGGINGS.get();
+			};
+			case CHEST -> switch (type) {
+				default -> TFItems.IRONWOOD_CHESTPLATE.get();
+				case 1 -> TFItems.STEELEAF_CHESTPLATE.get();
+				case 2 -> TFItems.KNIGHTMETAL_CHESTPLATE.get();
+				case 3 -> TFItems.ARCTIC_CHESTPLATE.get();
+			};
+			case HEAD -> switch (type) {
+				default -> TFItems.IRONWOOD_HELMET.get();
+				case 1 -> TFItems.STEELEAF_HELMET.get();
+				case 2 -> TFItems.KNIGHTMETAL_HELMET.get();
+				case 3 -> TFItems.ARCTIC_HELMET.get();
+			};
+		};
 	}
 
 	@Nullable

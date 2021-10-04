@@ -60,9 +60,9 @@ public class TFFeature {
 
 			this.addMonster(EntityType.SPIDER, 10, 4, 4)
 					.addMonster(EntityType.ZOMBIE, 10, 4, 4)
-					.addMonster(TFEntities.redcap, 10, 4, 4)
-					.addMonster(TFEntities.swarm_spider, 10, 4, 4)
-					.addMonster(TFEntities.kobold, 10, 4, 8);
+					.addMonster(TFEntities.REDCAP, 10, 4, 4)
+					.addMonster(TFEntities.SWARM_SPIDER, 10, 4, 4)
+					.addMonster(TFEntities.KOBOLD, 10, 4, 8);
 		}
 
 		@Override
@@ -75,15 +75,15 @@ public class TFFeature {
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.redcap, 10, 4, 4)
-					.addMonster(TFEntities.redcap_sapper, 1, 1, 4)
-					.addMonster(TFEntities.kobold, 10, 4, 8)
+			this.addMonster(TFEntities.REDCAP, 10, 4, 4)
+					.addMonster(TFEntities.REDCAP_SAPPER, 1, 1, 4)
+					.addMonster(TFEntities.KOBOLD, 10, 4, 8)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(TFEntities.swarm_spider, 10, 4, 4)
+					.addMonster(TFEntities.SWARM_SPIDER, 10, 4, 4)
 					.addMonster(EntityType.SPIDER, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
-					.addMonster(TFEntities.fire_beetle, 5, 4, 4)
-					.addMonster(TFEntities.slime_beetle, 5, 4, 4)
+					.addMonster(TFEntities.FIRE_BEETLE, 5, 4, 4)
+					.addMonster(TFEntities.SLIME_BEETLE, 5, 4, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
@@ -97,16 +97,16 @@ public class TFFeature {
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.redcap, 10, 4, 4)
-					.addMonster(TFEntities.redcap_sapper, 2, 1, 4)
+			this.addMonster(TFEntities.REDCAP, 10, 4, 4)
+					.addMonster(TFEntities.REDCAP_SAPPER, 2, 1, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
 					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(TFEntities.wraith, 2, 1, 4)
-					.addMonster(TFEntities.fire_beetle, 10, 4, 4)
-					.addMonster(TFEntities.slime_beetle, 10, 4, 4)
-					.addMonster(TFEntities.pinch_beetle, 10, 2, 4)
+					.addMonster(TFEntities.WRAITH, 2, 1, 4)
+					.addMonster(TFEntities.FIRE_BEETLE, 10, 4, 4)
+					.addMonster(TFEntities.SLIME_BEETLE, 10, 4, 4)
+					.addMonster(TFEntities.PINCH_BEETLE, 10, 2, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
@@ -155,7 +155,7 @@ public class TFFeature {
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 1, 4, 4)
 					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(TFEntities.death_tome, 10, 4, 4)
+					.addMonster(TFEntities.DEATH_TOME, 10, 4, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 
 			this.adjustToTerrainHeight = true;
@@ -202,14 +202,14 @@ public class TFFeature {
 			this.enableDecorations();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.minotaur, 20, 2, 4)
+			this.addMonster(TFEntities.MINOTAUR, 20, 2, 4)
 					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
-					.addMonster(TFEntities.maze_slime, 10, 4, 4)
+					.addMonster(TFEntities.MAZE_SLIME, 10, 4, 4)
 					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(TFEntities.fire_beetle, 10, 4, 4)
-					.addMonster(TFEntities.slime_beetle, 10, 4, 4)
-					.addMonster(TFEntities.pinch_beetle, 10, 2, 4);
+					.addMonster(TFEntities.FIRE_BEETLE, 10, 4, 4)
+					.addMonster(TFEntities.SLIME_BEETLE, 10, 4, 4)
+					.addMonster(TFEntities.PINCH_BEETLE, 10, 2, 4);
 		}
 
 		@Override
@@ -234,16 +234,16 @@ public class TFFeature {
 	};
 	public static final TFFeature DARK_TOWER = new TFFeature( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
-			this.addMonster(TFEntities.tower_golem, 10, 4, 4)
+			this.addMonster(TFEntities.CARMINITE_GOLEM, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
 					.addMonster(EntityType.ENDERMAN, 2, 1, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1)
-					.addMonster(TFEntities.mini_ghast, 10, 1, 4)
-					.addMonster(TFEntities.tower_broodling, 10, 8, 8)
-					.addMonster(TFEntities.pinch_beetle, 10, 2, 4)
+					.addMonster(TFEntities.CARMINITE_GHASTLING, 10, 1, 4)
+					.addMonster(TFEntities.CARMINITE_BROODLING, 10, 8, 8)
+					.addMonster(TFEntities.PINCH_BEETLE, 10, 2, 4)
 					// roof ghasts
-					.addMonster(1, TFEntities.tower_ghast, 10, 1, 4)
+					.addMonster(1, TFEntities.CARMINITE_GHASTGUARD, 10, 1, 4)
 					// aquarium squids (only in aquariums between y = 35 and y = 64. :/
 					.addWaterCreature(EntityType.SQUID, 10, 4, 4);
 
@@ -270,12 +270,12 @@ public class TFFeature {
 			this.enableDecorations().disableProtectionAura();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.blockchain_goblin, 10, 4, 4)
-					.addMonster(TFEntities.goblin_knight_lower, 5, 1, 2)
-					.addMonster(TFEntities.helmet_crab, 10, 4, 4)
-					.addMonster(TFEntities.slime_beetle, 10, 4, 4)
-					.addMonster(TFEntities.redcap_sapper, 2, 1, 4)
-					.addMonster(TFEntities.kobold, 10, 4, 8)
+			this.addMonster(TFEntities.BLOCKCHAIN_GOBLIN, 10, 4, 4)
+					.addMonster(TFEntities.LOWER_GOBLIN_KNIGHT, 5, 1, 2)
+					.addMonster(TFEntities.HELMET_CRAB, 10, 4, 4)
+					.addMonster(TFEntities.SLIME_BEETLE, 10, 4, 4)
+					.addMonster(TFEntities.REDCAP_SAPPER, 2, 1, 4)
+					.addMonster(TFEntities.KOBOLD, 10, 4, 8)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
 					.addMonster(EntityType.SLIME, 5, 4, 4);
 		}
@@ -305,7 +305,7 @@ public class TFFeature {
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.yeti, 10, 4, 4);
+			this.addMonster(TFEntities.YETI, 10, 4, 4);
 		}
 
 		@Override
@@ -325,9 +325,9 @@ public class TFFeature {
 	};
 	public static final TFFeature ICE_TOWER = new TFFeature( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
-			this.addMonster(TFEntities.snow_guardian, 10, 4, 4)
-					.addMonster(TFEntities.stable_ice_core, 10, 4, 4)
-					.addMonster(TFEntities.unstable_ice_core, 5, 4, 4);
+			this.addMonster(TFEntities.SNOW_GUARDIAN, 10, 4, 4)
+					.addMonster(TFEntities.STABLE_ICE_CORE, 10, 4, 4)
+					.addMonster(TFEntities.UNSTABLE_ICE_CORE, 5, 4, 4);
 		}
 
 		@Override
@@ -352,11 +352,11 @@ public class TFFeature {
 
 			this.addMonster(EntityType.CREEPER, 5, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(TFEntities.troll, 20, 4, 4)
+					.addMonster(TFEntities.TROLL, 20, 4, 4)
 					.addMonster(EntityType.WITCH, 5, 1, 1)
 					// cloud monsters
-					.addMonster(1, TFEntities.giant_miner, 10, 1, 1)
-					.addMonster(1, TFEntities.armored_giant, 10, 1, 1);
+					.addMonster(1, TFEntities.GIANT_MINER, 10, 1, 1)
+					.addMonster(1, TFEntities.ARMORED_GIANT, 10, 1, 1);
 		}
 
 		@Override
@@ -382,17 +382,17 @@ public class TFFeature {
 	public static final TFFeature FINAL_CASTLE = new TFFeature( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
 			// plain parts of the castle, like the tower maze
-			this.addMonster(TFEntities.kobold, 10, 4, 4)
-					.addMonster(TFEntities.adherent, 10, 1, 1)
-					.addMonster(TFEntities.harbinger_cube, 10, 1, 1)
+			this.addMonster(TFEntities.KOBOLD, 10, 4, 4)
+					.addMonster(TFEntities.ADHERENT, 10, 1, 1)
+					.addMonster(TFEntities.HARBINGER_CUBE, 10, 1, 1)
 					.addMonster(EntityType.ENDERMAN, 10, 1, 1)
 					// internal castle
-					.addMonster(1, TFEntities.kobold, 10, 4, 4)
-					.addMonster(1, TFEntities.adherent, 10, 1, 1)
-					.addMonster(1, TFEntities.harbinger_cube, 10, 1, 1)
-					.addMonster(1, TFEntities.armored_giant, 10, 1, 1)
+					.addMonster(1, TFEntities.KOBOLD, 10, 4, 4)
+					.addMonster(1, TFEntities.ADHERENT, 10, 1, 1)
+					.addMonster(1, TFEntities.HARBINGER_CUBE, 10, 1, 1)
+					.addMonster(1, TFEntities.ARMORED_GIANT, 10, 1, 1)
 					// dungeons
-					.addMonster(2, TFEntities.adherent, 10, 1, 1)
+					.addMonster(2, TFEntities.ADHERENT, 10, 1, 1)
 					// forge
 					.addMonster(3, EntityType.BLAZE, 10, 1, 1);
 		}
@@ -904,7 +904,7 @@ public class TFFeature {
 		int dz = world.random.nextInt(16) - world.random.nextInt(16);
 
 		// make our hint monster
-		Kobold hinty = new Kobold(TFEntities.kobold, world);
+		Kobold hinty = new Kobold(TFEntities.KOBOLD, world);
 		hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear

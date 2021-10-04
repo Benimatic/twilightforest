@@ -79,7 +79,7 @@ public class SimpleWellFeature extends TemplateFeature<NoneFeatureConfiguration>
             default  -> rotation.rotate(mirror.mirror(Direction.NORTH));
         };
 
-        TFTreasure.well.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
+        TFTreasure.WELL.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
 
         if (random.nextBoolean()) return;
 

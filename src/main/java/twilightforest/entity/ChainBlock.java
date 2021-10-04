@@ -268,7 +268,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().getItem() == TFItems.block_and_chain.get()) {
+		if (thrower != null && thrower.getUseItem().getItem() == TFItems.BLOCK_AND_CHAIN.get()) {
 			thrower.stopUsingItem();
 		}
 	}

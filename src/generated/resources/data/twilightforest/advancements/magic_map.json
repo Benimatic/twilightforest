@@ -2,7 +2,7 @@
   "parent": "twilightforest:magic_map_focus",
   "display": {
     "icon": {
-      "item": "twilightforest:magic_map"
+      "item": "twilightforest:filled_magic_map"
     },
     "title": {
       "translate": "advancement.twilightforest.magic_map"
@@ -27,7 +27,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:magic_map"
+              "twilightforest:filled_magic_map"
             ]
           }
         ]

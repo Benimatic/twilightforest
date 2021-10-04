@@ -42,7 +42,7 @@ public class CubeOfAnnihilationItem extends Item {
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 		if (!world.isClientSide) {
-			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.cube_of_annihilation, world, player);
+			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION, world, player);
 			world.addFreshEntity(launchedCube);
 			setThrownEntity(stack, launchedCube);
 		}

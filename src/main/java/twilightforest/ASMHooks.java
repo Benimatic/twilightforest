@@ -65,7 +65,7 @@ public class ASMHooks {
 	}
 
 	private static boolean isOurMap(ItemStack stack) {
-		return stack.is(TFItems.magic_map.get()) || stack.is(TFItems.maze_map.get()) || stack.is(TFItems.ore_map.get());
+		return stack.is(TFItems.FILLED_MAGIC_MAP.get()) || stack.is(TFItems.FILLED_MAZE_MAP.get()) || stack.is(TFItems.FILLED_ORE_MAP.get());
 	}
 
 	/**

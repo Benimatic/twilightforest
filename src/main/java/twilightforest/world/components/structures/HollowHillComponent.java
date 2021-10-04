@@ -151,7 +151,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		Random chestRNG = new Random(world.getSeed() + (long) x * z);
 
 		// try placing it
-		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
+		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFTreasure.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFTreasure.MEDIUM_HOLLOW_HILL : TFTreasure.SMALL_HOLLOW_HILL), sbb);
 
 		// make something for it to stand on, if necessary
 		placeBlock(world, Blocks.COBBLESTONE.defaultBlockState(), x, y - 1, z, sbb);
@@ -282,7 +282,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			case 1:
 			case 2:
 			default:
-				return TFEntities.swarm_spider;
+				return TFEntities.SWARM_SPIDER;
 			case 3:
 			case 4:
 			case 5:
@@ -293,7 +293,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			case 8:
 				return EntityType.SILVERFISH;
 			case 9:
-				return TFEntities.redcap;
+				return TFEntities.REDCAP;
 		}
 	}
 
@@ -306,7 +306,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			case 1:
 			case 2:
 			default:
-				return TFEntities.redcap;
+				return TFEntities.REDCAP;
 			case 3:
 			case 4:
 			case 5:
@@ -315,7 +315,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			case 7:
 				return EntityType.SKELETON;
 			case 8:
-				return TFEntities.swarm_spider;
+				return TFEntities.SWARM_SPIDER;
 			case 9:
 				return EntityType.CAVE_SPIDER;
 		}
@@ -327,11 +327,11 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	public EntityType<?> getLevel3Mob(Random rand) {
 		switch (rand.nextInt(11)) {
 			case 0:
-				return TFEntities.slime_beetle;
+				return TFEntities.SLIME_BEETLE;
 			case 1:
-				return TFEntities.fire_beetle;
+				return TFEntities.FIRE_BEETLE;
 			case 2:
-				return TFEntities.pinch_beetle;
+				return TFEntities.PINCH_BEETLE;
 			case 3:
 			case 4:
 			case 5:
@@ -344,7 +344,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 				return EntityType.CREEPER;
 			case 10:
 			default:
-				return TFEntities.wraith;
+				return TFEntities.WRAITH;
 		}
 	}
 }

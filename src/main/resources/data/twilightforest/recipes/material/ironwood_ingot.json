@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "item": "twilightforest:ironwood_raw"
+    "item": "twilightforest:raw_ironwood"
   },
   "result": {
     "item": "twilightforest:ironwood_ingot"

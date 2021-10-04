@@ -131,7 +131,7 @@ public class TFTickHandler {
 				if (ItemTagGenerator.PORTAL_ACTIVATOR.contains(entityItem.getItem().getItem())) {
 					BlockPos pos = new BlockPos(entityItem.position().subtract(0, -0.1d, 0)); //TODO Quick fix, find if there's a more performant fix than this
 					BlockState state = world.getBlockState(pos);
-					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {
+					if (TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(state)) {
 						Random rand = new Random();
 						for (int i = 0; i < 2; i++) {
 							double vx = rand.nextGaussian() * 0.02D;
@@ -141,7 +141,7 @@ public class TFTickHandler {
 							world.addParticle(ParticleTypes.EFFECT, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
 						}
 
-						if (TFBlocks.twilight_portal.get().tryToCreatePortal(world, pos, entityItem, player)) {
+						if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(world, pos, entityItem, player)) {
 							TFAdvancements.MADE_TF_PORTAL.trigger((ServerPlayer) player);
 							return;
 						}

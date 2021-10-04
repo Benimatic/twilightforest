@@ -50,16 +50,16 @@ public final class FeatureLogic {
         Block block = state.getBlock();
 
         return /*(state.getDestroySpeed() >= 0) // TODO Starting to sound like we should have a generalized no-replace tag list
-                &&*/ block != TFBlocks.stronghold_shield.get()
-                && block != TFBlocks.trophy_pedestal.get()
-                && block != TFBlocks.boss_spawner_naga.get()
-                && block != TFBlocks.boss_spawner_lich.get()
-                && block != TFBlocks.boss_spawner_hydra.get()
-                && block != TFBlocks.boss_spawner_ur_ghast.get()
-                && block != TFBlocks.boss_spawner_knight_phantom.get()
-                && block != TFBlocks.boss_spawner_snow_queen.get()
-                && block != TFBlocks.boss_spawner_minoshroom.get()
-                && block != TFBlocks.boss_spawner_alpha_yeti.get()
+                &&*/ block != TFBlocks.STRONGHOLD_SHIELD.get()
+                && block != TFBlocks.TROPHY_PEDESTAL.get()
+                && block != TFBlocks.NAGA_BOSS_SPAWNER.get()
+                && block != TFBlocks.LICH_BOSS_SPAWNER.get()
+                && block != TFBlocks.HYDRA_BOSS_SPAWNER.get()
+                && block != TFBlocks.UR_GHAST_BOSS_SPAWNER.get()
+                && block != TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get()
+                && block != TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get()
+                && block != TFBlocks.MINOSHROOM_BOSS_SPAWNER.get()
+                && block != TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get()
                 && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT || state.getMaterial() == Material.STONE || state.getMaterial() == Material.WATER);
     }
 

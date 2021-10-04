@@ -21,7 +21,7 @@ public class IceArrow extends TFArrow {
 	}
 
 	public IceArrow(Level world, Entity shooter) {
-		super(TFEntities.ice_arrow, world, shooter);
+		super(TFEntities.ICE_ARROW, world, shooter);
 	}
 
 	@Override

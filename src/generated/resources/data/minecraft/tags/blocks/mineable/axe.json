@@ -12,11 +12,11 @@
     "twilightforest:transformation_log_core",
     "twilightforest:mining_log_core",
     "twilightforest:sorting_log_core",
-    "twilightforest:tower_wood",
-    "twilightforest:tower_wood_mossy",
-    "twilightforest:tower_wood_cracked",
-    "twilightforest:tower_wood_infested",
-    "twilightforest:tower_wood_encased",
+    "twilightforest:towerwood",
+    "twilightforest:mossy_towerwood",
+    "twilightforest:cracked_towerwood",
+    "twilightforest:infested_towerwood",
+    "twilightforest:encased_towerwood",
     "twilightforest:reappearing_block",
     "twilightforest:antibuilder",
     "twilightforest:carminite_reactor",
@@ -29,7 +29,7 @@
     "twilightforest:cinder_wood",
     "twilightforest:ironwood_block",
     "twilightforest:death_tome_spawner",
-    "twilightforest:empty_bookshelf",
+    "twilightforest:empty_canopy_bookshelf",
     "twilightforest:canopy_bookshelf"
   ]
 }

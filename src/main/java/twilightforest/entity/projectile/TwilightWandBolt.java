@@ -25,12 +25,12 @@ public class TwilightWandBolt extends TFThrowable implements ItemSupplier {
 	}
 
 	public TwilightWandBolt(Level world, LivingEntity thrower) {
-		super(TFEntities.wand_bolt, world, thrower);
+		super(TFEntities.WAND_BOLT, world, thrower);
 		shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
 	}
 
 	public TwilightWandBolt(Level worldIn, double x, double y, double z) {
-		super(TFEntities.wand_bolt, worldIn, x, y, z);
+		super(TFEntities.WAND_BOLT, worldIn, x, y, z);
 	}
 
 	@Override

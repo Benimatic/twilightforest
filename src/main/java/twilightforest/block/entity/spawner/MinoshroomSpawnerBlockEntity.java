@@ -10,7 +10,7 @@ import twilightforest.block.entity.TFBlockEntities;
 public class MinoshroomSpawnerBlockEntity extends BossSpawnerBlockEntity<Minoshroom> {
 
 	public MinoshroomSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.MINOSHROOM_SPAWNER.get(), TFEntities.minoshroom, pos, state);
+		super(TFBlockEntities.MINOSHROOM_SPAWNER.get(), TFEntities.MINOSHROOM, pos, state);
 	}
 
 	@Override

@@ -116,7 +116,7 @@ public class SwarmSpider extends Spider {
 	}
 
 	protected boolean spawnAnother() {
-		SwarmSpider another = new SwarmSpider(TFEntities.swarm_spider, level, false);
+		SwarmSpider another = new SwarmSpider(TFEntities.SWARM_SPIDER, level, false);
 
 		double sx = getX() + (random.nextBoolean() ? 0.9 : -0.9);
 		double sy = getY();
@@ -179,7 +179,7 @@ public class SwarmSpider extends Spider {
 		livingData = super.finalizeSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
 		if (this.getFirstPassenger() != null || worldIn.getRandom().nextInt(20) <= difficulty.getDifficulty().getId()) {
-			SkeletonDruid druid = TFEntities.skeleton_druid.create(this.level);
+			SkeletonDruid druid = TFEntities.SKELETON_DRUID.create(this.level);
 			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 			druid.setBaby(true);
 			druid.finalizeSpawn(worldIn, difficulty, MobSpawnType.JOCKEY, null, null);

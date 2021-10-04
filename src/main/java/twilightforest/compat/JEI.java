@@ -15,7 +15,7 @@ import twilightforest.inventory.UncraftingContainer;
 public class JEI implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(TFBlocks.uncrafting_table.get()), VanillaRecipeCategoryUid.CRAFTING);
+        registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), VanillaRecipeCategoryUid.CRAFTING);
     }
 
     @Override

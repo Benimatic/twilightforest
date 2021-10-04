@@ -40,32 +40,19 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 		if (!boss.hasHome())
 			boss.restrictTo(boss.blockPosition(), 20);
 
-		switch (boss.getCurrentFormation()) {
-			case LARGE_CLOCKWISE:
-				return getCirclePosition(CIRCLE_LARGE_RADIUS, true);
-			case SMALL_CLOCKWISE:
-				return getCirclePosition(CIRCLE_SMALL_RADIUS, true);
-			case LARGE_ANTICLOCKWISE:
-				return getCirclePosition(CIRCLE_LARGE_RADIUS, false);
-			case SMALL_ANTICLOCKWISE:
-				return getCirclePosition(CIRCLE_SMALL_RADIUS, false);
-			case CHARGE_PLUSX:
-				return getMoveAcrossPosition(true, true);
-			case CHARGE_MINUSX:
-				return getMoveAcrossPosition(false, true);
-			case CHARGE_PLUSZ:
-				return getMoveAcrossPosition(true, false);
-			case ATTACK_PLAYER_START:
-			case HOVER:
-				return getHoverPosition(CIRCLE_LARGE_RADIUS);
-			case CHARGE_MINUSZ:
-				return getMoveAcrossPosition(false, false);
-			case WAITING_FOR_LEADER:
-			default:
-				return getLoiterPosition();
-			case ATTACK_PLAYER_ATTACK:
-				return getAttackPlayerPosition();
-		}
+		return switch (boss.getCurrentFormation()) {
+			case LARGE_CLOCKWISE -> getCirclePosition(CIRCLE_LARGE_RADIUS, true);
+			case SMALL_CLOCKWISE -> getCirclePosition(CIRCLE_SMALL_RADIUS, true);
+			case LARGE_ANTICLOCKWISE -> getCirclePosition(CIRCLE_LARGE_RADIUS, false);
+			case SMALL_ANTICLOCKWISE -> getCirclePosition(CIRCLE_SMALL_RADIUS, false);
+			case CHARGE_PLUSX -> getMoveAcrossPosition(true, true);
+			case CHARGE_MINUSX -> getMoveAcrossPosition(false, true);
+			case CHARGE_PLUSZ -> getMoveAcrossPosition(true, false);
+			case ATTACK_PLAYER_START, HOVER -> getHoverPosition(CIRCLE_LARGE_RADIUS);
+			case CHARGE_MINUSZ -> getMoveAcrossPosition(false, false);
+			default -> getLoiterPosition();
+			case ATTACK_PLAYER_ATTACK -> getAttackPlayerPosition();
+		};
 	}
 
 	/**
@@ -84,15 +71,9 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 			} else {
 				// random weapon switch!
 				switch (boss.getRandom().nextInt(3)) {
-					case 0:
-						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword.get()));
-						break;
-					case 1:
-						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_axe.get()));
-						break;
-					case 2:
-						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe.get()));
-						break;
+					case 0 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+					case 1 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
+					case 2 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 				}
 
 				boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);

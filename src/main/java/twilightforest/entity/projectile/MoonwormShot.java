@@ -32,7 +32,7 @@ public class MoonwormShot extends TFThrowable {
 		shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1.0F);
 	}
 	public MoonwormShot(Level worldIn, double x, double y, double z) {
-		super(TFEntities.moonworm_shot, worldIn, x, y, z);
+		super(TFEntities.MOONWORM_SHOT, worldIn, x, y, z);
 	}
 
 
@@ -81,7 +81,7 @@ public class MoonwormShot extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, TFBlocks.moonworm.get().defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, TFBlocks.MOONWORM.get().defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -98,7 +98,7 @@ public class MoonwormShot extends TFThrowable {
 
 				DirectionalPlaceContext context = new DirectionalPlaceContext(level, pos, blockray.getDirection(), ItemStack.EMPTY, blockray.getDirection().getOpposite());
 				if (currentState.canBeReplaced(context)) {
-					level.setBlockAndUpdate(pos, TFBlocks.moonworm.get().defaultBlockState().setValue(DirectionalBlock.FACING, ((BlockHitResult) ray).getDirection()));
+					level.setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState().setValue(DirectionalBlock.FACING, ((BlockHitResult) ray).getDirection()));
 					// todo sound
 				} else {
 					ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), Items.LIME_DYE.getDefaultInstance());

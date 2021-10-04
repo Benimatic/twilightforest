@@ -49,8 +49,8 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 
 		maze.oddBias = 2;
-		maze.torchBlockState = TFBlocks.firefly.get().defaultBlockState();
-		maze.wallBlockState = TFBlocks.hedge.get().defaultBlockState();
+		maze.torchBlockState = TFBlocks.FIREFLY.get().defaultBlockState();
+		maze.wallBlockState = TFBlocks.HEDGE.get().defaultBlockState();
 		maze.type = 4;
 		maze.tall = 3;
 		maze.roots = 3;
@@ -180,14 +180,14 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 
 		switch (rand.nextInt(3)) {
 			case 1:
-				mobID = TFEntities.swarm_spider;
+				mobID = TFEntities.SWARM_SPIDER;
 				break;
 			case 2:
-				mobID = TFEntities.hostile_wolf;
+				mobID = TFEntities.HOSTILE_WOLF;
 				break;
 			case 0:
 			default:
-				mobID = TFEntities.hedge_spider;
+				mobID = TFEntities.HEDGE_SPIDER;
 		}
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);
@@ -200,7 +200,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFTreasure.hedgemaze, sbb);
+		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFTreasure.HEDGE_MAZE, sbb);
 	}
 
 	/**

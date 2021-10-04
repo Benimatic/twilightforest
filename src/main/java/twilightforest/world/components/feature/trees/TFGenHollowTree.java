@@ -412,7 +412,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		world.setBlock(pos.above(), Blocks.SPAWNER.defaultBlockState(), 16 | 2);
 		SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(pos.above());
 		if (ms != null) {
-			ms.getSpawner().setEntityId(TFEntities.swarm_spider);
+			ms.getSpawner().setEntityId(TFEntities.SWARM_SPIDER);
 		}
 
 		// treasure chests?
@@ -422,7 +422,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	private void makeLeafDungeonChest(WorldGenLevel world, Random random, BlockPos pos) {
 		Direction chestDir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
 		pos = pos.relative(chestDir, 2);
-		TFTreasure.tree_cache.generateChest(world, pos.below(), chestDir.getOpposite(), false);
+		TFTreasure.TREE_CACHE.generateChest(world, pos.below(), chestDir.getOpposite(), false);
 	}
 
 	/**
@@ -452,8 +452,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
-			world.setBlock(src, TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
+		if (TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
+			world.setBlock(src, TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
 		}
 	}
 
@@ -473,8 +473,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.cicada.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
-			world.setBlock(src, TFBlocks.cicada.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
+		if (TFBlocks.CICADA.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
+			world.setBlock(src, TFBlocks.CICADA.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
 		}
 	}
 }

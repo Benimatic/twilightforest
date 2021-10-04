@@ -27,7 +27,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	public IceSnowball(Level world, LivingEntity thrower) {
-		super(TFEntities.ice_snowball, world, thrower);
+		super(TFEntities.ICE_SNOWBALL, world, thrower);
 	}
 
 	@Override

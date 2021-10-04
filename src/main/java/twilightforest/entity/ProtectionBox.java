@@ -27,7 +27,7 @@ public class ProtectionBox extends Entity {
 	}
 
 	public ProtectionBox(Level world, BoundingBox sbb) {
-		super(TFEntities.protection_box, world);
+		super(TFEntities.PROTECTION_BOX, world);
 
 		this.sbb = new BoundingBox(sbb.getCenter());
 

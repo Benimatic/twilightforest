@@ -164,7 +164,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 					if (dist > threshold) {
 						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, boundingBox);
 					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlock(world, x, y, z, boundingBox).is(BlockTags.BASE_STONE_OVERWORLD)) {
-						this.placeBlock(world, TFBlocks.trollsteinn.get().defaultBlockState(), x, y, z, boundingBox);
+						this.placeBlock(world, TFBlocks.TROLLSTEINN.get().defaultBlockState(), x, y, z, boundingBox);
 					}
 				}
 			}
@@ -271,7 +271,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		int mid = this.size / 2;
 		this.generateBox(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.defaultBlockState(), Blocks.OBSIDIAN.defaultBlockState(), false);
 		this.generateAirBox(world, sbb, mid - 1, 1, mid - 1, mid, 2, mid);
-		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFTreasure.troll_garden, false, sbb);
+		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFTreasure.TROLL_GARDEN, false, sbb);
 	}
 
 	@Override

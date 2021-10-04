@@ -64,7 +64,7 @@ public class DwarfRabbit extends Animal {
 	@Nullable
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableEntity) {
-		DwarfRabbit rabbit = TFEntities.bunny.create(world);
+		DwarfRabbit rabbit = TFEntities.DWARF_RABBIT.create(world);
 		int i = world.random.nextInt(4);
 		if (this.random.nextInt(20) != 0) {
 			if (ageableEntity instanceof DwarfRabbit && this.random.nextBoolean()) {

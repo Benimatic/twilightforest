@@ -201,10 +201,10 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						data.addAll(trap.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 						if (world.setBlock(placement.offset(chestloc), Blocks.TRAPPED_CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags)) {
-							TFTreasure.graveyard.generateChestContents(world, placement.offset(chestloc));
+							TFTreasure.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
 							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 						}
-						Wraith wraith = new Wraith(TFEntities.wraith, world.getLevel());
+						Wraith wraith = new Wraith(TFEntities.WRAITH, world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
 						world.addFreshEntity(wraith);
 					}
@@ -222,7 +222,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						if (world.setBlock(p, Blocks.SPAWNER.defaultBlockState(), 3)) {
 							SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(p);
 							if (ms != null)
-								ms.getSpawner().setEntityId(TFEntities.rising_zombie);
+								ms.getSpawner().setEntityId(TFEntities.RISING_ZOMBIE);
 						}
 					}
 				}
