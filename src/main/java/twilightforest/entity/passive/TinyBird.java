@@ -18,6 +18,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -48,9 +50,11 @@ public class TinyBird extends Bird {
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5F));
 		this.goalSelector.addGoal(2, new TinyBirdFlyGoal(this));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, SEEDS, true));
-		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6F));
-		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Cat.class, 8.0F, 1.0D, 1.25D));
+		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Ocelot.class, 8.0F, 1.0D, 1.25D));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
+		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 	}
 
 	@Override
