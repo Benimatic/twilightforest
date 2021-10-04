@@ -156,6 +156,8 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.COD)
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 1.0F)))
+										.apply(SmeltItemFunction.smelted()
+												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
 								.when(LootItemRandomChanceCondition.randomChance(0.5F))));
 
