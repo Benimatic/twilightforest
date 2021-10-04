@@ -41,8 +41,9 @@ import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
+import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.components.TFTeleporter;
+import twilightforest.world.TFTeleporter;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -208,7 +209,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	@Override
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
 		if (state == this.defaultBlockState()) {
-			attemptSendPlayer(entity, false);
+			attemptSendPlayer(entity, false, true);
 		}
 	}
 
@@ -219,7 +220,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				? twilightForest : ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
 	}
 
-	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
+	public static void attemptSendPlayer(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
 		if (!entity.isAlive() || entity.level.isClientSide) {
 			return;
 		}
@@ -241,7 +242,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if(serverWorld == null)
 			return;
 
-		entity.changeDimension(serverWorld, new TFTeleporter(forcedEntry));
+		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
 
 		if (destination ==  ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())) && entity instanceof ServerPlayer && forcedEntry) {
 			ServerPlayer playerMP = (ServerPlayer) entity;

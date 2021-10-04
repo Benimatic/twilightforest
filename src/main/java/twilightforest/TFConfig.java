@@ -28,6 +28,10 @@ public class TFConfig {
 						translation(config + "spawn_in_tf").
 						comment("If true, players spawning for the first time will spawn in the Twilight Forest.").
 						define("newPlayersSpawnInTF", false);
+				DIMENSION.portalForNewPlayerSpawn = builder.
+						translation(config + "portal_for_new_player").
+						comment("If true, the return portal will spawn for new players that were sent to the TF if `spawn_in_tf` is true.").
+						define("portalForNewPlayer", true);
 				DIMENSION.skylightForest = builder.
 						translation(config + "skylight_forest").
 						worldRestart().
@@ -158,6 +162,7 @@ public class TFConfig {
 		public static class Dimension {
 
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
+			public ForgeConfigSpec.BooleanValue portalForNewPlayerSpawn;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
 

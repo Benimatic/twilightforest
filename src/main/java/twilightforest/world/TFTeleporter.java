@@ -1,4 +1,4 @@
-package twilightforest.world.components;
+package twilightforest.world;
 
 import com.google.common.collect.Maps;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
@@ -275,7 +275,7 @@ public class TFTeleporter implements ITeleporter {
 		return null;
 	}
 
-	private static void makePortal(Entity entity, ServerLevel world, Vec3 pos) {
+	private void makePortal(Entity entity, ServerLevel world, Vec3 pos) {
 		// ensure area is populated first
 		loadSurroundingArea(world, pos);
 
@@ -397,7 +397,7 @@ public class TFTeleporter implements ITeleporter {
 		return true;
 	}
 
-	private static BlockPos makePortalAt(Level world, BlockPos pos) {
+	protected BlockPos makePortalAt(Level world, BlockPos pos) {
 		// grass all around it
 		BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
 
