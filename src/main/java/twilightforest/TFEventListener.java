@@ -337,9 +337,8 @@ public class TFEventListener {
 	public static void applyDeathItems(LivingDeathEvent event) {
 		LivingEntity living = event.getEntityLiving();
 
-		if (living.level.isClientSide || !(living instanceof Player) || living instanceof FakePlayer) return;
-
-		Player player = (Player) living; // To avoid triple-casting
+		if (living.level.isClientSide || !(living instanceof Player player) || living instanceof FakePlayer ||
+				player.isCreative()) return;
 
 		if (charmOfLife(player)) {
 			event.setCanceled(true); // Executes if the player had charms
