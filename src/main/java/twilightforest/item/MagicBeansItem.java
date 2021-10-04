@@ -27,6 +27,8 @@ import javax.annotation.Nonnull;
 
 public class MagicBeansItem extends Item {
 
+	private int blocksSkipped;
+
 	protected MagicBeansItem(Properties props) {
 		super(props);
 	}
@@ -83,7 +85,8 @@ public class MagicBeansItem extends Item {
 		int nextLeafY = minY + 10 + world.random.nextInt(20);
 
 		// make stalk
-		for (int dy = minY; dy < maxY; dy++) {
+		boolean isClear = true;
+		for (int dy = minY; dy < maxY && isClear; dy++) {
 			// make radius a little wavy
 			radius = 5F + Mth.sin((dy + yOffset) * rScale) * 2.5F;
 
@@ -105,13 +108,15 @@ public class MagicBeansItem extends Item {
 			int maxZ = Mth.ceil(z + radius + stalkThickness);
 
 			// generate stalk
-			for (int dx = minX; dx < maxX; dx++) {
-				for (int dz = minZ; dz < maxZ; dz++) {
+			for (int dx = minX; dx < maxX && isClear; dx++) {
+				for (int dz = minZ; dz < maxZ && isClear; dz++) {
 					if ((dx - cx) * (dx - cx) + (dz - cz) * (dz - cz) < stalkThickness * stalkThickness) {
-						this.tryToPlaceStalk(world, new BlockPos(dx, dy, dz));
+						isClear = this.tryToPlaceStalk(world, new BlockPos(dx, dy, dz));
 					}
 				}
 			}
+			//reset skipped blocks as we're moving on to a new layer
+			blocksSkipped = 0;
 
 			// leaves?
 			if (dy == nextLeafY) {
@@ -149,9 +154,9 @@ public class MagicBeansItem extends Item {
 	}
 
 	/**
-	 * Place the stalk block only if the destination is clear.  Return false if blocked.
+	 * Place the stalk block only if the destination is clear.  Return false if a layer is blocked by 15 or more blocks.
 	 */
-	private void tryToPlaceStalk(Level world, BlockPos pos) {
+	private boolean tryToPlaceStalk(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().equals(TFBlocks.FLUFFY_CLOUD.get())) {
 			world.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
@@ -162,6 +167,10 @@ public class MagicBeansItem extends Item {
 					}
 				}
 			}
+			return true;
+		} else {
+			blocksSkipped++;
+			return blocksSkipped < 15;
 		}
 	}
 
