@@ -304,6 +304,9 @@ public class TFEventListener {
 							if (wall) makeWallSkull(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
 							else makeFloorSkull(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
 						}
+						default -> {
+							return;
+						}
 					}
 					if(!event.getPlayer().getAbilities().instabuild) stack.shrink(1);
 					event.getPlayer().swing(event.getHand());
