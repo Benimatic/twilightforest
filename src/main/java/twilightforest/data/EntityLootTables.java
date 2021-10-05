@@ -159,7 +159,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 										.apply(SmeltItemFunction.smelted()
 												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))
-								.when(LootItemRandomChanceCondition.randomChance(0.5F))));
+								.when((LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.5F, 0.1F)))));
 
 		add(TFEntities.UPPER_GOBLIN_KNIGHT,
 				LootTable.lootTable()
@@ -320,11 +320,12 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.SLIME_BALL)
-										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))))
+										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.get()))
-								.when(LootItemRandomChanceCondition.randomChance(0.025F))));
+								.when((LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.015F, 0.005F)))));
 
 		add(TFEntities.MINOTAUR,
 				LootTable.lootTable()
@@ -332,12 +333,13 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.RAW_MEEF.get())
 										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
 										.apply(SmeltItemFunction.smelted()
 												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS.get()))
-								.when(LootItemRandomChanceCondition.randomChance(0.025F))));
+								.when((LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.01F)))));
 
 		add(TFEntities.CARMINITE_GOLEM,
 				LootTable.lootTable()
@@ -357,7 +359,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.MAGIC_BEANS.get()))
-								.when(LootItemRandomChanceCondition.randomChance(0.025F))));
+								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.01F))));
 
 		add(TFEntities.DEATH_TOME,
 				LootTable.lootTable()
@@ -365,7 +367,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.PAPER))
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(3)))
-								.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(1, 1))))
+								.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))
 						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.WRITABLE_BOOK).setWeight(2).setQuality(3))
 								.add(LootItem.lootTableItem(Items.BOOK).setWeight(19))
@@ -400,7 +402,8 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.NAGA_SCALE.get())
-								.apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 11)))))
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 11)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFBlocks.NAGA_TROPHY.get().asItem())))
@@ -489,12 +492,12 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.HYDRA_CHOP.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 35)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 2)))))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.FIERY_BLOOD.get())
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 10)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 2)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFBlocks.HYDRA_TROPHY.get().asItem())))
