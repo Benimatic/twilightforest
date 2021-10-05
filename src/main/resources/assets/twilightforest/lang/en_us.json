@@ -180,7 +180,7 @@
   "block.twilightforest.twilight_oak_leaves": "Twilight Oak Leaves",
   "block.twilightforest.canopy_leaves": "Canopy Tree Leaves",
   "block.twilightforest.mangrove_leaves": "Mangrove Leaves",
-  "block.twilightforest.rainboak_leaves": "Rainbow Oak Leaves",
+  "block.twilightforest.rainbow_oak_leaves": "Rainbow Oak Leaves",
   "block.twilightforest.firefly": "Firefly",
   "block.twilightforest.cicada": "Cicada",
   "block.twilightforest.cicada.desc": "What if this could be launched at someone with a Railgun...?",
@@ -236,7 +236,7 @@
   "block.twilightforest.transformation_sapling": "Tree of Transformation Sapling",
   "block.twilightforest.mining_sapling": "Miner's Tree Sapling",
   "block.twilightforest.sorting_sapling": "Sorting Tree Sapling",
-  "block.twilightforest.rainboak_sapling": "Rainbow Oak Sapling",
+  "block.twilightforest.rainbow_oak_sapling": "Rainbow Oak Sapling",
   "block.twilightforest.moonworm": "Moonworm",
   "block.twilightforest.time_log": "Timewood Log",
   "block.twilightforest.transformation_log": "Transwood Log",
@@ -923,7 +923,6 @@
   "item.twilightforest.guide": "Traveller's Logbook [WIP]",
 
   "item.twilightforest.minotaur_axe.tooltip": "Extra damage while charging",
-  "item.twilightforest.minotaur_axe_gold.tooltip": "Extra damage while charging",
   "item.twilightforest.knightmetal_sword.tooltip": "Extra damage to armored targets",
   "item.twilightforest.knightmetal_pickaxe.tooltip": "Extra damage to armored targets",
   "item.twilightforest.knightmetal_axe.tooltip": "Extra damage to unarmored targets",
@@ -935,7 +934,7 @@
   "item.twilightforest.yeti_armor.tooltip": "Chills attackers",
   "item.twilightforest.glass_sword.tooltip.1": "Creative Mode only",
 
-  "item.twilightforest.arctic_armor.tooltip": "Dyeable like Leather Armor",
+  "item.twilightforest.arctic_armor.tooltip": "Dyeable",
 
   "item.twilightforest.skull_candle.desc": "Has: %s %s Candle",
   "item.twilightforest.skull_candle.desc.multiple": "Has: %s %s Candles",
