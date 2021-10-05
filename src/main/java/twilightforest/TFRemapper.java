@@ -49,8 +49,8 @@ public class TFRemapper {
 
 				remapBlock(mapping, "maze_stone", "mazestone");
 				remapBlock(mapping, "maze_stone_brick", "mazestone_brick");
-				remapBlock(mapping, "maze_stone_cracked", "cracked_mazestone_brick");
-				remapBlock(mapping, "maze_stone_mossy", "mossy_mazestone_brick");
+				remapBlock(mapping, "maze_stone_cracked", "cracked_mazestone");
+				remapBlock(mapping, "maze_stone_mossy", "mossy_mazestone");
 				remapBlock(mapping, "maze_stone_decorative", "decorative_mazestone");
 				remapBlock(mapping, "maze_stone_chiseled", "cut_mazestone");
 				remapBlock(mapping, "maze_stone_border", "mazestone_border");
@@ -149,8 +149,8 @@ public class TFRemapper {
 
 				remapItem(mapping, "maze_stone", "mazestone");
 				remapItem(mapping, "maze_stone_brick", "mazestone_brick");
-				remapItem(mapping, "maze_stone_cracked", "cracked_mazestone_brick");
-				remapItem(mapping, "maze_stone_mossy", "mossy_mazestone_brick");
+				remapItem(mapping, "maze_stone_cracked", "cracked_mazestone");
+				remapItem(mapping, "maze_stone_mossy", "mossy_mazestone");
 				remapItem(mapping, "maze_stone_decorative", "decorative_mazestone");
 				remapItem(mapping, "maze_stone_chiseled", "cut_mazestone");
 				remapItem(mapping, "maze_stone_border", "mazestone_border");
@@ -222,6 +222,16 @@ public class TFRemapper {
 				remapItem(mapping, "peacock_fan", "peacock_feather_fan");
 				remapItem(mapping, "alpha_fur", "alpha_yeti_fur");
 				remapItem(mapping, "questing_ram_banner_pattern", "quest_ram_banner_pattern");
+
+				remapItem(mapping, "bunny_spawn_egg", "dwarf_rabbit_spawn_egg");
+				remapItem(mapping, "goblin_knight_lower_spawn_egg", "lower_goblin_knight_spawn_egg");
+				remapItem(mapping, "mini_ghast_spawn_egg", "carminite_ghastling_spawn_egg");
+				remapItem(mapping, "tower_ghast_spawn_egg", "carminite_ghastguard_spawn_egg");
+				remapItem(mapping, "tower_golem_spawn_egg", "carminite_golem_spawn_egg");
+				remapItem(mapping, "tower_broodling_spawn_egg", "carminite_broodling_spawn_egg");
+				remapItem(mapping, "tower_termite_spawn_egg", "towerwood_borer_spawn_egg");
+				remapItem(mapping, "wild_boar_spawn_egg", "boar_spawn_egg");
+				remapItem(mapping, "yeti_alpha_spawn_egg", "alpha_yeti_spawn_egg");
 			}
 		}
 	}
