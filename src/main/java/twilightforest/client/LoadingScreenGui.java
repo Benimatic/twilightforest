@@ -139,12 +139,12 @@ public class LoadingScreenGui extends Screen {
 
 	public enum BackgroundThemes {
 		LABYRINTH(
-				TwilightForestMod.prefix("textures/block/maze_stone_brick.png"),
-				TwilightForestMod.prefix("textures/block/maze_stone_brick.png"),
-				//TwilightForestMod.prefix("textures/block/maze_stone_mossy.png"     ),
-				TwilightForestMod.prefix("textures/block/maze_stone_cracked.png")
+				TwilightForestMod.prefix("textures/block/mazestone_brick.png"),
+				TwilightForestMod.prefix("textures/block/mazestone_brick.png"),
+				//TwilightForestMod.prefix("textures/block/mossy_mazestone.png"     ),
+				TwilightForestMod.prefix("textures/block/cracked_mazestone.png")
 		) {
-			private final ResourceLocation mazestoneDecor = TwilightForestMod.prefix("textures/block/maze_stone_decorative.png");
+			private final ResourceLocation mazestoneDecor = TwilightForestMod.prefix("textures/block/decorative_mazestone.png");
 
 			@Override
 			void postRenderBackground(float width, float height) {
@@ -196,17 +196,17 @@ public class LoadingScreenGui extends Screen {
 		},
 		STRONGHOLD(
 				TwilightForestMod.prefix("textures/block/underbrick.png"),
-				TwilightForestMod.prefix("textures/block/underbrick_mossy.png"),
-				TwilightForestMod.prefix("textures/block/underbrick_cracked.png")
+				TwilightForestMod.prefix("textures/block/mossy_underbrick.png"),
+				TwilightForestMod.prefix("textures/block/cracked_underbrick.png")
 		),
 		DARKTOWER(
-				TwilightForestMod.prefix("textures/block/tower_wood.png"),
-				TwilightForestMod.prefix("textures/block/tower_wood.png"),
-				TwilightForestMod.prefix("textures/block/tower_wood_mossy.png"),
-				TwilightForestMod.prefix("textures/block/tower_wood_cracked.png"),
-				TwilightForestMod.prefix("textures/block/tower_wood_cracked_alt.png")
+				TwilightForestMod.prefix("textures/block/towerwood.png"),
+				TwilightForestMod.prefix("textures/block/towerwood.png"),
+				TwilightForestMod.prefix("textures/block/mossy_towerwood.png"),
+				TwilightForestMod.prefix("textures/block/cracked_towerwood.png"),
+				TwilightForestMod.prefix("textures/block/cracked_towerwood_alt.png")
 		) {
-			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/block/tower_wood_encased.png");
+			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/block/encased_towerwood.png");
 
 			private final float stretch = 0.985F;
             private final float depth = 1.15F;
@@ -352,9 +352,9 @@ public class LoadingScreenGui extends Screen {
 				TwilightForestMod.prefix("textures/block/castle_brick.png"),
 				TwilightForestMod.prefix("textures/block/castle_brick.png"),
 				TwilightForestMod.prefix("textures/block/castle_brick.png"),
-				//TwilightForestMod.prefix("textures/block/castle_brick_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
-				TwilightForestMod.prefix("textures/block/castle_brick_cracked.png"),
-				TwilightForestMod.prefix("textures/block/castle_brick_worn.png")
+				//TwilightForestMod.prefix("textures/block/mossy_castle_brick.png"   ), // Jeez this one does not fit at ALL. Out!
+				TwilightForestMod.prefix("textures/block/cracked_castle_brick.png"),
+				TwilightForestMod.prefix("textures/block/worn_castle_brick.png")
 		) {
 			private final ResourceLocation[] magic = new ResourceLocation[]{
 					TwilightForestMod.prefix("textures/block/castleblock_magic_0.png"),
