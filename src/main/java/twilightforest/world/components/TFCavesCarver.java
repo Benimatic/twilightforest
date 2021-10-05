@@ -10,6 +10,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -34,6 +35,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands) {
 		super(codec);
 		this.liquids = ImmutableSet.of(Fluids.WATER, Fluids.LAVA);
+		this.replaceableBlocks = ImmutableSet.of(Blocks.SAND, Blocks.GRAVEL, Blocks.DIRT, Blocks.ROOTED_DIRT, Blocks.COARSE_DIRT);
 		this.isHighlands = isHighlands;
 	}
 
@@ -188,9 +190,10 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	}
 
+	//make our own list of replaceables since otherwise it breaks structures like the yeti cave
 	@Override
-	protected boolean canReplaceBlock(BlockState state) {
-		return super.canReplaceBlock(state) || state.is(TFBlocks.TROLLSTEINN.get()) || state.is(Blocks.ROOTED_DIRT) || state.is(Blocks.COARSE_DIRT);
+	protected boolean canReplaceBlock(BlockState state, BlockState aboveState) {
+		return (this.replaceableBlocks.contains(state.getBlock()) || state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(TFBlocks.TROLLSTEINN.get())) && !aboveState.getFluidState().is(FluidTags.WATER);
 	}
 
 	private static boolean shouldSkip(double posX, double posY, double posZ, double minY) {
