@@ -15,12 +15,7 @@ import javax.annotation.Nonnull;
 
 public class CapabilityList {
 
-	@CapabilityInject(IShieldCapability.class)
-	public static final Capability<IShieldCapability> SHIELDS;
-
-	static {
-		SHIELDS = null;
-	}
+	public static final Capability<IShieldCapability> SHIELDS = CapabilityManager.get(new CapabilityToken<>(){});
 
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.register(IShieldCapability.class);

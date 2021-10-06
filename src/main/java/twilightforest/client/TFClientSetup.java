@@ -83,31 +83,6 @@ public class TFClientSetup {
        
     }
 
-    public static void addLegacyPack() {
-        //noinspection ConstantConditions
-        if (Minecraft.getInstance() == null)
-            // Normally Minecraft Client is never null except when generating through runData
-            return;
-
-        Minecraft.getInstance().getResourcePackRepository().addPackFinder(
-                (consumer, iFactory) -> consumer.accept(
-                        Pack.create(
-                                TwilightForestMod.prefix("classic_textures").toString(),
-                                false,
-                                () -> new TwilightLegacyPack(
-                                        ModList
-                                                .get()
-                                                .getModFileById(TwilightForestMod.ID)
-                                                .getFile()
-                                ),
-                                iFactory,
-                                Pack.Position.TOP,
-                                iTextComponent -> iTextComponent
-                        )
-                )
-        );
-    }
-
 	private static Field field_EntityRenderersEvent$AddLayers_renderers;
 
 	@SubscribeEvent

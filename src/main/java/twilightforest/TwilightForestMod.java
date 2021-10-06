@@ -1,6 +1,11 @@
 package twilightforest;
 
 import com.google.common.collect.Maps;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -23,17 +28,20 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.resource.PathResourcePack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,6 +73,7 @@ import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import net.minecraft.world.item.ArmorItem;
@@ -92,15 +101,6 @@ public class TwilightForestMod {
 	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
 
 	public TwilightForestMod() {
-		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
-		//noinspection Convert2Lambda,Anonymous2MethodRef
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new Runnable() {
-			@Override
-			public void run() {
-				twilightforest.client.TFClientSetup.addLegacyPack();
-			}
-		});
-
 		{
 			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
 			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
@@ -144,6 +144,26 @@ public class TwilightForestMod {
 			}
 		} else {
 			LOGGER.warn("Skipping compatibility!");
+		}
+	}
+
+	@SubscribeEvent
+	public static void addClassicPack(AddPackFindersEvent event) {
+		try {
+			if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+				var resourcePath = ModList.get().getModFileById(TwilightForestMod.ID).getFile().findResource("classic");
+				var pack = new PathResourcePack(ModList.get().getModFileById(TwilightForestMod.ID).getFile().getFileName() + ":" + resourcePath, resourcePath);
+				var metadataSection = pack.getMetadataSection(PackMetadataSection.SERIALIZER);
+				if (metadataSection != null) {
+					event.addRepositorySource((packConsumer, packConstructor) ->
+							packConsumer.accept(packConstructor.create(
+									"builtin/twilight_forest_legacy_resources", new TextComponent("Twilight Classic"), false,
+									() -> pack, metadataSection, Pack.Position.TOP, PackSource.BUILT_IN, false)));
+				}
+			}
+		}
+		catch(IOException ex) {
+			throw new RuntimeException(ex);
 		}
 	}
 
