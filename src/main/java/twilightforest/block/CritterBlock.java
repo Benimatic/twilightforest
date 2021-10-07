@@ -144,7 +144,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			} else if(this == TFBlocks.CICADA.get()) {
 				if(!player.isCreative()) stack.shrink(1);
 				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
-				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
+				if(worldIn.isClientSide) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
 				worldIn.setBlockAndUpdate(pos,state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 				return InteractionResult.SUCCESS;
 			}
@@ -156,7 +156,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 		if ((entityIn instanceof Projectile && !(entityIn instanceof MoonwormShot)) || entityIn instanceof FallingBlockEntity) {
 			worldIn.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
-			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
+			if(worldIn.isClientSide) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
 			worldIn.playSound(null, pos, TFSounds.BUG_SQUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
 			ItemEntity squish = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), this.getSquishResult());
 			squish.spawnAtLocation(squish.getItem());

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -68,6 +70,12 @@ public class JarBlock extends Block {
 		if(!TFConfig.CLIENT_CONFIG.silentCicadas.get() && random.nextInt(worldIn.getGameRules().getRule(GameRules.RULE_RANDOMTICKING).get()) <= 3) {
 			worldIn.playSound(null, pos, TFSounds.CICADA, SoundSource.BLOCKS, 1.0F, 1.0F);
 		}
+	}
+
+	@Override
+	public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
+		super.destroy(pLevel, pPos, pState);
+		if(pLevel.isClientSide()) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
 	}
 
 	@Override

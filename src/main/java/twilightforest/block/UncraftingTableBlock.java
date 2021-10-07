@@ -52,7 +52,6 @@ public class UncraftingTableBlock extends Block {
 		if(!worldIn.isClientSide) {
 			boolean flag = worldIn.hasNeighborSignal(pos);
 			if (flag != state.getValue(POWERED)) {
-				Minecraft.getInstance().getSoundManager().stop(TFSounds.UNCRAFTING_TABLE_ACTIVATE.getLocation(), SoundSource.BLOCKS);
 				if (flag && worldIn.getBlockState(pos.below()).is(Blocks.AMETHYST_BLOCK)) {
 					worldIn.playSound(null, pos, TFSounds.UNCRAFTING_TABLE_ACTIVATE, SoundSource.BLOCKS, 0.5F, 1.0F);
 				}
