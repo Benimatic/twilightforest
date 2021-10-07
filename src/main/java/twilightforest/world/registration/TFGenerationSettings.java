@@ -54,13 +54,13 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0));
+				player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, true));
 				trySpawnHintMonster(player, world, TFFeature.KNIGHT_STRONGHOLD);
 			}
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST_CENTER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0));
+				player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, true));
 				trySpawnHintMonster(player, world, TFFeature.DARK_TOWER);
 			}
 		});
@@ -80,7 +80,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.GLACIER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 100, 3));
+				player.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 100, 3, false, true));
 			}
 			trySpawnHintMonster(player, world, TFFeature.ICE_TOWER);
 		});
@@ -93,7 +93,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.SNOWY_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 100, 2));
+				player.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 100, 2, false, true));
 				trySpawnHintMonster(player, world, TFFeature.YETI_CAVE);
 			}
 		});
@@ -103,7 +103,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 				int hungerLevel = currentHunger != null ? currentHunger.getAmplifier() + 1 : 1;
 
-				player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 100, hungerLevel));
+				player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 100, hungerLevel, false, true));
 
 				trySpawnHintMonster(player, world, TFFeature.LABYRINTH);
 			}
