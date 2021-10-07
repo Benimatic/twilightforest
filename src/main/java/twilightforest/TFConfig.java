@@ -198,7 +198,7 @@ public class TFConfig {
 					if (split.length != 5) return false;
 
 					Optional<Block> block = parseBlock(split[0]);
-					if (!block.isPresent()) return false;
+					if (block.isEmpty()) return false;
 
 					try {
 						BlockSpikeFeature.registerStalactite(tier, block.get().defaultBlockState(),
@@ -264,6 +264,10 @@ public class TFConfig {
 					translation(config + "dragons").
 					comment("Disable the Here Be Dragons experimental warning screen.").
 					define("disableHereBeDragons", false);
+			disableLockedBiomeToasts = builder.
+					translation(config + "locked_toasts").
+					comment("Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.").
+					define("disableLockedBiomeToasts", false);
 			builder.
 					comment("Client only: Controls for the Loading screen").
 					push("Loading Screen");
@@ -313,7 +317,6 @@ public class TFConfig {
 								"twilightforest:magic_beans",
 								"twilightforest:ironwood_raw",
 								"twilightforest:naga_scale",
-								"twilightforest:experiment_115{think:1}",
 								"twilightforest:twilight_portal_miniature_structure",
 								"twilightforest:lich_tower_miniature_structure",
 								"twilightforest:knightmetal_block",
@@ -334,6 +337,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public ForgeConfigSpec.BooleanValue disableHereBeDragons;
+		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 
 		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
 
@@ -397,7 +401,7 @@ public class TFConfig {
 		if (id == null || !ForgeRegistries.BLOCKS.containsKey(id)) {
 			return Optional.empty();
 		} else {
-			return Optional.of(ForgeRegistries.BLOCKS.getValue(id));
+			return Optional.ofNullable(ForgeRegistries.BLOCKS.getValue(id));
 		}
 	}
 }

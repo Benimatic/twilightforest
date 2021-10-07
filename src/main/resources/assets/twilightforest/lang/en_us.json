@@ -1326,8 +1326,8 @@
   "twilightforest.loading.title.leave": "Whisking you from the Twilight Forest...",
 
   "twilightforest.ui.magicmap.fail": "The Magic faltered. Perhaps it doesn't work here?",
-  "twilightforest.ui.biome_locked": "Unnatural forces impede you from progressing further.",
-  "twilightforest.ui.biome_locked_2": "(Check your advancements)",
+  "twilightforest.ui.biome_locked": "Biome Locked!",
+  "twilightforest.ui.biome_locked_2": "Check your advancements",
 
   // Config
   "twilightforest.config.dimension": "Dimension Settings",
@@ -1404,6 +1404,9 @@
 
   "twilightforest.config.dragons": "Disable the Here Be Dragons experimental screen.",
   "twilightforest.config.dragons.tooltip": "Disables the experimental Here Be Dragons screen on world load.",
+
+  "twilightforest.config.locked_toast": "Disable the Locked Biome Toasts.",
+  "twilightforest.config.locked_toast.tooltip": "Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.",
 
   "twilightforest.config.antibuilder_blacklist": "Antibuilder Blacklist",
   "twilightforest.config.antibuilder_blacklist.tooltip": "Anti-Builder blacklist. (domain:block:meta) meta is optional.",
