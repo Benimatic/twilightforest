@@ -218,6 +218,7 @@ public final class TFSounds {
 	public static final SoundEvent TOME_HURT = createEvent("entity.twilightforest.tome.hurt");
 	public static final SoundEvent TOME_IDLE = createEvent("entity.twilightforest.tome.idle");
 	public static final SoundEvent TRANSFORMATION_CORE = createEvent("block.twilightforest.core.transformation");
+	public static final SoundEvent UNCRAFTING_TABLE_ACTIVATE = createEvent("block.twilightforest.uncrafting_table.activate");
 	public static final SoundEvent UNLOCK_VANISHING_BLOCK = createEvent("block.twilightforest.vanish.unlock");
 	public static final SoundEvent URGHAST_AMBIENT = createEvent("entity.twilightforest.urghast.ambient");
 	public static final SoundEvent URGHAST_DEATH = createEvent("entity.twilightforest.urghast.death");
@@ -349,6 +350,7 @@ public final class TFSounds {
 				TINYBIRD_CHIRP, TINYBIRD_HURT, TINYBIRD_SONG,
 				TOME_DEATH, TOME_HURT, TOME_IDLE,
 				TRANSFORMATION_CORE,
+				UNCRAFTING_TABLE_ACTIVATE,
 				UNLOCK_VANISHING_BLOCK,
 				URGHAST_AMBIENT, URGHAST_DEATH, URGHAST_HURT,
 				URGHAST_TRAP_ACTIVE, URGHAST_TRAP_ON, URGHAST_TRAP_SPINDOWN, URGHAST_TRAP_WARMUP,

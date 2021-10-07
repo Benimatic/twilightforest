@@ -262,11 +262,21 @@ public class BlockstateGenerator extends BlockStateProvider {
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
 		simpleBlock(TFBlocks.LIVEROOT_BLOCK.get());
-		simpleBlock(TFBlocks.UNCRAFTING_TABLE.get(), models().withExistingParent(TFBlocks.UNCRAFTING_TABLE.getId().getPath(), prefix("block/util/cube_bottom_double_top"))
-						.texture("top", prefix("block/uncrafting_top"))
-						.texture("glow", prefix("block/uncrafting_glow"))
-						.texture("bottom", new ResourceLocation("block/jungle_planks"))
-						.texture("side", prefix("block/uncrafting_side")));
+
+		ModelFile glowing = models().withExistingParent(TFBlocks.UNCRAFTING_TABLE.getId().getPath() + "_glowing", prefix("block/util/cube_bottom_double_top_and_sides"))
+				.texture("top", prefix("block/uncrafting_top"))
+				.texture("glow", prefix("block/uncrafting_glow"))
+				.texture("sideglow", prefix("block/uncrafting_glow_side"))
+				.texture("bottom", new ResourceLocation("block/jungle_planks"))
+				.texture("side", prefix("block/uncrafting_side"));
+
+		ModelFile notglowing = models().withExistingParent(TFBlocks.UNCRAFTING_TABLE.getId().getPath(), prefix("block/util/cube_bottom_double_top"))
+				.texture("top", prefix("block/uncrafting_top"))
+				.texture("glow", prefix("block/uncrafting_glow"))
+				.texture("bottom", new ResourceLocation("block/jungle_planks"))
+				.texture("side", prefix("block/uncrafting_side"));
+
+		getVariantBuilder(TFBlocks.UNCRAFTING_TABLE.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(UncraftingTableBlock.POWERED) ? glowing : notglowing).build());
 		registerSmokersAndJets();
 		axisBlock(TFBlocks.TWISTED_STONE.get(), prefix("block/stone_twist/twist_side"), prefix("block/stone_twist/twist_end"));
 		axisBlock(TFBlocks.BOLD_STONE_PILLAR.get(), prefix("block/stone_pillar_side"), prefix("block/stone_pillar_end"));

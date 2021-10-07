@@ -226,6 +226,7 @@
   "block.twilightforest.core.transformation": { "subtitle": "subtitles.twilightforest.block.core.transformation", "sounds": ["note/harp2"] },
   "block.twilightforest.portal.woosh": { "subtitle": "subtitles.twilightforest.block.portal.woosh", "sounds": [{"attenuation_distance":10, "name":"portal/portal"}] },
   "block.twilightforest.pedestal.activate": { "subtitle": "subtitles.twilightforest.block.pedestal.activate", "sounds": ["mob/zombie/infect"] },
+  "block.twilightforest.uncrafting_table.activate": { "sounds": ["block/end_portal/endportal"] },
 
   "item.twilightforest.blockchain.collide": { "subtitle": "subtitles.twilightforest.item.blockchain.collide", "sounds": ["random/anvil_land"] },
   "item.twilightforest.blockchain.hit": { "subtitle": "subtitles.twilightforest.item.blockchain.hit", "sounds": ["mob/irongolem/throw"] },
