@@ -148,7 +148,7 @@
   "entity.twilightforest.shield.break": { "subtitle": "subtitles.twilightforest.entity.shield.break", "sounds": ["random/break"] },
   "entity.twilightforest.slimebeetle.death": { "subtitle": "subtitles.twilightforest.entity.slimebeetle.death", "sounds": [ "mob/spider/death" ] },
   "entity.twilightforest.slimebeetle.hurt": { "subtitle": "subtitles.twilightforest.entity.slimebeetle.hurt", "sounds": [  "mob/spider/say1", "mob/spider/say2", "mob/spider/say3", "mob/spider/say4" ] },
-  "entity.twilightforest.slimebeetle.squish": { "subtitle": "subtitles.twilightforest.entity.mazeslime.squish", "sounds": [ "mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4" ] },
+  "entity.twilightforest.slimebeetle.squish": { "subtitle": "subtitles.twilightforest.entity.slimebeetle.squish", "sounds": [ "mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4" ] },
   "entity.twilightforest.slimebeetle.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/spider/step1", "mob/spider/step2",  "mob/spider/step3", "mob/spider/step4" ] },
   "entity.twilightforest.snowqueen.ambient": { "subtitle": "subtitles.twilightforest.entity.snowqueen.ambient", "sounds": [ "twilightforest:mob/ice/noise0", "twilightforest:mob/ice/noise1" ] },
   "entity.twilightforest.snowqueen.attack": { "subtitle": "subtitles.twilightforest.entity.snowqueen.attack", "sounds": ["mob/irongolem/throw"] },
