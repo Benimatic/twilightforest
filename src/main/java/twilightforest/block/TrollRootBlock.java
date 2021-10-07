@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.LevelReader;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import twilightforest.item.TFItems;
+import twilightforest.util.TFStats;
 
 public class TrollRootBlock extends Block {
 
@@ -48,6 +50,7 @@ public class TrollRootBlock extends Block {
 			level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
 			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.TORCHBERRIES.get()));
 			level.addFreshEntity(torchberries);
+			if(player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED);
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
 		return super.use(state, level, pos, player, hand, result);

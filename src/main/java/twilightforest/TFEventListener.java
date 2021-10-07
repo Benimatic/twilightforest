@@ -89,6 +89,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
+import twilightforest.util.TFStats;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFFeature;
@@ -261,6 +262,7 @@ public class TFEventListener {
 			if (block instanceof CritterBlock poorBug) {
 				living.setItemSlot(EquipmentSlot.HEAD, poorBug.getSquishResult());
 				living.level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.BUG_SQUISH, living.getSoundSource(), 1, 1);
+				if(living instanceof Player player && player instanceof ServerPlayer) player.awardStat(TFStats.BUGS_SQUISHED);
 			}
 		}
 
@@ -310,6 +312,7 @@ public class TFEventListener {
 					}
 					if(!event.getPlayer().getAbilities().instabuild) stack.shrink(1);
 					event.getPlayer().swing(event.getHand());
+					if(event.getPlayer() instanceof ServerPlayer) event.getPlayer().awardStat(TFStats.SKULL_CANDLES_MADE);
 					//this is to prevent anything from being placed afterwords
 					event.setCanceled(true);
 				}
@@ -481,6 +484,8 @@ public class TFEventListener {
 
 			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE, player.getSoundSource(), 1, 1);
 
+			if(player instanceof ServerPlayer) player.awardStat(TFStats.LIFE_CHARMS_ACTIVATED);
+
 			return true;
 		}
 
@@ -642,6 +647,8 @@ public class TFEventListener {
 
 				player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP, player.getSoundSource(), 1.5F, 1.0F);
 				keepInventory.getSelected().shrink(1);
+
+				if(player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED);
 			}
 		}
 

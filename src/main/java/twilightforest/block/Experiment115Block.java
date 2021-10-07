@@ -41,6 +41,7 @@ import twilightforest.item.TFItems;
 import java.util.Random;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import twilightforest.util.TFStats;
 
 public class Experiment115Block extends Block {
 
@@ -60,19 +61,12 @@ public class Experiment115Block extends Block {
 	@Override
 	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		switch (state.getValue(BITES_TAKEN)) {
-			default:
-				return FULL_SHAPE;
-			case 2:
-			case 3:
-				return THREE_QUARTER_SHAPE;
-			case 4:
-			case 5:
-				return HALF_SHAPE;
-			case 6:
-			case 7:
-				return QUARTER_SHAPE;
-		}
+		return switch (state.getValue(BITES_TAKEN)) {
+			default -> FULL_SHAPE;
+			case 2, 3 -> THREE_QUARTER_SHAPE;
+			case 4, 5 -> HALF_SHAPE;
+			case 6, 7 -> QUARTER_SHAPE;
+		};
 	}
 
 	@Override
@@ -120,7 +114,7 @@ public class Experiment115Block extends Block {
 	private InteractionResult eatCake(Level world, BlockPos pos, BlockState state, Player player) {
         if (!player.canEat(false)) return InteractionResult.PASS;
         else {
-            player.awardStat(Stats.EAT_CAKE_SLICE);
+            player.awardStat(TFStats.E115_SLICES_EATEN);
             player.getFoodData().eat(4, 0.3F);
 			world.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
             int i = state.getValue(BITES_TAKEN);

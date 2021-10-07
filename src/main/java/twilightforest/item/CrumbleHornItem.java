@@ -28,6 +28,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.TFStats;
 import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public class CrumbleHornItem extends Item {
 	@Override
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		if (count > 10 && count % 5 == 0 && !living.level.isClientSide) {
-			int crumbled = doCrumble(stack, living.level, living);
+			int crumbled = doCrumble(living.level, living);
 
 			if (crumbled > 0) {
 				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
@@ -150,7 +151,7 @@ public class CrumbleHornItem extends Item {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
 	}
 
-	private int doCrumble(ItemStack stack, Level world, LivingEntity living) {
+	private int doCrumble(Level world, LivingEntity living) {
 
 		final double range = 3.0D;
 		final double radius = 2.0D;
@@ -161,18 +162,23 @@ public class CrumbleHornItem extends Item {
 
 		AABB crumbleBox = new AABB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 
-		return crumbleBlocksInAABB(stack, world, living, crumbleBox);
+		return crumbleBlocksInAABB(world, living, crumbleBox);
 	}
 
-	private int crumbleBlocksInAABB(ItemStack stack, Level world, LivingEntity living, AABB box) {
+	private int crumbleBlocksInAABB(Level world, LivingEntity living, AABB box) {
 		int crumbled = 0;
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			if (crumbleBlock(stack, world, living, pos)) crumbled++;
+			if (crumbleBlock(world, living, pos)) {
+				crumbled++;
+				if (living instanceof Player player && player instanceof ServerPlayer) {
+					player.awardStat(TFStats.BLOCKS_CRUMBLED);
+				}
+			}
 		}
 		return crumbled;
 	}
 
-	private boolean crumbleBlock(ItemStack stack, Level world, LivingEntity living, BlockPos pos) {
+	private boolean crumbleBlock(Level world, LivingEntity living, BlockPos pos) {
 
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();

@@ -65,6 +65,7 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.util.TFStats;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFBiomeFeatures;
@@ -191,6 +192,7 @@ public class TwilightForestMod {
 		TFAdvancements.init();
 		BiomeKeys.addBiomeTypes();
 		TFDimensions.init();
+		TFStats.init();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {

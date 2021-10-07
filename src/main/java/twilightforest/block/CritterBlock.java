@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -34,6 +35,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.TFSounds;
 import twilightforest.entity.projectile.MoonwormShot;
+import twilightforest.util.TFStats;
 
 import javax.annotation.Nullable;
 
@@ -158,6 +160,9 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			worldIn.playSound(null, pos, TFSounds.BUG_SQUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
 			ItemEntity squish = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), this.getSquishResult());
 			squish.spawnAtLocation(squish.getItem());
+			if(entityIn instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
+				player.awardStat(TFStats.BUGS_SQUISHED);
+			}
 		}
 	}
 

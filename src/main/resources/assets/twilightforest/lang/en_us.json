@@ -1317,6 +1317,18 @@
   "death.attack.twilightforest.yeeted": "%1$s was yeeted for the last time by %2$s",
   "death.attack.twilightforest.yeeted.item": "%1$s was yeeted for the last time by %2$s while somehow holding %3$s",
 
+  // Stats
+  "stat.twilightforest.blocks_crumbled": "Blocks Crumbled with Horn",
+  "stat.twilightforest.bugs_squished": "Bugs Squished",
+  "stat.twilightforest.e115_slices_eaten": "Experiment 115 Slices Eaten",
+  "stat.twilightforest.keeping_charms_activated": "Activated Charms of Keeping",
+  "stat.twilightforest.life_charms_activated": "Activated Charms of Life",
+  "stat.twilightforest.skull_candles_made": "Skull Candles Made",
+  "stat.twilightforest.tf_shields_broken": "Fortification Shields Broken",
+  "stat.twilightforest.torchberries_harvested": "Torchberries Harvested",
+  "stat.twilightforest.trophy_pedestals_activated": "Trophy Pedestals Activated",
+  "stat.twilightforest.uncrafting_table_interactions": "Interactions with Uncrafting Table",
+
   // Misc
   "twilightforest.misc.wip0": "This block is a work in progress and may have bugs or unintended effects that may damage your world.",
   "twilightforest.misc.wip1": "Use with caution.",

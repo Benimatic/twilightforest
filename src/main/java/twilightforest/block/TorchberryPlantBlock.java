@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import twilightforest.enums.PlantVariant;
 import twilightforest.item.TFItems;
+import twilightforest.util.TFStats;
 
 import java.util.Random;
 
@@ -39,6 +41,7 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 			level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
 			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.TORCHBERRIES.get()));
 			level.addFreshEntity(torchberries);
+			if(player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED);
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
 		return super.use(state, level, pos, player, hand, result);
