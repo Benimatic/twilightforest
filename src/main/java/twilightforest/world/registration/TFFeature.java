@@ -173,7 +173,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return rand.nextBoolean() ? new TowerMainComponent(this, rand, 0, x, y, z) : new TowerFoyer(structureManager, new BlockPos(x, y - 3, z));
+			return new TowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
 	public static final TFFeature HYDRA_LAIR = new TFFeature( 2, "hydra_lair"    , true, true, TwilightForestMod.prefix("progress_labyrinth") ) {
