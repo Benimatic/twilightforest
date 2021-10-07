@@ -15,6 +15,9 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "experience": 1000
+  },
   "criteria": {
     "twilight_oak_log": {
       "trigger": "minecraft:inventory_changed",

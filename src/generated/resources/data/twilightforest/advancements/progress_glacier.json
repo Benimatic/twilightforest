@@ -23,6 +23,9 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  },
   "criteria": {
     "queen": {
       "trigger": "minecraft:player_killed_entity",

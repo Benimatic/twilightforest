@@ -85,6 +85,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("scale", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.NAGA_SCALE.get()))
 				.addCriterion("kill_mob", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, silence.getId()))
 				.requirements(new CountRequirementsStrategy(2, 1))
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_naga");
 
 		Advancement lich = Advancement.Builder.advancement().parent(naga).display(
@@ -101,6 +102,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("shield_scepter", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FORTIFICATION_SCEPTER.get()))
 				.addCriterion("kill_naga", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, naga.getId()))
 				.requirements(new CountRequirementsStrategy(6, 1))
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_lich");
 
 		Advancement minoshroom = Advancement.Builder.advancement().parent(lich).display(
@@ -111,6 +113,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("meef", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.MEEF_STROGANOFF.get()))
 				.addCriterion("kill_lich", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, lich.getId()))
 				.requirements(RequirementsStrategy.AND)
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_labyrinth");
 
 		Advancement hydra = Advancement.Builder.advancement().parent(minoshroom).display(
@@ -124,6 +127,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("blood", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_BLOOD.get()))
 				.addCriterion("stroganoff", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, minoshroom.getId()))
 				.requirements(new CountRequirementsStrategy(3, 1))
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_hydra");
 
 		Advancement trophy_pedestal = Advancement.Builder.advancement().parent(lich).display(
@@ -145,6 +149,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.KNIGHT_PHANTOM_TROPHY.get()))
 				.addCriterion("previous_progression", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, trophy_pedestal.getId()))
 				.requirements(new CountRequirementsStrategy(2, 1))
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_knights");
 
 		Advancement trap = Advancement.Builder.advancement().parent(knights).display(
@@ -169,6 +174,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("tear", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_TEARS.get()))
 				.addCriterion("previous_progression", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, trap.getId()))
 				.requirements(new CountRequirementsStrategy(3, 1))
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_ur_ghast");
 
 		Advancement yeti = Advancement.Builder.advancement().parent(lich).display(
@@ -182,6 +188,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("fur", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ALPHA_YETI_FUR.get()))
 				.addCriterion("previous_progression", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, lich.getId()))
 				.requirements(new CountRequirementsStrategy(3, 1))
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_yeti");
 
 		Advancement snow_queen = Advancement.Builder.advancement().parent(yeti).display(
@@ -195,6 +202,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.SNOW_QUEEN_TROPHY.get()))
 				.addCriterion("previous_progression", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, yeti.getId()))
 				.requirements(new CountRequirementsStrategy(2, 1))
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_glacier");
 
 		Advancement merge = Advancement.Builder.advancement().parent(lich).display(
@@ -275,6 +283,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 								new TranslatableComponent("entity.twilightforest.quest_ram")),
 						null, FrameType.GOAL, true, true, false)
 				.addCriterion("quest_ram_complete", new QuestRamCompletionTrigger.Instance(EntityPredicate.Composite.ANY))
+				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")).addExperience(100))
 				.save(consumer, "twilightforest:quest_ram");
 
 		Advancement focus = Advancement.Builder.advancement().parent(silence).display(
@@ -472,6 +481,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_CHESTPLATE.get()).hasNbt(arcticDye(TFItems.ARCTIC_CHESTPLATE.get())).build()))
 				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_LEGGINGS.get()).hasNbt(arcticDye(TFItems.ARCTIC_LEGGINGS.get())).build()))
 				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_BOOTS.get()).hasNbt(arcticDye(TFItems.ARCTIC_BOOTS.get())).build()))
+				.rewards(AdvancementRewards.Builder.experience(25))
 				.save(consumer, "twilightforest:arctic_armor_dyed");
 
 		Advancement.Builder.advancement().parent(yeti).display(
@@ -490,6 +500,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 						null, FrameType.CHALLENGE, true, true, false)
 				.requirements(RequirementsStrategy.AND))
 				.addCriterion("liveroot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.LIVEROOT.get()))
+				.rewards(AdvancementRewards.Builder.experience(1000))
 				.save(consumer, "twilightforest:arborist");
 
 	}
