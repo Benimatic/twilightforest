@@ -142,6 +142,11 @@
         {
           "type": "minecraft:item",
           "weight": 75,
+          "name": "twilightforest:magic_map"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
           "functions": [
             {
               "function": "minecraft:set_count",

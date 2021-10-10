@@ -53,6 +53,7 @@ public class TFTreasure {
 	public static final TFTreasure TROLL_VAULT = new TFTreasure("troll_vault");
 	public static final TFTreasure GRAVEYARD = new TFTreasure("graveyard");
 	public static final TFTreasure QUEST_GROVE = new TFTreasure("quest_grove_dropper");
+	public static final TFTreasure USELESS_LOOT = new TFTreasure("useless");
 
 	public static final ResourceLocation BIGHORN_SHEEP_WHITE = register("entities/bighorn_sheep/white");
 	public static final ResourceLocation BIGHORN_SHEEP_ORANGE = register("entities/bighorn_sheep/orange");
@@ -75,7 +76,6 @@ public class TFTreasure {
 	public static final ResourceLocation DEATH_TOME_HURT = register("entities/death_tome_hurt");
 	public static final ResourceLocation DEATH_TOME_BOOKS = register("entities/death_tome_books");
 
-	public static final ResourceLocation USELESS_LOOT = register("structures/useless");
 	public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 
 	public static LootItemFunctionType ENCHANT;

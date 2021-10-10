@@ -186,6 +186,11 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 75,
+          "name": "twilightforest:magic_map"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 25,
           "functions": [
             {
@@ -218,6 +223,11 @@
         {
           "type": "minecraft:item",
           "weight": 25,
+          "name": "twilightforest:ironwood_block"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
           "name": "twilightforest:music_disc_maker"
         }
       ]
