@@ -79,7 +79,7 @@ public class BrittleFlaskItem extends Item {
 						player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
 					}
 					flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-					player.level.playSound(null, player.blockPosition(), TFSounds.FLASK_FILL, SoundSource.PLAYERS, flaskTag.getInt("Uses") * 0.33F, player.level.random.nextFloat() * 0.1F + 0.9F);
+					player.level.playSound(null, player, TFSounds.FLASK_FILL, player.getSoundSource(), flaskTag.getInt("Uses") * 0.33F, player.level.random.nextFloat() * 0.1F + 0.9F);
 					return true;
 				} else if(!flaskTag.contains("Potion")) {
 					if(!player.getAbilities().instabuild) {
@@ -88,7 +88,7 @@ public class BrittleFlaskItem extends Item {
 					}
 					flaskTag.putString("Potion", potionTag.getString("Potion"));
 					flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-					player.level.playSound(null, player.blockPosition(), TFSounds.FLASK_FILL, SoundSource.PLAYERS, flaskTag.getInt("Uses") * 0.33F, player.level.random.nextFloat() * 0.1F + 0.9F);
+					player.level.playSound(null, player, TFSounds.FLASK_FILL, player.getSoundSource(), flaskTag.getInt("Uses") * 0.33F, player.level.random.nextFloat() * 0.1F + 0.9F);
 					return true;
 				}
 			}
@@ -132,7 +132,7 @@ public class BrittleFlaskItem extends Item {
 						player.addEffect(new MobEffectInstance(mobeffectinstance));
 					}
 				}
-				addTowardsAdvancement(tag.getString("Potion"), player);
+				if(!player.isCreative()) addTowardsAdvancement(tag.getString("Potion"), player);
 			}
 			player.awardStat(Stats.ITEM_USED.get(this));
 			if (!player.getAbilities().instabuild) {
@@ -146,11 +146,11 @@ public class BrittleFlaskItem extends Item {
 			if (canBreak() && !player.getAbilities().instabuild) {
 				if (tag.getInt("Uses") <= 0) {
 					stack.shrink(1);
-					level.playSound(null, entity.blockPosition(), TFSounds.BRITTLE_FLASK_BREAK, SoundSource.PLAYERS, 1.5F, 0.7F);
+					level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK, player.getSoundSource(), 1.5F, 0.7F);
 				} else {
 					tag.putInt("Breakage", tag.getInt("Breakage") + 1);
 					tag.putBoolean("Refillable", false);
-					level.playSound(null, entity.blockPosition(), TFSounds.BRITTLE_FLASK_CRACK, SoundSource.PLAYERS, 1.5F, 2.0F);
+					level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK, player.getSoundSource(), 1.5F, 2.0F);
 				}
 			}
 		}

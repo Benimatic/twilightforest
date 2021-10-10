@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -42,6 +43,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 			}
 
 			playerIn.awardStat(Stats.ITEM_USED.get(this));
+			playerIn.level.playSound(null, playerIn, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, playerIn.getSoundSource(), 1.0F, 1.0F);
 			return InteractionResultHolder.success(emptyMapStack);
 		}
 	}

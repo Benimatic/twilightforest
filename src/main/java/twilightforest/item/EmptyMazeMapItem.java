@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ComplexItem;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +37,7 @@ public class EmptyMazeMapItem extends ComplexItem {
 			}
 
 			playerIn.awardStat(Stats.ITEM_USED.get(this));
+			playerIn.level.playSound(null, playerIn, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, playerIn.getSoundSource(), 1.0F, 1.0F);
 			return InteractionResultHolder.success(itemstack1);
 		}
 	}
