@@ -11,7 +11,7 @@
       "translate": "advancement.twilightforest.maze_map.desc",
       "with": [
         {
-          "translate": "item.twilightforest.maze_map"
+          "translate": "item.twilightforest.filled_maze_map"
         }
       ]
     },

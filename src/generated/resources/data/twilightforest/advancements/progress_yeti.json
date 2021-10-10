@@ -11,7 +11,7 @@
       "translate": "advancement.twilightforest.progress_yeti.desc",
       "with": [
         {
-          "translate": "entity.twilightforest.yeti_alpha"
+          "translate": "entity.twilightforest.alpha_yeti"
         }
       ]
     },

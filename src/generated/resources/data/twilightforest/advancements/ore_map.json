@@ -11,7 +11,7 @@
       "translate": "advancement.twilightforest.ore_map.desc",
       "with": [
         {
-          "translate": "item.twilightforest.ore_map"
+          "translate": "item.twilightforest.filled_ore_map"
         }
       ]
     },
