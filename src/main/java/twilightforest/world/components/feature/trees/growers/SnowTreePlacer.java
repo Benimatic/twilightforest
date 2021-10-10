@@ -57,7 +57,7 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
         });
     }
 
-    private static boolean isBlockUnderValid(LevelSimulatedReader reader, BlockPos pos) {
+    public static boolean isBlockUnderValid(LevelSimulatedReader reader, BlockPos pos) {
         return reader.isStateAtPosition(pos, state -> state.is(BlockTags.SNOW)) || reader.isStateAtPosition(pos, state -> state.is(BlockTags.DIRT));
     }
 

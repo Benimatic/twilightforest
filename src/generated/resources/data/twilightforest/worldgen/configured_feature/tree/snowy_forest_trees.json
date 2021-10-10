@@ -5,7 +5,11 @@
         "features": [
           {
             "feature": "twilightforest:tree/base/mega_spruce_no_podzol",
-            "chance": 0.5
+            "chance": 0.1
+          },
+          {
+            "feature": "twilightforest:tree/base/large_winter_tree_base",
+            "chance": 0.01
           }
         ],
         "default": "twilightforest:snow_spruce_snowy"

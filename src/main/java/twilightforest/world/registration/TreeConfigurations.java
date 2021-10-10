@@ -7,6 +7,7 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
@@ -235,6 +236,15 @@ public final class TreeConfigurations {
     )
             .ignoreVines()
             .decorators(ImmutableList.of(new TreeCorePlacer(2, new SimpleStateProvider(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState().setValue(TFLogBlock.AXIS, Direction.Axis.Y)))))
+            .build();
+
+    public static final TFTreeFeatureConfig LARGE_WINTER = new TFTreeFeatureConfig.Builder(
+            new SimpleStateProvider(BlockConstants.SPRUCE_LOG),
+            new SimpleStateProvider(BlockConstants.SPRUCE_LEAVES),
+            new SimpleStateProvider(BlockConstants.SPRUCE_LOG),
+            new SimpleStateProvider(BlockConstants.ROOTS)
+    )
+            .setSapling((SaplingBlock) Blocks.SPRUCE_SAPLING)
             .build();
 
     public static final TFTreeFeatureConfig DENSE_OAK = new TFTreeFeatureConfig.Builder(
