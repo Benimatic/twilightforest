@@ -156,6 +156,7 @@ public abstract class BiomeHelper {
 		addCanopyTrees(biome);
 		addHollowOakTrees(biome);
 		addForestVegetation(biome);
+		addDefaultStructures(biome);
 
 		return biome;
 	}

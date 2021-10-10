@@ -217,14 +217,6 @@ public class Kobold extends Monster {
 	}
 
 	@Override
-	protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
-		super.dropCustomDeathLoot(source, looting, recentlyHit);
-		if(source.getEntity() instanceof Player player && !player.isCreative() && player.getMainHandItem().is(TFItems.GLASS_SWORD.get()) && !player.getMainHandItem().getOrCreateTag().contains("Unbreakable")) {
-			this.spawnAtLocation(ItemTagGenerator.TF_MUSIC_DISCS.getRandomElement(random));
-		}
-	}
-
-	@Override
 	public int getMaxSpawnClusterSize() {
 		return 4;
 	}
