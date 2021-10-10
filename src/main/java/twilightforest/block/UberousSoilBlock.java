@@ -14,6 +14,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 import twilightforest.item.TFItems;
@@ -22,8 +24,14 @@ import java.util.Random;
 
 public class UberousSoilBlock extends Block implements BonemealableBlock {
 
+	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 15.0D, 16.0D);
+
 	public UberousSoilBlock(Properties props) {
 		super(props);
+	}
+
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+		return SHAPE;
 	}
 
 	@Override
@@ -40,7 +48,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 		Material aboveMaterial = above.getMaterial();
 
 		if (aboveMaterial.isSolid()) {
-			world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
+			world.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), world, pos));
 		}
 
 		if (above.getBlock() instanceof BonemealableBlock) {

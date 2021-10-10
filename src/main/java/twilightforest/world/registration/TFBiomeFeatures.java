@@ -56,12 +56,14 @@ public class TFBiomeFeatures {
 			new TFGenHugeWaterLily(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<BlockStateConfiguration>> LAMPPOSTS = FEATURES.register("lampposts", () ->
 			new TFGenLampposts(BlockStateConfiguration.CODEC));
+	public static final RegistryObject<Feature<TFTreeFeatureConfig>> LARGE_WINTER_TREE = FEATURES.register("large_winter_tree", () ->
+			new TFGenLargeWinter(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> MINERS_TREE = FEATURES.register("miners_tree", () ->
 			new TFGenMinersTree(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> MONOLITH = FEATURES.register("monolith", () ->
 			new TFGenMonolith(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<DiskConfiguration>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () ->
-			new BaseDiskFeature(DiskConfiguration.CODEC));
+			new CheckAbovePatchFeature(DiskConfiguration.CODEC));
 	public static final RegistryObject<Feature<BlockStateConfiguration>> UNDERGROUND_PLANTS = FEATURES.register("underground_plants", () ->
 			new UndergroundPlantFeature(BlockStateConfiguration.CODEC, false));
 	public static final RegistryObject<Feature<BlockStateConfiguration>> TROLL_VINES = FEATURES.register("troll_vines", () ->

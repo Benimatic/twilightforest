@@ -173,9 +173,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("all", blockTexture(Blocks.OAK_LEAVES)));
 		simpleBlock(TFBlocks.GIANT_OBSIDIAN.get(), models().withExistingParent(TFBlocks.GIANT_OBSIDIAN.getId().getPath(), prefix("block/util/giant_block"))
 						.texture("all", blockTexture(Blocks.OBSIDIAN)));
-		simpleBlock(TFBlocks.UBEROUS_SOIL.get(), models().withExistingParent(TFBlocks.UBEROUS_SOIL.getId().getPath(), prefix("block/util/cube_all_2_layer"))
-						.texture("all", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
-						.texture("all2", prefix("block/" + TFBlocks.UBEROUS_SOIL.getId().getPath() + "_glow")));
+		simpleBlock(TFBlocks.UBEROUS_SOIL.get(), models().withExistingParent(TFBlocks.UBEROUS_SOIL.getId().getPath(), "block/template_farmland")
+						.texture("top", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
+						.texture("dirt", blockTexture(TFBlocks.UBEROUS_SOIL.get())));
 		axisBlock(TFBlocks.HUGE_STALK.get(), prefix("block/huge_stalk"), prefix("block/huge_stalk_top"));
 		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
 		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_mushgloom_stem"));
