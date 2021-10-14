@@ -3,8 +3,12 @@ package twilightforest.world.components.structures.courtyard;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
@@ -19,7 +23,12 @@ public class CourtyardTerraceBrazier extends TwilightTemplateStructurePiece {
     }
 
     public CourtyardTerraceBrazier(int i, int x, int y, int z, Rotation rotation, StructureManager structureManager) {
-        super(NagaCourtyardPieces.TFNCTr, i, structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y, z));
+        super(NagaCourtyardPieces.TFNCTr, i, structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y + 3, z));
+    }
+
+    @Override
+    public boolean postProcess(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
+        return this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
     }
 
     @Override
@@ -29,6 +38,6 @@ public class CourtyardTerraceBrazier extends TwilightTemplateStructurePiece {
 
     @Override
     public NoiseEffect getNoiseEffect() {
-        return NoiseEffect.NONE;
+        return NoiseEffect.BEARD;
     }
 }
