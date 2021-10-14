@@ -5,7 +5,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
@@ -116,6 +118,10 @@ public class TFConfig {
 					translation(config + "portal_return").
 					comment("If false, the return portal will require the activation item.").
 					define("shouldReturnPortalBeUsable", true);
+			portalAdvancementLock = builder.
+					translation(config + "portal_unlocked_by_advancement").
+					comment("Use a valid advancement resource location as a string, with default String \"minecraft:story/mine_diamond\". Invalid/Empty Advancement resource IDs will leave the portal entirely unlocked.").
+					define("portalUnlockedByAdvancement", "minecraft:story/mine_diamond");
 			disableUncrafting = builder.
 					worldRestart().
 					translation(config + "uncrafting").
@@ -224,11 +230,13 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue checkPortalDestination;
 		public ForgeConfigSpec.BooleanValue portalLightning;
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
+		public ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
 		public ForgeConfigSpec.BooleanValue disableUncrafting;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public ForgeConfigSpec.BooleanValue disableSkullCandles;
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
+		public ResourceLocation portalLockingAdvancement;
 
 		public static class ShieldInteractions {
 
@@ -375,13 +383,25 @@ public class TFConfig {
 
 	private static final String config = TwilightForestMod.ID + ".config.";
 
-	/*@SubscribeEvent //FIXME Replace
-	public static void onConfigChanged(ModConfig.Reloading event) {
+	@SubscribeEvent // FIXME Not Firing
+	public static void onConfigChanged(ModConfigEvent.Reloading event) {
 		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
-//			TFDimensions.checkOriginDimension();
+			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
+
 			build();
 		}
-	}*/
+	}
+
+	// FIXME Remove once the top works again
+	//  This lets us have a RL without inserting RL creation into ticking code
+	@Deprecated
+	public static ResourceLocation getPortalLockingAdvancement() {
+		if (COMMON_CONFIG.portalLockingAdvancement == null) {
+			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
+		}
+
+		return COMMON_CONFIG.portalLockingAdvancement;
+	}
 
 	public static void build() {
 		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();

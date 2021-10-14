@@ -1340,6 +1340,9 @@
   "twilightforest.ui.magicmap.fail": "The Magic faltered. Perhaps it doesn't work here?",
   "twilightforest.ui.biome_locked": "Biome Locked!",
   "twilightforest.ui.biome_locked_2": "Check your advancements",
+  "twilightforest.ui.portal.unworthy": "The Portal pool is unresponsive. Perhaps something was neglected?",
+  "twilightforest.ui.advancement.required": "Advancement Required:",
+  "twilightforest.ui.advancement.no_title": "<Hidden Advancement>",
 
   // Config
   "twilightforest.config.dimension": "Dimension Settings",

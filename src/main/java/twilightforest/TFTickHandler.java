@@ -1,5 +1,9 @@
 package twilightforest;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +21,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.TFPortalBlock;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.item.BrittleFlaskItem;
+import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.TFPacketHandler;
@@ -37,15 +43,13 @@ public class TFTickHandler {
 
 	@SubscribeEvent
 	public static void playerTick(TickEvent.PlayerTickEvent event) {
-		Player player = event.player;
+		Player eventPlayer = event.player;
 
-		if (!(player.level instanceof ServerLevel))
-			return;
-
-		ServerLevel world = (ServerLevel) player.level;
+		if (!(eventPlayer instanceof ServerPlayer player)) return;
+		if (!(player.level instanceof ServerLevel world)) return;
 
 		// check for portal creation, at least if it's not disabled
-		if (!world.isClientSide && !TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
+		if (!TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
 			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
 				if (world.getServer().getProfilePermissions(player.getGameProfile()) != 0) {
@@ -59,21 +63,17 @@ public class TFTickHandler {
 		}
 
 		//tick every second for the advancement bit of the flask, but only if we dont have the advancement
-		if(!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("full_mettle_alchemist"))) {
+		if(event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, TwilightForestMod.prefix("full_mettle_alchemist"))) {
 			BrittleFlaskItem.ticker();
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0
-				&& TFGenerationSettings.isProgressionEnforced(world)
-				&& TFGenerationSettings.usesTwilightChunkGenerator(world)
-				&& !player.isCreative() && !player.isSpectator()) {
-
+		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && TFGenerationSettings.isProgressionEnforced(world) && TFGenerationSettings.usesTwilightChunkGenerator(world) && !player.isCreative() && !player.isSpectator()) {
 			TFGenerationSettings.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
+		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
@@ -120,33 +120,55 @@ public class TFTickHandler {
 		}).orElse(false);
 	}
 
-	private static void checkForPortalCreation(Player player, Level world, float rangeToCheck) {
+	private static final TranslatableComponent PORTAL_UNWORTHY = new TranslatableComponent(TwilightForestMod.ID + ".ui.portal.unworthy");
+	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
 		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
 				|| world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
+			ItemEntity qualified = null;
 
 			for (ItemEntity entityItem : itemList) {
-				if (ItemTagGenerator.PORTAL_ACTIVATOR.contains(entityItem.getItem().getItem())) {
-					BlockPos pos = new BlockPos(entityItem.position().subtract(0, -0.1d, 0)); //TODO Quick fix, find if there's a more performant fix than this
-					BlockState state = world.getBlockState(pos);
-					if (TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(state)) {
-						Random rand = new Random();
-						for (int i = 0; i < 2; i++) {
-							double vx = rand.nextGaussian() * 0.02D;
-							double vy = rand.nextGaussian() * 0.02D;
-							double vz = rand.nextGaussian() * 0.02D;
-
-							world.addParticle(ParticleTypes.EFFECT, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
-						}
-
-						if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(world, pos, entityItem, player)) {
-							TFAdvancements.MADE_TF_PORTAL.trigger((ServerPlayer) player);
-							return;
-						}
-					}
+				if (entityItem.getItem().is(ItemTagGenerator.PORTAL_ACTIVATOR)) {
+					qualified = entityItem;
+					break;
 				}
+			}
+
+			if (qualified == null) return;
+
+			if (!player.isCreative() && !player.isSpectator()) {
+				Advancement requirement = PlayerHelper.getAdvancement(player, TFConfig.getPortalLockingAdvancement());
+				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
+					player.displayClientMessage(PORTAL_UNWORTHY, true);
+
+					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
+						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
+						DisplayInfo info = requirement.getDisplay();
+						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? new MissingAdvancementToastPacket(new TranslatableComponent(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+
+						TFPortalBlock.playerNotifiedOfRequirement(player);
+					}
+
+					return; // Item qualifies, but the player doesn't
+				}
+			}
+
+			BlockPos pos = new BlockPos(qualified.position().subtract(0, -0.1d, 0)); //TODO Quick fix, find if there's a more performant fix than this
+			BlockState state = world.getBlockState(pos);
+			if (TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(state)) {
+				Random rand = new Random();
+				for (int i = 0; i < 2; i++) {
+					double vx = rand.nextGaussian() * 0.02D;
+					double vy = rand.nextGaussian() * 0.02D;
+					double vz = rand.nextGaussian() * 0.02D;
+
+					world.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
+				}
+
+				if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(world, pos, qualified, player))
+					TFAdvancements.MADE_TF_PORTAL.trigger(player);
 			}
 		}
 	}

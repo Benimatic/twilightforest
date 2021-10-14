@@ -924,7 +924,7 @@ public class TFEventListener {
 		playerData.putBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
 		tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
 
-		if (shouldBanishPlayer) TFPortalBlock.attemptSendPlayer(player, true, TFConfig.COMMON_CONFIG.DIMENSION.portalForNewPlayerSpawn.get()); // See ya hate to be ya
+		if (shouldBanishPlayer) TFPortalBlock.attemptSendEntity(player, true, TFConfig.COMMON_CONFIG.DIMENSION.portalForNewPlayerSpawn.get()); // See ya hate to be ya
 	}
 
 	// Advancement Trigger
