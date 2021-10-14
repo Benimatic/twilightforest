@@ -79,7 +79,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, BitSet bitset, Random rand, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
 		BlockState blockstate = access.getBlockState(pos);
 		BlockState blockstate1 = access.getBlockState(posUp.setWithOffset(pos, Direction.UP));
-		if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM)) {
+		if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM) || blockstate.is(Blocks.PODZOL) || blockstate.is(Blocks.DIRT_PATH)) {
 			isSurface.setTrue();
 		}
 
