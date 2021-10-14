@@ -146,6 +146,15 @@ public class TwilightForestMod {
 		} else {
 			LOGGER.warn("Skipping compatibility!");
 		}
+		
+		WoodType.register(TFBlocks.TWILIGHT_OAK);
+		WoodType.register(TFBlocks.CANOPY);
+		WoodType.register(TFBlocks.MANGROVE);
+		WoodType.register(TFBlocks.DARKWOOD);
+		WoodType.register(TFBlocks.TIMEWOOD);
+		WoodType.register(TFBlocks.TRANSFORMATION);
+		WoodType.register(TFBlocks.MINING);
+		WoodType.register(TFBlocks.SORTING);
 	}
 
 	@SubscribeEvent
@@ -292,14 +301,6 @@ public class TwilightForestMod {
 				}
 			});
 		});
-		WoodType.register(TFBlocks.TWILIGHT_OAK);
-		WoodType.register(TFBlocks.CANOPY);
-		WoodType.register(TFBlocks.MANGROVE);
-		WoodType.register(TFBlocks.DARKWOOD);
-		WoodType.register(TFBlocks.TIMEWOOD);
-		WoodType.register(TFBlocks.TRANSFORMATION);
-		WoodType.register(TFBlocks.MINING);
-		WoodType.register(TFBlocks.SORTING);
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {
