@@ -35,7 +35,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands) {
 		super(codec);
 		this.liquids = ImmutableSet.of(Fluids.WATER, Fluids.LAVA);
-		this.replaceableBlocks = ImmutableSet.of(Blocks.SAND, Blocks.GRAVEL, Blocks.DIRT, Blocks.ROOTED_DIRT, Blocks.COARSE_DIRT);
+		this.replaceableBlocks = ImmutableSet.of(Blocks.SAND, Blocks.GRAVEL);
 		this.isHighlands = isHighlands;
 	}
 
@@ -193,7 +193,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	//make our own list of replaceables since otherwise it breaks structures like the yeti cave
 	@Override
 	protected boolean canReplaceBlock(BlockState state, BlockState aboveState) {
-		return (this.replaceableBlocks.contains(state.getBlock()) || state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(TFBlocks.TROLLSTEINN.get())) && !aboveState.getFluidState().is(FluidTags.WATER);
+		return (this.replaceableBlocks.contains(state.getBlock()) || state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT) || state.is(TFBlocks.TROLLSTEINN.get())) && !aboveState.getFluidState().is(FluidTags.WATER);
 	}
 
 	private static boolean shouldSkip(double posX, double posY, double posZ, double minY) {
