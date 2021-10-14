@@ -398,6 +398,7 @@ public abstract class BiomeHelper {
 		biome.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.TFCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.PLANT_ROOTS);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.TORCH_BERRIES);
+		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.VANILLA_ROOTS);
 		BiomeDefaultFeatures.addDefaultOres(biome);
 	}
 
