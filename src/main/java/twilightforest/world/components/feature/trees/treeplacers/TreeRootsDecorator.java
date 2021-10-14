@@ -3,6 +3,7 @@ package twilightforest.world.components.feature.trees.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -86,7 +87,7 @@ public class TreeRootsDecorator extends TreeDecorator {
 
         if (this.hasSurfaceRoots) {
             for (int i = 0; i < numBranches; i++) {
-                buildRootExposed(worldReader, worldPlacer, random, startPos.below(), offset, i, this.length, this.surfaceBlock, this.rootBlock);
+                buildRootExposed(worldReader, worldPlacer, random, startPos, offset, i, this.length, this.surfaceBlock, this.rootBlock);
             }
         } else {
             for (int i = 0; i < numBranches; i++) {
@@ -102,8 +103,10 @@ public class TreeRootsDecorator extends TreeDecorator {
         BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(pos.below(), dest);
         boolean stillAboveGround = true;
         for (BlockPos coord : lineArray) {
-            if (stillAboveGround && FeatureLogic.hasEmptyNeighbor(worldReader, pos)) {
-                worldPlacer.accept(coord, airRoot.getState(random, coord));
+            if (stillAboveGround && FeatureLogic.hasEmptyNeighbor(worldReader, coord)) {
+                if (worldReader.isStateAtPosition(coord, FeatureLogic::canRootReplace)) {
+                    worldPlacer.accept(coord, airRoot.getState(random, coord));
+                } else if (worldReader.isStateAtPosition(coord, state -> !state.is(BlockTags.LOGS))) break;
             } else {
                 stillAboveGround = false;
                 if (FeatureLogic.canRootGrowIn(worldReader, coord)) {

@@ -1,6 +1,7 @@
 package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -60,7 +61,7 @@ public final class FeatureLogic {
                 && block != TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get()
                 && block != TFBlocks.MINOSHROOM_BOSS_SPAWNER.get()
                 && block != TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get()
-                && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT || state.getMaterial() == Material.STONE || state.getMaterial() == Material.WATER);
+                && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT || state.getMaterial() == Material.STONE || state.getMaterial().isReplaceable());
     }
 
     /**
