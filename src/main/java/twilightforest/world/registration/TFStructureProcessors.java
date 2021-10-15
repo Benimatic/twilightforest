@@ -15,6 +15,7 @@ import twilightforest.world.components.processors.NagastoneVariants;
  */
 public class TFStructureProcessors {
 	public static final StructureProcessorType<CobbleVariants> COBBLE_VARIANTS = registerProcessor("cobble_variants", CobbleVariants.CODEC);
+	public static final StructureProcessorType<SmoothStoneVariants> SMOOTH_STONE_VARIANTS = registerProcessor("smooth_stone_variants", SmoothStoneVariants.CODEC);
 	public static final StructureProcessorType<StoneBricksVariants> STONE_BRICK_VARIANTS = registerProcessor("stone_brick_variants", StoneBricksVariants.CODEC);
 	public static final StructureProcessorType<NagastoneVariants> NAGASTONE_VARIANTS = registerProcessor("nagastone_variants", NagastoneVariants.CODEC);
 

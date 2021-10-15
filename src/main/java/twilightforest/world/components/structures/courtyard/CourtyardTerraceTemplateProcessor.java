@@ -42,8 +42,8 @@ public final class CourtyardTerraceTemplateProcessor extends StructureProcessor 
         if (newState.getBlock() == Blocks.SANDSTONE_SLAB) {
             BlockState stateAt = world.getBlockState(newInfo.pos);
 
-            if (BLOCKS_REPLACE_TO_SLAB.contains(stateAt) && newState == Blocks.SANDSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE)) {
-                if (stateAt == Blocks.STONE_BRICK_SLAB.defaultBlockState() || stateAt == Blocks.MOSSY_STONE_BRICK_SLAB.defaultBlockState())
+            if (newState == Blocks.SANDSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE)) {
+                if (BLOCKS_REPLACE_TO_SLAB.contains(stateAt))
                     return new StructureTemplate.StructureBlockInfo(newInfo.pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
                 else if (stateAt.isAir())
                     return null;
