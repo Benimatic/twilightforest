@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureLogic;
+import twilightforest.util.VoxelBresenhamIterator;
 
 import java.util.Random;
 
@@ -75,8 +76,7 @@ public class TFGenWoodRoots extends Feature<NoneFeatureConfiguration> {
 		}
 
 		// if both the start and the end are in stone, put a root there
-		BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(pos, dest);
-		for (BlockPos coord : lineArray) {
+		for (BlockPos coord : new VoxelBresenhamIterator(pos, dest)) {
 			this.placeRootBlock(world, coord, rootBlock);
 		}
 

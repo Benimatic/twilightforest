@@ -44,7 +44,7 @@ public final class FeaturePlacers {
      * This takes all variables for setting Branch
      */
     public static void drawBresenhamBranch(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, Random random, BlockPos start, BlockPos end, BlockStateProvider config) {
-        for (BlockPos pixel : FeatureLogic.getBresenhamArrays(start, end)) {
+        for (BlockPos pixel : new VoxelBresenhamIterator(start, end)) {
             placeIfValidTreePos(world, trunkPlacer, random, pixel, config);
         }
     }
@@ -56,7 +56,7 @@ public final class FeaturePlacers {
         BlockPos dest = FeatureLogic.translate(start.below(b + 2), 5, 0.3 * b + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
-        for (BlockPos coord : FeatureLogic.getBresenhamArrays(start.below(), dest)) {
+        for (BlockPos coord : new VoxelBresenhamIterator(start.below(), dest)) {
             if (!placeIfValidRootPos(world, placer, rand, coord, config)) return;
         }
     }
@@ -66,7 +66,7 @@ public final class FeaturePlacers {
      * This just takes a BlockState, used to set Trunk
      */
     public static void drawBresenhamTree(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos from, BlockPos to, BlockStateProvider config, Random random) {
-        for (BlockPos pixel : FeatureLogic.getBresenhamArrays(from, to)) {
+        for (BlockPos pixel : new VoxelBresenhamIterator(from, to)) {
             placeProvidedBlock(world, placer, predicate, pixel, config, random);
         }
     }

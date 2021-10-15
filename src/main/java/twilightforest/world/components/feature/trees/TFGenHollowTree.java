@@ -12,6 +12,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
+import twilightforest.util.VoxelBresenhamIterator;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
@@ -330,9 +331,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
-		BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(src, dest);
 		boolean stillAboveGround = true;
-		for (BlockPos coord : lineArray) {
+		for (BlockPos coord : new VoxelBresenhamIterator(src, dest)) {
 			if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {
 				world.setBlock(coord, config.branchProvider.getState(random, coord), 3);
 				world.setBlock(coord.below(), config.branchProvider.getState(random, coord.below()), 3);

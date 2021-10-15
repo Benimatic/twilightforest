@@ -29,6 +29,7 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.FeatureLogic;
+import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -140,8 +141,6 @@ public class OreMagnetItem extends Item {
 		initOre2BlockMap();
 
 		int blocksMoved = 0;
-		// get blocks in line from src to dest
-		BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(usePos, destPos);
 
 		// find some ore?
 		BlockState attactedOreBlock = Blocks.AIR.defaultBlockState();
@@ -149,7 +148,7 @@ public class OreMagnetItem extends Item {
 		BlockPos foundPos = null;
         BlockPos basePos = null;
 
-		for (BlockPos coord : lineArray) {
+		for (BlockPos coord : new VoxelBresenhamIterator(usePos, destPos)) {
 			BlockState searchState = world.getBlockState(coord);
 
 			// keep track of where the dirt/stone we first find is.

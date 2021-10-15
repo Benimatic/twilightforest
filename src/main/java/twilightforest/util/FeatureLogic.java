@@ -84,14 +84,15 @@ public final class FeatureLogic {
     /**
      * Get an array of values that represent a line from point A to point B
      */
+    @Deprecated // Use VoxelBresenhamIterator directly instead
     public static BlockPos[] getBresenhamArrays(BlockPos src, BlockPos dest) {
         return getBresenhamArrays(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
     }
 
     /**
      * Get an array of values that represent a line from point A to point B
-     * todo 1.9 lazify this into an iterable?
      */
+    @Deprecated // Use VoxelBresenhamIterator directly instead
     public static BlockPos[] getBresenhamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
         int i, dx, dy, dz, absDx, absDy, absDz, x_inc, y_inc, z_inc, err_1, err_2, doubleAbsDx, doubleAbsDy, doubleAbsDz;
 

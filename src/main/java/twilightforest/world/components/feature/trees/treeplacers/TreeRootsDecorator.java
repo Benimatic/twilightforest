@@ -12,6 +12,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.util.FeatureLogic;
+import twilightforest.util.VoxelBresenhamIterator;
 import twilightforest.world.registration.TwilightFeatures;
 
 import java.util.List;
@@ -100,9 +101,8 @@ public class TreeRootsDecorator extends TreeDecorator {
         BlockPos dest = FeatureLogic.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
-        BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(pos.below(), dest);
         boolean stillAboveGround = true;
-        for (BlockPos coord : lineArray) {
+        for (BlockPos coord : new VoxelBresenhamIterator(pos.below(), dest)) {
             if (stillAboveGround && FeatureLogic.hasEmptyNeighbor(worldReader, coord)) {
                 if (worldReader.isStateAtPosition(coord, FeatureLogic::canRootReplace)) {
                     worldPlacer.accept(coord, airRoot.getState(random, coord));
@@ -121,8 +121,7 @@ public class TreeRootsDecorator extends TreeDecorator {
         BlockPos dest = FeatureLogic.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
 
         // go through block by block and stop drawing when we head too far into open air
-        BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(pos.below(), dest);
-        for (BlockPos coord : lineArray) {
+        for (BlockPos coord : new VoxelBresenhamIterator(pos.below(), dest)) {
             if (FeatureLogic.canRootGrowIn(world, coord)) {
                 worldPlacer.accept(coord, dirtRoot.getState(random, coord));
             } else break;
