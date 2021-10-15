@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
@@ -24,16 +25,11 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.components.processors.RandomizedTemplateProcessor;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
@@ -159,7 +155,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		Vec3i size = transformedSize.offset(-1, 0, -1);
 		Vec3i graveSize = transformedGraveSize.offset(-1, 0, -1);
 
-		base.placeInWorld(world, placementPos, placementPos, placementsettings.addProcessor(new WebTemplateProcessor(0.2F)), random, flags);
+		base.placeInWorld(world, placementPos, placementPos, placementsettings.addProcessor(new WebTemplateProcessor()), random, flags);
 		List<StructureTemplate.StructureBlockInfo> data = new ArrayList<>(base.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 
 		BlockPos start = startPos.offset(1, 1, 0);
@@ -248,12 +244,11 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		}
 	}
 
-	public static class WebTemplateProcessor extends RandomizedTemplateProcessor {
+	public static class WebTemplateProcessor extends StructureProcessor {
+		public static final WebTemplateProcessor INSTANCE = new WebTemplateProcessor();
+		public static final Codec<WebTemplateProcessor> CODEC = Codec.unit(() -> INSTANCE);
 
-		public static final Codec<WebTemplateProcessor> codecWebProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(WebTemplateProcessor::new, (obj) -> obj.integrity).codec();
-
-		public WebTemplateProcessor(float integrity) {
-			super(integrity);
+		private WebTemplateProcessor() {
 		}
 
 		@Override
