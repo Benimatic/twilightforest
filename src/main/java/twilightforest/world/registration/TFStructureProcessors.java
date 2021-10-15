@@ -21,6 +21,7 @@ public class TFStructureProcessors {
 	public static final StructureProcessorType<CobblePlankSwizzler> COBBLE_PLANK_SWIZZLER = registerProcessor("cobble_plank_swizzler", CobblePlankSwizzler.CODEC);
 	public static final StructureProcessorType<SmartGrassProcessor> SMART_GRASS = registerProcessor("smart_grass", SmartGrassProcessor.CODEC);
 	public static final StructureProcessorType<BoxCuttingProcessor> BOX_CUTTING_PROCESSOR = registerProcessor("box_cutting", BoxCuttingProcessor.CODEC);
+	public static final StructureProcessorType<TargetedRotProcessor> TARGETED_ROT = registerProcessor("targeted_rot", TargetedRotProcessor.CODEC);
 
 	public static final StructureProcessorType<GraveyardFeature.WebTemplateProcessor> WEB = registerProcessor("web", GraveyardFeature.WebTemplateProcessor.CODEC);
 	public static final StructureProcessorType<CourtyardTerraceTemplateProcessor> COURTYARD_TERRACE = registerProcessor("courtyard_terrace", CourtyardTerraceTemplateProcessor.CODEC);
