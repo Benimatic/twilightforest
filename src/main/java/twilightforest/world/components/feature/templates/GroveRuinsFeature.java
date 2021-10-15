@@ -7,7 +7,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureMana
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.processors.StoneBricksTemplateProcessor;
+import twilightforest.world.components.processors.StoneBricksVariants;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -28,6 +28,6 @@ public class GroveRuinsFeature extends TemplateFeature<NoneFeatureConfiguration>
 
     @Override
     protected void modifySettings(StructurePlaceSettings settings, Random random) {
-        settings.addProcessor(StoneBricksTemplateProcessor.INSTANCE);
+        settings.addProcessor(StoneBricksVariants.INSTANCE);
     }
 }

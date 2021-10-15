@@ -13,17 +13,19 @@ import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.processors.NagastoneVariants;
+import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.Random;
 
 public class CourtyardTerraceStatue extends TwilightTemplateStructurePiece {
     public CourtyardTerraceStatue(ServerLevel level, CompoundTag nbt) {
-        super(NagaCourtyardPieces.TFNCSt, nbt, level, readSettings(nbt).addProcessor(CourtyardMain.TERRACE_PROCESSOR));
+        super(NagaCourtyardPieces.TFNCSt, nbt, level, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
     }
 
     public CourtyardTerraceStatue(int i, int x, int y, int z, Rotation rotation, StructureManager structureManager) {
-        super(NagaCourtyardPieces.TFNCSt, i, structureManager, TwilightForestMod.prefix("terrace_statue/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y + 3, z));
+        super(NagaCourtyardPieces.TFNCSt, i, structureManager, TwilightForestMod.prefix("terrace_statue/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
     }
 
     @Override

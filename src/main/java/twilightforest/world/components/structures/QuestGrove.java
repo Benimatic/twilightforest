@@ -19,18 +19,18 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.FeaturePlacers;
-import twilightforest.world.components.processors.StoneBricksTemplateProcessor;
+import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class QuestGrove extends TwilightTemplateStructurePiece {
 	public QuestGrove(ServerLevel serverLevel, CompoundTag compoundTag) {
-		super(TFFeature.TFQuestGrove, compoundTag, serverLevel, readSettings(compoundTag).addProcessor(StoneBricksTemplateProcessor.INSTANCE));
+		super(TFFeature.TFQuestGrove, compoundTag, serverLevel, readSettings(compoundTag).addProcessor(StoneBricksVariants.INSTANCE));
 	}
 
 	public QuestGrove(StructureManager structureManager, BlockPos templatePosition) {
-		super(TFFeature.TFQuestGrove, 0, structureManager, TwilightForestMod.prefix("quest_grove"), makeSettings(Rotation.NONE).addProcessor(StoneBricksTemplateProcessor.INSTANCE), templatePosition);
+		super(TFFeature.TFQuestGrove, 0, structureManager, TwilightForestMod.prefix("quest_grove"), makeSettings(Rotation.NONE).addProcessor(StoneBricksVariants.INSTANCE), templatePosition);
 	}
 
 	@Override

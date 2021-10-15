@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.Random;
@@ -23,7 +24,7 @@ public class CourtyardPathPiece extends TwilightTemplateStructurePiece {
     }
 
     public CourtyardPathPiece(int i, int x, int y, int z, StructureManager structureManager) {
-        super(NagaCourtyardPieces.TFNCPa, i, structureManager, TwilightForestMod.prefix("courtyard/pathway"), makeSettings(Rotation.NONE).addProcessor(CourtyardMain.WALL_PROCESSOR), new BlockPos(x, y + 1, z));
+        super(NagaCourtyardPieces.TFNCPa, i, structureManager, TwilightForestMod.prefix("courtyard/pathway"), makeSettings(Rotation.NONE).addProcessor(NagastoneVariants.INSTANCE), new BlockPos(x, y + 1, z));
     }
 
     @Override

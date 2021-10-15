@@ -27,8 +27,6 @@ public class CourtyardMain extends StructureMazeGenerator {
 	static final float WALL_DECAY = 0.1f;
 	static final float WALL_INTEGRITY = 0.95f;
 
-	static final CourtyardTerraceTemplateProcessor TERRACE_PROCESSOR = new CourtyardTerraceTemplateProcessor(0.0F);
-	static final CourtyardWallTemplateProcessor WALL_PROCESSOR = new CourtyardWallTemplateProcessor(0.0F);
 	static final BlockRotProcessor WALL_INTEGRITY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_INTEGRITY);
 	static final BlockRotProcessor WALL_DECAY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_DECAY);
 

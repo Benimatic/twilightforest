@@ -20,6 +20,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.processors.CobblePlankSwizzler;
+import twilightforest.world.components.processors.CobbleVariants;
+import twilightforest.world.components.processors.StoneBricksVariants;
 
 import java.util.Random;
 
@@ -35,7 +37,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
     @Override
     protected void modifySettings(StructurePlaceSettings settings, Random random) {
-        settings.addProcessor(new CobblePlankSwizzler(0.0F, random));
+        settings.addProcessor(new CobblePlankSwizzler(random)).addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
             placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new CobblePlankSwizzler(0.0F, random)), random, 20);
+            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new CobblePlankSwizzler(random)).addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), random, 20);
 
             for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
                 if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)
