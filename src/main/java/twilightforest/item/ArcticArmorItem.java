@@ -117,25 +117,6 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		displayCompound.putBoolean("hasColor", true);
 	}
 
-	//TODO do we even need this? CauldronInteraction checks for DyeableLeatherItem
-	/*@Override
-	public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
-
-		if (this.hasCustomColor(itemstack)) {
-			BlockState blockAt = context.getLevel().getBlockState(context.getClickedPos());
-
-			if (blockAt.getBlock() instanceof LayeredCauldronBlock && blockAt.getValue(LayeredCauldronBlock.LEVEL) > 0) {
-				clearColor(itemstack);
-				context.getPlayer().awardStat(Stats.CLEAN_ARMOR);
-
-				LayeredCauldronBlock.lowerFillLevel(blockAt, context.getLevel(), context.getClickedPos());
-				return InteractionResult.SUCCESS;
-			}
-		}
-
-		return InteractionResult.PASS;
-	}*/
-
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
