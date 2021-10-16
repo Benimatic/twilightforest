@@ -253,19 +253,6 @@ public class TFEventListener {
 			}
 		}
 
-		// enderbow teleports
-
-		// Smashing!
-		if (damageSource != DamageSource.FALL && damageSource != DamageSource.DROWN && damageSource != DamageSource.SWEET_BERRY_BUSH) {
-			ItemStack stack = living.getItemBySlot(EquipmentSlot.HEAD);
-			Block block = Block.byItem(stack.getItem());
-			if (block instanceof CritterBlock poorBug) {
-				living.setItemSlot(EquipmentSlot.HEAD, poorBug.getSquishResult());
-				living.level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.BUG_SQUISH, living.getSoundSource(), 1, 1);
-				if(living instanceof Player player && player instanceof ServerPlayer) player.awardStat(TFStats.BUGS_SQUISHED);
-			}
-		}
-
 		// lets not make the player take suffocation damage if riding something
 		if (living instanceof Player && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
 			event.setCanceled(true);
