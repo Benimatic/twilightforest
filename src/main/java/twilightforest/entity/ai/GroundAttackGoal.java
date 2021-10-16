@@ -1,13 +1,13 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.phys.AABB;
+import twilightforest.TFSounds;
 import twilightforest.entity.boss.Minoshroom;
 
 import java.util.EnumSet;
@@ -18,7 +18,7 @@ public class GroundAttackGoal extends Goal {
 	private static final double MAX_RANGE_SQ = 48.0D;
 	private static final int FREQ = 24;
 
-	private Minoshroom attacker;
+	private final Minoshroom attacker;
 	private LivingEntity attackTarget;
 
 	private int attackTick;
@@ -79,7 +79,7 @@ public class GroundAttackGoal extends Goal {
 
 		if (this.attackTick-- <= 0) {
 			this.attacker.setGroundAttackCharge(false);
-			this.attacker.playSound(SoundEvents.GENERIC_EXPLODE, 2, 1F + this.attacker.getRandom().nextFloat() * 0.1F);
+			this.attacker.playSound(TFSounds.MINOSHROOM_SLAM, 2, 1F + this.attacker.getRandom().nextFloat() * 0.1F);
 
 			AABB selection = new AABB(this.attacker.blockPosition().getX() - 7.5F, this.attacker.blockPosition().getY(), this.attacker.blockPosition().getZ() - 7.5F, this.attacker.blockPosition().getX() + 7.5F, this.attacker.blockPosition().getY() + 3.0F, this.attacker.blockPosition().getZ() + 7.5F);
 

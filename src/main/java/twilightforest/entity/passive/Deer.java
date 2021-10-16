@@ -49,7 +49,7 @@ public class Deer extends Animal {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DEER_IDLE;
+		return TFSounds.DEER_AMBIENT;
 	}
 
 	@Override

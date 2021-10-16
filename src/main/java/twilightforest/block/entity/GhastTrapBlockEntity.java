@@ -1,23 +1,22 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Ghast;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.TFSounds;
 import twilightforest.block.GhastTrapBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.monster.CarminiteGhastling;
-import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.boss.UrGhast;
+import twilightforest.entity.monster.CarminiteGhastguard;
+import twilightforest.entity.monster.CarminiteGhastling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,19 +62,19 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 			if (chargeLevel >= 1 && te.counter % 10 == 0) {
 				TFBlocks.GHAST_TRAP.get().sparkle(level, pos);
-				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			}
 			if (chargeLevel >= 2) {
 				level.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.00, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
 				if (te.counter % 10 == 0) {
-					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.2F, 0.8F, false);
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT, SoundSource.BLOCKS, 1.2F, 0.8F, false);
 				}
 			}
 			if (chargeLevel >= 3) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.05, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
 				TFBlocks.GHAST_TRAP.get().sparkle(level, pos);
 				if (te.counter % 5 == 0) {
-					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.5F, 2F, false);
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT, SoundSource.BLOCKS, 1.5F, 2F, false);
 				}
 			}
 		}
@@ -150,11 +149,11 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 			// appropriate sound
 			if (te.counter < 30) {
-				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_WARMUP, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_WARMUP, SoundSource.BLOCKS, 1.0F, 4.0F, false);
 			} else if (te.counter < 80) {
-				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_ON, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_ON, SoundSource.BLOCKS, 1.0F, 4.0F, false);
 			} else {
-				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.URGHAST_TRAP_SPINDOWN, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_SPINDOWN, SoundSource.BLOCKS, 1.0F, 4.0F, false);
 			}
 		} else {
 			// trap nearby ghasts
@@ -164,9 +163,9 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 			for (Ghast ghast : nearbyGhasts) {
 				//stop boss tantrum
-				if (ghast instanceof UrGhast) {
-					((UrGhast) ghast).setInTantrum(false);
-					((UrGhast) ghast).noPhysics = true; // turn this on so we can pull it in close
+				if (ghast instanceof UrGhast urghast) {
+					urghast.setInTantrum(false);
+					ghast.noPhysics = true; // turn this on so we can pull it in close
 
 					// move boss to this point
 					double mx = (ghast.getX() - pos.getX() - 0.5) * -0.1;
@@ -176,7 +175,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 					if (te.rand.nextInt(10) == 0) {
 						ghast.hurt(DamageSource.GENERIC, 7);
-						((UrGhast) ghast).resetDamageUntilNextPhase();
+						urghast.resetDamageUntilNextPhase();
 					}
 
 				} else {

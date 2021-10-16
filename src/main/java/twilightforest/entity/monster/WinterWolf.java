@@ -116,7 +116,7 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.WINTER_WOLF_IDLE;
+		return TFSounds.WINTER_WOLF_AMBIENT;
 	}
 
 	@Override

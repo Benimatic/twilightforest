@@ -59,6 +59,16 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	      return TFSounds.GHASTLING_DEATH;
 	   }
 
+	@Override
+	public SoundEvent getFireSound() {
+		return TFSounds.GHASTLING_SHOOT;
+	}
+
+	@Override
+	public SoundEvent getWarnSound() {
+		return TFSounds.GHASTLING_WARN;
+	}
+
 	// Loosely based on EntityEnderman.shouldAttackPlayer
 	@Override
 	protected boolean shouldAttack(LivingEntity living) {

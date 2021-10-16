@@ -76,7 +76,7 @@ public class HostileWolf extends Wolf implements Enemy {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HOSTILE_WOLF_IDLE;
+		return TFSounds.HOSTILE_WOLF_AMBIENT;
 	}
 
 	@Override

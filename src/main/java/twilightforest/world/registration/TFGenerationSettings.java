@@ -1,33 +1,33 @@
 package twilightforest.world.registration;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.util.Mth;
-import net.minecraft.core.SectionPos;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFConfig;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;
+import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.util.PlayerHelper;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.HashMap;
@@ -67,7 +67,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		registerBiomeProgressionEnforcement(BiomeKeys.FINAL_PLATEAU, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 1.5F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
 				// TODO: change this when there's a book for the castle
 				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);
 			}
@@ -87,7 +87,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		registerBiomeProgressionEnforcement(BiomeKeys.HIGHLANDS, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 0.5F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
 				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);
 			}
 		});
@@ -111,7 +111,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		registerBiomeProgressionEnforcement(BiomeKeys.THORNLANDS, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 1.0F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
 
 				// hint monster?
 				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);

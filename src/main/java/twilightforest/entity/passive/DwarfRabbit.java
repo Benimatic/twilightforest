@@ -159,6 +159,6 @@ public class DwarfRabbit extends Animal {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DWARF_IDLE;
+		return TFSounds.DWARF_AMBIENT;
 	}
 }

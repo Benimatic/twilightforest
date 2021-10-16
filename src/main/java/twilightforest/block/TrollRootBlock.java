@@ -25,6 +25,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFStats;
 
@@ -47,7 +48,7 @@ public class TrollRootBlock extends Block {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if(state.getBlock() == TFBlocks.TROLLBER.get()) {
 			level.setBlock(pos, TFBlocks.TROLLVIDR.get().defaultBlockState(), 2);
-			level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
 			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.TORCHBERRIES.get()));
 			level.addFreshEntity(torchberries);
 			if(player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED);

@@ -1,5 +1,15 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,24 +22,13 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.LargeFireball;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.Difficulty;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.entity.boss.UrGhast;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.EnumSet;
 import java.util.Random;
@@ -213,13 +212,13 @@ public class CarminiteGhastguard extends Ghast {
 				this.parentEntity.getLookControl().setLookAt(entitylivingbase, 10F, this.parentEntity.getMaxHeadXRot());
 
 				if (this.attackTimer == 10) {
-					parentEntity.playSound(SoundEvents.GHAST_WARN, 10.0F, parentEntity.getVoicePitch());
+					parentEntity.playSound(parentEntity.getWarnSound(), 10.0F, parentEntity.getVoicePitch());
 				}
 
 				if (this.attackTimer == 20) {
 					if (this.parentEntity.shouldAttack(entitylivingbase)) {
 						// TF - call custom method
-						parentEntity.playSound(SoundEvents.GHAST_SHOOT, 10.0F, parentEntity.getVoicePitch());
+						parentEntity.playSound(parentEntity.getFireSound(), 10.0F, parentEntity.getVoicePitch());
 						this.parentEntity.spitFireball();
 						this.prevAttackTimer = attackTimer;
 					}
@@ -238,6 +237,14 @@ public class CarminiteGhastguard extends Ghast {
 		return Ghast.createAttributes()
 				.add(Attributes.MAX_HEALTH, 30.0D)
 				.add(Attributes.FOLLOW_RANGE, 64.0D);
+	}
+
+	public SoundEvent getFireSound() {
+		return TFSounds.GHASTGUARD_SHOOT;
+	}
+
+	public SoundEvent getWarnSound() {
+		return TFSounds.GHASTGUARD_WARN;
 	}
 
 	@Override

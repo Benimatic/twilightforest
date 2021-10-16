@@ -64,7 +64,7 @@ public class MistWolf extends HostileWolf {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MISTWOLF_IDLE;
+		return TFSounds.MISTWOLF_AMBIENT;
 	}
 
 	@Override

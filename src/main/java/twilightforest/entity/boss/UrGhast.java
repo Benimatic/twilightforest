@@ -217,6 +217,16 @@ public class UrGhast extends CarminiteGhastguard {
 	   }
 
 	@Override
+	public SoundEvent getFireSound() {
+		return TFSounds.URGHAST_SHOOT;
+	}
+
+	@Override
+	public SoundEvent getWarnSound() {
+		return TFSounds.URGHAST_WARN;
+	}
+
+	@Override
 	public void aiStep() {
 		super.aiStep();
 
