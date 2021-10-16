@@ -18,6 +18,7 @@ public class RenderLayerRegistration {
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.MINING_LEAVES.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.SORTING_LEAVES.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.TIME_DOOR.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(TFBlocks.TRANSFORMATION_DOOR.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.SORTING_DOOR.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.TIME_TRAPDOOR.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.SORTING_TRAPDOOR.get(), cutout);
