@@ -28,7 +28,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Kobold;
-import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.world.components.structures.*;

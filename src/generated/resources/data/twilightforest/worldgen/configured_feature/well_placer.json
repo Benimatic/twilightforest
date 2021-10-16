@@ -19,7 +19,8 @@
             "decorator": {
               "config": {
                 "occupies_surface": true,
-                "occupies_underground": true
+                "occupies_underground": true,
+                "additional_clearance": 0
               },
               "type": "twilightforest:no_structure"
             }
@@ -37,7 +38,7 @@
     },
     "decorator": {
       "config": {
-        "chance": 80
+        "chance": 1
       },
       "type": "minecraft:chance"
     }

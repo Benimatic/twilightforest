@@ -31,7 +31,7 @@ public class OutOfStructureFilter extends FeatureDecorator<StructureClearingConf
 
 		// Turn Feature Center into Feature Offset
 		featurePos.set(Math.abs(featurePos.getX() - blockPos.getX()), 0, Math.abs(featurePos.getZ() - blockPos.getZ()));
-		int size = feature.size * 16;
+		int size = feature.size * 16 + config.additionalClearance();
 
 		return featurePos.getX() < size && featurePos.getZ() < size ? Stream.empty() : Stream.of(blockPos);
 	}

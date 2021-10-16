@@ -52,11 +52,11 @@ public final class TwilightFeatures {
     public static final FeatureDecorator<ChunkBlanketingDecorator.ChunkBlanketingConfig> PLACEMENT_CHUNK_BLANKETING = new ChunkBlanketingDecorator(ChunkBlanketingDecorator.ChunkBlanketingConfig.CODEC);
 
     // Use for aboveground-only features like trees and other medium-to-large features
-    public static final ConfiguredDecorator<?> OCCUPIES_SURFACE_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(true, false));
+    public static final ConfiguredDecorator<?> OCCUPIES_SURFACE_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(true, false, 0));
     // Use for underground-only features like Torchberries or roots
-    public static final ConfiguredDecorator<?> OCCUPIES_UNDERGROUND_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(false, true));
+    public static final ConfiguredDecorator<?> OCCUPIES_UNDERGROUND_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(false, true, 0));
     // Use for features that decorate both ways, like Wells and Basements
-    public static final ConfiguredDecorator<?> OCCUPIES_STRUCTURE_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(true, true));
+    public static final ConfiguredDecorator<?> OCCUPIES_STRUCTURE_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(true, true, 0));
     public static final ConfiguredDecorator<?> CONFIGURED_CHUNK_CENTERER = CHUNK_CENTERER.configured(NoneDecoratorConfiguration.INSTANCE);
     public static final ConfiguredDecorator<?> CONFIGURED_THORNLANDS_BLANKETING = PLACEMENT_CHUNK_BLANKETING.configured(new ChunkBlanketingDecorator.ChunkBlanketingConfig(0.7f, Heightmap.Types.OCEAN_FLOOR_WG, Optional.of(TwilightForestMod.prefix("thornlands"))));
 
