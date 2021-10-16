@@ -162,6 +162,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			squish.spawnAtLocation(squish.getItem());
 			if(entityIn instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
 				player.awardStat(TFStats.BUGS_SQUISHED);
+				TFAdvancements.KILL_BUG.trigger(player, state);
 			}
 		}
 	}

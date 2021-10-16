@@ -21,7 +21,11 @@
   },
   "criteria": {
     "drink_4_harming": {
-      "trigger": "minecraft:impossible"
+      "trigger": "twilightforest:drink_from_flask",
+      "conditions": {
+        "doses": 4,
+        "potion": "minecraft:strong_harming"
+      }
     }
   },
   "requirements": [
