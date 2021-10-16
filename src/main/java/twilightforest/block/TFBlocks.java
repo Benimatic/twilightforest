@@ -140,7 +140,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> AURORA_BLOCK = BLOCKS.register("aurora_block", () -> new AuroraBrickBlock(BlockBehaviour.Properties.of(Material.ICE_SOLID).strength(10.0F, 10.0F)));
 	public static final RegistryObject<RotatedPillarBlock> AURORA_PILLAR = BLOCKS.register("aurora_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.ICE_SOLID).requiresCorrectToolForDrops().strength(2.0F, 10.0F)));
 	public static final RegistryObject<Block> AURORA_SLAB = BLOCKS.register("aurora_slab", () -> new SlabBlock(BlockBehaviour.Properties.of(Material.ICE_SOLID).requiresCorrectToolForDrops().strength(2.0F, 10.0F)));
-	public static final RegistryObject<Block> AURORALIZED_GLASS = BLOCKS.register("auroralized_glass", () -> new AuroralizedGlassBlock(BlockBehaviour.Properties.of(Material.ICE).noOcclusion()));
+	public static final RegistryObject<Block> AURORALIZED_GLASS = BLOCKS.register("auroralized_glass", () -> new AuroralizedGlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion()));
 
 	//highlands/thornlands
 	public static final RegistryObject<Block> BROWN_THORNS = BLOCKS.register("brown_thorns", () -> new ThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(50.0F, 2000.0F).sound(SoundType.WOOD).noDrops()));
