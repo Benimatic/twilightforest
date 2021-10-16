@@ -262,6 +262,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
 		simpleBlock(TFBlocks.LIVEROOT_BLOCK.get());
+		simpleBlock(TFBlocks.MANGROVE_ROOT.get());
 
 		ModelFile glowing = models().withExistingParent(TFBlocks.UNCRAFTING_TABLE.getId().getPath() + "_glowing", prefix("block/util/cube_bottom_double_top_and_sides"))
 				.texture("top", prefix("block/uncrafting_top"))

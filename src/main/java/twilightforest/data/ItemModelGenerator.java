@@ -143,6 +143,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.HEDGE.get());
 		toBlock(TFBlocks.ROOT_BLOCK.get());
 		toBlock(TFBlocks.LIVEROOT_BLOCK.get());
+		toBlock(TFBlocks.MANGROVE_ROOT.get());
 		toBlock(TFBlocks.UNCRAFTING_TABLE.get());
 		toBlockModel(TFBlocks.NAGA_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
 		toBlockModel(TFBlocks.LICH_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));

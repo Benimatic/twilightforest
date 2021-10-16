@@ -139,6 +139,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropWhenSilkTouch(TFBlocks.HEDGE.get());
 		add(TFBlocks.ROOT_BLOCK.get(), createSingleItemTableWithSilkTouch(TFBlocks.ROOT_BLOCK.get(), Items.STICK, UniformGenerator.between(3, 5)));
 		add(TFBlocks.LIVEROOT_BLOCK.get(), createSilkTouchDispatchTable(TFBlocks.LIVEROOT_BLOCK.get(), applyExplosionCondition(TFBlocks.LIVEROOT_BLOCK.get(), LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))));
+		add(TFBlocks.MANGROVE_ROOT.get(), createSingleItemTableWithSilkTouch(TFBlocks.MANGROVE_ROOT.get(), Items.STICK, UniformGenerator.between(3, 5)));
 		dropSelf(TFBlocks.UNCRAFTING_TABLE.get());
 		dropSelf(TFBlocks.FIREFLY_JAR.get());
 		add(TFBlocks.FIREFLY_SPAWNER.get(), particleSpawner());

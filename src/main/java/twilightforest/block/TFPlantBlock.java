@@ -101,7 +101,8 @@ public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 		} else {
 			return (state.getBlock() == TFBlocks.ROOT_STRAND.get()
 					|| state.is(TFBlocks.ROOT_BLOCK.get())
-					|| state.is(TFBlocks.LIVEROOT_BLOCK.get()));
+					|| state.is(TFBlocks.LIVEROOT_BLOCK.get())
+					|| state.is(TFBlocks.MANGROVE_ROOT.get()));
 		}
 	}
 

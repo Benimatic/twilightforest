@@ -1735,6 +1735,18 @@
         ]
       }
     },
+    "mangrove_root": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_root"
+            ]
+          }
+        ]
+      }
+    },
     "twilight_oak_banister": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -2273,6 +2285,9 @@
     ],
     [
       "fallen_leaves"
+    ],
+    [
+      "mangrove_root"
     ],
     [
       "twilight_oak_banister"

@@ -304,6 +304,8 @@ public class TFBlocks {
 	public static final RegistryObject<RotatedPillarBlock> MINING_WOOD = BLOCKS.register("mining_wood", () -> new TFLogBlock(logProperties(MaterialColor.SAND).strength(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<RotatedPillarBlock> SORTING_WOOD = BLOCKS.register("sorting_wood", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
 
+	public static final RegistryObject<Block> MANGROVE_ROOT = BLOCKS.register("mangrove_root", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0F).sound(SoundType.WOOD)));
+
 	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TWILIGHT_OAK_WOOD = BLOCKS.register("stripped_twilight_oak_wood", () -> new TFLogBlock(logProperties(MaterialColor.WOOD, MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<RotatedPillarBlock> STRIPPED_CANOPY_WOOD = BLOCKS.register("stripped_canopy_wood", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = BLOCKS.register("stripped_mangrove_wood", () -> new TFLogBlock(logProperties(MaterialColor.DIRT, MaterialColor.DIRT).strength(2.0F).sound(SoundType.WOOD)));

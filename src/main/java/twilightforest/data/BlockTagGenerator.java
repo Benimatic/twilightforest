@@ -359,6 +359,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.HEDGE.get(),
                 TFBlocks.ROOT_BLOCK.get(),
                 TFBlocks.LIVEROOT_BLOCK.get(),
+                TFBlocks.MANGROVE_ROOT.get(),
                 TFBlocks.UNCRAFTING_TABLE.get(),
                 TFBlocks.ENCASED_SMOKER.get(),
                 TFBlocks.ENCASED_FIRE_JET.get(),

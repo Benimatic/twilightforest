@@ -218,6 +218,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.HEDGE));
 		r.register(blockItem(TFBlocks.ROOT_BLOCK));
 		r.register(blockItem(TFBlocks.LIVEROOT_BLOCK));
+		r.register(blockItem(TFBlocks.MANGROVE_ROOT));
 
 		r.register(blockItem(TFBlocks.TWILIGHT_OAK_LEAVES));
 		r.register(blockItem(TFBlocks.CANOPY_LEAVES));
