@@ -95,10 +95,6 @@ public class Yeti extends Monster implements IHostileMount {
 		// look at things in our jaws
 		if (!this.getPassengers().isEmpty()) {
 			this.getLookControl().setLookAt(getPassengers().get(0), 100F, 100F);
-
-			// push out of user in wall
-			Vec3 riderPos = this.getRiderPosition(getPassengers().get(0));
-			this.moveTowardsClosestSpace(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
 

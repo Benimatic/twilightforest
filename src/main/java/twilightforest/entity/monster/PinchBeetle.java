@@ -70,10 +70,6 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 		if (!this.getPassengers().isEmpty()) {
 			this.getLookControl().setLookAt(getPassengers().get(0), 100F, 100F);
-
-			// push out of user in wall
-			Vec3 riderPos = this.getRiderPosition();
-			this.moveTowardsClosestSpace(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
 
