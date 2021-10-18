@@ -116,20 +116,18 @@ public class SeekerArrow extends TFArrow {
 			List<LivingEntity> entityList = this.level.getEntitiesOfClass(LivingEntity.class, targetBB);
 			List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).collect(Collectors.toList());
 
-			if(!monsters.isEmpty()) {
+			if(!monsters.isEmpty() && monsters.get(0).hasLineOfSight(this)) {
 				setTarget(monsters.get(0));
 				return;
 			}
 
 			for (LivingEntity living : entityList) {
 
-				if (living instanceof Player) {
-					continue;
-				}
+				if(!living.hasLineOfSight(this)) continue;
 
-				if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) {
-					continue;
-				}
+				if (living instanceof Player) continue;
+
+				if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) continue;
 
 				Vec3 motionVec = getMotionVec().normalize();
 				Vec3 targetVec = getVectorToTarget(living).normalize();
