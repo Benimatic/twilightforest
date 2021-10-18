@@ -18,6 +18,7 @@ import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SeekerArrow extends TFArrow {
 
@@ -112,28 +113,21 @@ public class SeekerArrow extends TFArrow {
 			double closestDot = -1.0;
 			Entity closestTarget = null;
 
-			List<Monster> monsters = this.level.getEntitiesOfClass(Monster.class, targetBB);
+			List<LivingEntity> entityList = this.level.getEntitiesOfClass(LivingEntity.class, targetBB);
+			List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).collect(Collectors.toList());
 
-			for (LivingEntity living : this.level.getEntitiesOfClass(LivingEntity.class, targetBB)) {
+			if(!monsters.isEmpty()) {
+				setTarget(monsters.get(0));
+				return;
+			}
 
-				if (!monsters.isEmpty()) {
-					for (Monster targets : monsters) {
-						Vec3 motionVec = getMotionVec().normalize();
-						Vec3 targetVec = getVectorToTarget(living).normalize();
-						double dot = motionVec.dot(targetVec);
-						if (dot > Math.max(closestDot, seekThreshold)) {
-							closestDot = dot;
-							closestTarget = targets;
-							break;
-						}
-					}
-				}
+			for (LivingEntity living : entityList) {
 
 				if (living instanceof Player) {
 					continue;
 				}
 
-				if (getOwner() != null && living instanceof TamableAnimal && ((TamableAnimal) living).getOwner() == getOwner()) {
+				if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) {
 					continue;
 				}
 
@@ -144,7 +138,7 @@ public class SeekerArrow extends TFArrow {
 
 				if (dot > Math.max(closestDot, seekThreshold)) {
 					closestDot = dot;
-					if (monsters.isEmpty()) closestTarget = living;
+					closestTarget = living;
 				}
 			}
 
