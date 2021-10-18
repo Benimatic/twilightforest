@@ -1,6 +1,8 @@
 package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableSet;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -20,6 +22,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.block.AbstractCandleBlock;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -29,6 +33,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
+import twilightforest.block.AbstractLightableBlock;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBolt;
 import twilightforest.entity.projectile.LichBomb;
@@ -77,6 +82,7 @@ public class Lich extends Monster {
 
 	private Lich masterLich;
 	private int attackCooldown;
+	private int spawnTime;
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_6);
 
 	public Lich(EntityType<? extends Lich> type, Level world) {
@@ -197,6 +203,10 @@ public class Lich extends Monster {
 		}
 	}
 
+	public void setExtinguishTimer() {
+		spawnTime = 20;
+	}
+
 	@Override
 	public void aiStep() {
 		// determine the hand position
@@ -314,8 +324,15 @@ public class Lich extends Monster {
 			return;
 		}
 
-		if (attackCooldown > 0) {
+		if (attackCooldown > 0 && spawnTime <= 0) {
 			attackCooldown--;
+		}
+
+		if (spawnTime > 0 && hasLineOfSight(getTarget())) {
+			spawnTime--;
+			if(spawnTime <= 0) {
+				extinguishNearbyCandles();
+			}
 		}
 
 		// TODO: AI task?
@@ -326,6 +343,17 @@ public class Lich extends Monster {
 		// always watch our target
 		// TODO: make into AI task
 		this.getLookControl().setLookAt(getTarget(), 100F, 100F);
+	}
+
+	private void extinguishNearbyCandles() {
+		AABB box = this.getBoundingBox().inflate(10.0D);
+		for(BlockPos pos : BlockPos.betweenClosed(Mth.floor(box.minX), Mth.floor(box.minY), Mth.floor(box.minZ), Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ))) {
+			if((level.getBlockState(pos).getBlock() instanceof AbstractLightableBlock || level.getBlockState(pos).getBlock() instanceof AbstractCandleBlock)
+					&& level.getBlockState(pos).getValue(BlockStateProperties.LIT)) {
+				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(BlockStateProperties.LIT, false));
+				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
+			}
+		}
 	}
 
 	public void launchBoltAt() {

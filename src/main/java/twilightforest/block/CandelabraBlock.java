@@ -2,28 +2,20 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -32,9 +24,9 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 // The code is flexible to allow colors but I'm not sure if they'd look good on Candelabra
-public class CandelabraBlock extends HorizontalDirectionalBlock {
+public class CandelabraBlock extends AbstractLightableBlock {
     public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
-    public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public static final VoxelShape CANDLES_NORTH = Shapes.or(Block.box(1, 7, 2, 15, 15, 6), Block.box(1, 1, 3.5, 15, 7,4.5), Block.box(7.5, 1, 1, 8.5, 7,7), Block.box(6, 2, 0, 10, 6, 1));
     public static final VoxelShape CANDLES_SOUTH = Shapes.or(Block.box(1, 7, 10, 15, 15, 14), Block.box(1, 1, 11.5, 15, 7,12.5), Block.box(7.5, 1, 9, 8.5, 7,15), Block.box(6, 2, 15, 10, 6, 16));
@@ -49,11 +41,6 @@ public class CandelabraBlock extends HorizontalDirectionalBlock {
         super(properties);
 
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIT, false));
-    }
-
-    @Override
-    public int getLightBlock(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return super.getLightBlock(pState, pLevel, pPos);
     }
 
     @Override
@@ -116,6 +103,21 @@ public class CandelabraBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    public BlockState rotate(BlockState pState, Rotation pRot) {
+        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
+        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
+    }
+
+    @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
         if (state.getValue(LIT)) {
             if (state.getValue(ON_WALL)) {
@@ -155,72 +157,9 @@ public class CandelabraBlock extends HorizontalDirectionalBlock {
         }
     }
 
-    // Below: Code copied from AbstractSkullCandleBlock. If you thought that mash-up was bad, brace yourself
-
+    @Nullable
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        if (player.getAbilities().mayBuild && player.getItemInHand(hand).isEmpty() && state.getValue(LIT)) {
-            extinguish(player, state, level, pos);
-            return InteractionResult.sidedSuccess(level.isClientSide);
-
-        } else if (!state.getValue(LIT)){
-            if(player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)) {
-                setLit(level, state, pos, true);
-                level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                if(!player.getAbilities().instabuild) player.getItemInHand(hand).hurtAndBreak(1, player, (res) -> {
-                    res.broadcastBreakEvent(hand);
-                });
-                return InteractionResult.sidedSuccess(level.isClientSide);
-            } else if (player.getItemInHand(hand).is(Items.FIRE_CHARGE)) {
-                setLit(level, state, pos, true);
-                level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                if(!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
-                return InteractionResult.sidedSuccess(level.isClientSide);
-            }
-        }
-        return InteractionResult.PASS;
-    }
-
-    @Override
-    public void onProjectileHit(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
-        if (!level.isClientSide && projectile.isOnFire() && this.canBeLit(state)) {
-            setLit(level, state, result.getBlockPos(), true);
-        }
-    }
-
-    protected boolean canBeLit(BlockState state) {
-        return !state.getValue(LIT);
-    }
-
-    // Original methods used Vec3 but here we can avoid creation of extraneous vectors
-    protected static void addParticlesAndSound(Level level, BlockPos pos, double xFraction, double yFraction, double zFraction, Random rand) {
-        addParticlesAndSound(level, pos.getX() + xFraction, pos.getY() + yFraction, pos.getZ() + zFraction, rand);
-    }
-
-    protected static void addParticlesAndSound(Level level, double x, double y, double z, Random rand) {
-        float var3 = rand.nextFloat();
-        if (var3 < 0.3F) {
-            level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
-            if (var3 < 0.17F) {
-                level.playLocalSound(x + 0.5D, y + 0.5D, z + 0.5D, SoundEvents.CANDLE_AMBIENT, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
-            }
-        }
-
-        level.addParticle(ParticleTypes.SMALL_FLAME, x, y, z, 0.0D, 0.0D, 0.0D);
-    }
-
-    public static void extinguish(@Nullable Player player, BlockState state, LevelAccessor accessor, BlockPos pos) {
-        setLit(accessor, state, pos, false);
-        if (state.getBlock() instanceof AbstractCandleBlock) {
-            ((AbstractSkullCandleBlock)state.getBlock()).getParticleOffsets(state).forEach((p_151926_) ->
-                    accessor.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + p_151926_.x(), (double)pos.getY() + p_151926_.y(), (double)pos.getZ() + p_151926_.z(), 0.0D, 0.1D, 0.0D));
-        }
-
-        accessor.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
-        accessor.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-    }
-
-    private static void setLit(LevelAccessor accessor, BlockState state, BlockPos pos, boolean lit) {
-        accessor.setBlock(pos, state.setValue(LIT, lit), 11);
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return null;
     }
 }
