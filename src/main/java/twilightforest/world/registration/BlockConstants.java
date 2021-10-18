@@ -74,6 +74,7 @@ public final class BlockConstants {
     public static final BlockState GRASS_BLOCK = Blocks.GRASS_BLOCK.defaultBlockState();
     public static final BlockState PODZOL = Blocks.PODZOL.defaultBlockState();
     public static final BlockState COARSE_DIRT = Blocks.COARSE_DIRT.defaultBlockState();
+    public static final BlockState CICADA_JAR = TFBlocks.CICADA_JAR.get().defaultBlockState();
     public static final BlockState FIREFLY_JAR = TFBlocks.FIREFLY_JAR.get().defaultBlockState();
     public static final BlockState TROLLVIDR = TFBlocks.TROLLVIDR.get().defaultBlockState();
     public static final BlockState TORCHBERRIES = TFBlocks.TORCHBERRY_PLANT.get().defaultBlockState().setValue(TorchberryPlantBlock.HAS_BERRIES, true);

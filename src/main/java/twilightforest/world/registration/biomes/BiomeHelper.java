@@ -57,7 +57,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
 		addHollowOakTrees(biome);
 
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.LAMPPOST);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.LAMPPOST_PLACER);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MUSHGLOOM_CLUSTER);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_PUMPKIN);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FOREST_FLOWER_VEGETATION_COMMON);

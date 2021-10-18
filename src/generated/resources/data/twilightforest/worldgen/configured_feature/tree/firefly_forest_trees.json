@@ -9,7 +9,7 @@
           },
           {
             "feature": "twilightforest:tree/base/firefly_canopy_tree",
-            "chance": 0.33
+            "chance": 0.45
           }
         ],
         "default": "twilightforest:tree/base/twilight_oak"
