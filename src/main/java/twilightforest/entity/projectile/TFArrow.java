@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -8,6 +9,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
+
+import javax.annotation.Nullable;
 
 public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 
@@ -29,5 +32,11 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 	@Override
 	protected ItemStack getPickupItem() {
 		return new ItemStack(Items.ARROW);
+	}
+
+	@Nullable
+	@Override
+	public ResourceLocation getTexture() {
+		return null;
 	}
 }

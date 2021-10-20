@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -15,11 +16,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.Lich;
 import twilightforest.util.TFDamageSources;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
-public class LichBolt extends TFThrowable implements ItemSupplier {
+import javax.annotation.Nullable;
+
+public class LichBolt extends TFThrowable {
 
 	@SuppressWarnings("unused")
 	public LichBolt(EntityType<? extends LichBolt> type, Level world) {
@@ -116,8 +119,9 @@ public class LichBolt extends TFThrowable implements ItemSupplier {
 		}
 	}
 
+	@Nullable
 	@Override
-	public ItemStack getItem() {
-		return new ItemStack(Items.ENDER_PEARL);
+	public ResourceLocation getTexture() {
+		return TwilightForestMod.prefix("textures/items/twilight_orb.png");
 	}
 }

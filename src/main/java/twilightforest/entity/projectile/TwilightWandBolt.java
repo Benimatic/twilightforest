@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,10 +16,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
-public class TwilightWandBolt extends TFThrowable implements ItemSupplier {
+import javax.annotation.Nullable;
+
+public class TwilightWandBolt extends TFThrowable {
 
 	public TwilightWandBolt(EntityType<? extends TwilightWandBolt> type, Level world) {
 		super(type, world);
@@ -103,8 +106,9 @@ public class TwilightWandBolt extends TFThrowable implements ItemSupplier {
 		return false;
 	}
 
+	@Nullable
 	@Override
-	public ItemStack getItem() {
-		return new ItemStack(Items.ENDER_PEARL);
+	public ResourceLocation getTexture() {
+		return TwilightForestMod.prefix("textures/items/twilight_orb.png");
 	}
 }

@@ -453,8 +453,8 @@ public class TFEntities {
 
 		// projectiles
 		event.registerEntityRenderer(NATURE_BOLT, ThrownItemRenderer::new);
-		event.registerEntityRenderer(LICH_BOLT, ThrownItemRenderer::new);
-		event.registerEntityRenderer(WAND_BOLT, ThrownItemRenderer::new);
+		event.registerEntityRenderer(LICH_BOLT, CustomProjectileTextureRenderer::new);
+		event.registerEntityRenderer(WAND_BOLT, CustomProjectileTextureRenderer::new);
 		event.registerEntityRenderer(TOME_BOLT, ThrownItemRenderer::new);
 		event.registerEntityRenderer(HYDRA_MORTAR, HydraMortarRenderer::new);
 		event.registerEntityRenderer(SLIME_BLOB, ThrownItemRenderer::new);
