@@ -377,8 +377,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 		Advancement.Builder.advancement().parent(root).display(
 						Items.BOWL,
 						new TranslatableComponent("advancement.twilightforest.twilight_dining"),
-						new TranslatableComponent("advancement.twilightforest.twilight_dining.desc",
-								new TranslatableComponent("structure.hedge_maze")),
+						new TranslatableComponent("advancement.twilightforest.twilight_dining.desc"),
 						null, FrameType.CHALLENGE, true, true, false)
 				.addCriterion("raw_venison", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.RAW_VENISON.get()))
 				.addCriterion("cooked_venison", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.COOKED_VENISON.get()))
@@ -388,7 +387,8 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("hydra_chop", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.HYDRA_CHOP.get()))
 				.addCriterion("maze_wafer", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.MAZE_WAFER.get()))
 				.addCriterion("experiment_115", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.EXPERIMENT_115.get()))
-				.requirements(new CountRequirementsStrategy(2, 2, 1, 1, 1, 1))
+				.addCriterion("torchberries", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.TORCHBERRIES.get()))
+				.requirements(new CountRequirementsStrategy(2, 2, 1, 1, 1, 1, 1))
 				.rewards(AdvancementRewards.Builder.experience(75))
 				.save(consumer, "twilightforest:twilight_dinner");
 
