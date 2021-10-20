@@ -1,26 +1,21 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.Lich;
 import twilightforest.util.TFDamageSources;
-
-import javax.annotation.Nullable;
 
 public class LichBolt extends TFThrowable {
 
@@ -101,8 +96,8 @@ public class LichBolt extends TFThrowable {
 
 	@Override
 	protected void onHit(HitResult result) {
-		if (result instanceof EntityHitResult) {
-			Entity entityHit = ((EntityHitResult)result).getEntity();
+		if (result instanceof EntityHitResult hit) {
+			Entity entityHit = hit.getEntity();
 			if (entityHit instanceof LichBolt
 					|| entityHit instanceof LichBomb
 					|| (entityHit instanceof Lich && ((Lich) entityHit).isShadowClone())) {
@@ -117,11 +112,5 @@ public class LichBolt extends TFThrowable {
 				this.discard();
 			}
 		}
-	}
-
-	@Nullable
-	@Override
-	public ResourceLocation getTexture() {
-		return TwilightForestMod.prefix("textures/items/twilight_orb.png");
 	}
 }

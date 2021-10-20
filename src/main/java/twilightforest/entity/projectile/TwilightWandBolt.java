@@ -77,9 +77,9 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	protected void onHit(HitResult result) {
 		if (!this.level.isClientSide) {
-			if (result instanceof EntityHitResult) {
-				if (((EntityHitResult)result).getEntity() instanceof LivingEntity) {
-					((EntityHitResult)result).getEntity().hurt(DamageSource.indirectMagic(this, this.getOwner()), 6);
+			if (result instanceof EntityHitResult hit) {
+				if (hit.getEntity() instanceof LivingEntity entity) {
+					entity.hurt(DamageSource.indirectMagic(this, this.getOwner()), 6);
 				}
 			}
 
@@ -104,11 +104,5 @@ public class TwilightWandBolt extends TFThrowable {
 		}
 
 		return false;
-	}
-
-	@Nullable
-	@Override
-	public ResourceLocation getTexture() {
-		return TwilightForestMod.prefix("textures/items/twilight_orb.png");
 	}
 }

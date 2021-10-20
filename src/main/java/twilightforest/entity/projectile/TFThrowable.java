@@ -33,10 +33,4 @@ public abstract class TFThrowable extends ThrowableProjectile implements ITFProj
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
-
-	@Nullable
-	@Override
-	public ResourceLocation getTexture() {
-		return null;
-	}
 }

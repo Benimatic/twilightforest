@@ -33,10 +33,4 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 	protected ItemStack getPickupItem() {
 		return new ItemStack(Items.ARROW);
 	}
-
-	@Nullable
-	@Override
-	public ResourceLocation getTexture() {
-		return null;
-	}
 }

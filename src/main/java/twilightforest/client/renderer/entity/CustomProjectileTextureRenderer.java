@@ -11,23 +11,19 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.TFThrowable;
 
 /**
  * This renderer serves as a way to render item textures on a projectile without needing an actual item registered for it.
  * Consider using {@link net.minecraft.client.renderer.entity.ThrownItemRenderer} if your projectile is an existing item already.
- * Note: If youre going to implement this as a projectile renderer, make sure the projectile entity defines a texture.
- * Override the getTexture() method in {@link twilightforest.entity.projectile.ITFProjectile} to add it.
- *
- * If you see a think115 as the texure, you did something wrong. Thats the fallback if its null lmao
  */
 public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable> {
 
-	private final ResourceLocation FALLBACK_TEX = TwilightForestMod.prefix("textures/items/think115.png");
+	private final ResourceLocation TEXTURE;
 
-	public CustomProjectileTextureRenderer(EntityRendererProvider.Context ctx) {
+	public CustomProjectileTextureRenderer(EntityRendererProvider.Context ctx, ResourceLocation texture) {
 		super(ctx);
+		this.TEXTURE = texture;
 	}
 
 	//[VanillaCopy] of DragonFireballRender.render, we just input our own texture stuff instead
@@ -40,7 +36,7 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 		PoseStack.Pose posestack$pose = ms.last();
 		Matrix4f matrix4f = posestack$pose.pose();
 		Matrix3f matrix3f = posestack$pose.normal();
-		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(entity.getTexture() != null ? entity.getTexture() : FALLBACK_TEX));
+		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
 		vertex(vertexconsumer, matrix4f, matrix3f, light, 0.0F, 0, 0, 1);
 		vertex(vertexconsumer, matrix4f, matrix3f, light, 1.0F, 0, 1, 1);
 		vertex(vertexconsumer, matrix4f, matrix3f, light, 1.0F, 1, 1, 0);
@@ -55,9 +51,6 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 
 	@Override
 	public ResourceLocation getTextureLocation(TFThrowable entity) {
-		if(entity.getTexture() != null) {
-			return entity.getTexture();
-		}
-		return FALLBACK_TEX;
+		return TEXTURE;
 	}
 }

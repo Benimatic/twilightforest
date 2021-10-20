@@ -62,10 +62,4 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 		this.yRotO = this.getYRot();
 		this.xRotO = this.getXRot();
 	}
-
-	@Nullable
-	@Override
-	public ResourceLocation getTexture() {
-		return null;
-	}
 }
