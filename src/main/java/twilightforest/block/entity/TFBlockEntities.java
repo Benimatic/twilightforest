@@ -77,6 +77,12 @@ public class TFBlockEntities {
 					TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(),
 					TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get()).build(null));
 
+	public static final RegistryObject<BlockEntityType<TwilightChestEntity>> TF_CHEST = TILE_ENTITIES.register("tf_chest", () ->
+			BlockEntityType.Builder.of(TwilightChestEntity::new,
+					TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(),
+					TFBlocks.DARKWOOD_CHEST.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TRANSFORMATION_CHEST.get(),
+					TFBlocks.MINING_CHEST.get(), TFBlocks.SORTING_CHEST.get()).build(null));
+
 	public static final RegistryObject<BlockEntityType<SkullCandleBlockEntity>> SKULL_CANDLE = TILE_ENTITIES.register("skull_candle", () ->
 			BlockEntityType.Builder.of(SkullCandleBlockEntity::new,
 					TFBlocks.ZOMBIE_SKULL_CANDLE.get(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(),
@@ -96,6 +102,7 @@ public class TFBlockEntities {
 		BlockEntityRenderers.register(MOONWORM.get(), MoonwormTileEntityRenderer::new);
 		BlockEntityRenderers.register(TROPHY.get(), TrophyTileEntityRenderer::new);
 		BlockEntityRenderers.register(TF_SIGN.get(), SignRenderer::new);
+		BlockEntityRenderers.register(TF_CHEST.get(), TwilightChestRenderer::new);
 		BlockEntityRenderers.register(KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
 		BlockEntityRenderers.register(SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);
 	}

@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -374,6 +375,15 @@ public class TFBlockItems {
 		r.register(tallBlock(TFBlocks.SORTING_DOOR));
 		r.register(signBlock(TFBlocks.SORTING_SIGN, TFBlocks.SORTING_WALL_SIGN));
 		r.register(blockItem(TFBlocks.SORTING_BANISTER));
+
+		makeBEWLRItem(r, TFBlocks.TWILIGHT_OAK_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(r, TFBlocks.CANOPY_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(r, TFBlocks.MANGROVE_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(r, TFBlocks.DARKWOOD_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(r, TFBlocks.TIME_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(r, TFBlocks.TRANSFORMATION_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(r, TFBlocks.MINING_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(r, TFBlocks.SORTING_CHEST, TFBlockEntities.TF_CHEST.getId());
 	}
 
 	private static <B extends Block> Item blockItem(RegistryObject<B> block) {
@@ -436,5 +446,19 @@ public class TFBlockItems {
 
 	private static Item makeBlockItem(Item blockitem, RegistryObject<? extends Block> block) {
 		return blockitem.setRegistryName(Objects.requireNonNull(block.getId()));
+	}
+
+	private static void makeBEWLRItem(IForgeRegistry<Item> r, RegistryObject<? extends Block> block, ResourceLocation rl) {
+		r.register(makeBlockItem(new BlockItem(block.get(), TFItems.defaultBuilder()) {
+			@Override
+			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+				consumer.accept(new IItemRenderProperties() {
+					@Override
+					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+						return new ISTER(rl);
+					}
+				});
+			}
+		}, block));
 	}
 }

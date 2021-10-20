@@ -3,8 +3,10 @@ package twilightforest.client;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Options;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.CameraType;
@@ -39,6 +41,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.item.TFItems;
 
@@ -75,6 +78,12 @@ public class TFClientEvents {
 		@SubscribeEvent
 		public static void texStitch(TextureStitchEvent.Pre evt) {
 			TextureAtlas map = evt.getMap();
+
+			if (Sheets.CHEST_SHEET.equals(map.location()))
+				TwilightChestRenderer.MATERIALS.values().stream()
+						.flatMap(e -> e.values().stream())
+						.map(Material::texture)
+						.forEach(evt::addSprite);
 
 		//FIXME bring back if you can get GradientMappedTexture working
 		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {

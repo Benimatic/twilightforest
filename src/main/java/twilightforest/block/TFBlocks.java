@@ -436,6 +436,15 @@ public class TFBlocks {
 	public static final RegistryObject<WallSignBlock> SORTING_WALL_SIGN = BLOCKS.register("sorting_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(SORTING_PLANKS.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), SORTING));
 	public static final RegistryObject<BanisterBlock> SORTING_BANISTER = BLOCKS.register("sorting_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(SORTING_PLANKS.get())));
 
+	public static final RegistryObject<TwilightChest> TWILIGHT_OAK_CHEST = BLOCKS.register("twilight_oak_chest", () -> new TwilightChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<TwilightChest> CANOPY_CHEST = BLOCKS.register("canopy_chest", () -> new TwilightChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<TwilightChest> MANGROVE_CHEST = BLOCKS.register("mangrove_chest", () -> new TwilightChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<TwilightChest> DARKWOOD_CHEST = BLOCKS.register("darkwood_chest", () -> new TwilightChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<TwilightChest> TIME_CHEST = BLOCKS.register("time_chest", () -> new TwilightChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<TwilightChest> TRANSFORMATION_CHEST = BLOCKS.register("transformation_chest", () -> new TwilightChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<TwilightChest> MINING_CHEST = BLOCKS.register("mining_chest", () -> new TwilightChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+	public static final RegistryObject<TwilightChest> SORTING_CHEST = BLOCKS.register("sorting_chest", () -> new TwilightChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+
 	//Flower Pots
 	public static final RegistryObject<FlowerPotBlock> POTTED_TWILIGHT_OAK_SAPLING = BLOCKS.register("potted_twilight_oak_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, TWILIGHT_OAK_SAPLING, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 	public static final RegistryObject<FlowerPotBlock> POTTED_CANOPY_SAPLING = BLOCKS.register("potted_canopy_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, CANOPY_SAPLING, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));

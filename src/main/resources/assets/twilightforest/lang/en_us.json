@@ -541,6 +541,15 @@
   "block.twilightforest.sorting_sign": "Sortingwood Sign",
   "block.twilightforest.sorting_wall_sign": "Sortingwood Wall Sign",
   "block.twilightforest.sorting_banister": "Sortingwood Banister",
+  
+  "block.twilightforest.twilight_oak_chest": "Twilight Oak Chest",
+  "block.twilightforest.canopy_chest": "Canopy Chest",
+  "block.twilightforest.mangrove_chest": "Mangrove Chest",
+  "block.twilightforest.darkwood_chest": "Darkwood Chest",
+  "block.twilightforest.time_chest": "Timewood Chest",
+  "block.twilightforest.transformation_chest": "Transwood Chest",
+  "block.twilightforest.mining_chest": "Minewood Chest",
+  "block.twilightforest.sorting_chest": "Sortingwood Chest",
 
   "block.steeleaf.tooltip": "Reduces fall damage by 25%",
   "block.arctic.tooltip": "Reduces fall damage by 90%",
