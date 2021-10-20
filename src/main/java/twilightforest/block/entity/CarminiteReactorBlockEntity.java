@@ -227,7 +227,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 		}
 
 		if (netherTransform && stateThere.getBlock() != Blocks.AIR) {
-			level.setBlock(pos, Blocks.NETHERRACK.defaultBlockState(), 3);
+			level.setBlock(pos, (level.random.nextInt(8) == 0 ? Blocks.NETHER_QUARTZ_ORE.defaultBlockState() : Blocks.NETHERRACK.defaultBlockState()), 3);
 			// fire on top?
 			if (level.isEmptyBlock(pos.above()) && fuzz % 3 == 0) {
 				level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), 3);
