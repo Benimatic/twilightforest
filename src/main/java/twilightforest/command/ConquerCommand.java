@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
@@ -12,6 +13,7 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
 
+//FIXME bring back once conquer flag is in place
 public class ConquerCommand {
     private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(new TranslatableComponent("commands.tffeature.structure.required"));
 
@@ -31,7 +33,8 @@ public class ConquerCommand {
 
         BlockPos pos = new BlockPos(source.getPosition());
         if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
-            //source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag), true);
+            source.sendSuccess(new TranslatableComponent("This command currently isnt working as the structure conquered flag has not been reimplemented yet.").withStyle(ChatFormatting.RED), false);
+            //source.sendSuccess(new TranslatableComponent("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag), true);
             //chunkGenerator.setStructureConquered(pos, flag);
             return Command.SINGLE_SUCCESS;
         } else {
