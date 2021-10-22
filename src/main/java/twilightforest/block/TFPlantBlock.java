@@ -63,9 +63,7 @@ public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter access, BlockPos pos, CollisionContext context) {
 		switch(plantVariant) {
-			case MOSSPATCH -> { return createCTMShape(TFBlocks.MOSS_PATCH.get(), access, pos); }
 			case MAYAPPLE -> { return MAYAPPLE_SHAPE; }
-			case CLOVERPATCH -> { return createCTMShape(TFBlocks.CLOVER_PATCH.get(), access, pos); }
 			case FIDDLEHEAD -> { return FIDDLEHEAD_SHAPE; }
 			case MUSHGLOOM -> { return MUSHGLOOM_SHAPE; }
 			case TORCHBERRY -> { return TORCHBERRY_SHAPE; }
@@ -73,24 +71,6 @@ public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 			case FALLEN_LEAVES -> { return FALLEN_LEAVES_SHAPE; }
 			default -> { return Shapes.block(); }
 		}
-	}
-
-	private VoxelShape createCTMShape(Block block, BlockGetter access, BlockPos pos) {
-		long seed = pos.getX() * 3129871L ^ pos.getY() * 116129781L ^ pos.getZ();
-		seed = seed * seed * 42317861L + seed * 11L;
-
-		int xOff0 = (int) (seed >> 12 & 3L);
-		int xOff1 = (int) (seed >> 15 & 3L);
-		int zOff0 = (int) (seed >> 18 & 3L);
-		int zOff1 = (int) (seed >> 21 & 3L);
-
-		boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getBlock() == block;
-		boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getBlock() == block;
-		boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.north()).getBlock() == block;
-		boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.south()).getBlock() == block;
-
-		return Shapes.create(new AABB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
-				xConnect0 ? 1F : (15F - xOff0) / 16F, 1F / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F));
 	}
 
 	public static boolean canPlaceRootAt(LevelReader world, BlockPos pos) {

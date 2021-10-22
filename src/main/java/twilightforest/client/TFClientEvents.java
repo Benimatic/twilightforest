@@ -15,9 +15,11 @@ import net.minecraft.network.chat.*;
 import net.minecraft.tags.StaticTagHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IWeatherRenderHandler;
@@ -27,8 +29,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,9 +55,15 @@ public class TFClientEvents {
 
 	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {
+		@SubscribeEvent
+		public static void registerLoaders(ModelRegistryEvent event) {
+			ModelLoaderRegistry.registerLoader(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
+		}
 
+		@Deprecated // tterrag said this would become deprecated soon in favor of above method
 		@SubscribeEvent
 		public static void modelBake(ModelBakeEvent event) {
+			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
 			fullbrightItem(event, TFItems.FIERY_INGOT);
 			fullbrightItem(event, TFItems.FIERY_BOOTS);
 			fullbrightItem(event, TFItems.FIERY_CHESTPLATE);
@@ -84,6 +92,8 @@ public class TFClientEvents {
 						.flatMap(e -> e.values().stream())
 						.map(Material::texture)
 						.forEach(evt::addSprite);
+
+			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
 
 		//FIXME bring back if you can get GradientMappedTexture working
 		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {

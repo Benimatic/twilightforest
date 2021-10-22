@@ -582,17 +582,18 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void registerPlantBlocks() {
-		simpleBlockExisting(TFBlocks.MOSS_PATCH.get());
+		simpleBlock(TFBlocks.MOSS_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/moss_patch"))));
 		simpleBlockExisting(TFBlocks.MAYAPPLE.get());
-		ConfiguredModel[] cloverModels = new ConfiguredModel[4];
-		for (int i = 0; i < 4; i++) {
-			ModelFile model = models().withExistingParent(TFBlocks.CLOVER_PATCH.getId().getPath() + "_" + i, prefix("block/util/flat_tex"))
-							.texture("particle", prefix("block/cloverpatch"))
-							.texture("texture", prefix("block/patch/clover_" + i))
-							.texture("ctm", prefix("block/patch/clover_" + i + "_ctm"));
-			cloverModels[i] = new ConfiguredModel(model);
-		}
-		simpleBlock(TFBlocks.CLOVER_PATCH.get(), cloverModels);
+		//ConfiguredModel[] cloverModels = new ConfiguredModel[4];
+		//for (int i = 0; i < 4; i++) {
+		//	ModelFile model = models().withExistingParent(TFBlocks.CLOVER_PATCH.getId().getPath() + "_" + i, prefix("block/util/flat_tex"))
+		//					.texture("particle", prefix("block/cloverpatch"))
+		//					.texture("texture", prefix("block/patch/clover_" + i))
+		//					.texture("ctm", prefix("block/patch/clover_" + i + "_ctm"));
+		//	cloverModels[i] = new ConfiguredModel(model);
+		//}
+		//simpleBlock(TFBlocks.CLOVER_PATCH.get(), cloverModels);
+		simpleBlock(TFBlocks.CLOVER_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/clover_patch"))));
 		simpleBlock(TFBlocks.FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.FIDDLEHEAD.getId().getPath(), "block/tinted_cross")
 						.texture("cross", blockTexture(TFBlocks.FIDDLEHEAD.get())));
 		simpleBlock(TFBlocks.MUSHGLOOM.get(), models().withExistingParent(TFBlocks.MUSHGLOOM.getId().getPath(), prefix("block/util/cross_2_layer"))
