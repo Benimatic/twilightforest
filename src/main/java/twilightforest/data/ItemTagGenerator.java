@@ -169,7 +169,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		);
 
 		tag(WIP).add(
-				TFBlocks.MOSS_PATCH.get().asItem(),
 				TFBlocks.KEEPSAKE_CASKET.get().asItem(),
 				TFItems.CUBE_OF_ANNIHILATION.get()
 		);
@@ -182,7 +181,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get().asItem(),
 				TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get().asItem(),
 				TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get().asItem(),
-				TFBlocks.CLOVER_PATCH.get().asItem(),
 				TFBlocks.AURORALIZED_GLASS.get().asItem(),
 				TFBlocks.SLIDER.get().asItem(),
 				TFBlocks.TWISTED_STONE.get().asItem(),

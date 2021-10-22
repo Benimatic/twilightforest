@@ -3252,7 +3252,7 @@ a9c6ca6829cd484bbfa78c09806e381a4761eac8 data/twilightforest/tags/items/kobold_p
 a37b73dfad5c44955a5937b4b3a3ffdbb00be92b data/twilightforest/tags/items/logs.json
 84260beae7e3103b490b14db8e75029fecccc738 data/twilightforest/tags/items/mangrove_logs.json
 42aae51d05e2cf26bc4c7badb73a3f881dfc04f9 data/twilightforest/tags/items/mining_logs.json
-872eec2cb9d78496b7623b697688138e3bf1b765 data/twilightforest/tags/items/nyi.json
+ed138b10b4ffc64cc9a3911c47e04a497abe21f7 data/twilightforest/tags/items/nyi.json
 c0787879296b48c4d316ff9e1b2012c137cacff1 data/twilightforest/tags/items/portal/activator.json
 56a8d16d0016d22564aed5ec0c1f2ec0b54749be data/twilightforest/tags/items/sortwood_logs.json
 19187a85d17cfa074df2b8c43d3131823531b443 data/twilightforest/tags/items/tf_music_discs.json
@@ -3260,7 +3260,7 @@ c0787879296b48c4d316ff9e1b2012c137cacff1 data/twilightforest/tags/items/portal/a
 9917dca1951a7e9946003befc8ece75c902d6ad7 data/twilightforest/tags/items/towerwood.json
 80d148d1c202379785e99dd932c78af0400cd04b data/twilightforest/tags/items/transwood_logs.json
 f2b376d4d4d5f8ab49fe3fbcff2073ab769c6e5b data/twilightforest/tags/items/twilight_oak_logs.json
-940286c62daf5b0c007ab7eac4257a0917294c82 data/twilightforest/tags/items/wip.json
+910b707ec942943f521e89ec584b625a2b135aa5 data/twilightforest/tags/items/wip.json
 b1a95e851c68d4ad2d5630844fa77f6b9a3bf72b data/twilightforest/worldgen/biome/clearing.json
 05ec613ffcf3967263312e9661044b5be5323e04 data/twilightforest/worldgen/biome/dark_forest.json
 b63b9e08aeb409c810dd2009543157966dac5d22 data/twilightforest/worldgen/biome/dark_forest_center.json
