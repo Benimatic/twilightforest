@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -35,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
+import twilightforest.data.EntityTagGenerator;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBolt;
 import twilightforest.entity.projectile.LichBomb;
@@ -68,8 +68,6 @@ import net.minecraft.world.entity.monster.Zombie;
 public class Lich extends Monster {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/lich");
-	//TODO: Think these could be EntityType?
-	private static final Set<Class<? extends Entity>> POPPABLE = ImmutableSet.of(Skeleton.class, Zombie.class, EnderMan.class, Spider.class, Creeper.class, SwarmSpider.class);
 
 	private static final EntityDataAccessor<Boolean> DATA_ISCLONE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Byte> DATA_SHIELDSTRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BYTE);
@@ -402,7 +400,7 @@ public class Lich extends Monster {
 	}
 
 	private void popNearbyMob() {
-		List<Mob> nearbyMobs = level.getEntitiesOfClass(Mob.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
+		List<Mob> nearbyMobs = level.getEntitiesOfClass(Mob.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D), e -> EntityTagGenerator.LICH_POPPABLES.contains(e.getType()));
 
 		for (Mob mob : nearbyMobs) {
 			if (getSensing().hasLineOfSight(mob)) {

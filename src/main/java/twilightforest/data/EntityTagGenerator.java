@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final Tag.Named<EntityType<?>> BOSSES = EntityTypeTags.bind(TwilightForestMod.prefix("bosses").toString());
+    public static final Tag.Named<EntityType<?>> LICH_POPPABLES = EntityTypeTags.bind(TwilightForestMod.prefix("lich_poppables").toString());
 
     public EntityTagGenerator(DataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
         super(dataGenerator, TwilightForestMod.ID, existingFileHelper);
@@ -81,5 +82,7 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
                 TFEntities.ALPHA_YETI,
                 TFEntities.SNOW_QUEEN
         );
+
+        tag(LICH_POPPABLES).addTag(EntityTypeTags.SKELETONS).add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER);
     }
 }
