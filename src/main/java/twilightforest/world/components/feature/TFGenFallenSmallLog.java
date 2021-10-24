@@ -86,6 +86,7 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 				world.setBlock(pos.offset(lx, 0, 1), logState, 3);
 				if (rand.nextInt(3) > 0) {
 					world.setBlock(pos.offset(lx, 1, 1), TFBlocks.MOSS_PATCH.get().defaultBlockState(), 3);
+					this.markAboveForPostProcessing(world, pos.offset(lx, 0, 1));
 				}
 			}
 		} else {
@@ -96,6 +97,7 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 				world.setBlock(pos.offset(1, 0, lz), logState, 3);
 				if (rand.nextInt(3) > 0) {
 					world.setBlock(pos.offset(1, 1, lz), TFBlocks.MOSS_PATCH.get().defaultBlockState(), 3);
+					this.markAboveForPostProcessing(world, pos.offset(1, 0, lz));
 				}
 			}
 		}
@@ -109,6 +111,7 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 				world.setBlock(pos.offset(bx, 0, bz), branchState, 3);
 				if (rand.nextBoolean()) {
 					world.setBlock(pos.offset(bx, 1, bz), TFBlocks.MOSS_PATCH.get().defaultBlockState(), 3);
+					this.markAboveForPostProcessing(world, pos.offset(bx, 0, bz));
 				}
 			} else {
 				int bx = rand.nextBoolean() ? 2 : 0;
@@ -117,6 +120,7 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 				world.setBlock(pos.offset(bx, 0, bz), branchState, 3);
 				if (rand.nextBoolean()) {
 					world.setBlock(pos.offset(bx, 1, bz), TFBlocks.MOSS_PATCH.get().defaultBlockState(), 3);
+					this.markAboveForPostProcessing(world, pos.offset(bx, 0, bz));
 				}
 			}
 		}
