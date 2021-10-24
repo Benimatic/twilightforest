@@ -2,6 +2,8 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -44,14 +46,12 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
     );
 
     private final RegistryObject<HollowLogClimbable> climbable;
-    private final Supplier<HollowLogItem> asItem;
 
-    public HollowLogVertical(Properties props, RegistryObject<HollowLogClimbable> climbable, Supplier<HollowLogItem> itemSupplier) {
+    public HollowLogVertical(Properties props, RegistryObject<HollowLogClimbable> climbable) {
         super(props);
         this.climbable = climbable;
 
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
-        this.asItem = itemSupplier;
     }
 
     @Override
@@ -70,6 +70,7 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 
         if (stack.is(Blocks.VINE.asItem())) {
             level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
+            level.playSound(null, pos, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
             if (!player.isCreative()) stack.shrink(1);
 
             player.swing(hand);
@@ -77,6 +78,7 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
             return InteractionResult.CONSUME;
         } else if (stack.is(Blocks.LADDER.asItem())) {
             level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
+            level.playSound(null, pos, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
             if (!player.isCreative()) stack.shrink(1);
 
             player.swing(hand);
@@ -91,11 +93,6 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return super.getStateForPlacement(context).setValue(WATERLOGGED, context.getLevel().getBlockState(context.getClickedPos()).getFluidState().getType() == Fluids.WATER);
-    }
-
-    @Override
-    public Item asItem() {
-        return this.asItem.get();
     }
 
     @Override

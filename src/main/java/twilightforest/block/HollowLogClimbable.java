@@ -2,6 +2,8 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -65,14 +67,12 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
     );
 
     private final RegistryObject<HollowLogVertical> vertical;
-    private final Supplier<HollowLogItem> asItem;
 
-    public HollowLogClimbable(Properties props, RegistryObject<HollowLogVertical> vertical, Supplier<HollowLogItem> itemSupplier) {
+    public HollowLogClimbable(Properties props, RegistryObject<HollowLogVertical> vertical) {
         super(props);
         this.vertical = vertical;
 
         this.registerDefaultState(this.stateDefinition.any().setValue(VARIANT, HollowLogVariants.Climbable.VINE).setValue(FACING, Direction.NORTH));
-        this.asItem = itemSupplier;
     }
 
     @Override
@@ -105,11 +105,6 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
     }
 
     @Override
-    public Item asItem() {
-        return this.asItem.get();
-    }
-
-    @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(VARIANT) == HollowLogVariants.Climbable.LADDER_WATERLOGGED ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
@@ -130,6 +125,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
         if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
             HollowLogVariants.Climbable variant = state.getValue(VARIANT);
             level.setBlock(pos, this.vertical.get().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), 3);
+            level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
             if (!player.isCreative()) {
                 stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
                 level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(variant == HollowLogVariants.Climbable.VINE ? Blocks.VINE : Blocks.LADDER)));

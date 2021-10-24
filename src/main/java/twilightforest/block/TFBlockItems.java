@@ -262,6 +262,14 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.STRIPPED_TRANSFORMATION_WOOD));
 		r.register(blockItem(TFBlocks.STRIPPED_MINING_WOOD));
 		r.register(blockItem(TFBlocks.STRIPPED_SORTING_WOOD));
+		r.register(hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE));
+		r.register(hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE));
+		r.register(hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL, TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE));
+		r.register(hollowLog(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_LOG_VERTICAL, TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE));
+		r.register(hollowLog(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL, TFBlocks.HOLLOW_TIME_LOG_VERTICAL, TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE));
+		r.register(hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE));
+		r.register(hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL, TFBlocks.HOLLOW_MINING_LOG_VERTICAL, TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE));
+		r.register(hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL, TFBlocks.HOLLOW_SORTING_LOG_VERTICAL, TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE));
 		r.register(blockItem(TFBlocks.TIME_LOG_CORE));
 		r.register(blockItem(TFBlocks.TRANSFORMATION_LOG_CORE));
 		r.register(blockItem(TFBlocks.MINING_LOG_CORE));
@@ -384,6 +392,10 @@ public class TFBlockItems {
 		makeBEWLRItem(r, TFBlocks.TRANSFORMATION_CHEST, TFBlockEntities.TF_CHEST.getId());
 		makeBEWLRItem(r, TFBlocks.MINING_CHEST, TFBlockEntities.TF_CHEST.getId());
 		makeBEWLRItem(r, TFBlocks.SORTING_CHEST, TFBlockEntities.TF_CHEST.getId());
+	}
+
+	private static <B extends Block> Item hollowLog(RegistryObject<HollowLogHorizontal> horizontalLog, RegistryObject<HollowLogVertical> verticalLog, RegistryObject<HollowLogClimbable> climbable) {
+		return makeBlockItem(new HollowLogItem(horizontalLog, verticalLog, climbable, TFItems.defaultBuilder()), horizontalLog);
 	}
 
 	private static <B extends Block> Item blockItem(RegistryObject<B> block) {

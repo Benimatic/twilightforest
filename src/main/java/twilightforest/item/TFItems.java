@@ -182,19 +182,6 @@ public class TFItems {
 	public static final RegistryObject<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_SNOW_QUEEN", "tf_snow_queen", "tfq", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
 	public static final RegistryObject<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TF_QUEST_RAM", "tf_quest_ram", "tfr", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
 
-	public static final RegistryObject<HollowLogItem> HOLLOW_TWILIGHT_OAK_LOG = ITEMS.register("hollow_twilight_oak_log", () -> hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL));
-	public static final RegistryObject<HollowLogItem> HOLLOW_CANOPY_LOG = ITEMS.register("hollow_canopy_log", () -> hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL));
-	public static final RegistryObject<HollowLogItem> HOLLOW_MANGROVE_LOG = ITEMS.register("hollow_mangrove_log", () -> hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL));
-	public static final RegistryObject<HollowLogItem> HOLLOW_DARK_LOG = ITEMS.register("hollow_dark_log", () -> hollowLog(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_LOG_VERTICAL));
-	public static final RegistryObject<HollowLogItem> HOLLOW_TIME_LOG = ITEMS.register("hollow_time_log", () -> hollowLog(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL, TFBlocks.HOLLOW_TIME_LOG_VERTICAL));
-	public static final RegistryObject<HollowLogItem> HOLLOW_TRANSFORMATION_LOG = ITEMS.register("hollow_transformation_log", () -> hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL));
-	public static final RegistryObject<HollowLogItem> HOLLOW_MINING_LOG = ITEMS.register("hollow_mining_log", () -> hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL, TFBlocks.HOLLOW_MINING_LOG_VERTICAL));
-	public static final RegistryObject<HollowLogItem> HOLLOW_SORTING_LOG = ITEMS.register("hollow_sorting_log", () -> hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL, TFBlocks.HOLLOW_SORTING_LOG_VERTICAL));
-
-	private static HollowLogItem hollowLog(RegistryObject<HollowLogHorizontal> horizontalLog, RegistryObject<HollowLogVertical> verticalLog) {
-		return new HollowLogItem(horizontalLog, verticalLog, new Item.Properties());
-	}
-
 	public static CreativeModeTab creativeTab = new CreativeModeTab(TwilightForestMod.ID) {
 		@Override
 		public ItemStack makeIcon() {

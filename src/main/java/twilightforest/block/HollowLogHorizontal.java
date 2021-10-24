@@ -2,6 +2,8 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -52,13 +55,10 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
             Block.box(14, 2, 0, 16, 14, 16)
     );
 
-    private final Supplier<HollowLogItem> asItem;
-
-    public HollowLogHorizontal(Properties props, Supplier<HollowLogItem> itemSupplier) {
+    public HollowLogHorizontal(Properties props) {
         super(props);
 
         this.registerDefaultState(this.stateDefinition.any().setValue(HORIZONTAL_AXIS, Direction.Axis.X).setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY));
-        this.asItem = itemSupplier;
     }
 
     @Override
@@ -92,11 +92,6 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
     }
 
     @Override
-    public Item asItem() {
-        return this.asItem.get();
-    }
-
-    @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(VARIANT) == HollowLogVariants.Horizontal.WATERLOGGED ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
@@ -119,6 +114,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
         if (stack.is(TFBlocks.MOSS_PATCH.get().asItem())) {
             if (variant == HollowLogVariants.Horizontal.EMPTY || variant == HollowLogVariants.Horizontal.WATERLOGGED) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS), 3);
+                level.playSound(null, pos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!player.isCreative()) stack.shrink(1);
 
                 player.swing(hand);
@@ -128,6 +124,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
         } else if (stack.is(Blocks.GRASS.asItem())) {
             if (variant == HollowLogVariants.Horizontal.MOSS) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS), 3);
+                level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!player.isCreative()) stack.shrink(1);
 
                 player.swing(hand);
@@ -137,6 +134,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
         } else if (stack.is(Items.SNOWBALL)) {
             if (variant == HollowLogVariants.Horizontal.EMPTY || variant == HollowLogVariants.Horizontal.WATERLOGGED) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.SNOW), 3);
+                level.playSound(null, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!player.isCreative()) stack.shrink(1);
 
                 player.swing(hand);
@@ -146,6 +144,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
         } else if (stack.canPerformAction(ToolActions.SHOVEL_DIG)) {
             if (variant == HollowLogVariants.Horizontal.SNOW) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
+                level.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!player.isCreative()) {
                     stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
                     level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.SNOWBALL)));
@@ -158,6 +157,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
         } else if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
             if (variant == HollowLogVariants.Horizontal.MOSS || variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
+                level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 
                 if (!player.isCreative()) {
                     stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
