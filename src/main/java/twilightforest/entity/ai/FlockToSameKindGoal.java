@@ -42,6 +42,10 @@ public class FlockToSameKindGoal extends Goal {
 
 		List<? extends Mob> flockList = this.flockCreature.level.getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(16.0D, 4.0D, 16.0D));
 
+		if(flockList.size() > 5) {
+			return false;
+		}
+
 		int flocknum = 0;
 		double flockX = 0;
 		double flockY = 0;

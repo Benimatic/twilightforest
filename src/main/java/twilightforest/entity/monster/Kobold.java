@@ -194,7 +194,7 @@ public class Kobold extends Monster {
 			case NORMAL -> { return 200; }
 			case HARD -> { return 100; }
 		}
-		return 10;
+		return 200;
 	}
 
 	private void dropItemStack(ItemStack stack) {
@@ -218,7 +218,7 @@ public class Kobold extends Monster {
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 4;
+		return 1;
 	}
 
 	//we dont want kobolds to attack if theyre pacified
