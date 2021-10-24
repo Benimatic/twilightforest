@@ -103,7 +103,7 @@ public class TreeRootsDecorator extends TreeDecorator {
         boolean stillAboveGround = true;
         for (BlockPos coord : new VoxelBresenhamIterator(pos.below(), dest)) {
             if (stillAboveGround && FeatureLogic.hasEmptyNeighbor(worldReader, coord)) {
-                if (worldReader.isStateAtPosition(coord, FeatureLogic::canRootReplace)) {
+                if (worldReader.isStateAtPosition(coord, FeatureLogic::isReplaceable)) {
                     worldPlacer.accept(coord, airRoot.getState(random, coord));
                 } else if (!worldReader.isStateAtPosition(coord, FeatureLogic.SHOULD_SKIP)) break;
             } else {

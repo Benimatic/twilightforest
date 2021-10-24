@@ -40,12 +40,12 @@ public final class FeatureLogic {
             // roots can grow through air if they are near a solid block
             return hasSolidNeighbor(worldReader, pos);
         } else {
-            return worldReader.isStateAtPosition(pos, FeatureLogic::canRootReplace);
+            return worldReader.isStateAtPosition(pos, FeatureLogic::isReplaceable);
         }
     }
 
-    public static boolean canRootReplace(BlockState state) {
-        return state.getMaterial().isReplaceable() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES);
+    public static boolean isReplaceable(BlockState state) {
+        return (state.getMaterial().isReplaceable() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTagGenerator.WORLDGEN_SKIPPABLES);
     }
 
     /**

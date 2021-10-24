@@ -16,6 +16,8 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProv
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.BlockTagGenerator;
+import twilightforest.util.FeatureLogic;
 import twilightforest.world.components.feature.config.SpikeConfig;
 
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         for (int i = 0; i < length; i++) {
             clearedLength = i;
 
-            if (level.isEmptyBlock(movingPos)) break;
+            if (FeatureLogic.isReplaceable(level.getBlockState(movingPos))) break;
 
             movingPos.move(0, dY, 0);
         }
@@ -60,7 +62,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         for (int i = 0; i < remainingScanLength; i++) {
             finalLength = clearedLength + i;
 
-            if (!level.isEmptyBlock(movingPos)) break;
+            if (!FeatureLogic.isReplaceable(level.getBlockState(movingPos))) break;
 
             movingPos.move(0, dY, 0);
         }
@@ -90,7 +92,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
                 for (int i = 0; i < spikeLength; i++) {
                     BlockPos placement = startPos.offset(dx, i * dY, dz);
 
-                    if (level.isEmptyBlock(placement) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))
+                    if (FeatureLogic.isReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))
                         level.setBlock(placement, blockState.getState(random, placement), 3);
                 }
             }
