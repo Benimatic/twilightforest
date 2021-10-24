@@ -37,7 +37,7 @@ public class OreMeterItem extends Item {
 			countOreInArea(player, world, useX, useZ, 3);
 		}
 
-		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
+		return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), world.isClientSide);
 	}
 
 	private void countOreInArea(Player player, Level world, int useX, int useZ, int radius) {
