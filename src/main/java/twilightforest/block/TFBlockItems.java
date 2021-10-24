@@ -79,7 +79,7 @@ public class TFBlockItems {
 //      r.register(blockItem(TFBlocks.LAPIS_BLOCK));
 		r.register(blockItem(TFBlocks.TWISTED_STONE));
 		r.register(blockItem(TFBlocks.TWISTED_STONE_PILLAR));
-		r.register(makeBlockItem(new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder()) {
+		r.register(makeBlockItem(new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant()) {
 			@Override
 			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 				consumer.accept(new IItemRenderProperties() {
