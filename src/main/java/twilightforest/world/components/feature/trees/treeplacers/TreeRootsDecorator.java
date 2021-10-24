@@ -3,7 +3,6 @@ package twilightforest.world.components.feature.trees.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -106,12 +105,12 @@ public class TreeRootsDecorator extends TreeDecorator {
             if (stillAboveGround && FeatureLogic.hasEmptyNeighbor(worldReader, coord)) {
                 if (worldReader.isStateAtPosition(coord, FeatureLogic::canRootReplace)) {
                     worldPlacer.accept(coord, airRoot.getState(random, coord));
-                } else if (worldReader.isStateAtPosition(coord, state -> !state.is(BlockTags.LOGS))) break;
+                } else if (!worldReader.isStateAtPosition(coord, FeatureLogic.SHOULD_SKIP)) break;
             } else {
                 stillAboveGround = false;
                 if (FeatureLogic.canRootGrowIn(worldReader, coord)) {
                     worldPlacer.accept(coord, dirtRoot.getState(random, coord));
-                } else break;
+                } else if (!worldReader.isStateAtPosition(coord, FeatureLogic.SHOULD_SKIP)) break;
             }
         }
     }
@@ -124,7 +123,7 @@ public class TreeRootsDecorator extends TreeDecorator {
         for (BlockPos coord : new VoxelBresenhamIterator(pos.below(), dest)) {
             if (FeatureLogic.canRootGrowIn(world, coord)) {
                 worldPlacer.accept(coord, dirtRoot.getState(random, coord));
-            } else break;
+            } else if (!world.isStateAtPosition(coord, FeatureLogic.SHOULD_SKIP)) break;
         }
     }
 }
