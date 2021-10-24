@@ -2,6 +2,14 @@
   "replace": false,
   "values": [
     "twilightforest:iron_ladder",
-    "twilightforest:root_strand"
+    "twilightforest:root_strand",
+    "twilightforest:hollow_twilight_oak_log_climbable",
+    "twilightforest:hollow_canopy_log_climbable",
+    "twilightforest:hollow_mangrove_log_climbable",
+    "twilightforest:hollow_dark_log_climbable",
+    "twilightforest:hollow_time_log_climbable",
+    "twilightforest:hollow_transformation_log_climbable",
+    "twilightforest:hollow_mining_log_climbable",
+    "twilightforest:hollow_sorting_log_climbable"
   ]
 }

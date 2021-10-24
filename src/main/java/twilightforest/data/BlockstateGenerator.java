@@ -12,12 +12,10 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.enums.FireJetVariant;
-import twilightforest.enums.HugeLilypadPiece;
-import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.enums.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -652,6 +650,30 @@ public class BlockstateGenerator extends BlockStateProvider {
 		plankBlocks("sort", TFBlocks.SORTING_PLANKS.get(), TFBlocks.SORTING_SLAB.get(), TFBlocks.SORTING_STAIRS.get(), TFBlocks.SORTING_BUTTON.get(), TFBlocks.SORTING_FENCE.get(), TFBlocks.SORTING_GATE.get(), TFBlocks.SORTING_PLATE.get(), TFBlocks.SORTING_DOOR.get(), TFBlocks.SORTING_TRAPDOOR.get(), TFBlocks.SORTING_BANISTER.get());
 		singleBlockBoilerPlate(TFBlocks.SORTING_LEAVES.get(), "block/leaves", m -> m.texture("all", "block/sorting_leaves"));
 		magicLogCore(TFBlocks.SORTING_LOG_CORE.get());
+
+		final ResourceLocation MOSS = TwilightForestMod.prefix("block/mosspatch");
+		final ResourceLocation MOSS_OVERHANG = TwilightForestMod.prefix("block/moss_overhang");
+		final ResourceLocation TALL_GRASS = new ResourceLocation("block/grass");
+		final ResourceLocation SNOW = new ResourceLocation("block/snow");
+		final ResourceLocation SNOW_OVERHANG = TwilightForestMod.prefix("block/snow_overhang");
+
+		final ModelFile EMPTY_LOG = this.buildHorizontalHollowLog(false, false);
+		final ModelFile LAYERED_LOG = this.buildHorizontalHollowLog(true, false);
+		final ModelFile MOSS_LOG_GRASS = models().getBuilder("hollow_log_moss_grass").parent(this.buildHorizontalHollowLog(true, true)).texture("carpet", MOSS).texture("overhang", MOSS_OVERHANG).texture("plant", TALL_GRASS);
+		final ModelFile MOSS_LOG = models().getBuilder("hollow_log_moss").parent(LAYERED_LOG).texture("carpet", MOSS).texture("overhang", MOSS_OVERHANG);
+		final ModelFile SNOW_LOG = models().getBuilder("hollow_log_snow").parent(LAYERED_LOG).texture("carpet", SNOW).texture("overhang", SNOW_OVERHANG);
+		final ModelFile HOLLOW_LOG = this.buildVerticalLog(null);
+		final ModelFile VINE_LOG = this.buildVerticalLog(HollowLogVariants.Climbable.VINE);
+		final ModelFile LADDER_LOG = this.buildVerticalLog(HollowLogVariants.Climbable.LADDER);
+
+		hollowLogs(TFBlocks.TWILIGHT_OAK_LOG, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(TFBlocks.CANOPY_LOG, TFBlocks.STRIPPED_CANOPY_LOG, TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(TFBlocks.MANGROVE_LOG, TFBlocks.STRIPPED_MANGROVE_LOG, TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL, TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(TFBlocks.DARK_LOG, TFBlocks.STRIPPED_DARK_LOG, TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_LOG_VERTICAL, TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(TFBlocks.TIME_LOG, TFBlocks.STRIPPED_TIME_LOG, TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL, TFBlocks.HOLLOW_TIME_LOG_VERTICAL, TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(TFBlocks.TRANSFORMATION_LOG, TFBlocks.STRIPPED_TRANSFORMATION_LOG, TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(TFBlocks.MINING_LOG, TFBlocks.STRIPPED_MINING_LOG, TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL, TFBlocks.HOLLOW_MINING_LOG_VERTICAL, TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(TFBlocks.SORTING_LOG, TFBlocks.STRIPPED_SORTING_LOG, TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL, TFBlocks.HOLLOW_SORTING_LOG_VERTICAL, TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 
 		banisterVanilla(TFBlocks.OAK_BANISTER.get(), "oak_planks");
 		banisterVanilla(TFBlocks.SPRUCE_BANISTER.get(), "spruce_planks");
@@ -1650,6 +1672,92 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationX(270).addModel().condition(HugeMushroomBlock.UP, true).end();
 		getMultipartBuilder(b).part().modelFile(modelInside).uvLock(true).rotationX(90).addModel().condition(HugeMushroomBlock.DOWN, false).end();
 		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationX(90).addModel().condition(HugeMushroomBlock.DOWN, true).end();
+	}
+
+	private void hollowLogs(RegistryObject<RotatedPillarBlock> originalLog, RegistryObject<RotatedPillarBlock> strippedLog, RegistryObject<HollowLogHorizontal> horizontalHollowLog, RegistryObject<HollowLogVertical> verticalHollowLog, RegistryObject<HollowLogClimbable> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {
+		ResourceLocation top = TwilightForestMod.prefix("block/" + originalLog.getId().getPath() + "_top");
+		ResourceLocation side = TwilightForestMod.prefix("block/" + originalLog.getId().getPath());
+		ResourceLocation inner = TwilightForestMod.prefix("block/" + strippedLog.getId().getPath());
+
+		this.getVariantBuilder(horizontalHollowLog.get()).forAllStates(state -> ConfiguredModel.builder().modelFile((switch (state.getValue(HollowLogHorizontal.VARIANT)) {
+			case MOSS -> models().getBuilder(horizontalHollowLog.getId().getPath() + "_moss").parent(mossLog);
+			case MOSS_AND_GRASS -> models().getBuilder(horizontalHollowLog.getId().getPath() + "_moss_grass").parent(grassLog);
+			case SNOW -> models().getBuilder(horizontalHollowLog.getId().getPath() + "_snow").parent(snowLog);
+			default -> models().getBuilder(horizontalHollowLog.getId().getPath()).parent(emptyLog);
+		}).texture("top", top).texture("side", side).texture("inner", inner)).rotationY(state.getValue(HollowLogHorizontal.HORIZONTAL_AXIS) == Direction.Axis.X ? 90 : 0).build());
+
+		this.simpleBlock(verticalHollowLog.get(), models().getBuilder(verticalHollowLog.getId().getPath()).parent(hollowLog).texture("top", top).texture("side", side).texture("inner", inner));
+
+		this.getVariantBuilder(climbableHollowLog.get()).forAllStates(state -> ConfiguredModel.builder().modelFile((switch (state.getValue(HollowLogClimbable.VARIANT)) {
+			case VINE -> models().getBuilder(climbableHollowLog.getId().getPath() + "_vine").parent(vineLog);
+			case LADDER, LADDER_WATERLOGGED -> models().getBuilder(climbableHollowLog.getId().getPath() + "_ladder").parent(ladderLog);
+		}).texture("top", top).texture("side", side).texture("inner", inner)).rotationY((int) state.getValue(HollowLogClimbable.FACING).toYRot()).uvLock(true).build());
+	}
+
+	private BlockModelBuilder buildVerticalLog(@Nullable HollowLogVariants.Climbable variant) {
+		BlockModelBuilder model = this.models().withExistingParent(variant == null ? "vertical_hollow_log" : "vertical_hollow_log_" + variant.getSerializedName(), "minecraft:block/block").texture("particle", "#side")
+				.element().from(0, 0, 0).to(2, 16, 16).allFaces(((dir, builder) -> builder.cullface(dir).texture(dir == Direction.EAST ? "#inner" : dir.getAxis() == Direction.Axis.Y ? "#top" : "#side"))).face(Direction.EAST).cullface(null).end().end()
+				.element().from(14, 0, 0).to(16, 16, 16).allFaces(((dir, builder) -> builder.cullface(dir).texture(dir == Direction.WEST ? "#inner" : dir.getAxis() == Direction.Axis.Y ? "#top" : "#side"))).face(Direction.WEST).cullface(null).end().end()
+				.element().from(0, 0, 0).to(16, 16, 2).allFaces(((dir, builder) -> builder.cullface(dir).texture(dir == Direction.SOUTH ? "#inner" : dir.getAxis() == Direction.Axis.Y ? "#top" : "#side"))).face(Direction.SOUTH).cullface(null).end().end()
+				.element().from(0, 0, 14).to(16, 16, 16).allFaces(((dir, builder) -> builder.cullface(dir).texture(dir == Direction.NORTH ? "#inner" : dir.getAxis() == Direction.Axis.Y ? "#top" : "#side"))).face(Direction.NORTH).cullface(null).end().end();
+
+		if (variant != null) model.element().from(2, 0, 2.8f).to(14, 16, 2.8f)
+				.face(Direction.NORTH).end().face(Direction.SOUTH).end()
+				.faces((dir, builder) -> builder.texture("#climbable").tintindex(1)).shade(false).end()
+				.texture("climbable", "minecraft:block/" + variant.getSerializedName());
+
+		return model;
+	}
+
+	private BlockModelBuilder buildHorizontalHollowLog(boolean carpet, boolean grass) {
+		final int height = carpet ? 3 : 2;
+		final int heightInv = 16 - height;
+		grass &= carpet;
+
+		// Top, Bottom, Left side, Right side
+		BlockModelBuilder model = this.models().withExistingParent(carpet ? (grass ? "horizontal_hollow_log_plant" : "horizontal_hollow_log_carpet") : "horizontal_hollow_log", "minecraft:block/block").texture("particle", "#side")
+				.element().from(0, 0, 0).to(16, height, 16)
+				.allFaces((dir, builder) -> builder
+						.uvs(0, dir.getAxis() == Direction.Axis.Y ? 0 : heightInv, 16, 16)
+						.cullface(dir == Direction.UP ? null : dir)
+						.texture((carpet && dir == Direction.UP) ? "#carpet" : dir.getAxis() == Direction.Axis.Z ? "#top" : dir == Direction.UP ? "#inner" : "#side")
+				)
+				.face(Direction.EAST).uvs(heightInv, 0, 16, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).end()
+				.face(Direction.WEST).uvs(0, 0, height, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).end()
+				.face(Direction.DOWN).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).end()
+				.end()
+				.element().from(0, 14, 0).to(16, 16, 16)
+				.allFaces((dir, builder) -> builder
+						.uvs(0, 0, 16, dir.getAxis() == Direction.Axis.Y ? 16 : 2)
+						.cullface(dir == Direction.DOWN ? null : dir)
+						.texture(dir.getAxis() == Direction.Axis.Z ? "#top" : dir == Direction.DOWN ? "#inner" : "#side")
+				)
+				.face(Direction.EAST).uvs(0, 0, 2, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).end()
+				.face(Direction.WEST).uvs(14, 0, 16, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).end()
+				.face(Direction.DOWN).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).end()
+				.end()
+				.element().from(0, height, 0).to(2, 14, 16)
+				.face(Direction.NORTH).uvs(14, 2, 16, heightInv).end()
+				.face(Direction.SOUTH).uvs(0, 2, 2, heightInv).end()
+				.face(Direction.EAST).uvs(2, 0, heightInv, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).end()
+				.face(Direction.WEST).uvs(height, 0, 14, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).end()
+				.faces((dir, builder) -> builder.cullface(dir == Direction.EAST ? null : dir).texture(dir.getAxis() == Direction.Axis.Z ? "#top" : dir == Direction.EAST ? "#inner" : "#side")).end()
+				.element().from(14, height, 0).to(16, 14, 16)
+				.face(Direction.NORTH).uvs(0, 2, 2, heightInv).end()
+				.face(Direction.SOUTH).uvs(14, 2, 16, heightInv).end()
+				.face(Direction.EAST).uvs(2, 0, heightInv, 16).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90).end()
+				.face(Direction.WEST).uvs(height, 0, 14, 16).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90).end()
+				.faces((dir, builder) -> builder.cullface(dir == Direction.WEST ? null : dir).texture(dir.getAxis() == Direction.Axis.Z ? "#top" : dir == Direction.WEST ? "#inner" : "#side")).end()
+				;
+
+		if (carpet)
+			model.element().from(0, 0, 0).to(16, height, 16).face(Direction.NORTH).end().face(Direction.SOUTH).end().faces((dir, builder) -> builder.uvs(0, 16 - height, 16, 16).texture("#overhang"));
+		if (grass) {
+			model.element().from(0.8f, height, 8).to(15.2f, 14, 8).rotation().origin(8, 8, 8).axis(Direction.Axis.Y).angle(45).rescale(true).end().shade(false).face(Direction.NORTH).end().face(Direction.SOUTH).end().faces((direction, faceBuilder) -> faceBuilder.uvs(0, height, 16, 14).texture("#plant").tintindex(1));
+			model.element().from(8, height, 0.8f).to(8, 14, 15.2f).rotation().origin(8, 8, 8).axis(Direction.Axis.Y).angle(45).rescale(true).end().shade(false).face(Direction.WEST).end().face(Direction.EAST).end().faces((direction, faceBuilder) -> faceBuilder.uvs(0, height, 16, 14).texture("#plant").tintindex(1));
+		}
+
+		return model;
 	}
 
 	@Nonnull

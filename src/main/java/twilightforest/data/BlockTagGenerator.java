@@ -194,7 +194,17 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
         tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.FIERY_BLOCK.get());
         tag(BlockTags.PORTALS).add(TFBlocks.TWILIGHT_PORTAL.get());
-        tag(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER.get(), TFBlocks.ROOT_STRAND.get());
+
+        tag(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER.get(), TFBlocks.ROOT_STRAND.get()).add(
+                TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(),
+                TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(),
+                TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(),
+                TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(),
+                TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(),
+                TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(),
+                TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(),
+                TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get()
+        );
 
         tag(BlockTags.STANDING_SIGNS).add(TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.CANOPY_SIGN.get(),
                 TFBlocks.MANGROVE_SIGN.get(), TFBlocks.DARKWOOD_SIGN.get(),
@@ -392,7 +402,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.DEATH_TOME_SPAWNER.get(),
                 TFBlocks.EMPTY_CANOPY_BOOKSHELF.get(),
                 TFBlocks.CANOPY_BOOKSHELF.get()
-        );
+        ).add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(),
+                TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(),
+                TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(),
+                TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(),
+                TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(),
+                TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());
 
         tag(BlockTags.MINEABLE_WITH_HOE).add(
                 //vanilla doesnt use the leaves tag

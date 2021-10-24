@@ -253,6 +253,8 @@ public class TFBlocks {
 	public static final RegistryObject<TrophyWallBlock> ALPHA_YETI_WALL_TROPHY = BLOCKS.register("alpha_yeti_wall_trophy", () -> new TrophyWallBlock(BossVariant.ALPHA_YETI));
 	public static final RegistryObject<TrophyWallBlock> QUEST_RAM_WALL_TROPHY = BLOCKS.register("quest_ram_wall_trophy", () -> new TrophyWallBlock(BossVariant.QUEST_RAM));
 
+	// TODO Enumify all of the dang tree stuff
+
 	//all tree related stuff
 	public static final RegistryObject<BanisterBlock> OAK_BANISTER = BLOCKS.register("oak_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 	public static final RegistryObject<BanisterBlock> SPRUCE_BANISTER = BLOCKS.register("spruce_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.SPRUCE_PLANKS)));
@@ -272,48 +274,102 @@ public class TFBlocks {
 	public static final WoodType MINING = WoodType.create("mining");
 	public static final WoodType SORTING = WoodType.create("sorting");
 
-	public static final RegistryObject<RotatedPillarBlock> TWILIGHT_OAK_LOG = BLOCKS.register("twilight_oak_log", () -> new TFLogBlock(logProperties(MaterialColor.WOOD, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> CANOPY_LOG = BLOCKS.register("canopy_log", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL, MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> MANGROVE_LOG = BLOCKS.register("mangrove_log", () -> new TFLogBlock(logProperties(MaterialColor.DIRT, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> DARK_LOG = BLOCKS.register("dark_log", () -> new TFLogBlock(logProperties(MaterialColor.COLOR_BROWN, MaterialColor.STONE).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> TIME_LOG = BLOCKS.register("time_log", () -> new TFLogBlock(logProperties(MaterialColor.DIRT, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> TRANSFORMATION_LOG = BLOCKS.register("transformation_log", () -> new TFLogBlock(logProperties(MaterialColor.WOOD, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> MINING_LOG = BLOCKS.register("mining_log", () -> new TFLogBlock(logProperties(MaterialColor.SAND, MaterialColor.QUARTZ).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> SORTING_LOG = BLOCKS.register("sorting_log", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL, MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD)));
+	public static final BlockBehaviour.Properties TWILIGHT_OAK_LOG_PROPS = logProperties(MaterialColor.WOOD, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties CANOPY_LOG_PROPS = logProperties(MaterialColor.PODZOL, MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties MANGROVE_LOG_PROPS = logProperties(MaterialColor.DIRT, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties DARK_LOG_PROPS = logProperties(MaterialColor.COLOR_BROWN, MaterialColor.STONE).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties TIME_LOG_PROPS = logProperties(MaterialColor.DIRT, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties TRANSFORMATION_LOG_PROPS = logProperties(MaterialColor.WOOD, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties MINING_LOG_PROPS = logProperties(MaterialColor.SAND, MaterialColor.QUARTZ).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties SORTING_LOG_PROPS = logProperties(MaterialColor.PODZOL, MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD);
 
-	public static final RegistryObject<Block> TIME_LOG_CORE = BLOCKS.register("time_log_core", () -> new SpecialMagicLogBlock(logProperties(MaterialColor.DIRT, MaterialColor.PODZOL), MagicWoodVariant.TIME));
-	public static final RegistryObject<Block> TRANSFORMATION_LOG_CORE = BLOCKS.register("transformation_log_core", () -> new SpecialMagicLogBlock(logProperties(MaterialColor.WOOD, MaterialColor.PODZOL), MagicWoodVariant.TRANS));
-	public static final RegistryObject<Block> MINING_LOG_CORE = BLOCKS.register("mining_log_core", () -> new SpecialMagicLogBlock(logProperties(MaterialColor.SAND, MaterialColor.QUARTZ), MagicWoodVariant.MINE));
-	public static final RegistryObject<Block> SORTING_LOG_CORE = BLOCKS.register("sorting_log_core", () -> new SpecialMagicLogBlock(logProperties(MaterialColor.PODZOL, MaterialColor.COLOR_BROWN), MagicWoodVariant.SORT));
+	public static final BlockBehaviour.Properties TWILIGHT_OAK_BARK_PROPS = logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties CANOPY_BARK_PROPS = logProperties(MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties MANGROVE_BARK_PROPS = logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties DARK_BARK_PROPS = logProperties(MaterialColor.STONE).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties TIME_BARK_PROPS = logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties TRANSFORMATION_BARK_PROPS = logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties MINING_BARK_PROPS = logProperties(MaterialColor.QUARTZ).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties SORTING_BARK_PROPS = logProperties(MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD);
 
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TWILIGHT_OAK_LOG = BLOCKS.register("stripped_twilight_oak_log", () -> new TFLogBlock(logProperties(MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_CANOPY_LOG = BLOCKS.register("stripped_canopy_log", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = BLOCKS.register("stripped_mangrove_log", () -> new TFLogBlock(logProperties(MaterialColor.DIRT).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_DARK_LOG = BLOCKS.register("stripped_dark_log", () -> new TFLogBlock(logProperties(MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TIME_LOG = BLOCKS.register("stripped_time_log", () -> new TFLogBlock(logProperties(MaterialColor.DIRT).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TRANSFORMATION_LOG = BLOCKS.register("stripped_transformation_log", () -> new TFLogBlock(logProperties(MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MINING_LOG = BLOCKS.register("stripped_mining_log", () -> new TFLogBlock(logProperties(MaterialColor.SAND).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_SORTING_LOG = BLOCKS.register("stripped_sorting_log", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
+	public static final BlockBehaviour.Properties TWILIGHT_OAK_STRIPPED_PROPS = logProperties(MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties CANOPY_STRIPPED_PROPS = logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties MANGROVE_STRIPPED_PROPS = logProperties(MaterialColor.DIRT).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties DARK_STRIPPED_PROPS = logProperties(MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties TIME_STRIPPED_PROPS = logProperties(MaterialColor.DIRT).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties TRANSFORMATION_STRIPPED_PROPS = logProperties(MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties MINING_STRIPPED_PROPS = logProperties(MaterialColor.SAND).strength(2.0F).sound(SoundType.WOOD);
+	public static final BlockBehaviour.Properties SORTING_STRIPPED_PROPS = logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
 
-	public static final RegistryObject<RotatedPillarBlock> TWILIGHT_OAK_WOOD = BLOCKS.register("twilight_oak_wood", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> CANOPY_WOOD = BLOCKS.register("canopy_wood", () -> new TFLogBlock(logProperties(MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> MANGROVE_WOOD = BLOCKS.register("mangrove_wood", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> DARK_WOOD = BLOCKS.register("dark_wood", () -> new TFLogBlock(logProperties(MaterialColor.STONE).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> TIME_WOOD = BLOCKS.register("time_wood", () -> new TFLogBlock(logProperties(MaterialColor.DIRT).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> TRANSFORMATION_WOOD = BLOCKS.register("transformation_wood", () -> new TFLogBlock(logProperties(MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> MINING_WOOD = BLOCKS.register("mining_wood", () -> new TFLogBlock(logProperties(MaterialColor.SAND).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> SORTING_WOOD = BLOCKS.register("sorting_wood", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> TWILIGHT_OAK_LOG = BLOCKS.register("twilight_oak_log", () -> new TFLogBlock(TWILIGHT_OAK_LOG_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> CANOPY_LOG = BLOCKS.register("canopy_log", () -> new TFLogBlock(CANOPY_LOG_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> MANGROVE_LOG = BLOCKS.register("mangrove_log", () -> new TFLogBlock(MANGROVE_LOG_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> DARK_LOG = BLOCKS.register("dark_log", () -> new TFLogBlock(DARK_LOG_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> TIME_LOG = BLOCKS.register("time_log", () -> new TFLogBlock(TIME_LOG_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> TRANSFORMATION_LOG = BLOCKS.register("transformation_log", () -> new TFLogBlock(TRANSFORMATION_LOG_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> MINING_LOG = BLOCKS.register("mining_log", () -> new TFLogBlock(MINING_LOG_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> SORTING_LOG = BLOCKS.register("sorting_log", () -> new TFLogBlock(SORTING_LOG_PROPS));
+
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL = BLOCKS.register("hollow_twilight_oak_log_horizontal", () -> new HollowLogHorizontal(TWILIGHT_OAK_BARK_PROPS, TFItems.HOLLOW_TWILIGHT_OAK_LOG));
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_CANOPY_LOG_HORIZONTAL = BLOCKS.register("hollow_canopy_log_horizontal", () -> new HollowLogHorizontal(CANOPY_BARK_PROPS, TFItems.HOLLOW_CANOPY_LOG));
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_MANGROVE_LOG_HORIZONTAL = BLOCKS.register("hollow_mangrove_log_horizontal", () -> new HollowLogHorizontal(MANGROVE_BARK_PROPS, TFItems.HOLLOW_MANGROVE_LOG));
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_DARK_LOG_HORIZONTAL = BLOCKS.register("hollow_dark_log_horizontal", () -> new HollowLogHorizontal(DARK_BARK_PROPS, TFItems.HOLLOW_DARK_LOG));
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_TIME_LOG_HORIZONTAL = BLOCKS.register("hollow_time_log_horizontal", () -> new HollowLogHorizontal(TIME_BARK_PROPS, TFItems.HOLLOW_TIME_LOG));
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_TRANSFORMATION_LOG_HORIZONTAL = BLOCKS.register("hollow_transformation_log_horizontal", () -> new HollowLogHorizontal(TRANSFORMATION_BARK_PROPS, TFItems.HOLLOW_TRANSFORMATION_LOG));
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_MINING_LOG_HORIZONTAL = BLOCKS.register("hollow_mining_log_horizontal", () -> new HollowLogHorizontal(MINING_BARK_PROPS, TFItems.HOLLOW_MINING_LOG));
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_SORTING_LOG_HORIZONTAL = BLOCKS.register("hollow_sorting_log_horizontal", () -> new HollowLogHorizontal(SORTING_BARK_PROPS, TFItems.HOLLOW_SORTING_LOG));
+
+	public static final RegistryObject<HollowLogVertical> HOLLOW_TWILIGHT_OAK_LOG_VERTICAL = BLOCKS.register("hollow_twilight_oak_log_vertical", () -> new HollowLogVertical(TWILIGHT_OAK_STRIPPED_PROPS, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, TFItems.HOLLOW_TWILIGHT_OAK_LOG));
+	public static final RegistryObject<HollowLogVertical> HOLLOW_CANOPY_LOG_VERTICAL = BLOCKS.register("hollow_canopy_log_vertical", () -> new HollowLogVertical(CANOPY_STRIPPED_PROPS, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, TFItems.HOLLOW_CANOPY_LOG));
+	public static final RegistryObject<HollowLogVertical> HOLLOW_MANGROVE_LOG_VERTICAL = BLOCKS.register("hollow_mangrove_log_vertical", () -> new HollowLogVertical(MANGROVE_STRIPPED_PROPS, TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE, TFItems.HOLLOW_MANGROVE_LOG));
+	public static final RegistryObject<HollowLogVertical> HOLLOW_DARK_LOG_VERTICAL = BLOCKS.register("hollow_dark_log_vertical", () -> new HollowLogVertical(DARK_STRIPPED_PROPS, TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE, TFItems.HOLLOW_DARK_LOG));
+	public static final RegistryObject<HollowLogVertical> HOLLOW_TIME_LOG_VERTICAL = BLOCKS.register("hollow_time_log_vertical", () -> new HollowLogVertical(TIME_STRIPPED_PROPS, TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE, TFItems.HOLLOW_TIME_LOG));
+	public static final RegistryObject<HollowLogVertical> HOLLOW_TRANSFORMATION_LOG_VERTICAL = BLOCKS.register("hollow_transformation_log_vertical", () -> new HollowLogVertical(TRANSFORMATION_STRIPPED_PROPS, TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE, TFItems.HOLLOW_TRANSFORMATION_LOG));
+	public static final RegistryObject<HollowLogVertical> HOLLOW_MINING_LOG_VERTICAL = BLOCKS.register("hollow_mining_log_vertical", () -> new HollowLogVertical(MINING_STRIPPED_PROPS, TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE, TFItems.HOLLOW_MINING_LOG));
+	public static final RegistryObject<HollowLogVertical> HOLLOW_SORTING_LOG_VERTICAL = BLOCKS.register("hollow_sorting_log_vertical", () -> new HollowLogVertical(SORTING_STRIPPED_PROPS, TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE, TFItems.HOLLOW_SORTING_LOG));
+
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE = BLOCKS.register("hollow_twilight_oak_log_climbable", () -> new HollowLogClimbable(TWILIGHT_OAK_STRIPPED_PROPS, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFItems.HOLLOW_TWILIGHT_OAK_LOG));
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_CANOPY_LOG_CLIMBABLE = BLOCKS.register("hollow_canopy_log_climbable", () -> new HollowLogClimbable(CANOPY_STRIPPED_PROPS, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFItems.HOLLOW_CANOPY_LOG));
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_MANGROVE_LOG_CLIMBABLE = BLOCKS.register("hollow_mangrove_log_climbable", () -> new HollowLogClimbable(MANGROVE_STRIPPED_PROPS, TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL, TFItems.HOLLOW_MANGROVE_LOG));
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_DARK_LOG_CLIMBABLE = BLOCKS.register("hollow_dark_log_climbable", () -> new HollowLogClimbable(DARK_STRIPPED_PROPS, TFBlocks.HOLLOW_DARK_LOG_VERTICAL, TFItems.HOLLOW_DARK_LOG));
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_TIME_LOG_CLIMBABLE = BLOCKS.register("hollow_time_log_climbable", () -> new HollowLogClimbable(TIME_STRIPPED_PROPS, TFBlocks.HOLLOW_TIME_LOG_VERTICAL, TFItems.HOLLOW_TIME_LOG));
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_TRANSFORMATION_LOG_CLIMBABLE = BLOCKS.register("hollow_transformation_log_climbable", () -> new HollowLogClimbable(TRANSFORMATION_STRIPPED_PROPS, TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL, TFItems.HOLLOW_TRANSFORMATION_LOG));
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_MINING_LOG_CLIMBABLE = BLOCKS.register("hollow_mining_log_climbable", () -> new HollowLogClimbable(MINING_STRIPPED_PROPS, TFBlocks.HOLLOW_MINING_LOG_VERTICAL, TFItems.HOLLOW_MINING_LOG));
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_SORTING_LOG_CLIMBABLE = BLOCKS.register("hollow_sorting_log_climbable", () -> new HollowLogClimbable(SORTING_STRIPPED_PROPS, TFBlocks.HOLLOW_SORTING_LOG_VERTICAL, TFItems.HOLLOW_SORTING_LOG));
+
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TWILIGHT_OAK_LOG = BLOCKS.register("stripped_twilight_oak_log", () -> new TFLogBlock(TWILIGHT_OAK_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_CANOPY_LOG = BLOCKS.register("stripped_canopy_log", () -> new TFLogBlock(CANOPY_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = BLOCKS.register("stripped_mangrove_log", () -> new TFLogBlock(MANGROVE_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_DARK_LOG = BLOCKS.register("stripped_dark_log", () -> new TFLogBlock(DARK_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TIME_LOG = BLOCKS.register("stripped_time_log", () -> new TFLogBlock(TIME_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TRANSFORMATION_LOG = BLOCKS.register("stripped_transformation_log", () -> new TFLogBlock(TRANSFORMATION_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MINING_LOG = BLOCKS.register("stripped_mining_log", () -> new TFLogBlock(MINING_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_SORTING_LOG = BLOCKS.register("stripped_sorting_log", () -> new TFLogBlock(SORTING_STRIPPED_PROPS));
+
+	public static final RegistryObject<RotatedPillarBlock> TWILIGHT_OAK_WOOD = BLOCKS.register("twilight_oak_wood", () -> new TFLogBlock(TWILIGHT_OAK_BARK_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> CANOPY_WOOD = BLOCKS.register("canopy_wood", () -> new TFLogBlock(CANOPY_BARK_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> MANGROVE_WOOD = BLOCKS.register("mangrove_wood", () -> new TFLogBlock(MANGROVE_BARK_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> DARK_WOOD = BLOCKS.register("dark_wood", () -> new TFLogBlock(DARK_BARK_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> TIME_WOOD = BLOCKS.register("time_wood", () -> new TFLogBlock(TIME_BARK_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> TRANSFORMATION_WOOD = BLOCKS.register("transformation_wood", () -> new TFLogBlock(TRANSFORMATION_BARK_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> MINING_WOOD = BLOCKS.register("mining_wood", () -> new TFLogBlock(MINING_BARK_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> SORTING_WOOD = BLOCKS.register("sorting_wood", () -> new TFLogBlock(SORTING_BARK_PROPS));
+
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TWILIGHT_OAK_WOOD = BLOCKS.register("stripped_twilight_oak_wood", () -> new TFLogBlock(TWILIGHT_OAK_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_CANOPY_WOOD = BLOCKS.register("stripped_canopy_wood", () -> new TFLogBlock(CANOPY_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = BLOCKS.register("stripped_mangrove_wood", () -> new TFLogBlock(MANGROVE_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_DARK_WOOD = BLOCKS.register("stripped_dark_wood", () -> new TFLogBlock(DARK_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TIME_WOOD = BLOCKS.register("stripped_time_wood", () -> new TFLogBlock(TIME_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TRANSFORMATION_WOOD = BLOCKS.register("stripped_transformation_wood", () -> new TFLogBlock(TRANSFORMATION_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MINING_WOOD = BLOCKS.register("stripped_mining_wood", () -> new TFLogBlock(MINING_STRIPPED_PROPS));
+	public static final RegistryObject<RotatedPillarBlock> STRIPPED_SORTING_WOOD = BLOCKS.register("stripped_sorting_wood", () -> new TFLogBlock(SORTING_STRIPPED_PROPS));
+
+	public static final RegistryObject<Block> TIME_LOG_CORE = BLOCKS.register("time_log_core", () -> new SpecialMagicLogBlock(TIME_LOG_PROPS, MagicWoodVariant.TIME));
+	public static final RegistryObject<Block> TRANSFORMATION_LOG_CORE = BLOCKS.register("transformation_log_core", () -> new SpecialMagicLogBlock(TRANSFORMATION_LOG_PROPS, MagicWoodVariant.TRANS));
+	public static final RegistryObject<Block> MINING_LOG_CORE = BLOCKS.register("mining_log_core", () -> new SpecialMagicLogBlock(MINING_LOG_PROPS, MagicWoodVariant.MINE));
+	public static final RegistryObject<Block> SORTING_LOG_CORE = BLOCKS.register("sorting_log_core", () -> new SpecialMagicLogBlock(SORTING_LOG_PROPS, MagicWoodVariant.SORT));
 
 	public static final RegistryObject<Block> MANGROVE_ROOT = BLOCKS.register("mangrove_root", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0F).sound(SoundType.WOOD)));
-
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TWILIGHT_OAK_WOOD = BLOCKS.register("stripped_twilight_oak_wood", () -> new TFLogBlock(logProperties(MaterialColor.WOOD, MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_CANOPY_WOOD = BLOCKS.register("stripped_canopy_wood", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = BLOCKS.register("stripped_mangrove_wood", () -> new TFLogBlock(logProperties(MaterialColor.DIRT, MaterialColor.DIRT).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_DARK_WOOD = BLOCKS.register("stripped_dark_wood", () -> new TFLogBlock(logProperties(MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_ORANGE).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TIME_WOOD = BLOCKS.register("stripped_time_wood", () -> new TFLogBlock(logProperties(MaterialColor.DIRT).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TRANSFORMATION_WOOD = BLOCKS.register("stripped_transformation_wood", () -> new TFLogBlock(logProperties(MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MINING_WOOD = BLOCKS.register("stripped_mining_wood", () -> new TFLogBlock(logProperties(MaterialColor.SAND).strength(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> STRIPPED_SORTING_WOOD = BLOCKS.register("stripped_sorting_wood", () -> new TFLogBlock(logProperties(MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD)));
 
 	public static final RegistryObject<Block> TWILIGHT_OAK_LEAVES = BLOCKS.register("twilight_oak_leaves", () -> new TFLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES)));
 	public static final RegistryObject<Block> CANOPY_LEAVES = BLOCKS.register("canopy_leaves", () -> new TFLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES)));
@@ -470,12 +526,11 @@ public class TFBlocks {
 	}
 
 	private static BlockBehaviour.Properties logProperties(MaterialColor color) {
-		return logProperties(color, color);
+		return BlockBehaviour.Properties.of(Material.WOOD, color);
 	}
 
 	private static BlockBehaviour.Properties logProperties(MaterialColor top, MaterialColor side) {
-		return BlockBehaviour.Properties.of(Material.WOOD, (state) ->
-				state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
+		return BlockBehaviour.Properties.of(Material.WOOD, (state) -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
 	}
 
 	public static void tfCompostables() {
