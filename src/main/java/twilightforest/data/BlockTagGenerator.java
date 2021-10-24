@@ -35,15 +35,16 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final Tag.Named<Block> TF_FENCE_GATES = BlockTags.bind(TwilightForestMod.prefix("fence_gates").toString());
     public static final Tag.Named<Block> BANISTERS = BlockTags.bind(TwilightForestMod.prefix("banisters").toString());
 
-    public static final Tag.Named<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.bind("forge:storage_blocks/arctic_fur");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.bind("forge:storage_blocks/carminite");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_FIERY = BlockTags.bind("forge:storage_blocks/fiery");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.bind("forge:storage_blocks/ironwood");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.bind("forge:storage_blocks/knightmetal");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.bind("forge:storage_blocks/steeleaf");
 
-    public static final Tag.Named<Block> ORES_IRONWOOD = BlockTags.bind("forge:ores/ironwood");
-    public static final Tag.Named<Block> ORES_KNIGHTMETAL = BlockTags.bind("forge:ores/knightmetal");
+    public static final Tag.Named<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.bind(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString());
+    public static final Tag.Named<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.bind(TwilightForestMod.prefix("storage_blocks/carminite").toString());
+    public static final Tag.Named<Block> STORAGE_BLOCKS_FIERY = BlockTags.bind(TwilightForestMod.prefix("storage_blocks/fiery").toString());
+    public static final Tag.Named<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.bind(TwilightForestMod.prefix("storage_blocks/ironwood").toString());
+    public static final Tag.Named<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.bind(TwilightForestMod.prefix("storage_blocks/knightmetal").toString());
+    public static final Tag.Named<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.bind(TwilightForestMod.prefix("storage_blocks/steeleaf").toString());
+
+    public static final Tag.Named<Block> ORES_IRONWOOD = BlockTags.bind(TwilightForestMod.prefix("ores/ironwood").toString());
+    public static final Tag.Named<Block> ORES_KNIGHTMETAL = BlockTags.bind(TwilightForestMod.prefix("ores/knightmetal").toString());
 
     public static final Tag.Named<Block> PORTAL_EDGE = BlockTags.bind(TwilightForestMod.prefix("portal/edge").toString());
     public static final Tag.Named<Block> PORTAL_POOL = BlockTags.bind(TwilightForestMod.prefix("portal/fluid").toString());
@@ -58,6 +59,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final Tag.Named<Block> ANTIBUILDER_IGNORES = BlockTags.bind(TwilightForestMod.prefix("antibuilder_ignores").toString());
     public static final Tag.Named<Block> CARMINITE_REACTOR_IMMUNE = BlockTags.bind(TwilightForestMod.prefix("carminite_reactor_immune").toString());
     public static final Tag.Named<Block> STRUCTURE_BANNED_INTERACTIONS = BlockTags.bind(TwilightForestMod.prefix("structure_banned_interactions").toString());
+
+    public static final Tag.Named<Block> WORLDGEN_SKIPPABLES = BlockTags.bind(TwilightForestMod.prefix("worldgen_skippables").toString());
+    public static final Tag.Named<Block> WORLDGEN_REPLACEABLES = BlockTags.bind(TwilightForestMod.prefix("worldgen_replaceables").toString());
 
     public static final Tag.Named<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/ore_safe_replace_block").toString());
     public static final Tag.Named<Block> ORE_MAGNET_BLOCK_REPLACE_ORE = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/block_replace_ore").toString());
@@ -286,7 +290,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.GREEN_FORCE_FIELD.get(),
                 TFBlocks.BLUE_FORCE_FIELD.get(),
                 TFBlocks.VIOLET_FORCE_FIELD.get(),
-                TFBlocks.KEEPSAKE_CASKET.get()
+                TFBlocks.KEEPSAKE_CASKET.get(),
+                TFBlocks.TROPHY_PEDESTAL.get()
         ).add( // [VanillaCopy] WITHER_IMMUNE - Do NOT include that tag in this tag
                 Blocks.BARRIER,
                 Blocks.BEDROCK,
@@ -370,6 +375,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
         );
 
         tag(ORE_MAGNET_ROOT).add(TFBlocks.LIVEROOT_BLOCK.get());
+
+        tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
+
+        // For anything that you consider okay for placer systems to pass through during Worldgen
+        tag(WORLDGEN_SKIPPABLES).addTags(BlockTags.LOGS, COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get());
+        // For anything that permits replacement during Worldgen
+        tag(WORLDGEN_REPLACEABLES).addTags(BlockTags.LUSH_GROUND_REPLACEABLE);
 
         tag(BlockTags.MINEABLE_WITH_AXE).addTag(BANISTERS).add(
                 TFBlocks.HEDGE.get(),
