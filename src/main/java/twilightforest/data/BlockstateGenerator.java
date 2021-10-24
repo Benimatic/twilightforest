@@ -1524,7 +1524,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	private void lilyPad(Block b) {
 		String baseName = b.getRegistryName().getPath();
-		ResourceLocation parent = new ResourceLocation("block/lily_pad");
+		ResourceLocation parent = prefix("block/huge_lily_pad");
 		ModelFile[] models = new ModelFile[4];
 		for (int i = 0; i < models.length; i++) {
 			models[i] = models().withExistingParent(baseName + "_" + i, parent)
