@@ -6,6 +6,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkSource;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -63,5 +64,13 @@ public final class WorldUtil {
 		if (generator instanceof ChunkGeneratorTwilight) {
 			return generator.getSeaLevel();
 		} else return TFGenerationSettings.SEALEVEL;
+	}
+
+	public static int getBaseHeight(LevelAccessor level, int x, int z, Heightmap.Types type) {
+		if (level.getChunkSource() instanceof ServerChunkCache chunkSource) {
+			return chunkSource.generator.getBaseHeight(x, z, type, level);
+		} else {
+			return level.getHeight(type, x, z);
+		}
 	}
 }

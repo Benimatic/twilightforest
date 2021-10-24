@@ -9,10 +9,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.config.ThornsConfig;
 
 import java.util.Random;
@@ -33,17 +34,18 @@ public class TwilightThorns extends Feature<ThornsConfig> {
 		int nextLength = 2 + rand.nextInt(4);
 		int maxLength = 2 + rand.nextInt(4) + rand.nextInt(4) + rand.nextInt(4);
 
-		placeThorns(world, rand, pos, nextLength, Direction.UP, maxLength, pos, ctx.config());
+		placeThorns(world, rand, pos, nextLength, Direction.UP, maxLength, pos, ctx.config(), true);
 
 		return true;
 	}
 
-	private void placeThorns(WorldGenLevel world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos, ThornsConfig config) {
+	private void placeThorns(WorldGenLevel world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos, ThornsConfig config, boolean avoidGiantCloud) {
 		boolean complete = false;
 		for (int i = 0; i < length; i++) {
 			BlockPos dPos = pos.relative(dir, i);
 
-			if (world.canSeeSkyFromBelowWater(pos)) {
+			// Makes it avoid the troll clouds
+			if (!avoidGiantCloud || dPos.getY() - 64 <= WorldUtil.getBaseHeight(world, dPos.getX(), dPos.getZ(), Heightmap.Types.MOTION_BLOCKING_NO_LEAVES)) {
 				if (Math.abs(dPos.getX() - oPos.getX()) < config.maxSpread() && Math.abs(dPos.getZ() - oPos.getZ()) < config.maxSpread() && canPlaceThorns(world, dPos)) {
 					world.setBlock(dPos, TFBlocks.BROWN_THORNS.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
 
@@ -77,7 +79,7 @@ public class TwilightThorns extends Feature<ThornsConfig> {
 			BlockPos nextPos = pos.relative(dir, length - 1).relative(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
 
-			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos, config);
+			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos, config, false);
 		}
 
 		// maybe another branch off the middle
@@ -90,7 +92,7 @@ public class TwilightThorns extends Feature<ThornsConfig> {
 			BlockPos nextPos = pos.relative(dir, middle).relative(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
 
-			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos, config);
+			this.placeThorns(world, rand, nextPos, nextLength, nextDir, maxLength - 1, oPos, config, false);
 		}
 
 		// maybe a leaf
