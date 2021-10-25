@@ -168,14 +168,14 @@ public class BuilderBlock extends BaseEntityBlock {
 		if (state.getBlock() == TFBlocks.BUILT_BLOCK.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
 			world.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
 			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundSource.BLOCKS, 0.3F, 0.6F);
-			world.getBlockTicks().scheduleTick(pos, state.getBlock(), /*state.getBlock().tickRate(world)*/ 15); //TODO: Potentially incorrect, but we aren't allowed block tick rates
+			world.getBlockTicks().scheduleTick(pos, state.getBlock(), 10);
 		}
 	}
 
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? new CarminiteBuilderBlockEntity(pos, state) : null;
+		return new CarminiteBuilderBlockEntity(pos, state);
 	}
 
 	@Nullable
