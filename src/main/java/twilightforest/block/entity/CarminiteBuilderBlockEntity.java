@@ -40,8 +40,14 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 	 */
 	public void startBuilding() {
 		this.makingBlocks = true;
+		resetStats();
+	}
+
+	public void resetStats() {
 		this.blocksMade = 0;
 		this.lastBlockCoords = getBlockPos();
+		this.ticksStopped = 0;
+		this.blockedCounter = 0;
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteBuilderBlockEntity te) {

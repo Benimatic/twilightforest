@@ -22,6 +22,7 @@ import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.enums.TowerDeviceVariant;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.core.Direction;
@@ -92,6 +93,7 @@ public class BuilderBlock extends BaseEntityBlock {
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_INACTIVE || variant == TowerDeviceVariant.BUILDER_TIMEOUT) {
+			((CarminiteBuilderBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).resetStats();
 			for (Direction e : Direction.values()) {
 				activateBuiltBlocks(world, pos.relative(e));
 			}
@@ -170,19 +172,15 @@ public class BuilderBlock extends BaseEntityBlock {
 		}
 	}
 
-	/**
-	 * We need variable, metadata-based tick rates
-	 */
-
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CarminiteBuilderBlockEntity(pos, state);
+		return state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? new CarminiteBuilderBlockEntity(pos, state) : null;
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.TOWER_BUILDER.get(), CarminiteBuilderBlockEntity::tick);
+		return state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? createTickerHelper(type, TFBlockEntities.TOWER_BUILDER.get(), CarminiteBuilderBlockEntity::tick) : null;
 	}
 }
