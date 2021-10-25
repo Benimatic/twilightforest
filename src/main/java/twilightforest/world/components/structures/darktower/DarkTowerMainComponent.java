@@ -1046,7 +1046,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, true), 14, y + 1, 4, rotation, sbb);
 
 		//setBlockStateRotated(world, Blocks.CHEST, 0, 13, y + 2, 4, rotation, sbb);
-		placeTreasureRotated(world, 13, y + 2, 4, getOrientation(), rotation, TFTreasure.USELESS_LOOT, sbb);
+		placeTreasureRotated(world, 13, y + 2, 4, getOrientation(), rotation, TFTreasure.DARKTOWER_CACHE, sbb);
 		setBlockStateRotated(world, Blocks.CRAFTING_TABLE.defaultBlockState(), 14, y + 2, 4, rotation, sbb);
 
 		BlockState slab = Blocks.SPRUCE_SLAB.defaultBlockState()
@@ -1123,15 +1123,9 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	private void placeRandomPlant(WorldGenLevel world, Random decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		Block flowerPot = BlockTags.FLOWER_POTS.getRandomElement(decoRNG);
-		//dont include special saplings or thorns in our pots
-		List<Block> blacklistedPots = BlockTagGenerator.SPECIAL_POTS.getValues();
+		Block flowerPot = BlockTagGenerator.DARK_TOWER_ALLOWED_POTS.getRandomElement(decoRNG);
 		BlockState flowerPotState = flowerPot.defaultBlockState();
-		if(!blacklistedPots.contains(flowerPot)) {
-			setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
-		} else {
-			setBlockStateRotated(world, decoRNG.nextBoolean() ? Blocks.FLOWER_POT.defaultBlockState() : Blocks.POTTED_DEAD_BUSH.defaultBlockState(), x, y, z, rotation, sbb);
-		}
+		setBlockStateRotated(world, decoRNG.nextInt(10) == 0 ? Blocks.FLOWER_POT.defaultBlockState() : flowerPotState, x, y, z, rotation, sbb);
 	}
 
 	private void makeBottomEntrance(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
