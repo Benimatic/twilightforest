@@ -1,39 +1,39 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.RangedAttackMob;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.entity.projectile.FallingIce;
-import twilightforest.entity.projectile.IceBomb;
-import twilightforest.entity.projectile.TwilightWandBolt;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IHostileMount;
@@ -42,19 +42,17 @@ import twilightforest.entity.ai.StayNearHomeGoal;
 import twilightforest.entity.ai.ThrowRiderGoal;
 import twilightforest.entity.ai.YetiRampageGoal;
 import twilightforest.entity.ai.YetiTiredGoal;
+import twilightforest.entity.projectile.FallingIce;
+import twilightforest.entity.projectile.IceBomb;
+import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
+import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount {
 
@@ -63,6 +61,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;
+	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
 	public AlphaYeti(EntityType<? extends AlphaYeti> type, Level world) {
 		super(type, world);
@@ -184,6 +183,9 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		}
 
 		this.canRampage = true;
+		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
+			hurtBy.add(player);
+		}
 		return super.hurt(source, amount);
 	}
 
@@ -386,6 +388,9 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		// mark the lair as defeated
 		if (!level.isClientSide) {
 			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.YETI_CAVE);
+			for(ServerPlayer player : hurtBy) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
+			}
 		}
 	}
 

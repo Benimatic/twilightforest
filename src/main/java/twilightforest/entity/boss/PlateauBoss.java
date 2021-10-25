@@ -14,15 +14,19 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlateauBoss extends Monster {
 
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
+	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
 	public PlateauBoss(EntityType<? extends PlateauBoss> type, Level world) {
 		super(type, world);
@@ -62,10 +66,21 @@ public class PlateauBoss extends Monster {
 	}
 
 	@Override
+	public boolean hurt(DamageSource source, float amount) {
+		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
+			hurtBy.add(player);
+		}
+		return super.hurt(source, amount);
+	}
+
+	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!level.isClientSide) {
 			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.FINAL_CASTLE);
+			for(ServerPlayer player : hurtBy) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
+			}
 		}
 	}
 

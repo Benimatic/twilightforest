@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +22,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -29,12 +31,16 @@ import twilightforest.entity.ai.GroundAttackGoal;
 import twilightforest.item.TFItems;
 import twilightforest.world.registration.TFGenerationSettings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Minoshroom extends Minotaur {
 	private static final EntityDataAccessor<Boolean> GROUND_ATTACK = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> GROUND_CHARGE = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.INT);
 	private float prevClientSideChargeAnimation;
 	private float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
+	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
 	public Minoshroom(EntityType<? extends Minoshroom> type, Level world) {
 		super(type, world);
@@ -142,10 +148,21 @@ public class Minoshroom extends Minotaur {
 	}
 
 	@Override
+	public boolean hurt(DamageSource source, float amount) {
+		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
+			hurtBy.add(player);
+		}
+		return super.hurt(source, amount);
+	}
+
+	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!level.isClientSide) {
 			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.LABYRINTH);
+			for(ServerPlayer player : hurtBy) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
+			}
 		}
 	}
 

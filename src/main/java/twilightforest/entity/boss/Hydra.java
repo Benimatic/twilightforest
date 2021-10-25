@@ -28,6 +28,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFPart;
 import twilightforest.util.EntityUtil;
@@ -66,6 +67,7 @@ public class Hydra extends Mob implements Enemy {
 	private float randomYawVelocity = 0f;
 
 	private int ticksSinceDamaged = 0;
+	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
 	public Hydra(EntityType<? extends Hydra> type, Level world) {
 		super(type, world);
@@ -633,6 +635,9 @@ public class Hydra extends Mob implements Enemy {
 
 	@Override
 	public boolean hurt(DamageSource src, float damage) {
+		if(src.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
+			hurtBy.add(player);
+		}
 		return src == DamageSource.OUT_OF_WORLD && super.hurt(src, damage);
 	}
 
@@ -705,6 +710,9 @@ public class Hydra extends Mob implements Enemy {
 		// mark the lair as defeated
 		if (!level.isClientSide) {
 			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.HYDRA_LAIR);
+			for (ServerPlayer player :hurtBy) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
+			}
 		}
 	}
 

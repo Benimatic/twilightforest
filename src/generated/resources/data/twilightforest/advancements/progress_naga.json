@@ -53,6 +53,20 @@
         ]
       }
     },
+    "was_in_fight": {
+      "trigger": "twilightforest:hurt_boss",
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:naga"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "kill_mob": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
@@ -63,7 +77,8 @@
   "requirements": [
     [
       "naga",
-      "scale"
+      "scale",
+      "was_in_fight"
     ],
     [
       "kill_mob"

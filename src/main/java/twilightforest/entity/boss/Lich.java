@@ -33,6 +33,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBolt;
@@ -48,6 +49,7 @@ import twilightforest.entity.ai.LichShadowsGoal;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -84,6 +86,7 @@ public class Lich extends Monster {
 	private int attackCooldown;
 	private int spawnTime;
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_6);
+	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
 	public Lich(EntityType<? extends Lich> type, Level world) {
 		super(type, world);
@@ -308,6 +311,10 @@ public class Lich extends Monster {
 
 			if (this.getPhase() < 3 || random.nextInt(4) == 0) {
 				this.teleportToSightOfEntity(getTarget());
+			}
+
+			if(src.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
+				hurtBy.add(player);
 			}
 
 			return true;
@@ -637,6 +644,9 @@ public class Lich extends Monster {
 		// mark the tower as defeated
 		if (!level.isClientSide && !this.isShadowClone()) {
 			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.LICH_TOWER);
+			for(ServerPlayer player : hurtBy) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
+			}
 		}
 	}
 

@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -34,6 +35,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.util.TFDamageSources;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
@@ -48,6 +50,7 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,6 +71,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	private int ticksProgress;
 	private Formation currentFormation;
 	private BlockPos chargePos = BlockPos.ZERO;
+	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
 	public KnightPhantom(EntityType<? extends KnightPhantom> type, Level world) {
 		super(type, world);
@@ -191,6 +195,14 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 			// mark the stronghold as defeated
 			TFGenerationSettings.markStructureConquered(level, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
+
+			for(ServerPlayer player : hurtBy) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
+			}
+
+			for(ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(homePosition).inflate(10.0D))) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
+			}
 		}
 	}
 
@@ -200,6 +212,9 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 			playSound(SoundEvents.SHIELD_BLOCK,1.0F,0.8F + this.level.random.nextFloat() * 0.4F);
 		}
 
+		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
+			hurtBy.add(player);
+		}
 		return super.hurt(source, amount);
 	}
 

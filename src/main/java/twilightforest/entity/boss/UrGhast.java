@@ -29,6 +29,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
@@ -63,6 +64,7 @@ public class UrGhast extends CarminiteGhastguard {
 	private float damageUntilNextPhase = 10; // how much damage can we take before we toggle tantrum mode
 	private boolean noTrapMode; // are there no traps nearby?  just float around
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
+	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
 	public UrGhast(EntityType<? extends UrGhast> type, Level world) {
 		super(type, world);
@@ -289,6 +291,10 @@ public class UrGhast extends CarminiteGhastguard {
 		}
 
 		float lastDamage = oldHealth - getHealth();
+
+		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
+			hurtBy.add(player);
+		}
 
 		if (!level.isClientSide) {
 			if (this.hurtTime == this.hurtDuration) {
@@ -608,6 +614,9 @@ public class UrGhast extends CarminiteGhastguard {
 		// mark the tower as defeated
 		if (!level.isClientSide) {
 			TFGenerationSettings.markStructureConquered(level, findChestCoords(), TFFeature.DARK_TOWER);
+			for(ServerPlayer player : hurtBy) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
+			}
 		}
 	}
 

@@ -98,6 +98,20 @@
         ]
       }
     },
+    "was_in_fight": {
+      "trigger": "twilightforest:hurt_boss",
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:lich"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "kill_naga": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
@@ -112,7 +126,8 @@
       "lifedrain_scepter",
       "twilight_scepter",
       "zombie_scepter",
-      "shield_scepter"
+      "shield_scepter",
+      "was_in_fight"
     ],
     [
       "kill_naga"
