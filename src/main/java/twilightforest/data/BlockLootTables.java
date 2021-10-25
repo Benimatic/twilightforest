@@ -243,14 +243,14 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get()));
 
-		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get()));
-		add(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get()));
-		add(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get()));
-		add(TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), hollowLog(TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get()));
-		add(TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), hollowLog(TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get()));
-		add(TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get()));
-		add(TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), hollowLog(TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get()));
-		add(TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), hollowLog(TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get()));
 
 		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get()));
 		add(TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get()));
@@ -453,6 +453,12 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 						.add(LootItem.lootTableItem(Blocks.LADDER).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED)))));
 	}
 
+	private LootTable.Builder verticalHollowLog(Block log) {
+		LootItemCondition.Builder HAS_SILK_TOUCH = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLoot.class, null, "f_124062_");
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE)))));
+	}
 
 	// [VanillaCopy] super.droppingWithChancesAndSticks, but non-silk touch parameter can be an item instead of a block
 	private static LootTable.Builder silkAndStick(Block block, ItemLike nonSilk, float... nonSilkFortune) {
