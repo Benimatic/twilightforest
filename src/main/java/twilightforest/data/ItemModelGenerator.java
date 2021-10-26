@@ -12,6 +12,7 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.HollowLogHorizontal;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.Experiment115Item;
 import twilightforest.item.TFItems;
@@ -353,14 +354,23 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFBlocks.SORTING_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_sort_0");
 		generated(TFBlocks.SORTING_DOOR.getId().getPath(), prefix("items/" + TFBlocks.SORTING_DOOR.getId().getPath()));
 
-		getBuilder(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.getId().toString()).parent(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/" + TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.getId().getPath())));
-		getBuilder(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.getId().toString()).parent(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/" + TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.getId().getPath())));
-		getBuilder(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.getId().toString()).parent(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/" + TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.getId().getPath())));
-		getBuilder(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.getId().toString()).parent(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/" + TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.getId().getPath())));
-		getBuilder(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.getId().toString()).parent(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/" + TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.getId().getPath())));
-		getBuilder(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.getId().toString()).parent(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/" + TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.getId().getPath())));
-		getBuilder(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.getId().toString()).parent(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/" + TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.getId().getPath())));
-		getBuilder(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.getId().toString()).parent(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/" + TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.getId().getPath())));
+		hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL);
+
+		hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL);
+		hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL);
 
 		singleTex(TFItems.NAGA_SCALE);
 		singleTex(TFItems.NAGA_CHESTPLATE);
@@ -693,6 +703,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		getBuilder(fence.getRegistryName().getPath())
 						.parent(getExistingFile(mcLoc("block/fence_inventory")))
 						.texture("texture", "block/wood/planks_" + variant + "_0");
+	}
+
+	private void hollowLog(RegistryObject<HollowLogHorizontal> hollowLog) {
+		getBuilder(hollowLog.getId().toString()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
 	}
 
 	private void toBlock(Block b) {
