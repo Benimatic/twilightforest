@@ -24,6 +24,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -66,6 +68,8 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!isInside(hit, pos)) return super.use(state, level, pos, player, hand, hit);
+
         ItemStack stack = player.getItemInHand(hand);
 
         if (stack.is(Blocks.VINE.asItem())) {
@@ -107,5 +111,11 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
         }
 
         return super.updateShape(state, facing, neighborState, level, pos, neighborPos);
+    }
+
+    private static boolean isInside(HitResult result, BlockPos pos) {
+        Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+
+        return (0.124 <= vec.x && vec.x <= 0.876) && (0.124 <= vec.z && vec.z <= 0.876);
     }
 }

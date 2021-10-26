@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -25,15 +24,15 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ToolActions;
 import twilightforest.enums.HollowLogVariants;
-import twilightforest.item.HollowLogItem;
+import twilightforest.util.AxisUtil;
 
 import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
 public class HollowLogHorizontal extends Block implements WaterloggedBlock {
     public static final EnumProperty<Direction.Axis> HORIZONTAL_AXIS = BlockStateProperties.HORIZONTAL_AXIS;
@@ -53,6 +52,9 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
             HORIZONTALS,
             Block.box(0, 2, 0, 2, 14, 16),
             Block.box(14, 2, 0, 16, 14, 16)
+    );
+    private static final VoxelShape INTERACTION = Shapes.or(
+            Block.box(2, 2, 2, 14, 14, 14)
     );
 
     public HollowLogHorizontal(Properties props) {
@@ -106,13 +108,21 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
     }
 
     @Override
+    public VoxelShape getInteractionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return Shapes.empty();
+    }
+
+    @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        Direction.Axis stateAxis = state.getValue(HORIZONTAL_AXIS);
+        if (!isInside(hit, stateAxis, pos)) return super.use(state, level, pos, player, hand, hit);
+
         ItemStack stack = player.getItemInHand(hand);
 
         HollowLogVariants.Horizontal variant = state.getValue(VARIANT);
 
         if (stack.is(TFBlocks.MOSS_PATCH.get().asItem())) {
-            if (variant == HollowLogVariants.Horizontal.EMPTY || variant == HollowLogVariants.Horizontal.WATERLOGGED) {
+            if (canChangeVariant(variant, level, pos, stateAxis)) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS), 3);
                 level.playSound(null, pos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!player.isCreative()) stack.shrink(1);
@@ -132,7 +142,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
                 return InteractionResult.CONSUME;
             }
         } else if (stack.is(Items.SNOWBALL)) {
-            if (variant == HollowLogVariants.Horizontal.EMPTY || variant == HollowLogVariants.Horizontal.WATERLOGGED) {
+            if (canChangeVariant(variant, level, pos, stateAxis)) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.SNOW), 3);
                 level.playSound(null, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 if (!player.isCreative()) stack.shrink(1);
@@ -173,5 +183,25 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
         }
 
         return super.use(state, level, pos, player, hand, hit);
+    }
+
+    private static boolean canChangeVariant(HollowLogVariants.Horizontal variant, Level level, BlockPos pos, Direction.Axis axis) {
+        // Empty Log, or the Log has water, and will be filled by water
+        return variant == HollowLogVariants.Horizontal.EMPTY || (variant == HollowLogVariants.Horizontal.WATERLOGGED && level.getFluidState(pos.relative(AxisUtil.getAxisDirectionNegative(axis))).getType() != Fluids.WATER && level.getFluidState(pos.relative(AxisUtil.getAxisDirectionPositive(axis))).getType() != Fluids.WATER);
+    }
+
+    private static boolean isInside(HitResult result, Direction.Axis axis, BlockPos pos) {
+        //if (!result.isInside()) return false;
+
+        Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+
+        if (0.124 > vec.y || vec.y > 0.876) return false;
+        // 2vox/16vox < y < 14vox/16vox
+
+        return switch (axis) {
+            case X -> (0.124 <= vec.z && vec.z <= 0.876);
+            case Z -> (0.124 <= vec.x && vec.x <= 0.876);
+            default -> false;
+        };
     }
 }

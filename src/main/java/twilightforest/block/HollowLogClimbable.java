@@ -22,6 +22,8 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -120,6 +122,8 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!isInside(hit, pos)) return super.use(state, level, pos, player, hand, hit);
+
         ItemStack stack = player.getItemInHand(hand);
 
         if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
@@ -137,5 +141,11 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
         }
 
         return super.use(state, level, pos, player, hand, hit);
+    }
+
+    private static boolean isInside(HitResult result, BlockPos pos) {
+        Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+
+        return (0.124 <= vec.x && vec.x <= 0.876) && (0.124 <= vec.z && vec.z <= 0.876);
     }
 }
