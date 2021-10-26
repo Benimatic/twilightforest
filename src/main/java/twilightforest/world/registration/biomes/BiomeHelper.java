@@ -76,6 +76,8 @@ public abstract class BiomeHelper {
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FOREST_FLOWER_VEGETATION_COMMON);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEFAULT_FALLEN_LOGS);
+		//TODO just to call the glitched feature - remove me later
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SMALL_LOG);
 
 		addForestVegetation(biome);
 		addDefaultStructures(biome);
