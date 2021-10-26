@@ -25,6 +25,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,24 +39,12 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
     public static final EnumProperty<Direction.Axis> HORIZONTAL_AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final EnumProperty<HollowLogVariants.Horizontal> VARIANT = EnumProperty.create("variant", HollowLogVariants.Horizontal.class);
 
-    private static final VoxelShape HORIZONTALS = Shapes.or(
-            Block.box(0, 0, 0, 16, 2, 16),
-            Block.box(0, 14, 0, 16, 16, 16)
-    );
-    // The player is intentionally allowed to clip through the moss inside the log
-    private static final VoxelShape SHAPE_X = Shapes.or(
-            HORIZONTALS,
-            Block.box(0, 2, 0, 16, 14, 2),
-            Block.box(0, 2, 14, 16, 14, 16)
-    );
-    private static final VoxelShape SHAPE_Z = Shapes.or(
-            HORIZONTALS,
-            Block.box(0, 2, 0, 2, 14, 16),
-            Block.box(14, 2, 0, 16, 14, 16)
-    );
-    private static final VoxelShape INTERACTION = Shapes.or(
-            Block.box(2, 2, 2, 14, 14, 14)
-    );
+    private static final VoxelShape HOLLOW_SHAPE_X = Shapes.join(Shapes.block(), Block.box(0, 2, 2, 16, 14, 14), BooleanOp.ONLY_FIRST);
+    private static final VoxelShape HOLLOW_SHAPE_Z = Shapes.join(Shapes.block(), Block.box(2, 2, 0, 14, 14, 16), BooleanOp.ONLY_FIRST);
+    private static final VoxelShape CARPET_SHAPE_X = Shapes.join(Shapes.block(), Block.box(0, 3, 2, 16, 14, 14), BooleanOp.ONLY_FIRST);
+    private static final VoxelShape CARPET_SHAPE_Z = Shapes.join(Shapes.block(), Block.box(2, 3, 0, 14, 14, 16), BooleanOp.ONLY_FIRST);
+    private static final VoxelShape COLLISION_SHAPE_X = Shapes.join(Shapes.block(), Block.box(0, 1, 1, 16, 15, 15), BooleanOp.ONLY_FIRST);
+    private static final VoxelShape COLLISION_SHAPE_Z = Shapes.join(Shapes.block(), Block.box(1, 1, 0, 15, 15, 16), BooleanOp.ONLY_FIRST);
 
     public HollowLogHorizontal(Properties props) {
         super(props);
@@ -65,10 +54,27 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return switch (state.getValue(VARIANT)) {
+            case EMPTY, WATERLOGGED -> switch (state.getValue(HORIZONTAL_AXIS)) {
+                case X -> HOLLOW_SHAPE_X;
+                case Z -> HOLLOW_SHAPE_Z;
+                default -> Shapes.block(); // Should never be reached
+            };
+            case MOSS, MOSS_AND_GRASS, SNOW -> switch (state.getValue(HORIZONTAL_AXIS)) {
+                case X -> CARPET_SHAPE_X;
+                case Z -> CARPET_SHAPE_Z;
+                default -> Shapes.block(); // Should never be reached
+            };
+        };
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        // The player is intentionally allowed to clip through the moss inside the log
         return switch (state.getValue(HORIZONTAL_AXIS)) {
-            case X -> SHAPE_X;
-            case Z -> SHAPE_Z;
-            default -> HORIZONTALS; // Should never be reached
+            case X -> COLLISION_SHAPE_X;
+            case Z -> COLLISION_SHAPE_Z;
+            default -> Shapes.empty(); // Should never be reached
         };
     }
 
@@ -78,13 +84,13 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
     }
 
     @Override
-    public boolean stateIsWaterlogged(BlockState state) {
+    public boolean isStateWaterlogged(BlockState state) {
         return state.getValue(VARIANT) == HollowLogVariants.Horizontal.WATERLOGGED;
     }
 
     @Override
-    public BlockState setWaterlogging(BlockState state, boolean doWater) {
-        return state.setValue(VARIANT, doWater ? HollowLogVariants.Horizontal.WATERLOGGED : HollowLogVariants.Horizontal.EMPTY);
+    public BlockState setWaterlog(BlockState prior, boolean doWater) {
+        return prior.setValue(VARIANT, doWater ? HollowLogVariants.Horizontal.WATERLOGGED : HollowLogVariants.Horizontal.EMPTY);
     }
 
     @Nullable
@@ -100,16 +106,11 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
     @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        if (this.stateIsWaterlogged(state)) {
+        if (this.isStateWaterlogged(state)) {
             level.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
         return super.updateShape(state, facing, neighborState, level, pos, neighborPos);
-    }
-
-    @Override
-    public VoxelShape getInteractionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return Shapes.empty();
     }
 
     @Override

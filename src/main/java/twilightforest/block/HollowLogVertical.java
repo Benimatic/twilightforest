@@ -26,6 +26,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -40,12 +41,8 @@ import java.util.function.Supplier;
 public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape HOLLOW_SHAPE = Shapes.or(
-            Block.box(0, 0, 0, 2, 16, 16),
-            Block.box(14, 0, 0, 16, 16, 16),
-            Block.box(2, 0, 0, 14, 16, 2),
-            Block.box(2, 0, 14, 14, 16, 16)
-    );
+    private static final VoxelShape HOLLOW_SHAPE = Shapes.join(Shapes.block(), Block.box(2, 0, 2, 14, 16, 14), BooleanOp.ONLY_FIRST);
+    private static final VoxelShape COLLISION_SHAPE = Shapes.join(Shapes.block(), Block.box(1, 0, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
 
     private final RegistryObject<HollowLogClimbable> climbable;
 
@@ -59,6 +56,11 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return HOLLOW_SHAPE;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return COLLISION_SHAPE;
     }
 
     @Override
