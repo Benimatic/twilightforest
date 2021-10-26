@@ -6,35 +6,34 @@
           "config": {
             "feature": {
               "config": {
-                "feature": {
-                  "config": {},
-                  "type": "twilightforest:fallen_small_log"
-                },
-                "decorator": {
-                  "config": {
-                    "occupies_surface": true,
-                    "occupies_underground": false,
-                    "additional_clearance": 0
+                "normal": {
+                  "Properties": {
+                    "axis": "y"
                   },
-                  "type": "twilightforest:no_structure"
+                  "Name": "minecraft:birch_log"
+                },
+                "hollow": {
+                  "Name": "minecraft:air"
                 }
               },
-              "type": "minecraft:decorated"
+              "type": "twilightforest:fallen_small_log"
             },
             "decorator": {
               "config": {
-                "heightmap": "WORLD_SURFACE_WG"
+                "occupies_surface": true,
+                "occupies_underground": false,
+                "additional_clearance": 0
               },
-              "type": "minecraft:heightmap"
+              "type": "twilightforest:no_structure"
             }
           },
           "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {
-            "chance": 90
+            "heightmap": "OCEAN_FLOOR"
           },
-          "type": "minecraft:chance"
+          "type": "minecraft:heightmap"
         }
       },
       "type": "minecraft:decorated"

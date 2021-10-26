@@ -8,20 +8,22 @@ import twilightforest.block.TorchberryPlantBlock;
 
 public final class BlockConstants {
     //Blockstates
+    public static final BlockState BIRCH_LOG = Blocks.BIRCH_LOG.defaultBlockState();
+    public static final BlockState OAK_LOG = Blocks.OAK_LOG.defaultBlockState();
     public static final BlockState SPRUCE_LOG = Blocks.SPRUCE_LOG.defaultBlockState();
     public static final BlockState SPRUCE_LEAVES = Blocks.SPRUCE_LEAVES.defaultBlockState();
     public static final BlockState SPRUCE_SAPLING = Blocks.SPRUCE_SAPLING.defaultBlockState();
-    public static final BlockState OAK_LOG = Blocks.OAK_LOG.defaultBlockState();
-    public static final BlockState OAK_LEAVES = Blocks.OAK_LEAVES.defaultBlockState();
-    public static final BlockState OAK_SAPLING = Blocks.OAK_SAPLING.defaultBlockState();
-    public static final BlockState TOAK_LOG = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState();
-    public static final BlockState TOAK_WOOD = TFBlocks.TWILIGHT_OAK_WOOD.get().defaultBlockState();
-    public static final BlockState TOAK_LEAVES = TFBlocks.TWILIGHT_OAK_LEAVES.get().defaultBlockState();
-    public static final BlockState TOAK_SAPLING = TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState();
+    public static final BlockState TF_OAK_LOG = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState();
+    public static final BlockState HOLLOW_TF_OAK_LOG = TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get().defaultBlockState();
+    public static final BlockState TF_OAK_WOOD = TFBlocks.TWILIGHT_OAK_WOOD.get().defaultBlockState();
+    public static final BlockState TF_OAK_LEAVES = TFBlocks.TWILIGHT_OAK_LEAVES.get().defaultBlockState();
+    public static final BlockState TF_OAK_SAPLING = TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState();
     public static final BlockState CANOPY_LOG = TFBlocks.CANOPY_LOG.get().defaultBlockState();
+    public static final BlockState HOLLOW_CANOPY_LOG = TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get().defaultBlockState();
     public static final BlockState CANOPY_LEAVES = TFBlocks.CANOPY_LEAVES.get().defaultBlockState();
     public static final BlockState CANOPY_SAPLING = TFBlocks.CANOPY_SAPLING.get().defaultBlockState();
     public static final BlockState MANGROVE_LOG = TFBlocks.MANGROVE_LOG.get().defaultBlockState();
+    public static final BlockState HOLLOW_MANGROVE_LOG = TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get().defaultBlockState();
     public static final BlockState MANGROVE_WOOD = TFBlocks.MANGROVE_WOOD.get().defaultBlockState();
     public static final BlockState MANGROVE_LEAVES = TFBlocks.MANGROVE_LEAVES.get().defaultBlockState();
     public static final BlockState MANGROVE_SAPLING = TFBlocks.MANGROVE_SAPLING.get().defaultBlockState();

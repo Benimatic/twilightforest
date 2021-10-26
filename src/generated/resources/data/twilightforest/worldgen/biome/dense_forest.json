@@ -72,12 +72,12 @@
       "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "twilightforest:small_log",
       "twilightforest:tree/vanilla_tf_trees",
       "twilightforest:tree/twilight_oak_trees",
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer",
       "twilightforest:tree/canopy_trees",
+      "twilightforest:default_fallen_logs",
       "twilightforest:tree/hollow_placer"
     ]
   ],
