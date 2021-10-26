@@ -9,8 +9,11 @@ import twilightforest.block.TorchberryPlantBlock;
 public final class BlockConstants {
     //Blockstates
     public static final BlockState BIRCH_LOG = Blocks.BIRCH_LOG.defaultBlockState();
+    public static final BlockState HOLLOW_BIRCH_LOG = TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get().defaultBlockState();
     public static final BlockState OAK_LOG = Blocks.OAK_LOG.defaultBlockState();
+    public static final BlockState HOLLOW_OAK_LOG = TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get().defaultBlockState();
     public static final BlockState SPRUCE_LOG = Blocks.SPRUCE_LOG.defaultBlockState();
+    public static final BlockState HOLLOW_SPRUCE_LOG = TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get().defaultBlockState();
     public static final BlockState SPRUCE_LEAVES = Blocks.SPRUCE_LEAVES.defaultBlockState();
     public static final BlockState SPRUCE_SAPLING = Blocks.SPRUCE_SAPLING.defaultBlockState();
     public static final BlockState TF_OAK_LOG = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState();

@@ -6,34 +6,49 @@
           "config": {
             "feature": {
               "config": {
-                "normal": {
-                  "Properties": {
-                    "axis": "y"
+                "feature": {
+                  "config": {
+                    "normal": {
+                      "Properties": {
+                        "axis": "y"
+                      },
+                      "Name": "minecraft:birch_log"
+                    },
+                    "hollow": {
+                      "Properties": {
+                        "variant": "empty",
+                        "axis": "x"
+                      },
+                      "Name": "twilightforest:hollow_birch_log_horizontal"
+                    }
                   },
-                  "Name": "minecraft:birch_log"
+                  "type": "twilightforest:fallen_small_log"
                 },
-                "hollow": {
-                  "Name": "minecraft:air"
+                "decorator": {
+                  "config": {
+                    "occupies_surface": true,
+                    "occupies_underground": false,
+                    "additional_clearance": 0
+                  },
+                  "type": "twilightforest:no_structure"
                 }
               },
-              "type": "twilightforest:fallen_small_log"
+              "type": "minecraft:decorated"
             },
             "decorator": {
               "config": {
-                "occupies_surface": true,
-                "occupies_underground": false,
-                "additional_clearance": 0
+                "heightmap": "OCEAN_FLOOR"
               },
-              "type": "twilightforest:no_structure"
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {
-            "heightmap": "OCEAN_FLOOR"
+            "chance": 40
           },
-          "type": "minecraft:heightmap"
+          "type": "minecraft:chance"
         }
       },
       "type": "minecraft:decorated"
