@@ -35,11 +35,11 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 
 		// check area clear
 		if (goingX) {
-			if (!FeatureUtil.isAreaSuitable(world, pos, length, 3, 2)) {
+			if (!FeatureUtil.isAreaSuitable(world, pos, length, 2, 2, true)) {
 				return false;
 			}
 		} else {
-			if (!FeatureUtil.isAreaSuitable(world, pos, 3, length, 2)) {
+			if (!FeatureUtil.isAreaSuitable(world, pos, 2, 2, length, true)) {
 				return false;
 			}
 		}
