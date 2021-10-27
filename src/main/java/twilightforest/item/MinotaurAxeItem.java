@@ -23,9 +23,11 @@ import java.util.List;
 public class MinotaurAxeItem extends AxeItem {
 
 	private static final int BONUS_CHARGING_DAMAGE = 7;
+	private final Tier material;
 
 	protected MinotaurAxeItem(Tier material, Properties props) {
 		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, props);
+		this.material = material;
 	}
 
 	@SubscribeEvent
@@ -44,7 +46,7 @@ public class MinotaurAxeItem extends AxeItem {
 
 	@Override
 	public int getEnchantmentValue() {
-		return Tiers.GOLD.getEnchantmentValue();
+		return material.getEnchantmentValue();
 	}
 
 	@Override
