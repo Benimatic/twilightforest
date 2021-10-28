@@ -569,6 +569,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(prefix("potion_level"), 3).model(gfill3).end()
 				.override().predicate(prefix("potion_level"), 4).model(gfill4).end();
 
+		generated(TFItems.COIN_OF_CROSSING.getId().getPath(), prefix("items/copper_coin"));
+
 		singleTex(TFItems.MUSIC_DISC_FINDINGS);
 		singleTex(TFItems.MUSIC_DISC_HOME);
 		singleTex(TFItems.MUSIC_DISC_MAKER);
@@ -706,7 +708,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void hollowLog(RegistryObject<HollowLogHorizontal> hollowLog) {
-		getBuilder(hollowLog.getId().toString()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
+		getBuilder(hollowLog.get().asItem().getRegistryName().getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
 	}
 
 	private void toBlock(Block b) {

@@ -25,7 +25,7 @@
                   }
                 }
               ],
-              "name": "twilightforest:hollow_canopy_log"
+              "name": "twilightforest:hollow_crimson_stem"
             },
             {
               "type": "minecraft:item",
@@ -76,7 +76,7 @@
             },
             {
               "condition": "minecraft:block_state_property",
-              "block": "twilightforest:hollow_canopy_log_horizontal",
+              "block": "twilightforest:hollow_crimson_stem_horizontal",
               "properties": {
                 "variant": "moss_and_grass"
               }
@@ -108,7 +108,7 @@
             },
             {
               "condition": "minecraft:block_state_property",
-              "block": "twilightforest:hollow_canopy_log_horizontal",
+              "block": "twilightforest:hollow_crimson_stem_horizontal",
               "properties": {
                 "variant": "moss_and_grass"
               }
@@ -140,7 +140,7 @@
             },
             {
               "condition": "minecraft:block_state_property",
-              "block": "twilightforest:hollow_canopy_log_horizontal",
+              "block": "twilightforest:hollow_crimson_stem_horizontal",
               "properties": {
                 "variant": "moss"
               }
@@ -172,7 +172,7 @@
             },
             {
               "condition": "minecraft:block_state_property",
-              "block": "twilightforest:hollow_canopy_log_horizontal",
+              "block": "twilightforest:hollow_crimson_stem_horizontal",
               "properties": {
                 "variant": "snow"
               }
@@ -204,7 +204,7 @@
             },
             {
               "condition": "minecraft:block_state_property",
-              "block": "twilightforest:hollow_canopy_log_horizontal",
+              "block": "twilightforest:hollow_crimson_stem_horizontal",
               "properties": {
                 "variant": "vine"
               }
@@ -223,7 +223,7 @@
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
-              "block": "twilightforest:hollow_canopy_log_horizontal",
+              "block": "twilightforest:hollow_crimson_stem_horizontal",
               "properties": {
                 "variant": "ladder"
               }
@@ -242,7 +242,7 @@
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
-              "block": "twilightforest:hollow_canopy_log_horizontal",
+              "block": "twilightforest:hollow_crimson_stem_horizontal",
               "properties": {
                 "variant": "ladder_waterlogged"
               }
