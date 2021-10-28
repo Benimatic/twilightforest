@@ -569,8 +569,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(prefix("potion_level"), 3).model(gfill3).end()
 				.override().predicate(prefix("potion_level"), 4).model(gfill4).end();
 
-		generated(TFItems.COIN_OF_CROSSING.getId().getPath(), prefix("items/copper_coin"));
-
 		singleTex(TFItems.MUSIC_DISC_FINDINGS);
 		singleTex(TFItems.MUSIC_DISC_HOME);
 		singleTex(TFItems.MUSIC_DISC_MAKER);
