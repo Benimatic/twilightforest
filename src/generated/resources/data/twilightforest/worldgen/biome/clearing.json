@@ -66,8 +66,9 @@
       "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "twilightforest:small_log",
       "minecraft:forest_flower_vegetation_common",
+      "twilightforest:default_fallen_logs",
+      "twilightforest:small_log",
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer"
     ]
