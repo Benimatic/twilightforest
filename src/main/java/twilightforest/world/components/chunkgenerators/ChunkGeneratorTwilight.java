@@ -22,6 +22,7 @@ import net.minecraftforge.common.world.StructureSpawnManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
@@ -35,24 +36,27 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
-			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight)
+			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
+			Codec.BOOL.fieldOf("use_overworld_seed").forGetter(o -> o.useOverworldSeed)
 	).apply(instance, instance.stable(ChunkGeneratorTwilight::new)));
 
 	private final boolean genDarkForestCanopy;
 	private final boolean monsterSpawnsBelowSeaLevel;
 	private final Optional<Integer> darkForestCanopyHeight;
+	private final boolean useOverworldSeed;
 
 	private final BlockState defaultBlock;
 	private final SurfaceNoise surfaceNoiseGetter;
 
 	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight) {
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight, boolean owSeed) {
 		//super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
-		super(delegate);
+		super(owSeed ? delegate = delegate.withSeed(TFDimensions.seed) : delegate);
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
+		this.useOverworldSeed = owSeed;
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
 			this.defaultBlock = noiseGen.defaultBlock;
@@ -70,7 +74,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Override
 	public ChunkGenerator withSeed(long newSeed) {
-		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel, this.darkForestCanopyHeight);
+		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel, this.darkForestCanopyHeight, false);
 	}
 
 	@Override

@@ -1,4 +1,5 @@
 {
+  "seed": "META-INF/asm/seed.js",
   "maprendercontext": "META-INF/asm/maprendercontext.js",
   "music": "META-INF/asm/music.js",
   "multipart": "META-INF/asm/multipart.js",

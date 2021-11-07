@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
@@ -38,12 +39,14 @@ import twilightforest.entity.TFPart;
 import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
+import twilightforest.world.registration.TFDimensions;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -52,6 +55,16 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.levelgen.WorldGenSettings#WorldGenSettings(long, boolean, boolean, MappedRegistry, Optional)}<br>
+	 * [BEFORE FIRST PUTFIELD]
+	 */
+	public static long seed(long seed) {
+		TFDimensions.seed = seed;
+		return seed;
+	}
 
 	/**
 	 * Injection Point:<br>
