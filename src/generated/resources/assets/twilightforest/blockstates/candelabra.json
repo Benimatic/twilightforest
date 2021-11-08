@@ -1,6 +1,6 @@
 {
   "variants": {
-    "facing=north,lit=false,on_wall=false": [
+    "facing=north,lighting=none,on_wall=false": [
       {
         "model": "twilightforest:block/candelabra_4_4_4_plain",
         "y": 180
@@ -34,7 +34,7 @@
         "y": 180
       }
     ],
-    "facing=south,lit=false,on_wall=false": [
+    "facing=south,lighting=none,on_wall=false": [
       {
         "model": "twilightforest:block/candelabra_4_4_4_plain"
       },
@@ -60,7 +60,7 @@
         "model": "twilightforest:block/candelabra_5_5_5_plain"
       }
     ],
-    "facing=west,lit=false,on_wall=false": [
+    "facing=west,lighting=none,on_wall=false": [
       {
         "model": "twilightforest:block/candelabra_4_4_4_plain",
         "y": 90
@@ -94,7 +94,7 @@
         "y": 90
       }
     ],
-    "facing=east,lit=false,on_wall=false": [
+    "facing=east,lighting=none,on_wall=false": [
       {
         "model": "twilightforest:block/candelabra_4_4_4_plain",
         "y": 270
@@ -128,7 +128,7 @@
         "y": 270
       }
     ],
-    "facing=north,lit=true,on_wall=false": [
+    "facing=north,lighting=normal,on_wall=false": [
       {
         "model": "twilightforest:block/candelabra_4_4_4_plain_lit",
         "y": 180
@@ -162,7 +162,7 @@
         "y": 180
       }
     ],
-    "facing=south,lit=true,on_wall=false": [
+    "facing=south,lighting=normal,on_wall=false": [
       {
         "model": "twilightforest:block/candelabra_4_4_4_plain_lit"
       },
@@ -188,7 +188,7 @@
         "model": "twilightforest:block/candelabra_5_5_5_plain_lit"
       }
     ],
-    "facing=west,lit=true,on_wall=false": [
+    "facing=west,lighting=normal,on_wall=false": [
       {
         "model": "twilightforest:block/candelabra_4_4_4_plain_lit",
         "y": 90
@@ -222,7 +222,7 @@
         "y": 90
       }
     ],
-    "facing=east,lit=true,on_wall=false": [
+    "facing=east,lighting=normal,on_wall=false": [
       {
         "model": "twilightforest:block/candelabra_4_4_4_plain_lit",
         "y": 270
@@ -256,7 +256,135 @@
         "y": 270
       }
     ],
-    "facing=north,lit=false,on_wall=true": [
+    "facing=north,lighting=ominous,on_wall=false": [
+      {
+        "model": "twilightforest:block/candelabra_4_4_4_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_4_4_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_5_4_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_5_4_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_4_5_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_4_5_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_5_5_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_5_5_plain_lit",
+        "y": 180
+      }
+    ],
+    "facing=south,lighting=ominous,on_wall=false": [
+      {
+        "model": "twilightforest:block/candelabra_4_4_4_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_4_4_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_5_4_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_5_4_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_4_5_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_4_5_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_5_5_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_5_5_plain_lit"
+      }
+    ],
+    "facing=west,lighting=ominous,on_wall=false": [
+      {
+        "model": "twilightforest:block/candelabra_4_4_4_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_4_4_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_5_4_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_5_4_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_4_5_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_4_5_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_5_5_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_5_5_plain_lit",
+        "y": 90
+      }
+    ],
+    "facing=east,lighting=ominous,on_wall=false": [
+      {
+        "model": "twilightforest:block/candelabra_4_4_4_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_4_4_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_5_4_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_5_4_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_4_5_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_4_5_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_4_5_5_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_5_5_5_plain_lit",
+        "y": 270
+      }
+    ],
+    "facing=north,lighting=none,on_wall=true": [
       {
         "model": "twilightforest:block/candelabra_wall_4_4_4_plain",
         "y": 180
@@ -290,7 +418,7 @@
         "y": 180
       }
     ],
-    "facing=south,lit=false,on_wall=true": [
+    "facing=south,lighting=none,on_wall=true": [
       {
         "model": "twilightforest:block/candelabra_wall_4_4_4_plain"
       },
@@ -316,7 +444,7 @@
         "model": "twilightforest:block/candelabra_wall_5_5_5_plain"
       }
     ],
-    "facing=west,lit=false,on_wall=true": [
+    "facing=west,lighting=none,on_wall=true": [
       {
         "model": "twilightforest:block/candelabra_wall_4_4_4_plain",
         "y": 90
@@ -350,7 +478,7 @@
         "y": 90
       }
     ],
-    "facing=east,lit=false,on_wall=true": [
+    "facing=east,lighting=none,on_wall=true": [
       {
         "model": "twilightforest:block/candelabra_wall_4_4_4_plain",
         "y": 270
@@ -384,7 +512,7 @@
         "y": 270
       }
     ],
-    "facing=north,lit=true,on_wall=true": [
+    "facing=north,lighting=normal,on_wall=true": [
       {
         "model": "twilightforest:block/candelabra_wall_4_4_4_plain_lit",
         "y": 180
@@ -418,7 +546,7 @@
         "y": 180
       }
     ],
-    "facing=south,lit=true,on_wall=true": [
+    "facing=south,lighting=normal,on_wall=true": [
       {
         "model": "twilightforest:block/candelabra_wall_4_4_4_plain_lit"
       },
@@ -444,7 +572,7 @@
         "model": "twilightforest:block/candelabra_wall_5_5_5_plain_lit"
       }
     ],
-    "facing=west,lit=true,on_wall=true": [
+    "facing=west,lighting=normal,on_wall=true": [
       {
         "model": "twilightforest:block/candelabra_wall_4_4_4_plain_lit",
         "y": 90
@@ -478,7 +606,135 @@
         "y": 90
       }
     ],
-    "facing=east,lit=true,on_wall=true": [
+    "facing=east,lighting=normal,on_wall=true": [
+      {
+        "model": "twilightforest:block/candelabra_wall_4_4_4_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_4_4_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_5_4_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_5_4_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_4_5_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_4_5_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_5_5_plain_lit",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_5_5_plain_lit",
+        "y": 270
+      }
+    ],
+    "facing=north,lighting=ominous,on_wall=true": [
+      {
+        "model": "twilightforest:block/candelabra_wall_4_4_4_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_4_4_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_5_4_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_5_4_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_4_5_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_4_5_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_5_5_plain_lit",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_5_5_plain_lit",
+        "y": 180
+      }
+    ],
+    "facing=south,lighting=ominous,on_wall=true": [
+      {
+        "model": "twilightforest:block/candelabra_wall_4_4_4_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_4_4_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_5_4_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_5_4_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_4_5_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_4_5_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_5_5_plain_lit"
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_5_5_plain_lit"
+      }
+    ],
+    "facing=west,lighting=ominous,on_wall=true": [
+      {
+        "model": "twilightforest:block/candelabra_wall_4_4_4_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_4_4_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_5_4_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_5_4_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_4_5_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_4_5_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_4_5_5_plain_lit",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/candelabra_wall_5_5_5_plain_lit",
+        "y": 90
+      }
+    ],
+    "facing=east,lighting=ominous,on_wall=true": [
       {
         "model": "twilightforest:block/candelabra_wall_4_4_4_plain_lit",
         "y": 270

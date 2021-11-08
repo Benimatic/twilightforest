@@ -411,6 +411,7 @@
   "block.twilightforest.creeper_skull_candle": "Creeper Skull Candle",
   "block.twilightforest.creeper_wall_skull_candle": "Creeper Wall Skull Candle",
   "block.twilightforest.player_skull_candle": "Player Skull Candle",
+  "block.twilightforest.player_skull_candle.named": "%s's Head with Candles",
   "block.twilightforest.player_wall_skull_candle": "Player Wall Skull Candle",
 
   "block.twilightforest.potted_twilight_oak_sapling": "Potted Sickly Twilight Oak Sapling",

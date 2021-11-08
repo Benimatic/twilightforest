@@ -2,6 +2,8 @@ package twilightforest.client.renderer.tileentity;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
@@ -18,9 +20,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.block.AbstractLightableBlock;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
@@ -61,21 +65,23 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		BlockState state = tile.getBlockState();
 		boolean flag = state.getBlock() instanceof WallSkullCandleBlock;
 		Direction dir = flag ? state.getValue(WallSkullCandleBlock.FACING) : null;
-		float offset = 22.5F * (float)(flag ? (2 + dir.get2DDataValue()) * 4 : state.getValue(SkullCandleBlock.ROTATION));
-		SkullBlock.Type type = ((AbstractSkullCandleBlock)state.getBlock()).getType();
+		float offset = 22.5F * (float) (flag ? (2 + dir.get2DDataValue()) * 4 : state.getValue(SkullCandleBlock.ROTATION));
+		SkullBlock.Type type = ((AbstractSkullCandleBlock) state.getBlock()).getType();
 		SkullModelBase base = this.modelByType.get(type);
-		RenderType render = RenderType.entityCutoutNoCull(SKIN_BY_TYPE.get(type));
+		RenderType render = getRenderType(type, tile.getOwnerProfile());
 		renderSkull(dir, offset, 0.0F, ms, buffer, light, base, render);
 
-		if(dir != null) {
-			ms.translate(-(float)dir.getStepX() * 0.25F, 0.0D, -(float)dir.getStepZ() * 0.25F);
+		if (dir != null) {
+			ms.translate(-(float) dir.getStepX() * 0.25F, 0.0D, -(float) dir.getStepZ() * 0.25F);
 		}
 		ms.translate(0.0F, flag ? 0.75F : 0.45F, 0.0F);
+		if (tile.candleAmount <= 0) tile.candleAmount = 1;
 		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
-				AbstractSkullCandleBlock.candleColorToCandle(state.getValue(AbstractSkullCandleBlock.COLOR).getSerializedName())
+				AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(tile.candleColor).getSerializedName())
 						.defaultBlockState()
-						.setValue(CandleBlock.CANDLES, state.getValue(AbstractSkullCandleBlock.CANDLES))
-						.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIT)), ms, buffer, light, overlay);
+						.setValue(CandleBlock.CANDLES, tile.candleAmount)
+						.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIGHTING) == AbstractLightableBlock.Lighting.NORMAL), ms, buffer, light, overlay);
+
 	}
 
 	public static void renderSkull(@Nullable Direction dir, float ticks, float animTime, PoseStack ms, MultiBufferSource buffer, int light, SkullModelBase base, RenderType render) {
@@ -92,5 +98,16 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		base.setupAnim(animTime, ticks, 0.0F);
 		base.renderToBuffer(ms, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		ms.popPose();
+	}
+
+	public static RenderType getRenderType(SkullBlock.Type pSkullType, @Nullable GameProfile pGameProfile) {
+		ResourceLocation resourcelocation = SKIN_BY_TYPE.get(pSkullType);
+		if (pSkullType == SkullBlock.Types.PLAYER && pGameProfile != null) {
+			Minecraft minecraft = Minecraft.getInstance();
+			Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = minecraft.getSkinManager().getInsecureSkinInformation(pGameProfile);
+			return map.containsKey(MinecraftProfileTexture.Type.SKIN) ? RenderType.entityTranslucent(minecraft.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN)) : RenderType.entityCutoutNoCull(DefaultPlayerSkin.getDefaultSkin(Player.createPlayerUUID(pGameProfile)));
+		} else {
+			return RenderType.entityCutoutNoCullZOffset(resourcelocation);
+		}
 	}
 }

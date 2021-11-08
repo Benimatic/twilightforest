@@ -1,39 +1,43 @@
 package twilightforest.client;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModelBase;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.StringUtils;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.TwilightChestEntity;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
 import twilightforest.enums.BossVariant;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -107,17 +111,33 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.keepsakeCasketBlockEntity, ms, buffers, light, overlay);
 			} else if (block instanceof TwilightChest) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
-			} else if (block instanceof AbstractSkullCandleBlock){
+			} else if (block instanceof AbstractSkullCandleBlock) {
+				GameProfile gameprofile = null;
+				if (stack.hasTag()) {
+					CompoundTag compoundtag = stack.getTag();
+					if (compoundtag.contains("SkullOwner", 10)) {
+						gameprofile = NbtUtils.readGameProfile(compoundtag.getCompound("SkullOwner"));
+					} else if (compoundtag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundtag.getString("SkullOwner"))) {
+						gameprofile = new GameProfile(null, compoundtag.getString("SkullOwner"));
+						compoundtag.remove("SkullOwner");
+						SkullBlockEntity.updateGameprofile(gameprofile, (p_172560_) ->
+								compoundtag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), p_172560_)));
+					}
+				}
+
 				SkullBlock.Type type = ((AbstractSkullCandleBlock)block).getType();
 				SkullModelBase base = SkullCandleTileEntityRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels()).get(type);
-				SkullCandleTileEntityRenderer.renderSkull(null, 180.0F, 0.0F, ms, buffers, light, base, RenderType.entityCutoutNoCull(SkullCandleTileEntityRenderer.SKIN_BY_TYPE.get(type)));
+				RenderType renderType = SkullCandleTileEntityRenderer.getRenderType(type, gameprofile);
+				SkullCandleTileEntityRenderer.renderSkull(null, 180.0F, 0.0F, ms, buffers, light, base, renderType);
+
 				//we put the candle
 				ms.translate(0.0F, 0.5F, 0.0F);
-				CompoundTag tag = stack.getTagElement("BlockStateTag");
-				if(tag != null && tag.contains("color") && tag.contains("candles")) {
+				CompoundTag tag = stack.getTagElement("BlockEntityTag");
+				if(tag != null && tag.contains("CandleColor") && tag.contains("CandleAmount")) {
+					if(tag.getInt("CandleAmount") <= 0) tag.putInt("CandleAmount", 1);
 					Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
-							AbstractSkullCandleBlock.candleColorToCandle(tag.getString("color"))
-									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("candles")), ms, buffers, light, overlay);
+							AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")).getSerializedName())
+									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay);
 				}
 			} else {
 				BlockEntityRenderer<BlockEntity> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(dummy);

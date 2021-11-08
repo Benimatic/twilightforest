@@ -40,7 +40,7 @@ public class CandelabraBlock extends AbstractLightableBlock {
     protected CandelabraBlock(Properties properties) {
         super(properties);
 
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIT, false));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIGHTING, Lighting.NONE));
     }
 
     @Override
@@ -90,7 +90,7 @@ public class CandelabraBlock extends AbstractLightableBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> blockStateBuilder) {
-        blockStateBuilder.add(FACING, ON_WALL, LIT);
+        blockStateBuilder.add(FACING, ON_WALL, LIGHTING);
     }
 
     @Override
@@ -119,39 +119,40 @@ public class CandelabraBlock extends AbstractLightableBlock {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
-        if (state.getValue(LIT)) {
+        boolean ominous = state.getValue(LIGHTING) == Lighting.OMINOUS;
+        if (state.getValue(LIGHTING) != Lighting.NONE) {
             if (state.getValue(ON_WALL)) {
                 switch (state.getValue(FACING)) {
                     case SOUTH -> {
-                        addParticlesAndSound(level, pos, 0.1875, 0.875, 0.75, rand);
-                        addParticlesAndSound(level, pos, 0.5, 0.875, 0.75, rand);
-                        addParticlesAndSound(level, pos, 0.8125, 0.875, 0.75, rand);
+                        addParticlesAndSound(level, pos, 0.1875, 0.875, 0.75, rand, ominous);
+                        addParticlesAndSound(level, pos, 0.5, 0.875, 0.75, rand, ominous);
+                        addParticlesAndSound(level, pos, 0.8125, 0.875, 0.75, rand, ominous);
                     }
                     case WEST -> {
-                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.1875, rand);
-                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.5, rand);
-                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.8125, rand);
+                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.1875, rand, ominous);
+                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.5, rand, ominous);
+                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.8125, rand, ominous);
                     }
                     case EAST -> {
-                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.1875, rand);
-                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.5, rand);
-                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.8125, rand);
+                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.1875, rand, ominous);
+                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.5, rand, ominous);
+                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.8125, rand, ominous);
                     }
                     default -> {
-                        addParticlesAndSound(level, pos, 0.1875, 0.875, 0.25, rand);
-                        addParticlesAndSound(level, pos, 0.5, 0.875, 0.25, rand);
-                        addParticlesAndSound(level, pos, 0.8125, 0.875, 0.25, rand);
+                        addParticlesAndSound(level, pos, 0.1875, 0.875, 0.25, rand, ominous);
+                        addParticlesAndSound(level, pos, 0.5, 0.875, 0.25, rand, ominous);
+                        addParticlesAndSound(level, pos, 0.8125, 0.875, 0.25, rand, ominous);
                     }
                 }
             } else {
                 if (state.getValue(FACING).getAxis() == Direction.Axis.X) {
-                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.1875, rand);
-                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.5, rand);
-                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.8125, rand);
+                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.1875, rand, ominous);
+                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.5, rand, ominous);
+                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.8125, rand, ominous);
                 } else {
-                    addParticlesAndSound(level, pos, 0.1875, 0.875, 0.5, rand);
-                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.5, rand);
-                    addParticlesAndSound(level, pos, 0.8125, 0.875, 0.5, rand);
+                    addParticlesAndSound(level, pos, 0.1875, 0.875, 0.5, rand, ominous);
+                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.5, rand, ominous);
+                    addParticlesAndSound(level, pos, 0.8125, 0.875, 0.5, rand, ominous);
                 }
             }
         }

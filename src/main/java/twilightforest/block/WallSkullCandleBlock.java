@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import twilightforest.block.entity.SkullCandleBlockEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,11 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
-	protected Iterable<Vec3> getParticleOffsets(BlockState state) {
-		return PARTICLE_OFFSETS.get(state.getValue(CANDLES));
+	protected Iterable<Vec3> getParticleOffsets(BlockState state, Level level, BlockPos pos) {
+		if(level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			return PARTICLE_OFFSETS.get(sc.candleAmount);
+		}
+		return PARTICLE_OFFSETS.get(1);
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 				Direction var10 = dir.getOpposite();
 				state = state.setValue(FACING, var10);
 				if (!getter.getBlockState(pos.relative(dir)).canBeReplaced(ctx)) {
-					return state.setValue(LIT, false);
+					return state.setValue(LIGHTING, Lighting.NONE);
 				}
 			}
 		}
@@ -81,9 +85,9 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
 		Direction dir = state.getValue(FACING);
-		if (state.getValue(LIT)) {
-			this.getParticleOffsets(state).forEach((offset) ->
-					addParticlesAndSound(level, offset.add(pos.getX() - (float)dir.getStepX() * 0.25F, pos.getY(), pos.getZ() - (float)dir.getStepZ() * 0.25F), rand));
+		if (state.getValue(LIGHTING) != Lighting.NONE) {
+			this.getParticleOffsets(state, level, pos).forEach((offset) ->
+					addParticlesAndSound(level, offset.add(pos.getX() - (float)dir.getStepX() * 0.25F, pos.getY(), pos.getZ() - (float)dir.getStepZ() * 0.25F), rand, state.getValue(LIGHTING) == Lighting.OMINOUS));
 		}
 	}
 

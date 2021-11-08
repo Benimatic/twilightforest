@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -21,6 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import twilightforest.block.entity.SkullCandleBlockEntity;
 
 import java.util.List;
 
@@ -55,7 +57,15 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext ctx) {
-		return switch (state.getValue(AbstractSkullCandleBlock.CANDLES)) {
+		if(getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			return switch (sc.candleAmount) {
+				default -> SKULL_WITH_ONE;
+				case 2 -> SKULL_WITH_TWO;
+				case 3 -> SKULL_WITH_THREE;
+				case 4 -> SKULL_WITH_FOUR;
+			};
+		}
+		return switch (getCandleCount()) {
 			default -> SKULL_WITH_ONE;
 			case 2 -> SKULL_WITH_TWO;
 			case 3 -> SKULL_WITH_THREE;
@@ -64,13 +74,16 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
-	protected Iterable<Vec3> getParticleOffsets(BlockState state) {
-		return PARTICLE_OFFSETS.get(state.getValue(CANDLES));
+	protected Iterable<Vec3> getParticleOffsets(BlockState state, Level level, BlockPos pos) {
+		if(level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			return PARTICLE_OFFSETS.get(sc.candleAmount);
+		}
+		return PARTICLE_OFFSETS.get(getCandleCount());
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return this.defaultBlockState().setValue(ROTATION, Mth.floor((double)(ctx.getRotation() * 16.0F / 360.0F) + 0.5D) & 15).setValue(LIT, false);
+		return this.defaultBlockState().setValue(ROTATION, Mth.floor((double)(ctx.getRotation() * 16.0F / 360.0F) + 0.5D) & 15).setValue(LIGHTING, Lighting.NONE);
 	}
 
 	@Override
