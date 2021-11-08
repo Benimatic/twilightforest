@@ -60,8 +60,8 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 			double d2 = this.getY() + (this.interpTargetY - this.getY()) / (double)this.newPosRotationIncrements;
 			double d4 = this.getZ() + (this.interpTargetZ - this.getZ()) / (double)this.newPosRotationIncrements;
 			double d6 = Mth.wrapDegrees(this.interpTargetYaw - (double)this.getYRot());
-			this.yRot = (float)((double)this.getYRot() + d6 / (double)this.newPosRotationIncrements);
-			this.xRot = (float)((double)this.getXRot() + (this.interpTargetPitch - (double)this.getXRot()) / (double)this.newPosRotationIncrements);
+			this.setYRot((float)((double)this.getYRot() + d6 / (double)this.newPosRotationIncrements));
+			this.setXRot((float)((double)this.getXRot() + (this.interpTargetPitch - (double)this.getXRot()) / (double)this.newPosRotationIncrements));
 			--this.newPosRotationIncrements;
 			this.setPos(d0, d2, d4);
 			this.setRot(this.getYRot(), this.getXRot());

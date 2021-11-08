@@ -71,8 +71,8 @@ public class CharmEffect extends Entity implements ItemSupplier {
 			double d1 = this.getY() + (this.interpTargetY - this.getY()) / this.newPosRotationIncrements;
 			double d2 = this.getZ() + (this.interpTargetZ - this.getZ()) / this.newPosRotationIncrements;
 			double d3 = Mth.wrapDegrees(this.interpTargetYaw - this.getYRot());
-			this.yRot = (float) (this.getYRot() + d3 / this.newPosRotationIncrements);
-			this.xRot = (float) (this.getXRot() + (this.interpTargetPitch - this.getXRot()) / this.newPosRotationIncrements);
+			this.setYRot((float) (this.getYRot() + d3 / this.newPosRotationIncrements));
+			this.setXRot((float) (this.getXRot() + (this.interpTargetPitch - this.getXRot()) / this.newPosRotationIncrements));
 			--this.newPosRotationIncrements;
 			this.setPos(d0, d1, d2);
 			this.setRot(this.getYRot(), this.getXRot());

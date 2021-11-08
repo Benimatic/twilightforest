@@ -323,8 +323,8 @@ public class Hydra extends Mob implements Enemy {
 				randomYawVelocity = (random.nextFloat() - 0.5F) * 20F;
 			}
 
-			yRot += randomYawVelocity;
-			xRot = 0;
+			setYRot(getYRot() + randomYawVelocity);
+			setXRot(0);
 
 			// TODO: while we are idle, consider having the heads breathe fire on passive mobs
 

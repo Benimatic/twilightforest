@@ -162,16 +162,16 @@ public class Wraith extends FlyingMob implements Enemy {
 		@Override
 		public void tick() {
 			if (this.parentEntity.getTarget() == null) {
-				this.parentEntity.yRot = -((float) Mth.atan2(this.parentEntity.getDeltaMovement().x(), this.parentEntity.getDeltaMovement().z())) * (180F / (float) Math.PI);
-				this.parentEntity.yBodyRot = this.parentEntity.getYRot();
+				this.parentEntity.setYRot(-((float) Mth.atan2(this.parentEntity.getDeltaMovement().x(), this.parentEntity.getDeltaMovement().z())) * (180F / (float) Math.PI));
+				this.parentEntity.setYBodyRot(this.parentEntity.getYRot());
 			} else {
 				LivingEntity entitylivingbase = this.parentEntity.getTarget();
 
 				if (entitylivingbase.distanceToSqr(this.parentEntity) < 4096.0D) {
 					double d1 = entitylivingbase.getX() - this.parentEntity.getX();
 					double d2 = entitylivingbase.getZ() - this.parentEntity.getZ();
-					this.parentEntity.yRot = -((float) Mth.atan2(d1, d2)) * (180F / (float) Math.PI);
-					this.parentEntity.yBodyRot = this.parentEntity.getYRot();
+					this.parentEntity.setYRot(-((float) Mth.atan2(d1, d2)) * (180F / (float) Math.PI));
+					this.parentEntity.setYBodyRot(this.parentEntity.getYRot());
 				}
 			}
 		}

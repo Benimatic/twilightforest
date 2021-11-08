@@ -96,8 +96,8 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	@Override
 	protected void setRot(float yaw, float pitch) {
-		this.yRot = yaw % 360.0F;
-		this.xRot = pitch % 360.0F;
+		this.setYRot(yaw % 360.0F);
+		this.setXRot(pitch % 360.0F);
 	}
 
 	@Override

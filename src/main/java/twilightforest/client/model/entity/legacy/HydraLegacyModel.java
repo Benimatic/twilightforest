@@ -226,13 +226,13 @@ public class HydraLegacyModel extends HierarchicalModel<Hydra> {
     public float getRotationY(Hydra hydra, HydraPart whichHead, float time) {
 
 		float yawOffset = hydra.yBodyRotO + (hydra.yBodyRot - hydra.yBodyRotO) * time;
-		float yaw = whichHead.yRotO + (whichHead.yRot - whichHead.yRotO) * time;
+		float yaw = whichHead.yRotO + (whichHead.getYRot() - whichHead.yRotO) * time;
 
 		return (yaw - yawOffset) / 57.29578F;
 	}
 
 	public float getRotationX(Hydra hydra, HydraPart whichHead, float time) {
 
-		return (whichHead.xRotO + (whichHead.xRot - whichHead.xRotO) * time) / 57.29578F;
+		return (whichHead.xRotO + (whichHead.getXRot() - whichHead.xRotO) * time) / 57.29578F;
 	}
 }

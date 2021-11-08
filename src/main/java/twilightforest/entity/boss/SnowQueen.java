@@ -209,7 +209,7 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 				// last block beneath
 				this.iceArray[i].setPos(this.getX(), this.getY() - 1, this.getZ());
 			}
-			this.iceArray[i].yRot = this.getIceShieldAngle(i);
+			this.iceArray[i].setYRot(this.getIceShieldAngle(i));
 
 			// collide things with the block
 			if (!level.isClientSide) {

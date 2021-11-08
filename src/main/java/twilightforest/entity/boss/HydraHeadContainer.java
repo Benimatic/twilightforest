@@ -474,10 +474,10 @@ public class HydraHeadContainer {
 			float yawOffOffset = Mth.wrapDegrees(headEntity.getYRot() - hydra.yBodyRot);
 
 			if (yawOffOffset > biteMaxYaw) {
-				headEntity.yRot = hydra.yBodyRot + biteMaxYaw;
+				headEntity.setYRot(hydra.yBodyRot + biteMaxYaw);
 			}
 			if (yawOffOffset < biteMinYaw) {
-				headEntity.yRot = hydra.yBodyRot + biteMinYaw;
+				headEntity.setYRot(hydra.yBodyRot + biteMinYaw);
 			}
 
 			// make the target vector be a point off in the distance in the direction we're already facing
@@ -489,7 +489,7 @@ public class HydraHeadContainer {
 
 		} else if (this.currentState == State.BITING || this.currentState == State.BITE_ENDING) {
 			this.faceEntity(targetEntity, 5F, hydra.getMaxHeadXRot());
-			headEntity.xRot += Math.PI / 4;
+			headEntity.setXRot((float) (headEntity.getXRot() + Math.PI / 4));
 
 		} else if (this.currentState == State.ROAR_RAWR) {
 			// keep facing target vector, don't move
@@ -834,28 +834,28 @@ public class HydraHeadContainer {
 
 		factor = 0.00F;
 		necka.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		necka.yRot = endYaw + (startYaw - endYaw) * factor;
-		necka.xRot = endPitch + (startPitch - endPitch) * factor;
+		necka.setYRot(endYaw + (startYaw - endYaw) * factor);
+		necka.setXRot(endPitch + (startPitch - endPitch) * factor);
 
 		factor = 0.25F;
 		neckb.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckb.yRot = endYaw + (startYaw - endYaw) * factor;
-		neckb.xRot = endPitch + (startPitch - endPitch) * factor;
+		neckb.setYRot(endYaw + (startYaw - endYaw) * factor);
+		neckb.setXRot(endPitch + (startPitch - endPitch) * factor);
 
 		factor = 0.50F;
 		neckc.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckc.yRot = endYaw + (startYaw - endYaw) * factor;
-		neckc.xRot = endPitch + (startPitch - endPitch) * factor;
+		neckc.setYRot(endYaw + (startYaw - endYaw) * factor);
+		neckc.setXRot(endPitch + (startPitch - endPitch) * factor);
 
 		factor = 0.75F;
 		neckd.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckd.yRot = endYaw + (startYaw - endYaw) * factor;
-		neckd.xRot = endPitch + (startPitch - endPitch) * factor;
+		neckd.setYRot(endYaw + (startYaw - endYaw) * factor);
+		neckd.setXRot(endPitch + (startPitch - endPitch) * factor);
 
 		factor = 1.0F;
 		necke.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		necke.yRot = endYaw + (startYaw - endYaw) * factor;
-		necke.xRot = endPitch + (startPitch - endPitch) * factor;
+		necke.setYRot(endYaw + (startYaw - endYaw) * factor);
+		necke.setXRot(endPitch + (startPitch - endPitch) * factor);
 	}
 
 	private void faceIdle(float yawConstraint, float pitchConstraint) {
@@ -894,8 +894,8 @@ public class HydraHeadContainer {
 		double distance = Mth.sqrt((float) (xOffset * xOffset + zOffset * zOffset));
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
-		headEntity.xRot = -updateRotation(headEntity.getXRot(), zdAngle, pitchConstraint);
-		headEntity.yRot = updateRotation(headEntity.getYRot(), xyAngle, yawConstraint);
+		headEntity.setXRot(-updateRotation(headEntity.getXRot(), zdAngle, pitchConstraint));
+		headEntity.setYRot(updateRotation(headEntity.getYRot(), xyAngle, yawConstraint));
 	}
 
 	private float updateRotation(float current, float intended, float increment) {

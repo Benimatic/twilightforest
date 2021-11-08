@@ -100,12 +100,12 @@ public class HydraHeadLegacyModel extends ListModel<HydraHead> {
 
     public float getRotationY(HydraPart whichHead, float time) {
         //float yawOffset = hydra.prevRenderYawOffset + (hydra.renderYawOffset - hydra.prevRenderYawOffset) * time;
-        float yaw = whichHead.yRotO + (whichHead.yRot - whichHead.yRotO) * time;
+        float yaw = whichHead.yRotO + (whichHead.getYRot() - whichHead.yRotO) * time;
 
         return yaw / 57.29578F;
     }
 
     public float getRotationX(HydraPart whichHead, float time) {
-        return (whichHead.xRotO + (whichHead.xRot - whichHead.xRotO) * time) / 57.29578F;
+        return (whichHead.xRotO + (whichHead.getXRot() - whichHead.xRotO) * time) / 57.29578F;
     }
 }

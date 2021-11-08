@@ -185,7 +185,7 @@ public class TinyBird extends Bird {
 			float f = (float) (Mth.atan2(this.getDeltaMovement().z(), this.getDeltaMovement().x()) * (180D / Math.PI)) - 90.0F;
 			float f1 = Mth.wrapDegrees(f - this.getYRot());
 			this.zza = 0.5F;
-			this.yRot += f1;
+			this.setYRot(this.getYRot() + f1);
 
 			// TF - change chance 100 -> 10; change check to isLandable
 			if (this.random.nextInt(100) == 0 && isLandableBlock(new BlockPos(getX(), getY() - 1, getZ()))) //this.world.getBlockState(blockpos1).isNormalCube())

@@ -57,8 +57,8 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 				.scale(scale);
 		this.setDeltaMovement(vec3d);
 		float f = Mth.sqrt((float) distanceToSqr(vec3d));
-		this.yRot = (float) (Mth.atan2(vec3d.x, z) * (180F / (float) Math.PI));
-		this.xRot = (float) (Mth.atan2(vec3d.y, f) * (180F / (float) Math.PI));
+		this.setYRot((float) (Mth.atan2(vec3d.x, z) * (180F / (float) Math.PI)));
+		this.setXRot((float) (Mth.atan2(vec3d.y, f) * (180F / (float) Math.PI)));
 		this.yRotO = this.getYRot();
 		this.xRotO = this.getXRot();
 	}
