@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -23,8 +25,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,6 +43,7 @@ import twilightforest.entity.TFPart;
 import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
+import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFDimensions;
 
 import javax.annotation.Nullable;
@@ -284,6 +289,17 @@ public class ASMHooks {
 	 */
 	public static int foliage(int o, Biome biome, double x, double z) {
 		return FoliageColorHandler.get(o, biome, x, z);
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.levelgen.feature.StructureFeature#loadStaticStart(ServerLevel, CompoundTag, long)} <br>
+	 * [AFTER {@link net.minecraft.world.level.levelgen.feature.StructureFeature#createStart(ChunkPos, int, long)}]
+	 */
+	public static StructureStart<?> conquered(StructureStart<?> start, CompoundTag nbt) {
+		if (start instanceof TFStructureStart.Start s)
+			s.load(nbt);
+		return start;
 	}
 
 }

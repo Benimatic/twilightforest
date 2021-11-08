@@ -168,7 +168,10 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	public static void markStructureConquered(Level world, BlockPos pos, TFFeature feature) {
 		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
-			//generator.setStructureConquered(pos, true);
+			locateTFStructureInRange((ServerLevel) world, feature, pos, 0).ifPresent(start -> {
+				if (start instanceof TFStructureStart.Start s)
+					s.setConquered(true);
+			});
 		}
 	}
 

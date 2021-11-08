@@ -1,31 +1,33 @@
 package twilightforest.world.components.structures.start;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructures;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
+import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructures;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -48,16 +50,6 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 
 	public TFFeature getFeature() {
 		return feature;
-	}
-
-	@Override
-	public List<MobSpawnSettings.SpawnerData> getDefaultSpawnList() {
-		return getFeature().getCombinedMonsterSpawnableList();
-	}
-
-	@Override
-	public List<MobSpawnSettings.SpawnerData> getDefaultCreatureSpawnList() {
-		return getFeature().getCombinedCreatureSpawnableList();
 	}
 
 	@Override
@@ -113,7 +105,6 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 		return highestFoundIndex;
 	}
 
-	// FIXME: reimplement conquered status check
 	@Nullable
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
 		for (StructureFeature<?> structure : TFStructures.SEPARATION_SETTINGS.keySet()) {
@@ -123,6 +114,8 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 			TFFeature feature = ((TFStructureStart<?>) structure).feature;
 			if (classification != MobCategory.MONSTER)
 				return feature.getSpawnableList(classification);
+			if (start instanceof TFStructureStart.Start s && s.conquered)
+				return null;
 			final int index = getSpawnListIndexAt(start, pos);
 			if (index < 0)
 				return null;
@@ -131,11 +124,32 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 		return null;
 	}
 
-	// FIXME: reimplement conquered status
-	private class Start extends StructureStart<C> {
+	public class Start extends StructureStart<C> {
+
+		private boolean conquered;
 
 		public Start(StructureFeature<C> p_i225876_1_, ChunkPos p_i225876_2_, int p_i225876_3_, long p_i225876_4_) {
 			super(p_i225876_1_, p_i225876_2_, p_i225876_3_, p_i225876_4_);
+		}
+
+		@Override
+		public CompoundTag createTag(ServerLevel pLevel, ChunkPos pChunkPos) {
+			CompoundTag tag = super.createTag(pLevel, pChunkPos);
+			if (isValid())
+				tag.putBoolean("conquered", conquered);
+			return tag;
+		}
+
+		public void load(CompoundTag nbt) {
+			conquered = nbt.getBoolean("conquered");
+		}
+
+		public final void setConquered(boolean flag) {
+			conquered = flag;
+		}
+
+		public final boolean isConquered() {
+			return conquered;
 		}
 
 		@Override
@@ -153,7 +167,6 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 		}
 	}
 
-	// FIXME: reimplement conquered status
 	private class TemplateStart extends Start {
 
 		public TemplateStart(StructureFeature<C> p_i225876_1_, ChunkPos p_i225876_2_, int p_i225876_3_, long p_i225876_4_) {
