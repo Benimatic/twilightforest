@@ -67,7 +67,7 @@ public class BrittleFlaskItem extends Item {
 		CompoundTag flaskTag = stack.getOrCreateTag();
 		CompoundTag potionTag = other.getOrCreateTag();
 
-		if(action == ClickAction.SECONDARY && other.getItem() instanceof PotionItem) {
+		if(action == ClickAction.SECONDARY && other.is(Items.POTION)) {
 			if(potionTag.contains("Potion") && canBeRefilled(stack)) {
 				if(flaskTag.contains("Potion") && flaskTag.getString("Potion").equals(potionTag.getString("Potion")) && flaskTag.getInt("Uses") < 4) {
 					if(!player.getAbilities().instabuild) {
