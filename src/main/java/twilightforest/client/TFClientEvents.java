@@ -41,6 +41,7 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
+import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
@@ -71,16 +72,41 @@ public class TFClientEvents {
 			fullbrightItem(event, TFItems.FIERY_LEGGINGS);
 			fullbrightItem(event, TFItems.FIERY_PICKAXE);
 			fullbrightItem(event, TFItems.FIERY_SWORD);
-			fullbright(event, TFBlocks.FIERY_BLOCK.getId(), "");
+
+			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
+
+			tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK);
+			tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK);
+			tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK);
+			tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK);
 		}
 
 		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
 			fullbright(event, Objects.requireNonNull(item.getId()), "inventory");
 		}
 
+		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
+			fullbright(event, Objects.requireNonNull(block.getId()), "inventory");
+			fullbright(event, Objects.requireNonNull(block.getId()), "");
+		}
+
 		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
 			event.getModelRegistry().put(mrl, new FullbrightBakedModel(event.getModelRegistry().get(mrl)));
+		}
+
+		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
+			tintedFullbright(event, Objects.requireNonNull(item.getId()), "inventory");
+		}
+
+		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
+			tintedFullbright(event, Objects.requireNonNull(block.getId()), "inventory");
+			tintedFullbright(event, Objects.requireNonNull(block.getId()), "");
+		}
+
+		private static void tintedFullbright(ModelBakeEvent event, ResourceLocation rl, String state) {
+			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
+			event.getModelRegistry().put(mrl, new TintIndexAwareFullbrightBakedModel(event.getModelRegistry().get(mrl)));
 		}
 
 		@SubscribeEvent

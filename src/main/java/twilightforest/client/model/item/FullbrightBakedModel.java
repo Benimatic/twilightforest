@@ -20,8 +20,8 @@ import java.util.Random;
 
 public class FullbrightBakedModel implements BakedModel {
 
-	private final BakedModel delegate;
-	private Map<Direction, List<BakedQuad>> cachedQuads = Maps.newHashMap();
+	protected final BakedModel delegate;
+	protected final Map<Direction, List<BakedQuad>> cachedQuads = Maps.newHashMap();
 
 	public FullbrightBakedModel(BakedModel delegate) {
 		this.delegate = delegate;
