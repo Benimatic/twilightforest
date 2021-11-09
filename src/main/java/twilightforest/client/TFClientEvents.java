@@ -49,6 +49,7 @@ import twilightforest.data.ItemTagGenerator;
 import twilightforest.item.TFItems;
 
 import java.util.Objects;
+import java.util.function.UnaryOperator;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
@@ -75,38 +76,54 @@ public class TFClientEvents {
 
 			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
 
-			tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK);
-			tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK);
-			tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK);
-			tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK);
+			tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 		}
 
 		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
-			fullbright(event, Objects.requireNonNull(item.getId()), "inventory");
+			fullbrightItem(event, item, f -> f);
+		}
+
+		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
+			fullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
 		}
 
 		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
-			fullbright(event, Objects.requireNonNull(block.getId()), "inventory");
-			fullbright(event, Objects.requireNonNull(block.getId()), "");
+			fullbrightBlock(event, block, f -> f);
 		}
 
-		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state) {
+		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
+			fullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
+			fullbright(event, Objects.requireNonNull(block.getId()), "", process);
+		}
+
+		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModelRegistry().put(mrl, new FullbrightBakedModel(event.getModelRegistry().get(mrl)));
+			event.getModelRegistry().put(mrl, process.apply(new FullbrightBakedModel(event.getModelRegistry().get(mrl))));
 		}
 
 		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
-			tintedFullbright(event, Objects.requireNonNull(item.getId()), "inventory");
+			tintedFullbrightItem(event, item, f -> f);
+		}
+
+		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
+			tintedFullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
 		}
 
 		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
-			tintedFullbright(event, Objects.requireNonNull(block.getId()), "inventory");
-			tintedFullbright(event, Objects.requireNonNull(block.getId()), "");
+			tintedFullbrightBlock(event, block, f -> f);
 		}
 
-		private static void tintedFullbright(ModelBakeEvent event, ResourceLocation rl, String state) {
+		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
+			tintedFullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
+			tintedFullbright(event, Objects.requireNonNull(block.getId()), "", process);
+		}
+
+		private static void tintedFullbright(ModelBakeEvent event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModelRegistry().put(mrl, new TintIndexAwareFullbrightBakedModel(event.getModelRegistry().get(mrl)));
+			event.getModelRegistry().put(mrl, process.apply(new TintIndexAwareFullbrightBakedModel(event.getModelRegistry().get(mrl))));
 		}
 
 		@SubscribeEvent
