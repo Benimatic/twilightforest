@@ -146,7 +146,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetle> {
 
 		partRoot.addOrReplaceChild("leg_1", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
+						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
 
 		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create()
@@ -156,7 +156,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetle> {
 
 		partRoot.addOrReplaceChild("leg_3", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
+						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
 
 		partRoot.addOrReplaceChild("leg_4", CubeListBuilder.create()
@@ -166,7 +166,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetle> {
 
 		partRoot.addOrReplaceChild("leg_5", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
+						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
 
 		partRoot.addOrReplaceChild("leg_6", CubeListBuilder.create()

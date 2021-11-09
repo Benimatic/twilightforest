@@ -53,7 +53,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 		renderChain(chainBlock, chainBlock.chain5, yaw, partialTicks, stack, buffer, light, chainModel);
 	}
 
-	static void renderChain(Entity parent, Entity chain, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
+	public static void renderChain(Entity parent, Entity chain, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
 		double chainInX = (Mth.lerp(partialTicks, chain.xOld, chain.getX()) - Mth.lerp(partialTicks, parent.xOld, parent.getX()));
 		double chainInY = (Mth.lerp(partialTicks, chain.yOld, chain.getY()) - Mth.lerp(partialTicks, parent.yOld, parent.getY()));
 		double chainInZ = (Mth.lerp(partialTicks, chain.zOld, chain.getZ()) - Mth.lerp(partialTicks, parent.zOld, parent.getZ()));

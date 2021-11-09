@@ -30,7 +30,7 @@ public class RavenLegacyModel extends HierarchicalModel<Raven> {
 
 		this.head = root.getChild("head");
 		this.rightarm = root.getChild("right_wing");
-		this.leftleg = root.getChild("left_wing");
+		this.leftarm = root.getChild("left_wing");
 		this.rightleg = root.getChild("right_leg");
 		this.leftleg = root.getChild("left_leg");
 	}

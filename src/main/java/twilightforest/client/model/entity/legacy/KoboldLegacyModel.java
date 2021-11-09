@@ -33,6 +33,8 @@ public class KoboldLegacyModel extends HumanoidModel<Kobold> {
 						.addBox(-3.5F, -7F, -3F, 7, 6, 6),
 				PartPose.offset(0F, 13F, 0F));
 
+		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+
 		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
 						.texOffs(48, 20)
 						.addBox(0F, -4F, 0F, 4, 4, 1),
@@ -40,7 +42,7 @@ public class KoboldLegacyModel extends HumanoidModel<Kobold> {
 
 		head.addOrReplaceChild("left_ear", CubeListBuilder.create()
 						.texOffs(48, 25)
-						.addBox(0F, -4F, 0F, 4, 4, 1),
+						.addBox(-4F, -4F, 0F, 4, 4, 1),
 				PartPose.offsetAndRotation(-3.5F, -3F, -1F, 0.0F, -0.2617994F, 0.3490659F));
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
@@ -65,7 +67,7 @@ public class KoboldLegacyModel extends HumanoidModel<Kobold> {
 
 		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
 						.texOffs(36, 17)
-						.addBox(-3F, -1F, -1.5F, 3, 7, 3),
+						.addBox(0F, -1F, -1.5F, 3, 7, 3),
 				PartPose.offset(3.5F, 12F, 0F));
 
 		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()

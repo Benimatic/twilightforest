@@ -30,7 +30,7 @@ public class BoarLegacyModel<T extends Boar> extends PigModel<T> {
 		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(28, 10)
 						.addBox(-5.0F, -8.0F, -7.0F, 10.0F, 14.0F, 8.0F),
-				PartPose.offset(0.0F, 11.0F, 2.0F));
+				PartPose.offsetAndRotation(0.0F, 11.0F, 2.0F, 1.5707963267948966F, 0.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
 						.texOffs(0, 16)

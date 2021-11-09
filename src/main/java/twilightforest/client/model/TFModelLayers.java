@@ -88,6 +88,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation SKELETON_DRUID_INNER_ARMOR = register("skeleton_druid", "inner_armor");
 	public static final ModelLayerLocation SKELETON_DRUID_OUTER_ARMOR = register("skeleton_druid", "outer_armor");
 	public static final ModelLayerLocation SLIME_BEETLE = register("slime_beetle");
+	public static final ModelLayerLocation SLIME_BEETLE_TAIL = register("slime_beetle", "tail");
 	public static final ModelLayerLocation SNOW_QUEEN = register("snow_queen");
 	public static final ModelLayerLocation SQUIRREL = register("squirrel");
 	public static final ModelLayerLocation STABLE_ICE_CORE = register("stable_ice_core");
@@ -116,11 +117,13 @@ public class TFModelLayers {
 	public static final ModelLayerLocation LEGACY_MINOSHROOM = register("legacy_minoshroom");
 	public static final ModelLayerLocation LEGACY_MINOTAUR = register("legacy_minotaur");
 	public static final ModelLayerLocation LEGACY_NAGA = register("legacy_naga");
+	public static final ModelLayerLocation LEGACY_NAGA_BODY = register("legacy_naga_body");
 	public static final ModelLayerLocation LEGACY_PINCH_BEETLE = register("legacy_pinch_beetle");
 	public static final ModelLayerLocation LEGACY_QUEST_RAM = register("legacy_quest_ram");
 	public static final ModelLayerLocation LEGACY_RAVEN = register("legacy_raven");
 	public static final ModelLayerLocation LEGACY_REDCAP = register("legacy_redcap");
 	public static final ModelLayerLocation LEGACY_SLIME_BEETLE = register("legacy_slime_beetle");
+	public static final ModelLayerLocation LEGACY_SLIME_BEETLE_TAIL = register("legacy_slime_beetle", "tail");
 	public static final ModelLayerLocation LEGACY_SNOW_QUEEN = register("legacy_snow_queen");
 	public static final ModelLayerLocation LEGACY_SQUIRREL = register("legacy_squirrel");
 	public static final ModelLayerLocation LEGACY_TINY_BIRD = register("legacy_tiny_bird");

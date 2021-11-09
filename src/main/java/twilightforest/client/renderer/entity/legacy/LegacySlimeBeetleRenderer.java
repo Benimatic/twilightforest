@@ -1,25 +1,26 @@
-package twilightforest.client.renderer.entity;
+package twilightforest.client.renderer.entity.legacy;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.SlimeBeetleModel;
+import twilightforest.client.model.entity.legacy.SlimeBeetleLegacyModel;
 import twilightforest.entity.monster.SlimeBeetle;
 
-public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, SlimeBeetleModel> {
+public class LegacySlimeBeetleRenderer extends MobRenderer<SlimeBeetle, SlimeBeetleLegacyModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("slimebeetle.png");
 
-	public SlimeBeetleRenderer(EntityRendererProvider.Context manager, SlimeBeetleModel model, float shadowSize) {
+	public LegacySlimeBeetleRenderer(EntityRendererProvider.Context manager, SlimeBeetleLegacyModel model, float shadowSize) {
 		super(manager, model, shadowSize);
 		addLayer(new LayerInner(this, manager));
 	}
@@ -35,12 +36,12 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, SlimeBeetleMod
 		return textureLoc;
 	}
 
-	static class LayerInner extends RenderLayer<SlimeBeetle, SlimeBeetleModel> {
-		private final SlimeBeetleModel innerModel;
+	static class LayerInner extends RenderLayer<SlimeBeetle, SlimeBeetleLegacyModel> {
+		private final SlimeBeetleLegacyModel innerModel;
 
-		public LayerInner(RenderLayerParent<SlimeBeetle, SlimeBeetleModel> renderer, EntityRendererProvider.Context manager) {
+		public LayerInner(RenderLayerParent<SlimeBeetle, SlimeBeetleLegacyModel> renderer, EntityRendererProvider.Context manager) {
 			super(renderer);
-			innerModel =  new SlimeBeetleModel(manager.bakeLayer(TFModelLayers.SLIME_BEETLE_TAIL));
+			innerModel =  new SlimeBeetleLegacyModel(manager.bakeLayer(TFModelLayers.LEGACY_SLIME_BEETLE_TAIL));
 		}
 
 		@Override

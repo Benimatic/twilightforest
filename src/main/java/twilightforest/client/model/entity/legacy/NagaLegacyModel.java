@@ -39,7 +39,7 @@ public class NagaLegacyModel<T extends Entity> extends ListModel<T> {
 						.addBox(-8F, -12F, -8F, 16, 16, 16),
 				PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	@Override

@@ -23,6 +23,9 @@ public class SnowQueenLegacyModel extends HumanoidModel<SnowQueen> {
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(0.0F, -4.0F, 0.0F));
 
+		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+				PartPose.ZERO);
+
 		var crown = head.addOrReplaceChild("crown", CubeListBuilder.create(),
 				PartPose.ZERO);
 
@@ -43,7 +46,7 @@ public class SnowQueenLegacyModel extends HumanoidModel<SnowQueen> {
 
 		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
 						.texOffs(16, 16)
-						.addBox(-2.0F, -2.0F, -1.5F, 3, 12, 3),
+						.addBox(-1.0F, -2.0F, -1.3F, 3, 12, 3),
 				PartPose.offset(5.0F, 2.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()

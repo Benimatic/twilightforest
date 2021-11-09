@@ -66,7 +66,7 @@ public class DeerLegacyModel extends QuadrupedModel<Deer> {
 
 		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
 						.texOffs(0, 17)
-						.addBox(-3F, 0F, -2F, 2, 12, 3),
+						.addBox(-1F, 0F, -2F, 2, 12, 3),
 				PartPose.offset(2F, 12F, 9F));
 
 		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
@@ -76,7 +76,7 @@ public class DeerLegacyModel extends QuadrupedModel<Deer> {
 
 		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
 						.texOffs(0, 17)
-						.addBox(-3F, 0F, -2F, 2, 12, 3),
+						.addBox(-1F, 0F, -2F, 2, 12, 3),
 				PartPose.offset(2F, 12F, -5F));
 
 		return LayerDefinition.create(mesh, 64, 32);

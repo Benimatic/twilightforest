@@ -1,5 +1,7 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
@@ -14,6 +16,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.monster.SlimeBeetle;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * ModelSlimeBeetle - MCVinnyq
  * Created using Tabula 8.0.0
@@ -27,10 +32,7 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
     public ModelPart rightEye, leftEye;
     public ModelPart tailBottom, tailTop, slime, slimeCenter;
 
-    private static boolean translucent;
-
-    public SlimeBeetleModel(ModelPart root, boolean translucent) {
-        SlimeBeetleModel.translucent = translucent;
+    public SlimeBeetleModel(ModelPart root) {
         this.root = root;
         this.head = root.getChild("head");
 
@@ -50,8 +52,8 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
         this.tailBottom = root.getChild("tail_bottom");
         this.tailTop = this.tailBottom.getChild("tail_top");
 
-        this.slime = this.tailTop.getChild("slime");
         this.slimeCenter = this.tailTop.getChild("slime_center");
+        this.slime = this.slimeCenter.getChild("slime");
     }
 
     public static LayerDefinition create() {
@@ -128,15 +130,15 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
                         .addBox(-3.0F, -9.0F, -1.0F, 6.0F, 6.0F, 6.0F),
                 PartPose.offset(0.0F, 0.0F, 3.0F));
 
-        tailTop.addOrReplaceChild("slime", CubeListBuilder.create()
+        var center = tailTop.addOrReplaceChild("slime_center", CubeListBuilder.create()
+                        .texOffs(0, 18)
+                        .addBox(-4.0F, -10.0F, -5.0F, 8.0F, 8.0F, 8.0F),
+                PartPose.offset(0.0F, -9.0F, 2.0F));
+
+        center.addOrReplaceChild("slime", CubeListBuilder.create()
                         .texOffs(16, 40)
                         .addBox(-6.0F, -12.0F, -7.0F, 12.0F, 12.0F, 12.0F),
-                PartPose.offset(0.0F, -8.0F, 2.0F));
-
-        tailTop.addOrReplaceChild("slime_center", CubeListBuilder.create()
-                        .texOffs(0, 18)
-                        .addBox(-4.0F, -9.0F, -5.0F, 8.0F, 8.0F, 8.0F),
-                PartPose.offset(0.0F, -9.0F, 2.0F));
+                PartPose.offset(0.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(mesh, 64, 64);
     }
@@ -148,12 +150,12 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
 
     @Override
     public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+        slime.visible =  false;
         root().render(stack, builder, light, overlay, red, green, blue, alpha);
-       /* if (!translucent) {
-            root().getAllParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
-        } else {
-            this.slime.render(stack, builder, light, overlay, red, green, blue, alpha);
-        }*/
+    }
+
+    public void renderTail(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+        this.tailBottom.render(stack, builder, light, overlay, red, green, blue, alpha);
     }
 
     @Override
@@ -206,7 +208,6 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
         // tail wiggle
         this.tailBottom.xRot = Mth.cos(ageInTicks * 0.3335F) * 0.15F;
         this.tailTop.xRot = Mth.cos(ageInTicks * 0.4445F) * 0.20F;
-        this.slime.xRot = Mth.cos(ageInTicks * 0.5555F) * 0.25F;
         this.slimeCenter.xRot = Mth.cos(ageInTicks * 0.5555F + 0.25F) * 0.25F;
     }
 }

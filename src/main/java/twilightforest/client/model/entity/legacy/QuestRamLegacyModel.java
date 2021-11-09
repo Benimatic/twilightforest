@@ -47,14 +47,14 @@ public class QuestRamLegacyModel extends HierarchicalModel<QuestRam> {
 		this.head = root.getChild("head");
 		this.neck = root.getChild("neck");
 		this.rearbody = root.getChild("rear_body");
-		this.haunch1 = root.getChild("front_right_haunch");
-		this.leg1 = root.getChild("front_right_leg");
-		this.haunch2 = root.getChild("front_left_haunch");
-		this.leg2 = root.getChild("front_left_leg");
-		this.haunch3 = root.getChild("back_right_haunch");
-		this.leg3 = root.getChild("back_right_leg");
-		this.haunch4 = root.getChild("back_left_haunch");
-		this.leg4 = root.getChild("back_left_leg");
+		this.haunch1 = root.getChild("right_front_haunch");
+		this.leg1 = root.getChild("right_front_leg");
+		this.haunch2 = root.getChild("left_front_haunch");
+		this.leg2 = root.getChild("left_front_leg");
+		this.haunch3 = root.getChild("right_back_haunch");
+		this.leg3 = root.getChild("right_back_leg");
+		this.haunch4 = root.getChild("left_back_haunch");
+		this.leg4 = root.getChild("left_back_leg");
 		Arrays.setAll(this.segments, (num) -> root.getChild(getSegmentName(num)));
 		for (int i = 0; i < 16; i++) {
 			segments[i].visible = false;

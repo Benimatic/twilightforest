@@ -57,7 +57,7 @@ public class LowerGoblinKnightLegacyModel extends HumanoidModel<LowerGoblinKnigh
 
 		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
 						.texOffs(0, 48)
-						.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4),
+						.addBox(-1.0F, 0.0F, -2.0F, 4, 8, 4),
 				PartPose.offset(2.5F, 16.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 128, 64);

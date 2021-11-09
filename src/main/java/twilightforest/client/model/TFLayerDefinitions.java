@@ -106,6 +106,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID_INNER_ARMOR, () -> SkeletonDruidModel.create(LayerDefinitions.INNER_ARMOR_DEFORMATION));
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID_OUTER_ARMOR, () -> SkeletonDruidModel.create(LayerDefinitions.OUTER_ARMOR_DEFORMATION));
 		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE, SlimeBeetleModel::create);
+		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE_TAIL, SlimeBeetleModel::create);
 		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN, SnowQueenModel::create);
 		event.registerLayerDefinition(TFModelLayers.CHAIN_BLOCK, SpikeBlockModel::create);
 		event.registerLayerDefinition(TFModelLayers.SQUIRREL, SquirrelModel::create);
@@ -135,11 +136,13 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.LEGACY_MINOSHROOM, MinoshroomLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_MINOTAUR, MinotaurLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_NAGA, NagaLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_NAGA_BODY, NagaLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_PINCH_BEETLE, PinchBeetleLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_QUEST_RAM, QuestRamLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_RAVEN, RavenLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_REDCAP, RedcapLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_SLIME_BEETLE, SlimeBeetleLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_SLIME_BEETLE_TAIL, SlimeBeetleLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_SNOW_QUEEN, SnowQueenLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_SQUIRREL, SquirrelLegacyModel::create);
 		event.registerLayerDefinition(TFModelLayers.LEGACY_TINY_BIRD, TinyBirdLegacyModel::create);
