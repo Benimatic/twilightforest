@@ -1,30 +1,27 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
-import com.mojang.blaze3d.platform.Lighting;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.data.ItemTagGenerator;
 import twilightforest.inventory.UncraftingContainer;
-import twilightforest.network.UncraftingGuiPacket;
 import twilightforest.network.TFPacketHandler;
-
-import net.minecraft.client.gui.components.Button.OnPress;
+import twilightforest.network.UncraftingGuiPacket;
 
 public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> {
 
@@ -169,12 +166,19 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 	@Override
 	protected void renderTooltip(PoseStack pPoseStack, int pX, int pY) {
 		UncraftingContainer container = this.menu;
+
 		for (int i = 0; i < 9; i++) {
 			if (container.getCarried().isEmpty() && container.slots.get(2 + i).hasItem() && this.hoveredSlot == container.slots.get(11 + i)) {
 				this.renderTooltip(pPoseStack, container.slots.get(2 + i).getItem(), pX, pY);
 			}
 		}
-		super.renderTooltip(pPoseStack, pX, pY);
+
+		//check if we're hovering over a banned uncraftable item
+		if(container.slots.get(0).hasItem() && container.slots.get(0).getItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) && container.slots.get(0).equals(hoveredSlot)) {
+			this.renderTooltip(pPoseStack, new TranslatableComponent("container.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED), pX, pY);
+		} else {
+			super.renderTooltip(pPoseStack, pX, pY);
+		}
 	}
 
 	private static class CycleButton extends Button {

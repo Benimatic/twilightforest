@@ -227,6 +227,7 @@
   "block.twilightforest.mangrove_root": "Mangrove Roots",
   "block.twilightforest.uncrafting_table": "Uncrafting Table",
   "container.uncrafting_table.disabled": "Uncrafting is disabled via config",
+  "container.uncrafting_table.disabled_item": "Uncrafting this item is disabled.",
   "block.twilightforest.smoker": "Smoker",
   "block.twilightforest.encased_smoker": "Encased Smoker",
   "block.twilightforest.fire_jet": "Fire Jet",
@@ -1489,6 +1490,8 @@
 
   "twilightforest.config.uncrafting": "Disable Uncrafting in Uncrafting Table",
   "twilightforest.config.uncrafting.tooltip": "Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.",
+  "twilightforest.config.uncrafting_recipes": "Disable Uncrafting Recipes in Uncrafting Table",
+  "twilightforest.config.uncrafting_recipes.tooltip": "If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.\nTo add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.\nExample: \"twilightforest:moonworm_queen\" will disable uncrafting the moonworm queen into itself and 3 torchberries.\nIf an item has multiple crafting recipes and you wish to disable them all, add the item to the \"twilightforest:banned_uncraftables\" item tag.\nIf you have a problematic ingredient, like infested towerwood for example, add the item to the \"twilightforest:banned_uncrafting_ingredients\" item tag.",
 
   "twilightforest.config.optifine": "Disable the nag screen when Optifine is installed.",
   "twilightforest.config.optifine.tooltip": "Disables the nag screen shown on launch when Optifine is installed.",

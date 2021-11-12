@@ -127,6 +127,16 @@ public class TFConfig {
 					translation(config + "uncrafting").
 					comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
 					define("disableUncrafting", false);
+			disableUncraftingRecipes = builder.
+					worldRestart().
+					translation(config + "uncrafting_recipes").
+					comment("""
+							If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.
+							To add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.
+							Example: "twilightforest:moonworm_queen" will disable uncrafting the moonworm queen into itself and 3 torchberries.
+							If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
+							If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
+					defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
 			casketUUIDLocking = builder.
 					worldRestart().
 					translation(config + "casket_uuid_locking").
@@ -232,6 +242,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
 		public ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
 		public ForgeConfigSpec.BooleanValue disableUncrafting;
+		public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public ForgeConfigSpec.BooleanValue disableSkullCandles;
 
