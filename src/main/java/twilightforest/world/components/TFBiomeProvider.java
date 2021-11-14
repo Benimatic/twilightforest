@@ -3,21 +3,19 @@ package twilightforest.world.components;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.newbiome.context.BigContext;
-import net.minecraft.world.level.newbiome.context.LazyAreaContext;
 import net.minecraft.world.level.newbiome.area.Area;
 import net.minecraft.world.level.newbiome.area.AreaFactory;
 import net.minecraft.world.level.newbiome.area.LazyArea;
+import net.minecraft.world.level.newbiome.context.BigContext;
+import net.minecraft.world.level.newbiome.context.LazyAreaContext;
 import net.minecraft.world.level.newbiome.layer.Layer;
 import net.minecraft.world.level.newbiome.layer.SmoothLayer;
 import net.minecraft.world.level.newbiome.layer.ZoomLayer;
-import twilightforest.world.registration.TFDimensions;
-import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.world.components.layer.GenLayerTFBiomeStabilize;
 import twilightforest.world.components.layer.GenLayerTFBiomes;
 import twilightforest.world.components.layer.GenLayerTFCompanionBiomes;
@@ -25,6 +23,8 @@ import twilightforest.world.components.layer.GenLayerTFKeyBiomes;
 import twilightforest.world.components.layer.GenLayerTFRiverMix;
 import twilightforest.world.components.layer.GenLayerTFStream;
 import twilightforest.world.components.layer.GenLayerTFThornBorder;
+import twilightforest.world.registration.TFDimensions;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
 import java.util.Optional;
@@ -115,35 +115,48 @@ public class TFBiomeProvider extends BiomeSource {
 	public static Layer makeLayers(long seed, Registry<Biome> registry) {
 		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
 		// Debug code to render an image of the biome layout within the ide
-		/*final Map<Integer, Integer> remapColors = new HashMap<>();
-		remapColors.put(getBiomeId(TFBiomes.tfLake, registry), 0x0000FF);
-		remapColors.put(getBiomeId(TFBiomes.twilightForest, registry), 0x00FF00);
-		remapColors.put(getBiomeId(TFBiomes.denseTwilightForest, registry), 0x00AA00);
-		remapColors.put(getBiomeId(TFBiomes.highlands, registry), 0xCC6900);
-		remapColors.put(getBiomeId(TFBiomes.mushrooms, registry), 0xcc008b);
-		remapColors.put(getBiomeId(TFBiomes.tfSwamp, registry), 0x00ccbb);
-		remapColors.put(getBiomeId(TFBiomes.stream, registry), 0x0000FF);
-		remapColors.put(getBiomeId(TFBiomes.snowy_forest, registry), 0xFFFFFF);
-		remapColors.put(getBiomeId(TFBiomes.glacier, registry), 0x82bff5);
-		remapColors.put(getBiomeId(TFBiomes.clearing, registry), 0x84f582);
-		remapColors.put(getBiomeId(TFBiomes.oakSavanna, registry), 0xeff582);
-		remapColors.put(getBiomeId(TFBiomes.fireflyForest, registry), 0x58fc66);
-		remapColors.put(getBiomeId(TFBiomes.deepMushrooms, registry), 0xb830b8);
-		remapColors.put(getBiomeId(TFBiomes.darkForest, registry), 0x193d0d);
-		remapColors.put(getBiomeId(TFBiomes.enchantedForest, registry), 0x00FFFF);
-		remapColors.put(getBiomeId(TFBiomes.fireSwamp, registry), 0xFF0000);
-		remapColors.put(getBiomeId(TFBiomes.darkForestCenter, registry), 0xFFFF00);
-		remapColors.put(getBiomeId(TFBiomes.finalPlateau, registry), 0x000000);
-		remapColors.put(getBiomeId(TFBiomes.thornlands, registry), 0x3d250d);
-		remapColors.put(getBiomeId(TFBiomes.spookyForest, registry), 0x7700FF);
-		BufferedImage image = new BufferedImage(2048, 2048, BufferedImage.TYPE_INT_RGB);
-		Graphics2D display = image.createGraphics();
+		/*final java.util.Map<Integer, Integer> remapColors = new java.util.HashMap<>();
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.LAKE, registry), 0x0000FF);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.FOREST, registry), 0x00FF00);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.DENSE_FOREST, registry), 0x00AA00);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.HIGHLANDS, registry), 0xCC6900);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.MUSHROOM_FOREST, registry), 0xcc008b);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.SWAMP, registry), 0x00ccbb);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.STREAM, registry), 0x0000FF);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.SNOWY_FOREST, registry), 0xFFFFFF);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.GLACIER, registry), 0x82bff5);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.CLEARING, registry), 0x84f582);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.OAK_SAVANNAH, registry), 0xeff582);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.FIREFLY_FOREST, registry), 0x58fc66);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.DENSE_MUSHROOM_FOREST, registry), 0xb830b8);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.DARK_FOREST, registry), 0x193d0d);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.ENCHANTED_FOREST, registry), 0x00FFFF);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.FIRE_SWAMP, registry), 0xFF0000);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.DARK_FOREST_CENTER, registry), 0xFFFF00);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.FINAL_PLATEAU, registry), 0x000000);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.THORNLANDS, registry), 0x3d250d);
+		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.SPOOKY_FOREST, registry), 0x7700FF);
+		final int size = 2048;
+		final int rad = size / 2;
+		final int ox = 0;
+		final int oz = 0;
+		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(size, size, java.awt.image.BufferedImage.TYPE_INT_RGB);
+		java.awt.Graphics2D display = image.createGraphics();
 		LazyArea area = areaFactory.make();
-		for (int x = 0; x < image.getWidth(); x++) {
-			for (int z = 0; z < image.getHeight(); z++) {
-				int c = area.getValue(x, z);
-				display.setColor(new Color(remapColors.getOrDefault(c, c)));
-				display.drawRect(x, z, 1, 1);
+		java.util.function.BiPredicate<Integer, Integer> line = (i, mod) -> {
+			for (int j = -5; j < 5; j++) {
+				if ((i + j) % mod == 0)
+					return true;
+			}
+			return false;
+		};
+		for (int x = -rad; x < rad - 1; x++) {
+			for (int z = -rad; z < rad - 1; z++) {
+				int xx = x + (ox * 64);
+				int zz = z + (oz * 64);
+				int c = area.get(x, z);
+				display.setColor(line.test(xx, 512) || line.test(zz, 512) ? new java.awt.Color(0xFF0000) : new java.awt.Color(remapColors.getOrDefault(c, c)));
+				display.drawRect(x + rad, z + rad, 1, 1);
 			}
 		}
  		System.out.println("breakpoint");*/

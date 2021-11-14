@@ -42,10 +42,10 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 
 	@Override
 	public int applyPixel(BigContext<?> random, Area iArea, int x, int z) {
-		RANDOM.setSeed(seed + (x & -4) * 25117 + (z & -4) * 151121);
+		RANDOM.setSeed(seed + (x & -4) * 25117L + (z & -4) * 151121L);
 		int ox = RANDOM.nextInt(2) + 1;
 		int oz = RANDOM.nextInt(2) + 1;
-		RANDOM.setSeed(seed + (x / 8) * 25117 + (z / 8) * 151121);
+		RANDOM.setSeed(seed + (x / 8) * 25117L + (z / 8) * 151121L);
 		int offset = RANDOM.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4

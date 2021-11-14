@@ -87,12 +87,12 @@ public class MagicMapItem extends MapItem {
 	private static TFMagicMapData createMapData(ItemStack stack, Level world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
 		int i = world.getFreeMapId();
 
-		// magic maps are offset by 1024 from normal maps so that 0,0 is in the middle of the map containing those coords
-		int mapSize = 128 * (1 << scale);
+		// magic maps are aligned to the key biome grid so that 0,0 -> 2048,2048 is the covered area
+		int mapSize = 2048;
 		int roundX = (int) Math.round((double) x / mapSize);
 		int roundZ = (int) Math.round((double) z / mapSize);
-		int scaledX = roundX * mapSize;
-		int scaledZ = roundZ * mapSize;
+		int scaledX = roundX * mapSize + 1024;
+		int scaledZ = roundZ * mapSize + 1024;
 
 		TFMagicMapData mapdata = new TFMagicMapData(scaledX, scaledZ, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
 		TFMagicMapData.registerMagicMapData(world, mapdata, getMapName(i)); // call our own register method
