@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:twilight_hunter",
+  "parent": "twilightforest:root",
   "display": {
     "icon": {
       "item": "twilightforest:naga_courtyard_miniature_structure"
@@ -66,12 +66,6 @@
           }
         ]
       }
-    },
-    "kill_mob": {
-      "trigger": "twilightforest:has_advancement",
-      "conditions": {
-        "advancement": "twilightforest:twilight_hunter"
-      }
     }
   },
   "requirements": [
@@ -79,9 +73,6 @@
       "naga",
       "scale",
       "was_in_fight"
-    ],
-    [
-      "kill_mob"
     ]
   ]
 }

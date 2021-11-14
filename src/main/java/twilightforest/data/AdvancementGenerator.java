@@ -73,7 +73,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				null, FrameType.TASK, true, true, false).requirements(RequirementsStrategy.OR))
 				.save(consumer, "twilightforest:twilight_hunter");
 
-		Advancement naga = Advancement.Builder.advancement().parent(silence).display(
+		Advancement naga = Advancement.Builder.advancement().parent(root).display(
 				TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(),
 				new TranslatableComponent("advancement.twilightforest.kill_naga"),
 				new TranslatableComponent("advancement.twilightforest.kill_naga.desc",
@@ -83,8 +83,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.addCriterion("naga", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.NAGA)))
 				.addCriterion("scale", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.NAGA_SCALE.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.Instance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.NAGA)))
-				.addCriterion("kill_mob", HasAdvancementTrigger.Instance.hasAdvancement(silence.getId()))
-				.requirements(new CountRequirementsStrategy(3, 1))
+				.requirements(RequirementsStrategy.OR)
 				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")))
 				.save(consumer, "twilightforest:progress_naga");
 
