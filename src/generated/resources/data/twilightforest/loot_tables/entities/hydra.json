@@ -51,7 +51,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               }
             }
           ],
@@ -84,6 +84,7 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader",
               "default": "twilightforest:fiery_blood"
             },
             {
@@ -110,6 +111,7 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader_bag_twilight",
               "default": "twilightforest:fiery_blood"
             }
           ],

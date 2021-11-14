@@ -2,7 +2,6 @@ package twilightforest.compat.ie;
 
 import blusunrize.immersiveengineering.api.shader.ShaderLayer;
 import blusunrize.immersiveengineering.api.shader.impl.ShaderCaseRailgun;
-import net.minecraft.item.ItemStack;
 
 import java.util.Collection;
 

@@ -176,10 +176,10 @@ repositories {
     //    name 'tterrag\'s Maven' // CTM
     //    url 'https://maven.tterrag.com/'
     //}
-    //maven {
-    //    name 'Jared\'s Maven' // Immersive Engineering + Patchouli
-    //    url 'https://maven.blamejared.com/'
-    //}
+    maven {
+        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
+        url 'https://maven.blamejared.com/'
+    }
     //maven {
     //    name 'theillusivec4\'s Maven' //Curios
     //    url 'https://maven.theillusivec4.top/'
@@ -202,7 +202,7 @@ dependencies {
     //implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
 
     // blamejared
-    //implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
     //implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // theillusivec4

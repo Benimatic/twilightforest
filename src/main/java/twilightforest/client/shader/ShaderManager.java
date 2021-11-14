@@ -63,6 +63,7 @@ public final class ShaderManager {
         public static final ShaderUniform[] TIME_UNIFORM  = { TIME };
     }
 
+    //FIXME actually init shaders somewhere
     public static void initShaders() {
         ResourceManager iManager;
 

@@ -7,10 +7,10 @@ import blusunrize.immersiveengineering.api.shader.ShaderCase;
 import blusunrize.immersiveengineering.api.shader.ShaderLayer;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.shader.impl.ShaderCaseItem;
-import blusunrize.immersiveengineering.common.blocks.IEBlocks;
+import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerStandingBlock;
-import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerTileEntity;
 import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerWallBlock;
+import blusunrize.immersiveengineering.common.register.IEBlocks;
 import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.world.level.block.BannerBlock;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.item.*;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.InteractionResult;
@@ -55,7 +54,7 @@ public class TFShaderItem extends Item implements IShaderItem {
     static final String TAG_SHADER = "shader_name";
 
     @Override
-    public ShaderCase getShaderCase(ItemStack shader, ItemStack tool, ResourceLocation shaderType) {
+    public ShaderCase getShaderCase(ItemStack shader, ResourceLocation shaderType) {
         return ShaderRegistry.getShader(getShaderName(shader), shaderType);
     }
 
@@ -94,24 +93,24 @@ public class TFShaderItem extends Item implements IShaderItem {
                     boolean wall = blockState.getBlock() instanceof WallBannerBlock;
 
                     if(wall)
-                        world.setBlockAndUpdate(pos, IEBlocks.Cloth.shaderBannerWall.defaultBlockState()
+                        world.setBlockAndUpdate(pos, IEBlocks.Cloth.SHADER_BANNER_WALL.defaultBlockState()
                                 .setValue(ShaderBannerWallBlock.FACING, blockState.getValue(WallBannerBlock.FACING)));
                     else
-                        world.setBlockAndUpdate(pos, IEBlocks.Cloth.shaderBanner.defaultBlockState()
+                        world.setBlockAndUpdate(pos, IEBlocks.Cloth.SHADER_BANNER.defaultBlockState()
                                 .setValue(ShaderBannerStandingBlock.ROTATION, blockState.getValue(BannerBlock.ROTATION)));
                     tile = world.getBlockEntity(pos);
-                    if(tile instanceof ShaderBannerTileEntity)
+                    if(tile instanceof ShaderBannerBlockEntity sb)
                     {
-                        ((ShaderBannerTileEntity)tile).shader.setShaderItem(ItemHandlerHelper.copyStackWithSize(ctx.getItemInHand(), 1));
+                        sb.shader.setShaderItem(ItemHandlerHelper.copyStackWithSize(ctx.getItemInHand(), 1));
                         tile.setChanged();
                         return InteractionResult.SUCCESS;
                     }
                 }
             }
-            else if(tile instanceof ShaderBannerTileEntity)
+            else if(tile instanceof ShaderBannerBlockEntity sb)
             {
-                ((ShaderBannerTileEntity)tile).shader.setShaderItem(ItemHandlerHelper.copyStackWithSize(ctx.getItemInHand(), 1));
-                tile.setChanged();
+                sb.shader.setShaderItem(ItemHandlerHelper.copyStackWithSize(ctx.getItemInHand(), 1));
+                sb.setChanged();
                 return InteractionResult.SUCCESS;
             }
 

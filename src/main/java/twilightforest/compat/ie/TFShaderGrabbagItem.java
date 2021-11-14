@@ -71,7 +71,7 @@ public class TFShaderGrabbagItem extends Item {
         if (stack.getCount() <= 0)
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, shaderItem);
 
-        if (!playerIn.inventory.add(shaderItem))
+        if (!playerIn.getInventory().add(shaderItem))
             playerIn.drop(shaderItem, false, true);
 
         return new InteractionResultHolder<>(InteractionResult.PASS, stack);

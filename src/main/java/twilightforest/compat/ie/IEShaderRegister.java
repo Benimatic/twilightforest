@@ -7,6 +7,8 @@ import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.shader.impl.*;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -228,7 +230,7 @@ public class IEShaderRegister {
 				return new RenderType(
 						"shader_" + baseType + render,
 						DefaultVertexFormat.BLOCK,
-						GL11.GL_QUADS,
+						VertexFormat.Mode.QUADS,
 						256,
 						false,
 						true,
@@ -267,7 +269,7 @@ public class IEShaderRegister {
 			method.apply(modName, overlayType, rarity, gripColor, bodyColor, colorSecondary, colorBlade, null, 0);
 		}
 
-		return ShaderRegistry.shaderRegistry.get(modName).setCrateLoot(false).setBagLoot(false).setInLowerBags(false).setReplicationCost(() -> new IngredientWithSize(Ingredient.of(TFItems.ore_meter.get())));
+		return ShaderRegistry.shaderRegistry.get(modName).setCrateLoot(false).setBagLoot(false).setInLowerBags(false).setReplicationCost(() -> new IngredientWithSize(Ingredient.of(TFItems.ORE_METER.get())));
 	}
 
 	@SafeVarargs

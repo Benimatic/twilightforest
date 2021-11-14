@@ -15,7 +15,7 @@ public abstract class TFCompat {
     public static Set<TFCompat> modules = new HashSet<>();
 
     static {
-        //classes.put("immersiveengineering", IECompat.class);
+        classes.put("immersiveengineering", IECompat.class);
     }
 
     protected TFCompat(String modName) {
