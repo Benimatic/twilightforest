@@ -78,10 +78,8 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
                 TFEntities.WRAITH,
                 TFEntities.KNIGHT_PHANTOM,
                 TFEntities.WINTER_WOLF,
-                TFEntities.YETI,
-                TFEntities.ALPHA_YETI,
-                TFEntities.SNOW_QUEEN
-        );
+                TFEntities.YETI
+        ).addTag(BOSSES);
 
         tag(LICH_POPPABLES).addTag(EntityTypeTags.SKELETONS).add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER);
     }
