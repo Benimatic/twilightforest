@@ -41,7 +41,7 @@ compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecat
 minecraft {
     //mappings channel: "official", version: "1.17.1"
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    mappings channel: 'parchment', version: '2021.08.29-1.17.1'
+    mappings channel: 'parchment', version: '2021.10.31-1.17.1'
 
     //version = minecraft_version + "-" + forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
