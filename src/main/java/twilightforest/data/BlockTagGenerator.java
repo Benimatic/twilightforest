@@ -61,6 +61,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final Tag.Named<Block> ANNIHILATION_INCLUSIONS = BlockTags.bind(TwilightForestMod.prefix("annihilation_inclusions").toString());
     public static final Tag.Named<Block> ANTIBUILDER_IGNORES = BlockTags.bind(TwilightForestMod.prefix("antibuilder_ignores").toString());
     public static final Tag.Named<Block> CARMINITE_REACTOR_IMMUNE = BlockTags.bind(TwilightForestMod.prefix("carminite_reactor_immune").toString());
+    public static final Tag.Named<Block> CARMINITE_REACTOR_ORES = BlockTags.bind(TwilightForestMod.prefix("carminite_reactor_ores").toString());
     public static final Tag.Named<Block> STRUCTURE_BANNED_INTERACTIONS = BlockTags.bind(TwilightForestMod.prefix("structure_banned_interactions").toString());
 
     public static final Tag.Named<Block> WORLDGEN_SKIPPABLES = BlockTags.bind(TwilightForestMod.prefix("worldgen_skippables").toString());
@@ -376,6 +377,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
         tag(BlockTags.WITHER_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());
 
         tag(CARMINITE_REACTOR_IMMUNE).addTag(COMMON_PROTECTIONS);
+
+        tag(CARMINITE_REACTOR_ORES).add(Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE);
 
         tag(ANNIHILATION_INCLUSIONS) // This is NOT a blacklist! This is a whitelist
                 .add(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.WEATHERED_DEADROCK.get())
