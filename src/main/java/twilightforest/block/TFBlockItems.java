@@ -197,7 +197,7 @@ public class TFBlockItems {
 
 		r.register(blockItem(TFBlocks.IRONWOOD_BLOCK));
 		r.register(blockItem(TFBlocks.STEELEAF_BLOCK));
-		r.register(blockItem(TFBlocks.FIERY_BLOCK));
+		r.register(fireImmuneBlock(TFBlocks.FIERY_BLOCK));
 		r.register(blockItem(TFBlocks.KNIGHTMETAL_BLOCK));
 		r.register(blockItem(TFBlocks.CARMINITE_BLOCK));
 		r.register(blockItem(TFBlocks.ARCTIC_FUR_BLOCK));
@@ -411,6 +411,10 @@ public class TFBlockItems {
 
 	private static <B extends Block> Item blockItem(RegistryObject<B> block) {
 		return makeBlockItem(new BlockItem(block.get(), TFItems.defaultBuilder()), block);
+	}
+
+	private static <B extends Block> Item fireImmuneBlock(RegistryObject<B> block) {
+		return makeBlockItem(new BlockItem(block.get(), TFItems.defaultBuilder().fireResistant()), block);
 	}
 
 	private static <B extends AbstractSkullCandleBlock> Item skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
