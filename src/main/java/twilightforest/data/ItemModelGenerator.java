@@ -165,7 +165,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.MUSHGLOOM.getId().getPath(), prefix("block/mushgloom"), prefix("block/mushgloom_head"));
 		generated(TFBlocks.TORCHBERRY_PLANT.getId().getPath(), prefix("block/torchberry_plant"));
 		generated(TFBlocks.ROOT_STRAND.getId().getPath(), prefix("block/root_strand"));
-		generated(TFBlocks.FALLEN_LEAVES.getId().getPath(), new ResourceLocation("block/spruce_leaves"));
+		generated(TFBlocks.FALLEN_LEAVES.getId().getPath(), new ResourceLocation("block/oak_leaves"));
 		toBlockModel(TFBlocks.SMOKER.get(), prefix("block/jet"));
 		toBlockModel(TFBlocks.FIRE_JET.get(), prefix("block/jet"));
 		toBlock(TFBlocks.ENCASED_SMOKER.get());
