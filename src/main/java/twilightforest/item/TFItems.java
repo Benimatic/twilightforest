@@ -115,6 +115,7 @@ public class TFItems {
 	public static final RegistryObject<Item> CHARM_OF_KEEPING_1 = ITEMS.register("charm_of_keeping_1", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> CHARM_OF_KEEPING_2 = ITEMS.register("charm_of_keeping_2", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> CHARM_OF_KEEPING_3 = ITEMS.register("charm_of_keeping_3", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> FOUR_LEAF_CLOVER = ITEMS.register("four_leaf_clover", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON).stacksTo(16)));
 	public static final RegistryObject<Item> TOWER_KEY = ITEMS.register("tower_key", () -> new Item(defaultBuilder().fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> BORER_ESSENCE = ITEMS.register("borer_essence", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> CARMINITE = ITEMS.register("carminite", () -> new Item(defaultBuilder()));
@@ -155,8 +156,8 @@ public class TFItems {
 	public static final RegistryObject<Item> GIANT_PICKAXE = ITEMS.register("giant_pickaxe", () -> new GiantPickItem(TwilightItemTier.GIANT, defaultBuilder()));
 	public static final RegistryObject<Item> GIANT_SWORD = ITEMS.register("giant_sword", () -> new GiantSwordItem(TwilightItemTier.GIANT, defaultBuilder()));
 	public static final RegistryObject<Item> LAMP_OF_CINDERS = ITEMS.register("lamp_of_cinders", () -> new LampOfCindersItem(defaultBuilder().fireResistant().durability(1024).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> CUBE_TALISMAN = ITEMS.register("cube_talisman", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> CUBE_OF_ANNIHILATION = ITEMS.register("cube_of_annihilation", () -> new CubeOfAnnihilationItem(unstackable().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> CUBE_TALISMAN = ITEMS.register("cube_talisman", () -> new Item(defaultBuilder().fireResistant().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> CUBE_OF_ANNIHILATION = ITEMS.register("cube_of_annihilation", () -> new CubeOfAnnihilationItem(unstackable().fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> MOON_DIAL = ITEMS.register("moon_dial", () -> new Item(defaultBuilder()));
 
 	public static final RegistryObject<Item> MUSIC_DISC_RADIANCE = ITEMS.register("music_disc_radiance", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_RADIANCE, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
