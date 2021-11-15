@@ -32,9 +32,9 @@ public class TFBlocks {
 
 	//misc.
 	public static final RegistryObject<Block> HEDGE = BLOCKS.register("hedge", () -> new HedgeBlock(BlockBehaviour.Properties.of(Material.CACTUS).strength(2.0F, 10.0F).sound(SoundType.GRASS)));
-	public static final RegistryObject<Block> FIREFLY_JAR = BLOCKS.register("firefly_jar", () -> new JarBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 0.0F).sound(SoundType.WOOD).lightLevel((state) -> 15).noOcclusion()));
-	public static final RegistryObject<Block> FIREFLY_SPAWNER = BLOCKS.register("firefly_particle_spawner", () -> new FireflySpawnerBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(1.0F, 0.0F).sound(SoundType.GLASS).lightLevel((state) -> 15).noOcclusion()));
-	public static final RegistryObject<Block> CICADA_JAR = BLOCKS.register("cicada_jar", () -> new JarBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 0.0F).sound(SoundType.WOOD).noOcclusion().randomTicks()));
+	public static final RegistryObject<Block> FIREFLY_JAR = BLOCKS.register("firefly_jar", () -> new JarBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 0.0F).sound(SoundType.BONE_BLOCK).lightLevel((state) -> 15).noOcclusion()));
+	public static final RegistryObject<Block> FIREFLY_SPAWNER = BLOCKS.register("firefly_particle_spawner", () -> new FireflySpawnerBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(1.0F, 0.0F).sound(SoundType.BONE_BLOCK).lightLevel((state) -> 15).noOcclusion()));
+	public static final RegistryObject<Block> CICADA_JAR = BLOCKS.register("cicada_jar", () -> new JarBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 0.0F).sound(SoundType.BONE_BLOCK).noOcclusion().randomTicks()));
 	public static final RegistryObject<Block> MOSS_PATCH = BLOCKS.register("moss_patch", () -> new PatchBlock(PlantVariant.MOSSPATCH, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.MOSS).noCollission().noOcclusion()));
 	public static final RegistryObject<Block> MAYAPPLE = BLOCKS.register("mayapple", () -> new TFPlantBlock(PlantVariant.MAYAPPLE, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.GRASS).noCollission().noOcclusion()));
 	public static final RegistryObject<Block> CLOVER_PATCH = BLOCKS.register("clover_patch", () -> new PatchBlock(PlantVariant.CLOVERPATCH, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.GRASS).noCollission().noOcclusion()));
