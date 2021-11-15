@@ -32,6 +32,14 @@
     "twilightforest:ironwood_block",
     "twilightforest:death_tome_spawner",
     "twilightforest:empty_canopy_bookshelf",
-    "twilightforest:canopy_bookshelf"
+    "twilightforest:canopy_bookshelf",
+    "twilightforest:twilight_oak_chest",
+    "twilightforest:canopy_chest",
+    "twilightforest:mangrove_chest",
+    "twilightforest:darkwood_chest",
+    "twilightforest:time_chest",
+    "twilightforest:transformation_chest",
+    "twilightforest:mining_chest",
+    "twilightforest:sorting_chest"
   ]
 }

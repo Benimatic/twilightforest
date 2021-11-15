@@ -477,7 +477,15 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.IRONWOOD_BLOCK.get(),
                 TFBlocks.DEATH_TOME_SPAWNER.get(),
                 TFBlocks.EMPTY_CANOPY_BOOKSHELF.get(),
-                TFBlocks.CANOPY_BOOKSHELF.get()
+                TFBlocks.CANOPY_BOOKSHELF.get(),
+                TFBlocks.TWILIGHT_OAK_CHEST.get(),
+                TFBlocks.CANOPY_CHEST.get(),
+                TFBlocks.MANGROVE_CHEST.get(),
+                TFBlocks.DARKWOOD_CHEST.get(),
+                TFBlocks.TIME_CHEST.get(),
+                TFBlocks.TRANSFORMATION_CHEST.get(),
+                TFBlocks.MINING_CHEST.get(),
+                TFBlocks.SORTING_CHEST.get()
         );
 
         tag(BlockTags.MINEABLE_WITH_HOE).add(
