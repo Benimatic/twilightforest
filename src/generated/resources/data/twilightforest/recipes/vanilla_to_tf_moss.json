@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:moss_block"
+    },
+    {
+      "item": "twilightforest:transformation_powder"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:moss_patch",
+    "count": 8
+  }
+}

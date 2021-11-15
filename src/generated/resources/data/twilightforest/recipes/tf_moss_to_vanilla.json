@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "mmm",
+    "mtm",
+    "mmm"
+  ],
+  "key": {
+    "m": {
+      "item": "twilightforest:moss_patch"
+    },
+    "t": {
+      "item": "twilightforest:transformation_powder"
+    }
+  },
+  "result": {
+    "item": "minecraft:moss_block"
+  }
+}
