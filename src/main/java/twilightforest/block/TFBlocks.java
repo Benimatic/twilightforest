@@ -615,6 +615,7 @@ public class TFBlocks {
 	public static void TFBurnables() {
 		FireBlock fireblock = (FireBlock)Blocks.FIRE;
 		fireblock.setFlammable(ROOT_BLOCK.get(), 5, 20);
+		fireblock.setFlammable(ARCTIC_FUR_BLOCK.get(), 20, 20);
 		fireblock.setFlammable(LIVEROOT_BLOCK.get(), 5, 20);
 		fireblock.setFlammable(EMPTY_CANOPY_BOOKSHELF.get(), 30, 20);
 		fireblock.setFlammable(TWILIGHT_OAK_WOOD.get(), 5, 5);
@@ -629,12 +630,14 @@ public class TFBlocks {
 		fireblock.setFlammable(CANOPY_STAIRS.get(), 5, 20);
 		fireblock.setFlammable(CANOPY_FENCE.get(), 5, 20);
 		fireblock.setFlammable(CANOPY_GATE.get(), 5, 20);
+		fireblock.setFlammable(CANOPY_BOOKSHELF.get(), 5, 20);
 		fireblock.setFlammable(MANGROVE_WOOD.get(), 5, 5);
 		fireblock.setFlammable(MANGROVE_PLANKS.get(), 5, 20);
 		fireblock.setFlammable(MANGROVE_SLAB.get(), 5, 20);
 		fireblock.setFlammable(MANGROVE_STAIRS.get(), 5, 20);
 		fireblock.setFlammable(MANGROVE_FENCE.get(), 5, 20);
 		fireblock.setFlammable(MANGROVE_GATE.get(), 5, 20);
+		fireblock.setFlammable(MANGROVE_ROOT.get(), 5, 20);
 		fireblock.setFlammable(DARK_WOOD.get(), 5, 5);
 		fireblock.setFlammable(DARK_PLANKS.get(), 5, 20);
 		fireblock.setFlammable(DARK_SLAB.get(), 5, 20);

@@ -205,4 +205,14 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
             default -> false;
         };
     }
+
+    @Override
+    public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+        return 5;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+        return 5;
+    }
 }
