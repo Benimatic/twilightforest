@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.material.PushReaction;
 import twilightforest.TFSounds;
 
 import java.util.Random;
@@ -40,5 +41,10 @@ public class TranslucentBuiltBlock extends Block {
 				BuilderBlock.activateBuiltBlocks(world, pos.relative(e));
 			}
 		}
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState pState) {
+		return PushReaction.BLOCK;
 	}
 }

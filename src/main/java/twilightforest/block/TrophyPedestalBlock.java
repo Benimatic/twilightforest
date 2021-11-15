@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -158,5 +159,10 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 			return ((TrophyBlock)trophy).getComparatorValue();
 		}
 		return 0;
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		return state.getValue(ACTIVE) ? PushReaction.NORMAL : PushReaction.BLOCK;
 	}
 }
