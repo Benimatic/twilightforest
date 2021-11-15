@@ -78,6 +78,11 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	}
 
 	@Override
+	public boolean canChangeDimensions() {
+		return false;
+	}
+
+	@Override
 	public void shoot(double x, double y, double z, float speed, float accuracy) {
 		super.shoot(x, y, z, speed, accuracy);
 

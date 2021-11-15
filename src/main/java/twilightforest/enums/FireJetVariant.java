@@ -7,7 +7,8 @@ import java.util.Locale;
 public enum FireJetVariant implements StringRepresentable {
 	IDLE,
 	POPPING,
-	FLAME;
+	FLAME,
+	TIMEOUT;
 
 	@Override
 	public String toString() {
