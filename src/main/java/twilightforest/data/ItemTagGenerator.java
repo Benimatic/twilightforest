@@ -215,5 +215,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.SORTING_SAPLING.get().asItem());
 
 		tag(BANNED_UNCRAFTABLES).add(TFItems.MOONWORM_QUEEN.get());
+
+		tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
 	}
 }

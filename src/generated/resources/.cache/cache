@@ -2399,6 +2399,7 @@ e88927a4537906dc786b1ea2feeeb2bd8424564c data/minecraft/tags/items/freeze_immune
 7e0b55c221c967b9b9d96fdc65d02dc6d65d40fe data/minecraft/tags/items/logs.json
 13e8b297acb446ab4973b0b0e90ebf3ba946d27a data/minecraft/tags/items/logs_that_burn.json
 e86dbd67e92666549889c6bb8e703be1561af96e data/minecraft/tags/items/music_discs.json
+73659dd0c06c9ba05a5ee41d7f8601d405493d82 data/minecraft/tags/items/piglin_loved.json
 57488548b1fc4a5edde1e17eb71a68420faa7037 data/minecraft/tags/items/planks.json
 9daed0a0d29eb1652e99f8871c2ad1ea1ae281b2 data/minecraft/tags/items/saplings.json
 523bda71c8ca81c37bd9bf3b5ddb4b00c8f87029 data/minecraft/tags/items/signs.json
