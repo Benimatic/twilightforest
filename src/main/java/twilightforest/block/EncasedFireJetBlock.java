@@ -26,6 +26,9 @@ public class EncasedFireJetBlock extends FireJetBlock {
 		if (variant == FireJetVariant.IDLE && powered) {
 			world.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.POPPING));
 			world.playSound(null, pos, TFSounds.JET_START, SoundSource.BLOCKS, 0.3F, 0.6F);
+
+		} else if (variant == FireJetVariant.TIMEOUT && !powered) {
+			world.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.IDLE));
 		}
 	}
 }

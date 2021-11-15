@@ -574,6 +574,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getVariantBuilder(TFBlocks.ENCASED_FIRE_JET.get()).partialState()
 						.with(FireJetBlock.STATE, FireJetVariant.IDLE).setModels(new ConfiguredModel(encasedJetOff));
 		getVariantBuilder(TFBlocks.ENCASED_FIRE_JET.get()).partialState()
+						.with(FireJetBlock.STATE, FireJetVariant.TIMEOUT).setModels(new ConfiguredModel(encasedJetOff));
+		getVariantBuilder(TFBlocks.ENCASED_FIRE_JET.get()).partialState()
 						.with(FireJetBlock.STATE, FireJetVariant.POPPING).setModels(new ConfiguredModel(encasedJetOn));
 		getVariantBuilder(TFBlocks.ENCASED_FIRE_JET.get()).partialState()
 						.with(FireJetBlock.STATE, FireJetVariant.FLAME).setModels(new ConfiguredModel(encasedJetOn));
