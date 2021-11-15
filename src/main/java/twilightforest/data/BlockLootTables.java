@@ -223,9 +223,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropPottedContents(TFBlocks.POTTED_MAYAPPLE.get());
 		dropPottedContents(TFBlocks.POTTED_FIDDLEHEAD.get());
 		dropPottedContents(TFBlocks.POTTED_MUSHGLOOM.get());
-		dropPottedContents(TFBlocks.POTTED_THORN.get());
-		dropPottedContents(TFBlocks.POTTED_GREEN_THORN.get());
-		dropPottedContents(TFBlocks.POTTED_DEAD_THORN.get());
+		add(TFBlocks.POTTED_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
+		add(TFBlocks.POTTED_GREEN_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
+		add(TFBlocks.POTTED_DEAD_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
 
 		dropSelf(TFBlocks.OAK_BANISTER.get());
 		dropSelf(TFBlocks.SPRUCE_BANISTER.get());
