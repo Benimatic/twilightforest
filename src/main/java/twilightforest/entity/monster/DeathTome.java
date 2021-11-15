@@ -78,10 +78,12 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		}
 
 		if (super.hurt(src, damage)) {
-			if (!level.isClientSide) {
-				LootContext ctx = createLootContext(true, src).create(LootContextParamSets.ENTITY);
+			if(damage > 0) {
+				if (!level.isClientSide) {
+					LootContext ctx = createLootContext(true, src).create(LootContextParamSets.ENTITY);
 
-				level.getServer().getLootTables().get(TFTreasure.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					level.getServer().getLootTables().get(TFTreasure.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+				}
 			}
 			return true;
 		} else {
