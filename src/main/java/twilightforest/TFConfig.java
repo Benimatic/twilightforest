@@ -120,8 +120,8 @@ public class TFConfig {
 					define("shouldReturnPortalBeUsable", true);
 			portalAdvancementLock = builder.
 					translation(config + "portal_unlocked_by_advancement").
-					comment("Use a valid advancement resource location as a string, with default String \"minecraft:story/mine_diamond\". Invalid/Empty Advancement resource IDs will leave the portal entirely unlocked.").
-					define("portalUnlockedByAdvancement", "minecraft:story/mine_diamond");
+					comment("Use a valid advancement resource location as a string. For example, using the string \"minecraft:story/mine_diamond\" will lock the portal behind the \"Diamonds!\" advancement. Invalid/Empty Advancement resource IDs will leave the portal entirely unlocked.").
+					define("portalUnlockedByAdvancement", "");
 			disableUncrafting = builder.
 					worldRestart().
 					translation(config + "uncrafting").
