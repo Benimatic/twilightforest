@@ -11,6 +11,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.enchantment.TFEnchantments;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.loot.conditions.ModExists;
@@ -506,6 +508,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 //rare loot
                                 .add(LootItem.lootTableItem(Items.GOLDEN_APPLE))
                                 .add(LootItem.lootTableItem(Items.BLAZE_ROD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))))));
 
         register.accept(TFTreasure.LABYRINTH_ROOM.lootTable,
@@ -536,6 +539,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 //rare loot
                                 .add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS.get()))
                                 .add(LootItem.lootTableItem(Items.TNT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
                                 .add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:strong_healing")))))));
 
         register.accept(TFTreasure.LABYRINTH_VAULT.lootTable,
@@ -555,6 +559,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 //uncommon loot
                                 .add(LootItem.lootTableItem(Items.BOW).apply(Enchant.builder().apply(Enchantments.INFINITY_ARROWS, 1).apply(Enchantments.PUNCH_ARROWS, 2)))
                                 .add(LootItem.lootTableItem(Items.BOW).apply(Enchant.builder().apply(Enchantments.POWER_ARROWS, 3).apply(Enchantments.FLAMING_ARROWS, 1)))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_SHOVEL.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 2)))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_AXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 5)))
@@ -607,6 +612,9 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.UNBREAKING, 2)).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.ALL_DAMAGE_PROTECTION, 3)).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.PROJECTILE_PROTECTION, 3)).setWeight(25))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.PRESERVATION.get())).setWeight(25))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())).setWeight(25))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.BLOCK_STRENGTH.get())).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.FALL_PROTECTION, 3)).setWeight(25))));
 
         register.accept(TFTreasure.STRONGHOLD_ROOM.lootTable,
@@ -641,6 +649,9 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(Items.DIAMOND_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(15))))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.PRESERVATION.get())))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.BLOCK_STRENGTH.get())))
                                 .add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS.get()))));
 
         register.accept(TFTreasure.STRONGHOLD_BOSS.lootTable,
@@ -794,6 +805,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.POWER_ARROWS, 4)).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.PUNCH_ARROWS, 2)).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.UNBREAKING, 2)).setWeight(25))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.CHILL_AURA.get())).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.INFINITY_ARROWS, 1)).setWeight(25))));
 
         register.accept(TFTreasure.AURORA_ROOM.lootTable,
@@ -823,6 +835,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.ICE_BOW.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(TFItems.ENDER_BOW.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(5))))
                                 .add(LootItem.lootTableItem(TFItems.ICE_SWORD.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(25))))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.CHILL_AURA.get())))
                                 .add(LootItem.lootTableItem(TFItems.GLASS_SWORD.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))));
 
         register.accept(TFTreasure.TROLL_GARDEN.lootTable,

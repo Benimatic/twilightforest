@@ -166,6 +166,18 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "function": "minecraft:enchant_randomly",
+              "enchantments": [
+                "twilightforest:fire_react"
+              ]
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
               "function": "minecraft:set_nbt",
               "tag": "{Potion:\"minecraft:strong_healing\"}"
             }

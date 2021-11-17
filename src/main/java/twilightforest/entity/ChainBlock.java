@@ -12,15 +12,21 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import twilightforest.TFSounds;
+import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.monster.BlockChainGoblin;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
@@ -28,11 +34,14 @@ import twilightforest.util.WorldUtil;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 
-	private static final int MAX_SMASH = 12;
+	private int MAX_SMASH;
 	private static final int MAX_CHAIN = 16;
 
 	private static final EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> IS_FOIL = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private boolean isReturning = false;
+	private boolean ignoreBlocks;
+	private ItemStack stack;
 	private int blocksSmashed = 0;
 	private double velX;
 	private double velY;
@@ -56,9 +65,12 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		partsArray =  new BlockChainGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
 	}
 
-	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand) {
+	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
 		super(type, thrower, world);
 		this.isReturning = false;
+		this.ignoreBlocks = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.PRESERVATION.get(), stack) > 0;
+		MAX_SMASH = 12 + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) * 10);
+		this.stack = stack;
 		this.setHand(hand);
 		chain1 = new Chain(this);
 		chain2 = new Chain(this);
@@ -67,6 +79,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		chain5 = new Chain(this);
 		partsArray =  new BlockChainGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1F);
+		this.entityData.set(IS_FOIL, stack.hasFoil());
 	}
 
 	private void setHand(InteractionHand hand) {
@@ -75,6 +88,10 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 	public InteractionHand getHand() {
 		return entityData.get(HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+	}
+
+	public boolean isFoil() {
+		return this.entityData.get(IS_FOIL);
 	}
 
 	@Override
@@ -98,82 +115,81 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	}
 
 	@Override
-	protected void onHit(HitResult ray) {
-		if (level.isClientSide) {
-			return;
-		}
-
-		if (ray instanceof EntityHitResult entityRay) {
-
-			// only hit living things
-			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getOwner()) {
-				if (entityRay.getEntity().hurt(TFDamageSources.spiked(this, (LivingEntity)this.getOwner()), 10)) {
-					// age when we hit a monster so that we go back to the player faster
-					this.tickCount += 60;
-				}
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		// only hit living things
+		if (!level.isClientSide && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {
+			if (result.getEntity().hurt(TFDamageSources.spiked(this, (LivingEntity)this.getOwner()), 10)) {
+				// age when we hit a monster so that we go back to the player faster
+				this.tickCount += 60;
 			}
 		}
+	}
 
-		if (ray instanceof BlockHitResult blockRay) {
+	@Override
+	protected void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		if (!level.isClientSide && !this.level.isEmptyBlock(result.getBlockPos())) {
 
-			if (blockRay.getBlockPos() != null && !this.level.isEmptyBlock(blockRay.getBlockPos())) {
-				if (!this.isReturning) {
-					playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.125f, this.random.nextFloat());
-				}
+			if (!this.isReturning) {
+				playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.125f, this.random.nextFloat());
+			}
 
-				if (this.blocksSmashed < MAX_SMASH) {
-					if (this.level.getBlockState(blockRay.getBlockPos()).getDestroySpeed(level, blockRay.getBlockPos()) > 0.3F) {
-						// riccochet
-						double bounce = 0.6;
-						this.velX *= bounce;
-						this.velY *= bounce;
-						this.velZ *= bounce;
+			if (this.blocksSmashed < MAX_SMASH) {
+				if (this.level.getBlockState(result.getBlockPos()).getDestroySpeed(level, result.getBlockPos()) < 0.0F ||
+						this.level.getBlockState(result.getBlockPos()).getDestroySpeed(level, result.getBlockPos()) > 0.3F) {
+					// riccochet
+					double bounce = 0.6;
+					this.velX *= bounce;
+					this.velY *= bounce;
+					this.velZ *= bounce;
 
 
-						switch (blockRay.getDirection()) {
-							case DOWN:
-								if (this.velY > 0) {
-									this.velY *= -bounce;
-								}
-								break;
-							case UP:
-								if (this.velY < 0) {
-									this.velY *= -bounce;
-								}
-								break;
-							case NORTH:
-								if (this.velZ > 0) {
-									this.velZ *= -bounce;
-								}
-								break;
-							case SOUTH:
-								if (this.velZ < 0) {
-									this.velZ *= -bounce;
-								}
-								break;
-							case WEST:
-								if (this.velX > 0) {
-									this.velX *= -bounce;
-								}
-								break;
-							case EAST:
-								if (this.velX < 0) {
-									this.velX *= -bounce;
-								}
-								break;
-						}
+					switch (result.getDirection()) {
+						case DOWN:
+							if (this.velY > 0) {
+								this.velY *= -bounce;
+							}
+							break;
+						case UP:
+							if (this.velY < 0) {
+								this.velY *= -bounce;
+							}
+							break;
+						case NORTH:
+							if (this.velZ > 0) {
+								this.velZ *= -bounce;
+							}
+							break;
+						case SOUTH:
+							if (this.velZ < 0) {
+								this.velZ *= -bounce;
+							}
+							break;
+						case WEST:
+							if (this.velX > 0) {
+								this.velX *= -bounce;
+							}
+							break;
+						case EAST:
+							if (this.velX < 0) {
+								this.velX *= -bounce;
+							}
+							break;
 					}
+				}
 
+				if(!ignoreBlocks) {
 					// demolish some blocks
-					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.25D));
+					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.5D + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) * 0.5)));
 				}
+			}
 
-				this.isReturning = true;
+			this.isReturning = true;
 
-				// if we have smashed enough, add to ticks so that we go back faster
-				if (this.blocksSmashed > MAX_SMASH && this.tickCount < 60) {
-					this.tickCount += 60;
-				}
+			// if we have smashed enough, add to ticks so that we go back faster
+			if (this.blocksSmashed > MAX_SMASH && this.tickCount < 60) {
+				this.tickCount += 60;
 			}
 		}
 	}
@@ -184,7 +200,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 			Block block = state.getBlock();
 
 			// TODO: The "explosion" parameter can't actually be null
-			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < 7F
+			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < (15F + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.BLOCK_STRENGTH.get(), stack) * 20F))
 					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this)) {
 
 				if (getOwner() instanceof Player player) {
@@ -234,7 +250,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 			}
 		} else {
 			if (getOwner() == null) {
-				remove(RemovalReason.KILLED);
+				discard();
 			} else {
 				double distToPlayer = this.distanceTo(this.getOwner());
 				// return if far enough away
@@ -245,7 +261,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 				if (this.isReturning) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
-						this.remove(RemovalReason.KILLED);
+						this.discard();
 					}
 
 					LivingEntity returnTo = (LivingEntity) this.getOwner();
@@ -267,6 +283,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	@Override
 	protected void defineSynchedData() {
 		entityData.define(HAND, true);
+		entityData.define(IS_FOIL, false);
 	}
 
 	@Override

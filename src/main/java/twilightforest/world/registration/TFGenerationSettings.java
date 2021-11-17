@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.potions.TFPotions;
+import twilightforest.potions.TFMobEffects;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -80,7 +80,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.GLACIER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 100, 3, false, true));
+				player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, 3, false, true));
 			}
 			trySpawnHintMonster(player, world, TFFeature.ICE_TOWER);
 		});
@@ -93,7 +93,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.SNOWY_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 100, 2, false, true));
+				player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, 2, false, true));
 				trySpawnHintMonster(player, world, TFFeature.YETI_CAVE);
 			}
 		});

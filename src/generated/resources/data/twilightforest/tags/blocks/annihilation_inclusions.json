@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "minecraft:nether_portal",
     "twilightforest:deadrock",
     "twilightforest:cracked_deadrock",
     "twilightforest:weathered_deadrock",

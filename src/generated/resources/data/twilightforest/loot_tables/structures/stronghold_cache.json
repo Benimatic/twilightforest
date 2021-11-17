@@ -311,6 +311,45 @@
           "weight": 25,
           "functions": [
             {
+              "function": "minecraft:enchant_randomly",
+              "enchantments": [
+                "twilightforest:preservation"
+              ]
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly",
+              "enchantments": [
+                "twilightforest:destruction"
+              ]
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly",
+              "enchantments": [
+                "twilightforest:block_strength"
+              ]
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "functions": [
+            {
               "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:feather_falling": 3

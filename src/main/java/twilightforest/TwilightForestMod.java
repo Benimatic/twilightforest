@@ -56,6 +56,7 @@ import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.dispenser.TransformationDispenseBehavior;
+import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.inventory.TFContainers;
@@ -64,8 +65,9 @@ import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.potions.TFPotions;
+import twilightforest.potions.TFMobEffects;
 import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.potions.TFPotions;
 import twilightforest.util.TFStats;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.TFDimensions;
@@ -122,6 +124,7 @@ public class TwilightForestMod {
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
+		TFMobEffects.MOB_EFFECTS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
 		BiomeKeys.BIOMES.register(modbus);
 		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
@@ -131,7 +134,7 @@ public class TwilightForestMod {
 		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
-//		TFEnchantments.ENCHANTMENTS.register(modbus);
+		TFEnchantments.ENCHANTMENTS.register(modbus);
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new TwilightFeatures();
 		new BiomeGrassColors();

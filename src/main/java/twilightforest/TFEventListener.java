@@ -90,7 +90,7 @@ import twilightforest.network.AreaProtectionPacket;
 import twilightforest.network.EnforceProgressionStatusPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
-import twilightforest.potions.TFPotions;
+import twilightforest.potions.TFMobEffects;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.util.TFStats;
 import twilightforest.util.WorldUtil;
@@ -243,7 +243,7 @@ public class TFEventListener {
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.getInventory(), damageSource);
 
 			if (chillLevel > 0) {
-				((LivingEntity) trueSource).addEffect(new MobEffectInstance(TFPotions.frosty.get(), chillLevel * 5 + 5, chillLevel));
+				((LivingEntity) trueSource).addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), chillLevel * 5 + 5, chillLevel));
 			}
 		}
 

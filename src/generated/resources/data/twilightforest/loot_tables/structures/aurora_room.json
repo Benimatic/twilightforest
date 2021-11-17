@@ -172,6 +172,18 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "function": "minecraft:enchant_randomly",
+              "enchantments": [
+                "twilightforest:chill_aura"
+              ]
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
               "function": "minecraft:enchant_with_levels",
               "levels": 20.0,
               "treasure": false

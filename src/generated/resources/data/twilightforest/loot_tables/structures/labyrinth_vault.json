@@ -131,6 +131,18 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "function": "minecraft:enchant_randomly",
+              "enchantments": [
+                "twilightforest:fire_react"
+              ]
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",

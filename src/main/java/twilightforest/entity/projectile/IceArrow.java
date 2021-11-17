@@ -12,7 +12,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
 import twilightforest.entity.TFEntities;
-import twilightforest.potions.TFPotions;
+import twilightforest.potions.TFMobEffects;
 
 public class IceArrow extends TFArrow {
 
@@ -41,7 +41,7 @@ public class IceArrow extends TFArrow {
 		if (ray instanceof EntityHitResult) {
 			if (!level.isClientSide && ((EntityHitResult)ray).getEntity() instanceof LivingEntity) {
 				int chillLevel = 2;
-				((LivingEntity) ((EntityHitResult)ray).getEntity()).addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 10, chillLevel));
+				((LivingEntity) ((EntityHitResult)ray).getEntity()).addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 10, chillLevel));
 			}
 		}
 	}

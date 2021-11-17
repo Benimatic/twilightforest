@@ -49,7 +49,7 @@ public class ChainBlockItem extends DiggerItem {
 		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 1.0F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isClientSide) {
-			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK, world, player, hand);
+			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK, world, player, hand, stack);
 			world.addFreshEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 
@@ -111,7 +111,7 @@ public class ChainBlockItem extends DiggerItem {
 		if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
 				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
 			return TierSortingRegistry.isCorrectTierForDrops(Tiers.IRON, state);
-		return false;
+		return super.isCorrectToolForDrops(stack, state);
 	}
 
 	/*@Override

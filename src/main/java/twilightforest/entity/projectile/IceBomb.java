@@ -14,7 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent;
 import twilightforest.entity.monster.Yeti;
-import twilightforest.potions.TFPotions;
+import twilightforest.potions.TFMobEffects;
 import twilightforest.util.TFDamageSources;
 
 import java.util.List;
@@ -146,7 +146,7 @@ public class IceBomb extends TFThrowable {
 					entity.discard();
 				} else {
 					entity.hurt(TFDamageSources.frozen(this, (LivingEntity)this.getOwner()), 1);
-					entity.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
+					entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 5, 2));
 				}
 			}
 		}
