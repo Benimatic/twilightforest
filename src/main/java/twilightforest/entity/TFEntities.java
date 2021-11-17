@@ -47,10 +47,7 @@ import twilightforest.entity.projectile.*;
 import twilightforest.item.TransformPowderItem;
 import twilightforest.item.TFItems;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BooleanSupplier;
 
 import net.minecraft.world.entity.Entity;
@@ -83,16 +80,16 @@ public class TFEntities {
 	public static final EntityType<Deer> DEER = make(TFEntityNames.DEER, Deer::new, MobCategory.CREATURE, 0.7F, 1.8F);
 	public static final EntityType<Redcap> REDCAP = make(TFEntityNames.REDCAP, Redcap::new, MobCategory.MONSTER, 0.9F, 1.4F);
 	public static final EntityType<SwarmSpider> SWARM_SPIDER = make(TFEntityNames.SWARM_SPIDER, SwarmSpider::new, MobCategory.MONSTER, 0.8F, 0.4F);
-	public static final EntityType<Naga> NAGA = make(TFEntityNames.NAGA, Naga::new, MobCategory.MONSTER, 1.75f, 3.0f);
+	public static final EntityType<Naga> NAGA = make(TFEntityNames.NAGA, Naga::new, MobCategory.MONSTER, 1.75f, 3.0f, true);
 	public static final EntityType<SkeletonDruid> SKELETON_DRUID = make(TFEntityNames.SKELETON_DRUID, SkeletonDruid::new, MobCategory.MONSTER, 0.6F, 1.99F);
 	public static final EntityType<HostileWolf> HOSTILE_WOLF = make(TFEntityNames.HOSTILE_WOLF, HostileWolf::new, MobCategory.MONSTER, 0.6F, 0.85F);
-	public static final EntityType<Wraith> WRAITH = make(TFEntityNames.WRAITH, Wraith::new, MobCategory.MONSTER);
+	public static final EntityType<Wraith> WRAITH = make(TFEntityNames.WRAITH, Wraith::new, MobCategory.MONSTER, 0.6F, 1.8F, true);
 	public static final EntityType<HedgeSpider> HEDGE_SPIDER = make(TFEntityNames.HEDGE_SPIDER, HedgeSpider::new, MobCategory.MONSTER, 1.4F, 0.9F);
-	public static final EntityType<Hydra> HYDRA = make(TFEntityNames.HYDRA, Hydra::new, MobCategory.MONSTER, 16F, 12F);
-	public static final EntityType<Lich> LICH = make(TFEntityNames.LICH, Lich::new, MobCategory.MONSTER, 1.1F, 2.1F);
+	public static final EntityType<Hydra> HYDRA = make(TFEntityNames.HYDRA, Hydra::new, MobCategory.MONSTER, 16F, 12F, true);
+	public static final EntityType<Lich> LICH = make(TFEntityNames.LICH, Lich::new, MobCategory.MONSTER, 1.1F, 2.1F, true);
 	public static final EntityType<Penguin> PENGUIN = make(TFEntityNames.PENGUIN, Penguin::new, MobCategory.CREATURE, 0.5F, 0.9F);
 	public static final EntityType<LichMinion> LICH_MINION = make(TFEntityNames.LICH_MINION, LichMinion::new, MobCategory.MONSTER, 0.6F, 1.95F);
-	public static final EntityType<LoyalZombie> LOYAL_ZOMBIE = make(TFEntityNames.LOYAL_ZOMBIE, LoyalZombie::new, MobCategory.MONSTER);
+	public static final EntityType<LoyalZombie> LOYAL_ZOMBIE = make(TFEntityNames.LOYAL_ZOMBIE, LoyalZombie::new, MobCategory.MONSTER, 0.6F, 1.8F);
 	public static final EntityType<TinyBird> TINY_BIRD = make(TFEntityNames.TINY_BIRD, TinyBird::new, MobCategory.CREATURE, 0.3F, 0.3F);
 	public static final EntityType<Squirrel> SQUIRREL = make(TFEntityNames.SQUIRREL, Squirrel::new, MobCategory.CREATURE, 0.3F, 0.5F);
 	public static final EntityType<DwarfRabbit> DWARF_RABBIT = make(TFEntityNames.DWARF_RABBIT, DwarfRabbit::new, MobCategory.CREATURE, 0.4F, 0.4F);
@@ -100,10 +97,10 @@ public class TFEntities {
 	public static final EntityType<QuestRam> QUEST_RAM = make(TFEntityNames.QUEST_RAM, QuestRam::new, MobCategory.CREATURE, 1.25F, 2.9F);
 	public static final EntityType<Kobold> KOBOLD = make(TFEntityNames.KOBOLD, Kobold::new, MobCategory.MONSTER, 0.8F, 1.1F);
 	public static final EntityType<MosquitoSwarm> MOSQUITO_SWARM = make(TFEntityNames.MOSQUITO_SWARM, MosquitoSwarm::new, MobCategory.MONSTER, 0.7F, 1.9F);
-	public static final EntityType<DeathTome> DEATH_TOME = make(TFEntityNames.DEATH_TOME, DeathTome::new, MobCategory.MONSTER);
+	public static final EntityType<DeathTome> DEATH_TOME = make(TFEntityNames.DEATH_TOME, DeathTome::new, MobCategory.MONSTER, 0.6F, 1.8F);
 	public static final EntityType<Minotaur> MINOTAUR = make(TFEntityNames.MINOTAUR, Minotaur::new, MobCategory.MONSTER, 0.6F, 2.1F);
 	public static final EntityType<Minoshroom> MINOSHROOM = make(TFEntityNames.MINOSHROOM, Minoshroom::new, MobCategory.MONSTER, 1.49F, 2.5F);
-	public static final EntityType<FireBeetle> FIRE_BEETLE = make(TFEntityNames.FIRE_BEETLE, FireBeetle::new, MobCategory.MONSTER, 1.1F, 0.5F);
+	public static final EntityType<FireBeetle> FIRE_BEETLE = make(TFEntityNames.FIRE_BEETLE, FireBeetle::new, MobCategory.MONSTER, 1.1F, 0.5F, true);
 	public static final EntityType<SlimeBeetle> SLIME_BEETLE = make(TFEntityNames.SLIME_BEETLE, SlimeBeetle::new, MobCategory.MONSTER, 0.9F, 0.5F);
 	public static final EntityType<PinchBeetle> PINCH_BEETLE = make(TFEntityNames.PINCH_BEETLE, PinchBeetle::new, MobCategory.MONSTER, 1.2F, 0.5F);
 	public static final EntityType<MazeSlime> MAZE_SLIME = make(TFEntityNames.MAZE_SLIME, MazeSlime::new, MobCategory.MONSTER, 2.04F, 2.04F);
@@ -115,72 +112,77 @@ public class TFEntities {
 	public static final EntityType<CarminiteGolem> CARMINITE_GOLEM = make(TFEntityNames.CARMINITE_GOLEM, CarminiteGolem::new, MobCategory.MONSTER, 1.4F, 2.9F);
 	public static final EntityType<TowerwoodBorer> TOWERWOOD_BORER = make(TFEntityNames.TOWERWOOD_BORER, TowerwoodBorer::new, MobCategory.MONSTER, 0.4F, 0.3F);
 	public static final EntityType<TowerBroodling> CARMINITE_BROODLING = make(TFEntityNames.CARMINITE_BROODLING, TowerBroodling::new, MobCategory.MONSTER, 0.7F, 0.5F);
-	public static final EntityType<UrGhast> UR_GHAST = make(TFEntityNames.UR_GHAST, UrGhast::new, MobCategory.MONSTER, 14.0F, 18.0F);
+	public static final EntityType<UrGhast> UR_GHAST = make(TFEntityNames.UR_GHAST, UrGhast::new, MobCategory.MONSTER, 14.0F, 18.0F, true);
 	public static final EntityType<BlockChainGoblin> BLOCKCHAIN_GOBLIN = make(TFEntityNames.BLOCKCHAIN_GOBLIN, BlockChainGoblin::new, MobCategory.MONSTER, 0.9F, 1.4F);
 	public static final EntityType<UpperGoblinKnight> UPPER_GOBLIN_KNIGHT = make(TFEntityNames.UPPER_GOBLIN_KNIGHT, UpperGoblinKnight::new, MobCategory.MONSTER, 1.1F, 1.3F);
 	public static final EntityType<LowerGoblinKnight> LOWER_GOBLIN_KNIGHT = make(TFEntityNames.LOWER_GOBLIN_KNIGHT, LowerGoblinKnight::new, MobCategory.MONSTER, 0.7F, 1.1F);
 	public static final EntityType<HelmetCrab> HELMET_CRAB = make(TFEntityNames.HELMET_CRAB, HelmetCrab::new, MobCategory.MONSTER, 0.8F, 1.1F);
 	public static final EntityType<KnightPhantom> KNIGHT_PHANTOM = make(TFEntityNames.KNIGHT_PHANTOM, KnightPhantom::new, MobCategory.MONSTER, 1.5F, 3.0F);
 	public static final EntityType<Yeti> YETI = make(TFEntityNames.YETI, Yeti::new, MobCategory.MONSTER, 1.4F, 2.4F);
-	public static final EntityType<AlphaYeti> ALPHA_YETI = make(TFEntityNames.ALPHA_YETI, AlphaYeti::new, MobCategory.MONSTER, 3.8F, 5.0F);
+	public static final EntityType<AlphaYeti> ALPHA_YETI = make(TFEntityNames.ALPHA_YETI, AlphaYeti::new, MobCategory.MONSTER, 3.8F, 5.0F, true);
 	public static final EntityType<WinterWolf> WINTER_WOLF = make(TFEntityNames.WINTER_WOLF, WinterWolf::new, MobCategory.MONSTER, 1.4F, 1.9F);
 	public static final EntityType<SnowGuardian> SNOW_GUARDIAN = make(TFEntityNames.SNOW_GUARDIAN, SnowGuardian::new, MobCategory.MONSTER, 0.6F, 1.8F);
 	public static final EntityType<StableIceCore> STABLE_ICE_CORE = make(TFEntityNames.STABLE_ICE_CORE, StableIceCore::new, MobCategory.MONSTER, 0.8F, 1.8F);
 	public static final EntityType<UnstableIceCore> UNSTABLE_ICE_CORE = make(TFEntityNames.UNSTABLE_ICE_CORE, UnstableIceCore::new, MobCategory.MONSTER, 0.8F, 1.8F);
-	public static final EntityType<SnowQueen> SNOW_QUEEN = make(TFEntityNames.SNOW_QUEEN, SnowQueen::new, MobCategory.MONSTER, 0.7F, 2.2F);
+	public static final EntityType<SnowQueen> SNOW_QUEEN = make(TFEntityNames.SNOW_QUEEN, SnowQueen::new, MobCategory.MONSTER, 0.7F, 2.2F, true);
 	public static final EntityType<Troll> TROLL = make(TFEntityNames.TROLL, Troll::new, MobCategory.MONSTER, 1.4F, 2.4F);
 	public static final EntityType<GiantMiner> GIANT_MINER = make(TFEntityNames.GIANT_MINER, GiantMiner::new, MobCategory.MONSTER, 2.4F, 7.2F);
 	public static final EntityType<ArmoredGiant> ARMORED_GIANT = make(TFEntityNames.ARMORED_GIANT, ArmoredGiant::new, MobCategory.MONSTER, 2.4F, 7.2F);
 	public static final EntityType<IceCrystal> ICE_CRYSTAL = make(TFEntityNames.ICE_CRYSTAL, IceCrystal::new, MobCategory.MONSTER, 0.6F, 1.8F);
-	public static final EntityType<HarbingerCube> HARBINGER_CUBE = make(TFEntityNames.HARBINGER_CUBE, HarbingerCube::new, MobCategory.MONSTER, 1.9F, 2.4F);
+	public static final EntityType<HarbingerCube> HARBINGER_CUBE = make(TFEntityNames.HARBINGER_CUBE, HarbingerCube::new, MobCategory.MONSTER, 1.9F, 2.4F, true);
 	public static final EntityType<Adherent> ADHERENT = make(TFEntityNames.ADHERENT, Adherent::new, MobCategory.MONSTER, 0.8F, 2.2F);
 	public static final EntityType<RovingCube> ROVING_CUBE = make(TFEntityNames.ROVING_CUBE, RovingCube::new, MobCategory.MONSTER, 1.2F, 2.1F);
 	//public static final EntityType<EntityTFCastleGuardian> CASTLE_GUARDIAN = make(TFEntityNames.CASTLE_GUARDIAN, EntityTFCastleGuardian::new, EntityClassification.MONSTER, 1.8F, 2.4F);
-	public static final EntityType<PlateauBoss> PLATEAU_BOSS = make(TFEntityNames.PLATEAU_BOSS, PlateauBoss::new, MobCategory.MONSTER, 1F, 1F);
+	public static final EntityType<PlateauBoss> PLATEAU_BOSS = make(TFEntityNames.PLATEAU_BOSS, PlateauBoss::new, MobCategory.MONSTER, 1F, 1F, true);
 
-	public static final EntityType<NatureBolt> NATURE_BOLT = build(TFEntityNames.NATURE_BOLT, makeCastedBuilder(NatureBolt.class, NatureBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
-	public static final EntityType<LichBolt> LICH_BOLT = build(TFEntityNames.LICH_BOLT, makeCastedBuilder(LichBolt.class, LichBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(2));
-	public static final EntityType<TwilightWandBolt> WAND_BOLT = build(TFEntityNames.WAND_BOLT, makeCastedBuilder(TwilightWandBolt.class, TwilightWandBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
-	public static final EntityType<TomeBolt> TOME_BOLT = build(TFEntityNames.TOME_BOLT, makeCastedBuilder(TomeBolt.class, TomeBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
-	public static final EntityType<HydraMortarHead> HYDRA_MORTAR = build(TFEntityNames.HYDRA_MORTAR, makeCastedBuilder(HydraMortarHead.class, HydraMortarHead::new, MobCategory.MISC).sized(0.75F, 0.75F).setTrackingRange(150));
-	public static final EntityType<LichBomb> LICH_BOMB = build(TFEntityNames.LICH_BOMB, makeCastedBuilder(LichBomb.class, LichBomb::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150));
-	public static final EntityType<MoonwormShot> MOONWORM_SHOT = build(TFEntityNames.MOONWORM_SHOT, makeCastedBuilder(MoonwormShot.class, MoonwormShot::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150));
-	public static final EntityType<CicadaShot> CICADA_SHOT = build(TFEntityNames.CICADA_SHOT, makeCastedBuilder(CicadaShot.class, CicadaShot::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150));
-	public static final EntityType<SlimeProjectile> SLIME_BLOB = build(TFEntityNames.SLIME_BLOB, makeCastedBuilder(SlimeProjectile.class, SlimeProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150));
+	public static final EntityType<NatureBolt> NATURE_BOLT = build(TFEntityNames.NATURE_BOLT, makeCastedBuilder(NatureBolt.class, NatureBolt::new).sized(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
+	public static final EntityType<LichBolt> LICH_BOLT = build(TFEntityNames.LICH_BOLT, makeCastedBuilder(LichBolt.class, LichBolt::new).sized(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(2));
+	public static final EntityType<TwilightWandBolt> WAND_BOLT = build(TFEntityNames.WAND_BOLT, makeCastedBuilder(TwilightWandBolt.class, TwilightWandBolt::new).sized(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
+	public static final EntityType<TomeBolt> TOME_BOLT = build(TFEntityNames.TOME_BOLT, makeCastedBuilder(TomeBolt.class, TomeBolt::new).sized(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
+	public static final EntityType<HydraMortarHead> HYDRA_MORTAR = build(TFEntityNames.HYDRA_MORTAR, makeCastedBuilder(HydraMortarHead.class, HydraMortarHead::new).sized(0.75F, 0.75F).setTrackingRange(150));
+	public static final EntityType<LichBomb> LICH_BOMB = build(TFEntityNames.LICH_BOMB, makeCastedBuilder(LichBomb.class, LichBomb::new).sized(0.25F, 0.25F).setTrackingRange(150));
+	public static final EntityType<MoonwormShot> MOONWORM_SHOT = build(TFEntityNames.MOONWORM_SHOT, makeCastedBuilder(MoonwormShot.class, MoonwormShot::new).sized(0.25F, 0.25F).setTrackingRange(150));
+	public static final EntityType<CicadaShot> CICADA_SHOT = build(TFEntityNames.CICADA_SHOT, makeCastedBuilder(CicadaShot.class, CicadaShot::new).sized(0.25F, 0.25F).setTrackingRange(150));
+	public static final EntityType<SlimeProjectile> SLIME_BLOB = build(TFEntityNames.SLIME_BLOB, makeCastedBuilder(SlimeProjectile.class, SlimeProjectile::new).sized(0.25F, 0.25F).setTrackingRange(150));
 	public static final EntityType<CharmEffect> CHARM_EFFECT = make(TFEntityNames.CHARM_EFFECT, CharmEffect::new, MobCategory.MISC, 0.25F, 0.25F);
 	public static final EntityType<ThrownWep> THROWN_WEP = make(TFEntityNames.THROWN_WEP, ThrownWep::new, MobCategory.MISC, 0.5F, 0.5F);
 	public static final EntityType<FallingIce> FALLING_ICE = make(TFEntityNames.FALLING_ICE, FallingIce::new, MobCategory.MISC, 2.98F, 2.98F);
-	public static final EntityType<IceBomb> THROWN_ICE = build(TFEntityNames.THROWN_ICE, makeCastedBuilder(IceBomb.class, IceBomb::new, MobCategory.MISC).sized(1.0F, 1.0F).setUpdateInterval(2));
-	public static final EntityType<SeekerArrow> SEEKER_ARROW = build(TFEntityNames.SEEKER_ARROW, makeCastedBuilder(SeekerArrow.class, SeekerArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(150).setUpdateInterval(1));
-	public static final EntityType<IceArrow> ICE_ARROW = build(TFEntityNames.ICE_ARROW, makeCastedBuilder(IceArrow.class, IceArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).setTrackingRange(150).setUpdateInterval(1));
-	public static final EntityType<IceSnowball> ICE_SNOWBALL = build(TFEntityNames.ICE_SNOWBALL, makeCastedBuilder(IceSnowball.class, IceSnowball::new, MobCategory.MISC).sized(0.25F, 0.25F).setTrackingRange(150));
-	public static final EntityType<ChainBlock> CHAIN_BLOCK = build(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(ChainBlock.class, ChainBlock::new, MobCategory.MISC).sized(0.6F, 0.6F).setUpdateInterval(1));
-	public static final EntityType<CubeOfAnnihilation> CUBE_OF_ANNIHILATION = build(TFEntityNames.CUBE_OF_ANNIHILATION, makeCastedBuilder(CubeOfAnnihilation.class, CubeOfAnnihilation::new, MobCategory.MISC).sized(1F, 1F).setUpdateInterval(1));
-	public static final EntityType<SlideBlock> SLIDER = build(TFEntityNames.SLIDER, makeCastedBuilder(SlideBlock.class, SlideBlock::new, MobCategory.MISC).sized(0.98F, 0.98F).setUpdateInterval(1));
+	public static final EntityType<IceBomb> THROWN_ICE = build(TFEntityNames.THROWN_ICE, makeCastedBuilder(IceBomb.class, IceBomb::new).sized(1.0F, 1.0F).setUpdateInterval(2));
+	public static final EntityType<SeekerArrow> SEEKER_ARROW = build(TFEntityNames.SEEKER_ARROW, makeCastedBuilder(SeekerArrow.class, SeekerArrow::new).sized(0.5F, 0.5F).setTrackingRange(150).setUpdateInterval(1));
+	public static final EntityType<IceArrow> ICE_ARROW = build(TFEntityNames.ICE_ARROW, makeCastedBuilder(IceArrow.class, IceArrow::new).sized(0.5F, 0.5F).setTrackingRange(150).setUpdateInterval(1));
+	public static final EntityType<IceSnowball> ICE_SNOWBALL = build(TFEntityNames.ICE_SNOWBALL, makeCastedBuilder(IceSnowball.class, IceSnowball::new).sized(0.25F, 0.25F).setTrackingRange(150));
+	public static final EntityType<ChainBlock> CHAIN_BLOCK = build(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(ChainBlock.class, ChainBlock::new).sized(0.6F, 0.6F).setUpdateInterval(1), true);
+	public static final EntityType<CubeOfAnnihilation> CUBE_OF_ANNIHILATION = build(TFEntityNames.CUBE_OF_ANNIHILATION, makeCastedBuilder(CubeOfAnnihilation.class, CubeOfAnnihilation::new).sized(1F, 1F).setUpdateInterval(1), true);
+	public static final EntityType<SlideBlock> SLIDER = build(TFEntityNames.SLIDER, makeCastedBuilder(SlideBlock.class, SlideBlock::new).sized(0.98F, 0.98F).setUpdateInterval(1));
 	//public static final EntityType<EntityTFBoggard> BOGGARD = make(TFEntityNames.BOGGARD, EntityTFBoggard::new, EntityClassification.MONSTER, 0.8F, 1.1F);
 	public static final EntityType<RisingZombie> RISING_ZOMBIE = make(TFEntityNames.RISING_ZOMBIE, RisingZombie::new, MobCategory.MONSTER, 0.6F, 1.95F);
-	public static final EntityType<ProtectionBox> PROTECTION_BOX = build(TFEntityNames.PROTECTION_BOX, makeCastedBuilder(ProtectionBox.class, ProtectionBox::new, MobCategory.MISC).noSave().noSummon().sized(0, 0));
+	public static final EntityType<ProtectionBox> PROTECTION_BOX = build(TFEntityNames.PROTECTION_BOX, makeCastedBuilder(ProtectionBox.class, ProtectionBox::new).noSave().noSummon().sized(0, 0));
 
 	private static <E extends Entity> EntityType<E> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height) {
-		return build(id, makeBuilder(factory, classification).sized(width, height));
+		return make(id, factory, classification, width, height, false);
 	}
 
-	private static <E extends Entity> EntityType<E> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification) {
-		return make(id, factory, classification, 0.6F, 1.8F);
+	private static <E extends Entity> EntityType<E> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, boolean fireproof) {
+		return build(id, makeBuilder(factory, classification).sized(width, height), fireproof);
+	}
+
+	private static <E extends Entity> EntityType<E> build(ResourceLocation id, EntityType.Builder<E> builder) {
+		return build(id, builder, false);
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <E extends Entity> EntityType<E> build(ResourceLocation id, EntityType.Builder<E> builder) {
+	private static <E extends Entity> EntityType<E> build(ResourceLocation id, EntityType.Builder<E> builder, boolean fireproof) {
 		boolean cache = SharedConstants.CHECK_DATA_FIXER_SCHEMA;
 		SharedConstants.CHECK_DATA_FIXER_SCHEMA = false;
+		if(fireproof) builder.fireImmune();
 		EntityType<E> ret = (EntityType<E>) builder.build(id.toString()).setRegistryName(id);
 		SharedConstants.CHECK_DATA_FIXER_SCHEMA = cache;
 		ALL.add(ret);
 		return ret;
 	}
 
-	private static <E extends Entity> EntityType.Builder<E> makeCastedBuilder(@SuppressWarnings("unused") Class<E> cast, EntityType.EntityFactory<E> factory, MobCategory classification) {
-		return makeBuilder(factory, classification);
+	private static <E extends Entity> EntityType.Builder<E> makeCastedBuilder(@SuppressWarnings("unused") Class<E> cast, EntityType.EntityFactory<E> factory) {
+		return makeBuilder(factory, MobCategory.MISC);
 	}
 
 	private static <E extends Entity> EntityType.Builder<E> makeBuilder(EntityType.EntityFactory<E> factory, MobCategory classification) {
@@ -191,8 +193,9 @@ public class TFEntities {
 				setShouldReceiveVelocityUpdates(true);
 	}
 
+	@SuppressWarnings("deprecation")
 	private static Item spawnEgg(EntityType<? extends Mob> type, int color, int color2) {
-		ResourceLocation eggId = new ResourceLocation(type.getRegistryName().getNamespace(), type.getRegistryName().getPath() + "_spawn_egg");
+		ResourceLocation eggId = new ResourceLocation(Objects.requireNonNull(type.getRegistryName()).getNamespace(), type.getRegistryName().getPath() + "_spawn_egg");
 		return new SpawnEggItem(type, color, color2, TFItems.defaultBuilder()).setRegistryName(eggId);
 	}
 
