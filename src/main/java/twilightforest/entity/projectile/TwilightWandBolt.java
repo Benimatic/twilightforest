@@ -1,25 +1,20 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
-
-import javax.annotation.Nullable;
 
 public class TwilightWandBolt extends TFThrowable {
 
@@ -75,13 +70,20 @@ public class TwilightWandBolt extends TFThrowable {
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
 		if (!this.level.isClientSide) {
-			if (result instanceof EntityHitResult hit) {
-				if (hit.getEntity() instanceof LivingEntity entity) {
-					entity.hurt(DamageSource.indirectMagic(this, this.getOwner()), 6);
-				}
-			}
+			result.getEntity().hurt(DamageSource.indirectMagic(this, this.getOwner()), 6);
+
+			this.level.broadcastEntityEvent(this, (byte) 3);
+			this.discard();
+		}
+	}
+
+	@Override
+	protected void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		if (!this.level.isClientSide) {
 
 			this.level.broadcastEntityEvent(this, (byte) 3);
 			this.discard();
