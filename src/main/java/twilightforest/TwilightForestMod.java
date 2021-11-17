@@ -125,7 +125,7 @@ public class TwilightForestMod {
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFMobEffects.MOB_EFFECTS.register(modbus);
-		TFPotions.POTIONS.register(modbus);
+		//TFPotions.POTIONS.register(modbus);
 		BiomeKeys.BIOMES.register(modbus);
 		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
 		TFBlockEntities.TILE_ENTITIES.register(modbus);
