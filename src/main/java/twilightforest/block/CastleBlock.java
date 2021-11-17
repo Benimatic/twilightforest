@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 public class CastleBlock extends Block {
 
 	public CastleBlock(MaterialColor color) {
-		super(Properties.of(Material.STONE, color).requiresCorrectToolForDrops().strength(100.0F, 35.0F).sound(SoundType.STONE));
+		super(Properties.of(Material.STONE, color).requiresCorrectToolForDrops().strength(100.0F, 50.0F).sound(SoundType.STONE));
 	}
 
 	@Override
