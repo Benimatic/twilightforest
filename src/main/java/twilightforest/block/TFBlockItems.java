@@ -278,14 +278,14 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.SORTING_SAPLING));
 		r.register(blockItem(TFBlocks.RAINBOW_OAK_SAPLING));
 
-		r.register(blockItem(TFBlocks.OAK_BANISTER));
-		r.register(blockItem(TFBlocks.SPRUCE_BANISTER));
-		r.register(blockItem(TFBlocks.BIRCH_BANISTER));
-		r.register(blockItem(TFBlocks.JUNGLE_BANISTER));
-		r.register(blockItem(TFBlocks.ACACIA_BANISTER));
-		r.register(blockItem(TFBlocks.DARK_OAK_BANISTER));
-		r.register(blockItem(TFBlocks.CRIMSON_BANISTER));
-		r.register(blockItem(TFBlocks.WARPED_BANISTER));
+		r.register(burningItem(TFBlocks.OAK_BANISTER, 300));
+		r.register(burningItem(TFBlocks.SPRUCE_BANISTER, 300));
+		r.register(burningItem(TFBlocks.BIRCH_BANISTER, 300));
+		r.register(burningItem(TFBlocks.JUNGLE_BANISTER, 300));
+		r.register(burningItem(TFBlocks.ACACIA_BANISTER, 300));
+		r.register(burningItem(TFBlocks.DARK_OAK_BANISTER, 300));
+		r.register(burningItem(TFBlocks.CRIMSON_BANISTER, 300));
+		r.register(burningItem(TFBlocks.WARPED_BANISTER, 300));
 
 		r.register(hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE, "hollow_oak_log"));
 		r.register(hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL, TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL, TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE, "hollow_spruce_log"));
@@ -315,7 +315,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.TWILIGHT_OAK_TRAPDOOR));
 		r.register(tallBlock(TFBlocks.TWILIGHT_OAK_DOOR));
 		r.register(signBlock(TFBlocks.TWILIGHT_OAK_SIGN, TFBlocks.TWILIGHT_WALL_SIGN));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_BANISTER));
+		r.register(burningItem(TFBlocks.TWILIGHT_OAK_BANISTER, 300));
 		r.register(blockItem(TFBlocks.CANOPY_PLANKS));
 		r.register(blockItem(TFBlocks.CANOPY_STAIRS));
 		r.register(blockItem(TFBlocks.CANOPY_SLAB));
@@ -326,7 +326,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.CANOPY_TRAPDOOR));
 		r.register(tallBlock(TFBlocks.CANOPY_DOOR));
 		r.register(signBlock(TFBlocks.CANOPY_SIGN, TFBlocks.CANOPY_WALL_SIGN));
-		r.register(blockItem(TFBlocks.CANOPY_BANISTER));
+		r.register(burningItem(TFBlocks.CANOPY_BANISTER, 300));
 		r.register(blockItem(TFBlocks.CANOPY_BOOKSHELF));
 		r.register(blockItem(TFBlocks.MANGROVE_PLANKS));
 		r.register(blockItem(TFBlocks.MANGROVE_STAIRS));
@@ -338,7 +338,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.MANGROVE_TRAPDOOR));
 		r.register(tallBlock(TFBlocks.MANGROVE_DOOR));
 		r.register(signBlock(TFBlocks.MANGROVE_SIGN, TFBlocks.MANGROVE_WALL_SIGN));
-		r.register(blockItem(TFBlocks.MANGROVE_BANISTER));
+		r.register(burningItem(TFBlocks.MANGROVE_BANISTER, 300));
 		r.register(blockItem(TFBlocks.DARK_PLANKS));
 		r.register(blockItem(TFBlocks.DARK_STAIRS));
 		r.register(blockItem(TFBlocks.DARK_SLAB));
@@ -349,7 +349,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.DARK_TRAPDOOR));
 		r.register(tallBlock(TFBlocks.DARK_DOOR));
 		r.register(signBlock(TFBlocks.DARKWOOD_SIGN, TFBlocks.DARKWOOD_WALL_SIGN));
-		r.register(blockItem(TFBlocks.DARKWOOD_BANISTER));
+		r.register(burningItem(TFBlocks.DARKWOOD_BANISTER, 300));
 		r.register(blockItem(TFBlocks.TIME_PLANKS));
 		r.register(blockItem(TFBlocks.TIME_STAIRS));
 		r.register(blockItem(TFBlocks.TIME_SLAB));
@@ -360,7 +360,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.TIME_TRAPDOOR));
 		r.register(tallBlock(TFBlocks.TIME_DOOR));
 		r.register(signBlock(TFBlocks.TIME_SIGN, TFBlocks.TIME_WALL_SIGN));
-		r.register(blockItem(TFBlocks.TIME_BANISTER));
+		r.register(burningItem(TFBlocks.TIME_BANISTER, 300));
 		r.register(blockItem(TFBlocks.TRANSFORMATION_PLANKS));
 		r.register(blockItem(TFBlocks.TRANSFORMATION_STAIRS));
 		r.register(blockItem(TFBlocks.TRANSFORMATION_SLAB));
@@ -371,7 +371,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.TRANSFORMATION_TRAPDOOR));
 		r.register(tallBlock(TFBlocks.TRANSFORMATION_DOOR));
 		r.register(signBlock(TFBlocks.TRANSFORMATION_SIGN, TFBlocks.TRANSFORMATION_WALL_SIGN));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_BANISTER));
+		r.register(burningItem(TFBlocks.TRANSFORMATION_BANISTER, 300));
 		r.register(blockItem(TFBlocks.MINING_PLANKS));
 		r.register(blockItem(TFBlocks.MINING_STAIRS));
 		r.register(blockItem(TFBlocks.MINING_SLAB));
@@ -382,7 +382,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.MINING_TRAPDOOR));
 		r.register(tallBlock(TFBlocks.MINING_DOOR));
 		r.register(signBlock(TFBlocks.MINING_SIGN, TFBlocks.MINING_WALL_SIGN));
-		r.register(blockItem(TFBlocks.MINING_BANISTER));
+		r.register(burningItem(TFBlocks.MINING_BANISTER, 300));
 		r.register(blockItem(TFBlocks.SORTING_PLANKS));
 		r.register(blockItem(TFBlocks.SORTING_STAIRS));
 		r.register(blockItem(TFBlocks.SORTING_SLAB));
@@ -393,7 +393,7 @@ public class TFBlockItems {
 		r.register(blockItem(TFBlocks.SORTING_TRAPDOOR));
 		r.register(tallBlock(TFBlocks.SORTING_DOOR));
 		r.register(signBlock(TFBlocks.SORTING_SIGN, TFBlocks.SORTING_WALL_SIGN));
-		r.register(blockItem(TFBlocks.SORTING_BANISTER));
+		r.register(burningItem(TFBlocks.SORTING_BANISTER, 300));
 
 		makeBEWLRItem(r, TFBlocks.TWILIGHT_OAK_CHEST, TFBlockEntities.TF_CHEST.getId());
 		makeBEWLRItem(r, TFBlocks.CANOPY_CHEST, TFBlockEntities.TF_CHEST.getId());
