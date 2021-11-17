@@ -286,6 +286,19 @@
           "weight": 25,
           "functions": [
             {
+              "function": "minecraft:enchant_randomly",
+              "enchantments": [
+                "twilightforest:chill_aura"
+              ]
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "functions": [
+            {
               "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:infinity": 1
