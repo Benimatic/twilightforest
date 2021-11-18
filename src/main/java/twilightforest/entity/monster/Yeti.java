@@ -53,8 +53,8 @@ public class Yeti extends Monster implements IHostileMount {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new ThrowRiderGoal(this, 1.0D, false) {
 			@Override
-			protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
-				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
+			protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
+				super.checkAndPerformAttack(victim, p_190102_2_);
 				if (!getPassengers().isEmpty())
 					playSound(TFSounds.YETI_GRAB, 1F, 1.25F + getRandom().nextFloat() * 0.5F);
 			}

@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
+import twilightforest.data.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.ChargeAttackGoal;
 import twilightforest.util.TFDamageSources;
@@ -75,8 +76,15 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		if (this.getPassengers().isEmpty() && !entity.isPassenger()) {
-			entity.startRiding(this);
+		if (this.getPassengers().isEmpty()) {
+			var v = entity.getVehicle();
+
+			if (v == null || !v.getType().is(EntityTagGenerator.RIDES_OBSTRUCT_SNATCHING)) {
+				// Pluck them from the boat, minecart, donkey, or whatever
+				entity.stopRiding();
+
+				entity.startRiding(this);
+			}
 		}
 		entity.hurt(TFDamageSources.clamped(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entity);

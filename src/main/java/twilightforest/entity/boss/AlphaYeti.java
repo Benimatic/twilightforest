@@ -84,8 +84,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		});
 		this.goalSelector.addGoal(4, new ThrowRiderGoal(this, 1.0D, false) {
 			@Override
-			protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
-				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
+			protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
+				super.checkAndPerformAttack(victim, p_190102_2_);
 				if (!getPassengers().isEmpty())
 					playSound(TFSounds.ALPHAYETI_GRAB, 4F, 0.75F + getRandom().nextFloat() * 0.25F);
 			}
