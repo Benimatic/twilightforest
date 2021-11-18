@@ -513,6 +513,33 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.FIERY_BLOOD.get())))));
 
+		add(TFEntities.UR_GHAST,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(4))
+								.add(LootItem.lootTableItem(TFItems.CARMINITE.get())
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(2))
+								.add(LootItem.lootTableItem(TFItems.FIERY_TEARS.get())
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(TFBlocks.UR_GHAST_TROPHY.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.CARMINITE.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.CARMINITE.get()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:ur-ghast"))))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.CARMINITE.get())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.CARMINITE.get())))));
+
 		add(TFEntities.ALPHA_YETI,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()

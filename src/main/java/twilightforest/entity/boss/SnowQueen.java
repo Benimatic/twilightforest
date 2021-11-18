@@ -18,6 +18,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -31,6 +32,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.monster.IceCrystal;
+import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -254,7 +256,15 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
+
+			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState(), new BlockPos(this.position()));
 		}
+	}
+
+	@Override
+	protected boolean shouldDropLoot() {
+		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
+		return false;
 	}
 
 	private void applyShieldCollisions(Entity collider) {

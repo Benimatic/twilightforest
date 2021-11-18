@@ -24,6 +24,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -31,6 +32,7 @@ import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFPart;
+import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFFeature;
@@ -713,7 +715,15 @@ public class Hydra extends Mob implements Enemy {
 			for (ServerPlayer player :hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
+
+			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), new BlockPos(this.position()));
 		}
+	}
+
+	@Override
+	protected boolean shouldDropLoot() {
+		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
+		return false;
 	}
 
 	@Override

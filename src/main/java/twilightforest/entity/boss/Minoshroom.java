@@ -20,9 +20,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -163,7 +165,15 @@ public class Minoshroom extends Minotaur {
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
+
+			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), new BlockPos(this.position()));
 		}
+	}
+
+	@Override
+	protected boolean shouldDropLoot() {
+		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
+		return false;
 	}
 
 	@Override

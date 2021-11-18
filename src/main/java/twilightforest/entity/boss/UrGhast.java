@@ -21,6 +21,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -601,14 +602,6 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	@Override
-	protected void tickDeath() {
-		super.tickDeath();
-		if (this.deathTime == 20 && level instanceof ServerLevel serverLevel) {
-			TFTreasure.DARKTOWER_BOSS.generateChest(serverLevel, findChestCoords(), Direction.NORTH, false);
-		}
-	}
-
-	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the tower as defeated
@@ -617,7 +610,15 @@ public class UrGhast extends CarminiteGhastguard {
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
+
+			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.DARKWOOD_CHEST.get().defaultBlockState(), this.findChestCoords());
 		}
+	}
+
+	@Override
+	protected boolean shouldDropLoot() {
+		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
+		return false;
 	}
 
 	private BlockPos findChestCoords() {

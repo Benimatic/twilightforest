@@ -749,6 +749,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.TOWER_KEY.get()))));
 
+		// Keeping this here for legacy generated chests
         register.accept(TFTreasure.DARKTOWER_BOSS.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()

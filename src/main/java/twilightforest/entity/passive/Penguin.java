@@ -2,6 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -57,8 +58,6 @@ public class Penguin extends Bird {
 
 	public static boolean canSpawn(EntityType<? extends Penguin> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
 		BlockPos blockpos = pos.below();
-		return Mob.checkMobSpawnRules(type, world, reason, pos, rand)
-				|| (world.getBlockState(blockpos).getBlock() == Blocks.ICE)
-				|| (world.getBlockState(blockpos).getBlock() == Blocks.PACKED_ICE);
+		return Mob.checkMobSpawnRules(type, world, reason, pos, rand) || world.getBlockState(blockpos).is(BlockTags.ICE);
 	}
 }
