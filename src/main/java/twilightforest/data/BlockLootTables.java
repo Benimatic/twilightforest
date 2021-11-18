@@ -150,7 +150,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(TFBlocks.FIDDLEHEAD.get(), createShearsOnlyDrop(TFBlocks.FIDDLEHEAD.get()));
 		dropSelf(TFBlocks.MUSHGLOOM.get());
 		add(TFBlocks.TORCHBERRY_PLANT.get(), torchberryPlant(TFBlocks.TORCHBERRY_PLANT.get()));
-		add(TFBlocks.ROOT_STRAND.get(), createShearsOnlyDrop(TFBlocks.ROOT_STRAND.get()));
+		add(TFBlocks.ROOT_STRAND.get(), block -> createShearsDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F))))));
 		add(TFBlocks.FALLEN_LEAVES.get(), createShearsOnlyDrop(TFBlocks.FALLEN_LEAVES.get()));
 		dropSelf(TFBlocks.SMOKER.get());
 		dropSelf(TFBlocks.ENCASED_SMOKER.get());
