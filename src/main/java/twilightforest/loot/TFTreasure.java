@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
@@ -148,22 +149,10 @@ public class TFTreasure {
 		}
 	}
 
-	public static void entityDropsIntoContainer(LivingEntity entity, LootContext lootContext, BlockState container, BlockPos placement) {
-		if (!(entity.level instanceof ServerLevel serverLevel)) return;
-
-		var stacks = serverLevel.getServer().getServerResources().getLootTables().get(entity.getLootTable()).getRandomItems(lootContext);
-
-		if (serverLevel.setBlock(placement, container, DEFAULT_PLACE_FLAG)) {
-			var blockEntity = serverLevel.getBlockEntity(placement);
-
-			if (blockEntity == null) return;
-
-			blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
-				// Brand new container, so we'll force all stacks in
-				for (int i = 0; i < inventory.getSlots() && i < stacks.size(); i++) {
-					inventory.insertItem(i, stacks.get(i), false);
-				}
-			});
-		}
+	public static void entityDropsIntoContainer(LivingEntity entity, LootContext lootContext, BlockState blockContaining, BlockPos placement) {
+		if (entity.level instanceof ServerLevel serverLevel
+				&& serverLevel.setBlock(placement, blockContaining, DEFAULT_PLACE_FLAG)
+				&& serverLevel.getBlockEntity(placement) instanceof Container container)
+			serverLevel.getServer().getServerResources().getLootTables().get(entity.getLootTable()).fill(container, lootContext);
 	}
 }
