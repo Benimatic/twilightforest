@@ -18,6 +18,8 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -104,6 +106,7 @@ public class SpecialMagicLogBlock extends RotatedPillarBlock {
 	/**
 	 * The tree of time adds extra ticks to blocks, so that they have twice the normal chance to get a random tick
 	 */
+	@SuppressWarnings("unchecked") // Vanilla also makes this dirty cast on block entity tickers, poor mojank design.
 	private void doTreeOfTimeEffect(Level world, BlockPos pos, Random rand) {
 
 		int numticks = 8 * 3 * this.tickRate();
@@ -118,11 +121,12 @@ public class SpecialMagicLogBlock extends RotatedPillarBlock {
 				state.randomTick((ServerLevel) world, dPos, rand);
 			}
 
-			//FIXME figure out how to get this working again
-//			BlockEntity te = world.getBlockEntity(dPos);
-//			if (te instanceof TickableBlockEntity && !te.isRemoved()) {
-//				((TickableBlockEntity) te).tick();
-//			}
+			BlockEntity entity = world.getBlockEntity(dPos);
+			if (entity != null) {
+				BlockEntityTicker<BlockEntity> ticker = state.getTicker(world, (BlockEntityType<BlockEntity>) entity.getType());
+				if (ticker != null)
+					ticker.tick(world, pos, state, entity);
+			}
 		}
 	}
 
