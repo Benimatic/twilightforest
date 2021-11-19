@@ -144,24 +144,12 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		int index = this.getGenDepth();
 
-		TowerRoofComponent roof;
-
-		switch (rand.nextInt(5)) {
-			case 0:
-			case 1:
-			default:
-				roof = new DarkTowerRoofAntennaComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-				break;
-			case 2:
-				roof = new DarkTowerRoofCactusComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-				break;
-			case 3:
-				roof = new DarkTowerRoofRingsComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-				break;
-			case 4:
-				roof = new DarkTowerRoofFourPostComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-				break;
-		}
+		TowerRoofComponent roof = switch (rand.nextInt(5)) {
+			case 2 -> new DarkTowerRoofCactusComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			case 3 -> new DarkTowerRoofRingsComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			case 4 -> new DarkTowerRoofFourPostComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			default -> new DarkTowerRoofAntennaComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		};
 
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
@@ -860,15 +848,11 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Pick one of the three specified values at random
 	 */
 	protected int pickFrom(Random rand, int i, int j, int k) {
-		switch (rand.nextInt(3)) {
-			case 0:
-			default:
-				return i;
-			case 1:
-				return j;
-			case 2:
-				return k;
-		}
+		return switch (rand.nextInt(3)) {
+			case 1 -> j;
+			case 2 -> k;
+			default -> i;
+		};
 	}
 
 	/**
@@ -1003,16 +987,9 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 			}
 
 			switch (doorType) {
-				case VANISHING:
-				default:
-					makeDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
-					break;
-				case REAPPEARING:
-					makeReappearingDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
-					break;
-				case LOCKED:
-					makeLockedDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
-					break;
+				case REAPPEARING -> makeReappearingDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
+				case LOCKED -> makeLockedDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
+				default -> makeDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
 			}
 		}
 	}

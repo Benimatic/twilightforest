@@ -30,18 +30,10 @@ public class IronwoodArmorItem extends ArmorItem {
 		if (allowdedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.getSlot()) {
-				case HEAD:
-					istack.enchant(Enchantments.AQUA_AFFINITY, 1);
-					break;
-				case CHEST:
-				case LEGS:
-					istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 1);
-					break;
-				case FEET:
-					istack.enchant(Enchantments.FALL_PROTECTION, 1);
-					break;
-				default:
-					break;
+				case HEAD -> istack.enchant(Enchantments.AQUA_AFFINITY, 1);
+				case CHEST, LEGS -> istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 1);
+				case FEET -> istack.enchant(Enchantments.FALL_PROTECTION, 1);
+				default -> { }
 			}
 			list.add(istack);
 		}

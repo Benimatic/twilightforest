@@ -134,31 +134,22 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isInside(pos)) {
-			ConfiguredFeature<?,?> treeGen;
+			ConfiguredFeature<?,?> treeGen = switch (treeNum) {
+				case 1 ->
+						// jungle tree
+						Features.JUNGLE_TREE;
+				case 2 ->
+						// birch
+						Features.BIRCH;
+				case 3 -> ConfiguredFeatures.TWILIGHT_OAK_BASE;
+				case 4 -> ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
+				default ->
+						// oak tree
+						Features.OAK;
+			};
 			// grow a tree
 
 			//TODO: All trees here grab configs from DefaultBiomeFeatures or TFBiomeDecorator, and will not have "minHeight"
-			switch (treeNum) {
-				case 0:
-				default:
-					// oak tree
-					treeGen = Features.OAK;
-					break;
-				case 1:
-					// jungle tree
-					treeGen = Features.JUNGLE_TREE;
-					break;
-				case 2:
-					// birch
-					treeGen = Features.BIRCH;
-					break;
-				case 3:
-					treeGen = ConfiguredFeatures.TWILIGHT_OAK_BASE;
-					break;
-				case 4:
-					treeGen = ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
-					break;
-			}
 
 			for (int i = 0; i < 100; i++) {
 				if (treeGen.place(world, generator, world.getRandom(), pos)) {

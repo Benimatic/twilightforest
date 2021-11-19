@@ -32,19 +32,11 @@ public class MistWolf extends HostileWolf {
 			float myBrightness = this.getBrightness();
 
 			if (entity instanceof LivingEntity && myBrightness < 0.10F) {
-				int effectDuration;
-				switch (level.getDifficulty()) {
-					case EASY:
-						effectDuration = 0;
-						break;
-					default:
-					case NORMAL:
-						effectDuration = 7;
-						break;
-					case HARD:
-						effectDuration = 15;
-						break;
-				}
+				int effectDuration = switch (level.getDifficulty()) {
+					case EASY -> 0;
+					case HARD -> 15;
+					default -> 7;
+				};
 
 				if (effectDuration > 0) {
 					((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, effectDuration * 20, 0));

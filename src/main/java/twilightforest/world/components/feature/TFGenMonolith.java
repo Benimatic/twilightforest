@@ -40,31 +40,30 @@ public class TFGenMonolith extends Feature<NoneFeatureConfiguration> {
 		}
 
 		switch (dir) {
-			case 0:
+			case 0 -> {
 				h0 = ht;
 				h1 = (int) (ht * .75);
 				h2 = (int) (ht * .75);
 				h3 = (int) (ht * .5);
-				break;
-			case 1:
+			}
+			case 1 -> {
 				h0 = (int) (ht * .5);
 				h1 = ht;
 				h2 = (int) (ht * .75);
 				h3 = (int) (ht * .75);
-				break;
-			case 2:
+			}
+			case 2 -> {
 				h0 = (int) (ht * .75);
 				h1 = (int) (ht * .5);
 				h2 = ht;
 				h3 = (int) (ht * .75);
-				break;
-			case 3:
-			default:
+			}
+			default -> {
 				h0 = (int) (ht * .75);
 				h1 = (int) (ht * .75);
 				h2 = (int) (ht * .5);
 				h3 = ht;
-				break;
+			}
 		}
 
 		for (int cy = 0; cy <= h0; cy++) {

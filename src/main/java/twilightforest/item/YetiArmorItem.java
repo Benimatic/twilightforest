@@ -48,17 +48,12 @@ public class YetiArmorItem extends ArmorItem {
 		if (allowdedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.slot) {
-				case HEAD:
-				case CHEST:
-				case LEGS:
-					istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
-					break;
-				case FEET:
+				case HEAD, CHEST, LEGS -> istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
+				case FEET -> {
 					istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
 					istack.enchant(Enchantments.FALL_PROTECTION, 4);
-					break;
-				default:
-					break;
+				}
+				default -> { }
 			}
 			list.add(istack);
 		}

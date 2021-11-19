@@ -92,18 +92,18 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	 */
 	private void doThornBurst(Level world, BlockPos pos, BlockState state) {
 		switch (state.getValue(AXIS)) {
-			case Y:
+			case Y -> {
 				growThorns(world, pos, Direction.UP);
 				growThorns(world, pos, Direction.DOWN);
-				break;
-			case X:
+			}
+			case X -> {
 				growThorns(world, pos, Direction.EAST);
 				growThorns(world, pos, Direction.WEST);
-				break;
-			case Z:
+			}
+			case Z -> {
 				growThorns(world, pos, Direction.NORTH);
 				growThorns(world, pos, Direction.SOUTH);
-				break;
+			}
 		}
 
 		// also try three random directions

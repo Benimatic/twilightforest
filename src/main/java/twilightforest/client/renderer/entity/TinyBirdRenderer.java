@@ -19,16 +19,11 @@ public class TinyBirdRenderer extends BirdRenderer<TinyBird, TinyBirdModel> {
 
 	@Override
 	public ResourceLocation getTextureLocation(TinyBird entity) {
-		switch (entity.getBirdType()) {
-			default:
-			case 0:
-				return textureLocSparrow;
-			case 1:
-				return textureLocBluebird;
-			case 2:
-				return textureLocCardinal;
-			case 3:
-				return textureLocFinch;
-		}
+		return switch (entity.getBirdType()) {
+			case 1 -> textureLocBluebird;
+			case 2 -> textureLocCardinal;
+			case 3 -> textureLocFinch;
+			default -> textureLocSparrow;
+		};
 	}
 }

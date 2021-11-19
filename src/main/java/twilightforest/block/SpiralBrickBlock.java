@@ -61,15 +61,13 @@ public class SpiralBrickBlock extends Block {
         int angleX = (int) ((placer.getXRot() + 180f) / 180f) & 1;
         int angleY = (int) ((placer.getYRot() + 180f) / 90f) & 3;
 
-        switch (facing) {
-            case DOWN:
-            case UP:
-                switch (angleY) {
-                    default: return Diagonals.TOP_RIGHT; // NORTH EAST
-                    case 1: return Diagonals.BOTTOM_RIGHT; // SOUTH EAST
-                    case 2: return Diagonals.BOTTOM_LEFT; // SOUTH WEST
-                    case 3: return Diagonals.TOP_LEFT; // NORTH WEST
-                }
+		return switch (facing) {
+			case DOWN, UP -> switch (angleY) {
+				default -> Diagonals.TOP_RIGHT; // NORTH EAST
+				case 1 -> Diagonals.BOTTOM_RIGHT; // SOUTH EAST
+				case 2 -> Diagonals.BOTTOM_LEFT; // SOUTH WEST
+				case 3 -> Diagonals.TOP_LEFT; // NORTH WEST
+			};
 
                 /*
                 NORTH
@@ -78,18 +76,13 @@ public class SpiralBrickBlock extends Block {
                 2   1
                 */
 
-            case NORTH:
-                return Diagonals.getDiagonalFromUpDownLeftRight(  isEast(angleY), angleX < 1);
-            case SOUTH:
-                return Diagonals.getDiagonalFromUpDownLeftRight( !isEast(angleY), angleX < 1);
-            case EAST:
-                return Diagonals.getDiagonalFromUpDownLeftRight( isNorth(angleY), angleX < 1);
-            case WEST:
-                return Diagonals.getDiagonalFromUpDownLeftRight(!isNorth(angleY), angleX < 1);
-        }
+			case NORTH -> Diagonals.getDiagonalFromUpDownLeftRight(isEast(angleY), angleX < 1);
+			case SOUTH -> Diagonals.getDiagonalFromUpDownLeftRight(!isEast(angleY), angleX < 1);
+			case EAST -> Diagonals.getDiagonalFromUpDownLeftRight(isNorth(angleY), angleX < 1);
+			case WEST -> Diagonals.getDiagonalFromUpDownLeftRight(!isNorth(angleY), angleX < 1);
+		};
 
-        return Diagonals.TOP_RIGHT;
-    }
+	}
 
     private static boolean isNorth(int intIn) {
         return intIn == 0 || intIn == 3;

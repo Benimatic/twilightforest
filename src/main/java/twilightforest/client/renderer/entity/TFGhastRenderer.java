@@ -19,14 +19,10 @@ public class TFGhastRenderer<T extends CarminiteGhastguard, M extends TFGhastMod
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		switch (entity.isCharging() ? 2 : entity.getAttackStatus()) {
-			default:
-			case 0:
-				return textureLocClosed;
-			case 1:
-				return textureLocOpen;
-			case 2:
-				return textureLocAttack;
-		}
+		return switch (entity.isCharging() ? 2 : entity.getAttackStatus()) {
+			case 1 -> textureLocOpen;
+			case 2 -> textureLocAttack;
+			default -> textureLocClosed;
+		};
 	}
 }

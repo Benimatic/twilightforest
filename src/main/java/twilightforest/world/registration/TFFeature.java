@@ -619,31 +619,14 @@ public class TFFeature {
 
 		// get random value
 		// okay, well that takes care of most special cases
-		switch (new Random(seed + chunkX * 25117L + chunkZ * 151121L).nextInt(16)) {
-			default:
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-				return SMALL_HILL;
-			case 6:
-			case 7:
-			case 8:
-				return MEDIUM_HILL;
-			case 9:
-				return LARGE_HILL;
-			case 10:
-			case 11:
-				return HEDGE_MAZE;
-			case 12:
-			case 13:
-				return NAGA_COURTYARD;
-			case 14:
-			case 15:
-				return LICH_TOWER;
-		}
+		return switch (new Random(seed + chunkX * 25117L + chunkZ * 151121L).nextInt(16)) {
+			case 6, 7, 8 -> MEDIUM_HILL;
+			case 9 -> LARGE_HILL;
+			case 10, 11 -> HEDGE_MAZE;
+			case 12, 13 -> NAGA_COURTYARD;
+			case 14, 15 -> LICH_TOWER;
+			default -> SMALL_HILL;
+		};
 	}
 
 	/**
@@ -835,16 +818,12 @@ public class TFFeature {
 	 * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
 	 */
 	public List<MobSpawnSettings.SpawnerData> getSpawnableList(MobCategory creatureType) {
-		switch (creatureType) {
-			case MONSTER:
-				return this.getSpawnableMonsterList(0);
-			case AMBIENT:
-				return this.ambientCreatureList;
-			case WATER_CREATURE:
-				return this.waterCreatureList;
-			default:
-				return new ArrayList<>();
-		}
+		return switch (creatureType) {
+			case MONSTER -> this.getSpawnableMonsterList(0);
+			case AMBIENT -> this.ambientCreatureList;
+			case WATER_CREATURE -> this.waterCreatureList;
+			default -> new ArrayList<>();
+		};
 	}
 
 	/**
@@ -966,21 +945,16 @@ public class TFFeature {
 			y += (spanY + minY) / 4;
 			z += (spanZ + minZ) / 4;
 		}
-		switch (dir) {
-
-			case SOUTH: // '\0'
-			default:
-				return new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
-
-			case WEST: // '\001'
-				return new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
-
-			case NORTH: // '\002'
-				return new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
-
-			case EAST: // '\003'
-				return new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
-		}
+		return switch (dir) {
+			case WEST -> // '\001'
+					new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
+			case NORTH -> // '\002'
+					new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
+			case EAST -> // '\003'
+					new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
+			default -> // '\0'
+					new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
+		};
 	}
 
 	public static boolean isTheseFeatures(TFFeature feature, TFFeature... predicates) {

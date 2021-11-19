@@ -66,17 +66,10 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 			this.rotation = Rotation.NONE;
 		} else {
 			switch (facing) {
-				case SOUTH:
-					this.rotation = Rotation.CLOCKWISE_180;
-					break;
-				case WEST:
-					this.rotation = Rotation.COUNTERCLOCKWISE_90;
-					break;
-				case EAST:
-					this.rotation = Rotation.CLOCKWISE_90;
-					break;
-				default:
-					this.rotation = Rotation.NONE;
+				case SOUTH -> this.rotation = Rotation.CLOCKWISE_180;
+				case WEST -> this.rotation = Rotation.COUNTERCLOCKWISE_90;
+				case EAST -> this.rotation = Rotation.CLOCKWISE_90;
+				default -> this.rotation = Rotation.NONE;
 			}
 		}
 	}
@@ -85,21 +78,16 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 * Fixed a bug with direction 1 and -z values, but I'm not sure if it'll break other things
 	 */
 	public static BoundingBox getComponentToAddBoundingBox2(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Direction dir) {
-		switch (dir) {
-
-			case SOUTH: // '\0'
-			default:
-				return new BoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
-
-			case WEST: // '\001'
-				return new BoundingBox(x - maxZ - minZ, y + minY, z + minX, x - minZ, y + maxY + minY, z + maxX + minX);
-
-			case NORTH: // '\002'
-				return new BoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
-
-			case EAST: // '\003'
-				return new BoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z - minX);
-		}
+		return switch (dir) {
+			case WEST -> // '\001'
+					new BoundingBox(x - maxZ - minZ, y + minY, z + minX, x - minZ, y + maxY + minY, z + maxX + minX);
+			case NORTH -> // '\002'
+					new BoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
+			case EAST -> // '\003'
+					new BoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z - minX);
+			default -> // '\0'
+					new BoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+		};
 	}
 
 	protected void setSpawner(WorldGenLevel world, Vec3i pos, BoundingBox sbb, EntityType<?> monsterID) {
@@ -337,18 +325,13 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		if (enumfacing == null) {
 			return x;
 		} else {
-			switch (enumfacing) {
-				case SOUTH:
-					return this.boundingBox.minX() + x;
-				case WEST:
-					return this.boundingBox.maxX() - z;
-				case NORTH:
-					return this.boundingBox.maxX() - x; // TF - Add case for NORTH todo 1.9 is this correct?
-				case EAST:
-					return this.boundingBox.minX() + z;
-				default:
-					return x;
-			}
+			return switch (enumfacing) {
+				case SOUTH -> this.boundingBox.minX() + x;
+				case WEST -> this.boundingBox.maxX() - z;
+				case NORTH -> this.boundingBox.maxX() - x; // TF - Add case for NORTH todo 1.9 is this correct?
+				case EAST -> this.boundingBox.minX() + z;
+				default -> x;
+			};
 		}
 	}
 
@@ -361,18 +344,13 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		if (enumfacing == null) {
 			return z;
 		} else {
-			switch (enumfacing) {
-				case SOUTH:
-					return this.boundingBox.minZ() + z;
-				case WEST:
-					return this.boundingBox.minZ() + x;
-				case NORTH:
-					return this.boundingBox.maxZ() - z;
-				case EAST:
-					return this.boundingBox.maxZ() - x;
-				default:
-					return z;
-			}
+			return switch (enumfacing) {
+				case SOUTH -> this.boundingBox.minZ() + z;
+				case WEST -> this.boundingBox.minZ() + x;
+				case NORTH -> this.boundingBox.maxZ() - z;
+				case EAST -> this.boundingBox.maxZ() - x;
+				default -> z;
+			};
 		}
 	}
 

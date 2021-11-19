@@ -25,16 +25,12 @@ public enum NagastoneVariant implements StringRepresentable {
 	}
 
 	public static NagastoneVariant getVariantFromAxis(Direction.Axis axis) {
-		switch (axis) {
-			case X:
-				return AXIS_X;
-			case Y:
-				return AXIS_Y;
-			case Z:
-				return AXIS_Z;
-			default:
-				return SOLID;
-		}
+		return switch (axis) {
+			case X -> AXIS_X;
+			case Y -> AXIS_Y;
+			case Z -> AXIS_Z;
+			//default -> SOLID;
+		};
 	}
 
 	public static NagastoneVariant getVariantFromDoubleFacing(Direction facing1, Direction facing2) {
@@ -47,31 +43,21 @@ public enum NagastoneVariant implements StringRepresentable {
 		Direction otherFace = facing1.getAxis() != Direction.Axis.Y ? facing1 : facing2;
 
 		if (facingYAxis == Direction.UP) {
-			switch (otherFace) {
-				case NORTH:
-					return NORTH_UP;
-				case SOUTH:
-					return SOUTH_UP;
-				case WEST:
-					return WEST_UP;
-				case EAST:
-					return EAST_UP;
-				default:
-					return SOLID;
-			}
+			return switch (otherFace) {
+				case NORTH -> NORTH_UP;
+				case SOUTH -> SOUTH_UP;
+				case WEST -> WEST_UP;
+				case EAST -> EAST_UP;
+				default -> SOLID;
+			};
 		} else {
-			switch (otherFace) {
-				case NORTH:
-					return NORTH_DOWN;
-				case SOUTH:
-					return SOUTH_DOWN;
-				case WEST:
-					return WEST_DOWN;
-				case EAST:
-					return EAST_DOWN;
-				default:
-					return SOLID;
-			}
+			return switch (otherFace) {
+				case NORTH -> NORTH_DOWN;
+				case SOUTH -> SOUTH_DOWN;
+				case WEST -> WEST_DOWN;
+				case EAST -> EAST_DOWN;
+				default -> SOLID;
+			};
 		}
 	}
 }

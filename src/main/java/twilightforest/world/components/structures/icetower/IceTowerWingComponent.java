@@ -317,22 +317,12 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	private boolean isNoDoorAreaRotated(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Rotation rotation) {
 		boolean isClear = true;
 		// make a bounding box of the area
-		BoundingBox exclusionBox;
-		switch (rotation) {
-			case NONE:
-			default:
-				exclusionBox = new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
-				break;
-			case CLOCKWISE_90:
-				exclusionBox = new BoundingBox(this.size - 1 - maxZ, minY, minX, this.size - 1 - minZ, maxY, maxX);
-				break;
-			case CLOCKWISE_180:
-				exclusionBox = new BoundingBox(this.size - 1 - maxX, minY, this.size - 1 - maxZ, this.size - 1 - minX, maxY, this.size - 1 - minZ);
-				break;
-			case COUNTERCLOCKWISE_90:
-				exclusionBox = new BoundingBox(minZ, minY, this.size - 1 - maxX, maxZ, maxY, this.size - 1 - minX);
-				break;
-		}
+		BoundingBox exclusionBox = switch (rotation) {
+			case CLOCKWISE_90 -> new BoundingBox(this.size - 1 - maxZ, minY, minX, this.size - 1 - minZ, maxY, maxX);
+			case CLOCKWISE_180 -> new BoundingBox(this.size - 1 - maxX, minY, this.size - 1 - maxZ, this.size - 1 - minX, maxY, this.size - 1 - minZ);
+			case COUNTERCLOCKWISE_90 -> new BoundingBox(minZ, minY, this.size - 1 - maxX, maxZ, maxY, this.size - 1 - minX);
+			default -> new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+		};
 
 		for (BlockPos door : this.openings) {
 			if (exclusionBox.isInside(door)) {

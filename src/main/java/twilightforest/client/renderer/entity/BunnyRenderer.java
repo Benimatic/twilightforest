@@ -19,15 +19,10 @@ public class BunnyRenderer extends MobRenderer<DwarfRabbit, BunnyModel> {
 
 	@Override
 	public ResourceLocation getTextureLocation(DwarfRabbit entity) {
-		switch (entity.getBunnyType()) {
-			default:
-			case 0:
-			case 1:
-				return textureLocDutch;
-			case 2:
-				return textureLocWhite;
-			case 3:
-				return textureLocBrown;
-		}
+		return switch (entity.getBunnyType()) {
+			case 2 -> textureLocWhite;
+			case 3 -> textureLocBrown;
+			default -> textureLocDutch;
+		};
 	}
 }

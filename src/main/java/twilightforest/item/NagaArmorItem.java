@@ -29,14 +29,10 @@ public class NagaArmorItem extends ArmorItem {
 		if (allowdedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.slot) {
-				case CHEST:
-					istack.enchant(Enchantments.FIRE_PROTECTION, 3);
-					break;
-				case LEGS:
-					istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 3);
-					break;
-				default:
-					break;
+				case CHEST -> istack.enchant(Enchantments.FIRE_PROTECTION, 3);
+				case LEGS -> istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 3);
+				default -> {
+				}
 			}
 			list.add(istack);
 		}

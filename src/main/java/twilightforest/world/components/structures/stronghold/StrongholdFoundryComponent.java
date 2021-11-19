@@ -60,23 +60,24 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 		super.addChildren(parent, list, random);
 
 		switch (this.entranceLevel) {
-			case 1:
+			case 1 -> {
 				this.addDoor(4, 6, 0);
 				addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 13, 13);
 				addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 13, 4);
 				addNewComponent(parent, list, random, Rotation.NONE, 13, 20, 18);
-				break;
-			case 2:
+			}
+			case 2 -> {
 				this.addDoor(4, 13, 0);
 				addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 6, 13);
 				addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 20, 4);
 				addNewComponent(parent, list, random, Rotation.NONE, 13, 13, 18);
-				break;
-			case 3:
+			}
+			case 3 -> {
 				this.addDoor(4, 20, 0);
 				addNewComponent(parent, list, random, Rotation.NONE, 13, 6, 18);
 				addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 13, 13);
 				addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 13, 4);
+			}
 		}
 	}
 

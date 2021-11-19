@@ -107,47 +107,44 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 			float volume = 1.0F;
 			float pitch = 0.9F;
 			switch (variant) {
-				case NAGA:
+				case NAGA -> {
 					sound = TFSounds.NAGA_RATTLE;
 					volume = 1.25F;
 					pitch = 1.2F;
-					break;
-				case LICH:
+				}
+				case LICH -> {
 					sound = TFSounds.LICH_AMBIENT;
 					volume = 0.35F;
 					pitch = 1.1F;
-					break;
-				case HYDRA:
+				}
+				case HYDRA -> {
 					sound = TFSounds.HYDRA_GROWL;
 					pitch = 1.2F;
-					break;
-				case UR_GHAST:
+				}
+				case UR_GHAST -> {
 					sound = TFSounds.URGHAST_AMBIENT;
 					pitch = 0.6F;
-					break;
-				case SNOW_QUEEN:
-					sound = TFSounds.SNOW_QUEEN_AMBIENT;
-					break;
-				case KNIGHT_PHANTOM:
+				}
+				case SNOW_QUEEN -> sound = TFSounds.SNOW_QUEEN_AMBIENT;
+				case KNIGHT_PHANTOM -> {
 					sound = TFSounds.PHANTOM_AMBIENT;
 					pitch = 1.1F;
-					break;
-				case MINOSHROOM:
+				}
+				case MINOSHROOM -> {
 					sound = TFSounds.MINOSHROOM_AMBIENT;
 					volume = 0.75F;
 					pitch = 0.7F;
-					break;
-				case ALPHA_YETI:
+				}
+				case ALPHA_YETI -> {
 					sound = world.random.nextInt(50) == 0 ? TFSounds.ALPHAYETI_ROAR : TFSounds.ALPHAYETI_GROWL;
 					volume = 0.75F;
 					pitch = 0.75F;
-					break;
-				case QUEST_RAM:
+				}
+				case QUEST_RAM -> {
 					sound = TFSounds.QUEST_RAM_AMBIENT;
 					pitch = 0.7F;
-					break;
-				default:
-					break;
+				}
+				default -> { }
 			}
 			if (sound != null) {
 				world.playSound((Player)null, pos, sound, SoundSource.BLOCKS, volume, world.random.nextFloat() * 0.1F + pitch);

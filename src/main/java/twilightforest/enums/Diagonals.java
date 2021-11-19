@@ -37,95 +37,63 @@ public enum Diagonals implements StringRepresentable {
     }
 
     public static Diagonals mirrorOn(Direction.Axis axis, Diagonals diagonal, Mirror mirror) {
-        switch (axis) {
-            case X:
-                return mirrorOnX(diagonal, mirror);
-            case Z:
-                return mirrorOnZ(diagonal, mirror);
-            default:
-                return mirror(diagonal, mirror);
-        }
+        return switch (axis) {
+            case X -> mirrorOnX(diagonal, mirror);
+            case Z -> mirrorOnZ(diagonal, mirror);
+            default -> mirror(diagonal, mirror);
+        };
     }
 
     public static Diagonals mirrorOnX(Diagonals diagonal, Mirror mirror) {
-        switch (mirror) {
-            case FRONT_BACK:
-                switch (diagonal) {
-                    case TOP_RIGHT:
-                        return BOTTOM_RIGHT;
-                    case BOTTOM_RIGHT:
-                        return TOP_RIGHT;
-                    case BOTTOM_LEFT:
-                        return TOP_LEFT;
-                    case TOP_LEFT:
-                        return BOTTOM_LEFT;
-                    default:
-                        return diagonal;
-                }
-            default:
-                return diagonal;
+        if (mirror == Mirror.FRONT_BACK) {
+            return switch (diagonal) {
+                case TOP_RIGHT -> BOTTOM_RIGHT;
+                case BOTTOM_RIGHT -> TOP_RIGHT;
+                case BOTTOM_LEFT -> TOP_LEFT;
+                case TOP_LEFT -> BOTTOM_LEFT;
+                //default -> diagonal;
+            };
         }
+        return diagonal;
     }
 
     public static Diagonals mirrorLeftRight(Diagonals diagonal) {
-        switch (diagonal) {
-            case TOP_RIGHT:
-                return TOP_LEFT;
-            case BOTTOM_RIGHT:
-                return BOTTOM_LEFT;
-            case BOTTOM_LEFT:
-                return BOTTOM_RIGHT;
-            case TOP_LEFT:
-                return TOP_RIGHT;
-        }
-
-        return diagonal;
+        return switch (diagonal) {
+            case TOP_RIGHT -> TOP_LEFT;
+            case BOTTOM_RIGHT -> BOTTOM_LEFT;
+            case BOTTOM_LEFT -> BOTTOM_RIGHT;
+            case TOP_LEFT -> TOP_RIGHT;
+        };
     }
 
     public static Diagonals mirrorUpDown(Diagonals diagonal) {
-        switch (diagonal) {
-            case TOP_RIGHT:
-                return BOTTOM_RIGHT;
-            case BOTTOM_RIGHT:
-                return TOP_RIGHT;
-            case BOTTOM_LEFT:
-                return TOP_LEFT;
-            case TOP_LEFT:
-                return BOTTOM_LEFT;
-        }
-
-        return diagonal;
+        return switch (diagonal) {
+            case TOP_RIGHT -> BOTTOM_RIGHT;
+            case BOTTOM_RIGHT -> TOP_RIGHT;
+            case BOTTOM_LEFT -> TOP_LEFT;
+            case TOP_LEFT -> BOTTOM_LEFT;
+        };
     }
 
     public static Diagonals mirror(Diagonals diagonal, Mirror mirror) {
-        switch (mirror) {
-            case LEFT_RIGHT:
-                return mirrorLeftRight(diagonal);
-            case FRONT_BACK:
-                return mirrorUpDown(diagonal);
-            default:
-                return diagonal;
-        }
+        return switch (mirror) {
+            case LEFT_RIGHT -> mirrorLeftRight(diagonal);
+            case FRONT_BACK -> mirrorUpDown(diagonal);
+            default -> diagonal;
+        };
     }
 
     public static Diagonals mirrorOnZ(Diagonals diagonal, Mirror mirror) {
-        switch (mirror) {
-            case LEFT_RIGHT:
-                switch (diagonal) {
-                    case TOP_RIGHT:
-                        return TOP_LEFT;
-                    case BOTTOM_RIGHT:
-                        return BOTTOM_LEFT;
-                    case BOTTOM_LEFT:
-                        return BOTTOM_RIGHT;
-                    case TOP_LEFT:
-                        return TOP_RIGHT;
-                    default:
-                        return diagonal;
-                }
-            default:
-                return diagonal;
+        if (mirror == Mirror.LEFT_RIGHT) {
+            return switch (diagonal) {
+                case TOP_RIGHT -> TOP_LEFT;
+                case BOTTOM_RIGHT -> BOTTOM_LEFT;
+                case BOTTOM_LEFT -> BOTTOM_RIGHT;
+                case TOP_LEFT -> TOP_RIGHT;
+                //default -> diagonal;
+            };
         }
+        return diagonal;
     }
 
     @Override

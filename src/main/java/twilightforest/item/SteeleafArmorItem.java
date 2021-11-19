@@ -30,20 +30,11 @@ public class SteeleafArmorItem extends ArmorItem {
 		if (allowdedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.slot) {
-				case HEAD:
-					istack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);
-					break;
-				case CHEST:
-					istack.enchant(Enchantments.BLAST_PROTECTION, 2);
-					break;
-				case LEGS:
-					istack.enchant(Enchantments.FIRE_PROTECTION, 2);
-					break;
-				case FEET:
-					istack.enchant(Enchantments.FALL_PROTECTION, 2);
-					break;
-				default:
-					break;
+				case HEAD -> istack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);
+				case CHEST -> istack.enchant(Enchantments.BLAST_PROTECTION, 2);
+				case LEGS -> istack.enchant(Enchantments.FIRE_PROTECTION, 2);
+				case FEET -> istack.enchant(Enchantments.FALL_PROTECTION, 2);
+				default -> { }
 			}
 			list.add(istack);
 		}

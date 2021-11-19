@@ -741,22 +741,12 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		// 20% chance of a spider spawner!
 		if (rand.nextInt(5) == 0) {
-			EntityType<?> spiderName;
-			switch (rand.nextInt(4)) {
-				case 3:
-					spiderName = EntityType.CAVE_SPIDER;
-					break;
-				case 2:
-					spiderName = TFEntities.SWARM_SPIDER;
-					break;
-				case 1:
-					spiderName = TFEntities.HEDGE_SPIDER;
-					break;
-				case 0:
-				default:
-					spiderName = EntityType.SPIDER;
-					break;
-			}
+			EntityType<?> spiderName = switch (rand.nextInt(4)) {
+				case 3 -> EntityType.CAVE_SPIDER;
+				case 2 -> TFEntities.SWARM_SPIDER;
+				case 1 -> TFEntities.HEDGE_SPIDER;
+				default -> EntityType.SPIDER;
+			};
 
 			setSpawner(world, size / 2, bottom + 2, size / 2, sbb, spiderName);
 
@@ -1002,37 +992,26 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Gets the X coordinate of the ladder on the specified wall.
 	 */
 	protected int getLadderX(Rotation ladderDir) {
-		switch (ladderDir) {
-			case NONE:
-				return size - 2;
-			case CLOCKWISE_90:
-				return size / 2 + 1;
-			case CLOCKWISE_180:
-				return 1;
-			case COUNTERCLOCKWISE_90:
-				return size / 2 - 1;
-			default:
-				return size / 2;
-		}
+		return switch (ladderDir) {
+			case NONE -> size - 2;
+			case CLOCKWISE_90 -> size / 2 + 1;
+			case CLOCKWISE_180 -> 1;
+			case COUNTERCLOCKWISE_90 -> size / 2 - 1;
+			//default -> size / 2;
+		};
 	}
 
 	/**
 	 * Gets the Z coordinate of the ladder on the specified wall.
 	 */
 	protected int getLadderZ(Rotation ladderDir) {
-
-		switch (ladderDir) {
-			case NONE:
-				return size / 2 - 1;
-			case CLOCKWISE_90:
-				return size - 2;
-			case CLOCKWISE_180:
-				return size / 2 + 1;
-			case COUNTERCLOCKWISE_90:
-				return 1;
-			default:
-				return size / 2;
-		}
+		return switch (ladderDir) {
+			case NONE -> size / 2 - 1;
+			case CLOCKWISE_90 -> size - 2;
+			case CLOCKWISE_180 -> size / 2 + 1;
+			case COUNTERCLOCKWISE_90 -> 1;
+			//default -> size / 2;
+		};
 	}
 
 	/**
@@ -1090,48 +1069,26 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// decorate below the bottom floor, into the stairs
 			if (base > 8) {
 				switch (rand.nextInt(4)) {
-					case 0:
-						decorateChandelier(world, rand, base + 1, sbb);
-						break;
-					case 1:
-						decorateHangingChains(world, rand, base + 1, sbb);
-						break;
-					case 2:
-						decorateFloatingBooks(world, rand, base + 1, sbb);
-						break;
-					case 3:
-						decorateFloatingVines(world, rand, base + 1, sbb);
-						break;
+					case 0 -> decorateChandelier(world, rand, base + 1, sbb);
+					case 1 -> decorateHangingChains(world, rand, base + 1, sbb);
+					case 2 -> decorateFloatingBooks(world, rand, base + 1, sbb);
+					case 3 -> decorateFloatingVines(world, rand, base + 1, sbb);
 				}
 			}
 		} else {
 			// decorate the top normally
 			if (size > 5) {
 				switch (rand.nextInt(4)) {
-					case 0:
-						decorateChandelier(world, rand, height, sbb);
-						break;
-					case 1:
-						decorateHangingChains(world, rand, height, sbb);
-						break;
-					case 2:
-						decorateFloatingBooks(world, rand, height, sbb);
-						break;
-					case 3:
-						decorateFloatingVines(world, rand, height, sbb);
-						break;
+					case 0 -> decorateChandelier(world, rand, height, sbb);
+					case 1 -> decorateHangingChains(world, rand, height, sbb);
+					case 2 -> decorateFloatingBooks(world, rand, height, sbb);
+					case 3 -> decorateFloatingVines(world, rand, height, sbb);
 				}
 			} else if (size > 3) {
 				switch (rand.nextInt(3)) {
-					case 0:
-						decorateHangingChains(world, rand, height, sbb);
-						break;
-					case 1:
-						decorateFloatingBooks(world, rand, height, sbb);
-						break;
-					case 2:
-						decorateFloatingVines(world, rand, height, sbb);
-						break;
+					case 0 -> decorateHangingChains(world, rand, height, sbb);
+					case 1 -> decorateFloatingBooks(world, rand, height, sbb);
+					case 2 -> decorateFloatingVines(world, rand, height, sbb);
 				}
 			}
 		}
@@ -1223,34 +1180,16 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx, decoTop - y - 1, dz, sbb);
 		}
 		// make the "ball" at the end.
-		BlockState ballBlock;
-		switch (rand.nextInt(10)) {
-			case 0:
-				ballBlock = Blocks.IRON_BLOCK.defaultBlockState();
-				break;
-			case 1:
-				ballBlock = Blocks.BOOKSHELF.defaultBlockState();
-				break;
-			case 2:
-				ballBlock = Blocks.NETHERRACK.defaultBlockState();
-				break;
-			case 3:
-				ballBlock = Blocks.SOUL_SAND.defaultBlockState();
-				break;
-			case 4:
-				ballBlock = Blocks.GLASS.defaultBlockState();
-				break;
-			case 5:
-				ballBlock = Blocks.LAPIS_BLOCK.defaultBlockState();
-				break;
-			case 6:
-				ballBlock = Blocks.INFESTED_STONE_BRICKS.defaultBlockState();
-				break;
-			case 7:
-			default:
-				ballBlock = Blocks.GLOWSTONE.defaultBlockState();
-				break;
-		}
+		BlockState ballBlock = switch (rand.nextInt(10)) {
+			case 0 -> Blocks.IRON_BLOCK.defaultBlockState();
+			case 1 -> Blocks.BOOKSHELF.defaultBlockState();
+			case 2 -> Blocks.NETHERRACK.defaultBlockState();
+			case 3 -> Blocks.SOUL_SAND.defaultBlockState();
+			case 4 -> Blocks.GLASS.defaultBlockState();
+			case 5 -> Blocks.LAPIS_BLOCK.defaultBlockState();
+			case 6 -> Blocks.INFESTED_STONE_BRICKS.defaultBlockState();
+			default -> Blocks.GLOWSTONE.defaultBlockState();
+		};
 		placeBlock(world, ballBlock, dx, decoTop - length - 2, dz, sbb);
 	}
 
@@ -1489,20 +1428,12 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (size == 5) {
 			rise = 4;
 			// bleh, a switch.
-			switch (direction) {
-				case NONE:
-					base = 3;
-					break;
-				case CLOCKWISE_90:
-					base = 2;
-					break;
-				case CLOCKWISE_180:
-					base = 5;
-					break;
-				case COUNTERCLOCKWISE_90:
-					base = 4;
-					break;
-			}
+			base = switch (direction) {
+				case NONE -> 3;
+				case CLOCKWISE_90 -> 2;
+				case CLOCKWISE_180 -> 5;
+				case COUNTERCLOCKWISE_90 -> 4;
+			};
 		}
 
 		int flights = ((height - 6 - base) / rise) + 1;

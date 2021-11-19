@@ -68,13 +68,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile ironLadderRight = models().getExistingFile(prefix("block/iron_ladder_right"));
 		ModelFile ironLadderRightConnected = models().getExistingFile(prefix("block/iron_ladder_right_connection"));
 		for (Direction d : Direction.Plane.HORIZONTAL) {
-			int rotY;
-			switch (d) {
-			default: rotY = 0; break;
-			case EAST: rotY = 90; break;
-			case SOUTH: rotY = 180; break;
-			case WEST: rotY = 270; break;
-			}
+			int rotY = switch (d) {
+				default -> 0;
+				case EAST -> 90;
+				case SOUTH -> 180;
+				case WEST -> 270;
+			};
 
 			ironLadder.part().modelFile(ironLadderLeft).rotationY(rotY).addModel()
 							.condition(LadderBlock.FACING, d).condition(IronLadderBlock.LEFT, false).end();
@@ -408,34 +407,19 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile up = models().getExistingFile(prefix("block/naga_segment/up"));
 		ModelFile horizontal = models().getExistingFile(prefix("block/naga_segment/horizontal"));
 		ModelFile vertical = models().getExistingFile(prefix("block/naga_segment/vertical"));
-		getVariantBuilder(TFBlocks.NAGASTONE.get()).forAllStates(s -> {
-			switch (s.getValue(NagastoneBlock.VARIANT)) {
-			case NORTH_DOWN:
-				return ConfiguredModel.builder().modelFile(down).rotationY(270).build();
-			case SOUTH_DOWN:
-				return ConfiguredModel.builder().modelFile(down).rotationY(90).build();
-			case WEST_DOWN:
-				return ConfiguredModel.builder().modelFile(down).rotationY(180).build();
-			case EAST_DOWN:
-				return ConfiguredModel.builder().modelFile(down).build();
-			case NORTH_UP:
-				return ConfiguredModel.builder().modelFile(up).rotationY(270).build();
-			case SOUTH_UP:
-				return ConfiguredModel.builder().modelFile(up).rotationY(90).build();
-			case EAST_UP:
-				return ConfiguredModel.builder().modelFile(up).build();
-			case WEST_UP:
-				return ConfiguredModel.builder().modelFile(up).rotationY(180).build();
-			case AXIS_X:
-				return ConfiguredModel.builder().modelFile(horizontal).build();
-			case AXIS_Y:
-				return ConfiguredModel.builder().modelFile(vertical).build();
-			case AXIS_Z:
-				return ConfiguredModel.builder().modelFile(horizontal).rotationY(90).build();
-			default:
-			case SOLID:
-				return ConfiguredModel.builder().modelFile(solid).build();
-			}
+		getVariantBuilder(TFBlocks.NAGASTONE.get()).forAllStates(s -> switch (s.getValue(NagastoneBlock.VARIANT)) {
+			case NORTH_DOWN -> ConfiguredModel.builder().modelFile(down).rotationY(270).build();
+			case SOUTH_DOWN -> ConfiguredModel.builder().modelFile(down).rotationY(90).build();
+			case WEST_DOWN -> ConfiguredModel.builder().modelFile(down).rotationY(180).build();
+			case EAST_DOWN -> ConfiguredModel.builder().modelFile(down).build();
+			case NORTH_UP -> ConfiguredModel.builder().modelFile(up).rotationY(270).build();
+			case SOUTH_UP -> ConfiguredModel.builder().modelFile(up).rotationY(90).build();
+			case EAST_UP -> ConfiguredModel.builder().modelFile(up).build();
+			case WEST_UP -> ConfiguredModel.builder().modelFile(up).rotationY(180).build();
+			case AXIS_X -> ConfiguredModel.builder().modelFile(horizontal).build();
+			case AXIS_Y -> ConfiguredModel.builder().modelFile(vertical).build();
+			case AXIS_Z -> ConfiguredModel.builder().modelFile(horizontal).rotationY(90).build();
+			case SOLID -> ConfiguredModel.builder().modelFile(solid).build();
 		});
 
 		horizontalBlock(TFBlocks.NAGASTONE_HEAD.get(), models().getExistingFile(prefix("block/" + TFBlocks.NAGASTONE_HEAD.getId().getPath())));
@@ -971,32 +955,25 @@ public class BlockstateGenerator extends BlockStateProvider {
 			ModelFile model1 = state.getValue(ButtonBlock.POWERED) ? pressed1 : unpressed1;
 			ModelFile model2 = state.getValue(ButtonBlock.POWERED) ? pressed2 : unpressed2;
 			ModelFile model3 = state.getValue(ButtonBlock.POWERED) ? pressed3 : unpressed3;
-			int rotX = 0;
-			switch (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE)) {
-			case WALL:
-				rotX = 90;
-				break;
-			case FLOOR:
-				rotX = 0;
-				break;
-			case CEILING:
-				rotX = 180;
-				break;
-			}
+			int rotX = switch (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE)) {
+				case WALL -> 90;
+				case FLOOR -> 0;
+				case CEILING -> 180;
+			};
 			int rotY = 0;
 			if (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.CEILING)  {
 				switch (state.getValue(HorizontalDirectionalBlock.FACING)) {
-				case NORTH: rotY = 180; break;
-				case SOUTH: rotY = 0; break;
-				case WEST: rotY = 90; break;
-				case EAST: rotY = 270; break;
+					case NORTH -> rotY = 180;
+					case SOUTH -> rotY = 0;
+					case WEST -> rotY = 90;
+					case EAST -> rotY = 270;
 				}
 			} else {
 				switch (state.getValue(HorizontalDirectionalBlock.FACING)) {
-				case NORTH: rotY = 0; break;
-				case SOUTH: rotY = 180; break;
-				case WEST: rotY = 270; break;
-				case EAST: rotY = 90; break;
+					case NORTH -> rotY = 0;
+					case SOUTH -> rotY = 180;
+					case WEST -> rotY = 270;
+					case EAST -> rotY = 90;
 				}
 			}
 			boolean uvlock = state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.WALL;
@@ -1188,35 +1165,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 	private void slider() {
 		ModelFile slider = models().getExistingFile(TwilightForestMod.prefix("block/slider"));
 		ModelFile horizSlider = models().getExistingFile(TwilightForestMod.prefix("block/slider_horiz"));
-		getVariantBuilder(TFBlocks.SLIDER.get()).forAllStates(state -> {
-			switch (state.getValue(SliderBlock.AXIS)) {
-				case X:
-					switch(state.getValue(SliderBlock.DELAY)) {
-						case 0:
-						case 1:
-						case 2:
-						default:
-							return ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).rotationY(90).build();
-					}
-				case Y:
-				default:
-					switch(state.getValue(SliderBlock.DELAY)) {
-						case 0:
-						case 1:
-						case 2:
-						default:
-							return ConfiguredModel.builder().modelFile(slider).build();
-					}
-				case Z:
-					switch(state.getValue(SliderBlock.DELAY)) {
-						case 0:
-						case 1:
-						case 2:
-						default:
-							return ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).build();
-					}
-
-			}
+		getVariantBuilder(TFBlocks.SLIDER.get()).forAllStates(state -> switch (state.getValue(SliderBlock.AXIS)) {
+			case X -> ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).rotationY(90).build();
+			case Z -> ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).build();
+			default -> ConfiguredModel.builder().modelFile(slider).build();
 		});
 	}
 
@@ -1556,23 +1508,22 @@ public class BlockstateGenerator extends BlockStateProvider {
 			int rotY;
 			Map<HugeLilypadPiece, ModelFile> m;
 			switch (state.getValue(HugeLilyPadBlock.FACING)) {
-			default:
-			case NORTH:
-				rotY = 0;
-				m = north;
-				break;
-			case SOUTH:
-				rotY = 180;
-				m = south;
-				break;
-			case WEST:
-				rotY = 270;
-				m = west;
-				break;
-			case EAST:
-				rotY = 90;
-				m = east;
-				break;
+				case SOUTH -> {
+					rotY = 180;
+					m = south;
+				}
+				case WEST -> {
+					rotY = 270;
+					m = west;
+				}
+				case EAST -> {
+					rotY = 90;
+					m = east;
+				}
+				default -> {
+					rotY = 0;
+					m = north;
+				}
 			}
 
 			ModelFile model = m.get(state.getValue(HugeLilyPadBlock.PIECE));

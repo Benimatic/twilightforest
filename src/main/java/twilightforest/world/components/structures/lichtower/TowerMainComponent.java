@@ -120,24 +120,24 @@ public class TowerMainComponent extends TowerWingComponent {
 		int rz = 0;
 
 		switch (rotation) {
-			case NONE:
+			case NONE -> {
 				// for directions 0 or 2, the wall lies along the z axis
 				rx = size - 1;
 				rz = 6 + rand.nextInt(8);
-				break;
-			case CLOCKWISE_90:
+			}
+			case CLOCKWISE_90 -> {
 				// for directions 1 or 3, the wall lies along the x axis
 				rx = 1 + rand.nextInt(11);
 				rz = size - 1;
-				break;
-			case CLOCKWISE_180:
+			}
+			case CLOCKWISE_180 -> {
 				rx = 0;
 				rz = 1 + rand.nextInt(8);
-				break;
-			case COUNTERCLOCKWISE_90:
+			}
+			case COUNTERCLOCKWISE_90 -> {
 				rx = 3 + rand.nextInt(11);
 				rz = 0;
-				break;
+			}
 		}
 
 		return new int[]{rx, ry, rz};
@@ -255,19 +255,11 @@ public class TowerMainComponent extends TowerWingComponent {
 		placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), 9, floorLevel, 3, sbb);
 
 		// place spawner in the middle
-		EntityType<?> mobID = EntityType.SKELETON;
-		switch (rand.nextInt(4)) {
-			case 0:
-			case 1:
-				mobID = EntityType.SKELETON;
-				break;
-			case 2:
-				mobID = EntityType.ZOMBIE;
-				break;
-			case 3:
-				mobID = TFEntities.SWARM_SPIDER;
-				break;
-		}
+		EntityType<?> mobID = switch (rand.nextInt(4)) {
+			case 2 -> EntityType.ZOMBIE;
+			case 3 -> TFEntities.SWARM_SPIDER;
+			default -> EntityType.SKELETON;
+		};
 		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
 
 		// make a fence arch support for the spawner

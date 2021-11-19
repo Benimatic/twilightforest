@@ -58,18 +58,14 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		switch (state.getValue(WallPillarBlock.AXIS)) {
-            case X:
-                return state.getValue(PipeBlock.WEST) && state.getValue(PipeBlock.EAST) ? PILLAR_X :
-                        state.getValue(PipeBlock.WEST) ? NO_TOP_X : state.getValue(PipeBlock.EAST) ? NO_BOTTOM_X : FULL_X;
-            case Y:
-            default:
-                return state.getValue(PipeBlock.UP) && state.getValue(PipeBlock.DOWN) ? PILLAR_Y :
-                        state.getValue(PipeBlock.UP) ? NO_TOP_Y : state.getValue(PipeBlock.DOWN) ? NO_BOTTOM_Y : FULL_Y;
-            case Z:
-                return state.getValue(PipeBlock.NORTH) && state.getValue(PipeBlock.SOUTH) ? PILLAR_Z :
-                        state.getValue(PipeBlock.NORTH) ? NO_TOP_Z : state.getValue(PipeBlock.SOUTH) ? NO_BOTTOM_Z : FULL_Z;
-        }
+        return switch (state.getValue(WallPillarBlock.AXIS)) {
+            case X -> state.getValue(PipeBlock.WEST) && state.getValue(PipeBlock.EAST) ? PILLAR_X :
+                    state.getValue(PipeBlock.WEST) ? NO_TOP_X : state.getValue(PipeBlock.EAST) ? NO_BOTTOM_X : FULL_X;
+            case Z -> state.getValue(PipeBlock.NORTH) && state.getValue(PipeBlock.SOUTH) ? PILLAR_Z :
+                    state.getValue(PipeBlock.NORTH) ? NO_TOP_Z : state.getValue(PipeBlock.SOUTH) ? NO_BOTTOM_Z : FULL_Z;
+            default -> state.getValue(PipeBlock.UP) && state.getValue(PipeBlock.DOWN) ? PILLAR_Y :
+                    state.getValue(PipeBlock.UP) ? NO_TOP_Y : state.getValue(PipeBlock.DOWN) ? NO_BOTTOM_Y : FULL_Y;
+        };
     }
 
     @Override

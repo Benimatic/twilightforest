@@ -20,14 +20,10 @@ public class LegacyUrGhastRenderer extends CarminiteGhastRenderer<UrGhast, UrGha
 
 	@Override
 	public ResourceLocation getTextureLocation(UrGhast entity) {
-		switch (entity.isCharging() ? 2 : entity.getAttackStatus()) {
-			default:
-			case 0:
-				return textureLocClosed;
-			case 1:
-				return textureLocOpen;
-			case 2:
-				return textureLocAttack;
-		}
+		return switch (entity.isCharging() ? 2 : entity.getAttackStatus()) {
+			case 1 -> textureLocOpen;
+			case 2 -> textureLocAttack;
+			default -> textureLocClosed;
+		};
 	}
 }

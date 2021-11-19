@@ -78,17 +78,12 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 * used to project a possible new component Bounding Box - to check if it would cut anything already spawned
 	 */
 	public static BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, Direction facing) {
-		switch (facing) {
-			case WEST:
-				return new BoundingBox(x - zSize + 1 + zOff, y + yOff, z + xOff, x + zOff, y + ySize - 1 + yOff, z + xSize - 1 + xOff);
-			case NORTH:
-				return new BoundingBox(x - xSize + 1 - xOff, y + yOff, z - zSize + 1 + zOff, x - xOff, y + ySize - 1 + yOff, z + zOff);
-			case EAST:
-				return new BoundingBox(x + zOff, y + yOff, z - xSize + 1 - xOff, x + zSize - 1 + zOff, y + ySize - 1 + yOff, z - xOff);
-			case SOUTH:
-			default:
-				return new BoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
-		}
+		return switch (facing) {
+			case WEST -> new BoundingBox(x - zSize + 1 + zOff, y + yOff, z + xOff, x + zOff, y + ySize - 1 + yOff, z + xSize - 1 + xOff);
+			case NORTH -> new BoundingBox(x - xSize + 1 - xOff, y + yOff, z - zSize + 1 + zOff, x - xOff, y + ySize - 1 + yOff, z + zOff);
+			case EAST -> new BoundingBox(x + zOff, y + yOff, z - xSize + 1 - xOff, x + zSize - 1 + zOff, y + ySize - 1 + yOff, z - xOff);
+			default -> new BoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
+		};
 	}
 
 	@Override
@@ -165,24 +160,13 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		}
 
 		// find a new component
-		switch (random.nextInt(5)) {
-			case 0:
-			default:
-				attempted = new StrongholdUpperTIntersectionComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-				break;
-			case 1:
-				attempted = new StrongholdUpperLeftTurnComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-				break;
-			case 2:
-				attempted = new StrongholdUpperRightTurnComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-				break;
-			case 3:
-				attempted = new StrongholdUpperCorridorComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-				break;
-			case 4:
-				attempted = new StrongholdUpperAscenderComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-				break;
-		}
+		attempted = switch (random.nextInt(5)) {
+			case 1 -> new StrongholdUpperLeftTurnComponent(getFeatureType(), index, nFacing, nx, ny, nz);
+			case 2 -> new StrongholdUpperRightTurnComponent(getFeatureType(), index, nFacing, nx, ny, nz);
+			case 3 -> new StrongholdUpperCorridorComponent(getFeatureType(), index, nFacing, nx, ny, nz);
+			case 4 -> new StrongholdUpperAscenderComponent(getFeatureType(), index, nFacing, nx, ny, nz);
+			default -> new StrongholdUpperTIntersectionComponent(getFeatureType(), index, nFacing, nx, ny, nz);
+		};
 
 		// is it clear?
 		if (attempted != null && list.findCollisionPiece(attempted.getBoundingBox()) == null) {
@@ -218,15 +202,10 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	protected int getXSize() {
-		switch (this.getOrientation()) {
-			default:
-			case SOUTH:
-			case NORTH:
-				return this.boundingBox.getXSpan() - 1;
-			case WEST:
-			case EAST:
-				return this.boundingBox.getZSpan() - 1;
-		}
+		return switch (this.getOrientation()) {
+			case WEST, EAST -> this.boundingBox.getZSpan() - 1;
+			default -> this.boundingBox.getXSpan() - 1;
+		};
 	}
 
 	/**
@@ -393,18 +372,10 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 */
 	public void addDoorwayTo(int dx, int dy, int dz, Rotation facing) {
 		switch (facing) {
-			case NONE:
-				addDoor(dx, dy, dz - 1);
-				break;
-			case CLOCKWISE_90:
-				addDoor(dx + 1, dy, dz);
-				break;
-			case CLOCKWISE_180:
-				addDoor(dx, dy, dz + 1);
-				break;
-			case COUNTERCLOCKWISE_90:
-				addDoor(dx - 1, dy, dz);
-				break;
+			case NONE -> addDoor(dx, dy, dz - 1);
+			case CLOCKWISE_90 -> addDoor(dx + 1, dy, dz);
+			case CLOCKWISE_180 -> addDoor(dx, dy, dz + 1);
+			case COUNTERCLOCKWISE_90 -> addDoor(dx - 1, dy, dz);
 		}
 	}
 
@@ -433,18 +404,13 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	protected int getRelativeX(int x, int z) {
 		//this.getXWithOffset(x, z);
 
-		switch (getOrientation()) {
-			case SOUTH:
-				return x - boundingBox.minX();
-			case NORTH:
-				return boundingBox.maxX() - x;
-			case WEST:
-				return z - boundingBox.minZ();
-			case EAST:
-				return boundingBox.maxZ() - z;
-			default:
-				return x;
-		}
+		return switch (getOrientation()) {
+			case SOUTH -> x - boundingBox.minX();
+			case NORTH -> boundingBox.maxX() - x;
+			case WEST -> z - boundingBox.minZ();
+			case EAST -> boundingBox.maxZ() - z;
+			default -> x;
+		};
 	}
 
 	protected int getRelativeY(int y) {
@@ -452,18 +418,13 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	protected int getRelativeZ(int x, int z) {
-		switch (getOrientation()) {
-			case SOUTH:
-				return z - boundingBox.minZ();
-			case NORTH:
-				return boundingBox.maxZ() - z;
-			case WEST:
-				return boundingBox.maxX() - x;
-			case EAST:
-				return x - boundingBox.minX();
-			default:
-				return z;
-		}
+		return switch (getOrientation()) {
+			case SOUTH -> z - boundingBox.minZ();
+			case NORTH -> boundingBox.maxZ() - z;
+			case WEST -> boundingBox.maxX() - x;
+			case EAST -> x - boundingBox.minX();
+			default -> z;
+		};
 	}
 
 	/**

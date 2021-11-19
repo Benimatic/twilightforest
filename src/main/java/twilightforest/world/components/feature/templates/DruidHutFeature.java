@@ -87,32 +87,18 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
             world.removeBlock(blockPos, false);
             BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.defaultBlockState() : Blocks.CHEST.defaultBlockState();
 
-            switch (s.substring(5, 6)) {
-                case "L":
-                    chest = chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
-                    break;
-                case "R":
-                    chest = chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
-                    break;
-                default:
-                    chest = chest.setValue(ChestBlock.TYPE, ChestType.SINGLE);
-                    break;
-            }
+            chest = switch (s.substring(5, 6)) {
+                case "L" -> chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
+                case "R" -> chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
+                default -> chest.setValue(ChestBlock.TYPE, ChestType.SINGLE);
+            };
 
-            switch (s.substring(4, 5)) {
-                case "W":
-                    chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
-                    break;
-                case "E":
-                    chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
-                    break;
-                case "S":
-                    chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
-                    break;
-                default:
-                    chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
-                    break;
-            }
+            chest = switch (s.substring(4, 5)) {
+                case "W" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+                case "E" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+                case "S" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+                default -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+            };
 
             TFTreasure.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
         }

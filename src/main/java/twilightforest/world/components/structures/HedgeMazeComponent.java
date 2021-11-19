@@ -176,19 +176,11 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		EntityType<?> mobID;
-
-		switch (rand.nextInt(3)) {
-			case 1:
-				mobID = TFEntities.SWARM_SPIDER;
-				break;
-			case 2:
-				mobID = TFEntities.HOSTILE_WOLF;
-				break;
-			case 0:
-			default:
-				mobID = TFEntities.HEDGE_SPIDER;
-		}
+		EntityType<?> mobID = switch (rand.nextInt(3)) {
+			case 1 -> TFEntities.SWARM_SPIDER;
+			case 2 -> TFEntities.HOSTILE_WOLF;
+			default -> TFEntities.HEDGE_SPIDER;
+		};
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);
 	}

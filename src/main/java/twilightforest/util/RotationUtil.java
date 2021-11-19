@@ -21,109 +21,59 @@ public final class RotationUtil {
 	}
 
 	public static Rotation subtract(Rotation original, Rotation rotation) {
-		switch (rotation) {
-			case CLOCKWISE_180:
-
-				switch (original) {
-					case NONE:
-						return Rotation.CLOCKWISE_180;
-					case CLOCKWISE_90:
-						return Rotation.COUNTERCLOCKWISE_90;
-					case CLOCKWISE_180:
-						return Rotation.NONE;
-					case COUNTERCLOCKWISE_90:
-						return Rotation.CLOCKWISE_90;
-					default:
-						return original;
-				}
-
-			case COUNTERCLOCKWISE_90:
-
-				switch (original) {
-					case NONE:
-						return Rotation.CLOCKWISE_90;
-					case CLOCKWISE_90:
-						return Rotation.CLOCKWISE_180;
-					case CLOCKWISE_180:
-						return Rotation.COUNTERCLOCKWISE_90;
-					case COUNTERCLOCKWISE_90:
-						return Rotation.NONE;
-					default:
-						return original;
-				}
-
-			case CLOCKWISE_90:
-
-				switch (original) {
-					case NONE:
-						return Rotation.COUNTERCLOCKWISE_90;
-					case CLOCKWISE_90:
-						return Rotation.NONE;
-					case CLOCKWISE_180:
-						return Rotation.CLOCKWISE_90;
-					case COUNTERCLOCKWISE_90:
-						return Rotation.CLOCKWISE_180;
-					default:
-						return original;
-				}
-
-			default:
-				return original;
-		}
+		return switch (rotation) {
+			case CLOCKWISE_180 -> switch (original) {
+				case NONE -> Rotation.CLOCKWISE_180;
+				case CLOCKWISE_90 -> Rotation.COUNTERCLOCKWISE_90;
+				case CLOCKWISE_180 -> Rotation.NONE;
+				case COUNTERCLOCKWISE_90 -> Rotation.CLOCKWISE_90;
+				//default -> original;
+			};
+			case COUNTERCLOCKWISE_90 -> switch (original) {
+				case NONE -> Rotation.CLOCKWISE_90;
+				case CLOCKWISE_90 -> Rotation.CLOCKWISE_180;
+				case CLOCKWISE_180 -> Rotation.COUNTERCLOCKWISE_90;
+				case COUNTERCLOCKWISE_90 -> Rotation.NONE;
+				//default -> original;
+			};
+			case CLOCKWISE_90 -> switch (original) {
+				case NONE -> Rotation.COUNTERCLOCKWISE_90;
+				case CLOCKWISE_90 -> Rotation.NONE;
+				case CLOCKWISE_180 -> Rotation.CLOCKWISE_90;
+				case COUNTERCLOCKWISE_90 -> Rotation.CLOCKWISE_180;
+				//default -> original;
+			};
+			default -> original;
+		};
 	}
 
 	public static Rotation getRelativeRotation(Direction original, Direction destination) {
-		switch (original) {
-			case NORTH:
-			default:
-				switch (destination) {
-					case NORTH:
-					default:
-						return Rotation.NONE;
-					case SOUTH:
-						return Rotation.CLOCKWISE_180;
-					case EAST:
-						return Rotation.CLOCKWISE_90;
-					case WEST:
-						return Rotation.COUNTERCLOCKWISE_90;
-				}
-			case SOUTH:
-				switch (destination) {
-					case SOUTH:
-					default:
-						return Rotation.NONE;
-					case NORTH:
-						return Rotation.CLOCKWISE_180;
-					case WEST:
-						return Rotation.CLOCKWISE_90;
-					case EAST:
-						return Rotation.COUNTERCLOCKWISE_90;
-				}
-			case EAST:
-				switch (destination) {
-					case EAST:
-					default:
-						return Rotation.NONE;
-					case WEST:
-						return Rotation.CLOCKWISE_180;
-					case SOUTH:
-						return Rotation.CLOCKWISE_90;
-					case NORTH:
-						return Rotation.COUNTERCLOCKWISE_90;
-				}
-			case WEST:
-				switch (destination) {
-					case WEST:
-					default:
-						return Rotation.NONE;
-					case EAST:
-						return Rotation.CLOCKWISE_180;
-					case NORTH:
-						return Rotation.CLOCKWISE_90;
-					case SOUTH:
-						return Rotation.COUNTERCLOCKWISE_90;
-				}
-		}
+		return switch (original) {
+			case SOUTH -> switch (destination) {
+				case NORTH -> Rotation.CLOCKWISE_180;
+				case WEST -> Rotation.CLOCKWISE_90;
+				case EAST -> Rotation.COUNTERCLOCKWISE_90;
+				default -> Rotation.NONE;
+			};
+			case EAST -> switch (destination) {
+				case WEST -> Rotation.CLOCKWISE_180;
+				case SOUTH -> Rotation.CLOCKWISE_90;
+				case NORTH -> Rotation.COUNTERCLOCKWISE_90;
+				default -> Rotation.NONE;
+			};
+			case WEST -> switch (destination) {
+				case EAST -> Rotation.CLOCKWISE_180;
+				case NORTH -> Rotation.CLOCKWISE_90;
+				case SOUTH -> Rotation.COUNTERCLOCKWISE_90;
+				default -> Rotation.NONE;
+			};
+			default -> switch (destination) {
+				case SOUTH -> Rotation.CLOCKWISE_180;
+				case EAST -> Rotation.CLOCKWISE_90;
+				case WEST -> Rotation.COUNTERCLOCKWISE_90;
+				default -> Rotation.NONE;
+			};
+		};
 	}
 
 	public static Direction getRandomFacing(Random random) {

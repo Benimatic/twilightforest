@@ -59,19 +59,11 @@ public class MosquitoSwarm extends Monster {
 	public boolean doHurtTarget(Entity entity) {
 		if (super.doHurtTarget(entity)) {
 			if (entity instanceof LivingEntity) {
-				int duration;
-				switch (level.getDifficulty()) {
-					case EASY:
-						duration = 7;
-						break;
-					default:
-					case NORMAL:
-						duration = 15;
-						break;
-					case HARD:
-						duration = 30;
-						break;
-				}
+				int duration = switch (level.getDifficulty()) {
+					case EASY -> 7;
+					case HARD -> 30;
+					default -> 15;
+				};
 
 				((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.HUNGER, duration * 20, 0));
 			}

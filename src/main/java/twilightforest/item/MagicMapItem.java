@@ -227,19 +227,12 @@ public class MagicMapItem extends MapItem {
 	}
 
 	public static int getMapColor(MapColorBrightness mcb) {
-		int i = 220;
-
-		switch (mcb.color.id) {
-			case 3:
-				i = 135;
-				break;
-			case 2:
-				i = 255;
-				break;
-			case 0:
-				i = 180;
-				break;
-		}
+		int i = switch (mcb.color.id) {
+			case 3 -> 135;
+			case 2 -> 255;
+			case 0 -> 180;
+			default -> 220;
+		};
 
 		int j = (mcb.color.col >> 16 & 255) * i / 255;
 		int k = (mcb.color.col >> 8 & 255) * i / 255;

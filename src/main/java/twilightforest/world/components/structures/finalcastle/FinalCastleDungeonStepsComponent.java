@@ -52,18 +52,10 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 		int sz = 17;
 
 		switch (rotation) {
-			case NONE:
-				sz -= 5;
-				break;
-			case CLOCKWISE_90:
-				sx -= 5;
-				break;
-			case CLOCKWISE_180:
-				sz += 5;
-				break;
-			case COUNTERCLOCKWISE_90:
-				sx += 6;
-				break;
+			case NONE -> sz -= 5;
+			case CLOCKWISE_90 -> sx -= 5;
+			case CLOCKWISE_180 -> sz += 5;
+			case COUNTERCLOCKWISE_90 -> sx += 6;
 		}
 
 		// find center of landing

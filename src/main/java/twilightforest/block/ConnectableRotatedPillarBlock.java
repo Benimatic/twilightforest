@@ -102,36 +102,34 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
     }
 
 	@Override
+	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		switch (state.getValue(AXIS)) {
-			case X:
-				return box(
-						0d,
-						state.getValue(NORTH) ?  0d : this.boundingBoxWidthLower,
-						state.getValue(WEST ) ?  0d : this.boundingBoxWidthLower,
-						16d,
-						state.getValue(SOUTH) ? 16d : this.boundingBoxWidthUpper,
-						state.getValue(EAST ) ? 16d : this.boundingBoxWidthUpper
-				);
-			case Z:
-				return box(
-						state.getValue(EAST ) ?  0d : this.boundingBoxWidthLower,
-						state.getValue(SOUTH) ?  0d : this.boundingBoxWidthLower,
-						0d,
-						state.getValue(WEST ) ? 16d : this.boundingBoxWidthUpper,
-						state.getValue(NORTH) ? 16d : this.boundingBoxWidthUpper,
-						16d
-				);
-			default:
-				return box(
-						state.getValue(WEST)  ?  0d : this.boundingBoxWidthLower,
-						0d,
-						state.getValue(NORTH) ?  0d : this.boundingBoxWidthLower,
-						state.getValue(EAST)  ? 16d : this.boundingBoxWidthUpper,
-						16d,
-						state.getValue(SOUTH) ? 16d : this.boundingBoxWidthUpper
-				);
-		}
+		return switch (state.getValue(AXIS)) {
+			case X -> box(
+					0d,
+					state.getValue(NORTH) ? 0d : this.boundingBoxWidthLower,
+					state.getValue(WEST) ? 0d : this.boundingBoxWidthLower,
+					16d,
+					state.getValue(SOUTH) ? 16d : this.boundingBoxWidthUpper,
+					state.getValue(EAST) ? 16d : this.boundingBoxWidthUpper
+			);
+			case Z -> box(
+					state.getValue(EAST) ? 0d : this.boundingBoxWidthLower,
+					state.getValue(SOUTH) ? 0d : this.boundingBoxWidthLower,
+					0d,
+					state.getValue(WEST) ? 16d : this.boundingBoxWidthUpper,
+					state.getValue(NORTH) ? 16d : this.boundingBoxWidthUpper,
+					16d
+			);
+			default -> box(
+					state.getValue(WEST) ? 0d : this.boundingBoxWidthLower,
+					0d,
+					state.getValue(NORTH) ? 0d : this.boundingBoxWidthLower,
+					state.getValue(EAST) ? 16d : this.boundingBoxWidthUpper,
+					16d,
+					state.getValue(SOUTH) ? 16d : this.boundingBoxWidthUpper
+			);
+		};
 	}
 
     protected AABB makeQuickAABB(double x1, double y1, double z1, double x2, double y2, double z2) {

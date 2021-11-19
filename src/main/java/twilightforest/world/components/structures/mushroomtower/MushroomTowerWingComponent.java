@@ -167,18 +167,13 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 					TowerWingComponent otherWing = (TowerWingComponent) obj;
 
 					if (wingSize == otherWing.size && otherWing.getBoundingBox().intersects(x - 3, z - 3, x + 3, z + 3)) {
-						switch (direction) {
-							case SOUTH:
-								return new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().minZ()};
-							case WEST:
-								return new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().minZ()};
-							case NORTH:
-								return new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().maxZ()};
-							case EAST:
-								return new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().maxZ()};
-							default:
-								return new int[]{x, y, z};
-						}
+						return switch (direction) {
+							case SOUTH -> new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().minZ()};
+							case WEST -> new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().minZ()};
+							case NORTH -> new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().maxZ()};
+							case EAST -> new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().maxZ()};
+							default -> new int[]{x, y, z};
+						};
 					}
 				}
 			}

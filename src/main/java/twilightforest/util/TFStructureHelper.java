@@ -39,17 +39,12 @@ public class TFStructureHelper {
     }
 
     public static BlockState randomSapling(int i) {
-        switch (i) {
-			case 0:
-			default:
-				return Blocks.OAK_SAPLING.defaultBlockState();
-			case 1:
-				return Blocks.SPRUCE_SAPLING.defaultBlockState();
-			case 2:
-				return Blocks.BIRCH_SAPLING.defaultBlockState();
-			case 3:
-				return Blocks.JUNGLE_SAPLING.defaultBlockState();
-        }
+		return switch (i) {
+			case 1 -> Blocks.SPRUCE_SAPLING.defaultBlockState();
+			case 2 -> Blocks.BIRCH_SAPLING.defaultBlockState();
+			case 3 -> Blocks.JUNGLE_SAPLING.defaultBlockState();
+			default -> Blocks.OAK_SAPLING.defaultBlockState();
+		};
     }
 
     public static BlockState randomMushroom(int i) {

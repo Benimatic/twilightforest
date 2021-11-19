@@ -76,12 +76,10 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 				color = displayCompound.getInt("color" + string);
 		}
 
-		switch (type) {
-			case 0:
-				return 0xFFFFFF;
-			default:
-				return color;
+		if (type == 0) {
+			return 0xFFFFFF;
 		}
+		return color;
 	}
 
 	public void removeColor(ItemStack stack, int type) {

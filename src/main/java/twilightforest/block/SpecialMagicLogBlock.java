@@ -71,20 +71,16 @@ public class SpecialMagicLogBlock extends RotatedPillarBlock {
 		if (world.isClientSide || !state.getValue(ACTIVE)) return;
 
 		switch (this.magicWoodVariant) {
-			case TIME:
+			case TIME -> {
 				world.playSound(null, pos, TFSounds.TIME_CORE, SoundSource.BLOCKS, 0.1F, 0.5F);
 				doTreeOfTimeEffect(world, pos, rand);
-				break;
-			case TRANS:
+			}
+			case TRANS -> {
 				world.playSound(null, pos, TFSounds.TRANSFORMATION_CORE, SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2F);
 				doTreeOfTransformationEffect(world, pos, rand);
-				break;
-			case MINE:
-				doMinersTreeEffect(world, pos, rand);
-				break;
-			case SORT:
-				doSortingTreeEffect(world, pos, rand);
-				break;
+			}
+			case MINE -> doMinersTreeEffect(world, pos, rand);
+			case SORT -> doSortingTreeEffect(world, pos, rand);
 		}
 
 		world.getBlockTicks().scheduleTick(pos, this, this.tickRate());

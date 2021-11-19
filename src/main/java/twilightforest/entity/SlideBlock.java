@@ -63,20 +63,14 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 	private void determineMoveDirection() {
 		BlockPos pos = new BlockPos(this.blockPosition());
 
-		Direction[] toCheck;
-
-		switch (myState.getValue(RotatedPillarBlock.AXIS)) {
-			case X: // horizontal blocks will go up or down if there is a block on one side and air on the other
-				toCheck = new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};
-				break;
-			case Z: // horizontal blocks will go up or down if there is a block on one side and air on the other
-				toCheck = new Direction[]{Direction.DOWN, Direction.UP, Direction.WEST, Direction.EAST};
-				break;
-			default:
-			case Y: // vertical blocks priority is -x, +x, -z, +z
-				toCheck = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH};
-				break;
-		}
+		Direction[] toCheck = switch (myState.getValue(RotatedPillarBlock.AXIS)) {
+			case X -> // horizontal blocks will go up or down if there is a block on one side and air on the other
+					new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};
+			case Z -> // horizontal blocks will go up or down if there is a block on one side and air on the other
+					new Direction[]{Direction.DOWN, Direction.UP, Direction.WEST, Direction.EAST};
+			case Y -> // vertical blocks priority is -x, +x, -z, +z
+					new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH};
+		};
 
 		for (Direction e : toCheck) {
 			if (level.isEmptyBlock(pos.relative(e)) && !level.isEmptyBlock(pos.relative(e.getOpposite()))) {

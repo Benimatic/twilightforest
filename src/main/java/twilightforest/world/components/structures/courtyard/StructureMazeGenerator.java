@@ -567,40 +567,24 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
     }
 
     private static String getStringFromFacings(int directions) {
-        switch (directions & 0b1111) {
-            case 0b0010:
-                return " ╷ ";
-            case 0b0001:
-                return " ╶─";
-            case 0b1000:
-                return " ╵ ";
-            case 0b0100:
-                return "─╴ ";
-            case 0b1001:
-                return " └─";
-            case 0b1100:
-                return "─┘ ";
-            case 0b0110:
-                return "─┐ ";
-            case 0b0011:
-                return " ┌─";
-            case 0b1101:
-                return "─┴─";
-            case 0b1110:
-                return "─┤ ";
-            case 0b0111:
-                return "─┬─";
-            case 0b1011:
-                return " ├─";
-            case 0b1010:
-                return " │ ";
-            case 0b0101:
-                return "───";
-            case 0b1111:
-                return "─┼─";
-            default:
-                return " • ";
-        }
+        return switch (directions & 0b1111) {
+            case 0b0010 -> " ╷ ";
+            case 0b0001 -> " ╶─";
+            case 0b1000 -> " ╵ ";
+            case 0b0100 -> "─╴ ";
+            case 0b1001 -> " └─";
+            case 0b1100 -> "─┘ ";
+            case 0b0110 -> "─┐ ";
+            case 0b0011 -> " ┌─";
+            case 0b1101 -> "─┴─";
+            case 0b1110 -> "─┤ ";
+            case 0b0111 -> "─┬─";
+            case 0b1011 -> " ├─";
+            case 0b1010 -> " │ ";
+            case 0b0101 -> "───";
+            case 0b1111 -> "─┼─";
+            default -> " • ";
+        };
     }
 
     protected enum WallFacing {

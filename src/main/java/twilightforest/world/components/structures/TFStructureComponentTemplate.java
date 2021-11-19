@@ -100,26 +100,16 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
         this.boundingBox = new BoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 
         switch (rotation) {
-            case NONE:
-            default:
-                break;
-            case CLOCKWISE_90:
-                this.boundingBox.move(-size.getX(), 0, 0);
-                break;
-            case COUNTERCLOCKWISE_90:
-                this.boundingBox.move(0, 0, -size.getZ());
-                break;
-            case CLOCKWISE_180:
-                this.boundingBox.move(-size.getX(), 0, -size.getZ());
+            case CLOCKWISE_90 -> this.boundingBox.move(-size.getX(), 0, 0);
+            case COUNTERCLOCKWISE_90 -> this.boundingBox.move(0, 0, -size.getZ());
+            case CLOCKWISE_180 -> this.boundingBox.move(-size.getX(), 0, -size.getZ());
+            default -> {
+            }
         }
 
         switch (mirror) {
-            case NONE:
-            default:
-                break;
-            case FRONT_BACK:
+            case FRONT_BACK -> {
                 BlockPos blockpos2 = BlockPos.ZERO;
-
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
                     if (rotation == Rotation.CLOCKWISE_180) {
                         blockpos2 = blockpos2.relative(Direction.EAST, size.getX());
@@ -129,12 +119,10 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
                 } else {
                     blockpos2 = blockpos2.relative(rotation.rotate(Direction.WEST), size.getZ());
                 }
-
                 this.boundingBox.move(blockpos2.getX(), 0, blockpos2.getZ());
-                break;
-            case LEFT_RIGHT:
+            }
+            case LEFT_RIGHT -> {
                 BlockPos blockpos1 = BlockPos.ZERO;
-
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
                     if (rotation == Rotation.CLOCKWISE_180) {
                         blockpos1 = blockpos1.relative(Direction.SOUTH, size.getZ());
@@ -144,8 +132,9 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
                 } else {
                     blockpos1 = blockpos1.relative(rotation.rotate(Direction.NORTH), size.getX());
                 }
-
                 this.boundingBox.move(blockpos1.getX(), 0, blockpos1.getZ());
+            }
+            default -> { }
         }
 
         this.boundingBox.move(pos.getX(), pos.getY(), pos.getZ());

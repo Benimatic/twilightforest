@@ -40,41 +40,24 @@ public class Bighorn extends Sheep {
 		if (this.isSheared()) {
 			return this.getType().getDefaultLootTable();
 		} else {
-			switch(this.getColor()) {
-				case WHITE:
-				default:
-					return TFTreasure.BIGHORN_SHEEP_WHITE;
-				case ORANGE:
-					return TFTreasure.BIGHORN_SHEEP_ORANGE;
-				case MAGENTA:
-					return TFTreasure.BIGHORN_SHEEP_MAGENTA;
-				case LIGHT_BLUE:
-					return TFTreasure.BIGHORN_SHEEP_LIGHT_BLUE;
-				case YELLOW:
-					return TFTreasure.BIGHORN_SHEEP_YELLOW;
-				case LIME:
-					return TFTreasure.BIGHORN_SHEEP_LIME;
-				case PINK:
-					return TFTreasure.BIGHORN_SHEEP_PINK;
-				case GRAY:
-					return TFTreasure.BIGHORN_SHEEP_GRAY;
-				case LIGHT_GRAY:
-					return TFTreasure.BIGHORN_SHEEP_LIGHT_GRAY;
-				case CYAN:
-					return TFTreasure.BIGHORN_SHEEP_CYAN;
-				case PURPLE:
-					return TFTreasure.BIGHORN_SHEEP_PURPLE;
-				case BLUE:
-					return TFTreasure.BIGHORN_SHEEP_BLUE;
-				case BROWN:
-					return TFTreasure.BIGHORN_SHEEP_BROWN;
-				case GREEN:
-					return TFTreasure.BIGHORN_SHEEP_GREEN;
-				case RED:
-					return TFTreasure.BIGHORN_SHEEP_RED;
-				case BLACK:
-					return TFTreasure.BIGHORN_SHEEP_BLACK;
-			}
+			return switch (this.getColor()) {
+				case ORANGE -> TFTreasure.BIGHORN_SHEEP_ORANGE;
+				case MAGENTA -> TFTreasure.BIGHORN_SHEEP_MAGENTA;
+				case LIGHT_BLUE -> TFTreasure.BIGHORN_SHEEP_LIGHT_BLUE;
+				case YELLOW -> TFTreasure.BIGHORN_SHEEP_YELLOW;
+				case LIME -> TFTreasure.BIGHORN_SHEEP_LIME;
+				case PINK -> TFTreasure.BIGHORN_SHEEP_PINK;
+				case GRAY -> TFTreasure.BIGHORN_SHEEP_GRAY;
+				case LIGHT_GRAY -> TFTreasure.BIGHORN_SHEEP_LIGHT_GRAY;
+				case CYAN -> TFTreasure.BIGHORN_SHEEP_CYAN;
+				case PURPLE -> TFTreasure.BIGHORN_SHEEP_PURPLE;
+				case BLUE -> TFTreasure.BIGHORN_SHEEP_BLUE;
+				case BROWN -> TFTreasure.BIGHORN_SHEEP_BROWN;
+				case GREEN -> TFTreasure.BIGHORN_SHEEP_GREEN;
+				case RED -> TFTreasure.BIGHORN_SHEEP_RED;
+				case BLACK -> TFTreasure.BIGHORN_SHEEP_BLACK;
+				default -> TFTreasure.BIGHORN_SHEEP_WHITE;
+			};
 		}
 	}
 

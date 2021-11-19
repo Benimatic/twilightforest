@@ -461,20 +461,11 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		int dz = getWorldZ(x, z);
 
 		switch (direction) {
-			case SOUTH:
-				dx += howFar;
-				break;
-			case WEST:
-				dz += howFar;
-				break;
-			case NORTH:
-				dx -= howFar;
-				break;
-			case EAST:
-				dz -= howFar;
-				break;
-			default:
-				break;
+			case SOUTH -> dx += howFar;
+			case WEST -> dz += howFar;
+			case NORTH -> dx -= howFar;
+			case EAST -> dz -= howFar;
+			default -> { }
 		}
 
 		// ugh?

@@ -39,28 +39,11 @@ public class TrophyBlock extends AbstractTrophyBlock {
 		if (((AbstractTrophyBlock) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
 			return GHAST_SHAPE;
 		} else if (((AbstractTrophyBlock) state.getBlock()).getVariant() == BossVariant.ALPHA_YETI) {
-			switch (state.getValue(ROTATION)) {
-				case 0:
-				case 1:
-				case 7:
-				case 8:
-				case 9:
-				case 15:
-				default:
-					return YETI_X_SHAPE;
-				case 3:
-				case 4:
-				case 5:
-				case 11:
-				case 12:
-				case 13:
-					return YETI_Z_SHAPE;
-				case 2:
-				case 6:
-				case 10:
-				case 14:
-					return YETI_CORNER_SHAPE;
-			}
+			return switch (state.getValue(ROTATION)) {
+				case 3, 4, 5, 11, 12, 13 -> YETI_Z_SHAPE;
+				case 2, 6, 10, 14 -> YETI_CORNER_SHAPE;
+				default -> YETI_X_SHAPE;
+			};
 		}
 		return SHAPE;
 	}

@@ -384,16 +384,9 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		if (isTop) {
 			// there are a limited amount that can go at the top
 			switch (decoRNG.nextInt(3)) {
-				default:
-				case 0:
-					decorateAquarium(world, sbb, rotation, y);
-					break;
-				case 1:
-					decorateBotanical(world, generator, decoRNG, sbb, rotation, y);
-					break;
-				case 2:
-					decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
-					break;
+				case 1 -> decorateBotanical(world, generator, decoRNG, sbb, rotation, y);
+				case 2 -> decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
+				default -> decorateAquarium(world, sbb, rotation, y);
 			}
 		} else if (isBottom) {
 			// similarly some don't work on the bottom
@@ -519,7 +512,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 		// set some areas out of bounds and make the maze depending on where we start
 		switch (rotation) {
-			case NONE:
+			case NONE -> {
 				for (int x = 1; x < 6; x++) {
 					for (int z = 1; z < 6; z++) {
 						maze.putRaw(x, z, TFMaze.ROOM);
@@ -534,8 +527,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				maze.putRaw(7, 1, TFMaze.ROOM);
 				maze.putRaw(8, 1, TFMaze.DOOR);
 				maze.generateRecursiveBacktracker(0, 5);
-				break;
-			case CLOCKWISE_90:
+			}
+			case CLOCKWISE_90 -> {
 				for (int x = 7; x < 12; x++) {
 					for (int z = 1; z < 6; z++) {
 						maze.putRaw(x, z, TFMaze.ROOM);
@@ -550,8 +543,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				maze.putRaw(11, 7, TFMaze.ROOM);
 				maze.putRaw(11, 8, TFMaze.DOOR);
 				maze.generateRecursiveBacktracker(0, 0);
-				break;
-			case CLOCKWISE_180:
+			}
+			case CLOCKWISE_180 -> {
 				for (int x = 7; x < 12; x++) {
 					for (int z = 7; z < 12; z++) {
 						maze.putRaw(x, z, TFMaze.ROOM);
@@ -566,8 +559,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				maze.putRaw(5, 11, TFMaze.ROOM);
 				maze.putRaw(4, 11, TFMaze.DOOR);
 				maze.generateRecursiveBacktracker(5, 0);
-				break;
-			case COUNTERCLOCKWISE_90:
+			}
+			case COUNTERCLOCKWISE_90 -> {
 				for (int x = 1; x < 6; x++) {
 					for (int z = 7; z < 12; z++) {
 						maze.putRaw(x, z, TFMaze.ROOM);
@@ -582,7 +575,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				maze.putRaw(1, 5, TFMaze.ROOM);
 				maze.putRaw(1, 4, TFMaze.DOOR);
 				maze.generateRecursiveBacktracker(5, 5);
-				break;
+			}
 		}
 
 		// copy the maze to us!
@@ -632,26 +625,26 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		int z = mz * 3 + 1;
 
 		switch (facing) {
-			case 0:
+			case 0 -> {
 				placeBlock(world, deco.accentState, x, y + 1, z + 1, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
 				this.setDoubleLootChest(world, x, y + 2, z + 1, x + 1, y + 2, z + 1, Direction.SOUTH, TFTreasure.DARKTOWER_CACHE, sbb, false);
-				break;
-			case 1:
+			}
+			case 1 -> {
 				placeBlock(world, deco.accentState, x, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x, y + 1, z + 1, sbb);
 				this.setDoubleLootChest(world, x, y + 2, z, x, y + 2, z + 1, Direction.WEST, TFTreasure.DARKTOWER_CACHE, sbb, false);
-				break;
-			case 2:
+			}
+			case 2 -> {
 				placeBlock(world, deco.accentState, x, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z, sbb);
 				this.setDoubleLootChest(world, x + 1, y + 2, z, x, y + 2, z, Direction.NORTH, TFTreasure.DARKTOWER_CACHE, sbb, false);
-				break;
-			case 3:
+			}
+			case 3 -> {
 				placeBlock(world, deco.accentState, x + 1, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
 				this.setDoubleLootChest(world, x + 1, y + 2, z + 1, x + 1, y + 2, z, Direction.EAST, TFTreasure.DARKTOWER_CACHE, sbb, false);
-				break;
+			}
 		}
 	}
 
@@ -1090,29 +1083,20 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		int dy = getWorldY(y + 1);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		if (sbb.isInside(new BlockPos(dx, dy, dz))) {
-			ConfiguredFeature<?,?> treeGen;
+			ConfiguredFeature<?,?> treeGen = switch (treeNum) {
+				case 1 ->
+						// jungle tree
+						Features.JUNGLE_TREE; //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
+				case 2 ->
+						// birch
+						Features.BIRCH;
+				case 3 -> ConfiguredFeatures.TWILIGHT_OAK_BASE;
+				case 4 -> ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
+				default ->
+						// oak tree
+						Features.OAK;
+			};
 			// grow a tree
-			switch (treeNum) {
-				case 0:
-				default:
-					// oak tree
-					treeGen = Features.OAK;
-					break;
-				case 1:
-					// jungle tree
-					treeGen = Features.JUNGLE_TREE; //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
-					break;
-				case 2:
-					// birch
-					treeGen = Features.BIRCH;
-					break;
-				case 3:
-					treeGen = ConfiguredFeatures.TWILIGHT_OAK_BASE;
-					break;
-				case 4:
-					treeGen = ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
-					break;
-			}
 
 			for (int i = 0; i < 100; i++) {
 				if (treeGen.place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
@@ -1426,31 +1410,30 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 					AttachFace face;
 					Direction orientation;
 					switch (direction) {
-						case NORTH:
+						case NORTH -> {
 							face = AttachFace.WALL;
 							orientation = Direction.SOUTH;
-							break;
-						case SOUTH:
+						}
+						case SOUTH -> {
 							face = AttachFace.WALL;
 							orientation = Direction.NORTH;
-							break;
-						case EAST:
+						}
+						case EAST -> {
 							face = AttachFace.WALL;
 							orientation = Direction.WEST;
-							break;
-						case WEST:
+						}
+						case WEST -> {
 							face = AttachFace.WALL;
 							orientation = Direction.EAST;
-							break;
-						case UP:
+						}
+						case UP -> {
 							face = AttachFace.FLOOR;
 							orientation = Direction.EAST;
-							break;
-						case DOWN:
-						default:
+						}
+						default -> {
 							face = AttachFace.CEILING;
 							orientation = Direction.NORTH;
-							break;
+						}
 					}
 
 					setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), face, orientation, false), lx, ly, lz, rotation, sbb);

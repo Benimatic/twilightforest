@@ -81,15 +81,11 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	@Override
 	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		switch (state.getValue(AXIS)) {
-			case Y:
-			default:
-				return Y_BB;
-			case X:
-				return X_BB;
-			case Z:
-				return Z_BB;
-		}
+		return switch (state.getValue(AXIS)) {
+			case X -> X_BB;
+			case Z -> Z_BB;
+			default -> Y_BB;
+		};
 	}
 
 	@Override
@@ -112,16 +108,12 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	public boolean isConnectedInRange(Level world, BlockPos pos) {
 		Direction.Axis axis = world.getBlockState(pos).getValue(AXIS);
 
-		switch (axis) {
-			case Y:
-				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.UP) || this.isConnectedInRangeRecursive(world, pos, Direction.DOWN);
-			case X:
-				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.WEST) || this.isConnectedInRangeRecursive(world, pos, Direction.EAST);
-			case Z:
-				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.NORTH) || this.isConnectedInRangeRecursive(world, pos, Direction.SOUTH);
-			default:
-				return this.anyPlayerInRange(world, pos);
-		}
+		return switch (axis) {
+			case Y -> this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.UP) || this.isConnectedInRangeRecursive(world, pos, Direction.DOWN);
+			case X -> this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.WEST) || this.isConnectedInRangeRecursive(world, pos, Direction.EAST);
+			case Z -> this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.NORTH) || this.isConnectedInRangeRecursive(world, pos, Direction.SOUTH);
+			//default -> this.anyPlayerInRange(world, pos);
+		};
 	}
 
 	private boolean isConnectedInRangeRecursive(Level world, BlockPos pos, Direction dir) {

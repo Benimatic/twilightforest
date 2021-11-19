@@ -99,15 +99,11 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	private int leafRadius(int treeHeight, int dy, int functionType) {
-		switch (functionType) {
-			case 0:
-			default:
-				return (dy - 1) % 4;
-			case 1:
-				return (int) (4F * dy / treeHeight + (0.75F * dy % 3));
-			case 99:
-				return (treeHeight - (dy / 2) - 1) % 4; // bad
-		}
+		return switch (functionType) {
+			case 1 -> (int) (4F * dy / treeHeight + (0.75F * dy % 3));
+			case 99 -> (treeHeight - (dy / 2) - 1) % 4; // bad
+			default -> (dy - 1) % 4;
+		};
 	}
 
 	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, Random rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {

@@ -38,24 +38,12 @@ public class UncraftingGuiPacket {
                         UncraftingContainer uncrafting = (UncraftingContainer) container;
 
                         switch (message.type) {
-                            case 0:
-                                uncrafting.unrecipeInCycle++;
-                                break;
-                            case 1:
-                                uncrafting.unrecipeInCycle--;
-                                break;
-                            case 2:
-                                uncrafting.ingredientsInCycle++;
-                                break;
-                            case 3:
-                                uncrafting.ingredientsInCycle--;
-                                break;
-                            case 4:
-                                uncrafting.recipeInCycle++;
-                                break;
-                            case 5:
-                                uncrafting.recipeInCycle--;
-                                break;
+                            case 0 -> uncrafting.unrecipeInCycle++;
+                            case 1 -> uncrafting.unrecipeInCycle--;
+                            case 2 -> uncrafting.ingredientsInCycle++;
+                            case 3 -> uncrafting.ingredientsInCycle--;
+                            case 4 -> uncrafting.recipeInCycle++;
+                            case 5 -> uncrafting.recipeInCycle--;
                         }
 
                         if (message.type < 4)

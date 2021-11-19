@@ -96,82 +96,69 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		double dz = this.worldPosition.getZ();
 
 		switch (outline) {
-			case 0:
-			case 8:
+			case 0, 8 -> {
 				sx -= RADIUS;
 				dx += RADIUS + 1;
 				sz -= RADIUS;
 				dz -= RADIUS;
-				break;
-			case 1:
-			case 9:
+			}
+			case 1, 9 -> {
 				sx -= RADIUS;
 				dx -= RADIUS;
 				sz -= RADIUS;
 				dz += RADIUS + 1;
-				break;
-			case 2:
-			case 10:
+			}
+			case 2, 10 -> {
 				sx -= RADIUS;
 				dx += RADIUS + 1;
 				sz += RADIUS + 1;
 				dz += RADIUS + 1;
-				break;
-			case 3:
-			case 11:
+			}
+			case 3, 11 -> {
 				sx += RADIUS + 1;
 				dx += RADIUS + 1;
 				sz -= RADIUS;
 				dz += RADIUS + 1;
-				break;
-			case 4:
+			}
+			case 4 -> {
 				sx -= RADIUS;
 				dx -= RADIUS;
 				sz -= RADIUS;
 				dz -= RADIUS;
-				break;
-			case 5:
+			}
+			case 5 -> {
 				sx += RADIUS + 1;
 				dx += RADIUS + 1;
 				sz -= RADIUS;
 				dz -= RADIUS;
-				break;
-			case 6:
+			}
+			case 6 -> {
 				sx += RADIUS + 1;
 				dx += RADIUS + 1;
 				sz += RADIUS + 1;
 				dz += RADIUS + 1;
-				break;
-			case 7:
+			}
+			case 7 -> {
 				sx -= RADIUS;
 				dx -= RADIUS;
 				sz += RADIUS + 1;
 				dz += RADIUS + 1;
-				break;
+			}
 		}
 
 		switch (outline) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
+			case 0, 1, 2, 3 -> {
 				sy += RADIUS + 1;
 				dy += RADIUS + 1;
-				break;
-			case 4:
-			case 5:
-			case 6:
-			case 7:
+			}
+			case 4, 5, 6, 7 -> {
 				sy -= RADIUS;
 				dy += RADIUS + 1;
-				break;
-			case 8:
-			case 9:
-			case 10:
-			case 11:
+			}
+			case 8, 9, 10, 11 -> {
 				sy -= RADIUS;
 				dy -= RADIUS;
-				break;
+			}
 		}
 
 		if (rand.nextBoolean()) {

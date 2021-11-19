@@ -185,30 +185,14 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 					if (dist == rad && !(dx == 0 && dy == 0 && dz == 0)) {
 						// do eight at a time for easiness!
 						switch (fuzzX) {
-							case 0:
-								transformBlock(pos.offset(dx, dy, dz), state, fuzzY, netherTransform);
-								break;
-							case 1:
-								transformBlock(pos.offset(dx, dy, -dz), state, fuzzY, netherTransform);
-								break;
-							case 2:
-								transformBlock(pos.offset(-dx, dy, dz), state, fuzzY, netherTransform);
-								break;
-							case 3:
-								transformBlock(pos.offset(-dx, dy, -dz), state, fuzzY, netherTransform);
-								break;
-							case 4:
-								transformBlock(pos.offset(dx, -dy, dz), state, fuzzY, netherTransform);
-								break;
-							case 5:
-								transformBlock(pos.offset(dx, -dy, -dz), state, fuzzY, netherTransform);
-								break;
-							case 6:
-								transformBlock(pos.offset(-dx, -dy, dz), state, fuzzY, netherTransform);
-								break;
-							case 7:
-								transformBlock(pos.offset(-dx, -dy, -dz), state, fuzzY, netherTransform);
-								break;
+							case 0 -> transformBlock(pos.offset(dx, dy, dz), state, fuzzY, netherTransform);
+							case 1 -> transformBlock(pos.offset(dx, dy, -dz), state, fuzzY, netherTransform);
+							case 2 -> transformBlock(pos.offset(-dx, dy, dz), state, fuzzY, netherTransform);
+							case 3 -> transformBlock(pos.offset(-dx, dy, -dz), state, fuzzY, netherTransform);
+							case 4 -> transformBlock(pos.offset(dx, -dy, dz), state, fuzzY, netherTransform);
+							case 5 -> transformBlock(pos.offset(dx, -dy, -dz), state, fuzzY, netherTransform);
+							case 6 -> transformBlock(pos.offset(-dx, -dy, dz), state, fuzzY, netherTransform);
+							case 7 -> transformBlock(pos.offset(-dx, -dy, -dz), state, fuzzY, netherTransform);
 						}
 					}
 				}

@@ -74,16 +74,11 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	private int getKeyBiomeFor(int index) {
 		// do we need to shuffle this better?
 		// the current version just "rotates" the 4 key biomes
-		switch ((index) & 0b11) {
-			case 0:
-			default:
-				return TFBiomeProvider.getBiomeId(BiomeKeys.GLACIER, registry);
-			case 1:
-				return TFBiomeProvider.getBiomeId(BiomeKeys.FIRE_SWAMP, registry);
-			case 2:
-				return TFBiomeProvider.getBiomeId(BiomeKeys.DARK_FOREST_CENTER, registry);
-			case 3:
-				return TFBiomeProvider.getBiomeId(BiomeKeys.FINAL_PLATEAU, registry);
-		}
+		return switch ((index) & 0b11) {
+			case 1 -> TFBiomeProvider.getBiomeId(BiomeKeys.FIRE_SWAMP, registry);
+			case 2 -> TFBiomeProvider.getBiomeId(BiomeKeys.DARK_FOREST_CENTER, registry);
+			case 3 -> TFBiomeProvider.getBiomeId(BiomeKeys.FINAL_PLATEAU, registry);
+			default -> TFBiomeProvider.getBiomeId(BiomeKeys.GLACIER, registry);
+		};
 	}
 }

@@ -387,51 +387,31 @@ public class IEShaderRegister {
 		IMMERSIVE_ENGINEERING("immersiveengineering") {
 			@Override
 			String getPath(CaseType caseType, String suffix) {
-				switch (caseType) {
-					case REVOLVER:
-						return "revolvers/shaders/revolver_" + suffix;
-					case CHEMICAL_THROWER:
-						return "item/shaders/chemthrower_" + suffix;
-					case DRILL:
-						return "item/shaders/drill_diesel_" + suffix;
-					case RAILGUN:
-						return "item/shaders/railgun_" + suffix;
-					case SHIELD:
-						return "item/shaders/shield_" + suffix;
-					case MINECART:
-						return "textures/models/shaders/minecart_" + suffix + ".png";
-					case BALLOON:
-						return "block/shaders/balloon_" + suffix;
-					case BANNER:
-						return "block/shaders/banner_" + suffix;
-				}
-
-				return "";
+				return switch (caseType) {
+					case REVOLVER -> "revolvers/shaders/revolver_" + suffix;
+					case CHEMICAL_THROWER -> "item/shaders/chemthrower_" + suffix;
+					case DRILL -> "item/shaders/drill_diesel_" + suffix;
+					case RAILGUN -> "item/shaders/railgun_" + suffix;
+					case SHIELD -> "item/shaders/shield_" + suffix;
+					case MINECART -> "textures/models/shaders/minecart_" + suffix + ".png";
+					case BALLOON -> "block/shaders/balloon_" + suffix;
+					case BANNER -> "block/shaders/banner_" + suffix;
+				};
 			}
 		},
 		TWILIGHT_FOREST(TwilightForestMod.ID) {
 			@Override
 			String getPath(CaseType caseType, String suffix) {
-				switch (caseType) {
-					case REVOLVER:
-						return "items/immersiveengineering/revolver_" + suffix;
-					case CHEMICAL_THROWER:
-						return "items/immersiveengineering/chemthrower_" + suffix;
-					case DRILL:
-						return "items/immersiveengineering/drill_" + suffix;
-					case RAILGUN:
-						return "items/immersiveengineering/railgun_" + suffix;
-					case SHIELD:
-						return "items/immersiveengineering/shield_" + suffix;
-					case MINECART:
-						return "textures/model/immersiveengineering/minecart_" + suffix + ".png";
-					case BALLOON:
-						return "block/immersiveengineering/balloon_" + suffix;
-					case BANNER:
-						return "block/immersiveengineering/banner_" + suffix;
-				}
-
-				return "";
+				return switch (caseType) {
+					case REVOLVER -> "items/immersiveengineering/revolver_" + suffix;
+					case CHEMICAL_THROWER -> "items/immersiveengineering/chemthrower_" + suffix;
+					case DRILL -> "items/immersiveengineering/drill_" + suffix;
+					case RAILGUN -> "items/immersiveengineering/railgun_" + suffix;
+					case SHIELD -> "items/immersiveengineering/shield_" + suffix;
+					case MINECART -> "textures/model/immersiveengineering/minecart_" + suffix + ".png";
+					case BALLOON -> "block/immersiveengineering/balloon_" + suffix;
+					case BANNER -> "block/immersiveengineering/banner_" + suffix;
+				};
 			}
 
 			@Override

@@ -145,17 +145,12 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			offset += this.size;
 		}
 
-		switch (rotation) {
-			default:
-			case NONE:
-				return new BlockPos(this.boundingBox.maxX() + 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
-			case CLOCKWISE_90:
-				return new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.maxZ() + 9);
-			case CLOCKWISE_180:
-				return new BlockPos(this.boundingBox.minX() - 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
-			case COUNTERCLOCKWISE_90:
-				return new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.minZ() - 9);
-		}
+		return switch (rotation) {
+			case CLOCKWISE_90 -> new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.maxZ() + 9);
+			case CLOCKWISE_180 -> new BlockPos(this.boundingBox.minX() - 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
+			case COUNTERCLOCKWISE_90 -> new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.minZ() - 9);
+			default -> new BlockPos(this.boundingBox.maxX() + 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
+		};
 	}
 
 	@Override

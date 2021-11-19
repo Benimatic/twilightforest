@@ -161,7 +161,7 @@ public class YetiArmorModel extends TFArmorModel {
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
 		switch (slot) {
-			case HEAD:
+			case HEAD -> {
 				this.head.visible = true;
 				this.hat.visible = false;
 				this.body.visible = false;
@@ -170,8 +170,8 @@ public class YetiArmorModel extends TFArmorModel {
 				this.bipedLegBody.visible = false;
 				this.rightLeg.visible = false;
 				this.leftLeg.visible = false;
-				break;
-			case CHEST:
+			}
+			case CHEST -> {
 				this.head.visible = false;
 				this.hat.visible = false;
 				this.body.visible = true;
@@ -180,8 +180,8 @@ public class YetiArmorModel extends TFArmorModel {
 				this.bipedLegBody.visible = false;
 				this.rightLeg.visible = false;
 				this.leftLeg.visible = false;
-				break;
-			case LEGS:
+			}
+			case LEGS -> {
 				this.head.visible = false;
 				this.hat.visible = false;
 				this.body.visible = false;
@@ -194,8 +194,8 @@ public class YetiArmorModel extends TFArmorModel {
 				this.leftToe.visible = false;
 				this.rightRuff.visible = false;
 				this.rightToe.visible = false;
-				break;
-			case FEET:
+			}
+			case FEET -> {
 				this.head.visible = false;
 				this.hat.visible = false;
 				this.body.visible = false;
@@ -208,9 +208,8 @@ public class YetiArmorModel extends TFArmorModel {
 				this.leftToe.visible = true;
 				this.rightRuff.visible = true;
 				this.rightToe.visible = true;
-				break;
-			default:
-				break;
+			}
+			default -> { }
 		}
 		super.renderToBuffer(stack, builder, light, overlay, red, green, blue, scale);
 		//this.bipedLegBody.render(scale);
