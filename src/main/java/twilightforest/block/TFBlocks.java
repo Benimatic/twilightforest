@@ -391,10 +391,10 @@ public class TFBlocks {
 	public static final RegistryObject<RotatedPillarBlock> STRIPPED_MINING_WOOD = BLOCKS.register("stripped_mining_wood", () -> new TFLogBlock(MINING_STRIPPED_PROPS));
 	public static final RegistryObject<RotatedPillarBlock> STRIPPED_SORTING_WOOD = BLOCKS.register("stripped_sorting_wood", () -> new TFLogBlock(SORTING_STRIPPED_PROPS));
 
-	public static final RegistryObject<Block> TIME_LOG_CORE = BLOCKS.register("time_log_core", () -> new SpecialMagicLogBlock(TIME_LOG_PROPS, MagicWoodVariant.TIME));
-	public static final RegistryObject<Block> TRANSFORMATION_LOG_CORE = BLOCKS.register("transformation_log_core", () -> new SpecialMagicLogBlock(TRANSFORMATION_LOG_PROPS, MagicWoodVariant.TRANS));
-	public static final RegistryObject<Block> MINING_LOG_CORE = BLOCKS.register("mining_log_core", () -> new SpecialMagicLogBlock(MINING_LOG_PROPS, MagicWoodVariant.MINE));
-	public static final RegistryObject<Block> SORTING_LOG_CORE = BLOCKS.register("sorting_log_core", () -> new SpecialMagicLogBlock(SORTING_LOG_PROPS, MagicWoodVariant.SORT));
+	public static final RegistryObject<Block> TIME_LOG_CORE = BLOCKS.register("time_log_core", () -> new TimeLogCoreBlock(TIME_LOG_PROPS));
+	public static final RegistryObject<Block> TRANSFORMATION_LOG_CORE = BLOCKS.register("transformation_log_core", () -> new TransLogCoreBlock(TRANSFORMATION_LOG_PROPS));
+	public static final RegistryObject<Block> MINING_LOG_CORE = BLOCKS.register("mining_log_core", () -> new MineLogCoreBlock(MINING_LOG_PROPS));
+	public static final RegistryObject<Block> SORTING_LOG_CORE = BLOCKS.register("sorting_log_core", () -> new SortLogCoreBlock(SORTING_LOG_PROPS));
 
 	public static final RegistryObject<Block> MANGROVE_ROOT = BLOCKS.register("mangrove_root", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0F).sound(SoundType.WOOD)));
 
