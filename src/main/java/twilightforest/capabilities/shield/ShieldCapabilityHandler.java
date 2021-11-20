@@ -18,6 +18,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	private int permanentShields;
 	private LivingEntity host;
 	private int timer;
+	private int breakTimer;
 
 	@Override
 	public void setEntity(LivingEntity entity) {
@@ -26,8 +27,10 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	@Override
 	public void update() {
-		if (!host.level.isClientSide && shieldsLeft() > 0 && timer-- <= 0 && (!(host instanceof Player) || !((Player) host).isCreative()))
+		if (!host.level.isClientSide && temporaryShieldsLeft() > 0 && timer-- <= 0 && breakTimer <= 0 && (!(host instanceof Player) || !((Player) host).isCreative()))
 			breakShield();
+		if (breakTimer > 0)
+			breakTimer--;
 	}
 
 	@Override
@@ -47,17 +50,21 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	@Override
 	public void breakShield() {
-		// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
-		if (temporaryShields > 0) {
-			temporaryShields--;
-			resetTimer();
-		} else if (permanentShields > 0) {
-			permanentShields--;
-		}
+		if (breakTimer > 0) {
+			// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
+			if (temporaryShields > 0) {
+				temporaryShields--;
+				resetTimer();
+			} else if (permanentShields > 0) {
+				permanentShields--;
+			}
 
-		if(host instanceof Player player && player instanceof ServerPlayer) player.awardStat(TFStats.TF_SHIELDS_BROKEN);
+			if (host instanceof Player player && player instanceof ServerPlayer)
+				player.awardStat(TFStats.TF_SHIELDS_BROKEN);
+			sendUpdatePacket();
+			breakTimer = 20;
+		}
 		host.level.playSound(null, host.blockPosition(), TFSounds.SHIELD_BREAK, SoundSource.PLAYERS, 1.0F, ((host.getRandom().nextFloat() - host.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
-		sendUpdatePacket();
 	}
 
 	@Override
