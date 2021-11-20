@@ -83,7 +83,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 				// Pluck them from the boat, minecart, donkey, or whatever
 				entity.stopRiding();
 
-				entity.startRiding(this);
+				entity.startRiding(this, true);
 			}
 		}
 		entity.hurt(TFDamageSources.clamped(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));

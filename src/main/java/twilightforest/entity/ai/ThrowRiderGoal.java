@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import twilightforest.TFEventListener;
 import twilightforest.data.EntityTagGenerator;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
@@ -16,6 +17,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 	private int throwTimer;
 	private int timeout;
+	private int cooldown;
 
 	public ThrowRiderGoal(PathfinderMob creature, double speedIn, boolean useLongMemory) {
 		super(creature, speedIn, useLongMemory);
@@ -47,7 +49,8 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
 		double d0 = this.getAttackReachSqr(victim);
 
-		if (p_190102_2_ <= d0 && this.getTicksUntilNextAttack() <= 0) {
+		if (p_190102_2_ <= d0 && this.getTicksUntilNextAttack() <= 0 && mob.getPassengers().isEmpty() && cooldown-- == 0) {
+			cooldown = 3; // Gives the thrower a pause so it doesn't pick the target back up immediately after throwing; for whatever reason the attack cooldown isn't enough...
 			this.resetAttackCooldown();
 			this.mob.swing(InteractionHand.MAIN_HAND);
 			if (mob.getPassengers().isEmpty()) {
@@ -57,7 +60,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 					// Pluck them from the boat, minecart, donkey, or whatever
 					victim.stopRiding();
 
-					victim.startRiding(mob);
+					victim.startRiding(mob, true);
 				}
 			}
 		}
@@ -67,7 +70,9 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public void stop() {
 		if (!mob.getPassengers().isEmpty()) {
 			Entity rider = mob.getPassengers().get(0);
+			TFEventListener.allowDismount = true;
 			rider.stopRiding();
+			TFEventListener.allowDismount = false;
 
 			Vec3 throwVec = mob.getLookAngle().scale(2);
 			throwVec = new Vec3(throwVec.x, 0.9, throwVec.z);
