@@ -5,6 +5,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -39,6 +42,27 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(BOOK_STAGES, SPAWNER);
+	}
+
+	@Override
+	public void catchFire(BlockState state, Level world, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
+		if(world.getDifficulty() != Difficulty.PEACEFUL && world.getBlockState(pos).getValue(SPAWNER) && world.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && world instanceof ServerLevel level) {
+			for(int i = 0; i < state.getValue(BOOK_STAGES); i++) {
+				ts.attemptSpawnTome(level, pos, true);
+			}
+			world.destroyBlock(pos, false);
+		}
+		super.catchFire(state, world, pos, face, igniter);
+	}
+
+	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		for(Direction direction : Direction.values()) {
+			if(level.getBlockState(pos.relative(direction)).is(BlockTags.FIRE)) {
+				this.catchFire(state, level, pos, direction, null);
+				break;
+			}
+		}
 	}
 
 	@Override

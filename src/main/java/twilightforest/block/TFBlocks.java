@@ -612,12 +612,13 @@ public class TFBlocks {
 		ComposterBlock.add(0.85F, TFItems.MAGIC_BEANS.get());
 	}
 
-	public static void TFBurnables() {
+	public static void tfBurnables() {
 		FireBlock fireblock = (FireBlock)Blocks.FIRE;
 		fireblock.setFlammable(ROOT_BLOCK.get(), 5, 20);
 		fireblock.setFlammable(ARCTIC_FUR_BLOCK.get(), 20, 20);
 		fireblock.setFlammable(LIVEROOT_BLOCK.get(), 5, 20);
 		fireblock.setFlammable(EMPTY_CANOPY_BOOKSHELF.get(), 30, 20);
+		fireblock.setFlammable(DEATH_TOME_SPAWNER.get(), 30, 20);
 		fireblock.setFlammable(TWILIGHT_OAK_WOOD.get(), 5, 5);
 		fireblock.setFlammable(TWILIGHT_OAK_PLANKS.get(), 5, 20);
 		fireblock.setFlammable(TWILIGHT_OAK_SLAB.get(), 5, 20);
@@ -670,7 +671,7 @@ public class TFBlocks {
 		fireblock.setFlammable(SORTING_GATE.get(), 5, 20);
 	}
 
-	public static void TFPots() {
+	public static void tfPots() {
 		FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
 
 		pot.addPlant(TWILIGHT_OAK_SAPLING.getId(), POTTED_TWILIGHT_OAK_SAPLING);

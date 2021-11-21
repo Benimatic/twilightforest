@@ -45,7 +45,7 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 					te.elapsedTime++;
 				} else {
 					te.elapsedTime = 0;
-					te.attemptSpawnTome((ServerLevel) level, pos);
+					te.attemptSpawnTome((ServerLevel) level, pos, false);
 				}
 			}
 
@@ -59,7 +59,7 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 
 	}
 
-	private void attemptSpawnTome(ServerLevel level, BlockPos pos) {
+	public void attemptSpawnTome(ServerLevel level, BlockPos pos, boolean fire) {
 		Optional<EntityType<?>> mob = EntityType.byString(this.entityType);
 		boolean spawnedOne = false;
 		for(Direction dir: Direction.Plane.HORIZONTAL) {
@@ -72,6 +72,7 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 					if (level.noCollision(mob.orElse(TFEntities.DEATH_TOME).getAABB(x, y, z)) && mob.isPresent()) {
 						Entity entity = mob.orElse(TFEntities.DEATH_TOME).create(level);
 						entity.moveTo(new BlockPos(x, y, z), entity.getYRot(), entity.getXRot());
+						if(fire) entity.setSecondsOnFire(10);
 						level.addFreshEntity(entity);
 						tomesLeft--;
 						spawnedOne = true;
