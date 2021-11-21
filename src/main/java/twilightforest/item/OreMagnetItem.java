@@ -15,6 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
@@ -28,13 +30,12 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.CustomTagGenerator;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -53,6 +54,13 @@ public class OreMagnetItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
+
+		for (Enchantment ench : enchants.keySet()) {
+			if (Objects.equals(ench.getRegistryName(), Enchantments.UNBREAKING.getRegistryName())) {
+				return super.isBookEnchantable(stack, book);
+			}
+		}
 		return false;
 	}
 
