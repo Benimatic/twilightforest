@@ -9,6 +9,7 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.blockplacers.DoublePlantPlacer;
@@ -16,10 +17,8 @@ import net.minecraft.world.level.levelgen.feature.blockplacers.SimpleBlockPlacer
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
-import net.minecraft.world.level.levelgen.placement.ConfiguredDecorator;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
-import net.minecraft.world.level.levelgen.placement.FrequencyWithExtraChanceDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.placement.WaterDepthThresholdConfiguration;
+import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
+import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.config.*;
@@ -69,6 +68,8 @@ public final class ConfiguredFeatures {
             () -> Features.HUGE_RED_MUSHROOM,
             () -> Features.HUGE_BROWN_MUSHROOM
     )).decorated(TwilightFeatures.OCCUPIES_SURFACE_CLEARANCE).decorated(Features.Decorators.HEIGHTMAP_SQUARE));
+    public static final ConfiguredFeature<?, ?> LAKE_LAVA = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("lava_lake"), Feature.LAKE.configured(new BlockStateConfiguration(BlockConstants.LAVA)).decorated(TwilightFeatures.OCCUPIES_STRUCTURE_CLEARANCE).decorated(FeatureDecorator.LAVA_LAKE.configured(new ChanceDecoratorConfiguration(80))).range(new RangeDecoratorConfiguration(BiasedToBottomHeight.of(VerticalAnchor.bottom(), VerticalAnchor.top(), 8))).squared().rarity(8));
+    public static final ConfiguredFeature<?, ?> LAKE_WATER = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("water_lake"), Feature.LAKE.configured(new BlockStateConfiguration(BlockConstants.WATER)).decorated(TwilightFeatures.OCCUPIES_STRUCTURE_CLEARANCE).range(Features.Decorators.FULL_RANGE).squared().rarity(4));
 
     //Trees!
     public static final ConfiguredFeature<?, ?> CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/canopy_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(CANOPY_TREE_BASE.weighted(0.6F)), TWILIGHT_OAK_BASE)).decorated(DEFAULT_TREE_PLACEMENT_SQUARED.decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.1F, 1))).count(4)));
