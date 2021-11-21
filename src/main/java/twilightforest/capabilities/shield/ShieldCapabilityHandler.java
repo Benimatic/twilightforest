@@ -50,7 +50,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	@Override
 	public void breakShield() {
-		if (breakTimer > 0) {
+		if (breakTimer <= 0) {
 			// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
 			if (temporaryShields > 0) {
 				temporaryShields--;
@@ -62,9 +62,9 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			if (host instanceof Player player && player instanceof ServerPlayer)
 				player.awardStat(TFStats.TF_SHIELDS_BROKEN);
 			sendUpdatePacket();
+			host.level.playSound(null, host.blockPosition(), TFSounds.SHIELD_BREAK, SoundSource.PLAYERS, 1.0F, ((host.getRandom().nextFloat() - host.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 			breakTimer = 20;
 		}
-		host.level.playSound(null, host.blockPosition(), TFSounds.SHIELD_BREAK, SoundSource.PLAYERS, 1.0F, ((host.getRandom().nextFloat() - host.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 	}
 
 	@Override
