@@ -219,53 +219,49 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 		return super.hurt(source, amount);
 	}
 
-	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
+	// [VanillaCopy] Exact copy of Mob.doHurtTarget, but change the damage source
 	@Override
-	public boolean doHurtTarget(Entity entityIn) {
-		float f = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
-		int i = 0;
+	public boolean doHurtTarget(Entity entity) {
+		float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 
-		if (entityIn instanceof LivingEntity) {
-			f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity) entityIn).getMobType());
-			i += EnchantmentHelper.getKnockbackBonus(this);
+		if (entity instanceof LivingEntity living) {
+			f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), living.getMobType());
+			f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
 		}
 
-		boolean flag = entityIn.hurt(TFDamageSources.haunt(this), f);
+		int i = EnchantmentHelper.getFireAspect(this);
+		if (i > 0) {
+			entity.setSecondsOnFire(i * 4);
+		}
 
+		boolean flag = entity.hurt(TFDamageSources.haunt(this), f);
 		if (flag) {
-			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).knockback(i * 0.5F, Mth.sin(this.getYRot() * 0.017453292F), (-Mth.cos(this.getYRot() * 0.017453292F)));
-				setDeltaMovement(new Vec3(
-						getDeltaMovement().x() * 0.6D,
-						getDeltaMovement().y(),
-						getDeltaMovement().z() * 0.6D));
+			if (f1 > 0.0F && entity instanceof LivingEntity living) {
+				living.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));
+				this.setDeltaMovement(this.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
 			}
 
-			int j = EnchantmentHelper.getFireAspect(this);
-
-			if (j > 0) {
-				entityIn.setSecondsOnFire(j * 4);
+			if (entity instanceof Player player) {
+				this.maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
 			}
 
-			if (entityIn instanceof Player) {
-				Player entityplayer = (Player) entityIn;
-				ItemStack itemstack = this.getMainHandItem();
-				ItemStack itemstack1 = entityplayer.isUsingItem() ? entityplayer.getUseItem() : ItemStack.EMPTY;
-
-				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof AxeItem && itemstack1.getItem() == Items.SHIELD) {
-					float f1 = 0.25F + EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
-
-					if (this.random.nextFloat() < f1) {
-						entityplayer.getCooldowns().addCooldown(Items.SHIELD, 100);
-						this.level.broadcastEntityEvent(entityplayer, (byte) 30);
-					}
-				}
-			}
-
-			this.doEnchantDamageEffects(this, entityIn);
+			this.doEnchantDamageEffects(this, entity);
+			this.setLastHurtMob(entity);
 		}
 
 		return flag;
+	}
+
+	private void maybeDisableShield(Player p_21425_, ItemStack p_21426_, ItemStack p_21427_) {
+		if (!p_21426_.isEmpty() && !p_21427_.isEmpty() && p_21426_.getItem() instanceof AxeItem && p_21427_.is(Items.SHIELD)) {
+			float f = 0.25F + (float)EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
+			if (this.random.nextFloat() < f) {
+				p_21425_.getCooldowns().addCooldown(Items.SHIELD, 100);
+				this.level.broadcastEntityEvent(p_21425_, (byte)30);
+			}
+		}
+
 	}
 
 	@Override
