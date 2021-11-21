@@ -1,5 +1,8 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.core.Position;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent;
+import twilightforest.data.BlockTagGenerator;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.monster.Yeti;
 import twilightforest.potions.TFMobEffects;
 import twilightforest.util.TFDamageSources;
@@ -36,6 +41,10 @@ public class IceBomb extends TFThrowable {
 		super(type, world, thrower);
 	}
 
+	public IceBomb(Level world, Position pos) {
+		super(TFEntities.THROWN_ICE, world, pos.x(), pos.y(), pos.z());
+	}
+
 	@Override
 	protected void onHit(HitResult ray) {
 		this.setDeltaMovement(0.0D, 0.0D, 0.0D);
@@ -56,10 +65,7 @@ public class IceBomb extends TFThrowable {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
 					BlockPos pos = new BlockPos(ix + x, iy + y, iz + z);
-					BlockSnapshot blocksnapshot = BlockSnapshot.create(level.dimension(), level, pos);
-					if (!level.isClientSide && !MinecraftForge.EVENT_BUS.post(new BlockEvent.EntityPlaceEvent(blocksnapshot, level.getBlockState(pos), null))) {
-						this.doTerrainEffect(pos);
-					}
+					this.doTerrainEffect(pos);
 				}
 			}
 		}
@@ -79,8 +85,11 @@ public class IceBomb extends TFThrowable {
 		if (this.level.isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos)) {
 			this.level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
 		}
-		if(this.level.getBlockState(pos) == Blocks.GRASS.defaultBlockState() || this.level.getBlockState(pos) == Blocks.TALL_GRASS.defaultBlockState()) {
-			this.level.setBlock(pos, Blocks.SNOW.defaultBlockState(), 3);
+		if(BlockTagGenerator.ICE_BOMB_REPLACEABLES.contains(state.getBlock())) {
+			this.level.setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
+		}
+		if(state.is(Blocks.SNOW) && state.getValue(SnowLayerBlock.LAYERS) < 8) {
+			this.level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, state.getValue(SnowLayerBlock.LAYERS) + 1));
 		}
 	}
 
@@ -126,7 +135,7 @@ public class IceBomb extends TFThrowable {
 				level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
-			if (this.zoneTimer % 10 == 0) {
+			if (this.zoneTimer % 20 == 0) {
 				hitNearbyEntities();
 			}
 		}
@@ -145,8 +154,10 @@ public class IceBomb extends TFThrowable {
 
 					entity.discard();
 				} else {
-					entity.hurt(TFDamageSources.frozen(this, (LivingEntity)this.getOwner()), 1);
-					entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 5, 2));
+					if(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES.contains(entity.getType())) {
+						entity.hurt(TFDamageSources.frozen(this, (LivingEntity) this.getOwner()), EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES.contains(entity.getType()) ? 5 : 1);
+						entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 5));
+					}
 				}
 			}
 		}

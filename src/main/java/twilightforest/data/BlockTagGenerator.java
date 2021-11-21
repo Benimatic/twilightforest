@@ -56,6 +56,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final Tag.Named<Block> DARK_TOWER_ALLOWED_POTS = BlockTags.bind(TwilightForestMod.prefix("dark_tower_allowed_pots").toString());
     public static final Tag.Named<Block> TROPHIES = BlockTags.bind(TwilightForestMod.prefix("trophies").toString());
     public static final Tag.Named<Block> FIRE_JET_FUEL = BlockTags.bind(TwilightForestMod.prefix("fire_jet_fuel").toString());
+    public static final Tag.Named<Block> ICE_BOMB_REPLACEABLES = BlockTags.bind(TwilightForestMod.prefix("ice_bomb_replaceables").toString());
 
     public static final Tag.Named<Block> COMMON_PROTECTIONS = BlockTags.bind(TwilightForestMod.prefix("common_protections").toString());
     public static final Tag.Named<Block> ANNIHILATION_INCLUSIONS = BlockTags.bind(TwilightForestMod.prefix("annihilation_inclusions").toString());
@@ -336,6 +337,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .add(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get());
 
         tag(FIRE_JET_FUEL).add(Blocks.LAVA);
+
+        tag(ICE_BOMB_REPLACEABLES)
+                .add(TFBlocks.MAYAPPLE.get(), TFBlocks.FIDDLEHEAD.get(), Blocks.GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
+                .addTag(BlockTags.FLOWERS);
 
         tag(COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
                 TFBlocks.NAGA_BOSS_SPAWNER.get(),
