@@ -502,8 +502,11 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	private static int countDamageableParts(Container matrix) {
 		int count = 0;
 		for (int i = 0; i < matrix.getContainerSize(); i++) {
-			if (isDamageableComponent(matrix.getItem(i))) {
+			if (!matrix.getItem(i).isEmpty()) {
 				count++;
+			}
+			if(isIngredientProblematic(matrix.getItem(i)) || isMarked(matrix.getItem(i))) {
+				count--;
 			}
 		}
 		return count;
