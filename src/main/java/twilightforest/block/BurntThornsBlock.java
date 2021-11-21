@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,7 +32,7 @@ public class BurntThornsBlock extends ThornsBlock {
 	@Deprecated
 	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
 		// dissolve
-		if (!world.isClientSide && entity instanceof LivingEntity) {
+		if (!world.isClientSide && (entity instanceof LivingEntity || entity instanceof Projectile)) {
 			world.destroyBlock(pos, false);
 		}
 	}
