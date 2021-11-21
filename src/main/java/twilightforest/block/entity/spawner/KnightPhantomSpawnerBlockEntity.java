@@ -1,5 +1,8 @@
 package twilightforest.block.entity.spawner;
 
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -8,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.item.TFItems;
@@ -60,5 +64,10 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 			}
 		}
 		return spawned == COUNT;
+	}
+
+	@Override
+	public ParticleOptions getSpawnerParticle() {
+		return TFParticleType.OMINOUS_FLAME.get();
 	}
 }

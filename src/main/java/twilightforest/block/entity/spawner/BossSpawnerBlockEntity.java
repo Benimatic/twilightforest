@@ -1,6 +1,8 @@
 package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,11 +38,11 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 		}
 		if (level.isClientSide) {
 			// particles
-			double rx = pos.getX() + level.random.nextFloat();
-			double ry = pos.getY() + level.random.nextFloat();
-			double rz = pos.getZ() + level.random.nextFloat();
-			level.addParticle(ParticleTypes.SMOKE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
-			level.addParticle(ParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			double rx = (pos.getX() - 0.2F) + (level.random.nextFloat() * 1.25F);
+			double ry = (pos.getY() - 0.2F) + (level.random.nextFloat() * 1.25F);
+			double rz = (pos.getZ() - 0.2F) + (level.random.nextFloat() * 1.25F);
+			//level.addParticle(ParticleTypes.SMOKE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			level.addParticle(te.getSpawnerParticle(), rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		} else {
 			if (level.getDifficulty() != Difficulty.PEACEFUL) {
 				if (te.spawnMyBoss((ServerLevel)level)) {
@@ -64,6 +66,8 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 		// spawn it
 		return world.addFreshEntity(myCreature);
 	}
+
+	public abstract ParticleOptions getSpawnerParticle();
 
 	protected void initializeCreature(T myCreature) {
 		myCreature.restrictTo(worldPosition, 46);
