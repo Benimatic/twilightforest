@@ -77,7 +77,7 @@ public class Lich extends Monster {
 	private static final EntityDataAccessor<Byte> DATA_ATTACKTYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BYTE);
 
 	public static final int MAX_SHADOW_CLONES = 2;
-	public static final int INITIAL_SHIELD_STRENGTH = 5;
+	public static final int INITIAL_SHIELD_STRENGTH = 6;
 	public static final int MAX_ACTIVE_MINIONS = 3;
 	public static final int INITIAL_MINIONS_TO_SUMMON = 9;
 	public static final int MAX_HEALTH = 100;
@@ -254,7 +254,7 @@ public class Lich extends Monster {
 
 		if (!level.isClientSide) {
 			if (this.getPhase() == 1) {
-				bossInfo.setProgress((float) (getShieldStrength() + 1) / (float) (INITIAL_SHIELD_STRENGTH + 1));
+				bossInfo.setProgress((float) (getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
 			} else {
 				bossInfo.setOverlay(BossEvent.BossBarOverlay.PROGRESS);
 				bossInfo.setProgress(getHealth() / getMaxHealth());
