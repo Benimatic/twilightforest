@@ -180,7 +180,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.CINDER_FURNACE.get().asItem(),
 				TFBlocks.CINDER_LOG.get().asItem(),
 				TFBlocks.CINDER_WOOD.get().asItem(),
-				TFBlocks.UNDERBRICK_FLOOR.get().asItem(),
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get().asItem(),
 				TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get().asItem(),
 				TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get().asItem(),
