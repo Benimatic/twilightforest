@@ -907,12 +907,12 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().level.isClientSide && event.getPlayer() instanceof ServerPlayer) {
-			if (event.getTo().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())) {
-				sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().level));
+		if (!event.getPlayer().level.isClientSide && event.getPlayer() instanceof ServerPlayer player) {
+			if (TFGenerationSettings.usesTwilightChunkGenerator(player.getLevel())) {
+				sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(player.getLevel()));
 			}
 
-			updateCapabilities((ServerPlayer) event.getPlayer(), event.getPlayer());
+			updateCapabilities(player, event.getPlayer());
 		}
 	}
 
@@ -922,10 +922,10 @@ public class TFEventListener {
 	}
 
 	// send any capabilities that are needed client-side
-	private static void updateCapabilities(ServerPlayer player, Entity entity) {
-		entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
+	private static void updateCapabilities(ServerPlayer clientTarget, Entity shielded) {
+		shielded.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 			if (cap.shieldsLeft() > 0) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new UpdateShieldPacket(entity, cap));
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> clientTarget), new UpdateShieldPacket(shielded, cap));
 			}
 		});
 	}

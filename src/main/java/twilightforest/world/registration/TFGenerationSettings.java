@@ -1,5 +1,6 @@
 package twilightforest.world.registration;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
@@ -146,10 +147,19 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	@Deprecated // Used in places where we can't access the sea level
 	public static final int SEALEVEL = 0;
 
-	public static boolean isStrictlyTwilightForest(Level world) {
+	// Checks if the world is linked by the default Twilight Portal.
+	// If you want to check if the world is a Twilight world, use usesTwilightChunkGenerator instead
+	// Only use this method if you need to know if a world is a destination for portals!
+	public static boolean isTwilightPortalDestination(Level world) {
 		return world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get());
 	}
 
+	// Checks if the world is a qualified Twilight world by checking against its namespace or if it's a portal destination
+	public static boolean isTwilightWorldOnClient(Level world) {
+		return TwilightForestMod.ID.equals(Minecraft.getInstance().level.dimension().location().getNamespace()) || isTwilightPortalDestination(world);
+	}
+
+	// Checks if the world is *a* Twilight world on the Server side.
 	public static boolean usesTwilightChunkGenerator(ServerLevel world) {
 		return world.getChunkSource().generator instanceof ChunkGeneratorTwilight;
 	}

@@ -9,7 +9,7 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
-	// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example)
+	// Use TFGenerationSettings.usesTwilightChunkGenerator or TFGenerationSettings.isTwilightWorldOnClient instead of hard-comparing the dimension ID
 	//public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
 	public static long seed;
 
