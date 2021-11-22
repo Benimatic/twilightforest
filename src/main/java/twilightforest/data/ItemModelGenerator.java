@@ -494,9 +494,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		tool(TFItems.ICE_SWORD.getId().getPath(), prefix("items/ice_sword_solid"), prefix("items/ice_sword_clear"));
 		tool(TFItems.GLASS_SWORD.getId().getPath(), prefix("items/glass_sword_solid"), prefix("items/glass_sword_clear"));
 		ModelFile chainThrown = biggerTexString("block_and_chain_thrown", prefix("items/block_and_chain_thrown"));
-		biggerTex(TFItems.BLOCK_AND_CHAIN, prefix("items/block_and_chain")).override().predicate(prefix("thrown"), 1).model(chainThrown).end();
+		biggerTexHeld(TFItems.BLOCK_AND_CHAIN, prefix("items/block_and_chain")).override().predicate(prefix("thrown"), 1).model(chainThrown).end();
 		ModelFile cubeThrown = biggerTexString("cube_of_annihilation_thrown", prefix("items/cube_of_annihilation_thrown"));
-		biggerTex(TFItems.CUBE_OF_ANNIHILATION, prefix("items/cube_of_annihilation")).override().predicate(prefix("thrown"), 1).model(cubeThrown).end();
+		biggerTexHeld(TFItems.CUBE_OF_ANNIHILATION, prefix("items/cube_of_annihilation")).override().predicate(prefix("thrown"), 1).model(cubeThrown).end();
 		singleTex(TFItems.CUBE_TALISMAN);
 		//moon dial is a big boi
 		ModelFile full = phaseTex("moon_dial_full", prefix("items/moon_dial/full"));
@@ -645,6 +645,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private ItemModelBuilder biggerTex(RegistryObject<Item> item, ResourceLocation... layers) {
 		ItemModelBuilder builder = withExistingParent(item.getId().getPath(), "twilightforest:item/util/overlap_gui");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		return builder;
+	}
+
+	private ItemModelBuilder biggerTexHeld(RegistryObject<Item> item, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(item.getId().getPath(), "twilightforest:item/util/overlap_gui_held");
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
