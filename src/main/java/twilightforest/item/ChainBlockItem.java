@@ -46,7 +46,7 @@ public class ChainBlockItem extends DiggerItem {
 		if (getThrownUuid(stack) != null)
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
-		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 1.0F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
+		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 0.5F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isClientSide) {
 			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK, world, player, hand, stack);

@@ -6,6 +6,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,6 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
@@ -120,6 +122,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		// only hit living things
 		if (!level.isClientSide && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {
 			if (result.getEntity().hurt(TFDamageSources.spiked(this, (LivingEntity)this.getOwner()), 10)) {
+				playSound(TFSounds.BLOCKCHAIN_HIT, 1.0f, this.random.nextFloat());
 				// age when we hit a monster so that we go back to the player faster
 				this.tickCount += 60;
 			}
@@ -205,7 +208,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 				if (getOwner() instanceof Player player) {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
-						if (block.canHarvestBlock(state, level, pos, player)) {
+						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(getHand()).isCorrectToolForDrops(state))) {
 							block.playerDestroy(level, player, pos, state, level.getBlockEntity(pos), player.getItemInHand(getHand()));
 
 							level.destroyBlock(pos, false);
