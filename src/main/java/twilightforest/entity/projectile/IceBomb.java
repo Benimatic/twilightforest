@@ -76,20 +76,22 @@ public class IceBomb extends TFThrowable {
 	 */
 	private void doTerrainEffect(BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		if (state.getMaterial() == Material.WATER) {
-			this.level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
-		}
-		if (state == Blocks.LAVA.defaultBlockState()) {
-			this.level.setBlockAndUpdate(pos, Blocks.OBSIDIAN.defaultBlockState());
-		}
-		if (this.level.isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos)) {
-			this.level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
-		}
-		if(BlockTagGenerator.ICE_BOMB_REPLACEABLES.contains(state.getBlock())) {
-			this.level.setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
-		}
-		if(state.is(Blocks.SNOW) && state.getValue(SnowLayerBlock.LAYERS) < 8) {
-			this.level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, state.getValue(SnowLayerBlock.LAYERS) + 1));
+		if(!level.isClientSide) {
+			if (state.getMaterial() == Material.WATER) {
+				this.level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
+			}
+			if (state == Blocks.LAVA.defaultBlockState()) {
+				this.level.setBlockAndUpdate(pos, Blocks.OBSIDIAN.defaultBlockState());
+			}
+			if (this.level.isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos)) {
+				this.level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
+			}
+			if (BlockTagGenerator.ICE_BOMB_REPLACEABLES.contains(state.getBlock())) {
+				this.level.setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
+			}
+			if (state.is(Blocks.SNOW) && state.getValue(SnowLayerBlock.LAYERS) < 8) {
+				this.level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, state.getValue(SnowLayerBlock.LAYERS) + 1));
+			}
 		}
 	}
 
