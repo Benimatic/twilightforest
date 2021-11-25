@@ -126,7 +126,6 @@ public class ASMHooks {
 	private static final Int2ObjectMap<TFPart<?>> multiparts = new Int2ObjectOpenHashMap<>();
 
 	// This only works on the client side in 1.17...
-	@OnlyIn(Dist.CLIENT)
 	public static void registerMultipartEvents(IEventBus bus) {
 		bus.addListener((Consumer<EntityJoinWorldEvent>) event -> {
 			if(event.getWorld().isClientSide() && event.getEntity().isMultipartEntity())
