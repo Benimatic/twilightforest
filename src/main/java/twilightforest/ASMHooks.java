@@ -115,6 +115,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.sounds.MusicManager#tick()}<br>
 	 * [AFTER FIRST INVOKEVIRTUAL]
 	 */
+	@OnlyIn(Dist.CLIENT)
 	public static Music music(Music music) {
 		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFGenerationSettings.isTwilightWorldOnClient(Minecraft.getInstance().level))
 			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).getBackgroundMusic().orElse(Musics.GAME);
@@ -125,6 +126,7 @@ public class ASMHooks {
 	private static final Int2ObjectMap<TFPart<?>> multiparts = new Int2ObjectOpenHashMap<>();
 
 	// This only works on the client side in 1.17...
+	@OnlyIn(Dist.CLIENT)
 	public static void registerMultipartEvents(IEventBus bus) {
 		bus.addListener((Consumer<EntityJoinWorldEvent>) event -> {
 			if(event.getWorld().isClientSide() && event.getEntity().isMultipartEntity())
