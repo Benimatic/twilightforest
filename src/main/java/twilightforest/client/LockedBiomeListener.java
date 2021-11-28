@@ -23,7 +23,7 @@ public class LockedBiomeListener {
 	private static int timeUntilToast = 60;
 
 	@SubscribeEvent
-	public static void clientTick(TickEvent.WorldTickEvent event) {
+	public static void clientTick(TickEvent.ClientTickEvent event) {
 		Player player = Minecraft.getInstance().player;
 		if (player == null || !(player.level instanceof ClientLevel world))
 			return;
