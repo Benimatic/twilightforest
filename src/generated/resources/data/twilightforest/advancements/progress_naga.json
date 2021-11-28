@@ -41,6 +41,18 @@
         ]
       }
     },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:naga_trophy"
+            ]
+          }
+        ]
+      }
+    },
     "scale": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -71,6 +83,7 @@
   "requirements": [
     [
       "naga",
+      "trophy",
       "scale",
       "was_in_fight"
     ]

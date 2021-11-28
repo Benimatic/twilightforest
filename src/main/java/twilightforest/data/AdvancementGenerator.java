@@ -88,6 +88,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent(TFItems.NAGA_SCALE.get().getDescriptionId())),
 				null, FrameType.GOAL, true, true, false)
 				.addCriterion("naga", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.NAGA)))
+				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.NAGA_TROPHY.get()))
 				.addCriterion("scale", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.NAGA_SCALE.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.Instance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.NAGA)))
 				.requirements(RequirementsStrategy.OR)
@@ -351,7 +352,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.hill1"),
 						new TranslatableComponent("advancement.twilightforest.hill1.desc",
 								new TranslatableComponent(TFEntities.REDCAP.getDescriptionId()),
-								new TranslatableComponent("structure.hollow_hill")),
+								new TranslatableComponent("structure.small_hollow_hill")),
 						null, FrameType.TASK, true, true, false)
 				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP).located(LocationPredicate.inFeature(TFStructures.HOLLOW_HILL_SMALL))))
 				.save(consumer, "twilightforest:hill1");
@@ -361,7 +362,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.hill2"),
 						new TranslatableComponent("advancement.twilightforest.hill2.desc",
 								new TranslatableComponent(TFEntities.REDCAP_SAPPER.getDescriptionId()),
-								new TranslatableComponent("structure.hollow_hill")),
+								new TranslatableComponent("structure.medium_hollow_hill")),
 						null, FrameType.TASK, true, true, false)
 				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP_SAPPER).located(LocationPredicate.inFeature(TFStructures.HOLLOW_HILL_MEDIUM))))
 				.save(consumer, "twilightforest:hill2");
@@ -371,7 +372,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.hill3"),
 						new TranslatableComponent("advancement.twilightforest.hill3.desc",
 								new TranslatableComponent(TFEntities.WRAITH.getDescriptionId()),
-								new TranslatableComponent("structure.hollow_hill")),
+								new TranslatableComponent("structure.large_hollow_hill")),
 						null, FrameType.TASK, true, true, false)
 				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.WRAITH).located(LocationPredicate.inFeature(TFStructures.HOLLOW_HILL_LARGE))))
 				.save(consumer, "twilightforest:hill3");

@@ -12,11 +12,11 @@
   "advancement.twilightforest.kill_cicada.desc": "Kill a cicada",
 
   "advancement.twilightforest.hill1": "The Boots Are Mine!",
-  "advancement.twilightforest.hill1.desc": "Defeat a %s in a small %s.",
+  "advancement.twilightforest.hill1.desc": "Defeat a %s in a %s.",
   "advancement.twilightforest.hill2": "What Was That Noise?",
-  "advancement.twilightforest.hill2.desc": "Defeat a %s in a medium %s.",
+  "advancement.twilightforest.hill2.desc": "Defeat a %s in a %s.",
   "advancement.twilightforest.hill3": "I See Right Through You",
-  "advancement.twilightforest.hill3.desc": "Defeat a %s in a large %s.",
+  "advancement.twilightforest.hill3.desc": "Defeat a %s in a %s.",
 
   "advancement.twilightforest.quest_ram": "Consummate Baaahs",
   "advancement.twilightforest.quest_ram.desc": "Give the %s what it is missing.",
