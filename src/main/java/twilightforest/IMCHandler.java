@@ -2,11 +2,13 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
-import net.minecraft.nbt.*;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -57,8 +59,8 @@ public class IMCHandler {
 			if (thing instanceof CompoundTag) {
 				CompoundTag imcCompound = ((CompoundTag) thing);
 
-				readFromTagList(imcCompound.getList("Ore_Blocks", Constants.NBT.TAG_COMPOUND), IMCHandler::handleOre);
-				readFromTagList(imcCompound.getList("Crumbling",  Constants.NBT.TAG_COMPOUND), IMCHandler::handleCrumble);
+				readFromTagList(imcCompound.getList("Ore_Blocks", Tag.TAG_COMPOUND), IMCHandler::handleOre);
+				readFromTagList(imcCompound.getList("Crumbling",  Tag.TAG_COMPOUND), IMCHandler::handleCrumble);
 			}
 
 			if (thing instanceof ItemStack && message.getMethod().equals("Loading_Icon")) {
@@ -85,7 +87,7 @@ public class IMCHandler {
 	private static void handleCrumble(CompoundTag nbt) {
 		BlockState key = NbtUtils.readBlockState(nbt);
 		if (key.getBlock() != Blocks.AIR) {
-			readStatesFromTagList(nbt.getList("Crumbling", Constants.NBT.TAG_COMPOUND), value -> CRUMBLE_BLOCKS_BUILDER.put(key, value));
+			readStatesFromTagList(nbt.getList("Crumbling", Tag.TAG_COMPOUND), value -> CRUMBLE_BLOCKS_BUILDER.put(key, value));
 		}
 	}
 
@@ -97,7 +99,7 @@ public class IMCHandler {
 		if (nbtState.getBlock() != Blocks.AIR) {
 			ORE_BLOCKS_BUILDER.add(nbtState);
 
-			if (nbt.contains("Stalactite_Settings", Constants.NBT.TAG_COMPOUND)) {
+			if (nbt.contains("Stalactite_Settings", Tag.TAG_COMPOUND)) {
 				CompoundTag settings = nbt.getCompound("Stalactite_Settings");
 				int weight    = readInt(settings, "Weight", 15);
 				int hillSize  = readInt(settings, "Hill_Size", 3);
@@ -110,11 +112,11 @@ public class IMCHandler {
 	}
 
 	private static int readInt(CompoundTag tag, String key, int defaultValue) {
-		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getInt(key) : defaultValue;
+		return tag.contains(key, Tag.TAG_ANY_NUMERIC) ? tag.getInt(key) : defaultValue;
 	}
 
 	private static float readFloat(CompoundTag tag, String key, float defaultValue) {
-		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
+		return tag.contains(key, Tag.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
 	}
 
 	public static ImmutableList<ItemStack> getLoadingIconStacks() {

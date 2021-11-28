@@ -30,7 +30,7 @@ public class GreaterFlaskItem extends BrittleFlaskItem {
 	}
 
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean isBarVisible(ItemStack stack) {
 		return false;
 	}
 

@@ -48,12 +48,12 @@ public class BrittleFlaskItem extends Item {
 	}
 
 	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
+	public boolean isBarVisible(ItemStack stack) {
 		return stack.getOrCreateTag().contains("Potion");
 	}
 
 	@Override
-	public int getRGBDurabilityForDisplay(ItemStack stack) {
+	public int getBarColor(ItemStack stack) {
 		return PotionUtils.getColor(stack);
 	}
 
@@ -198,8 +198,8 @@ public class BrittleFlaskItem extends Item {
 	}
 
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
-		return Math.abs((double)stack.getOrCreateTag().getInt("Uses") - 4) / 4;
+	public int getBarWidth(ItemStack stack) {
+		return (int) (Math.abs((double)stack.getOrCreateTag().getInt("Uses") - 4) / 4);
 	}
 
 	@Override

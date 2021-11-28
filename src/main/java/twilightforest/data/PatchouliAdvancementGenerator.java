@@ -3,12 +3,15 @@ package twilightforest.data;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.ArmorInventoryChangedTrigger;
 import twilightforest.advancements.HasAdvancementTrigger;
@@ -21,9 +24,13 @@ import twilightforest.world.registration.biomes.BiomeKeys;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancement>> {
+public class PatchouliAdvancementGenerator extends AdvancementProvider {
+	public PatchouliAdvancementGenerator(DataGenerator generatorIn, ExistingFileHelper fileHelperIn) {
+		super(generatorIn, fileHelperIn);
+	}
+
 	@Override
-	public void accept(Consumer<Advancement> consumer) {
+	protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
 		Advancement root = Advancement.Builder.advancement()
 				.addCriterion("hidden", new ImpossibleTrigger.TriggerInstance())
 				.save(consumer, "twilightforest:alt/root");
