@@ -59,7 +59,7 @@ public class MoonwormQueenItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.getDamageValue() >= stack.getMaxDamage() - 1) {
+		if (stack.getDamageValue() >= stack.getMaxDamage()) {
 			return InteractionResultHolder.fail(stack);
 		} else {
 			player.startUsingItem(hand);
