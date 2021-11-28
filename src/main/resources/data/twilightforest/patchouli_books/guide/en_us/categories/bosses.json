@@ -2,6 +2,6 @@
   "parent": "twilightforest:entities",
   "name": "Bosses",
   "description": "The very baddest guys!",
-  "icon": "twilightforest:boss_spawner",
+  "icon": "twilightforest:final_boss_boss_spawner",
   "sortnum": 0
 }

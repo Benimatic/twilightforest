@@ -1,7 +1,7 @@
 {
   "name": "Goblins",
   "icon": "twilightforest:blockchain_goblin_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/goblins",
   "sortnum": 2100,
   "pages": [
@@ -24,15 +24,15 @@
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/goblin_knight",
-      "entity": "twilightforest:goblin_knight_lower{Passengers:[{id:\"twilightforest:goblin_knight_upper\",hasArmor:1b,hasShield:1b}],hasArmor:1b}"
+      "entity": "twilightforest:lower_goblin_knight{Passengers:[{id:\"twilightforest:goblin_knight_upper\",hasArmor:1b,hasShield:1b}],hasArmor:1b}"
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/entities/goblin_knight",
-      "text": "It appears that with Upper Goblin's world always sitting upon Lower Goblin's shoulders, he has never skipped leg day. Joking aside though, these two will make trouble for any Labyrinth intruder."
+      "text": "It appears that with Upper Goblin's world always sitting upon Lower Goblin's shoulders, he has never skipped leg day. Joking aside though, these two will make trouble for any Stronghold intruder."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/goblin_knight",
-      "entity": "twilightforest:goblin_knight_upper{hasArmor:1b}"
+      "entity": "twilightforest:upper_goblin_knight{hasArmor:1b}"
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/entities/goblin_knight",

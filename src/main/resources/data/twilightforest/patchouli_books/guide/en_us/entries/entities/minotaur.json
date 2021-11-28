@@ -1,7 +1,7 @@
 {
   "name": "Minotaur",
   "icon": "twilightforest:minotaur_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/minotaur",
   "sortnum": 5020,
   "pages": [
@@ -14,7 +14,7 @@
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/treasures/minotaur_axe_gold",
-      "entity": "twilightforest:minotaur{HandItems:[{Count:1,id:\"twilightforest:minotaur_axe_gold\"},{}]}"
+      "entity": "twilightforest:minotaur{HandItems:[{Count:1,id:\"twilightforest:gold_minotaur_axe\"},{}]}"
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/minotaur_axe_gold",

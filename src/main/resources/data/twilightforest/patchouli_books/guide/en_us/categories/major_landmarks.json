@@ -2,6 +2,6 @@
   "parent": "twilightforest:world",
   "name": "Major Landmarks",
   "description": "Time to wallop those bosses!",
-  "icon": "twilightforest:magic_map",
+  "icon": "twilightforest:filled_magic_map",
   "sortnum": 2000
 }

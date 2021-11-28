@@ -1,14 +1,14 @@
 {
   "name": "Alpha Yeti",
-  "icon": "twilightforest:yeti_helmet",
-  "category": "bosses",
-  "advancement": "twilightforest:alt/entities/yeti_alpha",
+  "icon": "twilightforest:alpha_yeti_trophy",
+  "category": "twilightforest:bosses",
+  "advancement": "twilightforest:alt/entities/alpha_yeti",
   "sortnum": 7030,
   "pages": [
     {
       "type": "entity",
-      "entity": "twilightforest:yeti_alpha",
-      "text": "He so baddie but not so bad, he don't got no trophy yeti"
+      "entity": "twilightforest:alpha_yeti",
+      "text": "He so baddie but not so bad, he don't got no trophy yeti (yes he does)"
     }
   ]
 }

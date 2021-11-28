@@ -1,7 +1,7 @@
 {
   "name": "Arthopods",
   "icon": "twilightforest:pinch_beetle_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/arthopods",
   "sortnum": 2100,
   "pages": [
@@ -63,20 +63,20 @@
       "text": "The King Spider certainly lives up to its name! This massive arthopod would make short work of an enemy, and that's even without the Skeleton Druid atop its back."
     }, {
       "type": "entity",
-      "advancement": "twilightforest:alt/entities/tower_termite",
-      "entity": "twilightforest:tower_termite"
+      "advancement": "twilightforest:alt/entities/towerwood_borer",
+      "entity": "twilightforest:towerwood_borer"
     }, {
       "type": "text",
-      "advancement": "twilightforest:alt/entities/tower_termite",
+      "advancement": "twilightforest:alt/entities/towerwood_borer",
       "text": "Towerwood Borer's bear a striking resemblance to Overworld Silverfish; however, an unusual shine is noticeable on their scales, perhaps it is a kind of essence?..."
     }, {
       "type": "entity",
-      "advancement": "twilightforest:alt/entities/tower_broodling",
-      "entity": "twilightforest:tower_broodling"
+      "advancement": "twilightforest:alt/entities/carminite_broodling",
+      "entity": "twilightforest:carminite_broodling"
     }, {
       "type": "text",
-      "advancement": "twilightforest:alt/entities/tower_broodling",
-      "text": "The Tower Broodling is somewhat related to its cousin the Swarm Spider, but not as weak."
+      "advancement": "twilightforest:alt/entities/carminite_broodling",
+      "text": "The Carminite Broodling is somewhat related to its cousin the Swarm Spider, but not as weak."
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "name": "Scepters",
   "icon": "twilightforest:twilight_scepter",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/scepters",
   "sortnum": 4030,
   "pages": [
@@ -29,7 +29,7 @@
     }, {
       "type": "spotlight",
       "title": "Twilight Scepter",
-      "item": "twilightforest:shield_scepter",
+      "item": "twilightforest:fortification_scepter",
       "advancement": "twilightforest:alt/treasures/shield_scepter",
       "text": "Generates a temporary warding aura."
     }
