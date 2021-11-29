@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.Lich;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class LichMinion extends Zombie {
 	}
 
 	public LichMinion(Level world, Lich entityTFLich) {
-		super(world);
+		super(TFEntities.LICH_MINION, world);
 		this.master = entityTFLich;
 	}
 
