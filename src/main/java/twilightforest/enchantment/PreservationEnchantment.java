@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import twilightforest.item.ChainBlockItem;
 
-public class PreservationEnchantment extends Enchantment {
+public class PreservationEnchantment extends LootOnlyEnchantment {
 
 	public PreservationEnchantment(Rarity rarity) {
 		super(rarity, TFEnchantments.BLOCK_AND_CHAIN, new EquipmentSlot[] {EquipmentSlot.MAINHAND});
@@ -24,11 +24,6 @@ public class PreservationEnchantment extends Enchantment {
 	@Override
 	public int getMaxLevel() {
 		return 1;
-	}
-
-	@Override
-	public boolean isTreasureOnly() {
-		return true;
 	}
 
 	@Override

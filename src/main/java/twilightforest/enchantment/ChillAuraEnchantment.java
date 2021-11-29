@@ -1,6 +1,5 @@
 package twilightforest.enchantment;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -12,12 +11,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
-import twilightforest.client.particle.TFParticleType;
 import twilightforest.potions.TFMobEffects;
 
 import java.util.Random;
 
-public class ChillAuraEnchantment extends Enchantment {
+public class ChillAuraEnchantment extends LootOnlyEnchantment {
 
 	public ChillAuraEnchantment(Rarity rarity) {
 		super(rarity, EnchantmentCategory.ARMOR, new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST,
@@ -37,11 +35,6 @@ public class ChillAuraEnchantment extends Enchantment {
 	@Override
 	public int getMaxCost(int pEnchantmentLevel) {
 		return this.getMinCost(pEnchantmentLevel) + 15;
-	}
-
-	@Override
-	public boolean isTreasureOnly() {
-		return true;
 	}
 
 	@Override

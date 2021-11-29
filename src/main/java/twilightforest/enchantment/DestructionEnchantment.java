@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import twilightforest.item.ChainBlockItem;
 
-public class DestructionEnchantment extends Enchantment {
+public class DestructionEnchantment extends LootOnlyEnchantment {
 
 	public DestructionEnchantment(Rarity rarity) {
 		super(rarity, TFEnchantments.BLOCK_AND_CHAIN, new EquipmentSlot[] {EquipmentSlot.MAINHAND});
@@ -25,11 +25,6 @@ public class DestructionEnchantment extends Enchantment {
 	@Override
 	public int getMaxLevel() {
 		return 2;
-	}
-
-	@Override
-	public boolean isTreasureOnly() {
-		return true;
 	}
 
 	@Override

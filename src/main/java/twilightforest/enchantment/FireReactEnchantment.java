@@ -1,7 +1,5 @@
 package twilightforest.enchantment;
 
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,7 +11,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.Random;
 
-public class FireReactEnchantment extends Enchantment {
+public class FireReactEnchantment extends LootOnlyEnchantment {
 
 	public FireReactEnchantment(Rarity rarity) {
 		super(rarity, EnchantmentCategory.ARMOR, new EquipmentSlot[]{
@@ -35,11 +33,6 @@ public class FireReactEnchantment extends Enchantment {
 	@Override
 	public int getMaxCost(int pEnchantmentLevel) {
 		return this.getMinCost(pEnchantmentLevel) + 15;
-	}
-
-	@Override
-	public boolean isTreasureOnly() {
-		return true;
 	}
 
 	@Override
