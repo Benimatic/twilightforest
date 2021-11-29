@@ -38,7 +38,15 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	private static final VoxelShape AABB = Shapes.create(new AABB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F));
+	private static final VoxelShape BOTTOM = Block.box(1, 0, 1, 15, 3, 15);
+	private static final VoxelShape MID = Block.box(2, 3, 2, 14, 13, 14);
+	private static final VoxelShape TOP = Block.box(1, 13, 1, 15, 16, 15);
+	private static final VoxelShape CORNER1 = Block.box(1, 12, 1, 4, 13, 4);
+	private static final VoxelShape CORNER2 = Block.box(12, 12, 1, 15, 13, 4);
+	private static final VoxelShape CORNER3 = Block.box(1, 12, 12, 4, 13, 15);
+	private static final VoxelShape CORNER4 = Block.box(12, 12, 12, 15, 13, 15);
+
+	private static final VoxelShape FINAL = Shapes.or(BOTTOM, MID, TOP, CORNER1, CORNER2, CORNER3, CORNER4);
 
 	public TrophyPedestalBlock(Properties props) {
 		super(props);
@@ -55,7 +63,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 		boolean flag = fluidstate.getType() == Fluids.WATER;
-		return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, flag);
 	}
 
 	@Override
@@ -76,7 +84,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	@Override
 	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		return AABB;
+		return FINAL;
 	}
 
 	@Override
