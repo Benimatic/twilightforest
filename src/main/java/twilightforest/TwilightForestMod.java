@@ -52,6 +52,7 @@ import twilightforest.enchantment.TFEnchantments;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.FieryPickItem;
 import twilightforest.item.TFItems;
+import twilightforest.item.recipe.TFRecipes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
@@ -113,6 +114,7 @@ public class TwilightForestMod {
 		BiomeKeys.BIOMES.register(modbus);
 		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
 		TFBlockEntities.TILE_ENTITIES.register(modbus);
+		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
 		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);

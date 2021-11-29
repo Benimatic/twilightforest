@@ -32,6 +32,7 @@ import twilightforest.entity.projectile.MoonwormShot;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class MoonwormQueenItem extends Item {
 
@@ -59,7 +60,7 @@ public class MoonwormQueenItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.getDamageValue() >= stack.getMaxDamage()) {
+		if (stack.getDamageValue() + 1 >= this.getMaxDamage(stack)) {
 			return InteractionResultHolder.fail(stack);
 		} else {
 			player.startUsingItem(hand);
@@ -105,7 +106,7 @@ public class MoonwormQueenItem extends Item {
 			boolean fired = world.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT, world, living));
 
 			if (fired) {
-				stack.hurtAndBreak(2, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
+				stack.hurt(2, world.random, null);
 
 				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH, living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1, 1);
 			}
@@ -155,9 +156,9 @@ public class MoonwormQueenItem extends Item {
 					}
 
 					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
-					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, context.getPlayer()), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, Objects.requireNonNull(context.getPlayer())), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 					if (playerentity == null || !playerentity.getAbilities().instabuild) {
-						itemstack.hurtAndBreak(1, playerentity, (user) -> user.broadcastBreakEvent(playerentity.getUsedItemHand()));
+						itemstack.hurt(1, world.random, null);
 					}
 
 					return InteractionResult.SUCCESS;

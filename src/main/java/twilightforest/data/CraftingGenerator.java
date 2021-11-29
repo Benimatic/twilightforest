@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import com.google.gson.JsonObject;
+import net.minecraft.data.recipes.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.data.*;
 import net.minecraft.world.item.Items;
@@ -12,16 +13,11 @@ import net.minecraftforge.common.crafting.ConditionalRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
+import twilightforest.item.recipe.TFRecipes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 
 import java.nio.file.Path;
 import java.util.function.Consumer;
-
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
-import net.minecraft.data.recipes.UpgradeRecipeBuilder;
 
 public class CraftingGenerator extends CraftingDataHelper {
 	public CraftingGenerator(DataGenerator generator) {
@@ -341,11 +337,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		charmRecipe(consumer, "charm_of_keeping_3", TFItems.CHARM_OF_KEEPING_3, TFItems.CHARM_OF_KEEPING_2);
 		charmRecipe(consumer, "charm_of_life_2", TFItems.CHARM_OF_LIFE_2, TFItems.CHARM_OF_LIFE_1);
 
-		ShapelessRecipeBuilder.shapeless(TFItems.MOONWORM_QUEEN.get())
-				.requires(TFItems.MOONWORM_QUEEN.get())
-				.requires(TFItems.TORCHBERRIES.get(), 3)
-				.unlockedBy("has_item", has(TFItems.MOONWORM_QUEEN.get()))
-				.save(consumer, TwilightForestMod.prefix("moonworm_queen"));
+		SpecialRecipeBuilder.special(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.get()).save(consumer, TwilightForestMod.prefix("moonworm_queen_repair_recipe").toString());
 
 		ShapelessRecipeBuilder.shapeless(Blocks.COBBLESTONE, 64)
 				.requires(TFBlocks.GIANT_COBBLESTONE.get())
