@@ -8,12 +8,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.UncraftingGui;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.inventory.UncraftingContainer;
+import twilightforest.item.recipe.TFRecipes;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,8 +45,10 @@ public class JEI implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        List<CraftingRecipe> recipes = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING);
+        RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
+        List<CraftingRecipe> recipes = manager.getAllRecipesFor(RecipeType.CRAFTING);
         recipes.removeIf(recipe -> recipe.getResultItem().isEmpty() | recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES));//Prevents things that are tagged as banned from showing up
+        recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE));
         registration.addRecipes(recipes, JEIUncraftingCategory.UNCRAFTING);
     }
 
