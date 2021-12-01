@@ -37,13 +37,12 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
 			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
-			Codec.BOOL.fieldOf("use_overworld_seed").forGetter(o -> o.useOverworldSeed)
+			Codec.BOOL.fieldOf("use_overworld_seed").forGetter(o -> false) // Don't make this persistent, we want to load the stored seed on existing worlds! This is purely used on world creation ONLY!!
 	).apply(instance, instance.stable(ChunkGeneratorTwilight::new)));
 
 	private final boolean genDarkForestCanopy;
 	private final boolean monsterSpawnsBelowSeaLevel;
 	private final Optional<Integer> darkForestCanopyHeight;
-	private final boolean useOverworldSeed;
 
 	private final BlockState defaultBlock;
 	private final SurfaceNoise surfaceNoiseGetter;
@@ -56,7 +55,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
-		this.useOverworldSeed = owSeed;
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
 			this.defaultBlock = noiseGen.defaultBlock;

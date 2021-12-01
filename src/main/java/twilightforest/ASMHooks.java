@@ -1,8 +1,10 @@
 package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.DataFixer;
 import com.mojang.datafixers.util.Function4;
 import com.mojang.math.Matrix4f;
+import com.mojang.serialization.Dynamic;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Camera;
@@ -16,6 +18,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
@@ -69,6 +72,16 @@ public class ASMHooks {
 	 */
 	public static long seed(long seed) {
 		TFDimensions.seed = seed;
+		return seed;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.storage.LevelStorageSource#readWorldGenSettings(Dynamic, DataFixer, int)}<br>
+	 * [BEFORE FIRST ASTORE]
+	 */
+	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
+		TFDimensions.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 
