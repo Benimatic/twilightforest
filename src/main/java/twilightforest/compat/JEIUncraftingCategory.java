@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
@@ -83,6 +84,8 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
             outputList.set(i, newList.stream()
                     .filter(o -> !(o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS)))
                     .filter(o -> !(o.getItem().hasContainerItem(o)))
+                    .filter(o -> !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(craftingRecipe.getId().toString()))
+                    .filter(o -> TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(craftingRecipe.getId().getNamespace()))
                     .collect(Collectors.toList()));//Remove any banned items
         }
 
