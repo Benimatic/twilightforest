@@ -62,6 +62,7 @@ import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.world.registration.features.TFNoiseRules;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -211,6 +212,7 @@ public class TwilightForestMod {
 
 		TFConfig.build();
 		BlockSpikeFeature.loadStalactites();
+		TFNoiseRules.init();
 
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();
