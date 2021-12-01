@@ -24,7 +24,7 @@ apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remappe
 ///////////////////////////////////////////////////
 idea {
     project {
-        languageLevel = '16' // Not sure this is proper or even needed anymore, verify it
+        languageLevel = '17' // Not sure this is proper or even needed anymore, verify it
     }
 }
 
@@ -34,14 +34,14 @@ idea {
 version = (hasProperty("CIRevision") ? CIRevision : mod_version)
 group = group_name
 archivesBaseName = "${mod_id}-${minecraft_version}"
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    //mappings channel: "official", version: "1.17.1"
+    mappings channel: "official", version: "1.18"
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    mappings channel: 'parchment', version: '2021.10.31-1.17.1'
+    //mappings channel: 'parchment', version: '2021.10.31-1.17.1'
 
     //version = minecraft_version + "-" + forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
@@ -168,18 +168,18 @@ jar {
 }
 
 repositories {
-    maven {
-        name 'progwm\'s Maven' // JEI + Mantle + TCon
-        url 'https://dvs1.progwml6.com/files/maven'
-    }
+//    maven {
+//        name 'progwm\'s Maven' // JEI + Mantle + TCon
+//        url 'https://dvs1.progwml6.com/files/maven'
+//    }
     //maven {
     //    name 'tterrag\'s Maven' // CTM
     //    url 'https://maven.tterrag.com/'
     //}
-    maven {
-        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
-        url 'https://maven.blamejared.com/'
-    }
+//    maven {
+//        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
+//        url 'https://maven.blamejared.com/'
+//    }
     //maven {
     //    name 'theillusivec4\'s Maven' //Curios
     //    url 'https://maven.theillusivec4.top/'
@@ -192,8 +192,8 @@ repositories {
 
 dependencies {
     // progwml6
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    //compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     //implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}")
     //implementation fg.deobf("slimeknights:TConstruct:${minecraft_version}-${tcon_version}")
@@ -202,8 +202,8 @@ dependencies {
     //implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
 
     // blamejared
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
-    implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    //implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
+    //implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // theillusivec4
     //compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
