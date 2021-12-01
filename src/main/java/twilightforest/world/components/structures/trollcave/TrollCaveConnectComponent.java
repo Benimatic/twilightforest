@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -28,8 +29,8 @@ import twilightforest.util.RotationUtil;
 import java.util.Random;
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
-	protected static final SpikeConfig STONE_STALACTITE_SMALL = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 5), UniformInt.of(2, 3), true);
-	protected static final SpikeConfig STONE_STALAGMITE_SMALL = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(2, 4), UniformInt.of(2, 3), false);
+	protected static final SpikeConfig STONE_STALACTITE_SMALL = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(5, 5), UniformInt.of(2, 3), true);
+	protected static final SpikeConfig STONE_STALAGMITE_SMALL = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(2, 4), UniformInt.of(2, 3), false);
 
 	protected boolean[] openingTowards = {false, false, true, false};
 
@@ -50,8 +51,8 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		// too lazy to do this as a loop
 		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
 		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
@@ -74,7 +75,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 //		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
 //			return false;
 //		}
@@ -112,8 +113,6 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 			// or a monolith!
 			makeMonolith(world, decoRNG, sbb);
 		}
-
-		return true;
 	}
 
 	protected void makeMonolith(WorldGenLevel world, Random rand, BoundingBox sbb) {

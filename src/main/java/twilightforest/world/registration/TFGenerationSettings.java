@@ -164,7 +164,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 	// Checks if the world is *a* Twilight world on the Server side.
 	public static boolean usesTwilightChunkGenerator(ServerLevel world) {
-		return world.getChunkSource().generator instanceof ChunkGeneratorTwilight;
+		return world.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight;
 	}
 
 	public static boolean isProgressionEnforced(Level world) {

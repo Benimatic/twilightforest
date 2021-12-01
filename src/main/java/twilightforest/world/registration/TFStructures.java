@@ -131,11 +131,11 @@ public class TFStructures {
 	}
 
 	public static void load(WorldEvent.Load event) {
-		if(event.getWorld() instanceof ServerLevel && ((ServerLevel) event.getWorld()).getChunkSource().generator instanceof ChunkGeneratorTwilight) {
+		if(event.getWorld() instanceof ServerLevel && ((ServerLevel) event.getWorld()).getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight) {
 			ServerLevel serverWorld = (ServerLevel)event.getWorld();
-			Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
+			Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(serverWorld.getChunkSource().getGenerator().getSettings().structureConfig());
 			tempMap.putAll(SEPARATION_SETTINGS);
-			serverWorld.getChunkSource().generator.getSettings().structureConfig = tempMap;
+			serverWorld.getChunkSource().getGenerator().getSettings().structureConfig = tempMap;
 		}
 	}
 }

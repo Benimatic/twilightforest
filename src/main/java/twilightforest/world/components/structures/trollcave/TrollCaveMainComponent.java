@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
@@ -19,28 +18,28 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.block.TFBlocks;
+import twilightforest.loot.TFTreasure;
+import twilightforest.util.RotationUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.registration.BlockConstants;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.block.TFBlocks;
-import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.util.RotationUtil;
+import twilightforest.world.registration.BlockConstants;
 import twilightforest.world.registration.TFBiomeFeatures;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 import java.util.function.Predicate;
 
 public class TrollCaveMainComponent extends TFStructureComponentOld {
-	protected static final SpikeConfig STONE_STALACTITE = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(6, 9), UniformInt.of(3, 4), true);
-	protected static final SpikeConfig STONE_STALAGMITE = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(4, 7), UniformInt.of(3, 4), false);
+	protected static final SpikeConfig STONE_STALACTITE = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(6, 9), UniformInt.of(3, 4), true);
+	protected static final SpikeConfig STONE_STALAGMITE = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(4, 7), UniformInt.of(3, 4), false);
 
 	protected int size;
 	protected int height;

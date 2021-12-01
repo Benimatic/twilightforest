@@ -34,8 +34,8 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
-import twilightforest.world.registration.ConfiguredFeatures;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.features.TFTreeFeatures;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -1088,8 +1088,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				case 2 ->
 						// birch
 						TreeFeatures.BIRCH;
-				case 3 -> ConfiguredFeatures.TWILIGHT_OAK_BASE;
-				case 4 -> ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
+				case 3 -> TFTreeFeatures.TWILIGHT_OAK_BASE;
+				case 4 -> TFTreeFeatures.RAINBOW_OAK_TREE_BASE;
 				default ->
 						// oak tree
 						TreeFeatures.OAK;

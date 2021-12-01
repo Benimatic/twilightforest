@@ -1,16 +1,16 @@
 package twilightforest.world.components.structures;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.ConfiguredFeatures;
+import twilightforest.world.registration.features.TFTreeFeatures;
 
 import java.util.Random;
 
@@ -386,7 +386,7 @@ public class TFMaze {
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
 		if (sbb.isInside(pos)) {
-			ConfiguredFeatures.CANOPY_TREE_BASE.place(world, generator, rand, pos);
+			TFTreeFeatures.CANOPY_TREE_BASE.place(world, generator, rand, pos);
 		}
 	}
 
