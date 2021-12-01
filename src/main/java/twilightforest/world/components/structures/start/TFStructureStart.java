@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
@@ -157,7 +158,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 			boolean dontCenter = feature == TFFeature.LICH_TOWER || feature == TFFeature.TROLL_CAVE || feature == TFFeature.YETI_CAVE;
 			int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 			int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
-			int y = feature.shouldAdjustToTerrain() ? Math.max(chunkGenerator.getFirstOccupiedHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, levelHeightAccessor), chunkGenerator.getSeaLevel() + 1) : chunkGenerator.getSeaLevel();
+			int y = feature.shouldAdjustToTerrain() ? Mth.clamp(chunkGenerator.getFirstOccupiedHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, levelHeightAccessor), chunkGenerator.getSeaLevel() + 1, chunkGenerator.getSeaLevel() + 7) : chunkGenerator.getSeaLevel();
 			StructurePiece start = feature.provideStructureStart(structureManager, chunkGenerator, random, x, y, z);
 			if(start == null)
 				return;
