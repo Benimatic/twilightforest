@@ -1,14 +1,12 @@
 package twilightforest.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -46,18 +44,10 @@ public final class WorldUtil {
 
 	@Nullable
 	public static ChunkGeneratorTwilight getChunkGenerator(LevelAccessor level) {
-		if (level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().generator instanceof ChunkGeneratorTwilight chunkGenerator)
+		if (level.getChunkSource() instanceof ServerChunkCache chunkSource && chunkSource.chunkMap.generator() instanceof ChunkGeneratorTwilight chunkGenerator)
 			return chunkGenerator;
 
 		return null;
-	}
-
-	public static int getSeaLevel(Level world) {
-		return getSeaLevel(getChunkGenerator(world));
-	}
-
-	public static int getSeaLevel(ChunkSource source) {
-		return source instanceof ServerChunkCache serverCache ? getSeaLevel(serverCache.generator) : TFGenerationSettings.SEALEVEL;
 	}
 
 	public static int getSeaLevel(ChunkGenerator generator) {
@@ -68,7 +58,7 @@ public final class WorldUtil {
 
 	public static int getBaseHeight(LevelAccessor level, int x, int z, Heightmap.Types type) {
 		if (level.getChunkSource() instanceof ServerChunkCache chunkSource) {
-			return chunkSource.generator.getBaseHeight(x, z, type, level);
+			return chunkSource.chunkMap.generator().getBaseHeight(x, z, type, level);
 		} else {
 			return level.getHeight(type, x, z);
 		}
