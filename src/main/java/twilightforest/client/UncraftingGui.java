@@ -83,7 +83,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 	@Override
 	protected void renderLabels(PoseStack ms, int mouseX, int mouseY) {
 		this.font.draw(ms, I18n.get(TFBlocks.UNCRAFTING_TABLE.get().getDescriptionId()), 6, 6, 4210752);
-		if(TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
+		if(TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) {
 			this.font.draw(ms, new TranslatableComponent("container.uncrafting_table.disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752);
 		} else {
 			this.font.draw(ms, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 4210752);

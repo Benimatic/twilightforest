@@ -122,21 +122,6 @@ public class TFConfig {
 					translation(config + "portal_unlocked_by_advancement").
 					comment("Use a valid advancement resource location as a string. For example, using the string \"minecraft:story/mine_diamond\" will lock the portal behind the \"Diamonds!\" advancement. Invalid/Empty Advancement resource IDs will leave the portal entirely unlocked.").
 					define("portalUnlockedByAdvancement", "");
-			disableUncrafting = builder.
-					worldRestart().
-					translation(config + "uncrafting").
-					comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
-					define("disableUncrafting", false);
-			disableUncraftingRecipes = builder.
-					worldRestart().
-					translation(config + "uncrafting_recipes").
-					comment("""
-							If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.
-							To add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.
-							Example: "twilightforest:moonworm_queen" will disable uncrafting the moonworm queen into itself and 3 torchberries.
-							If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
-							If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
-					defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
 			casketUUIDLocking = builder.
 					worldRestart().
 					translation(config + "casket_uuid_locking").
@@ -146,6 +131,42 @@ public class TFConfig {
 					translation(config + "disable_skull_candles").
 					comment("If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.").
 					define("skull_candles", false);
+
+			builder.
+					comment("Settings for all things related to the uncrafting table.").
+					push("Uncrafting Table");
+			{
+				UNCRAFTING_STUFFS.disableUncraftingRecipes = builder.
+						worldRestart().
+						translation(config + "uncrafting_recipes").
+						comment("""
+							If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.
+							To add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.
+							Example: "twilightforest:moonworm_queen" will disable uncrafting the moonworm queen into itself and 3 torchberries.
+							If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
+							If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
+						defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
+				UNCRAFTING_STUFFS.blacklistedUncraftingModIds = builder.
+						worldRestart().
+						translation(config + "uncrafting_mod_ids").
+						comment("""
+							Here, you can disable all items from certain mods from being uncrafted.
+							Input a valid mod id to disable all uncrafting recipes from that mod.
+							Example: "twilightforest" will disable all uncrafting recipes from this mod.""").
+						defineList("blacklistedUncraftingModIds", new ArrayList<>(), s -> s instanceof String);
+				UNCRAFTING_STUFFS.flipUncraftingModIdList = builder.
+						worldRestart().
+						translation(config + "uncrafting_mod_id_flip").
+						comment("If true, this will invert the above option from a blacklist to a whitelist.").
+						define("flipIdList", false);
+				UNCRAFTING_STUFFS.disableUncrafting = builder.
+						worldRestart().
+						translation(config + "uncrafting").
+						comment("Disable the uncrafting function of the uncrafting table. Recommended as a last resort if there's too many things to change about its behavior.").
+						define("disableUncrafting", false);
+			}
+			builder.pop();
+
 			builder.
 					comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
 					push("Shield Parrying");
@@ -241,10 +262,17 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue portalLightning;
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
 		public ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
-		public ForgeConfigSpec.BooleanValue disableUncrafting;
-		public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public ForgeConfigSpec.BooleanValue disableSkullCandles;
+
+		public UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
+
+		public static class UncraftingStuff {
+			public ForgeConfigSpec.BooleanValue disableUncrafting;
+			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
+			public ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
+			public ForgeConfigSpec.BooleanValue flipUncraftingModIdList;
+		}
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 		public ResourceLocation portalLockingAdvancement;

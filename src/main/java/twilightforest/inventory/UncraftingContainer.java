@@ -303,8 +303,10 @@ public class UncraftingContainer extends AbstractContainerMenu {
 						recipe.canCraftInDimensions(3, 3) &&
 						!recipe.getIngredients().isEmpty() &&
 						matches(inputStack, recipe.getResultItem()) &&
-						!TFConfig.COMMON_CONFIG.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
-					recipes.add(rec);
+						!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
+					if(TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) {
+						recipes.add(rec);
+					}
 				}
 			}
 			for (UncraftingRecipe uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE)) {
@@ -483,7 +485,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			}
 
 			// don't allow uncrafting if the server option is turned off
-			if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
+			if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) {
 				return;
 			}
 
