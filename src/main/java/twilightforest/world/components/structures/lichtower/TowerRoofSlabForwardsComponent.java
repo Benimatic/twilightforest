@@ -1,17 +1,17 @@
 package twilightforest.world.components.structures.lichtower;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
@@ -23,7 +23,7 @@ import java.util.Random;
  */
 public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 
-	public TowerRoofSlabForwardsComponent(ServerLevel level, CompoundTag nbt) {
+	public TowerRoofSlabForwardsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRSF, nbt);
 	}
 
@@ -44,7 +44,7 @@ public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 	 * Makes flat hip roof
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState();
 		BlockState birchDoubleSlab = Blocks.BIRCH_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE);
 
@@ -61,6 +61,5 @@ public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 				}
 			}
 		}
-		return true;
 	}
 }

@@ -7,6 +7,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.CobbleVariants;
@@ -18,10 +19,10 @@ import twilightforest.world.components.structures.TwilightDoubleTemplateStructur
 import java.util.Random;
 
 public class CourtyardWallCornerOuter extends TwilightDoubleTemplateStructurePiece {
-    public CourtyardWallCornerOuter(ServerLevel level, CompoundTag nbt) {
+    public CourtyardWallCornerOuter(StructurePieceSerializationContext ctx, CompoundTag nbt) {
         super(NagaCourtyardPieces.TFNCWC,
                 nbt,
-                level,
+                ctx,
                 readSettings(nbt).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(SmoothStoneVariants.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE).addProcessor(CobbleVariants.INSTANCE),
                 readSettings(nbt).addProcessor(CourtyardMain.WALL_DECAY_PROCESSOR).addProcessor(CobbleVariants.INSTANCE)
         );

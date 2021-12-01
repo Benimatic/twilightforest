@@ -99,7 +99,7 @@ public class TripleBowItem extends BowItem {
 						worldIn.addFreshEntity(entityarrow2);
 					}
 
-					worldIn.playSound((Player)null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (worldIn.random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					worldIn.playSound(null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (worldIn.random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 					if (!flag1 && !entityplayer.getAbilities().instabuild) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty()) {

@@ -25,7 +25,7 @@ public class CapabilityList {
 		if (e.getObject() instanceof LivingEntity) {
 			e.addCapability(IShieldCapability.ID, new ICapabilitySerializable<CompoundTag>() {
 
-				LazyOptional<IShieldCapability> inst = LazyOptional.of(() -> {
+				final LazyOptional<IShieldCapability> inst = LazyOptional.of(() -> {
 					ShieldCapabilityHandler i = new ShieldCapabilityHandler();
 					i.setEntity((LivingEntity) e.getObject());
 					return i;

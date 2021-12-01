@@ -45,13 +45,10 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 
 		if (target == null) {
 			return false;
-		} else if (!target.isAlive()) {
+		} else //attacker.canEntityBeSeen(target);
+			if (!target.isAlive()) {
 			return false;
-		} else if (this.attacker.getCurrentPhase() != Phase.BEAM) {
-			return false;
-		} else {
-			return true;//attacker.canEntityBeSeen(target);
-		}
+		} else return this.attacker.getCurrentPhase() == Phase.BEAM;
 	}
 
 	@Override
@@ -64,11 +61,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 			return false;
 		} else if (this.seekTimer >= this.maxSeekTime) {
 			return false;
-		} else if (this.beamTimer >= this.maxBeamTime) {
-			return false;
-		} else {
-			return true;
-		}
+		} else return this.beamTimer < this.maxBeamTime;
 	}
 
 	@Override

@@ -1,23 +1,23 @@
 package twilightforest.world.components.structures.trollcave;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class CloudTreeComponent extends TFStructureComponentOld {
 
-	public CloudTreeComponent(ServerLevel level, CompoundTag nbt) {
+	public CloudTreeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TrollCavePieces.TFClTr, nbt);
 	}
 
@@ -38,7 +38,7 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// leaves
 		this.generateBox(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
@@ -51,7 +51,5 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 
 		// cloud base
 		this.generateBox(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
-
-		return true;
 	}
 }

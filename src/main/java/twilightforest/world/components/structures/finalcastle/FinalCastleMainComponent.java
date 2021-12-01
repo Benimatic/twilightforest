@@ -1,24 +1,24 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.util.RotationUtil;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.Random;
 
 public class FinalCastleMainComponent extends TFStructureComponentOld {
 
-	public FinalCastleMainComponent(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCMain, nbt);
 	}
 
@@ -57,7 +57,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		// add foundation
-		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
@@ -73,7 +73,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 
 		// build 4 towers on sides
-		FinalCastleStairTowerComponent tower0 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.NORTH);
+		FinalCastleStairTowerComponent tower0 = new FinalCastleStairTowerComponent(getFeatureType(), 3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.NORTH);
 		list.addPiece(tower0);
 		tower0.addChildren(this, list, rand);
 
@@ -81,11 +81,11 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		list.addPiece(tower1);
 		tower1.addChildren(this, list, rand);
 
-		FinalCastleStairTowerComponent tower2 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.WEST);
+		FinalCastleStairTowerComponent tower2 = new FinalCastleStairTowerComponent(getFeatureType(), 3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.WEST);
 		list.addPiece(tower2);
 		tower2.addChildren(this, list, rand);
 
-		FinalCastleStairTowerComponent tower3 = new FinalCastleStairTowerComponent(getFeatureType(), rand, 3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.SOUTH);
+		FinalCastleStairTowerComponent tower3 = new FinalCastleStairTowerComponent(getFeatureType(), 3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.SOUTH);
 		list.addPiece(tower3);
 		tower3.addChildren(this, list, rand);
 
@@ -214,7 +214,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// walls
 		generateBox(world, sbb, 0, 0, 0, 48, 40, 48, false, rand, deco.randomBlocks);
 
@@ -300,8 +300,6 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 		// door, second floor
 		this.generateBox(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.VIOLET_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
-
-		return true;
 	}
 
 	private void makeSmallTowerStairs(WorldGenLevel world, BoundingBox sbb, Rotation rotation) {

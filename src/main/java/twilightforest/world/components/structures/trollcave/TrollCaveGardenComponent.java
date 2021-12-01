@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.BlockConstants;
 import twilightforest.world.registration.TFBiomeFeatures;
 import twilightforest.world.registration.TFFeature;
@@ -33,7 +33,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 	private final ConfiguredFeature<?,?> bigBrownMushroomGen = TreeFeatures.HUGE_BROWN_MUSHROOM;
 	private final ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().configured(FeatureConfiguration.NONE);
 
-	public TrollCaveGardenComponent(ServerLevel level, CompoundTag nbt) {
+	public TrollCaveGardenComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCGard, nbt);
 	}
 

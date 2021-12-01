@@ -1,37 +1,37 @@
 package twilightforest.world.components.structures.lichtower;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.AABB;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.util.RotationUtil;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class TowerMainComponent extends TowerWingComponent {
 
-	public TowerMainComponent(ServerLevel level, CompoundTag nbt) {
+	public TowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTMai, nbt);
 	}
 
@@ -160,7 +160,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		generateBox(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, TFStructureComponentOld.getStrongholdStones());
 
@@ -202,8 +202,6 @@ public class TowerMainComponent extends TowerWingComponent {
 
 		// extra paintings in main tower
 		makeTowerPaintings(world, rand, sbb);
-
-		return true;
 	}
 
 	/**

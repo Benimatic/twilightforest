@@ -44,10 +44,6 @@ public enum GenLayerTFThornBorder implements IThornsTransformer {
 			return true;
 		} else if (up == biomeID) {
 			return true;
-		} else if (down == biomeID) {
-			return true;
-		} else {
-			return false;
-		}
+		} else return down == biomeID;
 	}
 }

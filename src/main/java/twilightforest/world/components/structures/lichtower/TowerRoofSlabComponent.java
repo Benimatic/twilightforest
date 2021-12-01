@@ -1,23 +1,23 @@
 package twilightforest.world.components.structures.lichtower;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class TowerRoofSlabComponent extends TowerRoofComponent {
 
-	public TowerRoofSlabComponent(ServerLevel level, CompoundTag nbt) {
+	public TowerRoofSlabComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRS, nbt);
 	}
 
@@ -42,11 +42,11 @@ public class TowerRoofSlabComponent extends TowerRoofComponent {
 	 * Makes a flat, pyramid-shaped roof
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		return makePyramidCap(world, Blocks.BIRCH_SLAB.defaultBlockState(), Blocks.BIRCH_PLANKS.defaultBlockState(), sbb);
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		makePyramidCap(world, Blocks.BIRCH_SLAB.defaultBlockState(), Blocks.BIRCH_PLANKS.defaultBlockState(), sbb);
 	}
 
-	protected boolean makePyramidCap(WorldGenLevel world, BlockState slabType, BlockState woodType, BoundingBox sbb) {
+	protected void makePyramidCap(WorldGenLevel world, BlockState slabType, BlockState woodType, BoundingBox sbb) {
 		for (int y = 0; y <= height; y++) {
 			int min = 2 * y;
 			int max = size - (2 * y) - 1;
@@ -61,10 +61,9 @@ public class TowerRoofSlabComponent extends TowerRoofComponent {
 				}
 			}
 		}
-		return true;
 	}
 
-	protected boolean makeConnectedCap(WorldGenLevel world, BlockState slabType, BlockState woodType, BoundingBox sbb) {
+	protected void makeConnectedCap(WorldGenLevel world, BlockState slabType, BlockState woodType, BoundingBox sbb) {
 		for (int y = 0; y < height; y++) {
 			int min = 2 * y;
 			int max = size - (2 * y) - 1;
@@ -78,6 +77,5 @@ public class TowerRoofSlabComponent extends TowerRoofComponent {
 				}
 			}
 		}
-		return true;
 	}
 }

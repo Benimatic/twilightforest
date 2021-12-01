@@ -53,7 +53,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	public final Chain chain3;
 	public final Chain chain4;
 	public final Chain chain5;
-	private BlockChainGoblin.MultipartGenericsAreDumb[] partsArray;
+	private final BlockChainGoblin.MultipartGenericsAreDumb[] partsArray;
 
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world) {
 		super(type, world);

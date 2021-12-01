@@ -1,33 +1,31 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class MazeMoundComponent extends TFStructureComponentOld {
 
-	public MazeMoundComponent(ServerLevel level, CompoundTag nbt) {
+	public MazeMoundComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMMound, nbt);
 	}
 
 	public static final int DIAMETER = 35;
-	private int averageGroundLevel = Integer.MIN_VALUE;
+	private final int averageGroundLevel = Integer.MIN_VALUE;
 
 	private MazeUpperEntranceComponent mazeAbove;
 
@@ -50,7 +48,7 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		/*if (this.averageGroundLevel < generator.getMinY()) {
 			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
 
@@ -90,7 +88,5 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 				}
 			}
 		}
-
-		return true;
 	}
 }

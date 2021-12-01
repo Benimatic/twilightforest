@@ -58,7 +58,7 @@ public class BlockChainGoblin extends Monster {
 	public final Chain chain2;
 	public final Chain chain3;
 
-	private MultipartGenericsAreDumb[] partsArray;
+	private final MultipartGenericsAreDumb[] partsArray;
 
 	public BlockChainGoblin(EntityType<? extends BlockChainGoblin> type, Level world) {
 		super(type, world);

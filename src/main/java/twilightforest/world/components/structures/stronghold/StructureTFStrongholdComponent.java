@@ -41,11 +41,6 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		this.setOrientation(facing);
 	}
 
-	@Override
-	protected void addAdditionalSaveData(StructurePieceSerializationContext p_192646_, CompoundTag p_192647_) {
-
-	}
-
 	/**
 	 * Turn the openings array into an array of ints.
 	 */
@@ -62,8 +57,8 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
 	}
 

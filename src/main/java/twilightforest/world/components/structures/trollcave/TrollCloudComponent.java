@@ -15,8 +15,8 @@ import java.util.Random;
 
 public class TrollCloudComponent extends TFStructureComponentOld {
 
-	private int size;
-	private int height;
+	private final int size;
+	private final int height;
 
 	public TrollCloudComponent(ServerLevel level, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCloud, nbt);

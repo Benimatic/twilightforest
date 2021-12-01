@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -25,7 +26,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 	private static final SpikeConfig PACKED_ICE_SPIKE = new SpikeConfig(new SimpleStateProvider(Blocks.PACKED_ICE.defaultBlockState()), UniformInt.of(5, 9), ConstantInt.of(4), true);
 	private static final SpikeConfig ICE_SPIKE = new SpikeConfig(new SimpleStateProvider(Blocks.ICE.defaultBlockState()), UniformInt.of(6, 10), ConstantInt.of(4), true);
 
-	public YetiCaveComponent(ServerLevel level, CompoundTag nbt) {
+	public YetiCaveComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFFeature.TFYeti, nbt);
 	}
 
@@ -37,7 +38,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int sn = 64;
 
 		// fill in features
@@ -72,8 +73,6 @@ public class YetiCaveComponent extends HollowHillComponent {
 		// spawn alpha yeti
 		final BlockState yetiSpawner = TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().defaultBlockState();
 		this.setBlockStateRotated(world, yetiSpawner, this.radius, 1, this.radius, Rotation.NONE, sbb);
-
-		return true;
 	}
 
 	/**

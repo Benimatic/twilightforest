@@ -26,7 +26,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 //	protected int minHeight = 20;
 
-	private List<BlockPos> leaves = Lists.newArrayList();
+	private final List<BlockPos> leaves = Lists.newArrayList();
 
 	public TFGenCanopyTree(Codec<TFTreeFeatureConfig> config) {
 		super(config);

@@ -19,6 +19,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -35,7 +36,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	boolean hasBase = false;
 	protected int treasureFloor = -1;
 
-	public IceTowerWingComponent(ServerLevel level, CompoundTag nbt) {
+	public IceTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(IceTowerPieces.TFITWin, nbt);
 	}
 
@@ -50,8 +51,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putBoolean("hasBase", this.hasBase);
 		tagCompound.putInt("treasureFloor", this.treasureFloor);
 	}
@@ -187,7 +188,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// make walls
@@ -214,8 +215,6 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// openings
 		makeOpenings(world, sbb);
-
-		return true;
 	}
 
 	/**

@@ -1,28 +1,28 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 
-	public FinalCastleBridgeComponent(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCBri, nbt);
 	}
 
@@ -40,7 +40,7 @@ public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int length = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.maxX() - this.boundingBox.minX() : this.boundingBox.maxZ() - this.boundingBox.minZ();
 
 		// span
@@ -71,7 +71,5 @@ public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, length, 2, 5, length, 7, 5, deco.pillarState, deco.pillarState, false);
 		this.generateBox(world, sbb, length, 6, 2, length, 6, 4, deco.accentState, deco.accentState, false);
 		this.placeBlock(world, deco.pillarState, length, 7, 3, sbb);
-
-		return true;
 	}
 }

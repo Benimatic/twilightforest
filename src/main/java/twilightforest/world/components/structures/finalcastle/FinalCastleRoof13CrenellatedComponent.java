@@ -1,25 +1,25 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.components.structures.TFStructureComponentOld;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.util.RotationUtil;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class FinalCastleRoof13CrenellatedComponent extends TFStructureComponentOld {
 
-	public FinalCastleRoof13CrenellatedComponent(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleRoof13CrenellatedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCRo13Cr, nbt);
 	}
 

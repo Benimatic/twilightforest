@@ -1,23 +1,23 @@
 package twilightforest.world.components.structures.trollcave;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
-import twilightforest.entity.TFEntities;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -26,7 +26,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	private boolean minerPlaced = false;
 	private boolean warriorPlaced = false;
 
-	public CloudCastleComponent(ServerLevel level, CompoundTag nbt) {
+	public CloudCastleComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TrollCavePieces.TFClCa, nbt);
 		this.minerPlaced = nbt.getBoolean("minerPlaced");
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
@@ -48,8 +48,8 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
 		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
 	}
@@ -74,7 +74,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// make haus
 		this.generateBox(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
@@ -122,7 +122,5 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 				world.addFreshEntity(warrior);
 			}
 		}
-
-		return true;
 	}
 }

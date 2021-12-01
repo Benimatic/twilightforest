@@ -147,7 +147,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 				default -> { }
 			}
 			if (sound != null) {
-				world.playSound((Player)null, pos, sound, SoundSource.BLOCKS, volume, world.random.nextFloat() * 0.1F + pitch);
+				world.playSound(null, pos, sound, SoundSource.BLOCKS, volume, world.random.nextFloat() * 0.1F + pitch);
 			}
 		}
 	}

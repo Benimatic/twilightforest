@@ -11,8 +11,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class PanicOnFlockDeathGoal extends Goal {
-	private PathfinderMob flockCreature;
-	private float speed;
+	private final PathfinderMob flockCreature;
+	private final float speed;
 	private double fleeX;
 	private double fleeY;
 	private double fleeZ;

@@ -1,18 +1,18 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -23,7 +23,7 @@ import java.util.Random;
  */
 public class MazeRuinsComponent extends TFStructureComponentOld {
 
-	public MazeRuinsComponent(ServerLevel level, CompoundTag nbt) {
+	public MazeRuinsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMRuins, nbt);
 	}
 
@@ -60,8 +60,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	 * the end, it adds Fences...
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// I have no components
-		return true;
 	}
 }

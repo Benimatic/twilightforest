@@ -374,9 +374,7 @@ public class CarminiteGhastguard extends Ghast {
 	public boolean isWithinRestriction(BlockPos pos) {
 		// TF - restrict valid y levels
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
-		return this.maximumHomeDistance == -1.0F
-				? true
-				: pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distSqr(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
+		return this.maximumHomeDistance == -1.0F || pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distSqr(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
 	}
 
 	@Override

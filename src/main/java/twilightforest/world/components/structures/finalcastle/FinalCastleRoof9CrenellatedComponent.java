@@ -1,25 +1,25 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.components.structures.TFStructureComponentOld;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.util.RotationUtil;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOld {
 
-	public FinalCastleRoof9CrenellatedComponent(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleRoof9CrenellatedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCRo9Cr, nbt);
 	}
 
@@ -40,7 +40,7 @@ public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOl
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			this.fillBlocksRotated(world, sbb, 0, -1, 0, 2, 3, 2, deco.blockState, rotation);
 			this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
@@ -60,7 +60,5 @@ public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOl
 			this.setBlockStateRotated(world, deco.blockState, 9, 0, 1, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, 9, 1, 1, rotation, sbb);
 		}
-
-		return true;
 	}
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
@@ -16,7 +17,7 @@ import java.util.Random;
 public class IceTowerMainComponent extends IceTowerWingComponent {
 	public boolean hasBossWing = false;
 
-	public IceTowerMainComponent(ServerLevel level, CompoundTag nbt) {
+	public IceTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(IceTowerPieces.TFITMai, nbt);
 		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
@@ -35,8 +36,8 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putBoolean("hasBossWing", this.hasBossWing);
 	}
 

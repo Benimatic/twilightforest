@@ -1,21 +1,21 @@
 package twilightforest.world.components.structures.stronghold;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.loot.TFTreasure;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -25,7 +25,7 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 	public boolean hasTreasure;
 	public boolean chestTrapped;
 
-	public StrongholdSmallStairsComponent(ServerLevel level, CompoundTag nbt) {
+	public StrongholdSmallStairsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(StrongholdPieces.TFSSS, nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 		this.hasTreasure = nbt.getBoolean("hasTreasure");
@@ -37,8 +37,8 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putBoolean("enterBottom", this.enterBottom);
 		tagCompound.putBoolean("hasTreasure", this.hasTreasure);
 		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
@@ -80,7 +80,7 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 13, 8, rand, deco.randomBlocks);
 
 		// railing
@@ -124,7 +124,5 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 
 		// doors
 		placeDoors(world, sbb);
-
-		return true;
 	}
 }

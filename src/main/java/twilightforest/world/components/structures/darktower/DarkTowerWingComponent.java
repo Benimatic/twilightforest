@@ -28,6 +28,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -49,7 +50,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	protected boolean keyTower = false;
 	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<>();
 
-	public DarkTowerWingComponent(ServerLevel level, CompoundTag nbt) {
+	public DarkTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(DarkTowerPieces.TFDTWin, nbt);
 	}
 
@@ -879,7 +880,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 			for (int y = minY; y <= maxY; y++) {
 				for (int z = minZ; z <= maxZ; z++) {
 					if (x != minX && x != maxX && y != minY && y != maxY && z != minZ && z != maxZ) {
-						;
 					} else {
 						// wall
 						if (((y == minY || y == maxY) && ((x == minY || x == maxX) || (z == minZ || z == maxZ)))

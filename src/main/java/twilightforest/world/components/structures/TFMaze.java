@@ -455,12 +455,9 @@ public class TFMaze {
 		}
 
 		// if there are walls in two opposite directions, no
-		if ((getRaw(rx + 1, rz) == 0 && getRaw(rx - 1, rz) == 0) || (getRaw(rx, rz + 1) == 0 && getRaw(rx, rz - 1) == 0)) {
-			return false;
-		}
+		return (getRaw(rx + 1, rz) != 0 || getRaw(rx - 1, rz) != 0) && (getRaw(rx, rz + 1) != 0 || getRaw(rx, rz - 1) != 0);
 
 		// otherwise, I suppose yes
-		return true;
 	}
 
 	/**

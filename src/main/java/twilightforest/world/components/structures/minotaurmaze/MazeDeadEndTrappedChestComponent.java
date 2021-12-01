@@ -1,25 +1,25 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 
-	public MazeDeadEndTrappedChestComponent(ServerLevel level, CompoundTag nbt) {
+	public MazeDeadEndTrappedChestComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMDETrC, nbt);
 	}
 
@@ -32,7 +32,7 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		//super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// dais
@@ -59,7 +59,5 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 		this.placeBlock(world, tnt, 3,  0, 3, sbb);
 		this.placeBlock(world, tnt, 2,  0, 4, sbb);
 		this.placeBlock(world, tnt, 3,  0, 4, sbb);
-
-		return true;
 	}
 }

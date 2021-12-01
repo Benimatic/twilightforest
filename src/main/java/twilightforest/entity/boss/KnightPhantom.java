@@ -492,7 +492,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 	@Override
 	public boolean isWithinRestriction(BlockPos pos) {
-		return this.maximumHomeDistance == -1.0F ? true : this.homePosition.distSqr(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
+		return this.maximumHomeDistance == -1.0F || this.homePosition.distSqr(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
 	}
 
 	@Override

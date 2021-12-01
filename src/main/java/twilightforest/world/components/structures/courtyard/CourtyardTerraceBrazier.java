@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.courtyard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureFeatureManager;
@@ -22,7 +21,7 @@ import java.util.Random;
 
 public class CourtyardTerraceBrazier extends TwilightTemplateStructurePiece {
     public CourtyardTerraceBrazier(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        super(NagaCourtyardPieces.TFNCTr, nbt, level, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
+        super(NagaCourtyardPieces.TFNCTr, nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
     }
 
     public CourtyardTerraceBrazier(int i, int x, int y, int z, Rotation rotation, StructureManager structureManager) {

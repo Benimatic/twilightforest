@@ -4,12 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.TwilightForestMod;
@@ -22,8 +22,8 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     @SuppressWarnings("FieldCanBeLocal") // TODO Allow this to be dynamic per piece
     private final int length = 2; // Determines how far out the piece should gen
 
-    public CentralTowerAttachment(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, TwilightTemplateStructurePiece.readSettings(compoundTag));
+    public CentralTowerAttachment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, ctx, TwilightTemplateStructurePiece.readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
@@ -92,8 +92,8 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     }
 
     @Override
-    protected void addAdditionalSaveData(ServerLevel level, CompoundTag structureTag) {
-        super.addAdditionalSaveData(level, structureTag);
+    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+        super.addAdditionalSaveData(ctx, structureTag);
 
         structureTag.putInt("width", this.width);
     }

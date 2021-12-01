@@ -9,7 +9,7 @@ import twilightforest.inventory.UncraftingContainer;
 import java.util.function.Supplier;
 
 public class UncraftingGuiPacket {
-    private int type;
+    private final int type;
 
     public UncraftingGuiPacket(int type) {
         this.type = type;

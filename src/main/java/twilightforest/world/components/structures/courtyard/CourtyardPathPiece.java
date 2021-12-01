@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.courtyard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureFeatureManager;
@@ -11,6 +10,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.NagastoneVariants;
@@ -19,8 +19,8 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 import java.util.Random;
 
 public class CourtyardPathPiece extends TwilightTemplateStructurePiece {
-    public CourtyardPathPiece(ServerLevel level, CompoundTag nbt) {
-        super(NagaCourtyardPieces.TFNCPa, nbt, level, readSettings(nbt));
+    public CourtyardPathPiece(StructurePieceSerializationContext ctx, CompoundTag nbt) {
+        super(NagaCourtyardPieces.TFNCPa, nbt, ctx, readSettings(nbt));
     }
 
     public CourtyardPathPiece(int i, int x, int y, int z, StructureManager structureManager) {

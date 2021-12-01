@@ -13,7 +13,7 @@ import java.util.EnumSet;
 
 public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
-	private float pursueSpeed;
+	private final float pursueSpeed;
 	private int delay;
 	private BlockPos tntPos = null;
 

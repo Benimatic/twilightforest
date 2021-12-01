@@ -1,18 +1,18 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -24,7 +24,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	// we will model the mural in this byte array
 	private byte[][] mural;
 
-	public FinalCastleMuralComponent(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleMuralComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCMur, nbt);
 	}
 
@@ -35,7 +35,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		this.height = this.boundingBox.getYSpan();
 		this.width = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.getZSpan() : this.boundingBox.getXSpan();
 
@@ -79,8 +79,6 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 				}
 			}
 		}
-
-		return true;
 	}
 
 	private void makeHorizontalTree(Random decoRNG, byte[][] mural, int centerX, int centerY, int branchLength, boolean positive) {
@@ -162,7 +160,6 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		if (clear) {
 			int bx = sx;
 			int by = sy + (plusY ? downLine : -downLine);
-			;
 
 			// jag
 			this.fillHorizontalLine(mural, bx, by, 1, plusX);

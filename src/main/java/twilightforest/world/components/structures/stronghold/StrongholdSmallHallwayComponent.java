@@ -1,24 +1,24 @@
 package twilightforest.world.components.structures.stronghold;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class StrongholdSmallHallwayComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdSmallHallwayComponent(ServerLevel level, CompoundTag nbt) {
+	public StrongholdSmallHallwayComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(StrongholdPieces.TFSSH, nbt);
 	}
 
@@ -43,7 +43,7 @@ public class StrongholdSmallHallwayComponent extends StructureTFStrongholdCompon
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 17, rand, deco.randomBlocks);
 
 		// statues
@@ -52,7 +52,5 @@ public class StrongholdSmallHallwayComponent extends StructureTFStrongholdCompon
 
 		// doors
 		placeDoors(world, sbb);
-
-		return true;
 	}
 }

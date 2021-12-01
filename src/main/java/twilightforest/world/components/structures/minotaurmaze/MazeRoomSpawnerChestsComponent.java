@@ -1,26 +1,26 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 
-	public MazeRoomSpawnerChestsComponent(ServerLevel level, CompoundTag nbt) {
+	public MazeRoomSpawnerChestsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMRSC, nbt);
 	}
 
@@ -29,7 +29,7 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// 4 pillar enclosures
@@ -53,8 +53,6 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 		placeBlock(world, Blocks.TNT.defaultBlockState(), 11, 0, 10, sbb);
 		placeBlock(world, Blocks.TNT.defaultBlockState(), 11, 0, 12, sbb);
 		placeBlock(world, Blocks.TNT.defaultBlockState(), 12, 0, 11, sbb);
-
-		return true;
 	}
 
 	private void placePillarEnclosure(WorldGenLevel world, BoundingBox sbb,

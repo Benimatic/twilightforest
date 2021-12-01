@@ -13,6 +13,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 
@@ -23,7 +24,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 
 	public StrongholdPieces lowerPieces;
 
-	public StrongholdEntranceComponent(ServerLevel level, CompoundTag nbt) {
+	public StrongholdEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(StrongholdPieces.TFSEnter, nbt);
 
 		this.deco = new StrongholdDecorator();
@@ -126,7 +127,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
 
 		// statues
@@ -143,7 +144,5 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 
 		// doors
 		this.placeDoors(world, sbb);
-
-		return true;
 	}
 }

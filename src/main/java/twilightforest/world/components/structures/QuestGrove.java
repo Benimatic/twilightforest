@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureFeatureManager;
@@ -15,6 +14,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
@@ -29,8 +29,8 @@ import java.util.Random;
 public class QuestGrove extends TwilightTemplateStructurePiece {
 	private static final TargetedRotProcessor MOSSY_BRICK_DECAY = new TargetedRotProcessor(ImmutableSet.of(Blocks.MOSSY_STONE_BRICKS.defaultBlockState()), 0.5f);
 
-	public QuestGrove(ServerLevel serverLevel, CompoundTag compoundTag) {
-		super(TFFeature.TFQuestGrove, compoundTag, serverLevel, readSettings(compoundTag).addProcessor(StoneBricksVariants.INSTANCE));
+	public QuestGrove(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFFeature.TFQuestGrove, compoundTag, ctx, readSettings(compoundTag).addProcessor(StoneBricksVariants.INSTANCE));
 	}
 
 	public QuestGrove(StructureManager structureManager, BlockPos templatePosition) {

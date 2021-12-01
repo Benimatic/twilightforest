@@ -1,18 +1,18 @@
 package twilightforest.world.components.structures.darktower;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -21,7 +21,7 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	protected int size;
 	protected int height;
 
-	public DarkTowerBeardComponent(ServerLevel level, CompoundTag nbt) {
+	public DarkTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTBea, nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
@@ -39,8 +39,8 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 
 		tagCompound.putInt("beardSize", this.size);
 		tagCompound.putInt("beardHeight", this.height);
@@ -50,10 +50,8 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	 * Makes a dark tower type beard
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		makeDarkBeard(world, sbb, 0, 0, size - 1, height - 1, size - 1);
-
-		return true;
 	}
 
 	protected void makeDarkBeard(WorldGenLevel world, BoundingBox sbb, int minX, int minZ, int maxX, int maxY, int maxZ) {

@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -25,7 +26,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 	int dSize;
 	int dHeight;
 
-	public MushroomTowerBridgeComponent(ServerLevel level, CompoundTag nbt) {
+	public MushroomTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(MushroomTowerPieces.TFMTBri, nbt);
 	}
 

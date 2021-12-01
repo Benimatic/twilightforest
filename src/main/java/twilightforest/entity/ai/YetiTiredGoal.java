@@ -8,8 +8,8 @@ import java.util.EnumSet;
 
 public class YetiTiredGoal extends Goal {
 
-	private AlphaYeti yeti;
-	private int tiredDuration;
+	private final AlphaYeti yeti;
+	private final int tiredDuration;
 	private int tiredTimer;
 
 	public YetiTiredGoal(AlphaYeti entityTFYetiAlpha, int i) {

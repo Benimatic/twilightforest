@@ -20,7 +20,7 @@ public class IgniteLightableDispenseBehavior extends OptionalDispenseItemBehavio
 		if (!level.isClientSide()) {
 			BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
 			this.setSuccess(tryLightBlock(level, blockpos));
-			if (this.isSuccess() && stack.hurt(1, level.getRandom(), (ServerPlayer)null)) {
+			if (this.isSuccess() && stack.hurt(1, level.getRandom(), null)) {
 				stack.setCount(0);
 			}
 		}

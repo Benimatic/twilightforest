@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.NagastoneVariants;
@@ -20,7 +21,7 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 import java.util.Random;
 
 public class CourtyardTerraceStatue extends TwilightTemplateStructurePiece {
-    public CourtyardTerraceStatue(ServerLevel level, CompoundTag nbt) {
+    public CourtyardTerraceStatue(StructurePieceSerializationContext ctx, CompoundTag nbt) {
         super(NagaCourtyardPieces.TFNCSt, nbt, level, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
     }
 

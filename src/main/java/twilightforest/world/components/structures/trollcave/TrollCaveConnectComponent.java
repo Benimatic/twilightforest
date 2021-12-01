@@ -18,6 +18,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -32,7 +33,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 
 	protected boolean[] openingTowards = {false, false, true, false};
 
-	public TrollCaveConnectComponent(ServerLevel level, CompoundTag nbt) {
+	public TrollCaveConnectComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCCon, nbt);
 		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
 		this.openingTowards[1] = nbt.getBoolean("openingTowards1");

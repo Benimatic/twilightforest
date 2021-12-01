@@ -7,7 +7,7 @@ import java.util.EnumSet;
 
 public class TinyBirdFlyGoal extends Goal {
 
-	private TinyBird entity;
+	private final TinyBird entity;
 
 	public TinyBirdFlyGoal(TinyBird bird) {
 		this.entity = bird;

@@ -5,12 +5,12 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.TwilightForestMod;
@@ -48,8 +48,8 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     private final int squareDiameter;
     private final Rotation externalRotation;
 
-    public SideTowerRoom(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.SIDE_TOWER_ROOM, compoundTag, serverLevel, readSettings(compoundTag));
+    public SideTowerRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+        super(LichTowerRevampPieces.SIDE_TOWER_ROOM, compoundTag, ctx, readSettings(compoundTag));
         this.squareDiameter = compoundTag.getInt("square_diameter");
         this.externalRotation = ArrayUtil.wrapped(Rotation.values(), compoundTag.getInt("ext_rotation"));
     }
@@ -130,8 +130,8 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    protected void addAdditionalSaveData(ServerLevel level, CompoundTag structureTag) {
-        super.addAdditionalSaveData(level, structureTag);
+    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+        super.addAdditionalSaveData(ctx, structureTag);
 
         structureTag.putInt("square_diameter", this.squareDiameter);
         structureTag.putInt("ext_rotation", this.externalRotation.ordinal());

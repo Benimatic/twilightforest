@@ -1,25 +1,24 @@
 package twilightforest.world.components.structures.icetower;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.registration.TFFeature;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 
 import java.util.Random;
 
 public class IceTowerEntranceComponent extends IceTowerWingComponent {
 
-	public IceTowerEntranceComponent(ServerLevel level, CompoundTag nbt) {
+	public IceTowerEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(IceTowerPieces.TFITEnt, nbt);
 	}
 

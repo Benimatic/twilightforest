@@ -36,13 +36,10 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 
 		if (target == null) {
 			return false;
-		} else if (!target.isAlive()) {
+		} else //attacker.canEntityBeSeen(target);
+			if (!target.isAlive()) {
 			return false;
-		} else if (this.attacker.getCurrentPhase() != Phase.DROP) {
-			return false;
-		} else {
-			return true;//attacker.canEntityBeSeen(target);
-		}
+		} else return this.attacker.getCurrentPhase() == Phase.DROP;
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProv
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
@@ -47,7 +48,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	// FIXME Can we just pluck it from the data pack?
 	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(4, 8), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
 
-	public TrollCaveMainComponent(ServerLevel level, CompoundTag nbt) {
+	public TrollCaveMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TrollCavePieces.TFTCMai, nbt);
 	}
 
@@ -72,8 +73,8 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putInt("size", this.size);
 		tagCompound.putInt("height", this.height);
 	}
@@ -114,7 +115,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// clear inside
@@ -136,16 +137,10 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 			BlockPos dest = getCoordsInCave(decoRNG);
 			generateAtSurface(world, generator, uberousGen, decoRNG, dest.getX(), dest.getZ(), sbb);
 		}
-
-		return true;
 	}
 
 	protected BlockPos.MutableBlockPos getCoordsInCave(Random rand) {
 		return new BlockPos.MutableBlockPos(rand.nextInt(this.size - 1), rand.nextInt(this.height - 1), rand.nextInt(this.size - 1));
-	}
-
-	protected BlockPos getCenterBiasedCaveCoords(Random rand) {
-		return new BlockPos(this.size - rand.nextInt(this.size / 2), rand.nextInt(this.height - 1), this.size - rand.nextInt(this.size / 2));
 	}
 
 	protected void hollowCaveMiddle(WorldGenLevel world, BoundingBox boundingBox, Random rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {

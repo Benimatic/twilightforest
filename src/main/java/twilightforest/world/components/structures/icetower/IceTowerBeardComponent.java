@@ -1,17 +1,17 @@
 package twilightforest.world.components.structures.icetower;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -20,7 +20,7 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 	protected int size;
 	protected int height;
 
-	public IceTowerBeardComponent(ServerLevel level, CompoundTag nbt) {
+	public IceTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(IceTowerPieces.TFITBea, nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
@@ -42,8 +42,8 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putInt("beardSize", this.size);
 		tagCompound.putInt("beardHeight", this.height);
 	}
@@ -52,7 +52,7 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 	 * Makes a dark tower type beard
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
 				//int rHeight = this.size - (int) MathHelper.sqrt_float(x * z); // interesting office building pattern
@@ -65,6 +65,5 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 				}
 			}
 		}
-		return true;
 	}
 }

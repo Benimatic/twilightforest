@@ -432,7 +432,7 @@ public class TFEventListener {
 					casket.setItems(NonNullList.of(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
 				}
 			} else {
-				TwilightForestMod.LOGGER.error("Could not place Keepsake Casket at " + pos.toString());
+				TwilightForestMod.LOGGER.error("Could not place Keepsake Casket at " + pos);
 			}
 		}
 	}
@@ -949,7 +949,7 @@ public class TFEventListener {
 
 	// Parrying
 
-	private static boolean globalParry = !ModList.get().isLoaded("parry");
+	private static final boolean globalParry = !ModList.get().isLoaded("parry");
 
 	/*@SubscribeEvent
 	public static void arrowParry(ProjectileImpactEvent<AbstractArrow> event) {

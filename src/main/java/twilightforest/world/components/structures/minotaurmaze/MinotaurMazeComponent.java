@@ -1,34 +1,34 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TFConfig;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFMaze;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 	TFMaze maze;
-	int rcoords[];
-	private int level;
+	int[] rcoords;
+	private final int level;
 
-	public MinotaurMazeComponent(ServerLevel level, CompoundTag nbt) {
+	public MinotaurMazeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(MinotaurMazePieces.TFMMaze, nbt);
 
 		this.level = nbt.getInt("mazeLevel");
@@ -103,8 +103,8 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putInt("mazeLevel", this.level);
 		tagCompound.putIntArray("roomCoords", this.rcoords);
 	}
@@ -268,7 +268,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
 		BlockState stone = Blocks.STONE.defaultBlockState();
@@ -297,8 +297,6 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.oddBias = 4;
 
 		maze.copyToStructure(world, manager, generator, 1, 2, 1, this, sbb);
-
-		return true;
 	}
 
 	public int getMazeSize() {

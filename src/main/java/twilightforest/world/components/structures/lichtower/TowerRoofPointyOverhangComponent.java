@@ -1,12 +1,12 @@
 package twilightforest.world.components.structures.lichtower;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 public class TowerRoofPointyOverhangComponent extends TowerRoofPointyComponent {
 
-	public TowerRoofPointyOverhangComponent(ServerLevel level, CompoundTag nbt) {
+	public TowerRoofPointyOverhangComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRPO, nbt);
 	}
 

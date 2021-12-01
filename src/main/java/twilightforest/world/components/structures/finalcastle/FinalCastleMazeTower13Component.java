@@ -17,6 +17,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -38,7 +39,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		color = NbtUtils.readBlockState(nbt.getCompound("color"));
 	}
 
-	public FinalCastleMazeTower13Component(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleMazeTower13Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(FinalCastlePieces.TFFCSiTo, nbt);
 	}
 

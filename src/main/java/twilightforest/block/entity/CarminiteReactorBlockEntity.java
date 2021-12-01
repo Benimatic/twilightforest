@@ -25,7 +25,9 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 	private int counter = 0;
 
-	private int secX, secY, secZ;
+	private final int secX;
+	private final int secY;
+	private final int secZ;
 	private int terX, terY, terZ;
 
 

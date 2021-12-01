@@ -1,46 +1,41 @@
 package twilightforest.world.components.structures.lichtower;
 
 import com.google.common.collect.Lists;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.VineBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
-import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.decoration.Motive;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ProtoChunk;
-import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.util.TFStructureHelper;
 import twilightforest.util.RotationUtil;
+import twilightforest.util.TFStructureHelper;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandle;
@@ -67,7 +62,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		handle_HangingEntity_updateFacingWithBoundingBox = tmp_handle_HangingEntity_updateFacingWithBoundingBox;
 	}
 
-	public TowerWingComponent(ServerLevel level, CompoundTag nbt) {
+	public TowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(LichTowerPieces.TFLTWin, nbt);
 	}
 
@@ -128,8 +123,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 
 		tagCompound.putInt("towerSize", this.size);
 		tagCompound.putInt("towerHeight", this.height);
@@ -375,7 +370,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel worldIn, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel worldIn, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		generateBox(worldIn, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, TFStructureComponentOld.getStrongholdStones());
 
@@ -405,8 +400,6 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		// openings
 		makeOpenings(worldIn, sbb);
-
-		return true;
 	}
 
 	/**
@@ -917,12 +910,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (x == size / 2 && z == 1) {
 			return true;
 		}
-		if (x == size / 2 && z == size - 2) {
-			return true;
-		}
+		return x == size / 2 && z == size - 2;
 
 		// okay, looks good
-		return false;
 	}
 
 	/**
@@ -980,12 +970,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (ladderUpDir != null && x == getLadderX(ladderUpDir) && z == getLadderZ(ladderUpDir)) {
 			return true;
 		}
-		if (ladderDownDir != null && x == getLadderX(ladderDownDir) && z == getLadderZ(ladderDownDir)) {
-			return true;
-		}
+		return ladderDownDir != null && x == getLadderX(ladderDownDir) && z == getLadderZ(ladderDownDir);
 
 		// okay, looks good
-		return false;
 	}
 
 	/**

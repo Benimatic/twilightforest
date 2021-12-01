@@ -11,11 +11,11 @@ import java.util.EnumSet;
 
 public class YetiRampageGoal extends Goal {
 
-	private AlphaYeti yeti;
+	private final AlphaYeti yeti;
 	private int currentTimeOut;
 	private int currentDuration;
-	private int maxTantrumTimeOut;
-	private int tantrumDuration;
+	private final int maxTantrumTimeOut;
+	private final int tantrumDuration;
 
 	public YetiRampageGoal(AlphaYeti entityTFYetiAlpha, int timeout, int duration) {
 		this.yeti = entityTFYetiAlpha;

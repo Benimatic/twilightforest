@@ -1,27 +1,27 @@
 package twilightforest.world.components.structures.stronghold;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class StrongholdAccessChamberComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdAccessChamberComponent(ServerLevel level, CompoundTag nbt) {
+	public StrongholdAccessChamberComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(StrongholdPieces.TFSAC, nbt);
 	}
 
@@ -50,7 +50,7 @@ public class StrongholdAccessChamberComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		generateBox(world, sbb, 0, 0, 0, 8, 4, 8, true, rand, deco.randomBlocks);
 
 		// doors
@@ -79,8 +79,6 @@ public class StrongholdAccessChamberComponent extends StructureTFStrongholdCompo
 
 		// block point
 		this.generateBox(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState(), AIR, false);
-
-		return true;
 	}
 
 	@Override

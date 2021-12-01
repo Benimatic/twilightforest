@@ -1,27 +1,27 @@
 package twilightforest.world.components.structures.mushroomtower;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
-	public TowerRoofMushroomComponent(ServerLevel level, CompoundTag nbt) {
+	public TowerRoofMushroomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(MushroomTowerPieces.TFMTRoofMush, nbt);
 	}
 
@@ -45,7 +45,7 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		for (int y = 0; y <= height; y++) {
 
@@ -58,8 +58,6 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
 			makeCircle(world, y, radius, hollow, sbb);
 		}
-
-		return true;
 	}
 
 	private void makeCircle(WorldGenLevel world, int y, int radius, int hollow, BoundingBox sbb) {

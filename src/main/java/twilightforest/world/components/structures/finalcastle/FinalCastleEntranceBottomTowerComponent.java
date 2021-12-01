@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -16,7 +17,7 @@ import java.util.Random;
 
 public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTower13Component {
 
-	public FinalCastleEntranceBottomTowerComponent(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleEntranceBottomTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCEnBoTo, nbt);
 	}
 

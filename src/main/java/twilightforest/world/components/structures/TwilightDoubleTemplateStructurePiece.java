@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -28,8 +29,8 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
     protected StructureTemplate templateOverlay;
     protected StructurePlaceSettings placeSettingsOverlay;
 
-    public TwilightDoubleTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, ServerLevel serverLevel, StructurePlaceSettings rl2SettingsFunction, StructurePlaceSettings placeSettingsOverlay) {
-        super(structurePieceType, compoundTag, serverLevel, rl2SettingsFunction);
+    public TwilightDoubleTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction, StructurePlaceSettings placeSettingsOverlay) {
+        super(structurePieceType, compoundTag, ctx, rl2SettingsFunction);
 
         this.templateOverlayLocation = new ResourceLocation(compoundTag.getString("TemplateOverlay"));
         this.templateOverlay = this.structureManager.getOrCreate(this.templateOverlayLocation);
@@ -45,8 +46,8 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
     }
 
     @Override
-    protected void addAdditionalSaveData(ServerLevel level, CompoundTag structureTag) {
-        super.addAdditionalSaveData(level, structureTag);
+    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+        super.addAdditionalSaveData(ctx, structureTag);
 
         structureTag.putString("TemplateOverlay", this.templateOverlayLocation.toString());
     }

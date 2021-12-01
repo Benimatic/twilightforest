@@ -1,25 +1,25 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.components.structures.TFStructureComponentOld;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.util.RotationUtil;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 
-	public FinalCastleRoof13PeakedComponent(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleRoof13PeakedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(FinalCastlePieces.TFFCRo13Pk, nbt);
 	}
 
@@ -41,7 +41,7 @@ public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// peaky roof, loop unrolled as it was getting dumb
 		for (int i = 0; i < 3; i++) {
 			this.generateBox(world, sbb, 1, i, i, 15, i, i, deco.roofState, deco.roofState, false);
@@ -102,7 +102,5 @@ public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 			this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
 		}
-
-		return true;
 	}
 }

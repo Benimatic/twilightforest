@@ -15,7 +15,7 @@ import twilightforest.entity.monster.IceCrystal;
 
 public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 
-	private ModelPart root;
+	private final ModelPart root;
 	private final ModelPart[] spikes = new ModelPart[16];
 
 	private boolean alive;

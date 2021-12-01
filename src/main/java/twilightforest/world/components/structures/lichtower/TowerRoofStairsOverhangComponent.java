@@ -1,6 +1,5 @@
 package twilightforest.world.components.structures.lichtower;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
@@ -12,13 +11,14 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 
-	public TowerRoofStairsOverhangComponent(ServerLevel level, CompoundTag nbt) {
+	public TowerRoofStairsOverhangComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRStO, nbt);
 	}
 
@@ -39,7 +39,7 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 	 * Makes a pyramid-shaped roof out of stairs
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockState woodenSlab = Blocks.BIRCH_SLAB.defaultBlockState();
 		BlockState woodenPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 
@@ -75,6 +75,5 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 				}
 			}
 		}
-		return true;
 	}
 }

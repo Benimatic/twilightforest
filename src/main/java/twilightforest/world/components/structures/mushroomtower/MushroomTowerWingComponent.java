@@ -15,6 +15,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -33,7 +34,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	boolean hasBase = false;
 	public boolean isAscender = false;
 
-	public MushroomTowerWingComponent(ServerLevel level, CompoundTag nbt) {
+	public MushroomTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(MushroomTowerPieces.TFMTWin, nbt);
 	}
 
@@ -48,8 +49,8 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 
 		tagCompound.putBoolean("hasBase", this.hasBase);
 		tagCompound.putBoolean("isAscender", this.isAscender);
@@ -315,7 +316,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		makeTrunk(world, sbb);
 
@@ -324,8 +325,6 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 		// openings
 		makeOpenings(world, sbb);
-
-		return true;
 	}
 
 	private void makeTrunk(WorldGenLevel world, BoundingBox sbb) {

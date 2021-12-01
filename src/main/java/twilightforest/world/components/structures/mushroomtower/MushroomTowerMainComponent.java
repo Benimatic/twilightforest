@@ -9,6 +9,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -19,7 +20,7 @@ import java.util.Random;
 
 public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
-	public MushroomTowerMainComponent(ServerLevel level, CompoundTag nbt) {
+	public MushroomTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(MushroomTowerPieces.TFMTMai, nbt);
 	}
 

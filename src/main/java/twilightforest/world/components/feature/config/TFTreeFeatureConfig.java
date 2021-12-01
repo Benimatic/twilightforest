@@ -71,17 +71,17 @@ public class TFTreeFeatureConfig implements FeatureConfiguration {
 	}
 
 	public static class Builder {
-		private BlockStateProvider trunkProvider;
-		private BlockStateProvider leavesProvider;
-		private BlockStateProvider branchProvider;
-		private BlockStateProvider rootsProvider;
+		private final BlockStateProvider trunkProvider;
+		private final BlockStateProvider leavesProvider;
+		private final BlockStateProvider branchProvider;
+		private final BlockStateProvider rootsProvider;
 		private int baseHeight;
 		private int chanceFirstFive;
 		private int chanceSecondFive;
 		private boolean hasLeaves;
 		private boolean checkWater;
 		private BlockStateProvider sapling;
-		private List<TreeDecorator> decorators = Lists.newArrayList();
+		private final List<TreeDecorator> decorators = Lists.newArrayList();
 
 		public Builder(BlockStateProvider trunk, BlockStateProvider leaves, BlockStateProvider branch, BlockStateProvider roots) {
 			this.trunkProvider = trunk;

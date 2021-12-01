@@ -1,22 +1,22 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.util.RotationUtil;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 import java.util.function.Predicate;
@@ -25,7 +25,7 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 
 	protected int groundLevel = -1;
 
-	public FinalCastleFoundation13Component(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleFoundation13Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(FinalCastlePieces.TFFCToF13, nbt);
 	}
 
@@ -48,13 +48,13 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// offset bounding box to average ground level
 		if (this.groundLevel < 0) {
 			this.groundLevel = this.findGroundLevel(world, sbb, 150, isDeadrock); // is 150 a good place to start? :)
 
 			if (this.groundLevel < 0) {
-				return true;
+				return;
 			}
 		}
 
@@ -78,8 +78,6 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 			}
 		}
-
-		return true;
 	}
 
 	protected static final Predicate<BlockState> isDeadrock = state -> state.getBlock() == TFBlocks.DEADROCK.get();

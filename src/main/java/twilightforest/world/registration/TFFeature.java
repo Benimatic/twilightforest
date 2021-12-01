@@ -453,9 +453,9 @@ public class TFFeature {
 
 	private static int maxPossibleSize;
 
-	private List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists = new ArrayList<>();
-	private List<MobSpawnSettings.SpawnerData> ambientCreatureList = new ArrayList<>();
-	private List<MobSpawnSettings.SpawnerData> waterCreatureList = new ArrayList<>();
+	private final List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists = new ArrayList<>();
+	private final List<MobSpawnSettings.SpawnerData> ambientCreatureList = new ArrayList<>();
+	private final List<MobSpawnSettings.SpawnerData> waterCreatureList = new ArrayList<>();
 
 	private long lastSpawnedHintMonsterTime;
 

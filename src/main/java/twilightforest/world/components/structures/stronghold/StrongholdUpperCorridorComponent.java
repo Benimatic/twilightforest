@@ -1,24 +1,24 @@
 package twilightforest.world.components.structures.stronghold;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class StrongholdUpperCorridorComponent extends StructureTFStrongholdComponent {
 
-	public StrongholdUpperCorridorComponent(ServerLevel level, CompoundTag nbt) {
+	public StrongholdUpperCorridorComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(StrongholdPieces.TFSUCo, nbt);
 	}
 
@@ -40,7 +40,7 @@ public class StrongholdUpperCorridorComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		/*if (this.edgesLiquid(world, sbb)) {
 			return false;
 		} else */{
@@ -51,8 +51,6 @@ public class StrongholdUpperCorridorComponent extends StructureTFStrongholdCompo
 
 			// end
 			placeSmallDoorwayAt(world, 2, 2, 1, 8, sbb);
-
-			return true;
 		}
 	}
 

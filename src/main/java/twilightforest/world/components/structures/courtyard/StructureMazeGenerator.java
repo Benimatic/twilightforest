@@ -22,9 +22,9 @@ import java.util.Random;
 
 public abstract class StructureMazeGenerator extends TFStructureComponent {
     protected int[][] maze;
-    private int[][] cornerClipping = new int[4][2];
-    private int widthInCellCount;
-    private int heightInCellCount;
+    private final int[][] cornerClipping = new int[4][2];
+    private final int widthInCellCount;
+    private final int heightInCellCount;
     private final StructureManager structureManager;
     protected BoundingBox sizeConstraints;
 
@@ -80,7 +80,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
         // A One in its binary interpretation means the wall connects in this direction.
         // As a result of this being a "connectome" of maze walls. It is "Size In Cell count" - 1.
 
-        final WallFacing rotations[][] = new WallFacing[maze.length][maze[0].length];
+        final WallFacing[][] rotations = new WallFacing[maze.length][maze[0].length];
 
         for (int x = 0; x < widthInCellCount-1; x++) {
             for (int y = 0; y < heightInCellCount-1; y++) {

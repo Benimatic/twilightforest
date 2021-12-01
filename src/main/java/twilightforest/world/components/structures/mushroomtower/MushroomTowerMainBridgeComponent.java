@@ -6,13 +6,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeComponent {
 
-	public MushroomTowerMainBridgeComponent(ServerLevel level, CompoundTag nbt) {
+	public MushroomTowerMainBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(MushroomTowerPieces.TFMTMB, nbt);
 	}
 

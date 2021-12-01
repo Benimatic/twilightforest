@@ -22,7 +22,7 @@ public class ChargeAttackGoal extends Goal {
 	private static final double MAX_RANGE_SQ = 64.0D;
 	private static final int FREQ = 1;
 
-	private PathfinderMob charger;
+	private final PathfinderMob charger;
 	private LivingEntity chargeTarget;
 	private double chargeX;
 	private double chargeY;

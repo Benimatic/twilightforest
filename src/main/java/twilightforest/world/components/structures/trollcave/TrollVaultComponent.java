@@ -1,26 +1,26 @@
 package twilightforest.world.components.structures.trollcave;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class TrollVaultComponent extends TFStructureComponentOld {
 
-	public TrollVaultComponent(ServerLevel level, CompoundTag nbt) {
+	public TrollVaultComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCVa, nbt);
 	}
 
@@ -40,7 +40,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		this.generateBox(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.GIANT_OBSIDIAN.get().defaultBlockState(), TFBlocks.GIANT_OBSIDIAN.get().defaultBlockState(), false);
 
@@ -53,8 +53,6 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 		// chests
 		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getOrientation().getClockWise(), TFTreasure.TROLL_VAULT, sbb, false);
 		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getOrientation().getClockWise(), TFTreasure.TROLL_GARDEN, sbb, false);
-
-		return true;
 	}
 
 	@Override

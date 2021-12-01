@@ -1,23 +1,23 @@
 package twilightforest.world.components.structures.lichtower;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class TowerRoofPointyComponent extends TowerRoofComponent {
 
-	public TowerRoofPointyComponent(ServerLevel level, CompoundTag nbt) {
+	public TowerRoofPointyComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(LichTowerPieces.TFLTRP, nbt);
 	}
 
@@ -42,7 +42,7 @@ public class TowerRoofPointyComponent extends TowerRoofComponent {
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState();
 		BlockState birchPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 
@@ -71,7 +71,6 @@ public class TowerRoofPointyComponent extends TowerRoofComponent {
 				}
 			}
 		}
-		return true;
 	}
 
 	public int slopeChangeForSize() {

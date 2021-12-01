@@ -5,10 +5,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
@@ -27,8 +27,8 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     static final int ATTACHMENT_POINT_START = 6;
     static final int ATTACHMENT_POINT_RANGE = 13;
 
-    public CentralTowerSegment(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.CENTRAL_TOWER, compoundTag, serverLevel, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
+    public CentralTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+        super(LichTowerRevampPieces.CENTRAL_TOWER, compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
     }
 
     public CentralTowerSegment(StructureManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
@@ -45,8 +45,8 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    protected void addAdditionalSaveData(ServerLevel level, CompoundTag structureTag) {
-        super.addAdditionalSaveData(level, structureTag);
+    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+        super.addAdditionalSaveData(ctx, structureTag);
 
         BoxCuttingProcessor cuttingProcessor = null;
         for (StructureProcessor processor : this.placeSettings.getProcessors()) {

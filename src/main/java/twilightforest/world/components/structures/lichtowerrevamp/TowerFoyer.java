@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.ChunkPos;
@@ -18,17 +17,20 @@ import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.BoxCuttingProcessor;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public final class TowerFoyer extends TwilightTemplateStructurePiece {
-    public TowerFoyer(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.TOWER_FOYER, compoundTag, serverLevel, readSettings(compoundTag));
+    public TowerFoyer(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+        super(LichTowerRevampPieces.TOWER_FOYER, compoundTag, ctx, readSettings(compoundTag));
     }
 
     public TowerFoyer(StructureManager structureManager, BlockPos startPosition) {
@@ -99,8 +101,8 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    public boolean postProcess(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
-        boolean result = this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
+    public void postProcess(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
+        this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
 
         BlockPos placement = new BlockPos(this.boundingBox.getCenter().getX() + 1, this.boundingBox.minY() + 7, this.boundingBox.minZ() + 16);
 
@@ -117,8 +119,6 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
             armorStand.getEntityData().set(ArmorStand.DATA_CLIENT_FLAGS, (byte) (armorStand.getEntityData().get(ArmorStand.DATA_CLIENT_FLAGS) | 16));
             level.addFreshEntity(armorStand);
         }
-
-        return result;
     }
 
     @Override

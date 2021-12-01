@@ -16,7 +16,7 @@ public class FlockToSameKindGoal extends Goal {
 	/**
 	 * The child that is following its parent.
 	 */
-	private Mob flockCreature;
+	private final Mob flockCreature;
 	private Vec3 flockPosition;
 	double speed;
 	private int moveTimer;

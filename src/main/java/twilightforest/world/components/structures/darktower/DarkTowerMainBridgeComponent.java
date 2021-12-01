@@ -1,17 +1,17 @@
 package twilightforest.world.components.structures.darktower;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
 public class DarkTowerMainBridgeComponent extends DarkTowerBridgeComponent {
 
-	public DarkTowerMainBridgeComponent(ServerLevel level, CompoundTag nbt) {
+	public DarkTowerMainBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTMB, nbt);
 	}
 

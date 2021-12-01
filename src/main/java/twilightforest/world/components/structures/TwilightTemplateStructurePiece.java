@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -27,12 +28,12 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
     private final BlockPos originalPlacement;
     private final BoundingBox originalBox;
 
-    public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, ServerLevel serverLevel, StructurePlaceSettings rl2SettingsFunction) {
-        super(structurePieceType, compoundTag, serverLevel, rl -> rl2SettingsFunction);
+    public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction) {
+        super(structurePieceType, compoundTag, ctx.structureManager(), rl -> rl2SettingsFunction);
         this.rotation = this.getRotation();
         this.mirror = this.getMirror();
 
-        this.structureManager = serverLevel.getStructureManager();
+        this.structureManager = ctx.structureManager();
 
         this.originalPlacement = this.templatePosition;
         this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
@@ -50,8 +51,8 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
     }
 
     @Override
-    protected void addAdditionalSaveData(ServerLevel level, CompoundTag structureTag) {
-        super.addAdditionalSaveData(level, structureTag);
+    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+        super.addAdditionalSaveData(ctx, structureTag);
 
         structureTag.putInt("rotation", this.placeSettings.getRotation().ordinal());
         structureTag.putInt("mirror", this.placeSettings.getMirror().ordinal());
@@ -63,17 +64,15 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
     }
 
     // This will be required if you want to dig a piece into a noise beard
-    protected boolean placePieceAdjusted(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos, int dY) {
+    protected void placePieceAdjusted(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos, int dY) {
         this.templatePosition = this.templatePosition.above(dY);
 
-        boolean result = super.postProcess(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos.above(dY));
+        super.postProcess(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos.above(dY));
 
         this.templatePosition = this.originalPlacement;
         this.boundingBox = BoundingBoxUtils.clone(this.originalBox);
 
         this.placeSettings.setBoundingBox(this.boundingBox);
-
-        return result;
     }
 
     public static StructurePlaceSettings readSettings(CompoundTag compoundTag) {

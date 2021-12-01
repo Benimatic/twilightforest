@@ -39,7 +39,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	final int radius;
 	final int hdiam;
 
-	public HollowHillComponent(ServerLevel level, CompoundTag nbt) {
+	public HollowHillComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TFFeature.TFHill, nbt);
 	}
 

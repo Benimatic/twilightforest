@@ -2,9 +2,8 @@ package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.worldgen.Features;
+import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
@@ -15,7 +14,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.SlabType;
@@ -25,27 +23,27 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
-import twilightforest.util.RotationUtil;
 import twilightforest.world.registration.ConfiguredFeatures;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	private boolean placedKeys = false;
 
-	public DarkTowerMainComponent(ServerLevel level, CompoundTag nbt) {
+	public DarkTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(DarkTowerPieces.TFDTMai, nbt);
 	}
 
@@ -1086,15 +1084,15 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			ConfiguredFeature<?,?> treeGen = switch (treeNum) {
 				case 1 ->
 						// jungle tree
-						Features.JUNGLE_TREE; //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
+						TreeFeatures.JUNGLE_TREE; //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
 				case 2 ->
 						// birch
-						Features.BIRCH;
+						TreeFeatures.BIRCH;
 				case 3 -> ConfiguredFeatures.TWILIGHT_OAK_BASE;
 				case 4 -> ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
 				default ->
 						// oak tree
-						Features.OAK;
+						TreeFeatures.OAK;
 			};
 			// grow a tree
 

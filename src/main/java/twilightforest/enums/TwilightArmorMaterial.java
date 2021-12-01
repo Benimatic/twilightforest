@@ -31,7 +31,7 @@ public enum TwilightArmorMaterial implements ArmorMaterial {
 	private final float toughness;
 	private final Supplier<Ingredient> repairMaterial;
 
-	TwilightArmorMaterial(String name, int durability, int damageReduction[], int enchantability, SoundEvent sound, float toughness, Supplier<Ingredient> repairMaterial) {
+	TwilightArmorMaterial(String name, int durability, int[] damageReduction, int enchantability, SoundEvent sound, float toughness, Supplier<Ingredient> repairMaterial) {
 		this.name = name;
 		this.durability = durability;
 		this.damageReduction = damageReduction;

@@ -26,8 +26,7 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 		super(FinalCastlePieces.TFFCStTo, nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleStairTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
+	public FinalCastleStairTowerComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(FinalCastlePieces.TFFCStTo, feature, i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 9;
