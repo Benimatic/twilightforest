@@ -119,23 +119,23 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 	}
 
 	//Mostly [VanillaCopy] of TreeFeature.doPlace, edits noted
-	private boolean doPlace(WorldGenLevel p_160511_, Random p_160512_, BlockPos p_160513_, BiConsumer<BlockPos, BlockState> p_160514_, BiConsumer<BlockPos, BlockState> p_160515_, TreeConfiguration p_160516_) {
-		int i = p_160516_.trunkPlacer.getTreeHeight(p_160512_);
-		int j = p_160516_.foliagePlacer.foliageHeight(p_160512_, i, p_160516_);
+	private boolean doPlace(WorldGenLevel level, Random p_160512_, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
+		int i = config.trunkPlacer.getTreeHeight(p_160512_);
+		int j = config.foliagePlacer.foliageHeight(p_160512_, i, config);
 		int k = i - j;
-		int l = p_160516_.foliagePlacer.foliageRadius(p_160512_, k);
+		int l = config.foliagePlacer.foliageRadius(p_160512_, k);
 		//set our blockpos to the valid dirt pos, not highest ground
-		p_160513_ = new BlockPos(p_160513_.getX(), validPos.getY(), p_160513_.getZ());
-		if (p_160513_.getY() >= p_160511_.getMinBuildHeight() + 1 && p_160513_.getY() + i + 1 <= p_160511_.getMaxBuildHeight()) {
-			if (!p_160516_.saplingProvider.getState(p_160512_, p_160513_).canSurvive(p_160511_, p_160513_)) {
+		pos = new BlockPos(pos.getX(), validPos.getY(), pos.getZ());
+		if (pos.getY() >= level.getMinBuildHeight() + 1 && pos.getY() + i + 1 <= level.getMaxBuildHeight()) {
+			if (!TFBlocks.DARKWOOD_SAPLING.get().canSurvive(level.getBlockState(pos), level, pos)) {
 				return false;
 			} else {
-				OptionalInt optionalint = p_160516_.minimumSize.minClippedHeight();
-				int i1 = this.getMaxFreeTreeHeight(p_160511_, i, p_160513_, p_160516_);
+				OptionalInt optionalint = config.minimumSize.minClippedHeight();
+				int i1 = this.getMaxFreeTreeHeight(level, i, pos, config);
 				if (i1 >= i || optionalint.isPresent() && i1 >= optionalint.getAsInt()) {
-					List<FoliagePlacer.FoliageAttachment> list = p_160516_.trunkPlacer.placeTrunk(p_160511_, p_160514_, p_160512_, i1, p_160513_, p_160516_);
+					List<FoliagePlacer.FoliageAttachment> list = config.trunkPlacer.placeTrunk(level, consumer1, p_160512_, i1, pos, config);
 					list.forEach((p_160539_) -> {
-						p_160516_.foliagePlacer.createFoliage(p_160511_, p_160515_, p_160512_, p_160516_, i1, p_160539_, j, l);
+						config.foliagePlacer.createFoliage(level, consumer2, p_160512_, config, i1, p_160539_, j, l);
 					});
 					return true;
 				} else {

@@ -66,7 +66,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
 		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
@@ -133,7 +133,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	public void scheduleBlockUpdate(Level world, BlockPos pos) {
 		int offset = world.getBlockState(pos).getValue(DELAY);
 		int update = TICK_TIME - ((int) (world.getGameTime() - (offset * OFFSET_TIME)) % TICK_TIME);
-		world.getBlockTicks().scheduleTick(pos, this, update);
+		world.scheduleTick(pos, this, update);
 	}
 
 	@Override

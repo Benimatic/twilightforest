@@ -92,7 +92,7 @@ public class CastleDoorBlock extends Block {
 		if (originState.getBlock() instanceof CastleDoorBlock) {
 			world.setBlockAndUpdate(pos, originState.setValue(ACTIVE, true));
 		}
-		world.getBlockTicks().scheduleTick(pos, originState.getBlock(), 2 + world.random.nextInt(5));
+		world.scheduleTick(pos, originState.getBlock(), 2 + world.random.nextInt(5));
 	}
 
 	private static boolean isBlockLocked(Level world, BlockPos pos) {
@@ -117,7 +117,7 @@ public class CastleDoorBlock extends Block {
 		} else {
 			if (state.getValue(ACTIVE)) {
 				world.setBlockAndUpdate(pos, state.setValue(VANISHED, true).setValue(ACTIVE, false));
-				world.getBlockTicks().scheduleTick(pos, this, 80);
+				world.scheduleTick(pos, this, 80);
 
 				playVanishSound(world, pos);
 

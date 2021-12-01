@@ -28,7 +28,7 @@ public interface WaterloggedBlock extends BucketPickup, LiquidBlockContainer {
         if (!this.isStateWaterlogged(state) && fluidState.getType() == Fluids.WATER) {
             if (!level.isClientSide()) {
                 level.setBlock(pos, this.setWaterlog(state, true), 3);
-                level.getLiquidTicks().scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(level));
+                level.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(level));
             }
 
             return true;

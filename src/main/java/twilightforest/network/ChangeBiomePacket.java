@@ -53,7 +53,8 @@ public class ChangeBiomePacket {
 						int x = (message.pos.getX() >> 2) & HORIZONTAL_MASK;
 						int y = Mth.clamp(dy >> 2, 0, VERTICAL_MASK);
 						int z = (message.pos.getZ() >> 2) & HORIZONTAL_MASK;
-						chunkAt.getBiomes().biomes[y << WIDTH_BITS + WIDTH_BITS | z << WIDTH_BITS | x] = targetBiome;
+						//FIXME
+						//chunkAt.getBiomes().biomes[y << WIDTH_BITS + WIDTH_BITS | z << WIDTH_BITS | x] = targetBiome;
 					}
 
 					world.getChunk(message.pos.getX() >> 4, message.pos.getZ() >> 4);

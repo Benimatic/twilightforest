@@ -1,14 +1,16 @@
 package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
@@ -17,13 +19,6 @@ import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.function.BiConsumer;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.VineBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
@@ -85,7 +80,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.HOLLOW_OAK_SAPLING.get())) {
 			return false;
 		}
 

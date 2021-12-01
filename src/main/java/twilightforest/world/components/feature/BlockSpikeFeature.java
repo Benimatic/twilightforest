@@ -2,7 +2,8 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.WeighedRandom;
+import net.minecraft.util.random.WeightedEntry;
+import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.WorldGenLevel;
@@ -12,11 +13,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.FeatureLogic;
 import twilightforest.world.components.feature.config.SpikeConfig;
 
@@ -116,15 +115,15 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
      */
     public static SpikeConfig makeRandomOreStalactite(Random rand, int hillSize) {
         if (hillSize >= 3 || hillSize >= 2 && rand.nextInt(5) == 0) {
-            return WeighedRandom.getRandomItem(rand, largeHillStalactites).get().stalactite;
+            return WeightedRandom.getRandomItem(rand, largeHillStalactites).get().stalactite;
         }
         if (hillSize >= 2 || hillSize >= 1 && rand.nextInt(5) == 0) {
-            return WeighedRandom.getRandomItem(rand, mediumHillStalactites).get().stalactite;
+            return WeightedRandom.getRandomItem(rand, mediumHillStalactites).get().stalactite;
         }
-        return WeighedRandom.getRandomItem(rand, smallHillStalactites).get().stalactite;
+        return WeightedRandom.getRandomItem(rand, smallHillStalactites).get().stalactite;
     }
 
-    public static class StalactiteEntry extends WeighedRandom.WeighedRandomItem {
+    public static class StalactiteEntry extends WeightedEntry.IntrusiveBase {
         final SpikeConfig stalactite;
 
         StalactiteEntry(SpikeConfig stalactite, int itemWeight) {
@@ -133,7 +132,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         }
 
         public StalactiteEntry(BlockState blockState, float size, int maxLength, int itemWeight) {
-            this(new SpikeConfig(new SimpleStateProvider(blockState), UniformInt.of((int) (maxLength * size), maxLength), ConstantInt.of(4), true), itemWeight);
+            this(new SpikeConfig(BlockStateProvider.simple(blockState), UniformInt.of((int) (maxLength * size), maxLength), ConstantInt.of(4), true), itemWeight);
         }
     }
 

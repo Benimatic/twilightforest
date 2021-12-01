@@ -36,11 +36,11 @@ public class SnowQueenIceShieldLayer<T extends SnowQueenIceShield> extends Entit
 				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.chunkBufferLayers()) {
 					if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
-						net.minecraftforge.client.ForgeHooksClient.setRenderLayer(type);
+						net.minecraftforge.client.ForgeHooksClient.setRenderType(type);
 						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, matrixStackIn, bufferIn.getBuffer(type), false, new Random(), blockstate.getSeed(new BlockPos(entityIn.position())), OverlayTexture.NO_OVERLAY);
 					}
 				}
-				net.minecraftforge.client.ForgeHooksClient.setRenderLayer(null);
+				net.minecraftforge.client.ForgeHooksClient.setRenderType(null);
 				matrixStackIn.popPose();
 				super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 			}

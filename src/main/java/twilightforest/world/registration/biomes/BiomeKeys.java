@@ -6,7 +6,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.data.worldgen.SurfaceBuilders;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -47,12 +46,12 @@ public class BiomeKeys {
 		BIOMES.register(name, () -> new Biome.BiomeBuilder()
 				.precipitation(Biome.Precipitation.NONE)
 				.biomeCategory(Biome.BiomeCategory.NONE)
-				.depth(0)
+				//.depth(0)
 				.downfall(0)
-				.scale(0)
+				//.scale(0)
 				.temperature(0)
 				.specialEffects(new BiomeSpecialEffects.Builder().fogColor(0).waterColor(0).waterFogColor(0).skyColor(0).build())
-				.generationSettings(new BiomeGenerationSettings.Builder().surfaceBuilder(SurfaceBuilders.GRASS).build())
+				.generationSettings(new BiomeGenerationSettings.Builder().build())
 				.mobSpawnSettings(new MobSpawnSettings.Builder().build())
 				.temperatureAdjustment(Biome.TemperatureModifier.NONE)
 				.build());

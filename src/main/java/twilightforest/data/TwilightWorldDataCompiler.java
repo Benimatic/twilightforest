@@ -9,21 +9,18 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
+import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.TerrainShaper;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
-import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.registration.ConfiguredSurfaceBuilders;
 import twilightforest.world.registration.ConfiguredWorldCarvers;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.biomes.BiomeMaker;
@@ -40,7 +37,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 
 	@Override
 	public void generate(HashCache directoryCache) {
-		ConfiguredSurfaceBuilders.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_SURFACE_BUILDER_REGISTRY));
+		//ConfiguredSurfaceBuilders.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_SURFACE_BUILDER_REGISTRY));
 		ConfiguredWorldCarvers.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_CARVER_REGISTRY));
 
 		Map<ResourceLocation, Biome> biomes = this.getBiomes();
@@ -66,25 +63,21 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				new StructureSettings(Optional.empty(), ImmutableMap.of()),
 				NoiseSettings.create(
 						-32, // TODO Deliberate over this. For now it'll be -32
-						128,
+						256,
 						new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-						new NoiseSlideSettings(-10, 3, 0),
-						new NoiseSlideSettings(15, 3, 0),
+						new NoiseSlider(-10, 3, 0),
+						new NoiseSlider(15, 3, 0),
 						1,
 						2,
-						1.0D,
-						-0.95,
 						true,
 						true,
 						false,
-						false
+						TerrainShaper.overworld(false)
 				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				Integer.MIN_VALUE,
+				SurfaceRuleData.overworld(),
 				0,
-				0,
-				-32,
 				false,
 				false,
 				false,
@@ -99,26 +92,22 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				// https://misode.github.io/worldgen/noise-settings/
 				// So far this looks great! We just need to raise the island levels to sea level. Otherwise is generates flat-flakey islands that really show the roots on dirt bottoms from trees
 				NoiseSettings.create(
-						-16, //min height
-						16, // height
+						-32, //min height
+						256, // height
 						new NoiseSamplingSettings(3.0D, 1.0D, 256.0D, 16.0D), // sampling
-						new NoiseSlideSettings(-3000, 92, -66), // top_slide
-						new NoiseSlideSettings(-30, 7, 1), // bottom_slide
+						new NoiseSlider(-3000, 92, -66), // top_slide
+						new NoiseSlider(-30, 7, 1), // bottom_slide
 						2, // size_horizontal
 						1, // size_vertical
-						0.3D, // density_factor
-						-0.2D, // density_offset
-						true, // simplex_surface_noise
-						false, // random_density_offset
 						false, // island_noise_override
-						false  // amplified
+						false,  // amplified
+						false, //large_biomes
+						TerrainShaper.overworld(false) //terrain_shaper
 				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				Integer.MIN_VALUE,
-				Integer.MAX_VALUE,
+				SurfaceRuleData.overworld(),
 				0,
-				-32,
 				false,
 				false,
 				false,
@@ -135,10 +124,10 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 
 		//FIXME: The issue with generated files using 0 as the seed is here. We need to somehow just...not have it here?
 		NoiseBasedChunkGenerator forestChunkGen =
-				new NoiseBasedChunkGenerator(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> forestDimensionSettings);
+				new NoiseBasedChunkGenerator(RegistryAccess.builtin().registryOrThrow(Registry.NOISE_REGISTRY), new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> forestDimensionSettings);
 				//new ChunkGeneratorTwilightForest(new FixedBiomeSource(getFromDynRegistry(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("enchanted_forest"))), 0L, () -> forestDimensionSettings);
 
-		NoiseBasedChunkGenerator skyChunkGen = new NoiseBasedChunkGenerator(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> skyDimensionSettings);
+		NoiseBasedChunkGenerator skyChunkGen = new NoiseBasedChunkGenerator(RegistryAccess.builtin().registryOrThrow(Registry.NOISE_REGISTRY), new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> skyDimensionSettings);
 		//NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 4L, () -> WorldGenRegistries.NOISE_SETTINGS.getValueForKey(RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, new ResourceLocation("floating_islands"))));
 		//NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new CheckerboardBiomeProvider(BiomeMaker.BIOMES.values().stream().sorted((o1, o2) -> Float.compare(o1.getDepth(), o2.getDepth())).map(b -> (Supplier<Biome>) () -> b).collect(Collectors.toList()), 2), 4L, skyDimensionSettings::get);
 
@@ -157,7 +146,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				-32, // Minimum Y Level
 				32+256, // Height + Min Y = Max Y
 				32+256, // Logical Height
-				FuzzyOffsetBiomeZoomer.INSTANCE,
+				//FuzzyOffsetBiomeZoomer.INSTANCE, //biome zoomer is no more here
 				new ResourceLocation("infiniburn_overworld"),
 				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
 				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0

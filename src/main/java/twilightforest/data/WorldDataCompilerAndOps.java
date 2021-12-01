@@ -12,11 +12,9 @@ import net.minecraft.data.HashCache;
 import net.minecraft.resources.RegistryWriteOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.TerrainShaper;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
-import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.*;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryManager;
@@ -224,16 +222,14 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
             int minY,
             int height,
             NoiseSamplingSettings noiseSamplingSettings,
-            NoiseSlideSettings topSlideSettings,
-            NoiseSlideSettings bottomSlideSettings,
+            NoiseSlider topSlideSettings,
+            NoiseSlider bottomSlideSettings,
             int noiseSizeHorizontal,
             int noiseSizeVertical,
-            double densityFactor,
-            double densityOffset,
-            boolean useSimplexSurfaceNoise,
-            boolean randomDensityOffset,
             boolean islandNoiseOverride,
-            boolean isAmplified
+            boolean isAmplified,
+            boolean largeBiomes,
+            TerrainShaper shaper
     ) {
         return NoiseSettings.create(
                 minY,
@@ -243,12 +239,10 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
                 bottomSlideSettings,
                 noiseSizeHorizontal,
                 noiseSizeVertical,
-                densityFactor,
-                densityOffset,
-                useSimplexSurfaceNoise,
-                randomDensityOffset,
                 islandNoiseOverride,
-                isAmplified
+                isAmplified,
+                largeBiomes,
+                shaper
         );
     }
 
@@ -258,32 +252,28 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
             NoiseSettings noiseSettings,
             BlockState defaultBlock,
             BlockState defaultFluid,
-            int bedrockRoofPosition,
-            int bedrockFloorPosition,
+            SurfaceRules.RuleSource rules,
             int seaLevel,
-            int minSurfaceLevel,
             boolean disableMobGeneration,
             boolean aquifersEnabled,
             boolean noiseCavesEnabled,
-            boolean deepslateEnabled,
             boolean oreVeinsEnabled,
-            boolean noodleCavesEnabled
+            boolean noodleCavesEnabled,
+            boolean legacyRandomSource
     ) {
         return new NoiseGeneratorSettings(
                 structureSettings,
                 noiseSettings,
                 defaultBlock,
                 defaultFluid,
-                bedrockRoofPosition,
-                bedrockFloorPosition,
+                rules,
                 seaLevel,
-                minSurfaceLevel,
                 disableMobGeneration,
                 aquifersEnabled,
                 noiseCavesEnabled,
-                deepslateEnabled,
                 oreVeinsEnabled,
-                noodleCavesEnabled
+                noodleCavesEnabled,
+                legacyRandomSource
         );
     }
 }

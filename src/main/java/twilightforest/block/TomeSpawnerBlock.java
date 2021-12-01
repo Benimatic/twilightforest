@@ -45,21 +45,21 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void catchFire(BlockState state, Level world, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
+	public void onCaughtFire(BlockState state, Level world, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
 		if(world.getDifficulty() != Difficulty.PEACEFUL && world.getBlockState(pos).getValue(SPAWNER) && world.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && world instanceof ServerLevel level) {
 			for(int i = 0; i < state.getValue(BOOK_STAGES); i++) {
 				ts.attemptSpawnTome(level, pos, true);
 			}
 			world.destroyBlock(pos, false);
 		}
-		super.catchFire(state, world, pos, face, igniter);
+		super.onCaughtFire(state, world, pos, face, igniter);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		for(Direction direction : Direction.values()) {
 			if(level.getBlockState(pos.relative(direction)).is(BlockTags.FIRE)) {
-				this.catchFire(state, level, pos, direction, null);
+				this.onCaughtFire(state, level, pos, direction, null);
 				break;
 			}
 		}

@@ -31,13 +31,13 @@ public abstract class BaseIceMob extends Monster {
 				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
 
 				level.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
-				if (this.level.getBiome(this.blockPosition()).getTemperature(this.blockPosition()) > 1.0F || this.isOnFire()) {
+				if (this.level.getBiome(this.blockPosition()).shouldSnowGolemBurn(this.blockPosition()) || this.isOnFire()) {
 					this.level.addParticle(ParticleTypes.CLOUD, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0.1F, 0);
 					this.level.addParticle(ParticleTypes.DRIPPING_WATER, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 				}
 			}
 		}
-		if (this.level.getBiome(this.blockPosition()).getTemperature(this.blockPosition()) > 1.0F && this.tickCount % 20 == 0) {
+		if (this.level.getBiome(this.blockPosition()).shouldSnowGolemBurn(this.blockPosition()) && this.tickCount % 20 == 0) {
 			//BURN!!!
 			this.hurt(DamageSource.ON_FIRE, 1.0F);
 		}

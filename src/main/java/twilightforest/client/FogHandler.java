@@ -33,7 +33,7 @@ public class FogHandler {
 				final boolean inverse = real > spoop;
 				spoopColors[i] = real == spoop ? spoop : Mth.clampedLerp(inverse ? spoop : real, inverse ? real : spoop, spoopColor);
 			}
-			float shift = (float) (0.01F * event.getRenderPartialTicks());
+			float shift = (float) (0.01F * event.getPartialTicks());
 			if (flag)
 				spoopColor += shift;
 			else
@@ -51,7 +51,7 @@ public class FogHandler {
 		if (flag || spoopFog < 1F) {
 			float f = 48F;
 			f = f >= event.getFarPlaneDistance() ? event.getFarPlaneDistance() : Mth.clampedLerp(f, event.getFarPlaneDistance(), spoopFog);
-			float shift = (float) (0.001F * event.getRenderPartialTicks());
+			float shift = (float) (0.001F * event.getPartialTicks());
 			if (flag)
 				spoopFog -= shift;
 			else
@@ -61,7 +61,7 @@ public class FogHandler {
 			//FIXME: These two are commented out as they do not exist in the main game. While this might mean they aren't needed, look at this if there is a problem
 //			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
 
-			if (event.getType() == FogRenderer.FogMode.FOG_SKY) {
+			if (event.getMode() == FogRenderer.FogMode.FOG_SKY) {
 				RenderSystem.setShaderFogStart(0.0F);
 				RenderSystem.setShaderFogEnd(f);
 			} else {

@@ -1,19 +1,21 @@
 package twilightforest.block;
 
 import com.mojang.math.Vector3f;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
@@ -24,9 +26,6 @@ import twilightforest.enums.TowerDeviceVariant;
 import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Random;
-
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundSource;
 
 public class BuilderBlock extends BaseEntityBlock {
 
@@ -69,13 +68,13 @@ public class BuilderBlock extends BaseEntityBlock {
 		if (variant == TowerDeviceVariant.BUILDER_INACTIVE && world.hasNeighborSignal(pos)) {
 			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
 			world.playSound(null, pos, TFSounds.BUILDER_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
-			world.getBlockTicks().scheduleTick(pos, this, 4);
+			world.scheduleTick(pos, this, 4);
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && !world.hasNeighborSignal(pos)) {
 			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
 			world.playSound(null, pos, TFSounds.BUILDER_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
-			world.getBlockTicks().scheduleTick(pos, this, 4);
+			world.scheduleTick(pos, this, 4);
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_TIMEOUT && !world.hasNeighborSignal(pos)) {
@@ -168,7 +167,7 @@ public class BuilderBlock extends BaseEntityBlock {
 		if (state.getBlock() == TFBlocks.BUILT_BLOCK.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
 			world.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
 			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundSource.BLOCKS, 0.3F, 0.6F);
-			world.getBlockTicks().scheduleTick(pos, state.getBlock(), 10);
+			world.scheduleTick(pos, state.getBlock(), 10);
 		}
 	}
 

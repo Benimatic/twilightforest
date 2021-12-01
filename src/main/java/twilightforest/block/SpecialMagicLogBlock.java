@@ -41,7 +41,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	@Override
 	@Deprecated
 	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
-		world.getBlockTicks().scheduleTick(pos, this, this.tickRate());
+		world.scheduleTick(pos, this, this.tickRate());
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 		playSound(world, pos, rand);
 		performTreeEffect(world, pos, rand);
 
-		world.getBlockTicks().scheduleTick(pos, this, this.tickRate());
+		world.scheduleTick(pos, this, this.tickRate());
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if (!state.getValue(ACTIVE)) {
 			world.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
-			world.getBlockTicks().scheduleTick(pos, this, this.tickRate());
+			world.scheduleTick(pos, this, this.tickRate());
 			return InteractionResult.SUCCESS;
 		} else if (state.getValue(ACTIVE)) {
 			world.setBlockAndUpdate(pos, state.setValue(ACTIVE, false));

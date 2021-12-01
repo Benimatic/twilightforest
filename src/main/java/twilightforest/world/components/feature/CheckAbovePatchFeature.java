@@ -25,10 +25,10 @@ public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 		WorldGenLevel level = ctx.level();
 		boolean flag = false;
 		int i = blockpos.getY();
-		int j = i + config.halfHeight;
-		int k = i - config.halfHeight - 1;
-		boolean flag1 = config.state.getBlock() instanceof FallingBlock;
-		int l = config.radius.sample(ctx.random());
+		int j = i + config.halfHeight();
+		int k = i - config.halfHeight() - 1;
+		boolean flag1 = config.state().getBlock() instanceof FallingBlock;
+		int l = config.radius().sample(ctx.random());
 
 		for(int i1 = blockpos.getX() - l; i1 <= blockpos.getX() + l; ++i1) {
 			for(int j1 = blockpos.getZ() - l; j1 <= blockpos.getZ() + l; ++j1) {
@@ -43,10 +43,10 @@ public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 						Block block = blockstate.getBlock();
 						boolean flag3 = false;
 						if (i2 > k) {
-							for(BlockState blockstate1 : config.targets) {
+							for(BlockState blockstate1 : config.targets()) {
 								//TF: add a check to make sure the block above is air or replaceable
 								if (blockstate1.is(block) && (level.getBlockState(blockpos1.above()).isAir() || level.getBlockState(blockpos1.above()).getMaterial().isReplaceable())) {
-									level.setBlock(blockpos1, config.state, 2);
+									level.setBlock(blockpos1, config.state(), 2);
 									this.markAboveForPostProcessing(level, blockpos1);
 									flag = true;
 									flag3 = true;
@@ -56,7 +56,7 @@ public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 						}
 
 						if (flag1 && flag2 && blockstate.isAir()) {
-							BlockState blockstate2 = config.state.is(Blocks.RED_SAND) ? Blocks.RED_SANDSTONE.defaultBlockState() : Blocks.SANDSTONE.defaultBlockState();
+							BlockState blockstate2 = config.state().is(Blocks.RED_SAND) ? Blocks.RED_SANDSTONE.defaultBlockState() : Blocks.SANDSTONE.defaultBlockState();
 							level.setBlock(new BlockPos(i1, i2 + 1, j1), blockstate2, 2);
 						}
 

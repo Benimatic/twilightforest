@@ -1,17 +1,14 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.material.Material;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -49,18 +46,18 @@ public class TFGenDarkForestFeature extends Feature<RandomPatchConfiguration> {
         }
 
         //RandomPatchFeature placement logic
-        BlockState blockstate = config.stateProvider.getState(rand, pos);
         int i = 0;
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
-        for(int j = 0; j < config.tries; ++j) {
-            blockpos$mutable.setWithOffset(pos, rand.nextInt(config.xspread + 1) - rand.nextInt(config.xspread + 1), rand.nextInt(config.yspread + 1) - rand.nextInt(config.yspread + 1), rand.nextInt(config.zspread + 1) - rand.nextInt(config.zspread + 1));
-            BlockPos blockpos1 = blockpos$mutable.below();
-            BlockState blockstate1 = reader.getBlockState(blockpos1);
-            if ((reader.isEmptyBlock(blockpos$mutable) || config.canReplace && reader.getBlockState(blockpos$mutable).getMaterial().isReplaceable()) && blockstate.canSurvive(reader, blockpos$mutable) && (config.whitelist.isEmpty() || config.whitelist.contains(blockstate1.getBlock())) && !config.blacklist.contains(blockstate1) && (!config.needWater || reader.getFluidState(blockpos1.west()).is(FluidTags.WATER) || reader.getFluidState(blockpos1.east()).is(FluidTags.WATER) || reader.getFluidState(blockpos1.north()).is(FluidTags.WATER) || reader.getFluidState(blockpos1.south()).is(FluidTags.WATER))) {
-                config.blockPlacer.place(reader, blockpos$mutable, blockstate, rand);
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        int j = config.xzSpread() + 1;
+        int k = config.ySpread() + 1;
+
+        for(int l = 0; l < config.tries(); ++l) {
+            blockpos$mutableblockpos.setWithOffset(pos, rand.nextInt(j) - rand.nextInt(j), rand.nextInt(k) - rand.nextInt(k), rand.nextInt(j) - rand.nextInt(j));
+            if (config.feature().get().place(reader, ctx.chunkGenerator(), rand, blockpos$mutableblockpos)) {
                 ++i;
             }
         }
+
         return i > 0;
     }
 }

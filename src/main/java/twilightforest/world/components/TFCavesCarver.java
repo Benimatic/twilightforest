@@ -10,9 +10,9 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import twilightforest.block.TFBlocks;
 
-import java.util.BitSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -43,7 +43,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		return rand.nextFloat() <= config.probability;
 	}
 
-	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, Random rand, Aquifer aquifer, ChunkPos accessPos, BitSet bitSet) {
+	@Override
+	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, Random rand, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
 		int i = SectionPos.sectionToBlockCoord(this.getRange() * 2 - 1);
 		int j = rand.nextInt(rand.nextInt(rand.nextInt(this.getCaveBound()) + 1) + 1);
 
@@ -59,7 +60,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			if (rand.nextInt(4) == 0 && isHighlands) {
 				double d6 = config.yScale.sample(rand);
 				float f1 = 1.0F + rand.nextFloat() * 6.0F;
-				this.createRoom(ctx, config, access, biomePos, rand.nextLong(), aquifer, x, y, z, f1, d6, bitSet, checker);
+				this.createRoom(ctx, config, access, biomePos, aquifer, x, y, z, f1, d6, mask, checker);
 				l += rand.nextInt(4);
 			}
 
@@ -68,7 +69,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				float f3 = (rand.nextFloat() - 0.5F) / 4.0F;
 				float f2 = this.getThickness(rand);
 				int i1 = i - rand.nextInt(i / 4);
-				this.createTunnel(ctx, config, access, biomePos, rand.nextLong(), aquifer, x, y, z, horiz, vert, f2, f, f3, 0, i1, this.getYScale(), bitSet, checker);
+				this.createTunnel(ctx, config, access, biomePos, rand.nextLong(), aquifer, x, y, z, horiz, vert, f2, f, f3, 0, i1, this.getYScale(), mask, checker);
 			}
 		}
 
@@ -76,9 +77,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	@Override
-	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, BitSet bitset, Random rand, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
+	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, CarvingMask mask, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
 		BlockState blockstate = access.getBlockState(pos);
-		BlockState blockstate1 = access.getBlockState(posUp.setWithOffset(pos, Direction.UP));
 		if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM) || blockstate.is(Blocks.PODZOL) || blockstate.is(Blocks.DIRT_PATH)) {
 			isSurface.setTrue();
 		}
@@ -86,7 +86,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		//We dont want caves to go so far down you can see bedrock, so lets stop them right before
 		if(pos.getY() < access.getMinBuildHeight() + 6) return false;
 
-		if (!this.canReplaceBlock(blockstate, blockstate1) && !isDebugEnabled(config)) {
+		if (!this.canReplaceBlock(blockstate) && !isDebugEnabled(config)) {
 			return false;
 		} else {
 			BlockState blockstate2 = this.getCarveState(ctx, config, pos, aquifer);
@@ -103,13 +103,13 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					if (areaAround.is(FluidTags.WATER) || areaAboveAround.is(FluidTags.WATER) || aboveSurface.is(FluidTags.WATER)) {
 						return false;
 					} else {
-						if (rand.nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
+						if (Objects.requireNonNull(access.getWorldForge()).getRandom().nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
 							access.setBlockState(pos.relative(facing), TFBlocks.TROLLSTEINN.get().defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);
 
 						if ((access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
-							switch(rand.nextInt(5)) {
+							switch(access.getWorldForge().getRandom().nextInt(5)) {
 								case 0, 1, 2 -> access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
 								case 3 -> access.setBlockState(pos.above(), Blocks.ROOTED_DIRT.defaultBlockState(), false);
 								case 4 -> access.setBlockState(pos.above(), Blocks.COARSE_DIRT.defaultBlockState(), false);
@@ -118,7 +118,12 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 						if (isSurface.isTrue()) {
 							BlockPos posDown = pos.setWithOffset(pos, Direction.DOWN).below();
 							if (access.getBlockState(posDown).is(Blocks.DIRT)) {
-								access.setBlockState(posDown, biomePos.apply(pos).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial(), false);
+								ctx.topMaterial(biomePos, access, posDown, !blockstate2.getFluidState().isEmpty()).ifPresent((state -> {
+									access.setBlockState(posDown, state, false);
+									if (!state.getFluidState().isEmpty()) {
+										access.markPosForPostprocessing(posDown);
+									}
+								}));
 							}
 						}
 
@@ -146,13 +151,13 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		return 1.0D;
 	}
 
-	protected void createRoom(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, long seed, Aquifer aquifer, double posX, double posY, double posZ, float radius, double horizToVertRatio, BitSet bitSet, WorldCarver.CarveSkipChecker checker) {
+	protected void createRoom(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, Aquifer aquifer, double posX, double posY, double posZ, float radius, double horizToVertRatio, CarvingMask mask, WorldCarver.CarveSkipChecker checker) {
 		double d0 = 1.5D + (double)(Mth.sin(((float)Math.PI / 2F)) * radius);
 		double d1 = d0 * horizToVertRatio;
-		this.carveEllipsoid(ctx, config, access, biomePos, seed, aquifer, posX + 1.0D, posY, posZ, d0, d1, bitSet, checker);
+		this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX + 1.0D, posY, posZ, d0, d1, mask, checker);
 	}
 
-	protected void createTunnel(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, long seed, Aquifer aquifer, double posX, double posY, double posZ, double horizMult, double vertMult, float thickness, float yaw, float pitch, int branchIndex, int branchCount, double horizToVertRatio, BitSet bitSet, WorldCarver.CarveSkipChecker checker) {
+	protected void createTunnel(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, long seed, Aquifer aquifer, double posX, double posY, double posZ, double horizMult, double vertMult, float thickness, float yaw, float pitch, int branchIndex, int branchCount, double horizToVertRatio, CarvingMask mask, WorldCarver.CarveSkipChecker checker) {
 		Random random = new Random(seed);
 		int i = random.nextInt(branchCount / 2) + branchCount / 4;
 		boolean flag = random.nextInt(6) == 0;
@@ -174,8 +179,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			f1 = f1 + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0F;
 			f = f + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
 			if (j == i && thickness > 1.0F) {
-				this.createTunnel(ctx, config, access, biomePos, random.nextLong(), aquifer, posX, posY, posZ, horizMult, vertMult, random.nextFloat() * 0.5F + 0.5F, yaw - ((float)Math.PI / 2F), pitch / 3.0F, j, branchCount, 1.0D, bitSet, checker);
-				this.createTunnel(ctx, config, access, biomePos, random.nextLong(), aquifer, posX, posY, posZ, horizMult, vertMult, random.nextFloat() * 0.5F + 0.5F, yaw + ((float)Math.PI / 2F), pitch / 3.0F, j, branchCount, 1.0D, bitSet, checker);
+				this.createTunnel(ctx, config, access, biomePos, random.nextLong(), aquifer, posX, posY, posZ, horizMult, vertMult, random.nextFloat() * 0.5F + 0.5F, yaw - ((float)Math.PI / 2F), pitch / 3.0F, j, branchCount, 1.0D, mask, checker);
+				this.createTunnel(ctx, config, access, biomePos, random.nextLong(), aquifer, posX, posY, posZ, horizMult, vertMult, random.nextFloat() * 0.5F + 0.5F, yaw + ((float)Math.PI / 2F), pitch / 3.0F, j, branchCount, 1.0D, mask, checker);
 				return;
 			}
 
@@ -184,7 +189,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					return;
 				}
 
-				this.carveEllipsoid(ctx, config, access, biomePos, seed, aquifer, posX, posY, posZ, d0 * horizMult, d1 * vertMult, bitSet, checker);
+				this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX, posY, posZ, d0 * horizMult, d1 * vertMult, mask, checker);
 			}
 		}
 
@@ -192,8 +197,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	//make our own list of replaceables since otherwise it breaks structures like the yeti cave
 	@Override
-	protected boolean canReplaceBlock(BlockState state, BlockState aboveState) {
-		return (this.replaceableBlocks.contains(state.getBlock()) || state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT) || state.is(TFBlocks.TROLLSTEINN.get())) && !aboveState.getFluidState().is(FluidTags.WATER);
+	protected boolean canReplaceBlock(BlockState state) {
+		return this.replaceableBlocks.contains(state.getBlock()) || state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT) || state.is(TFBlocks.TROLLSTEINN.get());
 	}
 
 	private static boolean shouldSkip(double posX, double posY, double posZ, double minY) {

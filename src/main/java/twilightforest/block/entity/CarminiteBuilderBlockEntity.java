@@ -92,7 +92,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 			if (++te.ticksStopped == 60) {
 				// force the builder back into an inactive state
 				level.setBlockAndUpdate(pos, state.setValue(BuilderBlock.STATE, TowerDeviceVariant.BUILDER_TIMEOUT));
-				level.getBlockTicks().scheduleTick(pos, state.getBlock(), 4);
+				level.scheduleTick(pos, state.getBlock(), 4);
 			}
 		}
 	}

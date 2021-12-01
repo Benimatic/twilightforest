@@ -1,26 +1,27 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RotatedPillarBlock;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import com.mojang.math.Vector3f;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ForgeHooksClient;
 import twilightforest.entity.SlideBlock;
 
 import java.util.Random;
-
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 
 public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 
@@ -59,11 +60,11 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 					BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 					for (RenderType type : RenderType.chunkBufferLayers()) {
 						if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
-							ForgeHooksClient.setRenderLayer(type);
+							ForgeHooksClient.setRenderType(type);
 							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
 						}
 					}
-					ForgeHooksClient.setRenderLayer(null);
+					ForgeHooksClient.setRenderType(null);
 
 					stack.popPose();
 					super.render(entity, yaw, partialTicks, stack, buffer, light);
