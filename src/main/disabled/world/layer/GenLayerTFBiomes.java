@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.newbiome.context.Context;
-import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer0;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.world.components.TFBiomeProvider;
 
