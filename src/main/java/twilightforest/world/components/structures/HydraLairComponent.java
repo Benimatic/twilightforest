@@ -33,7 +33,7 @@ public class HydraLairComponent extends HollowHillComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int stalacts = 64;
 		int stalags = 8;
 
@@ -56,8 +56,6 @@ public class HydraLairComponent extends HollowHillComponent {
 
 		// boss spawner seems important
 		placeBlock(world, TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState(), 27, 3, 27, sbb);
-
-		return true;
 	}
 
 	@Override

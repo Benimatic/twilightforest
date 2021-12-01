@@ -52,8 +52,8 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
     }
 
     @Override
-    public boolean postProcess(WorldGenLevel worldGenLevel, StructureFeatureManager structureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
-        boolean result = super.postProcess(worldGenLevel, structureManager, chunkGenerator, random, boundingBox, chunkPos, blockPos);
+    public void postProcess(WorldGenLevel worldGenLevel, StructureFeatureManager structureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
+        super.postProcess(worldGenLevel, structureManager, chunkGenerator, random, boundingBox, chunkPos, blockPos);
 
         // [VanillaCopy] TemplateStructurePiece.postProcess
         //  template -> templateOverlay
@@ -90,7 +90,5 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
                 }
             }
         }
-
-        return result;
     }
 }

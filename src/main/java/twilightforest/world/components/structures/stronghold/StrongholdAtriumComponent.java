@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.stronghold;
 
+import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.data.worldgen.Features;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -82,7 +82,7 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 	 * Generate the blocks that go here
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 13, 17, rand, deco.randomBlocks);
 
 
@@ -126,8 +126,6 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 
 		// doors
 		placeDoors(world, sbb);
-
-		return true;
 	}
 
 	private void spawnATree(WorldGenLevel world, ChunkGenerator generator, int treeNum, int x, int y, int z, BoundingBox sbb) {
@@ -137,15 +135,15 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 			ConfiguredFeature<?,?> treeGen = switch (treeNum) {
 				case 1 ->
 						// jungle tree
-						Features.JUNGLE_TREE;
+						TreeFeatures.JUNGLE_TREE;
 				case 2 ->
 						// birch
-						Features.BIRCH;
+						TreeFeatures.BIRCH;
 				case 3 -> ConfiguredFeatures.TWILIGHT_OAK_BASE;
 				case 4 -> ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
 				default ->
 						// oak tree
-						Features.OAK;
+						TreeFeatures.OAK;
 			};
 			// grow a tree
 

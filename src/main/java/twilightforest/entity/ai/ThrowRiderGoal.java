@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TFEventListener;
 import twilightforest.data.EntityTagGenerator;
 import twilightforest.network.TFPacketHandler;

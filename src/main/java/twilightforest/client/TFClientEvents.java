@@ -1,60 +1,51 @@
 package twilightforest.client;
 
-import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Options;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.CameraType;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.StaticTagHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IWeatherRenderHandler;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fmllegacy.RegistryObject;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
-import twilightforest.client.model.item.ShaderBagItemModel;
 import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.compat.ie.TFShaderGrabbagItem;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.item.TFItems;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
@@ -88,13 +79,14 @@ public class TFClientEvents {
 			tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 			tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 
-			if(ModList.get().isLoaded("immersiveengineering")) {
-				for (Rarity rarity : ShaderRegistry.rarityWeightMap.keySet()) {
-					ResourceLocation itemRL = TwilightForestMod.prefix("shader_bag_" + rarity.name().toLowerCase(Locale.US).replace(':', '_'));
-					ModelResourceLocation mrl = new ModelResourceLocation(itemRL, "inventory");
-					event.getModelRegistry().put(mrl, new ShaderBagItemModel(event.getModelRegistry().get(mrl), new ItemStack(ForgeRegistries.ITEMS.getValue(itemRL))));
-				}
-			}
+			//FIXME IE Compat
+//			if(ModList.get().isLoaded("immersiveengineering")) {
+//				for (Rarity rarity : ShaderRegistry.rarityWeightMap.keySet()) {
+//					ResourceLocation itemRL = TwilightForestMod.prefix("shader_bag_" + rarity.name().toLowerCase(Locale.US).replace(':', '_'));
+//					ModelResourceLocation mrl = new ModelResourceLocation(itemRL, "inventory");
+//					event.getModelRegistry().put(mrl, new ShaderBagItemModel(event.getModelRegistry().get(mrl), new ItemStack(ForgeRegistries.ITEMS.getValue(itemRL))));
+//				}
+//			}
 		}
 
 		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
@@ -143,7 +135,7 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void texStitch(TextureStitchEvent.Pre evt) {
-			TextureAtlas map = evt.getMap();
+			TextureAtlas map = evt.getAtlas();
 
 			if (Sheets.CHEST_SHEET.equals(map.location()))
 				TwilightChestRenderer.MATERIALS.values().stream()
@@ -208,14 +200,14 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void registerModels(ModelRegistryEvent event) {
-			ModelLoader.addSpecialModel(ShieldLayer.LOC);
-			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
-			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
-			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
+			ForgeModelBakery.addSpecialModel(ShieldLayer.LOC);
+			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
+			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
+			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
 
-			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
-			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
-			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
+			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
+			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
+			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
 		}
 	}
 
@@ -235,7 +227,7 @@ public class TFClientEvents {
 	 * Render effects in first-person perspective
 	 */
 	@SubscribeEvent
-	public static void renderWorldLast(RenderWorldLastEvent event) {
+	public static void renderWorldLast(RenderLevelLastEvent event) {
 
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
@@ -248,7 +240,7 @@ public class TFClientEvents {
 			if (renderer instanceof LivingEntityRenderer<?,?>) {
 				for (RenderEffect effect : RenderEffect.VALUES) {
 					if (effect.shouldRender((LivingEntity) entity, true)) {
-						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTicks(), true);
+						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
 					}
 				}
 			}

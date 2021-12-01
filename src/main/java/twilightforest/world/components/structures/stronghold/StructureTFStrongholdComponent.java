@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -38,6 +39,11 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		super(type, feature, i, x, y, z);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setOrientation(facing);
+	}
+
+	@Override
+	protected void addAdditionalSaveData(StructurePieceSerializationContext p_192646_, CompoundTag p_192647_) {
+
 	}
 
 	/**

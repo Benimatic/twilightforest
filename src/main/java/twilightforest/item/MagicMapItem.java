@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFMagicMapData;
@@ -186,6 +186,7 @@ public class MagicMapItem extends MapItem {
 			if (color != null) {
 				return color;
 			}
+			//FIXME surface builder where
 		return new MapColorBrightness(biome.getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial().getMapColor(world, BlockPos.ZERO));
 	}
 

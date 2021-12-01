@@ -22,7 +22,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.network.NetworkDirection;
 import twilightforest.TFMazeMapData;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.network.TFPacketHandler;

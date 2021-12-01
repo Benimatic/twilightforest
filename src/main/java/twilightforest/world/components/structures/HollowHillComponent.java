@@ -18,6 +18,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
@@ -64,8 +65,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-		super.addAdditionalSaveData(level, tagCompound);
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putInt("hillSize", hillSize);
 	}
 
@@ -73,7 +74,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int stalactiteCount = stalactitesForSizes[this.hillSize]; // number of stalactites mga = {0, 3, 9, 18}
 
 		// fill in features
@@ -111,30 +112,26 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			this.generateTreasureChest(world, dest.move(0, 1, 0), sbb);
 		}
 
-		if (true)
-			return true;
-
-		this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), this.radius, 3, this.radius, Rotation.NONE, sbb);
-		this.setBlockStateRotated(world, Blocks.SEA_LANTERN.defaultBlockState(), this.boundingBox.getXSpan()/2, 4, this.boundingBox.getZSpan()/2, Rotation.NONE, sbb);
-
-		for (int i = 0; i < 30; i++) {
-			this.setBlockStateRotated(world, Blocks.WHITE_GLAZED_TERRACOTTA.defaultBlockState(), 0, i, 0, Rotation.NONE, sbb);
-			this.setBlockStateRotated(world, Blocks.ORANGE_GLAZED_TERRACOTTA.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), i, 0, Rotation.NONE, sbb);
-			this.setBlockStateRotated(world, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA.defaultBlockState(), 0, i, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
-			this.setBlockStateRotated(world, Blocks.MAGENTA_GLAZED_TERRACOTTA.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), i, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
-		}
-
-		for (int i = 1; i < this.boundingBox.maxX() - this.boundingBox.minX(); i++) {
-			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, 30, 0, Rotation.NONE, sbb);
-			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, 30, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
-		}
-
-		for (int i = 1; i < this.boundingBox.maxZ() - this.boundingBox.minZ(); i++) {
-			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), 0, 30, i, Rotation.NONE, sbb);
-			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), 30, i, Rotation.NONE, sbb);
-		}
-
-		return true;
+		//DEBUG
+//		this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), this.radius, 3, this.radius, Rotation.NONE, sbb);
+//		this.setBlockStateRotated(world, Blocks.SEA_LANTERN.defaultBlockState(), this.boundingBox.getXSpan()/2, 4, this.boundingBox.getZSpan()/2, Rotation.NONE, sbb);
+//
+//		for (int i = 0; i < 30; i++) {
+//			this.setBlockStateRotated(world, Blocks.WHITE_GLAZED_TERRACOTTA.defaultBlockState(), 0, i, 0, Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.ORANGE_GLAZED_TERRACOTTA.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), i, 0, Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA.defaultBlockState(), 0, i, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.MAGENTA_GLAZED_TERRACOTTA.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), i, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
+//		}
+//
+//		for (int i = 1; i < this.boundingBox.maxX() - this.boundingBox.minX(); i++) {
+//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, 30, 0, Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, 30, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
+//		}
+//
+//		for (int i = 1; i < this.boundingBox.maxZ() - this.boundingBox.minZ(); i++) {
+//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), 0, 30, i, Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), 30, i, Rotation.NONE, sbb);
+//		}
 	}
 
 	/**

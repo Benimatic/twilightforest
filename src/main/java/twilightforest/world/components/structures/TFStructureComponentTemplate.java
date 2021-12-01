@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -27,11 +28,11 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     protected StructureTemplate TEMPLATE;
     public Runnable LAZY_TEMPLATE_LOADER;
 
-    public TFStructureComponentTemplate(ServerLevel level, StructurePieceType piece, CompoundTag nbt) {
+    public TFStructureComponentTemplate(StructurePieceSerializationContext ctx, StructurePieceType piece, CompoundTag nbt) {
         super(piece, nbt);
         this.templatePosition = new BlockPos(nbt.getInt("TPX"), nbt.getInt("TPY"), nbt.getInt("TPZ"));
         this.placeSettings.setRotation(this.rotation);
-		LAZY_TEMPLATE_LOADER = () -> setup(level.getStructureManager());
+		LAZY_TEMPLATE_LOADER = () -> setup(ctx.structureManager());
     }
 
     public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, BoundingBox boundingBox) {
@@ -71,8 +72,8 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     protected abstract void loadTemplates(StructureManager templateManager);
 
     @Override
-    protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
-        super.addAdditionalSaveData(level, tagCompound);
+    protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+        super.addAdditionalSaveData(ctx, tagCompound);
         tagCompound.putInt("TPX", this.templatePosition.getX());
         tagCompound.putInt("TPY", this.templatePosition.getY());
         tagCompound.putInt("TPZ", this.templatePosition.getZ());

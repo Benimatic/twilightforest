@@ -7,26 +7,24 @@ import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
-import twilightforest.block.entity.TFBlockEntities;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -43,10 +41,10 @@ public class TFClientSetup {
 		private static boolean optifineWarningShown = false;
 
 		@SubscribeEvent
-		public static void showOptifineWarning(GuiScreenEvent.InitGuiEvent.Post event) {
-			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getGui() instanceof TitleScreen) {
+		public static void showOptifineWarning(ScreenEvent.InitScreenEvent.Post event) {
+			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getScreen() instanceof TitleScreen) {
 				optifineWarningShown = true;
-				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getGui()));
+				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
 			}
 		}
 

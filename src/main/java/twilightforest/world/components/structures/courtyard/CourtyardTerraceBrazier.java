@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.NagastoneVariants;
@@ -20,7 +21,7 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 import java.util.Random;
 
 public class CourtyardTerraceBrazier extends TwilightTemplateStructurePiece {
-    public CourtyardTerraceBrazier(ServerLevel level, CompoundTag nbt) {
+    public CourtyardTerraceBrazier(StructurePieceSerializationContext ctx, CompoundTag nbt) {
         super(NagaCourtyardPieces.TFNCTr, nbt, level, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
     }
 
@@ -29,8 +30,8 @@ public class CourtyardTerraceBrazier extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    public boolean postProcess(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
-        return this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
+    public void postProcess(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
+        this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
     }
 
     @Override

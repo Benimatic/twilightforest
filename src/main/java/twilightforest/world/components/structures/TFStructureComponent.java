@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.nbt.CompoundTag;
@@ -165,7 +166,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	          worldIn.setBlock(blockpos, blockstateIn, 2);
 	          FluidState fluidstate = worldIn.getFluidState(blockpos);
 	          if (!fluidstate.isEmpty()) {
-	             worldIn.getLiquidTicks().scheduleTick(blockpos, fluidstate.getType(), 0);
+	             worldIn.scheduleTick(blockpos, fluidstate.getType(), 0);
 	          }
 
 	          if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
@@ -192,7 +193,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	}
 
 	@Override
-	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
 		tagCompound.putInt("si", this.spawnListIndex);
 		tagCompound.putString("deco", TFStructureDecorator.getDecoString(this.deco));
 		tagCompound.putInt("rot", this.rotation.ordinal());

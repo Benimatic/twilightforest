@@ -8,13 +8,11 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 
@@ -32,13 +30,13 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     }
 
     @Override
-    public void createBiomes(Registry<Biome> biomes, ChunkAccess chunkAccess) {
-        this.delegate.createBiomes(biomes, chunkAccess);
+    public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomes, Executor executor, Blender blender, StructureFeatureManager manager, ChunkAccess chunkAccess) {
+        return this.delegate.createBiomes(biomes, executor, blender, manager, chunkAccess);
     }
 
     @Override
-    public void applyCarvers(long seed, BiomeManager biomeManager, ChunkAccess chunkAccess, GenerationStep.Carving carving) {
-        this.delegate.applyCarvers(seed, biomeManager, chunkAccess, carving);
+    public void applyCarvers(WorldGenRegion region, long seed, BiomeManager biomeManager, StructureFeatureManager manager, ChunkAccess chunkAccess, GenerationStep.Carving carving) {
+        this.delegate.applyCarvers(region, seed, biomeManager, manager, chunkAccess, carving);
     }
 
     // Runtime will not care about public -> protected overrides, only compiletime will
@@ -56,13 +54,13 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     }
 
     @Override
-    public void applyBiomeDecoration(WorldGenRegion region, StructureFeatureManager structureManager) {
-        this.delegate.applyBiomeDecoration(region, structureManager);
+    public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess access, StructureFeatureManager structureManager) {
+        this.delegate.applyBiomeDecoration(level, access, structureManager);
     }
 
     @Override
-    public void buildSurfaceAndBedrock(WorldGenRegion level, ChunkAccess chunkAccess) {
-        this.delegate.buildSurfaceAndBedrock(level, chunkAccess);
+    public void buildSurface(WorldGenRegion level, StructureFeatureManager manager, ChunkAccess chunkAccess) {
+        this.delegate.buildSurface(level, manager, chunkAccess);
     }
 
     @Override
@@ -106,8 +104,8 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     }
 
     @Override
-    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, StructureFeatureManager structureManager, ChunkAccess chunkAccess) {
-        return this.delegate.fillFromNoise(executor, structureManager, chunkAccess);
+    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureManager, ChunkAccess chunkAccess) {
+        return this.delegate.fillFromNoise(executor, blender, structureManager, chunkAccess);
     }
 
     @Override
@@ -146,7 +144,13 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     }
 
     @Override
-    public BaseStoneSource getBaseStoneSource() {
-        return this.delegate.getBaseStoneSource();
+    public Climate.Sampler climateSampler() {
+        return this.delegate.climateSampler();
     }
+
+    //FIXME drull do we need this anymore
+//    @Override
+//    public BaseStoneSource getBaseStoneSource() {
+//        return this.delegate.getBaseStoneSource();
+//    }
 }

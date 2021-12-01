@@ -10,6 +10,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.block.TFBlocks;
@@ -30,8 +31,8 @@ public class CourtyardMain extends StructureMazeGenerator {
 	static final BlockRotProcessor WALL_INTEGRITY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_INTEGRITY);
 	static final BlockRotProcessor WALL_DECAY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_DECAY);
 
-	public CourtyardMain(ServerLevel level, CompoundTag nbt) {
-		super(level.getStructureManager(), NagaCourtyardPieces.TFNCMn, nbt);
+	public CourtyardMain(StructurePieceSerializationContext ctx, CompoundTag nbt) {
+		super(ctx.structureManager(), NagaCourtyardPieces.TFNCMn, nbt);
 	}
 
 	public CourtyardMain(TFFeature feature, Random rand, int i, int x, int y, int z, StructureManager structureManager) {
@@ -44,11 +45,9 @@ public class CourtyardMain extends StructureMazeGenerator {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// naga spawner seems important
 		placeBlock(world, TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState(), RADIUS/2, 3, RADIUS/2, sbb);
-
-		return true;
 	}
 
 	@Override

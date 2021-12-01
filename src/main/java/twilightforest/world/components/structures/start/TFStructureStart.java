@@ -33,7 +33,9 @@ import twilightforest.world.registration.TFStructures;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
+//FIXME I dont want to touch this
 public class TFStructureStart<C extends FeatureConfiguration> extends StructureFeature<C> {
 
 	private final TFFeature feature;
@@ -73,7 +75,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 	}
 
 	@Override
-	public StructureStart<?> generate(RegistryAccess dynamicRegistries, ChunkGenerator generator, BiomeSource provider, StructureManager templateManager, long seed, ChunkPos pos, Biome biome, int refCount, WorldgenRandom rand, StructureFeatureConfiguration settings, C config, LevelHeightAccessor accessor) {
+	public StructureStart<?> generate(RegistryAccess dynamicRegistries, ChunkGenerator generator, BiomeSource provider, StructureManager templateManager, long seed, ChunkPos pos, int refCount, StructureFeatureConfiguration settings, C config, LevelHeightAccessor accessor, Predicate<Biome> biomePred) {
 		ChunkPos chunkpos = this.getPotentialFeatureChunk(settings, seed, rand, pos.x, pos.z);
 		if (this.isFeatureChunk(generator, provider, seed, rand, pos, biome, chunkpos, config, accessor)) {
 			StructureStart<C> structurestart = this.createStructureStart(pos, refCount, seed);

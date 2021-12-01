@@ -1,26 +1,27 @@
 package twilightforest.block;
 
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.item.Item;
-import net.minecraft.core.Direction;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.TFCompat;
-import twilightforest.enums.*;
+import twilightforest.enums.BossVariant;
+import twilightforest.enums.FireJetVariant;
+import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.item.TFItems;
 import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.WoodType;
 
 @SuppressWarnings({"WeakerAccess", "unused", "deprecation"})
 @Nonnull

@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.trollcave;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.worldgen.Features;
+import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -29,8 +29,8 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 	private final ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.MYCELIUM, UniformInt.of(3, 5), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK)));
 	private final ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.DIRT, UniformInt.of(2, 5), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK)));
 	private final ConfiguredFeature<?,?> smallUberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(2, 3), 0, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
-	private final ConfiguredFeature<?,?> bigRedMushroomGen = Features.HUGE_RED_MUSHROOM;
-	private final ConfiguredFeature<?,?> bigBrownMushroomGen = Features.HUGE_BROWN_MUSHROOM;
+	private final ConfiguredFeature<?,?> bigRedMushroomGen = TreeFeatures.HUGE_RED_MUSHROOM;
+	private final ConfiguredFeature<?,?> bigBrownMushroomGen = TreeFeatures.HUGE_BROWN_MUSHROOM;
 	private final ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().configured(FeatureConfiguration.NONE);
 
 	public TrollCaveGardenComponent(ServerLevel level, CompoundTag nbt) {

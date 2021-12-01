@@ -8,7 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TFSounds;
 import twilightforest.network.ChangeBiomePacket;
 import twilightforest.network.TFPacketHandler;
@@ -45,6 +45,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			if (biomeAt == targetBiome)
 				continue;
 
+			//FIXME
 			LevelChunk chunkAt = world.getChunk(dPos.getX() >> 4, dPos.getZ() >> 4);
 			int x = (dPos.getX() >> 2) & HORIZONTAL_MASK;
 			int z = (dPos.getZ() >> 2) & HORIZONTAL_MASK;

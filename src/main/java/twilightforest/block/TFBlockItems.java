@@ -8,12 +8,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.ISTER;
 import twilightforest.item.*;
-import twilightforest.block.entity.TFBlockEntities;
 
 import java.util.Objects;
 import java.util.function.Consumer;
