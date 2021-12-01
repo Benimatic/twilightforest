@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -31,7 +32,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
-	public FinalCastleDungeonRoom31Component(ServerLevel level, CompoundTag nbt) {
+	public FinalCastleDungeonRoom31Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(FinalCastlePieces.TFFCDunR31, nbt);
 	}
 
@@ -154,9 +155,9 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes)) {
-			return false;
+			return;
 		}
 
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
@@ -191,8 +192,6 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 				this.fillBlocksRotated(world, sbb, cs, y, z + 1, cs, y, z + 3, castleMagic, rotation);
 			}
 		}
-
-		return true;
 	}
 
 	protected static final Predicate<Biome> plateauBiomes = biome -> true; /* FIXME or remove

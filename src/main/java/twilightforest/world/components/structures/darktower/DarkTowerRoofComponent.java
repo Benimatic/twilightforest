@@ -55,7 +55,7 @@ public class DarkTowerRoofComponent extends TowerRoofComponent {
 	 * A fence around the roof!
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fence
 		for (int x = 0; x <= size - 1; x++) {
 			for (int z = 0; z <= size - 1; z++) {
@@ -69,7 +69,5 @@ public class DarkTowerRoofComponent extends TowerRoofComponent {
 		placeBlock(world, deco.accentState, size - 1, 1, 0, sbb);
 		placeBlock(world, deco.accentState, 0, 1, size - 1, sbb);
 		placeBlock(world, deco.accentState, size - 1, 1, size - 1, sbb);
-
-		return true;
 	}
 }

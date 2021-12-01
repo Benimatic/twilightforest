@@ -24,7 +24,7 @@ public class DarkTowerRoofRingsComponent extends DarkTowerRoofComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// antenna
@@ -41,8 +41,6 @@ public class DarkTowerRoofRingsComponent extends DarkTowerRoofComponent {
 
 		makeARing(world, 6, sbb);
 		makeARing(world, 8, sbb);
-
-		return true;
 	}
 
 	protected void makeARing(WorldGenLevel world, int y, BoundingBox sbb) {

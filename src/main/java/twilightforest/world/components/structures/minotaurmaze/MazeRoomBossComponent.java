@@ -28,7 +28,7 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// doorways
 		if (this.getBlock(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
 			generateBox(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);
@@ -101,7 +101,5 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 		// the moo-cen-mino-shrom-taur!
 		final BlockState taurSpawner = TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().defaultBlockState();
 		setBlockStateRotated(world, taurSpawner, 7, 2, 7, Rotation.NONE, sbb);
-
-		return true;
 	}
 }

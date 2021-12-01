@@ -24,15 +24,13 @@ public class DarkTowerRoofFourPostComponent extends DarkTowerRoofComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		makeSmallAntenna(world, sbb, 4, size - 2, size - 2);
 		makeSmallAntenna(world, sbb, 5, 1, size - 2);
 		makeSmallAntenna(world, sbb, 6, size - 2, 1);
 		makeSmallAntenna(world, sbb, 7, 1, 1);
-
-		return true;
 	}
 
 	private void makeSmallAntenna(WorldGenLevel world, BoundingBox sbb, int height, int x, int z) {

@@ -24,7 +24,7 @@ public class DarkTowerRoofCactusComponent extends DarkTowerRoofComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// antenna
@@ -62,7 +62,5 @@ public class DarkTowerRoofCactusComponent extends DarkTowerRoofComponent {
 		placeBlock(world, deco.accentState, size / 2, 5, size / 2 - 2, sbb);
 		placeBlock(world, deco.accentState, size / 2, 6, size / 2 - 2, sbb);
 		placeBlock(world, deco.accentState, size / 2, 6, size / 2 - 3, sbb);
-
-		return true;
 	}
 }

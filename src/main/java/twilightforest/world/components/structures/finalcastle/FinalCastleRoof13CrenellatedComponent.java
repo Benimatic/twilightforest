@@ -41,7 +41,7 @@ public class FinalCastleRoof13CrenellatedComponent extends TFStructureComponentO
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// assume square
 		int size = this.boundingBox.maxX() - this.boundingBox.minX();
 
@@ -62,7 +62,5 @@ public class FinalCastleRoof13CrenellatedComponent extends TFStructureComponentO
 				this.setBlockStateRotated(world, deco.blockState, x + 1, -2, 1, rotation, sbb);
 			}
 		}
-
-		return true;
 	}
 }

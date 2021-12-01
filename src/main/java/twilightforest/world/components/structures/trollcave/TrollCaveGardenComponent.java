@@ -51,7 +51,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 //		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
 //			return false;
 //		}
@@ -102,8 +102,6 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 			BlockPos dest = getCoordsInCave(decoRNG);
 			generateBlockSpike(world, STONE_STALACTITE, dest.atY(this.height), sbb);
 		}
-
-		return true;
 	}
 
 	protected void generate(WorldGenLevel world, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, BoundingBox sbb) {

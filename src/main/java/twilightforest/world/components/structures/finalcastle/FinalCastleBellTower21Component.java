@@ -56,7 +56,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// openings!
@@ -76,7 +76,5 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 
 		// sign
 		this.placeSignAtCurrentPosition(world, 7, 9, 8, "Parkour area 2", "mini-boss 1", sbb);
-
-		return true;
 	}
 }

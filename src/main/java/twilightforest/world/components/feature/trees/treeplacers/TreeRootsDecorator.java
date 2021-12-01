@@ -20,7 +20,7 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class TreeRootsDecorator extends TreeDecorator {
-    private static final SimpleStateProvider EMPTY = new SimpleStateProvider(Blocks.AIR.defaultBlockState());
+    private static final SimpleStateProvider EMPTY = BlockStateProvider.simple(Blocks.AIR.defaultBlockState());
 
     public static final Codec<TreeRootsDecorator> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(

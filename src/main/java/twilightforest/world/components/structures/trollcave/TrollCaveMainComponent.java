@@ -34,6 +34,7 @@ import twilightforest.world.registration.BlockConstants;
 import twilightforest.world.registration.TFBiomeFeatures;
 import twilightforest.world.registration.TFFeature;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -249,7 +250,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		int dx = getWorldX(x, z);
 		int dz = getWorldZ(x, z);
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, WorldUtil.getSeaLevel(world.getLevel()) + 25, dz);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, WorldUtil.getSeaLevel(Objects.requireNonNull(WorldUtil.getChunkGenerator(world))) + 25, dz);
 
 		for(int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);

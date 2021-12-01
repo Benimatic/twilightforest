@@ -45,7 +45,7 @@ public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
 
@@ -64,8 +64,6 @@ public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 
 		// openings
 		makeOpenings(world, sbb);
-
-		return true;
 	}
 
 	@Override

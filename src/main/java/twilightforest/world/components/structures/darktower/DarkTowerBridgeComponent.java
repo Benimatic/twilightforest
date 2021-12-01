@@ -76,7 +76,7 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		generateBox(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockState, deco.blockState, false);
 
@@ -93,8 +93,6 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 
 		// clear inside
 		generateAirBox(world, sbb, 0, 1, 1, size - 1, height - 2, size - 2);
-
-		return true;
 	}
 
 	/**

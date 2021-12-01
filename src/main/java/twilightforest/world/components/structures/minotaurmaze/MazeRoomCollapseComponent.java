@@ -25,7 +25,7 @@ public class MazeRoomCollapseComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		//
@@ -49,7 +49,5 @@ public class MazeRoomCollapseComponent extends MazeRoomComponent {
 				}
 			}
 		}
-
-		return true;
 	}
 }

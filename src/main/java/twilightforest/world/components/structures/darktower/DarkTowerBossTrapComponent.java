@@ -66,7 +66,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// make walls
@@ -101,8 +101,6 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 4, 1, 8, sbb);
 		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 3, 1, 8, sbb);
 		this.placeBlock(world, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), 2, 1, 8, sbb);
-
-		return true;
 	}
 
 	/**

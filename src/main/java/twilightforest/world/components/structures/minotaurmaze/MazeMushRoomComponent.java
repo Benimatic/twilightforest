@@ -30,7 +30,7 @@ public class MazeMushRoomComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		for (int x = 1; x < 14; x++) {
@@ -82,8 +82,6 @@ public class MazeMushRoomComponent extends MazeRoomComponent {
 		this.placeBlock(world, HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.SOUTH_EAST, brownMushroomBlock), 14, 1, 13, sbb);
 
 		// mushroom ceiling spots?
-
-		return true;
 	}
 
 	/**

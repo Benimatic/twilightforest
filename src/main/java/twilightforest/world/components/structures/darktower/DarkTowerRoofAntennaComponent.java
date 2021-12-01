@@ -27,7 +27,7 @@ public class DarkTowerRoofAntennaComponent extends DarkTowerRoofComponent {
 	 * Stick with a ball on top antenna
 	 */
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// antenna
@@ -51,7 +51,5 @@ public class DarkTowerRoofAntennaComponent extends DarkTowerRoofComponent {
 		placeBlock(world, deco.accentState, size / 2 - 1, 8, size / 2 + 1, sbb);
 		placeBlock(world, deco.accentState, size / 2 + 1, 8, size / 2 - 1, sbb);
 		placeBlock(world, deco.accentState, size / 2 + 1, 8, size / 2 + 1, sbb);
-
-		return true;
 	}
 }

@@ -36,7 +36,7 @@ public class DarkTowerBalconyComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make floor
 		generateBox(world, sbb, 0, 0, 0, 2, 0, 4, deco.accentState, Blocks.AIR.defaultBlockState(), false);
 		generateBox(world, sbb, 0, 0, 1, 1, 0, 3, deco.blockState, Blocks.AIR.defaultBlockState(), false);
@@ -48,7 +48,5 @@ public class DarkTowerBalconyComponent extends TowerWingComponent {
 
 		// clear inside
 		generateAirBox(world, sbb, 0, 1, 1, 1, 1, 3);
-
-		return true;
 	}
 }

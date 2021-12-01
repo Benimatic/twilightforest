@@ -1,29 +1,26 @@
 package twilightforest.world.components.structures;
 
-import net.minecraft.core.Vec3i;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.entity.TFEntities;
+import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
-import twilightforest.entity.TFEntities;
-import twilightforest.loot.TFTreasure;
 
 import java.util.Random;
 
@@ -32,8 +29,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	private final static int[] spawnersForSizes = {0, 1, 4, 9};
 	private final static int[] chestsForSizes = {0, 2, 6, 12};
 
-	protected static final SpikeConfig STONE_STALACTITE = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 11), UniformInt.of(4, 5), true);
-	protected static final SpikeConfig STONE_STALAGMITE = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 10), UniformInt.of(4, 5), false);
+	protected static final SpikeConfig STONE_STALACTITE = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 11), UniformInt.of(4, 5), true);
+	protected static final SpikeConfig STONE_STALAGMITE = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 10), UniformInt.of(4, 5), false);
 
 	private final int hillSize;
 	final int radius;

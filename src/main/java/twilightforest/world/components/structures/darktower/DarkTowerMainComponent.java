@@ -245,7 +245,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// make walls
@@ -307,8 +307,6 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 		// openings
 		makeOpenings(world, sbb);
-
-		return true;
 	}
 
 	/**

@@ -41,11 +41,9 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
-		if (!super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos)) {
-			return false;
-		}
+		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		final BlockState stairs = deco.stairState.setValue(StairBlock.FACING, Direction.SOUTH);
 		final BlockState deadRock = TFBlocks.DEADROCK.get().defaultBlockState();
@@ -63,8 +61,6 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 		final BlockState castleDoor = TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState();
 		this.generateBox(world, sbb, 23, 0, 12, 23, 3, 14, castleDoor, AIR, false);
 		this.generateBox(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
-
-		return true;
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public class FinalCastleBellFoundation21Component extends FinalCastleFoundation1
 	}
 
 	@Override
-	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int mid = 16;
 		int low = 32;
 
@@ -57,7 +57,5 @@ public class FinalCastleBellFoundation21Component extends FinalCastleFoundation1
 				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 			}
 		}
-
-		return true;
 	}
 }
