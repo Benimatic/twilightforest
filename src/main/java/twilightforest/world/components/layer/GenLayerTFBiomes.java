@@ -1,11 +1,13 @@
 package twilightforest.world.components.layer;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.components.layer.vanillalegacy.context.Context;
+import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer0;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
 

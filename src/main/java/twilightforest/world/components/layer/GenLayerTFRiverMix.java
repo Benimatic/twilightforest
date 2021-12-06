@@ -2,12 +2,12 @@ package twilightforest.world.components.layer;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.newbiome.context.Context;
-import net.minecraft.world.level.newbiome.area.Area;
-import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer2;
-import net.minecraft.world.level.newbiome.layer.traits.DimensionOffset0Transformer;
-import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.components.layer.vanillalegacy.area.Area;
+import twilightforest.world.components.layer.vanillalegacy.context.Context;
+import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer2;
+import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffset0Transformer;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 public enum GenLayerTFRiverMix implements AreaTransformer2, DimensionOffset0Transformer {
 

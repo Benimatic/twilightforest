@@ -2,10 +2,10 @@ package twilightforest.world.components.layer;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.newbiome.context.Context;
-import net.minecraft.world.level.newbiome.layer.traits.CastleTransformer;
-import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.components.layer.vanillalegacy.context.Context;
+import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 public enum GenLayerTFCompanionBiomes implements CastleTransformer {
 	INSTANCE;

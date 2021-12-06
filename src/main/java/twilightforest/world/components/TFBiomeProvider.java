@@ -9,11 +9,21 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
+import twilightforest.world.components.layer.*;
+import twilightforest.world.components.layer.vanillalegacy.Layer;
+import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
+import twilightforest.world.components.layer.vanillalegacy.ZoomLayer;
+import twilightforest.world.components.layer.vanillalegacy.area.Area;
+import twilightforest.world.components.layer.vanillalegacy.area.AreaFactory;
+import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
+import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
+import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
@@ -45,7 +55,7 @@ public class TFBiomeProvider extends BiomeSource {
 	);
 
 	private final Registry<Biome> registry;
-	//private final Layer genBiomes;
+	private final Layer genBiomes;
 	private final long seed;
 
 	public TFBiomeProvider(long seed, Registry<Biome> registryIn) {
@@ -66,42 +76,40 @@ public class TFBiomeProvider extends BiomeSource {
 		//getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
 
 		registry = registryIn;
-		//FIXME
-		//genBiomes = makeLayers(seed, registryIn);
+		genBiomes = makeLayers(seed, registryIn);
 	}
 
 	public static int getBiomeId(ResourceKey<Biome> biome, Registry<Biome> registry) {
 		return registry.getId(registry.get(biome));
 	}
 
-//	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, Registry<Biome> registry, long rawSeed) {
-//	//FIXME I moved all this stuff to disabled for now, it doesnt seem like any of te parent classes exist anymore. This may need a new system.
-//
-// 		AreaFactory<T> biomes = GenLayerTFBiomes.INSTANCE.setup(registry).run(seed.apply(1L));
-//		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(registry, rawSeed).run(seed.apply(1000L), biomes);
-//		biomes = GenLayerTFCompanionBiomes.INSTANCE.setup(registry).run(seed.apply(1000L), biomes);
-//
-//		biomes = ZoomLayer.NORMAL.run(seed.apply(1000L), biomes);
-//		biomes = ZoomLayer.NORMAL.run(seed.apply(1001L), biomes);
-//
-//		biomes = GenLayerTFBiomeStabilize.INSTANCE.run(seed.apply(700L), biomes);
-//
-//		biomes = GenLayerTFThornBorder.INSTANCE.setup(registry).run(seed.apply(500L), biomes);
-//
-//		biomes = ZoomLayer.NORMAL.run(seed.apply(1002), biomes);
-//		biomes = ZoomLayer.NORMAL.run(seed.apply(1003), biomes);
-//		biomes = ZoomLayer.NORMAL.run(seed.apply(1004), biomes);
-//		biomes = ZoomLayer.NORMAL.run(seed.apply(1005), biomes);
-//
-//		AreaFactory<T> riverLayer = GenLayerTFStream.INSTANCE.setup(registry).run(seed.apply(1L), biomes);
-//		riverLayer = SmoothLayer.INSTANCE.run(seed.apply(7000L), riverLayer);
-//		biomes = GenLayerTFRiverMix.INSTANCE.setup(registry).run(seed.apply(100L), biomes, riverLayer);
-//
-//		return biomes;
-//	}
+	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, Registry<Biome> registry, long rawSeed) {
+
+ 		AreaFactory<T> biomes = GenLayerTFBiomes.INSTANCE.setup(registry).run(seed.apply(1L));
+		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(registry, rawSeed).run(seed.apply(1000L), biomes);
+		biomes = GenLayerTFCompanionBiomes.INSTANCE.setup(registry).run(seed.apply(1000L), biomes);
+
+		biomes = ZoomLayer.NORMAL.run(seed.apply(1000L), biomes);
+		biomes = ZoomLayer.NORMAL.run(seed.apply(1001L), biomes);
+
+		biomes = GenLayerTFBiomeStabilize.INSTANCE.run(seed.apply(700L), biomes);
+
+		biomes = GenLayerTFThornBorder.INSTANCE.setup(registry).run(seed.apply(500L), biomes);
+
+		biomes = ZoomLayer.NORMAL.run(seed.apply(1002), biomes);
+		biomes = ZoomLayer.NORMAL.run(seed.apply(1003), biomes);
+		biomes = ZoomLayer.NORMAL.run(seed.apply(1004), biomes);
+		biomes = ZoomLayer.NORMAL.run(seed.apply(1005), biomes);
+
+		AreaFactory<T> riverLayer = GenLayerTFStream.INSTANCE.setup(registry).run(seed.apply(1L), biomes);
+		riverLayer = SmoothLayer.INSTANCE.run(seed.apply(7000L), riverLayer);
+		biomes = GenLayerTFRiverMix.INSTANCE.setup(registry).run(seed.apply(100L), biomes, riverLayer);
+
+		return biomes;
+	}
 	
-//	public static Layer makeLayers(long seed, Registry<Biome> registry) {
-//		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
+	public static Layer makeLayers(long seed, Registry<Biome> registry) {
+		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
 		// Debug code to render an image of the biome layout within the ide
 		/*final java.util.Map<Integer, Integer> remapColors = new java.util.HashMap<>();
 		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.BiomeKeys.LAKE, registry), 0x0000FF);
@@ -148,17 +156,17 @@ public class TFBiomeProvider extends BiomeSource {
 			}
 		}
  		System.out.println("breakpoint");*/
-//		return new Layer(areaFactory) {
-//			@Override
-//			public Biome get(Registry<Biome> p_242936_1_, int p_242936_2_, int p_242936_3_) {
-//				int i = this.area.get(p_242936_2_, p_242936_3_);
-//				Biome biome = registry.byId(i);
-//				if (biome == null)
-//					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
-//				return biome;
-//			}
-//		};
-//	}
+		return new Layer(areaFactory) {
+			@Override
+			public Biome get(Registry<Biome> p_242936_1_, int p_242936_2_, int p_242936_3_) {
+				int i = this.area.get(p_242936_2_, p_242936_3_);
+				Biome biome = registry.byId(i);
+				if (biome == null)
+					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
+				return biome;
+			}
+		};
+	}
 
 	@Override
 	protected Codec<? extends BiomeSource> codec() {
@@ -172,6 +180,6 @@ public class TFBiomeProvider extends BiomeSource {
 
 	@Override
 	public Biome getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
-		return null; //genBiomes.get(registry, x, z);
+		return genBiomes.get(registry, x, z);
 	}
 }

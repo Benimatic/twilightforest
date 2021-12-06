@@ -2,9 +2,9 @@ package twilightforest.world.components.layer;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.newbiome.context.Context;
-import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.components.layer.vanillalegacy.context.Context;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 public enum GenLayerTFThornBorder implements IThornsTransformer {
 	INSTANCE;
