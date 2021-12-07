@@ -79,7 +79,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.COOKED_COD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.GLISTERING_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.MAP).setWeight(75))
@@ -117,7 +117,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								.add(LootItem.lootTableItem(Items.PUMPKIN_SEEDS).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.GLISTERING_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.MAP).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.get()).setWeight(75))
@@ -153,7 +153,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.SHEARS))
                                 .add(LootItem.lootTableItem(Items.SADDLE))
                                 .add(LootItem.lootTableItem(Items.DIAMOND))
@@ -179,7 +179,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								.add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 8)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
-								//rare loot
+								//specialBiomes loot
 								.add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 9))).setWeight(75))
 								.add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))).setWeight(75))
 								.add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 9))).setWeight(75))
@@ -211,7 +211,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFBlocks.FIREFLY.get().asItem()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.COBWEB).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.SHEARS).setWeight(75))
@@ -248,7 +248,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFBlocks.FIREFLY.get().asItem()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.PUMPKIN_PIE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.get()).setWeight(75))
@@ -276,7 +276,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.MOON_DIAL.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))))
                                 .add(LootItem.lootTableItem(TFBlocks.UNCRAFTING_TABLE.get().asItem()))
                                 .add(LootItem.lootTableItem(Items.GOLDEN_APPLE))));
@@ -301,7 +301,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.ORE_MAGNET.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.IRON_PICKAXE).setWeight(75))
@@ -331,7 +331,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.IRONWOOD_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.MAGIC_MAP.get()).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(TFBlocks.UNCRAFTING_TABLE.get().asItem()).setWeight(75))
@@ -363,7 +363,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.ORE_MAGNET.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.IRONWOOD_PICKAXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 1).apply(Enchantments.BLOCK_FORTUNE, 1)).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.MAGIC_MAP.get()).setWeight(75))
@@ -421,7 +421,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:weakness"))))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.STONE_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(10))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.WOODEN_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(15))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(5))).setWeight(75))
@@ -464,7 +464,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:harming"))))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.GOLDEN_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(10))).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.get()).setWeight(75))
@@ -505,7 +505,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.GOLDEN_APPLE))
                                 .add(LootItem.lootTableItem(Items.BLAZE_ROD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
@@ -536,7 +536,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS.get()))
                                 .add(LootItem.lootTableItem(Items.TNT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
@@ -569,7 +569,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_HELMET.get()).apply(Enchant.builder().apply(Enchantments.RESPIRATION, 3))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.EMERALD_BLOCK))
                                 .add(LootItem.lootTableItem(Items.ENDER_CHEST))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_PICKAXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 4).apply(Enchantments.SILK_TOUCH, 1)))
@@ -599,7 +599,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.ARMOR_SHARD.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))).setWeight(75))
@@ -643,7 +643,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(25))))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))
                                 .add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
@@ -669,7 +669,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.PHANTOM_CHESTPLATE.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.PHANTOM_HELMET.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(TFItems.PHANTOM_CHESTPLATE.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30)))))
                         .withPool(LootPool.lootPool()
@@ -709,7 +709,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))))
                                 .add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))));
 
@@ -740,7 +740,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1.get()))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.FALL_PROTECTION, 3)))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.KNOCKBACK, 2)))
@@ -796,7 +796,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.ARCTIC_FUR.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.ARCTIC_FUR.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.ICE_BOW.get()).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.ENDER_BOW.get()).setWeight(75))
@@ -832,7 +832,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1.get())))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.ICE_BOW.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(TFItems.ENDER_BOW.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(5))))
                                 .add(LootItem.lootTableItem(TFItems.ICE_SWORD.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(25))))
@@ -857,7 +857,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFBlocks.UBEROUS_SOIL.get().asItem()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.MAGIC_BEANS.get()))));
 
         register.accept(TFTreasure.TROLL_VAULT.lootTable,
@@ -875,7 +875,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.OBSIDIAN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                //rare loot
+                                //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.LAMP_OF_CINDERS.get()))));
     }
 }

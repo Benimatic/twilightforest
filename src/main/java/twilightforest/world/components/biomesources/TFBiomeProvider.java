@@ -1,4 +1,4 @@
-package twilightforest.world.components;
+package twilightforest.world.components.biomesources;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.LongFunction;
 
+@Deprecated // TODO move to TwilightBiomeSource
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),

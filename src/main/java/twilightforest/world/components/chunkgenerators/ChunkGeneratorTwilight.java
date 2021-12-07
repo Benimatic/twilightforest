@@ -11,6 +11,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseSampler;
 import net.minecraftforge.common.world.StructureSpawnManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
@@ -46,7 +48,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private final Optional<Integer> darkForestCanopyHeight;
 
 	private final BlockState defaultBlock;
-	private final SurfaceNoise surfaceNoiseGetter;
+	private final Optional<NoiseSampler> surfaceNoiseGetter;
 
 	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
 
@@ -59,10 +61,10 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
 			this.defaultBlock = noiseGen.defaultBlock;
-			this.surfaceNoiseGetter = noiseGen.surfaceNoise;
+			this.surfaceNoiseGetter = Optional.of(noiseGen.sampler);
 		} else {
 			this.defaultBlock = Blocks.STONE.defaultBlockState();
-			this.surfaceNoiseGetter = (x, y, yScale, yMax) -> ChunkGeneratorTwilight.this.getSeaLevel();
+			this.surfaceNoiseGetter = Optional.empty();
 		}
 	}
 
@@ -82,6 +84,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		super.buildSurface(world, manager, chunk);
 
+		//noinspection OptionalIsPresent
 		if (this.darkForestCanopyHeight.isPresent())
 			this.addDarkForestCanopy(world, chunk, this.darkForestCanopyHeight.get());
 	}
@@ -219,12 +222,21 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	/**
 	 * Raises up and hollows out the hollow hills.
 	 */ // TODO Add some surface noise
+	// FIXME Make this method process whole chunks instead of columns only
 	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, TFFeature nearFeature, int hdiam, int xInChunk, int zInChunk, int featureDX, int featureDZ, float hillHeight) {
 		BlockPos.MutableBlockPos movingPos = world.getCenter().getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
 
 		// raise the hill
 		int groundHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
-		float noiseRaw = (float) (this.surfaceNoiseGetter.getSurfaceNoiseValue(movingPos.getX() / 64f, movingPos.getZ() / 64f, 1.0f, 256) * 32f);
+		float noiseRaw = this.surfaceNoiseGetter.map(ns -> {
+			// FIXME Once the above FIXME is done, instantiate the noise chunk and build the hill from there
+
+			//ns.baseNoise.instantiate()
+
+			// (movingPos.getX() / 64f, movingPos.getZ() / 64f, 1.0f, 256) * 32f)
+
+			return 0f;
+		}).orElse(0f);
 		float totalHeightRaw = groundHeight * 0.75f + this.getSeaLevel() * 0.25f + hillHeight + noiseRaw;
 		int totalHeight = (int) (((int) totalHeightRaw >> 1) * 0.375f + totalHeightRaw * 0.625f);
 
@@ -341,7 +353,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
-						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2);
+						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2, null);
 						if (BiomeKeys.DARK_FOREST.location().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.location().equals(biome.getRegistryName())) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
@@ -400,7 +412,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 					// just use the same noise generator as the terrain uses for stones
 					//int noise = Math.min(3, (int) (depthBuffer[dZ & 15 | (dX & 15) << 4] / 1.25f));
-					int noise = Math.min(3, (int) (this.surfaceNoiseGetter.getSurfaceNoiseValue((blockpos.getX() + dX) * 0.0625D, (blockpos.getZ() + dZ) * 0.0625D, 0.0625D, dX * 0.0625D) * 15F / 1.25F));
+					int noise = 0;// FIXME [1.18] Math.min(3, (int) (this.surfaceNoiseGetter.getSurfaceNoiseValue((blockpos.getX() + dX) * 0.0625D, (blockpos.getZ() + dZ) * 0.0625D, 0.0625D, dX * 0.0625D) * 15F / 1.25F));
 
 					// manipulate top and bottom
 					int treeBottom = pos.getY() + height - (int) (thickness * 0.5F);

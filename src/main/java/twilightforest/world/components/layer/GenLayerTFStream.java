@@ -2,7 +2,7 @@ package twilightforest.world.components.layer;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
 import twilightforest.world.registration.biomes.BiomeKeys;

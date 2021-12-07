@@ -1,9 +1,10 @@
 package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.worldgen.biome.Biomes;
 import net.minecraft.server.level.ServerChunkCache;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
@@ -15,6 +16,10 @@ import java.util.Random;
 
 public final class WorldUtil {
 	private WorldUtil() {}
+
+	public static Biome voidFallback() {
+		return Biomes.THE_VOID;
+	}
 
 	/**
 	 * Inclusive of edges

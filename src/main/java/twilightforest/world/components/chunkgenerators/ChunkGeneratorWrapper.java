@@ -29,6 +29,9 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
         this.delegate = delegate;
     }
 
+    @Override // Force reimplementation with seed override instead of delegating
+    public abstract ChunkGenerator withSeed(long seed);
+
     @Override
     public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomes, Executor executor, Blender blender, StructureFeatureManager manager, ChunkAccess chunkAccess) {
         return this.delegate.createBiomes(biomes, executor, blender, manager, chunkAccess);
@@ -147,10 +150,4 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     public Climate.Sampler climateSampler() {
         return this.delegate.climateSampler();
     }
-
-    //FIXME drull do we need this anymore
-//    @Override
-//    public BaseStoneSource getBaseStoneSource() {
-//        return this.delegate.getBaseStoneSource();
-//    }
 }

@@ -19,7 +19,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.ConfiguredWorldCarvers;
 import twilightforest.world.registration.TFDimensions;
