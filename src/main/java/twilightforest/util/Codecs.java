@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,6 +23,12 @@ public final class Codecs {
 
     public static final Codec<Climate.ParameterList<Supplier<Biome>>> CLIMATE_SYSTEM = ExtraCodecs.nonEmptyList(RecordCodecBuilder.<Pair<Climate.ParameterPoint, Supplier<Biome>>>create((instance) -> instance.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)).apply(instance, Pair::of)).listOf()).xmap(Climate.ParameterList::new, Climate.ParameterList::values);
 
+    public static <T> Codec<Float2ObjectAVLTreeMap<T>> floatTreeCodec(Codec<T> elementCodec) {
+        return Codec
+                .compoundList(Codec.FLOAT, elementCodec)
+                .xmap(floatEList -> floatEList.stream().collect(Float2ObjectAVLTreeMap::new, (map, pair) -> map.put(pair.getFirst(), pair.getSecond()), Float2ObjectAVLTreeMap::putAll), map -> map.entrySet().stream().map(entry -> new Pair<>(entry.getKey(), entry.getValue())).toList());
+    }
+
     private static DataResult<BlockPos> parseString2BlockPos(String string) {
         try {
             return Util.fixedSize(Arrays.stream(string.split(" *, *")).mapToInt(Integer::parseInt), 3).map(arr -> new BlockPos(arr[0], arr[1], arr[2]));
@@ -30,6 +37,5 @@ public final class Codecs {
         }
     }
 
-    private Codecs() {
-    }
+    private Codecs() {}
 }

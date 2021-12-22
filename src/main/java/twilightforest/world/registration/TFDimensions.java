@@ -3,7 +3,7 @@ package twilightforest.world.registration;
 import net.minecraft.core.Registry;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.biomesources.TwilightBiomeSource;
+import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -13,7 +13,7 @@ public class TFDimensions {
 	public static long seed;
 
 	public static void init() {
-		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TwilightBiomeSource.CODEC);
+		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 
 		Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
 	}
