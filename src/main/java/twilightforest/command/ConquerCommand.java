@@ -35,7 +35,7 @@ public class ConquerCommand {
 
 		BlockPos pos = new BlockPos(source.getPosition());
 		if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
-			Optional<TFStructureStart<?>.Start> struct = TFGenerationSettings.locateTFStructureInRange(source.getLevel(), pos, 0).map(s -> (TFStructureStart<?>.Start) s);
+			Optional<TFStructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange(source.getLevel(), pos, 0).map(s -> (TFStructureStart<?>) s);
 			if(struct.isEmpty())
 				throw NOT_IN_STRUCTURE.create();
 			struct.ifPresent(structure -> {

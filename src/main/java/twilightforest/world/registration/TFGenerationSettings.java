@@ -30,6 +30,7 @@ import twilightforest.potions.TFMobEffects;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.structures.start.LegacyStructureFeature;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
@@ -182,7 +183,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
 			locateTFStructureInRange((ServerLevel) world, feature, pos, 0).ifPresent(start -> {
-				if (start instanceof TFStructureStart.Start s)
+				if (start instanceof TFStructureStart s)
 					s.setConquered(true);
 			});
 		}
@@ -201,9 +202,9 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
 		for (StructureFeature<?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
-			if (!(structureFeature instanceof TFStructureStart))
+			if (!(structureFeature instanceof LegacyStructureFeature legacyData))
 				continue;
-			TFFeature feature = ((TFStructureStart<?>) structureFeature).getFeature();
+			TFFeature feature = legacyData.feature;
 			if (feature != featureCheck)
 				continue;
 

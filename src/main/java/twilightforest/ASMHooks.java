@@ -312,7 +312,7 @@ public class ASMHooks {
 	 * [AFTER {@link net.minecraft.world.level.levelgen.feature.StructureFeature#createStart(ChunkPos, int, long)}]
 	 */
 	public static StructureStart<?> conquered(StructureStart<?> start, CompoundTag nbt) {
-		if (start instanceof TFStructureStart.Start s)
+		if (start instanceof TFStructureStart s)
 			s.load(nbt);
 		return start;
 	}
