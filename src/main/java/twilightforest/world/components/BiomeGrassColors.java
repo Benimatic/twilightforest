@@ -8,6 +8,7 @@ import twilightforest.TwilightForestMod;
 
 import java.util.Random;
 
+//TODO BIOME_INFO_NOISE is deprecated for removal, so we cant use it. Does TEMPERATURE_NOISE work fine instead?
 public class BiomeGrassColors {
 	private static final Random COLOR_RNG = new Random();
 	public static int getEnchantedColor(int x, int z) {
@@ -44,11 +45,11 @@ public class BiomeGrassColors {
 	// FIXME Flat color, resolve
 	public static final GrassColorModifier DARK_FOREST = make("dark_forest", (x, z, color) -> ((GrassColor.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2);
 	public static final GrassColorModifier DARK_FOREST_CENTER = make("dark_forest_center", (x, z, color) -> {
-		double d0 = Biome.BIOME_INFO_NOISE.getValue(x * 0.0225D, z * 0.0225D, false); //TODO: Check
+		double d0 = Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false); //TODO: Check
 		return d0 < -0.2D ? 0x667540 : 0x554114;
 	});
 	public static final GrassColorModifier SPOOKY_FOREST = make("spooky_forest", (x, z, color) -> {
-		double noise = (Biome.BIOME_INFO_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
+		double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
 		return blendColors(0xC45123, 0xB1C423, noise > 0.60D ? noise * 0.1D : noise);
 	});
 

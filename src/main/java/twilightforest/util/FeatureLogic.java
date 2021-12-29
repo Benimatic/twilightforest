@@ -1,6 +1,7 @@
 package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,7 +15,7 @@ import java.util.function.Predicate;
  */
 public final class FeatureLogic {
     public static final Predicate<BlockState> IS_REPLACEABLE = state -> state.getMaterial().isReplaceable();
-    public static final Predicate<BlockState> SHOULD_SKIP = state -> state.is(BlockTagGenerator.WORLDGEN_SKIPPABLES);
+    public static final Predicate<BlockState> SHOULD_SKIP = state -> state.is(BlockTags.FEATURES_CANNOT_REPLACE);
     public static boolean hasEmptyNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
         return worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE)
                 || worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE)
@@ -45,7 +46,7 @@ public final class FeatureLogic {
     }
 
     public static boolean isReplaceable(BlockState state) {
-        return (state.getMaterial().isReplaceable() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTagGenerator.WORLDGEN_SKIPPABLES);
+        return (state.getMaterial().isReplaceable() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
     }
 
     /**

@@ -68,7 +68,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 
 			if (classification != MobCategory.MONSTER)
 				return legacyData.feature.getSpawnableList(classification);
-			if (start instanceof TFStructureStart s && s.conquered)
+			if (start instanceof TFStructureStart<?> s && s.conquered)
 				return null;
 			final int index = getSpawnListIndexAt(start, pos);
 			if (index < 0)

@@ -1,0 +1,70 @@
+{
+  "feature": {
+    "config": {
+      "features": [
+        {
+          "feature": {
+            "feature": "twilightforest:mushroom/base/brown_canopy_mushroom",
+            "placement": []
+          },
+          "chance": 0.15
+        },
+        {
+          "feature": {
+            "feature": "twilightforest:mushroom/base/brown_canopy_mushroom",
+            "placement": []
+          },
+          "chance": 0.05
+        }
+      ],
+      "default": {
+        "feature": {
+          "config": {},
+          "type": "minecraft:no_op"
+        },
+        "placement": []
+      }
+    },
+    "type": "minecraft:random_selector"
+  },
+  "placement": [
+    {
+      "count": {
+        "distribution": [
+          {
+            "data": 8,
+            "weight": 9
+          },
+          {
+            "data": 9,
+            "weight": 1
+          }
+        ],
+        "type": "minecraft:weighted_list"
+      },
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "max_water_depth": 0,
+      "type": "minecraft:surface_water_depth_filter"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "value": {
+        "occupies_surface": true,
+        "occupies_underground": false,
+        "additional_clearance": 0
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

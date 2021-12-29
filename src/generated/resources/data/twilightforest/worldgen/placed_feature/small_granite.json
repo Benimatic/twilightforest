@@ -1,0 +1,33 @@
+{
+  "feature": {
+    "config": {
+      "targets": [
+        {
+          "target": {
+            "tag": "minecraft:base_stone_overworld",
+            "predicate_type": "minecraft:tag_match"
+          },
+          "state": {
+            "Name": "minecraft:granite"
+          }
+        }
+      ],
+      "size": 16,
+      "discard_chance_on_air_exposure": 0.0
+    },
+    "type": "minecraft:ore"
+  },
+  "placement": [
+    {
+      "chance": 60,
+      "type": "minecraft:rarity_filter"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "count": 5,
+      "type": "minecraft:count"
+    }
+  ]
+}

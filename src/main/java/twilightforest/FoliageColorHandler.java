@@ -26,14 +26,15 @@ public final class FoliageColorHandler {
 	@FunctionalInterface
 	private interface Handler {
 
+		//TODO BIOME_INFO_NOISE is deprecated for removal, so we cant use it. Does this work fine instead?
 		Map<ResourceLocation, Handler> REGISTRY = new HashMap<>() {{
 			put(BiomeKeys.SPOOKY_FOREST.location(), (o, x, z) -> {
-				double noise = (Biome.BIOME_INFO_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
+				double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
 				return BiomeGrassColors.blendColors(0xFF8501, 0xF7FF01, noise > 0.6D ? noise * 0.2D : noise);
 			});
 			put(BiomeKeys.ENCHANTED_FOREST.location(), (o, x, z) -> (o & 0xFFFF00) + BiomeGrassColors.getEnchantedColor((int) x, (int) z));
 			put(BiomeKeys.DARK_FOREST_CENTER.location(), (o, x, z) -> {
-				double noise = (Biome.BIOME_INFO_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
+				double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
 				return noise < -0.1D ? 0xF9821E : 0xE94E14;
 			});
 			put(BiomeKeys.DARK_FOREST.location(), (o, x, z) -> ((FoliageColor.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2);

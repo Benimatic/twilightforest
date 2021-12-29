@@ -2,12 +2,12 @@ package twilightforest.world.components.layer.vanillalegacy.context;
 
 import it.unimi.dsi.fastutil.longs.Long2IntLinkedOpenHashMap;
 import net.minecraft.util.LinearCongruentialGenerator;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.traits.PixelTransformer;
 
 public class LazyAreaContext implements BigContext<LazyArea> {
-	private static final int MAX_CACHE = 1024;
 	private final Long2IntLinkedOpenHashMap cache;
 	private final int maxCache;
 	private final ImprovedNoise biomeNoise;
@@ -16,7 +16,7 @@ public class LazyAreaContext implements BigContext<LazyArea> {
 
 	public LazyAreaContext(int p_76523_, long p_76524_, long p_76525_) {
 		this.seed = mixSeed(p_76524_, p_76525_);
-		this.biomeNoise = new ImprovedNoise(new SimpleRandomSource(p_76524_));
+		this.biomeNoise = new ImprovedNoise(new LegacyRandomSource(p_76524_));
 		this.cache = new Long2IntLinkedOpenHashMap(16, 0.25F);
 		this.cache.defaultReturnValue(Integer.MIN_VALUE);
 		this.maxCache = p_76523_;

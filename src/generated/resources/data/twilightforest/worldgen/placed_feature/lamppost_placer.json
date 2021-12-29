@@ -1,0 +1,44 @@
+{
+  "feature": {
+    "config": {
+      "features": [
+        {
+          "feature": {
+            "feature": "twilightforest:cicada_lamppost",
+            "placement": []
+          },
+          "chance": 0.1
+        }
+      ],
+      "default": {
+        "feature": "twilightforest:firefly_lamppost",
+        "placement": []
+      }
+    },
+    "type": "minecraft:random_selector"
+  },
+  "placement": [
+    {
+      "chance": 2,
+      "type": "minecraft:rarity_filter"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "value": {
+        "occupies_surface": true,
+        "occupies_underground": false,
+        "additional_clearance": 0
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

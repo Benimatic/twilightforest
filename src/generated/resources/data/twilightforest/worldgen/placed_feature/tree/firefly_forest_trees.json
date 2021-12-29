@@ -1,0 +1,67 @@
+{
+  "feature": {
+    "config": {
+      "features": [
+        {
+          "feature": {
+            "feature": "twilightforest:tree/base/canopy_tree",
+            "placement": []
+          },
+          "chance": 0.33
+        },
+        {
+          "feature": {
+            "feature": "twilightforest:tree/base/firefly_canopy_tree",
+            "placement": []
+          },
+          "chance": 0.45
+        }
+      ],
+      "default": {
+        "feature": "twilightforest:tree/base/twilight_oak",
+        "placement": []
+      }
+    },
+    "type": "minecraft:random_selector"
+  },
+  "placement": [
+    {
+      "count": {
+        "distribution": [
+          {
+            "data": 5,
+            "weight": 9
+          },
+          {
+            "data": 6,
+            "weight": 1
+          }
+        ],
+        "type": "minecraft:weighted_list"
+      },
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "max_water_depth": 0,
+      "type": "minecraft:surface_water_depth_filter"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "value": {
+        "occupies_surface": true,
+        "occupies_underground": false,
+        "additional_clearance": 0
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

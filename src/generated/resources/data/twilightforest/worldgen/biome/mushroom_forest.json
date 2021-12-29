@@ -1,29 +1,4 @@
 {
-  "effects": {
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2.0
-    },
-    "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
-      "max_delay": 12000,
-      "replace_current_music": true
-    },
-    "particle": {
-      "options": {
-        "type": "twilightforest:wandering_firefly"
-      },
-      "probability": 2.5E-4
-    },
-    "sky_color": 2105930,
-    "fog_color": 12648408,
-    "water_color": 4159204,
-    "water_fog_color": 329011
-  },
-  "surface_builder": "minecraft:ocean_sand",
   "carvers": {
     "air": [
       "twilightforest:tf_caves"
@@ -48,19 +23,29 @@
       "twilightforest:small_diorite",
       "twilightforest:small_granite",
       "twilightforest:ore/wood_roots_spread",
-      "minecraft:ore_coal",
-      "minecraft:ore_iron",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
       "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
       "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
       "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
       "minecraft:ore_lapis",
-      "minecraft:ore_copper"
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma"
     ],
     [
       "twilightforest:plant_roots",
       "twilightforest:torch_berries",
       "twilightforest:vanilla_roots"
     ],
+    [],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
@@ -77,7 +62,33 @@
       "twilightforest:tree/twilight_oak_trees",
       "twilightforest:tree/hollow_placer",
       "twilightforest:tree/canopy_trees",
-      "twilightforest:default_fallen_logs",
+      {
+        "feature": "twilightforest:default_fallen_logs",
+        "placement": [
+          {
+            "chance": 40,
+            "type": "minecraft:rarity_filter"
+          },
+          {
+            "type": "minecraft:in_square"
+          },
+          {
+            "heightmap": "OCEAN_FLOOR",
+            "type": "minecraft:heightmap"
+          },
+          {
+            "type": "twilightforest:no_structure",
+            "value": {
+              "occupies_surface": true,
+              "occupies_underground": false,
+              "additional_clearance": 0
+            }
+          },
+          {
+            "type": "minecraft:biome"
+          }
+        ]
+      },
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:brown_mushroom_taiga",
@@ -88,14 +99,6 @@
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer"
     ]
-  ],
-  "starts": [
-    "twilightforest:configured_hedge_maze",
-    "twilightforest:configured_hollow_hill_small",
-    "twilightforest:configured_hollow_hill_medium",
-    "twilightforest:configured_hollow_hill_large",
-    "twilightforest:configured_courtyard",
-    "twilightforest:configured_lich_tower"
   ],
   "spawners": {
     "monster": [
@@ -205,18 +208,40 @@
       }
     ],
     "ambient": [],
+    "axolotls": [],
     "underground_water_creature": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": true,
   "forge:registry_name": "twilightforest:mushroom_forest",
   "precipitation": "rain",
   "temperature": 0.8,
   "downfall": 0.8,
   "category": "forest",
-  "depth": 0.025,
-  "scale": 0.05
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 2.5E-4
+    },
+    "sky_color": 2105930,
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  }
 }

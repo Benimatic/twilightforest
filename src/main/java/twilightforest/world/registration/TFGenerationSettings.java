@@ -183,7 +183,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
 			locateTFStructureInRange((ServerLevel) world, feature, pos, 0).ifPresent(start -> {
-				if (start instanceof TFStructureStart s)
+				if (start instanceof TFStructureStart<?> s)
 					s.setConquered(true);
 			});
 		}

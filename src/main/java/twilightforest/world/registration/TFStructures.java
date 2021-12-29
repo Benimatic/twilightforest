@@ -2,20 +2,20 @@ package twilightforest.world.registration;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.levelgen.StructureSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.world.components.structures.darktower.DarkTowerPieces;
 import twilightforest.world.components.structures.finalcastle.FinalCastlePieces;
@@ -27,7 +27,6 @@ import twilightforest.world.components.structures.mushroomtower.MushroomTowerPie
 import twilightforest.world.components.structures.start.LegacyStructureFeature;
 import twilightforest.world.components.structures.stronghold.StrongholdPieces;
 import twilightforest.world.components.structures.trollcave.TrollCavePieces;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -127,7 +126,7 @@ public class TFStructures {
 				put(structure, seperation).build();
 		SEPARATION_SETTINGS.put(structure, seperation);
 		Registry.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, new ResourceLocation(name.getNamespace(), "configured_".concat(name.getPath())), config);
-		FlatLevelGeneratorSettings.STRUCTURE_FEATURES.put(structure, config);
+		//FlatLevelGeneratorSettings.STRUCTURE_FEATURES.put(structure, config);
 	}
 
 	public static void load(WorldEvent.Load event) {

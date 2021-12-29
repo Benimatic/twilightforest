@@ -1,0 +1,25 @@
+{
+  "feature": {
+    "config": {
+      "state": {
+        "Properties": {
+          "state": "idle"
+        },
+        "Name": "twilightforest:fire_jet"
+      }
+    },
+    "type": "twilightforest:fire_jet"
+  },
+  "placement": [
+    {
+      "heightmap": "WORLD_SURFACE_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

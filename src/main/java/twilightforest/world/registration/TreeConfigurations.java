@@ -27,7 +27,7 @@ import twilightforest.world.components.feature.trees.treeplacers.*;
 
 import java.util.OptionalInt;
 
-public final class TreeConfigurations {
+public class TreeConfigurations {
     private static final int canopyDistancing = 5;
 
     static SimpleWeightedRandomList.Builder<BlockState> createBlockList() {

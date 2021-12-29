@@ -1,23 +1,4 @@
 {
-  "effects": {
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2.0
-    },
-    "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
-      "max_delay": 12000,
-      "replace_current_music": true
-    },
-    "sky_color": 2105930,
-    "fog_color": 12648408,
-    "water_color": 4159204,
-    "water_fog_color": 329011
-  },
-  "surface_builder": "twilightforest:heavy_snow",
   "carvers": {
     "air": [
       "twilightforest:tf_caves"
@@ -33,37 +14,60 @@
     [],
     [],
     [
-      "minecraft:ore_coal",
-      "minecraft:ore_iron",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
       "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
       "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
       "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
       "minecraft:ore_lapis",
+      "minecraft:ore_lapis_buried",
       "minecraft:ore_copper",
-      "minecraft:ore_coal",
-      "minecraft:ore_iron",
+      "minecraft:underwater_magma",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
       "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
       "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
       "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
       "minecraft:ore_lapis",
-      "minecraft:ore_copper"
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma"
     ],
     [
       "twilightforest:plant_roots",
       "twilightforest:torch_berries",
       "twilightforest:vanilla_roots"
     ],
+    [],
     [
       "twilightforest:tree/snowy_forest_trees",
       "twilightforest:spruce_fallen_log"
     ],
     [
-      "twilightforest:snow_under_trees",
+      {
+        "feature": "twilightforest:snow_under_trees",
+        "placement": [
+          {
+            "type": "minecraft:biome"
+          }
+        ]
+      },
       "minecraft:freeze_top_layer"
     ]
-  ],
-  "starts": [
-    "twilightforest:configured_yeti_cave"
   ],
   "spawners": {
     "monster": [],
@@ -82,18 +86,34 @@
       }
     ],
     "ambient": [],
+    "axolotls": [],
     "underground_water_creature": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": false,
   "forge:registry_name": "twilightforest:snowy_forest",
   "precipitation": "snow",
   "temperature": 0.09,
   "downfall": 0.9,
   "category": "forest",
-  "depth": 0.05,
-  "scale": 0.15
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "sky_color": 2105930,
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  }
 }

@@ -1,4 +1,5 @@
 {
+  "type": "twilightforest:giant_block_grouping",
   "conditions": [
     {
       "condition": "minecraft:alternative",
@@ -11,6 +12,5 @@
         }
       ]
     }
-  ],
-  "function": "twilightforest:giant_block_grouping"
+  ]
 }

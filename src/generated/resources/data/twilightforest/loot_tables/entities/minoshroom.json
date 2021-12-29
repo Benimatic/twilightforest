@@ -55,7 +55,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader",
               "default": "twilightforest:meef_stroganoff"
             },
             {
@@ -82,7 +81,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader_bag_twilight",
               "default": "twilightforest:meef_stroganoff"
             }
           ],

@@ -1,19 +1,10 @@
 {
   "config": {
+    "has_leaves": false,
     "check_water": false,
-    "sapling": {
-      "state": {
-        "Properties": {
-          "stage": "0"
-        },
-        "Name": "minecraft:spruce_sapling"
-      },
-      "type": "minecraft:simple_state_provider"
-    },
     "decorators": [],
     "add_first_five_chance": 1,
     "add_second_five_chance": 1,
-    "has_leaves": false,
     "branch_provider": {
       "state": {
         "Properties": {

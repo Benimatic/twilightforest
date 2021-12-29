@@ -1,0 +1,50 @@
+{
+  "feature": {
+    "config": {
+      "tries": 96,
+      "xz_spread": 7,
+      "y_spread": 3,
+      "feature": {
+        "feature": {
+          "config": {
+            "to_place": {
+              "state": {
+                "Name": "twilightforest:mushgloom"
+              },
+              "type": "minecraft:simple_state_provider"
+            }
+          },
+          "type": "minecraft:simple_block"
+        },
+        "placement": [
+          {
+            "predicate": {
+              "blocks": [
+                "minecraft:air"
+              ],
+              "type": "minecraft:matching_blocks"
+            },
+            "type": "minecraft:block_predicate_filter"
+          }
+        ]
+      }
+    },
+    "type": "minecraft:random_patch"
+  },
+  "placement": [
+    {
+      "heightmap": "WORLD_SURFACE_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "count": 5,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

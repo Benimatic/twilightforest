@@ -1,4 +1,5 @@
 {
+  "type": "twilightforest:fiery_pick_smelting",
   "conditions": [
     {
       "condition": "minecraft:alternative",
@@ -11,6 +12,5 @@
         }
       ]
     }
-  ],
-  "function": "twilightforest:fiery_pick_smelting"
+  ]
 }

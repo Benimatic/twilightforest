@@ -1,9 +1,9 @@
 {
   "config": {
+    "yScale": 0.6,
     "lava_level": {
       "above_bottom": 0
     },
-    "aquifers_enabled": false,
     "debug_settings": {
       "water_state": {
         "Name": "minecraft:blue_stained_glass"
@@ -28,7 +28,6 @@
       },
       "type": "minecraft:uniform"
     },
-    "yScale": 0.6,
     "horizontal_radius_multiplier": 1.0,
     "vertical_radius_multiplier": 1.0,
     "floor_level": -0.7

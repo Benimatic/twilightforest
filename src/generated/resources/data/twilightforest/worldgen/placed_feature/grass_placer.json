@@ -1,0 +1,76 @@
+{
+  "feature": {
+    "config": {
+      "tries": 128,
+      "xz_spread": 7,
+      "y_spread": 7,
+      "feature": {
+        "feature": {
+          "config": {
+            "to_place": {
+              "seed": 2345,
+              "noise": {
+                "firstOctave": 0,
+                "amplitudes": [
+                  1.0
+                ]
+              },
+              "scale": 0.020833334,
+              "states": [
+                {
+                  "Name": "minecraft:grass"
+                },
+                {
+                  "Properties": {
+                    "half": "lower"
+                  },
+                  "Name": "minecraft:tall_grass"
+                },
+                {
+                  "Name": "minecraft:fern"
+                },
+                {
+                  "Properties": {
+                    "half": "lower"
+                  },
+                  "Name": "minecraft:large_fern"
+                }
+              ],
+              "type": "minecraft:noise_provider"
+            }
+          },
+          "type": "minecraft:simple_block"
+        },
+        "placement": [
+          {
+            "predicate": {
+              "blocks": [
+                "minecraft:air"
+              ],
+              "type": "minecraft:matching_blocks"
+            },
+            "type": "minecraft:block_predicate_filter"
+          }
+        ]
+      }
+    },
+    "type": "minecraft:random_patch"
+  },
+  "placement": [
+    {
+      "heightmap": "WORLD_SURFACE_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "count": 30,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "chance": 3,
+      "type": "minecraft:rarity_filter"
+    }
+  ]
+}

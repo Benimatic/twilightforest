@@ -1,0 +1,47 @@
+{
+  "feature": {
+    "config": {
+      "features": [
+        {
+          "feature": {
+            "feature": "twilightforest:tree/base/hollow_tree",
+            "placement": []
+          },
+          "chance": 0.04
+        }
+      ],
+      "default": {
+        "feature": {
+          "config": {},
+          "type": "minecraft:no_op"
+        },
+        "placement": []
+      }
+    },
+    "type": "minecraft:random_selector"
+  },
+  "placement": [
+    {
+      "max_water_depth": 0,
+      "type": "minecraft:surface_water_depth_filter"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "value": {
+        "occupies_surface": true,
+        "occupies_underground": false,
+        "additional_clearance": 16
+      }
+    },
+    {
+      "type": "twilightforest:chunk_centerer"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

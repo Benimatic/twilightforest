@@ -1,0 +1,94 @@
+{
+  "feature": {
+    "config": {
+      "tries": 128,
+      "xz_spread": 7,
+      "y_spread": 7,
+      "feature": {
+        "feature": {
+          "config": {
+            "to_place": {
+              "seed": 2345,
+              "noise": {
+                "firstOctave": 0,
+                "amplitudes": [
+                  1.0
+                ]
+              },
+              "scale": 0.020833334,
+              "states": [
+                {
+                  "Name": "minecraft:poppy"
+                },
+                {
+                  "Name": "minecraft:dandelion"
+                },
+                {
+                  "Name": "minecraft:red_tulip"
+                },
+                {
+                  "Name": "minecraft:orange_tulip"
+                },
+                {
+                  "Name": "minecraft:pink_tulip"
+                },
+                {
+                  "Name": "minecraft:white_tulip"
+                },
+                {
+                  "Name": "minecraft:cornflower"
+                },
+                {
+                  "Name": "minecraft:lily_of_the_valley"
+                },
+                {
+                  "Name": "minecraft:blue_orchid"
+                },
+                {
+                  "Name": "minecraft:allium"
+                },
+                {
+                  "Name": "minecraft:azure_bluet"
+                },
+                {
+                  "Name": "minecraft:oxeye_daisy"
+                }
+              ],
+              "type": "minecraft:noise_provider"
+            }
+          },
+          "type": "minecraft:simple_block"
+        },
+        "placement": [
+          {
+            "predicate": {
+              "blocks": [
+                "minecraft:air"
+              ],
+              "type": "minecraft:matching_blocks"
+            },
+            "type": "minecraft:block_predicate_filter"
+          }
+        ]
+      }
+    },
+    "type": "minecraft:flower"
+  },
+  "placement": [
+    {
+      "heightmap": "WORLD_SURFACE_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "count": 25,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "chance": 15,
+      "type": "minecraft:rarity_filter"
+    }
+  ]
+}

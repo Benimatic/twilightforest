@@ -1,26 +1,4 @@
 {
-  "effects": {
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2.0
-    },
-    "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
-      "max_delay": 12000,
-      "replace_current_music": true
-    },
-    "grass_color_modifier": "twilightforest:dark_forest",
-    "sky_color": 2105930,
-    "foliage_color": 3890751,
-    "grass_color": 4941652,
-    "fog_color": 12648408,
-    "water_color": 4159204,
-    "water_fog_color": 329011
-  },
-  "surface_builder": "minecraft:grass",
   "carvers": {
     "air": [
       "twilightforest:tf_caves"
@@ -34,19 +12,29 @@
     [],
     [],
     [
-      "minecraft:ore_coal",
-      "minecraft:ore_iron",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
       "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
       "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
       "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
       "minecraft:ore_lapis",
-      "minecraft:ore_copper"
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma"
     ],
     [
       "twilightforest:plant_roots",
       "twilightforest:torch_berries",
       "twilightforest:vanilla_roots"
     ],
+    [],
     [
       "twilightforest:tree/darkwood_trees",
       "twilightforest:tree/dark_forest_trees",
@@ -59,9 +47,6 @@
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer"
     ]
-  ],
-  "starts": [
-    "twilightforest:configured_knight_stronghold"
   ],
   "spawners": {
     "monster": [],
@@ -116,18 +101,37 @@
       }
     ],
     "ambient": [],
+    "axolotls": [],
     "underground_water_creature": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": false,
   "forge:registry_name": "twilightforest:dark_forest",
   "precipitation": "rain",
   "temperature": 0.7,
   "downfall": 0.8,
   "category": "forest",
-  "depth": 0.025,
-  "scale": 0.025
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "grass_color_modifier": "twilightforest:dark_forest",
+    "sky_color": 2105930,
+    "foliage_color": 3890751,
+    "grass_color": 4941652,
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  }
 }

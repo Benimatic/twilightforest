@@ -105,7 +105,6 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
 	}
 
     /** VanillaCopy: IDataProvider.save */
-    @SuppressWarnings("UnstableApiUsage") // Mojang uses HASH_FUNCTION as well, hence the warning suppression
     private void save(ResourceKey<?> key, HashCache cache, Format dynamic, Path pathIn) throws IOException {
     	dynamic = intercept(key, dynamic);
         String s = fileContentWriter.apply(dynamic);

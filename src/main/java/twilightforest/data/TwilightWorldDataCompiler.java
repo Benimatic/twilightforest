@@ -76,6 +76,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
+				//TODO use our surface rules once theyre done
 				SurfaceRuleData.overworld(),
 				0,
 				false,

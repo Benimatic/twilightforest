@@ -1,0 +1,22 @@
+{
+  "feature": {
+    "config": {},
+    "type": "twilightforest:webs"
+  },
+  "placement": [
+    {
+      "heightmap": "OCEAN_FLOOR",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "count": 60,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
