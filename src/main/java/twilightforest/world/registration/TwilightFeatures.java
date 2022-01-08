@@ -16,23 +16,13 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.trees.treeplacers.*;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
 import twilightforest.world.components.placements.ChunkCenterModifier;
 import twilightforest.world.components.placements.OutOfStructureFilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TwilightFeatures {
-    private static final List<FoliagePlacerType<?>> FOLIAGE_PLACER_TYPES = new ArrayList<>();
-    private static final List<TreeDecoratorType<?>> TREE_DECORATOR_TYPES = new ArrayList<>();
-
     public static final TrunkPlacerType<BranchingTrunkPlacer> TRUNK_BRANCHING = registerTrunk(TwilightForestMod.prefix("branching_trunk_placer"), BranchingTrunkPlacer.CODEC);
     public static final TrunkPlacerType<TrunkRiser> TRUNK_RISER = registerTrunk(TwilightForestMod.prefix("trunk_mover_upper"), TrunkRiser.CODEC);
 
@@ -52,10 +42,9 @@ public final class TwilightFeatures {
     }
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
+        //TRUNK REPLACER register forge side is current not good
         FoliagePlacerType<P> type = new FoliagePlacerType<>(codec);
-        type.setRegistryName(name);
-        FOLIAGE_PLACER_TYPES.add(type);
-        return type;
+        return Registry.register(Registry.FOLIAGE_PLACER_TYPES, name, type);
     }
 
     private static <P extends TrunkPlacer> TrunkPlacerType<P> registerTrunk(ResourceLocation name, Codec<P> codec) {
@@ -64,11 +53,9 @@ public final class TwilightFeatures {
     }
 
     private static <P extends TreeDecorator> TreeDecoratorType<P> registerTreeFeature(ResourceLocation name, Codec<P> codec) {
-        // TRUNK_REPLACER is wrong, it only places, not replacing
+        //TREE_DECORATOR_TYPES register forge side is current not good
         TreeDecoratorType<P> type = new TreeDecoratorType<>(codec);
-        type.setRegistryName(name);
-        TREE_DECORATOR_TYPES.add(type);
-        return type;
+        return Registry.register(Registry.TREE_DECORATOR_TYPES, name, type);
     }
 
     public static <FC extends FeatureConfiguration, F extends Feature<FC>> ConfiguredFeature<FC, F> registerWorldFeature(ResourceLocation rl, ConfiguredFeature<FC, F> feature) {
@@ -77,15 +64,5 @@ public final class TwilightFeatures {
 
     public static PlacedFeature registerWorldFeature(ResourceLocation rl, PlacedFeature feature) {
         return Registry.register(BuiltinRegistries.PLACED_FEATURE, rl, feature);
-    }
-
-    @SubscribeEvent
-    public static void registerFoliagePlacers(RegistryEvent.Register<FoliagePlacerType<?>> evt) {
-        evt.getRegistry().registerAll(FOLIAGE_PLACER_TYPES.toArray(new FoliagePlacerType<?>[0]));
-    }
-    
-    @SubscribeEvent
-    public static void registerTreeDecorators(RegistryEvent.Register<TreeDecoratorType<?>> evt) {
-        evt.getRegistry().registerAll(TREE_DECORATOR_TYPES.toArray(new TreeDecoratorType<?>[0]));
     }
 }
