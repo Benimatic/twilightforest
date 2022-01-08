@@ -120,7 +120,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_PUMPKIN);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_DEAD_BUSH);
 		
-		biome.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, TFVegetationFeatures.GRAVEYARD);
+		//biome.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, TFVegetationFeatures.GRAVEYARD);
 		
 		return biome;
 	}

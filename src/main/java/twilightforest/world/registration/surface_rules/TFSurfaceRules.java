@@ -6,21 +6,21 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 public class TFSurfaceRules {
 
-	private static final SurfaceRules.RuleSource AIR = makeStateRule(Blocks.AIR);
 	private static final SurfaceRules.RuleSource BEDROCK = makeStateRule(Blocks.BEDROCK);
-	private static final SurfaceRules.RuleSource STONE = makeStateRule(Blocks.STONE);
+	private static final SurfaceRules.RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
+	private static final SurfaceRules.RuleSource DIRT = makeStateRule(Blocks.DIRT);
 	private static final SurfaceRules.RuleSource PODZOL = makeStateRule(Blocks.PODZOL);
 	private static final SurfaceRules.RuleSource COARSE_DIRT = makeStateRule(Blocks.COARSE_DIRT);
 	private static final SurfaceRules.RuleSource GRAVEL = makeStateRule(Blocks.GRAVEL);
 	private static final SurfaceRules.RuleSource SAND = makeStateRule(Blocks.SAND);
 	private static final SurfaceRules.RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
 	private static final SurfaceRules.RuleSource ICE = makeStateRule(Blocks.ICE);
+	private static final SurfaceRules.RuleSource PACKED_ICE = makeStateRule(Blocks.PACKED_ICE);
 	private static final SurfaceRules.RuleSource SNOW = makeStateRule(Blocks.SNOW_BLOCK);
 	private static final SurfaceRules.RuleSource WATER = makeStateRule(Blocks.WATER);
 	private static final SurfaceRules.RuleSource LAVA = makeStateRule(Blocks.LAVA);
@@ -34,13 +34,7 @@ public class TFSurfaceRules {
 
 	public static SurfaceRules.RuleSource basicOverworldGen() {
 		SurfaceRules.ConditionSource y62 = SurfaceRules.yBlockCheck(VerticalAnchor.absolute(62), 0);
-		SurfaceRules.ConditionSource y63 = SurfaceRules.yBlockCheck(VerticalAnchor.absolute(63), 0);
-		SurfaceRules.ConditionSource checkWaterBelow = SurfaceRules.waterBlockCheck(-1, 0);
-		SurfaceRules.ConditionSource checkWaterAt = SurfaceRules.waterBlockCheck(0, 0);
-		SurfaceRules.ConditionSource checkWater6Below = SurfaceRules.waterStartCheck(-6, -1);
-		SurfaceRules.ConditionSource isHole = SurfaceRules.hole();
 		SurfaceRules.RuleSource sandPlacer = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, SANDSTONE), SAND);
-		SurfaceRules.RuleSource gravelPlacer = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, STONE), GRAVEL);
 
 		SurfaceRules.RuleSource overworldLike = SurfaceRules.sequence(
 				SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
@@ -54,21 +48,18 @@ public class TFSurfaceRules {
 										SurfaceRules.isBiome(BiomeKeys.FIRE_SWAMP),
 										SurfaceRules.ifTrue(y62,
 												SurfaceRules.ifTrue(
-														SurfaceRules.noiseCondition(Noises.SWAMP, 0.0D), LAVA))))),
-				SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-						SurfaceRules.ifTrue(checkWaterBelow,
-								SurfaceRules.ifTrue(isHole,
-										SurfaceRules.sequence(
-												SurfaceRules.ifTrue(checkWaterAt, AIR),
-												SurfaceRules.ifTrue(
-														SurfaceRules.temperature(), ICE), WATER)))),
-				SurfaceRules.ifTrue(checkWater6Below,
-						SurfaceRules.ifTrue(
-								SurfaceRules.stoneDepthCheck(0, true, true, CaveSurface.FLOOR), SANDSTONE)),
-				SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+														SurfaceRules.noiseCondition(Noises.SWAMP, 0.0D), LAVA))),
+								SurfaceRules.ifTrue(
+										SurfaceRules.isBiome(BiomeKeys.LAKE, BiomeKeys.STREAM), sandPlacer),
+								SurfaceRules.ifTrue(
+										SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)),
+				SurfaceRules.ifTrue(
+						SurfaceRules.waterStartCheck(-6, -1),
 						SurfaceRules.sequence(
 								SurfaceRules.ifTrue(
-										SurfaceRules.isBiome(BiomeKeys.LAKE, BiomeKeys.STREAM), sandPlacer), gravelPlacer)));
+										SurfaceRules.UNDER_FLOOR,
+										DIRT))));
+
 
 		ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
 		builder.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK));
@@ -86,12 +77,14 @@ public class TFSurfaceRules {
 
 		SurfaceRules.RuleSource highlandsNoise = SurfaceRules.sequence(
 				//check if we're in the highlands
-				SurfaceRules.ifTrue(SurfaceRules.isBiome(BiomeKeys.HIGHLANDS),
+				SurfaceRules.ifTrue(
+						SurfaceRules.isBiome(BiomeKeys.HIGHLANDS),
 						SurfaceRules.ifTrue(
 								//check if we're on the surface
-								SurfaceRules.abovePreliminarySurface(),
+								SurfaceRules.ON_FLOOR,
 								SurfaceRules.sequence(
 										//mix coarse dirt and podzol like we used to
+										PODZOL,
 										SurfaceRules.ifTrue(surfaceNoiseAbove(1.75D), COARSE_DIRT),
 										SurfaceRules.ifTrue(surfaceNoiseAbove(-0.95D), PODZOL)))));
 
@@ -99,31 +92,54 @@ public class TFSurfaceRules {
 				SurfaceRules.ifTrue(
 						//check if we're in the deadrock biomes
 						SurfaceRules.isBiome(BiomeKeys.THORNLANDS, BiomeKeys.FINAL_PLATEAU),
+						//deadrock blocks replace everything
 						SurfaceRules.sequence(
-								SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), WEATHERED_DEADROCK),
-								SurfaceRules.ifTrue(SurfaceRules.yStartCheck(VerticalAnchor.bottom(), -1), DEADROCK))));
+								SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, WEATHERED_DEADROCK),
+								SurfaceRules.ifTrue(
+										SurfaceRules.waterStartCheck(-6, -1),
+										SurfaceRules.sequence(
+												SurfaceRules.ifTrue(
+														SurfaceRules.UNDER_FLOOR,
+														CRACKED_DEADROCK))),
+								DEADROCK)));
 
 		SurfaceRules.RuleSource snowyForest = SurfaceRules.sequence(
 				SurfaceRules.ifTrue(
 						//check if we're in the snowy forest
 						SurfaceRules.isBiome(BiomeKeys.SNOWY_FOREST),
-						SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), SNOW)));
+						//surface is snow
+						SurfaceRules.sequence(
+								SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, SNOW),
+								SurfaceRules.ifTrue(
+										SurfaceRules.waterStartCheck(-6, -1),
+										SurfaceRules.sequence(
+												SurfaceRules.ifTrue(
+														SurfaceRules.UNDER_FLOOR,
+														SNOW))))));
 
 		SurfaceRules.RuleSource glacier = SurfaceRules.sequence(
 				SurfaceRules.ifTrue(
-						//check if we're in the snowy forest
-						SurfaceRules.isBiome(BiomeKeys.SNOWY_FOREST),
-						SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), SNOW)));
+						//check if we're in the glacier
+						SurfaceRules.isBiome(BiomeKeys.GLACIER),
+						SurfaceRules.sequence(
+								//surface and under is gravel
+								SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, GRAVEL),
+								SurfaceRules.ifTrue(
+										SurfaceRules.waterStartCheck(-6, -1),
+										SurfaceRules.sequence(
+												SurfaceRules.ifTrue(
+														SurfaceRules.UNDER_FLOOR,
+														GRAVEL))))));
 
 
 		ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
 		builder
-				//overworld generation
-				.add(basicOverworldGen())
 				.add(highlandsNoise)
 				.add(deadrockLands)
 				.add(snowyForest)
-				.add();
+				.add(glacier)
+				//overworld generation last
+				.add(basicOverworldGen());
 		return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
 	}
 

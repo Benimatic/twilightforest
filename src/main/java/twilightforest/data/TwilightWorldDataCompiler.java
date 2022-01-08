@@ -9,9 +9,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
-import net.minecraft.data.worldgen.SurfaceRuleData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CubicSpline;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.TerrainShaper;
 import net.minecraft.world.level.block.Blocks;
@@ -24,6 +24,7 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.ConfiguredWorldCarvers;
 import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.biomes.BiomeMaker;
+import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.Map;
 import java.util.Optional;
@@ -72,12 +73,11 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 						true,
 						true,
 						false,
-						TerrainShaper.overworld(false)
+						new TerrainShaper(CubicSpline.constant(0.0F), CubicSpline.constant(0.0F), CubicSpline.constant(0.0F))
 				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				//TODO use our surface rules once theyre done
-				SurfaceRuleData.overworld(),
+				TFSurfaceRules.tfSurface(),
 				0,
 				false,
 				false,
@@ -103,11 +103,11 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 						false, // island_noise_override
 						false,  // amplified
 						false, //large_biomes
-						TerrainShaper.overworld(false) //terrain_shaper
+						new TerrainShaper(CubicSpline.constant(0.0F), CubicSpline.constant(0.0F), CubicSpline.constant(0.0F)) //terrain_shaper
 				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				SurfaceRuleData.overworld(),
+				TFSurfaceRules.tfSurface(),
 				0,
 				false,
 				false,
@@ -157,7 +157,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		this.getOrCreateInRegistry(this.dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), () -> twilightType);
 
 		return ImmutableMap.of(
-				TwilightForestMod.prefix("twilight_forest"), new LevelStem(() -> twilightType, new ChunkGeneratorTwilight(forestChunkGen, true, true, Optional.of(12), true))//,
+				TwilightForestMod.prefix("twilightforest"), new LevelStem(() -> twilightType, new ChunkGeneratorTwilight(forestChunkGen, true, true, Optional.of(12), true))//,
 				//TwilightForestMod.prefix("skylight_forest"), new LevelStem(() -> twilightType, skyChunkGen)
 				// TODO add *actual* twilightforest:void world without islands
 		);
