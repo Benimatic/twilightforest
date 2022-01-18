@@ -1,8 +1,10 @@
 package twilightforest.world.registration.features;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
@@ -12,9 +14,11 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureCo
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.components.placements.ChunkCenterModifier;
 import twilightforest.world.components.placements.OutOfStructureFilter;
+import twilightforest.world.registration.BlockConstants;
 import twilightforest.world.registration.TFBiomeFeatures;
 import twilightforest.world.registration.TreeConfigurations;
 import twilightforest.world.registration.TwilightFeatures;
@@ -52,17 +56,17 @@ public class TFTreeFeatures {
 	public static final ConfiguredFeature<TreeConfiguration, ?> VANILLA_TF_BIRCH = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/vanilla_tf_birch"), Feature.TREE.configured(TreeFeatures.BIRCH.config()));
 
 	//Placements
-	public static final PlacedFeature CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/canopy_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(CANOPY_TREE_BASE.placed(), 0.6F)), TWILIGHT_OAK_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1)).build()));
-	public static final PlacedFeature DENSE_CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dense_canopy_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(CANOPY_TREE_BASE.placed(), 0.7F)), TWILIGHT_OAK_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1)).build()));
+	public static final PlacedFeature CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/canopy_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(CANOPY_TREE_BASE.filteredByBlockSurvival(TFBlocks.CANOPY_SAPLING.get()), 0.6F)), TWILIGHT_OAK_BASE.filteredByBlockSurvival(TFBlocks.TWILIGHT_OAK_SAPLING.get()))).placed(tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1)).build()));
+	public static final PlacedFeature DENSE_CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dense_canopy_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(CANOPY_TREE_BASE.filteredByBlockSurvival(TFBlocks.CANOPY_SAPLING.get()), 0.7F)), TWILIGHT_OAK_BASE.filteredByBlockSurvival(TFBlocks.TWILIGHT_OAK_SAPLING.get()))).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1)).build()));
 	public static final PlacedFeature DEAD_CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dead_canopy_trees"), DEAD_CANOPY_TREE_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1)).build()));
-	public static final PlacedFeature MANGROVE_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mangrove_trees"), MANGROVE_TREE_BASE.placed(PlacementUtils.countExtra(3, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(6), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), BiomeFilter.biome()));
+	public static final PlacedFeature MANGROVE_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mangrove_trees"), MANGROVE_TREE_BASE.placed(PlacementUtils.countExtra(3, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(6), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlockConstants.MANGROVE_SAPLING, BlockPos.ZERO)), BiomeFilter.biome()));
 	public static final PlacedFeature TWILIGHT_OAK_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/twilight_oak_trees"), TWILIGHT_OAK_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1)).build()));
 	public static final PlacedFeature DENSE_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dense_trees"), TWILIGHT_OAK_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(7, 0.1F, 1)).build()));
 	public static final PlacedFeature SAVANNAH_OAK_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/savannah_oak_trees"), TWILIGHT_OAK_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(0, 0.1F, 1)).build()));
 	public static final PlacedFeature SWAMPY_OAK_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/swampy_oak_trees"), SWAMPY_OAK_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(4, 0.1F, 1)).build()));
 	public static final PlacedFeature FIREFLY_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/firefly_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(CANOPY_TREE_BASE.placed(), 0.33F), new WeightedPlacedFeature(FIREFLY_CANOPY_TREE_BASE.placed(), 0.45F)), TWILIGHT_OAK_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1)).build()));
-	public static final PlacedFeature DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dark_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(BIRCH_DARK_FOREST.placed(), 0.35F), new WeightedPlacedFeature(OAK_DARK_FOREST.placed(), 0.35F)), DARKWOOD_TREE_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1)).build()));
-	public static final PlacedFeature DARKWOOD_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/darkwood_trees"), DARKWOOD_TREE_BASE.placed(PlacementUtils.countExtra(5, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new OutOfStructureFilter(true, false, 16), BiomeFilter.biome()));
+	public static final PlacedFeature DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dark_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(BIRCH_DARK_FOREST.placed(), 0.35F), new WeightedPlacedFeature(OAK_DARK_FOREST.placed(), 0.35F)), DARKWOOD_TREE_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), false).build()));
+	public static final PlacedFeature DARKWOOD_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/darkwood_trees"), DARKWOOD_TREE_BASE.placed(PlacementUtils.countExtra(5, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new OutOfStructureFilter(true, false, 16), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlockConstants.DARKWOOD_SAPLING, BlockPos.ZERO)), BiomeFilter.biome()));
 	public static final PlacedFeature HIGHLANDS_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/highlands_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TreeFeatures.SPRUCE.placed(), 0.25F), new WeightedPlacedFeature(TreeFeatures.PINE.placed(), 0.1F)), MEGA_SPRUCE_NO_PODZOL_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1)).build()));
 	public static final PlacedFeature ENCHANTED_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/enchanted_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(VANILLA_TF_OAK.placed(), 0.15F), new WeightedPlacedFeature(VANILLA_TF_BIRCH.placed(), 0.15F), new WeightedPlacedFeature(LARGE_RAINBOW_OAK_BASE.placed(), 0.1F)), RAINBOW_OAK_TREE_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(10, 0.1F, 1)).build()));
 	public static final PlacedFeature SNOWY_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/snowy_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(MEGA_SPRUCE_NO_PODZOL_BASE.placed(), 0.1F), new WeightedPlacedFeature(LARGE_WINTER_TREE_BASE.placed(), 0.01F)), SNOW_SPRUCE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(10, 0.1F, 1)).build()));
@@ -102,11 +106,21 @@ public class TFTreeFeatures {
 					));
 
 	private static ImmutableList.Builder<PlacementModifier> tfTreeCheckArea() {
-		return ImmutableList.<PlacementModifier>builder().add(InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), BiomeFilter.biome());
+		return ImmutableList.<PlacementModifier>builder().add(InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlockConstants.CANOPY_SAPLING, BlockPos.ZERO)), BiomeFilter.biome());
 	}
 
 	private static ImmutableList.Builder<PlacementModifier> tfTreeCheckArea(PlacementModifier count) {
-		return ImmutableList.<PlacementModifier>builder().add(count, InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), BiomeFilter.biome());
+		return tfTreeCheckArea(count, true);
+	}
+
+	private static ImmutableList.Builder<PlacementModifier> tfTreeCheckArea(PlacementModifier count, boolean checkSurvival) {
+		ImmutableList.Builder<PlacementModifier> list = ImmutableList.<PlacementModifier>builder();
+		list.add(count, InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface());
+		if (checkSurvival) {
+			list.add(BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlockConstants.CANOPY_SAPLING, BlockPos.ZERO)));
+		}
+		list.add(BiomeFilter.biome());
+		return list;
 	}
 
 }

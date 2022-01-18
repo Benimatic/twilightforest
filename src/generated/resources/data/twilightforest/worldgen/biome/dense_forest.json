@@ -66,8 +66,7 @@
             "type": "minecraft:biome"
           }
         ]
-      },
-      "twilightforest:tree/hollow_placer"
+      }
     ]
   ],
   "spawners": {

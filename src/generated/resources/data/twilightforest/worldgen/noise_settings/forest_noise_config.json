@@ -511,15 +511,13 @@
     "structures": {}
   },
   "noise": {
-    "amplified": true,
     "terrain_shaper": {
-      "offset": 0.0,
-      "factor": 0.0,
+      "offset": -0.45,
+      "factor": 10.0,
       "jaggedness": 0.0
     },
     "size_horizontal": 1,
     "size_vertical": 2,
-    "island_noise_override": true,
     "sampling": {
       "xz_scale": 0.9999999814507745,
       "y_scale": 0.9999999814507745,

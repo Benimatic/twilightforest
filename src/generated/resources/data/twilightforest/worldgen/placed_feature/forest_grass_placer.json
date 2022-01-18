@@ -1,7 +1,7 @@
 {
   "feature": {
     "config": {
-      "tries": 128,
+      "tries": 64,
       "xz_spread": 7,
       "y_spread": 7,
       "feature": {

@@ -63,14 +63,6 @@
           }
         ]
       },
-      {
-        "feature": "twilightforest:small_log",
-        "placement": [
-          {
-            "type": "minecraft:biome"
-          }
-        ]
-      },
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer"
     ]

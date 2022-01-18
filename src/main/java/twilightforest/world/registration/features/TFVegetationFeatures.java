@@ -83,8 +83,6 @@ public final class TFVegetationFeatures {
     public static final PlacedFeature SPRUCE_FALLEN_LOG = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("spruce_fallen_log"), TFBiomeFeatures.FALLEN_SMALL_LOG.get().configured(new HollowLogConfig(BlockConstants.SPRUCE_LOG, BlockConstants.HOLLOW_SPRUCE_LOG)).placed(tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build()));
     public static final PlacedFeature BIRCH_FALLEN_LOG = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("birch_fallen_log"), TFBiomeFeatures.FALLEN_SMALL_LOG.get().configured(new HollowLogConfig(BlockConstants.BIRCH_LOG, BlockConstants.HOLLOW_BIRCH_LOG)).placed(tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build()));
     public static final PlacedFeature DEFAULT_FALLEN_LOGS = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("default_fallen_logs"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(BIRCH_FALLEN_LOG, 0.1F), new WeightedPlacedFeature(OAK_FALLEN_LOG, 0.2F), new WeightedPlacedFeature(CANOPY_FALLEN_LOG, 0.4F)), TF_OAK_FALLEN_LOG))).placed(tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
-    //TODO remove me when you figure out why removing me causes a datapack failure
-    public static final PlacedFeature SMALL_LOG = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("small_log"), Feature.NO_OP.configured(NoneFeatureConfiguration.INSTANCE)).placed(BiomeFilter.biome());
 
     //smol stone veins
     public static final PlacedFeature SMALL_GRANITE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("small_granite"), Feature.ORE.configured(new OreConfiguration(OreFeatures.NATURAL_STONE, Blocks.GRANITE.defaultBlockState(), 16)).placed(RarityFilter.onAverageOnceEvery(60), InSquarePlacement.spread(), CountPlacement.of(5)));
@@ -108,7 +106,7 @@ public final class TFVegetationFeatures {
     }
 
     //ground decoration
-    public static final RandomPatchConfiguration SMALL_FLOWER_CONFIG = (new RandomPatchConfiguration(128, 7, 7, () ->
+    public static final RandomPatchConfiguration SMALL_FLOWER_CONFIG = (new RandomPatchConfiguration(32, 7, 7, () ->
             Feature.SIMPLE_BLOCK.configured(new SimpleBlockConfiguration(
                     new NoiseProvider(2345L,
                             new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F,
@@ -127,7 +125,7 @@ public final class TFVegetationFeatures {
                                     BlockConstants.OXEYE)
                     ))).onlyWhenEmpty()));
 
-    public static final RandomPatchConfiguration FOREST_GRASS = (new RandomPatchConfiguration(128, 7, 7, () ->
+    public static final RandomPatchConfiguration FOREST_GRASS = (new RandomPatchConfiguration(64, 7, 7, () ->
             Feature.SIMPLE_BLOCK.configured(new SimpleBlockConfiguration(
                     new NoiseProvider(2345L,
                             new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F,
@@ -139,7 +137,7 @@ public final class TFVegetationFeatures {
                                     BlockConstants.TALL_FERN)
                     ))).onlyWhenEmpty()));
 
-    public static final RandomPatchConfiguration OTHER_GRASS = (new RandomPatchConfiguration(128, 7, 7, () ->
+    public static final RandomPatchConfiguration OTHER_GRASS = (new RandomPatchConfiguration(64, 7, 7, () ->
             Feature.SIMPLE_BLOCK.configured(new SimpleBlockConfiguration(
                     new NoiseProvider(2345L,
                             new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F,

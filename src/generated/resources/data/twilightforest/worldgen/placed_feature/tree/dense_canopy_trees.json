@@ -5,14 +5,40 @@
         {
           "feature": {
             "feature": "twilightforest:tree/base/canopy_tree",
-            "placement": []
+            "placement": [
+              {
+                "predicate": {
+                  "state": {
+                    "Properties": {
+                      "stage": "0"
+                    },
+                    "Name": "twilightforest:canopy_sapling"
+                  },
+                  "type": "minecraft:would_survive"
+                },
+                "type": "minecraft:block_predicate_filter"
+              }
+            ]
           },
           "chance": 0.7
         }
       ],
       "default": {
         "feature": "twilightforest:tree/base/twilight_oak",
-        "placement": []
+        "placement": [
+          {
+            "predicate": {
+              "state": {
+                "Properties": {
+                  "stage": "0"
+                },
+                "Name": "twilightforest:twilight_oak_sapling"
+              },
+              "type": "minecraft:would_survive"
+            },
+            "type": "minecraft:block_predicate_filter"
+          }
+        ]
       }
     },
     "type": "minecraft:random_selector"
@@ -52,6 +78,18 @@
         "occupies_underground": false,
         "additional_clearance": 0
       }
+    },
+    {
+      "predicate": {
+        "state": {
+          "Properties": {
+            "stage": "0"
+          },
+          "Name": "twilightforest:canopy_sapling"
+        },
+        "type": "minecraft:would_survive"
+      },
+      "type": "minecraft:block_predicate_filter"
     },
     {
       "type": "minecraft:biome"

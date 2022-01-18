@@ -70,10 +70,10 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 						new NoiseSlider(15, 3, 0),
 						1,
 						2,
-						true,
-						true,
 						false,
-						new TerrainShaper(CubicSpline.constant(0.0F), CubicSpline.constant(0.0F), CubicSpline.constant(0.0F))
+						false,
+						false,
+						new TerrainShaper(CubicSpline.constant(-0.45F), CubicSpline.constant(10.0F), CubicSpline.constant(0.0F))
 				),
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
@@ -147,7 +147,6 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				-32, // Minimum Y Level
 				32+256, // Height + Min Y = Max Y
 				32+256, // Logical Height
-				//FuzzyOffsetBiomeZoomer.INSTANCE, //biome zoomer is no more here
 				new ResourceLocation("infiniburn_overworld"),
 				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
 				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0

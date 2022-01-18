@@ -1,6 +1,7 @@
 package twilightforest.world.registration.biomes;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.data.worldgen.placement.TreePlacements;
@@ -70,8 +71,6 @@ public abstract class BiomeHelper {
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.FLOWER_FOREST_FLOWERS);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFVegetationFeatures.DEFAULT_FALLEN_LOGS);
-		//TODO just to call the glitched feature - remove me later
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFVegetationFeatures.SMALL_LOG);
 
 		addForestVegetation(biome);
 
@@ -264,7 +263,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFVegetationFeatures.SPRUCE_FALLEN_LOG);
 
 		//BiomeDefaultFeatures.addDefaultOres(biome);
-		//BiomeDefaultFeatures.addSurfaceFreezing(biome);
+		BiomeDefaultFeatures.addSurfaceFreezing(biome);
 
 		addCaves(biome);
 
@@ -338,7 +337,7 @@ public abstract class BiomeHelper {
 	}
 
     public static void addHollowOakTrees(BiomeGenerationSettings.Builder biome) {
-        biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFTreeFeatures.HOLLOW_TREE_PLACER);
+        //biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFTreeFeatures.HOLLOW_TREE_PLACER);
 	}
 
 	public static void addSwampTrees(BiomeGenerationSettings.Builder biome) {

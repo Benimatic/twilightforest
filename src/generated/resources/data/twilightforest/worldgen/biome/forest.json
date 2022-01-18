@@ -67,8 +67,7 @@
       },
       "minecraft:jungle_bush",
       "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer",
-      "twilightforest:tree/hollow_placer"
+      "twilightforest:flower_placer"
     ]
   ],
   "spawners": {

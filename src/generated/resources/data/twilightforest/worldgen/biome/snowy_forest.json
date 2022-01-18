@@ -32,7 +32,8 @@
             "type": "minecraft:biome"
           }
         ]
-      }
+      },
+      "minecraft:freeze_top_layer"
     ]
   ],
   "spawners": {
