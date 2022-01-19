@@ -20,6 +20,6 @@ public class IceBowItem extends BowItem {
 
 	@Override
 	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repairWith) {
-		return toRepair.getItem() instanceof BlockItem blockItem && BlockTags.ICE.contains(blockItem.getBlock()) || super.isValidRepairItem(toRepair, repairWith);
+		return repairWith.getItem() instanceof BlockItem blockItem && BlockTags.ICE.contains(blockItem.getBlock()) || super.isValidRepairItem(toRepair, repairWith);
 	}
 }
