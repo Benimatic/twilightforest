@@ -7,6 +7,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.custom.CrumbleHornGenerator;
+import twilightforest.data.custom.TransformationPowderGenerator;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
@@ -29,5 +31,8 @@ public class DataGenerators {
 		generator.addProvider(new StonecuttingGenerator(generator));
 		generator.addProvider(new CraftingGenerator(generator));
 		generator.addProvider(new TwilightWorldDataCompiler(generator));
+
+		generator.addProvider(new CrumbleHornGenerator(generator, helper));
+		generator.addProvider(new TransformationPowderGenerator(generator, helper));
 	}
 }

@@ -6,59 +6,34 @@ import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.commons.lang3.tuple.Pair;
-import twilightforest.item.CrumbleHornItem;
-
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import twilightforest.item.recipe.TFRecipes;
 
 public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 
     boolean fired = false;
-    private final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = CrumbleHornItem.crumbleTransforms;
-    private final List<Predicate<BlockState>> harvestedStates = CrumbleHornItem.harvestedStates;
 
     @Override
     protected ItemStack execute(BlockSource source, ItemStack stack) {
-        boolean crumbled = false;
-        boolean harvested = false;
         Level world = source.getLevel();
-        BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-        BlockState blockstate = world.getBlockState(blockpos);
+        BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+        BlockState state = world.getBlockState(pos);
         if(!world.isClientSide) {
             if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-                for (Pair<Predicate<BlockState>, UnaryOperator<BlockState>> transform : crumbleTransforms) {
-                    if (transform.getLeft().test(blockstate)) {
-                        world.setBlock(blockpos, transform.getRight().apply(blockstate), 3);
-                        crumbled = true;
+                world.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE).forEach(recipe -> {
+                    if(recipe.getInput().is(state.getBlock())) {
+                        if (recipe.getResult().is(Blocks.AIR)) {
+                            world.removeBlock(pos, true);
+                            world.levelEvent(2001, pos, Block.getId(state));
+                        } else {
+                            world.setBlock(pos, recipe.getResult().getBlock().withPropertiesOf(state), 3);
+                        }
+                        stack.hurt(1, world.random, null);
+                        fired = true;
                     }
-                }
-
-                if (crumbled) {
-                    world.levelEvent(2001, blockpos, Block.getId(blockstate));
-                    if (stack.hurt(1, world.random, null)) {
-                        stack.setCount(0);
-                    }
-                    fired = true;
-                }
-
-                for (Predicate<BlockState> predicate : harvestedStates) {
-                    if (predicate.test(blockstate)) {
-                        world.destroyBlock(blockpos, true);
-                        harvested = true;
-                    }
-                }
-
-                if (harvested) {
-                    if (stack.hurt(1, world.random, null)) {
-                        stack.setCount(0);
-                    }
-                    fired = true;
-                }
-                return stack;
+                });
             }
         }
         return stack;

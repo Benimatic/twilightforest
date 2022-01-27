@@ -15,43 +15,16 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.TFEntities;
+import twilightforest.item.recipe.TFRecipes;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TransformPowderItem extends Item {
 
-	public static final Map<EntityType<?>, EntityType<?>> transformMap = new HashMap<>();
-
 	protected TransformPowderItem(Properties props) {
 		super(props);
-	}
-
-	public void initTransformations() {
-		addTwoWayTransformation(TFEntities.MINOTAUR, EntityType.ZOMBIFIED_PIGLIN);
-		addTwoWayTransformation(TFEntities.DEER, EntityType.COW);
-		addTwoWayTransformation(TFEntities.BIGHORN_SHEEP, EntityType.SHEEP);
-		addTwoWayTransformation(TFEntities.BOAR, EntityType.PIG);
-		addTwoWayTransformation(TFEntities.DWARF_RABBIT, EntityType.RABBIT);
-		addTwoWayTransformation(TFEntities.TINY_BIRD, EntityType.PARROT);
-		addTwoWayTransformation(TFEntities.RAVEN, EntityType.BAT);
-		addTwoWayTransformation(TFEntities.HOSTILE_WOLF, EntityType.WOLF);
-		addTwoWayTransformation(TFEntities.PENGUIN, EntityType.CHICKEN);
-		addTwoWayTransformation(TFEntities.HEDGE_SPIDER, EntityType.SPIDER);
-		addTwoWayTransformation(TFEntities.SWARM_SPIDER, EntityType.CAVE_SPIDER);
-		addTwoWayTransformation(TFEntities.WRAITH, EntityType.VEX);
-		addTwoWayTransformation(TFEntities.SKELETON_DRUID, EntityType.WITCH);
-		addTwoWayTransformation(TFEntities.CARMINITE_GHASTGUARD, EntityType.GHAST);
-		addTwoWayTransformation(TFEntities.TOWERWOOD_BORER, EntityType.SILVERFISH);
-		addTwoWayTransformation(TFEntities.MAZE_SLIME, EntityType.SLIME);
-	}
-
-	private void addTwoWayTransformation(EntityType<?> from, EntityType<?> to) {
-		transformMap.put(from, to);
-		transformMap.put(to, from);
 	}
 
 	@Override
@@ -59,41 +32,47 @@ public class TransformPowderItem extends Item {
 		if (!target.isAlive()) {
 			return InteractionResult.PASS;
 		}
+		AtomicBoolean flag = new AtomicBoolean(false);
 
-		EntityType<?> type = transformMap.get(target.getType());
-		if (type == null) {
-			return InteractionResult.PASS;
-		}
+		player.level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE).forEach((recipe) -> {
+			if(flag.get()) return;
+			if(recipe.getInput() == target.getType()) {
+				EntityType<?> type = recipe.getResult();
+				if (type == null) {
+					return;
+				}
 
-		Entity newEntity = type.create(player.level);
-		if (newEntity == null) {
-			return InteractionResult.PASS;
-		}
+				Entity newEntity = type.create(player.level);
+				if (newEntity == null) {
+					return;
+				}
 
-		newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
-		if (newEntity instanceof Mob mob && target.level instanceof ServerLevelAccessor world) {
-			mob.finalizeSpawn(world, target.level.getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
-		}
+				newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
+				if (newEntity instanceof Mob mob && target.level instanceof ServerLevelAccessor world) {
+					mob.finalizeSpawn(world, target.level.getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
+				}
 
-		try { // try copying what can be copied
-			UUID uuid = newEntity.getUUID();
-			newEntity.load(target.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
-			newEntity.setUUID(uuid);
-		} catch (Exception e) {
-			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
-		}
+				try { // try copying what can be copied
+					UUID uuid = newEntity.getUUID();
+					newEntity.load(target.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
+					newEntity.setUUID(uuid);
+				} catch (Exception e) {
+					TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
+				}
 
-		target.level.addFreshEntity(newEntity);
-		target.discard();
-		stack.shrink(1);
+				target.level.addFreshEntity(newEntity);
+				target.discard();
+				stack.shrink(1);
 
-		if (target instanceof Mob) {
-			((Mob) target).spawnAnim();
-			((Mob) target).spawnAnim();
-		}
-		target.playSound(TFSounds.POWDER_USE, 1.0F + target.level.random.nextFloat(), target.level.random.nextFloat() * 0.7F + 0.3F);
-
-		return InteractionResult.SUCCESS;
+				if (target instanceof Mob) {
+					((Mob) target).spawnAnim();
+					((Mob) target).spawnAnim();
+				}
+				target.playSound(TFSounds.POWDER_USE, 1.0F + target.level.random.nextFloat(), target.level.random.nextFloat() * 0.7F + 0.3F);
+				flag.set(true);
+			}
+		});
+		return flag.get() ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
 	@Nonnull

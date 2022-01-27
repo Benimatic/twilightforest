@@ -24,91 +24,21 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
-import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.item.recipe.TFRecipes;
 import twilightforest.util.TFStats;
 import twilightforest.util.WorldUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrumbleHornItem extends Item {
 
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
-	public static final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = new ArrayList<>();
-	public static final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
-
-	CrumbleHornItem(Properties props) {
+	public CrumbleHornItem(Properties props) {
 		super(props);
-		this.addCrumbleTransforms();
-	}
-
-	public void addCrumbleTransforms() {
-		addCrumble(() -> Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS::defaultBlockState);
-		addCrumble(() -> Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS::defaultBlockState);
-		addCrumble(() -> Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE::defaultBlockState);
-		addCrumble(() -> Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS::defaultBlockState);
-		addCrumble(() -> Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS::defaultBlockState);
-		addCrumble(() -> Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES::defaultBlockState);
-		addCrumble(TFBlocks.MAZESTONE_BRICK, () -> TFBlocks.CRACKED_MAZESTONE.get().defaultBlockState());
-		addCrumble(TFBlocks.UNDERBRICK, () -> TFBlocks.CRACKED_UNDERBRICK.get().defaultBlockState());
-		addCrumble(TFBlocks.TOWERWOOD, () -> TFBlocks.CRACKED_TOWERWOOD.get().defaultBlockState());
-		addCrumble(TFBlocks.DEADROCK, () -> TFBlocks.CRACKED_DEADROCK.get().defaultBlockState());
-		addCrumble(TFBlocks.CASTLE_BRICK, () -> TFBlocks.CRACKED_CASTLE_BRICK.get().defaultBlockState());
-		addCrumble(TFBlocks.NAGASTONE_PILLAR, () -> TFBlocks.CRACKED_NAGASTONE_PILLAR.get().defaultBlockState());
-		addCrumble(TFBlocks.ETCHED_NAGASTONE, () -> TFBlocks.CRACKED_ETCHED_NAGASTONE.get().defaultBlockState());
-		addCrumble(() -> Blocks.STONE, Blocks.COBBLESTONE::defaultBlockState);
-		addCrumble(() -> Blocks.COBBLESTONE, Blocks.GRAVEL::defaultBlockState);
-		addCrumble(() -> Blocks.SANDSTONE, Blocks.SAND::defaultBlockState);
-		addCrumble(() -> Blocks.RED_SANDSTONE, Blocks.RED_SAND::defaultBlockState);
-		addCrumble(() -> Blocks.GRASS_BLOCK, Blocks.DIRT::defaultBlockState);
-		addCrumble(() -> Blocks.MYCELIUM, Blocks.DIRT::defaultBlockState);
-		addCrumble(() -> Blocks.PODZOL, Blocks.DIRT::defaultBlockState);
-		addCrumble(() -> Blocks.COARSE_DIRT, Blocks.DIRT::defaultBlockState);
-		addCrumble(() -> Blocks.CRIMSON_NYLIUM, Blocks.NETHERRACK::defaultBlockState);
-		addCrumble(() -> Blocks.WARPED_NYLIUM, Blocks.NETHERRACK::defaultBlockState);
-		addCrumble(() -> Blocks.QUARTZ_BLOCK, Blocks.SAND::defaultBlockState);
-		addCrumble(() -> Blocks.ROOTED_DIRT, Blocks.DIRT::defaultBlockState);
-		addCopperCrumble(() -> Blocks.OXIDIZED_COPPER, () -> Blocks.WEATHERED_COPPER, () -> Blocks.EXPOSED_COPPER, () -> Blocks.COPPER_BLOCK);
-		addCopperCrumble(() -> Blocks.OXIDIZED_CUT_COPPER, () -> Blocks.WEATHERED_CUT_COPPER, () -> Blocks.EXPOSED_CUT_COPPER, () -> Blocks.CUT_COPPER);
-		addHarvest(() -> Blocks.GRAVEL);
-		addHarvest(() -> Blocks.DIRT);
-		addHarvest(() -> Blocks.SAND);
-		addHarvest(() -> Blocks.RED_SAND);
-		addHarvest(() -> Blocks.CLAY);
-		addHarvest(() -> Blocks.ANDESITE);
-		addHarvest(() -> Blocks.GRANITE);
-		addHarvest(() -> Blocks.DIORITE);
-
-	}
-
-	private void addCopperCrumble(Supplier<Block> oxidized, Supplier<Block> weathered, Supplier<Block> exposed, Supplier<Block> normal) {
-		addCrumble(state -> state.is(oxidized.get()), state -> weathered.get().defaultBlockState());
-		addCrumble(state -> state.is(weathered.get()), state -> exposed.get().defaultBlockState());
-		addCrumble(state -> state.is(exposed.get()), state -> normal.get().defaultBlockState());
-	}
-
-	private void addCrumble(Supplier<Block> block, Supplier<BlockState> result) {
-		addCrumble(state -> state.getBlock() == block.get(), state -> result.get());
-	}
-
-	private void addCrumble(Predicate<BlockState> test, UnaryOperator<BlockState> transform) {
-		crumbleTransforms.add(Pair.of(test, transform));
-	}
-
-	private void addHarvest(Supplier<Block> block) {
-		addHarvest(state -> state.getBlock() == block.get());
-	}
-
-	private void addHarvest(Predicate<BlockState> test) {
-		harvestedStates.add(test);
 	}
 
 	@Override
@@ -182,6 +112,7 @@ public class CrumbleHornItem extends Item {
 
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
+		AtomicBoolean flag = new AtomicBoolean(false);
 
 		if (state.isAir()) return false;
 
@@ -189,39 +120,37 @@ public class CrumbleHornItem extends Item {
 			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player)living))) return false;
 		}
 
-		for (Pair<Predicate<BlockState>, UnaryOperator<BlockState>> transform : crumbleTransforms) {
-			if (transform.getLeft().test(state) && world.random.nextInt(CHANCE_CRUMBLE) == 0) {
-				world.setBlock(pos, transform.getRight().apply(state), 3);
-				world.levelEvent(2001, pos, Block.getId(state));
-
-				postTrigger(living);
-
-				return true;
-			}
-		}
-
-		for (Predicate<BlockState> predicate : harvestedStates) {
-			if (predicate.test(state) && world.random.nextInt(CHANCE_HARVEST) == 0) {
-				if (living instanceof Player) {
-					if (block.canHarvestBlock(state, world, pos, (Player) living)) {
-						world.removeBlock(pos, false);
-						block.playerDestroy(world, (Player) living, pos, state, world.getBlockEntity(pos), ItemStack.EMPTY);
-						world.levelEvent(2001, pos, Block.getId(state));
-
-						postTrigger(living);
-
-						return true;
+		if(world instanceof ServerLevel level) {
+			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE).forEach(recipe -> {
+				if(flag.get()) return;
+				if(recipe.getResult().is(Blocks.AIR)) {
+					if (recipe.getInput().is(block) && world.random.nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
+						if (living instanceof Player) {
+							if (block.canHarvestBlock(state, world, pos, (Player) living)) {
+								world.removeBlock(pos, false);
+								block.playerDestroy(world, (Player) living, pos, state, world.getBlockEntity(pos), ItemStack.EMPTY);
+								world.levelEvent(2001, pos, Block.getId(state));
+								postTrigger(living);
+								flag.set(true);
+							}
+						} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
+							world.destroyBlock(pos, true);
+							postTrigger(living);
+							flag.set(true);
+						}
 					}
-				} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
-					world.destroyBlock(pos, true);
-
-					postTrigger(living);
-
-					return true;
+				} else {
+					if (recipe.getInput().is(block) && world.random.nextInt(CHANCE_CRUMBLE) == 0 && !flag.get()) {
+						world.setBlock(pos, recipe.getResult().getBlock().withPropertiesOf(state), 3);
+						world.levelEvent(2001, pos, Block.getId(state));
+						postTrigger(living);
+						flag.set(true);
+					}
 				}
-			}
+			});
 		}
-		return false;
+
+		return flag.get();
 	}
 
 	private void postTrigger(LivingEntity living) {
