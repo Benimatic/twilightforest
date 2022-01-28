@@ -1,5 +1,6 @@
 package twilightforest.compat;
 
+import blusunrize.immersiveengineering.ImmersiveEngineering;
 import blusunrize.immersiveengineering.api.crafting.builders.ThermoelectricSourceBuilder;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.tool.RailgunHandler;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -81,7 +83,7 @@ public class IECompat extends TFCompat {
 
         IEShaderRegister.initShaders();
 
-        //our bosses arent boring, but we dont want them dropping the lame default IE shaders
+        //prevent our bosses from dropping epic shader bags
         EventHandler.listOfBoringBosses.add(Naga.class);
         EventHandler.listOfBoringBosses.add(Lich.class);
         EventHandler.listOfBoringBosses.add(Minoshroom.class);
@@ -90,15 +92,25 @@ public class IECompat extends TFCompat {
         EventHandler.listOfBoringBosses.add(UrGhast.class);
         EventHandler.listOfBoringBosses.add(AlphaYeti.class);
         EventHandler.listOfBoringBosses.add(SnowQueen.class);
+        EventHandler.listOfBoringBosses.add(PlateauBoss.class);
+
+//        excludeFromShaderBags(Naga.class);
+//        excludeFromShaderBags(Lich.class);
+//        excludeFromShaderBags(Minoshroom.class);
+//        excludeFromShaderBags(Hydra.class);
+//        excludeFromShaderBags(KnightPhantom.class);
+//        excludeFromShaderBags(UrGhast.class);
+//        excludeFromShaderBags(AlphaYeti.class);
+//        excludeFromShaderBags(SnowQueen.class);
+//        excludeFromShaderBags(PlateauBoss.class);
+    }
+
+    private void excludeFromShaderBags(Class<? extends Entity> entityClass) {
+        InterModComms.sendTo(ImmersiveEngineering.MODID, "shaderbag_exclude", entityClass::getName);
     }
 
     @Override
     protected void postInit() {
-
-    }
-
-    @Override
-    protected void sendIMCs() {
 
     }
 }

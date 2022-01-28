@@ -75,11 +75,10 @@ public class YetiArmorItem extends ArmorItem {
 		private static final ArmorRender INSTANCE = new ArmorRender();
 
 		@Override
-		@SuppressWarnings("unchecked")
-		public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defModel) {
+		public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
 			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
-			return (A) new YetiArmorModel(armorSlot, root);
+			return new YetiArmorModel(armorSlot, root);
 		}
 	}
 }

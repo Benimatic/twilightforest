@@ -98,14 +98,13 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         if (!this.trySaveLootTable(compound)) {
             ContainerHelper.saveAllItems(compound, this.contents);
         }
         if(playeruuid != null) compound.putUUID("deadPlayer", playeruuid);
         if(casketname != null) compound.putString("playerName", casketname);
-        return compound;
     }
 
     @Override

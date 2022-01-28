@@ -1,5 +1,6 @@
 package twilightforest.client.model.item;
 
+import blusunrize.immersiveengineering.client.ClientUtils;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -125,8 +126,8 @@ public class ShaderBagItemModel implements BakedModel {
 			// Bind the star burst mask tex
 			RenderSystem.setShaderTexture(0, bg);
 
-			// Just gonna borrow your code for a sec blu, thnx FIXME IE Compat
-			int c = 0; //ClientUtils.getDarkenedTextColour(item.getRarity().color.getColor());
+			// Just gonna borrow your code for a sec blu, thnx
+			int c = ClientUtils.getDarkenedTextColour(item.getRarity().color.getColor());
 
 			// unpack colors
 			float r = (c >> 16 & 0xFF) / 255.0f;

@@ -76,6 +76,7 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader",
               "default": "twilightforest:ice_bomb"
             },
             {
@@ -102,6 +103,7 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader_bag_twilight",
               "default": "twilightforest:ice_bomb"
             }
           ],

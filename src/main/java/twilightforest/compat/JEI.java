@@ -1,15 +1,21 @@
 package twilightforest.compat;
 
+import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.*;
+import mezz.jei.api.runtime.IIngredientManager;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.registries.ForgeRegistries;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.UncraftingGui;
@@ -34,6 +40,15 @@ public class JEI implements IModPlugin {
     }
 
     @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        IIngredientManager ingredientManager = jeiRuntime.getIngredientManager();
+        ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
+                ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM, List.of(
+                        ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
+                )));
+    }
+
+    @Override
     public ResourceLocation getPluginUid() {
         return TwilightForestMod.prefix("jei_plugin");
     }
@@ -47,7 +62,10 @@ public class JEI implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
         List<CraftingRecipe> recipes = manager.getAllRecipesFor(RecipeType.CRAFTING);
-        recipes.removeIf(recipe -> recipe.getResultItem().isEmpty() | recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES));//Prevents things that are tagged as banned from showing up
+        recipes.removeIf(recipe -> recipe.getResultItem().isEmpty() ||
+                recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
+                TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) ||
+                TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() != TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace()));//Prevents things that are tagged as banned from showing up
         recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE));
         registration.addRecipes(recipes, JEIUncraftingCategory.UNCRAFTING);
     }

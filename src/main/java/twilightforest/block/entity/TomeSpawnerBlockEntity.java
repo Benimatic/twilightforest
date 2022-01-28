@@ -89,13 +89,12 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 		tag.putString("EntityType", this.entityType);
 		tag.putInt("MobSpawnsLeft", this.tomesLeft);
 		tag.putInt("SpawnDelay", this.spawnTime);
 		tag.putInt("MaxPlayerDistance", this.playerDistance);
-		return tag;
 	}
 
 	@Override

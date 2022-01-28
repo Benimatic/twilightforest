@@ -93,7 +93,7 @@ public class TFItemStackUtils {
 		return result;
 	}
 
-	//TODO: IE Compat
+	//TODO: TC Compat
 //	public static boolean hasToolMaterial(ItemStack stack, IItemTier material) {
 //
 //		Item item = stack.getItem();

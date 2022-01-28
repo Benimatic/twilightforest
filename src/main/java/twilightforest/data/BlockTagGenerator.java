@@ -412,7 +412,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .add(TFBlocks.ANTIBUILDER.get());
 
         tag(ORE_MAGNET_SAFE_REPLACE_BLOCK)
-                .addTags(ORE_MAGNET_BLOCK_REPLACE_ORE, Tags.Blocks.DIRT, Tags.Blocks.GRAVEL, Tags.Blocks.SAND)
+                .addTags(ORE_MAGNET_BLOCK_REPLACE_ORE, BlockTags.DIRT, Tags.Blocks.GRAVEL, Tags.Blocks.SAND)
                 .add(Blocks.GRANITE, Blocks.ANDESITE, Blocks.DIORITE, Blocks.TUFF, Blocks.CALCITE);
 
         tag(ORE_MAGNET_BLOCK_REPLACE_ORE)
