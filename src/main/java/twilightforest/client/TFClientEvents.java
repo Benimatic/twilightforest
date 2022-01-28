@@ -24,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IWeatherRenderHandler;
@@ -147,6 +148,14 @@ public class TFClientEvents {
 						.flatMap(e -> e.values().stream())
 						.map(Material::texture)
 						.forEach(evt::addSprite);
+
+			if (Sheets.BANNER_SHEET.equals(map.location()) || Sheets.SHIELD_SHEET.equals(map.location())) {
+				for (BannerPattern pattern : BannerPattern.values()) {
+					if (pattern.getFilename().startsWith(TwilightForestMod.ID)) {
+						evt.addSprite(pattern.location(Sheets.BANNER_SHEET.equals(map.location())));
+					}
+				}
+			}
 
 			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
 

@@ -68,6 +68,13 @@ public class TFClientSetup {
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
         DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
 
+		for(BannerPattern pattern : BannerPattern.values()) {
+			if(pattern.getFilename().startsWith(TwilightForestMod.ID)) {
+				Sheets.BANNER_MATERIALS.put(pattern, Sheets.createBannerMaterial(pattern));
+				Sheets.SHIELD_MATERIALS.put(pattern, Sheets.createShieldMaterial(pattern));
+			}
+		}
+
         evt.enqueueWork(() -> {
             Sheets.addWoodType(TFBlocks.TWILIGHT_OAK);
             Sheets.addWoodType(TFBlocks.CANOPY);
