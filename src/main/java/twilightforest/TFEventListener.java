@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +22,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
@@ -67,6 +67,10 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.event.DropRulesEvent;
+import top.theillusivec4.curios.api.type.capability.ICurio;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
@@ -100,7 +104,10 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * So much of the mod logic in this one class
@@ -111,9 +118,6 @@ public class TFEventListener {
 	private static final ImmutableSet<String> SHIELD_DAMAGE_BLACKLIST = ImmutableSet.of(
 			"inWall", "cramming", "drown", "starve", "fall", "flyIntoWall", "outOfWorld", "fallingBlock"
 	);
-
-	private static final Map<UUID, Inventory> playerKeepsMap = new HashMap<>();
-	//private static final Map<UUID, NonNullList<ItemStack>> playerKeepsMapBaubles = new HashMap<>();
 
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
@@ -398,8 +402,7 @@ public class TFEventListener {
 			if (world.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
 				BlockEntity te = world.getBlockEntity(immutablePos);
 
-				if (te instanceof KeepsakeCasketBlockEntity) {
-					KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) te;
+				if (te instanceof KeepsakeCasketBlockEntity casket) {
 
 					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
 						//make it so only the player who died can open the chest if our config allows us
@@ -458,9 +461,8 @@ public class TFEventListener {
 		BlockEntity te = event.getWorld().getBlockEntity(event.getPos());
 		UUID checker;
 		if(block == TFBlocks.KEEPSAKE_CASKET.get()) {
-			if(te instanceof KeepsakeCasketBlockEntity) {
-				KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) te;
-				 checker = casket.playeruuid;
+			if(te instanceof KeepsakeCasketBlockEntity casket) {
+				checker = casket.playeruuid;
 			} else checker = null;
 			if(checker != null) {
 				if (!((KeepsakeCasketBlockEntity) te).isEmpty()) {
@@ -483,7 +485,7 @@ public class TFEventListener {
 			}
 
 			if (charm2) {
-				player.setHealth((float) player.getAttribute(Attributes.MAX_HEALTH).getBaseValue()); //Max Health
+				player.setHealth(player.getMaxHealth());
 
 				player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 600, 3));
 				player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600, 0));
@@ -508,52 +510,69 @@ public class TFEventListener {
 		return false;
 	}
 
-	private static void charmOfKeeping(Player player) {
-		// drop any existing held items, just in case
-		dropStoredItems(player);
+	private static CompoundTag getPlayerData(Player player) {
+		if (!player.getPersistentData().contains(Player.PERSISTED_NBT_TAG)) {
+			player.getPersistentData().put(Player.PERSISTED_NBT_TAG, new CompoundTag());
+		}
+		return player.getPersistentData().getCompound(Player.PERSISTED_NBT_TAG);
+	}
 
+	//if we have any curios and die with a charm of keeping on us, keep our curios instead of dropping them
+	@SubscribeEvent
+	public static void keepCurios(DropRulesEvent event) {
+		if (event.getEntityLiving() instanceof Player player) {
+			CompoundTag playerData = getPlayerData(player);
+			if (!player.level.isClientSide && playerData.contains("TfCharmInventory")) { //Keep all Curios items
+				CuriosApi.getCuriosHelper().getEquippedCurios(player).ifPresent(modifiable -> {
+					for (int i = 0; i < modifiable.getSlots(); ++i) {
+						int finalI = i;
+						event.addOverride(stack -> stack == modifiable.getStackInSlot(finalI), ICurio.DropRule.ALWAYS_KEEP);
+					}
+				});
+			}
+		}
+	}
+
+	//stores the charm that was used for the effect later
+	private static ItemStack charmUsed;
+	private static void charmOfKeeping(Player player) {
+
+		//check our inventory for any charms of keeping. We also want to check curio slots (if the mod is installed)
 		// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
 		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_3.get()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_3.get(), player);
 		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_2.get()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_2.get(), player);
 		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_1.get()) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_1.get(), player);
 
+		//create a fake inventory to organize our kept inventory in
 		Inventory keepInventory = new Inventory(null);
+		ListTag tagList = new ListTag();
 
-		UUID playerUUID = player.getUUID();
-
-
+		//if we have any charm of keeping, all armor and offhand items are kept, so add those
 		if (tier1) {
-			keepAllArmor(player, keepInventory);
-			keepOffHand(player, keepInventory);
+			keepWholeList(keepInventory.armor, player.getInventory().armor);
+			keepWholeList(keepInventory.offhand, player.getInventory().offhand);
 		}
 
 		if (tier3) {
-			for (int i = 0; i < player.getInventory().items.size(); i++) {
-				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
-				player.getInventory().items.set(i, ItemStack.EMPTY);
-			}
-			keepInventory.setPickedItem(new ItemStack(TFItems.CHARM_OF_KEEPING_3.get()));
-
+			//tier 3 keeps our entire inventory
+			keepWholeList(keepInventory.items, player.getInventory().items);
+			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_3.get());
 		} else if (tier2) {
+			//tier 2 keeps our hotbar only
 			for (int i = 0; i < 9; i++) {
 				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setPickedItem(new ItemStack(TFItems.CHARM_OF_KEEPING_2.get()));
-
+			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_2.get());
 		} else if (tier1) {
+			//tier 1 keeps our selected item only
 			int i = player.getInventory().selected;
 			if (Inventory.isHotbarSlot(i)) {
 				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
-			keepInventory.setPickedItem(new ItemStack(TFItems.CHARM_OF_KEEPING_1.get()));
+			charmUsed = new ItemStack(TFItems.CHARM_OF_KEEPING_1.get());
 		}
-
-		//TODO: Baubles is dead, replace with curios
-		/*if (tier1 && TFCompat.BAUBLES.isActivated()) {
-			playerKeepsMapBaubles.put(playerUUID, Baubles.keepBaubles(player));
-		}*/
 
 		// always keep tower keys and held phantom armor
 		for (int i = 0; i < player.getInventory().items.size(); i++) {
@@ -577,24 +596,18 @@ public class TFEventListener {
 			}
 		}
 
-		playerKeepsMap.put(playerUUID, keepInventory);
+		//take our fake inventory and save it to the persistent player data.
+		//by saving it there we can guarantee we will always get all of our items back, even if the player logs out and back in.
+		keepInventory.save(tagList);
+		getPlayerData(player).put("TfCharmInventory", tagList);
 	}
 
-	/**
-	 * Move the full armor inventory to the keep pile
-	 */
-	private static void keepAllArmor(Player player, Inventory keepInventory) {
-		for (int i = 0; i < player.getInventory().armor.size(); i++) {
-			keepInventory.armor.set(i, player.getInventory().armor.get(i).copy());
-			player.getInventory().armor.set(i, ItemStack.EMPTY);
+	//transfers a list of items to another
+	private static void keepWholeList(NonNullList<ItemStack> transferTo, NonNullList<ItemStack> transferFrom) {
+		for (int i = 0; i < transferFrom.size(); i++) {
+			transferTo.set(i, transferFrom.get(i).copy());
 		}
-	}
-
-	private static void keepOffHand(Player player, Inventory keepInventory) {
-		for (int i = 0; i < player.getInventory().offhand.size(); i++) {
-			keepInventory.offhand.set(i, player.getInventory().offhand.get(i).copy());
-			player.getInventory().offhand.set(i, ItemStack.EMPTY);
-		}
+		transferFrom.clear();
 	}
 
 	@SubscribeEvent
@@ -613,98 +626,31 @@ public class TFEventListener {
 	 * Maybe we kept some stuff for the player!
 	 */
 	private static void returnStoredItems(Player player) {
-		Inventory keepInventory = playerKeepsMap.remove(player.getUUID());
-		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
 
-			NonNullList<ItemStack> displaced = NonNullList.create();
+		TwilightForestMod.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
 
-			for (int i = 0; i < player.getInventory().armor.size(); i++) {
-				ItemStack kept = keepInventory.armor.get(i);
-				if (!kept.isEmpty()) {
-					ItemStack existing = player.getInventory().armor.set(i, kept);
-					if (!existing.isEmpty()) {
-						displaced.add(existing);
-					}
-				}
-			}
-			for (int i = 0; i < player.getInventory().offhand.size(); i++) {
-				ItemStack kept = keepInventory.offhand.get(i);
-				if (!kept.isEmpty()) {
-					ItemStack existing = player.getInventory().offhand.set(i, kept);
-					if (!existing.isEmpty()) {
-						displaced.add(existing);
-					}
-				}
-			}
-			for (int i = 0; i < player.getInventory().items.size(); i++) {
-				ItemStack kept = keepInventory.items.get(i);
-				if (!kept.isEmpty()) {
-					ItemStack existing = player.getInventory().items.set(i, kept);
-					if (!existing.isEmpty()) {
-						displaced.add(existing);
-					}
-				}
-			}
-
-			// try to give player any displaced items
-			for (ItemStack extra : displaced) {
-				ItemHandlerHelper.giveItemToPlayer(player, extra);
-			}
-
-			// spawn effect thingers
-			if (!keepInventory.getSelected().isEmpty()) {
-				CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, keepInventory.getSelected().getItem());
-				player.level.addFreshEntity(effect);
-
-				CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, keepInventory.getSelected().getItem());
-				effect2.offset = (float) Math.PI;
-				player.level.addFreshEntity(effect2);
-
-				player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP, player.getSoundSource(), 1.5F, 1.0F);
-				keepInventory.getSelected().shrink(1);
-
-				if(player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED);
-			}
+		//check if our tag is in the persistent player data. If so, copy that inventory over to our own. Cloud storage at its finest!
+		CompoundTag playerData = getPlayerData(player);
+		if (!player.level.isClientSide && playerData.contains("TfCharmInventory")) {
+			ListTag tagList = playerData.getList("TfCharmInventory", 10);
+			player.getInventory().load(tagList);
+			getPlayerData(player).remove("TfCharmInventory");
 		}
 
-		//TODO: Baubles is dead, replace with curios
-		/*if (TFCompat.BAUBLES.isActivated()) {
-			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
-			if (baubles != null) {
-				TwilightForestMod.LOGGER.debug("Player {} respawned and received baubles held in storage", player.getName());
-				Baubles.returnBaubles(player, baubles);
-			}
-		}*/
-	}
+		// spawn effect thingers
+		if (charmUsed != null) {
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, charmUsed.getItem());
+			player.level.addFreshEntity(effect);
 
-	/**
-	 * Dump stored items if player logs out
-	 */
-	@SubscribeEvent
-	public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-		dropStoredItems(event.getPlayer());
-	}
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, charmUsed.getItem());
+			effect2.offset = (float) Math.PI;
+			player.level.addFreshEntity(effect2);
 
-	private static void dropStoredItems(Player player) {
-		Inventory keepInventory = playerKeepsMap.remove(player.getUUID());
-		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {} ({})", player.getName().getString(), player.getUUID());
-			keepInventory.player = player;
-			keepInventory.dropAll();
+			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP, player.getSoundSource(), 1.5F, 1.0F);
+			if(player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED);
+			charmUsed = null;
 		}
-		//TODO: Baubles is dead, replace with curios
-		/*if (TFCompat.BAUBLES.isActivated()) {
-			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
-			if (baubles != null) {
-				TwilightForestMod.LOGGER.warn("Dropping baubles previously held in reserve for player {}", player.getName());
-				for (ItemStack itemStack : baubles) {
-					if (!itemStack.isEmpty()) {
-						player.dropItem(itemStack, true, false);
-					}
-				}
-			}
-		}*/
+
 	}
 
 	@SubscribeEvent
