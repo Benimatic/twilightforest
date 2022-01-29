@@ -99,6 +99,7 @@ public class TwilightForestMod {
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 		modbus.addListener(CapabilityList::registerCapabilities);
+		modbus.addListener(this::sendIMCs);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
@@ -129,15 +130,6 @@ public class TwilightForestMod {
 		} else {
 			LOGGER.warn("Skipping compatibility!");
 		}
-		
-		WoodType.register(TFBlocks.TWILIGHT_OAK);
-		WoodType.register(TFBlocks.CANOPY);
-		WoodType.register(TFBlocks.MANGROVE);
-		WoodType.register(TFBlocks.DARKWOOD);
-		WoodType.register(TFBlocks.TIMEWOOD);
-		WoodType.register(TFBlocks.TRANSFORMATION);
-		WoodType.register(TFBlocks.MINING);
-		WoodType.register(TFBlocks.SORTING);
 	}
 
 	@SubscribeEvent
@@ -207,6 +199,15 @@ public class TwilightForestMod {
 
 		TFConfig.build();
 		BlockSpikeFeature.loadStalactites();
+
+		WoodType.register(TFBlocks.TWILIGHT_OAK);
+		WoodType.register(TFBlocks.CANOPY);
+		WoodType.register(TFBlocks.MANGROVE);
+		WoodType.register(TFBlocks.DARKWOOD);
+		WoodType.register(TFBlocks.TIMEWOOD);
+		WoodType.register(TFBlocks.TRANSFORMATION);
+		WoodType.register(TFBlocks.MINING);
+		WoodType.register(TFBlocks.SORTING);
 
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();

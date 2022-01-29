@@ -266,14 +266,14 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> CRIMSON_BANISTER = BLOCKS.register("crimson_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_PLANKS)));
 	public static final RegistryObject<BanisterBlock> WARPED_BANISTER = BLOCKS.register("warped_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_PLANKS)));
 
-	public static final WoodType TWILIGHT_OAK = WoodType.create("twilight_oak");
-	public static final WoodType CANOPY = WoodType.create("canopy");
-	public static final WoodType MANGROVE = WoodType.create("mangrove");
-	public static final WoodType DARKWOOD = WoodType.create("darkwood");
-	public static final WoodType TIMEWOOD = WoodType.create("timewood");
-	public static final WoodType TRANSFORMATION = WoodType.create("transformation");
-	public static final WoodType MINING = WoodType.create("mining");
-	public static final WoodType SORTING = WoodType.create("sorting");
+	public static final WoodType TWILIGHT_OAK = WoodType.create(TwilightForestMod.prefix("twilight_oak").toString());
+	public static final WoodType CANOPY = WoodType.create(TwilightForestMod.prefix("canopy").toString());
+	public static final WoodType MANGROVE = WoodType.create(TwilightForestMod.prefix("mangrove").toString());
+	public static final WoodType DARKWOOD = WoodType.create(TwilightForestMod.prefix("darkwood").toString());
+	public static final WoodType TIMEWOOD = WoodType.create(TwilightForestMod.prefix("timewood").toString());
+	public static final WoodType TRANSFORMATION = WoodType.create(TwilightForestMod.prefix("transformation").toString());
+	public static final WoodType MINING = WoodType.create(TwilightForestMod.prefix("mining").toString());
+	public static final WoodType SORTING = WoodType.create(TwilightForestMod.prefix("sorting").toString());
 
 	public static final BlockBehaviour.Properties TWILIGHT_OAK_LOG_PROPS = logProperties(MaterialColor.WOOD, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
 	public static final BlockBehaviour.Properties CANOPY_LOG_PROPS = logProperties(MaterialColor.PODZOL, MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD);

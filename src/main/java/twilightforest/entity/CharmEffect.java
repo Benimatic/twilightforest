@@ -87,13 +87,11 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		}
 
 		if (!this.getItemID().isEmpty()) {
-			for (int i = 0; i < 2; i++) {
-				double dx = getX() + 0.5 * (random.nextDouble() - random.nextDouble());
-				double dy = getY() + 0.5 * (random.nextDouble() - random.nextDouble());
-				double dz = getZ() + 0.5 * (random.nextDouble() - random.nextDouble());
+			double dx = getX() + 0.25 * (random.nextDouble() - random.nextDouble());
+			double dy = getY() + 0.25 * (random.nextDouble() - random.nextDouble());
+			double dz = getZ() + 0.25 * (random.nextDouble() - random.nextDouble());
 
-				level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
-			}
+			level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
 		}
 
 		if (!this.level.isClientSide

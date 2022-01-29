@@ -102,14 +102,14 @@ public class TFItems {
 	public static final RegistryObject<Item> TRANSFORMATION_POWDER = ITEMS.register("transformation_powder", () -> new TransformPowderItem(defaultBuilder()));
 	public static final RegistryObject<Item> RAW_MEEF = ITEMS.register("raw_meef", () -> new Item(defaultBuilder().food(MEEF_RAW)));
 	public static final RegistryObject<Item> COOKED_MEEF = ITEMS.register("cooked_meef", () -> new Item(defaultBuilder().food(MEEF_COOKED)));
-	public static final RegistryObject<Item> MEEF_STROGANOFF = ITEMS.register("meef_stroganoff", () -> new BowlFoodItem(defaultBuilder().fireResistant().food(STROGANOFF).stacksTo(1)));
+	public static final RegistryObject<Item> MEEF_STROGANOFF = ITEMS.register("meef_stroganoff", () -> new BowlFoodItem(unstackable().fireResistant().food(STROGANOFF)));
 	public static final RegistryObject<Item> MAZE_WAFER = ITEMS.register("maze_wafer", () -> new Item(defaultBuilder().food(WAFER)));
 	public static final RegistryObject<Item> ORE_MAGNET = ITEMS.register("ore_magnet", () -> new OreMagnetItem(defaultBuilder().durability(64)));
 	public static final RegistryObject<Item> CRUMBLE_HORN = ITEMS.register("crumble_horn", () -> new CrumbleHornItem(defaultBuilder().durability(1024).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> PEACOCK_FEATHER_FAN = ITEMS.register("peacock_feather_fan", () -> new PeacockFanItem(defaultBuilder().durability(1024).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> MOONWORM_QUEEN = ITEMS.register("moonworm_queen", () -> new MoonwormQueenItem(defaultBuilder().setNoRepair().durability(256).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> BRITTLE_FLASK = ITEMS.register("brittle_potion_flask", () -> new BrittleFlaskItem(defaultBuilder().stacksTo(1)));
-	public static final RegistryObject<Item> GREATER_FLASK = ITEMS.register("greater_potion_flask", () -> new GreaterFlaskItem(defaultBuilder().rarity(Rarity.UNCOMMON).fireResistant().stacksTo(1)));
+	public static final RegistryObject<Item> BRITTLE_FLASK = ITEMS.register("brittle_potion_flask", () -> new BrittleFlaskItem(unstackable()));
+	public static final RegistryObject<Item> GREATER_FLASK = ITEMS.register("greater_potion_flask", () -> new GreaterFlaskItem(unstackable().rarity(Rarity.UNCOMMON).fireResistant()));
 	public static final RegistryObject<Item> CHARM_OF_LIFE_1 = ITEMS.register("charm_of_life_1", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> CHARM_OF_LIFE_2 = ITEMS.register("charm_of_life_2", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> CHARM_OF_KEEPING_1 = ITEMS.register("charm_of_keeping_1", () -> new CuriosCharmItem(defaultBuilder().rarity(Rarity.UNCOMMON)));
@@ -159,25 +159,25 @@ public class TFItems {
 	public static final RegistryObject<Item> CUBE_OF_ANNIHILATION = ITEMS.register("cube_of_annihilation", () -> new CubeOfAnnihilationItem(unstackable().fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> MOON_DIAL = ITEMS.register("moon_dial", () -> new Item(defaultBuilder()));
 
-	public static final RegistryObject<Item> MUSIC_DISC_RADIANCE = ITEMS.register("music_disc_radiance", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_RADIANCE, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MUSIC_DISC_STEPS = ITEMS.register("music_disc_steps", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_STEPS, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MUSIC_DISC_SUPERSTITIOUS = ITEMS.register("music_disc_superstitious", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_SUPERSTITIOUS, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MUSIC_DISC_HOME = ITEMS.register("music_disc_home", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_HOME, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MUSIC_DISC_WAYFARER = ITEMS.register("music_disc_wayfarer", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_WAYFARER, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MUSIC_DISC_FINDINGS = ITEMS.register("music_disc_findings", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_FINDINGS, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MUSIC_DISC_MAKER = ITEMS.register("music_disc_maker", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_MAKER, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MUSIC_DISC_THREAD = ITEMS.register("music_disc_thread", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_THREAD, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MUSIC_DISC_MOTION = ITEMS.register("music_disc_motion", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_MOTION, defaultBuilder().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_RADIANCE = ITEMS.register("music_disc_radiance", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_RADIANCE, unstackable().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_STEPS = ITEMS.register("music_disc_steps", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_STEPS, unstackable().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_SUPERSTITIOUS = ITEMS.register("music_disc_superstitious", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_SUPERSTITIOUS, unstackable().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_HOME = ITEMS.register("music_disc_home", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_HOME, unstackable().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_WAYFARER = ITEMS.register("music_disc_wayfarer", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_WAYFARER, unstackable().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_FINDINGS = ITEMS.register("music_disc_findings", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_FINDINGS, unstackable().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_MAKER = ITEMS.register("music_disc_maker", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_MAKER, unstackable().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_THREAD = ITEMS.register("music_disc_thread", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_THREAD, unstackable().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MUSIC_DISC_MOTION = ITEMS.register("music_disc_motion", () -> new RecordItem(15, () -> TFSounds.MUSIC_DISC_MOTION, unstackable().rarity(Rarity.RARE)));
 
-	public static final RegistryObject<Item> NAGA_BANNER_PATTERN = ITEMS.register("naga_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_NAGA", "twilightforest_naga", "tfn", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> LICH_BANNER_PATTERN = ITEMS.register("lich_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_LICH", "twilightforest_lich", "tfl", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> MINOSHROOM_BANNER_PATTERN = ITEMS.register("minoshroom_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_MINOSHROOM", "twilightforest_minoshroom", "tfm", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> HYDRA_BANNER_PATTERN = ITEMS.register("hydra_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_HYDRA", "twilightforest_hydra", "tfh", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> KNIGHT_PHANTOM_BANNER_PATTERN = ITEMS.register("knight_phantom_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_PHANTOMS", "twilightforest_phantoms", "tfp", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> UR_GHAST_BANNER_PATTERN = ITEMS.register("ur_ghast_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_UR_GHAST", "twilightforest_ur_ghast", "tfg", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> ALPHA_YETI_BANNER_PATTERN = ITEMS.register("alpha_yeti_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_ALPHA_YETI", "twilightforest_alpha_yeti", "tfy", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_SNOW_QUEEN", "twilightforest_snow_queen", "tfq", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_QUEST_RAM", "twilightforest_quest_ram", "tfr", true), defaultBuilder().stacksTo(1).rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> NAGA_BANNER_PATTERN = ITEMS.register("naga_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_NAGA", "twilightforest_naga", "tfn", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> LICH_BANNER_PATTERN = ITEMS.register("lich_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_LICH", "twilightforest_lich", "tfl", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> MINOSHROOM_BANNER_PATTERN = ITEMS.register("minoshroom_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_MINOSHROOM", "twilightforest_minoshroom", "tfm", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> HYDRA_BANNER_PATTERN = ITEMS.register("hydra_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_HYDRA", "twilightforest_hydra", "tfh", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> KNIGHT_PHANTOM_BANNER_PATTERN = ITEMS.register("knight_phantom_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_PHANTOMS", "twilightforest_phantoms", "tfp", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> UR_GHAST_BANNER_PATTERN = ITEMS.register("ur_ghast_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_UR_GHAST", "twilightforest_ur_ghast", "tfg", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> ALPHA_YETI_BANNER_PATTERN = ITEMS.register("alpha_yeti_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_ALPHA_YETI", "twilightforest_alpha_yeti", "tfy", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_SNOW_QUEEN", "twilightforest_snow_queen", "tfq", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_QUEST_RAM", "twilightforest_quest_ram", "tfr", true), unstackable().rarity(TwilightForestMod.getRarity())));
 
 	public static CreativeModeTab creativeTab = new CreativeModeTab(TwilightForestMod.ID) {
 		@Override
