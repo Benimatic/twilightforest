@@ -2327,6 +2327,8 @@ d41bd4dd019d8a5325fedd4308d9e5ba1a1a69b1 assets/twilightforest/models/item/worn_
 a1c24201442c5599867d3a66885446bc69c9b4ca assets/twilightforest/models/item/yeti_leggings.json
 98167609bf3898587f7565736a6fc24a7966cacd assets/twilightforest/models/item/yeti_spawn_egg.json
 dbcd1147381acc80cb9da39942354cd0d006c3b1 assets/twilightforest/models/item/zombie_scepter.json
+92a9519500b7a64255a10d54a379394267e970b8 data/curios/tags/items/charm.json
+ce486fcb5333857356d9f0dc5ebda5efa5058e94 data/curios/tags/items/head.json
 80450bc0043e21f804114bb001afd1a6577dd4dd data/forge/tags/blocks/chests/wooden.json
 97ab9940ecc8ecaef427531b18df690fbdda10a0 data/forge/tags/blocks/fence_gates.json
 97ab9940ecc8ecaef427531b18df690fbdda10a0 data/forge/tags/blocks/fence_gates/wooden.json

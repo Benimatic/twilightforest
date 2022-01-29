@@ -6,8 +6,8 @@
   "display": {
     "head": {
       "rotation": [ 180, 0, 180 ],
-      "translation": [ 0, 24, 0 ],
-      "scale":[ 2, 2, 2 ]
+      "translation": [ 0, 22, 0 ],
+      "scale":[ 1.85, 1.85, 1.85 ]
     },
     "fixed": {
       "rotation": [ 0, 180, 0 ],

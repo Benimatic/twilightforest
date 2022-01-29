@@ -16,6 +16,7 @@ public abstract class TFCompat {
 
     static {
         classes.put("immersiveengineering", IECompat.class);
+        classes.put("curios", CuriosCompat.class);
     }
 
     protected TFCompat(String modName) {
@@ -88,11 +89,27 @@ public abstract class TFCompat {
         }
     }
 
+    public static void sendIMCs() {
+        for (TFCompat compat : modules) {
+            if (compat.isActivated) {
+                try {
+                    compat.handleIMCs();
+                } catch (Exception e) {
+                    compat.isActivated = false;
+                    TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in sending IMCs!", e.getLocalizedMessage(), compat.modName);
+                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+                }
+            }
+        }
+    }
+
     protected abstract boolean preInit();
 
     protected abstract void init();
 
     protected abstract void postInit();
+
+    protected abstract void handleIMCs();
 
     protected abstract void initItems(RegistryEvent.Register<Item> evt);
 

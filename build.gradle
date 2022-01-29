@@ -180,10 +180,10 @@ repositories {
         name 'Jared\'s Maven' // Immersive Engineering + Patchouli
         url 'https://maven.blamejared.com/'
     }
-    //maven {
-    //    name 'theillusivec4\'s Maven' //Curios
-    //    url 'https://maven.theillusivec4.top/'
-    //}
+    maven {
+        name 'theillusivec4\'s Maven' //Curios
+        url 'https://maven.theillusivec4.top/'
+    }
     //maven {
     //    name 'player\'s Maven' // Forestry
     //    url 'http://maven.ic2.player.to/'
@@ -206,8 +206,7 @@ dependencies {
     //implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // theillusivec4
-    //compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
-    //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
     // player
     //deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"

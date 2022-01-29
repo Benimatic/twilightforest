@@ -1,7 +1,6 @@
 package twilightforest.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
@@ -141,6 +140,11 @@ public class TFModelLayers {
 	public static final ModelLayerLocation FIREFLY = register("firefly");
 	public static final ModelLayerLocation KEEPSAKE_CASKET = register("keepsake_casket");
 	public static final ModelLayerLocation MOONWORM = register("moonworm");
+
+	public static final ModelLayerLocation CHARM_OF_LIFE_1 = register("charm_of_life_1");
+	public static final ModelLayerLocation CHARM_OF_LIFE_2 = register("charm_of_life_2");
+
+	public static final ModelLayerLocation CHARM_OF_KEEPING = register("charm_of_keeping");
 
 	private static ModelLayerLocation register(String p_171294_) {
 		return register(p_171294_, "main");

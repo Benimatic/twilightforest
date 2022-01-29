@@ -1,15 +1,17 @@
 package twilightforest.data;
 
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import top.theillusivec4.curios.api.CuriosApi;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
@@ -62,6 +64,9 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	public static final Tag.Named<Item> BANNED_UNCRAFTING_INGREDIENTS = ItemTags.bind(TwilightForestMod.prefix("banned_uncrafting_ingredients").toString());
 	public static final Tag.Named<Item> BANNED_UNCRAFTABLES = ItemTags.bind(TwilightForestMod.prefix("banned_uncraftables").toString());
+
+	private static final Tag.Named<Item> CHARM = ItemTags.createOptional(new ResourceLocation(CuriosApi.MODID, "charm"));
+	private static final Tag.Named<Item> HEAD = ItemTags.createOptional(new ResourceLocation(CuriosApi.MODID, "head"));
 
 	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
 		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);
@@ -216,5 +221,24 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
 
 		tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
+
+		tag(CHARM).add(
+				TFItems.CHARM_OF_LIFE_1.get(), TFItems.CHARM_OF_LIFE_2.get(),
+				TFItems.CHARM_OF_KEEPING_1.get(), TFItems.CHARM_OF_KEEPING_2.get(), TFItems.CHARM_OF_KEEPING_3.get()
+		);
+
+		tag(HEAD).add(
+				TFBlocks.NAGA_TROPHY.get().asItem(),
+				TFBlocks.LICH_TROPHY.get().asItem(),
+				TFBlocks.MINOSHROOM_TROPHY.get().asItem(),
+				TFBlocks.HYDRA_TROPHY.get().asItem(),
+				TFBlocks.KNIGHT_PHANTOM_TROPHY.get().asItem(),
+				TFBlocks.UR_GHAST_TROPHY.get().asItem(),
+				TFBlocks.ALPHA_YETI_TROPHY.get().asItem(),
+				TFBlocks.SNOW_QUEEN_TROPHY.get().asItem(),
+				TFBlocks.QUEST_RAM_TROPHY.get().asItem(),
+				TFBlocks.CICADA.get().asItem(),
+				TFBlocks.FIREFLY.get().asItem(),
+				TFBlocks.MOONWORM.get().asItem());
 	}
 }

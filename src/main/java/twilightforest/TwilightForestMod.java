@@ -31,6 +31,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.resource.PathResourcePack;
 import org.apache.commons.lang3.tuple.Pair;
@@ -56,10 +57,7 @@ import twilightforest.potions.TFMobEffects;
 import twilightforest.util.TFStats;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.registration.TFBiomeFeatures;
-import twilightforest.world.registration.TFDimensions;
-import twilightforest.world.registration.TFStructures;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.world.registration.*;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.io.IOException;
@@ -173,6 +171,10 @@ public class TwilightForestMod {
 	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
 		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
 		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
+	}
+
+	public void sendIMCs(InterModEnqueueEvent evt) {
+		TFCompat.sendIMCs();
 	}
 
 	@SubscribeEvent

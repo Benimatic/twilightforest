@@ -93,16 +93,6 @@ public class IECompat extends TFCompat {
         EventHandler.listOfBoringBosses.add(AlphaYeti.class);
         EventHandler.listOfBoringBosses.add(SnowQueen.class);
         EventHandler.listOfBoringBosses.add(PlateauBoss.class);
-
-//        excludeFromShaderBags(Naga.class);
-//        excludeFromShaderBags(Lich.class);
-//        excludeFromShaderBags(Minoshroom.class);
-//        excludeFromShaderBags(Hydra.class);
-//        excludeFromShaderBags(KnightPhantom.class);
-//        excludeFromShaderBags(UrGhast.class);
-//        excludeFromShaderBags(AlphaYeti.class);
-//        excludeFromShaderBags(SnowQueen.class);
-//        excludeFromShaderBags(PlateauBoss.class);
     }
 
     private void excludeFromShaderBags(Class<? extends Entity> entityClass) {
@@ -112,5 +102,18 @@ public class IECompat extends TFCompat {
     @Override
     protected void postInit() {
 
+    }
+
+    @Override
+    protected void handleIMCs() {
+        excludeFromShaderBags(Naga.class);
+        excludeFromShaderBags(Lich.class);
+        excludeFromShaderBags(Minoshroom.class);
+        excludeFromShaderBags(Hydra.class);
+        excludeFromShaderBags(KnightPhantom.class);
+        excludeFromShaderBags(UrGhast.class);
+        excludeFromShaderBags(AlphaYeti.class);
+        excludeFromShaderBags(SnowQueen.class);
+        excludeFromShaderBags(PlateauBoss.class);
     }
 }
