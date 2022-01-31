@@ -25,7 +25,10 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 	@Override
 	public boolean canUse() {
-		return this.mob.getPassengers().isEmpty() && !this.mob.getTarget().getType().is(EntityTagGenerator.BOSSES) && super.canUse();
+		return this.mob.getPassengers().isEmpty() &&
+				this.mob.getTarget() != null &&
+				!this.mob.getTarget().getType().is(EntityTagGenerator.BOSSES) &&
+				super.canUse();
 	}
 
 	@Override
@@ -79,8 +82,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 			rider.push(throwVec.x, throwVec.y, throwVec.z);
 
-			if (rider instanceof ServerPlayer) {
-				ServerPlayer player = (ServerPlayer) rider;
+			if (rider instanceof ServerPlayer player) {
 
 				ThrowPlayerPacket message = new ThrowPlayerPacket((float) throwVec.x, (float) throwVec.y, (float) throwVec.z);
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
