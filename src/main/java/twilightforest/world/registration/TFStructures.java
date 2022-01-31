@@ -1,11 +1,15 @@
 package twilightforest.world.registration;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.StructureSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
@@ -27,10 +31,12 @@ import twilightforest.world.components.structures.mushroomtower.MushroomTowerPie
 import twilightforest.world.components.structures.start.LegacyStructureFeature;
 import twilightforest.world.components.structures.stronghold.StrongholdPieces;
 import twilightforest.world.components.structures.trollcave.TrollCavePieces;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class TFStructures {
 
 	public static final Map<StructureFeature<?>, StructureFeatureConfiguration> SEPARATION_SETTINGS = new HashMap<>();
@@ -97,22 +103,22 @@ public class TFStructures {
 		new TrollCavePieces();
 		new FinalCastlePieces();
 
-		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedge_maze"), 1, 2);
-		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("quest_grove"), 1, 2);
-		register(event, MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TwilightForestMod.prefix("mushroom_tower"), 1, 2);
-		register(event, HOLLOW_HILL_SMALL, CONFIGURED_HOLLOW_HILL_SMALL, TwilightForestMod.prefix("hollow_hill_small"), 1, 2);
-		register(event, HOLLOW_HILL_MEDIUM, CONFIGURED_HOLLOW_HILL_MEDIUM, TwilightForestMod.prefix("hollow_hill_medium"), 1, 2);
-		register(event, HOLLOW_HILL_LARGE, CONFIGURED_HOLLOW_HILL_LARGE, TwilightForestMod.prefix("hollow_hill_large"), 1, 2);
-		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, TwilightForestMod.prefix("courtyard"), 1, 2);
-		register(event, LICH_TOWER, CONFIGURED_LICH_TOWER, TwilightForestMod.prefix("lich_tower"), 1, 2);
-		register(event, LABYRINTH, CONFIGURED_LABYRINTH, TwilightForestMod.prefix("labyrinth"), 1, 2);
-		register(event, HYDRA_LAIR, CONFIGURED_HYDRA_LAIR, TwilightForestMod.prefix("hydra_lair"), 1, 2);
-		register(event, KNIGHT_STRONGHOLD, CONFIGURED_KNIGHT_STRONGHOLD, TwilightForestMod.prefix("knight_stronghold"), 1, 2);
-		register(event, DARK_TOWER, CONFIGURED_DARK_TOWER, TwilightForestMod.prefix("dark_tower"), 1, 2);
-		register(event, YETI_CAVE, CONFIGURED_YETI_CAVE, TwilightForestMod.prefix("yeti_cave"), 1, 2);
-		register(event, AURORA_PALACE, CONFIGURED_AURORA_PALACE, TwilightForestMod.prefix("aurora_palace"), 1, 2);
-		register(event, TROLL_CAVE, CONFIGURED_TROLL_CAVE, TwilightForestMod.prefix("troll_cave"), 1, 2);
-		register(event, FINAL_CASTLE, CONFIGURED_FINAL_CASTLE, TwilightForestMod.prefix("final_castle"), 1, 2);
+		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedge_maze"), 0, 1);
+		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("quest_grove"), 0, 1);
+		register(event, MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TwilightForestMod.prefix("mushroom_tower"), 0, 1);
+		register(event, HOLLOW_HILL_SMALL, CONFIGURED_HOLLOW_HILL_SMALL, TwilightForestMod.prefix("hollow_hill_small"), 0, 1);
+		register(event, HOLLOW_HILL_MEDIUM, CONFIGURED_HOLLOW_HILL_MEDIUM, TwilightForestMod.prefix("hollow_hill_medium"), 0, 1);
+		register(event, HOLLOW_HILL_LARGE, CONFIGURED_HOLLOW_HILL_LARGE, TwilightForestMod.prefix("hollow_hill_large"), 0, 1);
+		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, TwilightForestMod.prefix("courtyard"), 0, 1);
+		register(event, LICH_TOWER, CONFIGURED_LICH_TOWER, TwilightForestMod.prefix("lich_tower"), 0, 1);
+		register(event, LABYRINTH, CONFIGURED_LABYRINTH, TwilightForestMod.prefix("labyrinth"), 0, 1);
+		register(event, HYDRA_LAIR, CONFIGURED_HYDRA_LAIR, TwilightForestMod.prefix("hydra_lair"), 0, 1);
+		register(event, KNIGHT_STRONGHOLD, CONFIGURED_KNIGHT_STRONGHOLD, TwilightForestMod.prefix("knight_stronghold"), 0, 1);
+		register(event, DARK_TOWER, CONFIGURED_DARK_TOWER, TwilightForestMod.prefix("dark_tower"), 0, 1);
+		register(event, YETI_CAVE, CONFIGURED_YETI_CAVE, TwilightForestMod.prefix("yeti_cave"), 0, 1);
+		register(event, AURORA_PALACE, CONFIGURED_AURORA_PALACE, TwilightForestMod.prefix("aurora_palace"), 0, 1);
+		register(event, TROLL_CAVE, CONFIGURED_TROLL_CAVE, TwilightForestMod.prefix("troll_cave"), 0, 1);
+		register(event, FINAL_CASTLE, CONFIGURED_FINAL_CASTLE, TwilightForestMod.prefix("final_castle"), 0, 1);
 
 		// TODO Beardify more structures (Or bury)
 		StructureFeature.NOISE_AFFECTING_FEATURES = ImmutableList.<StructureFeature<?>>builder().addAll(StructureFeature.NOISE_AFFECTING_FEATURES).add(HEDGE_MAZE, QUEST_GROVE, NAGA_COURTYARD, LICH_TOWER, LABYRINTH, KNIGHT_STRONGHOLD, DARK_TOWER, TROLL_CAVE, FINAL_CASTLE).build();
@@ -121,7 +127,7 @@ public class TFStructures {
 	private static void register(RegistryEvent.Register<StructureFeature<?>> event, StructureFeature<?> structure, ConfiguredStructureFeature<?, ?> config, ResourceLocation name, int min, int max) {
 		event.getRegistry().register(structure.setRegistryName(name));
 		StructureFeature.STRUCTURES_REGISTRY.put(name.toString(), structure);
-		StructureFeatureConfiguration seperation = new StructureFeatureConfiguration(max, min, 472681346);
+		StructureFeatureConfiguration seperation = new StructureFeatureConfiguration(max, min, 0);
 		StructureSettings.DEFAULTS = ImmutableMap.<StructureFeature<?>, StructureFeatureConfiguration>builder().putAll(StructureSettings.DEFAULTS).
 				put(structure, seperation).build();
 		SEPARATION_SETTINGS.put(structure, seperation);
@@ -130,11 +136,60 @@ public class TFStructures {
 	}
 
 	public static void load(WorldEvent.Load event) {
-		if(event.getWorld() instanceof ServerLevel && ((ServerLevel) event.getWorld()).getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight) {
-			ServerLevel serverWorld = (ServerLevel)event.getWorld();
+		if(event.getWorld() instanceof ServerLevel serverWorld && serverWorld.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight tfChunkGen) {
 			Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(serverWorld.getChunkSource().getGenerator().getSettings().structureConfig());
 			tempMap.putAll(SEPARATION_SETTINGS);
 			serverWorld.getChunkSource().getGenerator().getSettings().structureConfig = tempMap;
+			HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tmpMap = new HashMap<>();
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_HOLLOW_HILL_SMALL, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_HOLLOW_HILL_MEDIUM, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_HOLLOW_HILL_LARGE, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
+
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_NAGA_COURTYARD, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_LICH_TOWER, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
+
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_LABYRINTH, BiomeKeys.SWAMP);
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_HYDRA_LAIR, BiomeKeys.FIRE_SWAMP);
+
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_KNIGHT_STRONGHOLD, BiomeKeys.DARK_FOREST);
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_DARK_TOWER, BiomeKeys.DARK_FOREST_CENTER);
+
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_YETI_CAVE, BiomeKeys.SNOWY_FOREST);
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_AURORA_PALACE, BiomeKeys.GLACIER);
+
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_TROLL_CAVE, BiomeKeys.HIGHLANDS);
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_FINAL_CASTLE, BiomeKeys.FINAL_PLATEAU);
+
+			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_QUEST_GROVE, BiomeKeys.ENCHANTED_FOREST);
+			//get taunted
+			//associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_MUSHROOM_TOWER, BiomeKeys.DENSE_MUSHROOM_FOREST);
+
+			ImmutableMap.Builder<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tempStructureToMultiMap = ImmutableMap.builder();
+			tfChunkGen.getSettings().configuredStructures.entrySet().stream().filter(entry -> !tmpMap.containsKey(entry.getKey())).forEach(tempStructureToMultiMap::put);
+			tmpMap.forEach((key, value) -> tempStructureToMultiMap.put(key, ImmutableMultimap.copyOf(value)));
+			tfChunkGen.getSettings().configuredStructures = tempStructureToMultiMap.build();
+		}
+	}
+
+	@SafeVarargs
+	private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> map, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome>... biomeRegistryKey) {
+		map.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
+		HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = map.get(configuredStructureFeature.feature);
+		for (ResourceKey<Biome> biome : biomeRegistryKey) {
+			if (configuredStructureToBiomeMultiMap.containsValue(biome)) {
+				TwilightForestMod.LOGGER.error("""
+								    Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.
+								    This issue happens with vanilla too and is why a Snowy Village and Plains Village cannot spawn in the same biome because they both use the Village base structure.
+								    The two conflicting ConfiguredStructures are: {}, {}
+								    The biome that is attempting to be shared: {}
+								""",
+						BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureFeature),
+						BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureToBiomeMultiMap.entries().stream().filter(e -> e.getValue() == biome).findFirst().get().getKey()),
+						biome
+				);
+			} else {
+				configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biome);
+			}
 		}
 	}
 }

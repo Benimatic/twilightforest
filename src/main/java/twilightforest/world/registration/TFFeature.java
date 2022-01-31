@@ -941,7 +941,8 @@ public class TFFeature {
 		//.addChildren(start, this, random);
 		//createBoundingBox();
 
-		return Optional.ofNullable(this.provideFirstPiece(structureManager, chunkGenerator, random, x, y, z));
+		//im currently isolating one structure monstosity at 0 0. Otherwise they spawn every chunk and freeze the game. FIXME once the structures are correctly fixed
+		return chunkPos.x == 0 && chunkPos.z == 0 ? Optional.ofNullable(this.provideFirstPiece(structureManager, chunkGenerator, random, x, y, z)) : Optional.empty();
 	}
 
 	//TODO Mayby better way has....?
