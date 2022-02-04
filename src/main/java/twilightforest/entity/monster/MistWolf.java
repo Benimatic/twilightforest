@@ -38,7 +38,7 @@ public class MistWolf extends HostileWolf {
 					default -> 7;
 				};
 
-				if (effectDuration > 0) {
+				if (effectDuration > 0 && !level.getBlockState(this.eyeBlockPosition()).getMaterial().isSolid()) {
 					((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, effectDuration * 20, 0));
 				}
 			}
