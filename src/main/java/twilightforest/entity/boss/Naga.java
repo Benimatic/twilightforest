@@ -676,14 +676,18 @@ public class Naga extends Monster {
 			movementAI.doDaze();
 			return false;
 		}
-		boolean result = super.doHurtTarget(toAttack);
 
-		if (result) {
-			// charging, apply extra pushback
-			toAttack.push(-Mth.sin((getYRot() * 3.141593F) / 180F) * 2.0F, 0.4F, Mth.cos((getYRot() * 3.141593F) / 180F) * 2.0F);
+		if (!this.isDazed()) {
+			boolean result = super.doHurtTarget(toAttack);
+
+			if (result) {
+				// charging, apply extra pushback
+				toAttack.push(-Mth.sin((getYRot() * 3.141593F) / 180F) * 2.0F, 0.4F, Mth.cos((getYRot() * 3.141593F) / 180F) * 2.0F);
+			}
+
+			return result;
 		}
-
-		return result;
+		return false;
 	}
 
 	@Override
