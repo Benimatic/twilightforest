@@ -262,12 +262,14 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			return;
 		}
 
-		if (!forcedEntry && entity.portalTime > 0) {
-			return;
-		}
-
-		// set a cooldown before this can run again
-		entity.portalTime = 10;
+		//what the hell is any of this for?
+		//getting rid of this in favor to close #1441. If it breaks something major we need another workaround
+//		if (!forcedEntry && entity.portalTime > 0) {
+//			return;
+//		}
+//
+//		// set a cooldown before this can run again
+//		entity.portalTime = 10;
 
 		ResourceKey<Level> destination = getDestination(entity);
 		ServerLevel serverWorld = entity.getCommandSenderWorld().getServer().getLevel(destination);

@@ -48,7 +48,7 @@ public class TFConfig {
 						translation(config + "portal_destination_id").
 						worldRestart().
 						comment("Marked dimension ID for Twilight Portals and some other Twilight mod logic as well").
-						define("portalDestinationID", "twilightforest:twilight_forest");
+						define("portalDestinationID", "twilightforest:twilightforest");
 				builder.pop().
 						comment("""
 								Defines custom stalactites generated in hollow hills.
