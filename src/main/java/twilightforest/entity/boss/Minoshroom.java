@@ -1,6 +1,10 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -33,6 +37,7 @@ import twilightforest.entity.ai.GroundAttackGoal;
 import twilightforest.item.TFItems;
 import twilightforest.world.registration.TFGenerationSettings;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +48,12 @@ public class Minoshroom extends Minotaur {
 	private float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
+	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 
 	public Minoshroom(EntityType<? extends Minoshroom> type, Level world) {
 		super(type, world);
 		this.xpReward = 100;
-		this.setDropChance(EquipmentSlot.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped
+		this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
 	}
 
 	@Override
@@ -74,6 +80,38 @@ public class Minoshroom extends Minotaur {
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Minotaur.registerAttributes()
 				.add(Attributes.MAX_HEALTH, 120.0D);
+	}
+
+	@Override
+	public void setCustomName(@Nullable Component name) {
+		super.setCustomName(name);
+		this.bossInfo.setName(this.getDisplayName());
+	}
+
+	@Override
+	protected void customServerAiStep() {
+		super.customServerAiStep();
+		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
+	}
+
+	@Override
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
+
+	@Override
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
+		this.bossInfo.removePlayer(player);
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		if (this.hasCustomName()) {
+			this.bossInfo.setName(this.getDisplayName());
+		}
 	}
 
 	@Override

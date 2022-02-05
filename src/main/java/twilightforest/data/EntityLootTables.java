@@ -18,7 +18,6 @@ import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -467,13 +466,15 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 		add(TFEntities.MINOSHROOM,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
-								.setRolls(ConstantValue.exactly(1))
+								.setRolls(UniformGenerator.between(2, 5))
 								.add(LootItem.lootTableItem(TFItems.MEEF_STROGANOFF.get())
-										.apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFBlocks.MINOSHROOM_TROPHY.get().asItem())))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.DIAMOND_MINOTAUR_AXE.get())))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.MEEF_STROGANOFF.get())
