@@ -1,15 +1,14 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 
@@ -17,7 +16,6 @@ public class MistWolf extends HostileWolf {
 
 	public MistWolf(EntityType<? extends MistWolf> type, Level world) {
 		super(type, world);
-		setCollarColor(DyeColor.GRAY);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {

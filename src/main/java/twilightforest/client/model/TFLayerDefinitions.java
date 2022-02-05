@@ -74,7 +74,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.HARBINGER_CUBE, HarbingerCubeModel::create);
 		event.registerLayerDefinition(TFModelLayers.HEDGE_SPIDER, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.HELMET_CRAB, HelmetCrabModel::create);
-		event.registerLayerDefinition(TFModelLayers.HOSTILE_WOLF, WolfModel::createBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.HOSTILE_WOLF, HostileWolfModel::create);
 		event.registerLayerDefinition(TFModelLayers.HYDRA_HEAD, HydraHeadModel::create);
 		event.registerLayerDefinition(TFModelLayers.HYDRA, HydraModel::create);
 		event.registerLayerDefinition(TFModelLayers.HYDRA_MORTAR, HydraMortarModel::create);

@@ -1,44 +1,33 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Turtle;
-import net.minecraft.world.entity.animal.Wolf;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFSounds;
-import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class HostileWolf extends Wolf implements Enemy {
+public class HostileWolf extends Monster {
 
 	public HostileWolf(EntityType<? extends HostileWolf> type, Level world) {
 		super(type, world);
-		this.setTame(false);
-		this.setOrderedToSit(false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -48,15 +37,13 @@ public class HostileWolf extends Wolf implements Enemy {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
-		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, true));
-		this.targetSelector.addGoal(5, new NonTameRandomTargetGoal<>(this, Animal.class, false, PREY_SELECTOR));
-		this.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
-		this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
+		this.goalSelector.addGoal(2, new LeapGoal(this, 0.4F));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, HostileWolf.class));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
 	public static boolean getCanSpawnHere(EntityType<? extends HostileWolf> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, Random pRandom) {
@@ -90,37 +77,48 @@ public class HostileWolf extends Wolf implements Enemy {
 	}
 
 	@Override
-	public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
-		return InteractionResult.PASS;
+	protected void playStepSound(BlockPos p_30415_, BlockState p_30416_) {
+		this.playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
 	}
 
 	@Override
-	public InteractionResult mobInteract(Player playerIn, InteractionHand hand) {
-		return InteractionResult.PASS;
-	}
-
-	@Override
-	public boolean isFood(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean isInterested() {
-		return false;
-	}
-
-	@Override
-	public boolean canMate(Animal otherAnimal) {
-		return false;
-	}
-
-	@Override
-	public Wolf getBreedOffspring(ServerLevel world, AgeableMob mate) {
-		return null;
+	protected float getSoundVolume() {
+		return 0.4F;
 	}
 
 	@Override
 	protected boolean shouldDespawnInPeaceful() {
 		return true;
+	}
+
+	public float getTailAngle() {
+		if (this.getTarget() != null) {
+			return 1.5393804F;
+		} else {
+			return ((float)Math.PI / 5F);
+		}
+	}
+
+	//add agressive flags so its face doesnt turn passive when it jumps
+	public static class LeapGoal extends LeapAtTargetGoal {
+
+		private final Mob mob;
+
+		public LeapGoal(Mob mob, float jump) {
+			super(mob, jump);
+			this.mob = mob;
+		}
+
+		@Override
+		public void start() {
+			super.start();
+			mob.setAggressive(true);
+		}
+
+		@Override
+		public void stop() {
+			super.stop();
+			mob.setAggressive(false);
+		}
 	}
 }

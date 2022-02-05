@@ -20,7 +20,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -42,7 +41,6 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	public WinterWolf(EntityType<? extends WinterWolf> type, Level world) {
 		super(type, world);
-		setCollarColor(DyeColor.LIGHT_BLUE);
 	}
 
 	@Override
