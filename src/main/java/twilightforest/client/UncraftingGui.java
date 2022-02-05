@@ -63,14 +63,57 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 
 		this.addRenderableWidget(new CycleButton(leftPos + 121, topPos + 22, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(4));
-			menu.unrecipeInCycle++;
+			menu.recipeInCycle++;
 			menu.slotsChanged(menu.assemblyMatrix);
 		}));
 		this.addRenderableWidget(new CycleButton(leftPos + 121, topPos + 55, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(5));
-			menu.unrecipeInCycle--;
+			menu.recipeInCycle--;
 			menu.slotsChanged(menu.assemblyMatrix);
 		}));
+	}
+
+	@Override
+	public boolean mouseScrolled(double x, double y, double direction) {
+		boolean scrolled = super.mouseScrolled(x, y, direction);
+
+		//ingredient buttons
+		if(x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
+			if(direction > 0) {
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
+				menu.ingredientsInCycle++;
+			} else {
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
+				menu.ingredientsInCycle--;
+			}
+			menu.slotsChanged(menu.tinkerInput);
+		}
+
+		//uncrafting recipe buttons
+		if(x > this.leftPos + 40 && x < this.leftPos + 54 && y > this.topPos + 22 && y < this.topPos + 64) {
+			if(direction > 0) {
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
+				menu.unrecipeInCycle++;
+			} else {
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
+				menu.unrecipeInCycle--;
+			}
+			menu.slotsChanged(menu.tinkerInput);
+		}
+
+		//recrafting recipe buttons
+		if(x > this.leftPos + 121 && x < this.leftPos + 135 && y > this.topPos + 22 && y < this.topPos + 64) {
+			if(direction > 0) {
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(4));
+				menu.recipeInCycle++;
+			} else {
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(5));
+				menu.recipeInCycle--;
+			}
+			menu.slotsChanged(menu.tinkerInput);
+		}
+
+		return scrolled;
 	}
 
 	@Override
