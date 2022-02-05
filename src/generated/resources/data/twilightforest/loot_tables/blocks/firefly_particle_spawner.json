@@ -30,6 +30,20 @@
                   "condition": "minecraft:block_state_property",
                   "block": "twilightforest:firefly_particle_spawner",
                   "properties": {
+                    "particle_radius": "1"
+                  }
+                }
+              ],
+              "count": 0.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
                     "particle_radius": "2"
                   }
                 }
