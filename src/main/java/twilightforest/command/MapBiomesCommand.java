@@ -80,7 +80,7 @@ public class MapBiomesCommand {
 
         for (int x = 0; x < img.getHeight(); x++) {
             for (int z = 0; z < img.getWidth(); z++) {
-                Biome b = source.getSource().getLevel().getNoiseBiome(x - 2048, 0, z - 2048);
+                Biome b = source.getSource().getLevel().getNoiseBiome(x - 2048, 0, z - 2048).value();
                 Color color = BIOME2COLOR.get(b);
 
                 if (color == null) {

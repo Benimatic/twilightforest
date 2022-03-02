@@ -44,7 +44,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	public void addChildren(StructurePiece parent, StructurePieceAccessor old, Random random) {
 		super.addChildren(parent, old, random);
 
-		if (old instanceof StructureStart<?> start) {
+		if (old instanceof StructureStart start) {
 			List<StructurePiece> list = start.getPieces();
 
 			// make a random component in each direction

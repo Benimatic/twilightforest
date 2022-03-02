@@ -9,7 +9,6 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
-import twilightforest.compat.CuriosCompat;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +33,7 @@ public class TrophyItem extends StandingAndWallBlockItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
 		if(ModList.get().isLoaded("curios")) {
-			CuriosCompat.setupCuriosCapability(stack);
+			//CuriosCompat.setupCuriosCapability(stack);
 		}
 		return super.initCapabilities(stack, nbt);
 	}

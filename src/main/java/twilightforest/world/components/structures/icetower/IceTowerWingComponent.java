@@ -1,30 +1,29 @@
 package twilightforest.world.components.structures.icetower;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.util.RotationUtil;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -133,7 +132,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (list instanceof StructureStart<?> start && isOutOfRange(start.getPieces().get(0), dx[0], dx[2], RANGE)) {
+		if (list instanceof StructureStart start && isOutOfRange(start.getPieces().get(0), dx[0], dx[2], RANGE)) {
 			return false;
 		}
 
@@ -142,7 +141,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.addPiece(wing);
-			if (list instanceof StructureStart<?> start) {
+			if (list instanceof StructureStart start) {
 				wing.addChildren(start.getPieces().get(0), list, rand);
 			}
 			addOpening(x, y, z, rotation);
@@ -165,7 +164,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.addPiece(wing);
-			if (list instanceof StructureStart<?> start) {
+			if (list instanceof StructureStart start) {
 				wing.addChildren(start.getPieces().get(0), list, rand);
 			}
 			addOpening(x, y, z, rotation);

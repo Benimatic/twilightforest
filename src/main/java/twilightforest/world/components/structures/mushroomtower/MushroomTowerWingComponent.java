@@ -1,27 +1,26 @@
 package twilightforest.world.components.structures.mushroomtower;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.util.RotationUtil;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -162,7 +161,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	 */
 	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, Direction direction, StructurePieceAccessor list) {
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			for (StructurePiece obj : start.getPieces()) {
 				if (obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
 					TowerWingComponent otherWing = (TowerWingComponent) obj;
@@ -193,7 +192,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 		//boxAbove.maxY() = 256;
 
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			for (StructurePiece obj : start.getPieces()) {
 				if (this != obj && obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
 					TowerWingComponent otherWing = (TowerWingComponent) obj;

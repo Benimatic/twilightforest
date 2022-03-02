@@ -1,17 +1,16 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -52,7 +51,7 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 		FinalCastleEntranceStairsComponent stairs = new FinalCastleEntranceStairsComponent(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), direction);
 
 		list.addPiece(stairs);
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			stairs.addChildren(start.getPieces().get(0), list, rand);
 		}
 		return true;

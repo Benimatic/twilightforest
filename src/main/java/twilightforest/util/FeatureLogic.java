@@ -5,7 +5,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.tags.BlockTagGenerator;
 
 import java.util.Random;
 import java.util.function.Predicate;

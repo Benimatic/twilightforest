@@ -1,8 +1,7 @@
 package twilightforest.world.components.chunkgenerators;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.random.WeightedRandomList;
@@ -13,6 +12,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 
@@ -52,7 +52,7 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
 
     @Override
     @Nullable
-    public BlockPos findNearestMapFeature(ServerLevel level, StructureFeature<?> structure, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
+    public Pair<BlockPos, Holder<ConfiguredStructureFeature<?, ?>>> findNearestMapFeature(ServerLevel level,  HolderSet<ConfiguredStructureFeature<?, ?>> structure, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
         return this.delegate.findNearestMapFeature(level, structure, pos, searchRadius, skipKnownStructures);
     }
 
@@ -71,10 +71,11 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
         this.delegate.spawnOriginalMobs(region);
     }
 
-    @Override
-    public StructureSettings getSettings() {
-        return this.delegate.getSettings();
-    }
+    //FIXME probably gone now, verify
+//    @Override
+//    public StructureSettings getSettings() {
+//        return this.delegate.getSettings();
+//    }
 
     @Override
     public int getSpawnHeight(LevelHeightAccessor level) {
@@ -92,7 +93,7 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     }
 
     @Override
-    public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Biome biome, StructureFeatureManager structureManager, MobCategory mobCategory, BlockPos pos) {
+    public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureFeatureManager structureManager, MobCategory mobCategory, BlockPos pos) {
         return this.delegate.getMobsAt(biome, structureManager, mobCategory, pos);
     }
 

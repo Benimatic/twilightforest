@@ -27,8 +27,8 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		super(FinalCastlePieces.TFFCDunEx, nbt);
 	}
 
-	public FinalCastleDungeonExitComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
-		super(FinalCastlePieces.TFFCDunEx, feature, rand, i, x, y, z, direction, level);
+	public FinalCastleDungeonExitComponent(TFFeature feature, int i, int x, int y, int z, Direction direction, int level) {
+		super(FinalCastlePieces.TFFCDunEx, feature, i, x, y, z, direction, level);
 	}
 
 	@Override

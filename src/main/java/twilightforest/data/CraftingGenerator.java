@@ -12,6 +12,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.TFRecipes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
@@ -159,8 +160,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ingotRecipes(consumer, "smelted", RecipeSerializer.SMELTING_RECIPE, 200);
 		ingotRecipes(consumer, "blasted", RecipeSerializer.BLASTING_RECIPE, 100);
 		
-		crackedWoodRecipes(consumer, "smoked", RecipeSerializer.SMOKING_RECIPE, 100);
-		crackedStoneRecipes(consumer, "smelted", RecipeSerializer.SMELTING_RECIPE, 200);
+		crackedWoodRecipes(consumer);
+		crackedStoneRecipes(consumer);
 
 		ShapedRecipeBuilder.shaped(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get())
 				.pattern("---")
@@ -743,15 +744,15 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFItems.RAW_IRONWOOD.get()), TFItems.IRONWOOD_INGOT.get(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD.get())).save(consumer, TwilightForestMod.prefix( "material/" + processName + "_ironwood_ingot").toString());
 	}
 	
-	private void crackedWoodRecipes(Consumer<FinishedRecipe> consumer, String processName, SimpleCookingSerializer<?> process, int smeltingTime) {
-		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.TOWERWOOD.get()), TFBlocks.CRACKED_TOWERWOOD.get(), 0.3f, smeltingTime, process).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get())).save(consumer, TwilightForestMod.prefix("wood/" + processName + "_cracked_towerwood").toString());
+	private void crackedWoodRecipes(Consumer<FinishedRecipe> consumer) {
+		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.TOWERWOOD.get()), TFBlocks.CRACKED_TOWERWOOD.get(), 0.3f, 100, RecipeSerializer.SMOKING_RECIPE).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get())).save(consumer, TwilightForestMod.prefix("wood/" + "smoked" + "_cracked_towerwood").toString());
 	}
 	
-	private void crackedStoneRecipes(Consumer<FinishedRecipe> consumer, String processName, SimpleCookingSerializer<?> process, int smeltingTime) {
-		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()), TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), 0.3f, smeltingTime, process).unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get())).save(consumer, TwilightForestMod.prefix("nagastone/" + processName + "_cracked_nagastone_pillar").toString());
-		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()), TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), 0.3f, smeltingTime, process).unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get())).save(consumer, TwilightForestMod.prefix("nagastone/" + processName + "_cracked_etched_nagastone").toString());
-		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()), TFBlocks.CRACKED_MAZESTONE.get(), 0.3f, smeltingTime, process).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get())).save(consumer, TwilightForestMod.prefix("maze_stone/" + processName + "_maze_stone_cracked").toString());
-		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.CASTLE_BRICK.get()), TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.3f, smeltingTime, process).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get())).save(consumer, TwilightForestMod.prefix("castleblock/" + processName + "_cracked_castle_brick").toString());
-		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.UNDERBRICK.get()), TFBlocks.CRACKED_UNDERBRICK.get(), 0.3f, smeltingTime, process).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get())).save(consumer, TwilightForestMod.prefix(processName + "_cracked_underbrick").toString());
+	private void crackedStoneRecipes(Consumer<FinishedRecipe> consumer) {
+		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()), TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get())).save(consumer, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_nagastone_pillar").toString());
+		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()), TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get())).save(consumer, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_etched_nagastone").toString());
+		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()), TFBlocks.CRACKED_MAZESTONE.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get())).save(consumer, TwilightForestMod.prefix("maze_stone/" + "smelted" + "_maze_stone_cracked").toString());
+		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.CASTLE_BRICK.get()), TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get())).save(consumer, TwilightForestMod.prefix("castleblock/" + "smelted" + "_cracked_castle_brick").toString());
+		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.UNDERBRICK.get()), TFBlocks.CRACKED_UNDERBRICK.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get())).save(consumer, TwilightForestMod.prefix("smelted" + "_cracked_underbrick").toString());
 	}
 }

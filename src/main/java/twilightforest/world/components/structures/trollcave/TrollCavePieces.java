@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.trollcave;
 
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.registration.TFFeature;
 
 public class TrollCavePieces {

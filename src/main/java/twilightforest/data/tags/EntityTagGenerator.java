@@ -1,9 +1,11 @@
-package twilightforest.data;
+package twilightforest.data.tags;
 
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
@@ -12,9 +14,9 @@ import twilightforest.entity.TFEntities;
 import javax.annotation.Nullable;
 
 public class EntityTagGenerator extends EntityTypeTagsProvider {
-    public static final Tag.Named<EntityType<?>> BOSSES = EntityTypeTags.bind(TwilightForestMod.prefix("bosses").toString());
-    public static final Tag.Named<EntityType<?>> LICH_POPPABLES = EntityTypeTags.bind(TwilightForestMod.prefix("lich_poppables").toString());
-    public static final Tag.Named<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = EntityTypeTags.bind(TwilightForestMod.prefix("rides_obstruct_snatching").toString());
+    public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
+    public static final TagKey<EntityType<?>> LICH_POPPABLES = create(TwilightForestMod.prefix("lich_poppables"));
+    public static final TagKey<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = create(TwilightForestMod.prefix("rides_obstruct_snatching"));
 
     public EntityTagGenerator(DataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
         super(dataGenerator, TwilightForestMod.ID, existingFileHelper);
@@ -86,5 +88,9 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
 
         // These entities forcefully take players from the entity they're riding
         tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE, TFEntities.YETI, TFEntities.ALPHA_YETI);
+    }
+
+    private static TagKey<EntityType<?>> create(ResourceLocation rl) {
+        return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, rl);
     }
 }

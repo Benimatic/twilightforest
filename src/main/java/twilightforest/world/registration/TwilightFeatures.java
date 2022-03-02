@@ -1,6 +1,7 @@
 package twilightforest.world.registration;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,8 @@ import twilightforest.world.components.feature.trees.treeplacers.*;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
 import twilightforest.world.components.placements.ChunkCenterModifier;
 import twilightforest.world.components.placements.OutOfStructureFilter;
+
+import java.util.List;
 
 public final class TwilightFeatures {
     public static final TrunkPlacerType<BranchingTrunkPlacer> TRUNK_BRANCHING = registerTrunk(TwilightForestMod.prefix("branching_trunk_placer"), BranchingTrunkPlacer.CODEC);
@@ -58,11 +61,11 @@ public final class TwilightFeatures {
         return Registry.register(Registry.TREE_DECORATOR_TYPES, name, type);
     }
 
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> ConfiguredFeature<FC, F> registerWorldFeature(ResourceLocation rl, ConfiguredFeature<FC, F> feature) {
-        return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, rl, feature);
+    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, F>> registerWorldFeature(ResourceLocation rl, F feature, FC featureConfiguration) {
+        return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, rl.toString(), new ConfiguredFeature<>(feature, featureConfiguration));
     }
 
-    public static PlacedFeature registerWorldFeature(ResourceLocation rl, PlacedFeature feature) {
-        return Registry.register(BuiltinRegistries.PLACED_FEATURE, rl, feature);
+    public static Holder<PlacedFeature> registerWorldFeature(ResourceLocation rl, Holder<? extends ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
+        return BuiltinRegistries.registerExact(BuiltinRegistries.PLACED_FEATURE, rl.toString(), new PlacedFeature(Holder.hackyErase(feature), List.copyOf(placements)));
     }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -43,7 +44,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	@Override
-	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, Random rand, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
+	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, Random rand, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
 		int i = SectionPos.sectionToBlockCoord(this.getRange() * 2 - 1);
 		int j = rand.nextInt(rand.nextInt(rand.nextInt(this.getCaveBound()) + 1) + 1);
 
@@ -76,9 +77,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	@Override
-	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, CarvingMask mask, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
-		//TODO mayby another way...?
-		Random random = new Random();
+	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, CarvingMask mask, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
 		BlockState blockstate = access.getBlockState(pos);
 		if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM) || blockstate.is(Blocks.PODZOL) || blockstate.is(Blocks.DIRT_PATH)) {
 			isSurface.setTrue();
@@ -104,13 +103,13 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					if (areaAround.is(FluidTags.WATER) || areaAboveAround.is(FluidTags.WATER) || aboveSurface.is(FluidTags.WATER)) {
 						return false;
 					} else {
-						if (random.nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
+						if (access.getWorldForge().getRandom().nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
 							access.setBlockState(pos.relative(facing), TFBlocks.TROLLSTEINN.get().defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);
 
 						if ((access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
-							switch(random.nextInt(5)) {
+							switch(access.getWorldForge().getRandom().nextInt(5)) {
 								case 0, 1, 2 -> access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
 								case 3 -> access.setBlockState(pos.above(), Blocks.ROOTED_DIRT.defaultBlockState(), false);
 								case 4 -> access.setBlockState(pos.above(), Blocks.COARSE_DIRT.defaultBlockState(), false);
@@ -152,13 +151,13 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		return 1.0D;
 	}
 
-	protected void createRoom(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, Aquifer aquifer, double posX, double posY, double posZ, float radius, double horizToVertRatio, CarvingMask mask, WorldCarver.CarveSkipChecker checker) {
+	protected void createRoom(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, Aquifer aquifer, double posX, double posY, double posZ, float radius, double horizToVertRatio, CarvingMask mask, WorldCarver.CarveSkipChecker checker) {
 		double d0 = 1.5D + (double)(Mth.sin(((float)Math.PI / 2F)) * radius);
 		double d1 = d0 * horizToVertRatio;
 		this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX + 1.0D, posY, posZ, d0, d1, mask, checker);
 	}
 
-	protected void createTunnel(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, long seed, Aquifer aquifer, double posX, double posY, double posZ, double horizMult, double vertMult, float thickness, float yaw, float pitch, int branchIndex, int branchCount, double horizToVertRatio, CarvingMask mask, WorldCarver.CarveSkipChecker checker) {
+	protected void createTunnel(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, long seed, Aquifer aquifer, double posX, double posY, double posZ, double horizMult, double vertMult, float thickness, float yaw, float pitch, int branchIndex, int branchCount, double horizToVertRatio, CarvingMask mask, WorldCarver.CarveSkipChecker checker) {
 		Random random = new Random(seed);
 		int i = random.nextInt(branchCount / 2) + branchCount / 4;
 		boolean flag = random.nextInt(6) == 0;

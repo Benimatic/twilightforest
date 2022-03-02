@@ -20,7 +20,7 @@ import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.TFPortalBlock;
-import twilightforest.data.ItemTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;

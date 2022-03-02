@@ -1,8 +1,8 @@
 package twilightforest.world.components.feature.trees.growers;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import twilightforest.world.registration.features.TFTreeFeatures;
 
 import java.util.Random;
@@ -10,7 +10,7 @@ import java.util.Random;
 public class DarkCanopyTree extends AbstractTreeGrower {
 
 	@Override
-	public ConfiguredFeature<TreeConfiguration, ?> getConfiguredFeature(Random rand, boolean largeHive) {
-		return TFTreeFeatures.HOMEGROWN_DARKWOOD_TREE_BASE;
+	public Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random rand, boolean largeHive) {
+		return TFTreeFeatures.HOMEGROWN_DARKWOOD_TREE;
 	}
 }

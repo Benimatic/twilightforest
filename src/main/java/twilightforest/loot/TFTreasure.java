@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.minecraftforge.items.CapabilityItemHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.conditions.IsMinion;
 import twilightforest.loot.conditions.ModExists;
@@ -153,6 +152,6 @@ public class TFTreasure {
 		if (entity.level instanceof ServerLevel serverLevel
 				&& serverLevel.setBlock(placement, blockContaining, DEFAULT_PLACE_FLAG)
 				&& serverLevel.getBlockEntity(placement) instanceof Container container)
-			serverLevel.getServer().getServerResources().getLootTables().get(entity.getLootTable()).fill(container, lootContext);
+			serverLevel.getServer().getLootTables().get(entity.getLootTable()).fill(container, lootContext);
 	}
 }

@@ -9,7 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TFEventListener;
-import twilightforest.data.EntityTagGenerator;
+import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
 

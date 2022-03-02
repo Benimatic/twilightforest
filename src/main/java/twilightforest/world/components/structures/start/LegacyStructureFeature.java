@@ -18,6 +18,6 @@ public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeature
     //Temporally fixed Generation step error
     @Override
     public GenerationStep.Decoration step() {
-        return GenerationStep.Decoration.SURFACE_STRUCTURES;
+        return feature.getDecorationStage();
     }
 }

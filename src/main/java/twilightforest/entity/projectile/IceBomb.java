@@ -1,32 +1,28 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.level.block.SnowLayerBlock;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.event.world.BlockEvent;
-import twilightforest.data.BlockTagGenerator;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.HitResult;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.monster.Yeti;
 import twilightforest.potions.TFMobEffects;
 import twilightforest.util.TFDamageSources;
 
 import java.util.List;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class IceBomb extends TFThrowable {
 
@@ -86,7 +82,7 @@ public class IceBomb extends TFThrowable {
 			if (this.level.isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos)) {
 				this.level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
 			}
-			if (BlockTagGenerator.ICE_BOMB_REPLACEABLES.contains(state.getBlock())) {
+			if (state.is(BlockTagGenerator.ICE_BOMB_REPLACEABLES)) {
 				this.level.setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.level, pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
 			}
 			if (state.is(Blocks.SNOW) && state.getValue(SnowLayerBlock.LAYERS) < 8) {
@@ -156,8 +152,8 @@ public class IceBomb extends TFThrowable {
 
 					entity.discard();
 				} else {
-					if(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES.contains(entity.getType())) {
-						entity.hurt(TFDamageSources.frozen(this, (LivingEntity) this.getOwner()), EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES.contains(entity.getType()) ? 5 : 1);
+					if(entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
+						entity.hurt(TFDamageSources.frozen(this, (LivingEntity) this.getOwner()), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
 						entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 5));
 					}
 				}

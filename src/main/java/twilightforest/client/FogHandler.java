@@ -11,9 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
-import java.util.Objects;
-import java.util.Optional;
-
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class FogHandler {
 
@@ -75,6 +72,6 @@ public class FogHandler {
 
 	private static boolean isSpooky() {
 		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null &&
-				Objects.equals(Minecraft.getInstance().level.getBiomeName(Minecraft.getInstance().player.blockPosition()), Optional.of(BiomeKeys.SPOOKY_FOREST));
+				Minecraft.getInstance().level.getBiome(Minecraft.getInstance().player.blockPosition()).is(BiomeKeys.SPOOKY_FOREST);
 	}
 }

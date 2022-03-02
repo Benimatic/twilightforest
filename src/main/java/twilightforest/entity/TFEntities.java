@@ -7,7 +7,6 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
@@ -46,7 +45,6 @@ import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
 import twilightforest.entity.projectile.*;
 import twilightforest.item.TFItems;
-import twilightforest.item.TransformPowderItem;
 
 import java.util.*;
 import java.util.function.BooleanSupplier;
@@ -144,6 +142,7 @@ public class TFEntities {
 	public static final EntityType<ThrownWep> THROWN_WEP = make(TFEntityNames.THROWN_WEP, ThrownWep::new, MobCategory.MISC, 0.5F, 0.5F);
 	public static final EntityType<FallingIce> FALLING_ICE = make(TFEntityNames.FALLING_ICE, FallingIce::new, MobCategory.MISC, 2.98F, 2.98F, true);
 	public static final EntityType<IceBomb> THROWN_ICE = build(TFEntityNames.THROWN_ICE, makeCastedBuilder(IceBomb.class, IceBomb::new, 1.0F, 1.0F, 80, 2), true);
+	public static final EntityType<ThrownBlock> THROWN_BLOCK = build(TFEntityNames.THROWN_BLOCK, makeCastedBuilder(ThrownBlock.class, ThrownBlock::new, 1.0F, 1.0F, 80, 2), true);
 	public static final EntityType<SeekerArrow> SEEKER_ARROW = build(TFEntityNames.SEEKER_ARROW, makeCastedBuilder(SeekerArrow.class, SeekerArrow::new, 0.5F, 0.5F, 150, 1));
 	public static final EntityType<IceArrow> ICE_ARROW = build(TFEntityNames.ICE_ARROW, makeCastedBuilder(IceArrow.class, IceArrow::new, 0.5F, 0.5F, 150, 1));
 	public static final EntityType<IceSnowball> ICE_SNOWBALL = build(TFEntityNames.ICE_SNOWBALL, makeCastedBuilder(IceSnowball.class, IceSnowball::new, 0.25F, 0.25F, 150, 3));
@@ -468,6 +467,7 @@ public class TFEntities {
 		event.registerEntityRenderer(THROWN_WEP, ThrownWepRenderer::new);
 		event.registerEntityRenderer(FALLING_ICE, FallingIceRenderer::new);
 		event.registerEntityRenderer(THROWN_ICE, ThrownIceRenderer::new);
+		event.registerEntityRenderer(THROWN_BLOCK, ThrownBlockRenderer::new);
 		event.registerEntityRenderer(ICE_SNOWBALL, ThrownItemRenderer::new);
 		event.registerEntityRenderer(SLIDER, SlideBlockRenderer::new);
 		event.registerEntityRenderer(SEEKER_ARROW, DefaultArrowRenderer::new);

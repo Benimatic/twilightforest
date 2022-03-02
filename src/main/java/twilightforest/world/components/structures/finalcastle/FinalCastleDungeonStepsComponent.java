@@ -82,7 +82,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 		int dz = this.getWorldZ(2, 19);
 
 		// build a new dungeon level under there
-		FinalCastleDungeonEntranceComponent room = new FinalCastleDungeonEntranceComponent(getFeatureType(), rand, 8, dx, dy, dz, getOrientation(), level);
+		FinalCastleDungeonEntranceComponent room = new FinalCastleDungeonEntranceComponent(getFeatureType(), 8, dx, dy, dz, getOrientation(), level);
 		list.addPiece(room);
 		room.addChildren(this, list, rand);
 

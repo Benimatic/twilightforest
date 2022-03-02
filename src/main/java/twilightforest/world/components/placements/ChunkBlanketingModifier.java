@@ -55,7 +55,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
                 BlockPos pos = new BlockPos(chunkOriginX + xInChunk, context.getHeight(heightmap, chunkOriginX + xInChunk, chunkOriginZ + zInChunk), chunkOriginZ + zInChunk);
 
                 if (biomeRLOptional.isPresent()) {
-                    if (biomeRLOptional.get().equals(context.getLevel().getBiome(pos).getRegistryName())) {
+                    if (biomeRLOptional.get().equals(context.getLevel().getBiome(pos).value().getRegistryName())) {
                         coordinates.add(pos);
                     }
                 } else {

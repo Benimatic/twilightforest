@@ -130,7 +130,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	 * Build a side tower, then tell it to start building towards the destination
 	 */
 	private void buildTowerMaze(StructurePieceAccessor list, Random rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			boolean complete = false;
 			int iterations = 0;
 			while (!complete && iterations < 15) {
@@ -170,7 +170,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	}
 
 	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			if (start.getPieces().size() > 60) {
 				TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
 			}

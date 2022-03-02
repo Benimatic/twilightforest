@@ -2,6 +2,8 @@ package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -26,7 +29,6 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.data.BlockTagGenerator;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
@@ -155,7 +157,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// count how many size 9 towers we have hanging off us
 			ArrayList<DarkTowerWingComponent> possibleKeyTowers = new ArrayList<DarkTowerWingComponent>();
 
-			if (list instanceof StructureStart<?> start) {
+			if (list instanceof StructureStart start) {
 				for (StructurePiece piece : start.getPieces()) {
 					if (piece instanceof DarkTowerWingComponent wing && wing.size == 9 && wing.getGenDepth() == this.getGenDepth()) {
 						possibleKeyTowers.add(wing);
@@ -931,11 +933,12 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		this.makeStonePillar(world, forgeDeco, 9, y, 17, rotation, sbb);
 
 		// anvils
-		BlockState anvil = BlockTags.ANVIL.getRandomElement(decoRNG).defaultBlockState()
+		BlockState anvil = Registry.BLOCK.getTag(BlockTags.ANVIL)
+				.flatMap(tag -> tag.getRandomElement(decoRNG))
+				.map(holder -> holder.value().defaultBlockState())
+				.orElse(Blocks.ANVIL.defaultBlockState())
 				.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG));
 		this.setBlockStateRotated(world, anvil, 13, y + 2, 5, rotation, sbb);
-		anvil = BlockTags.ANVIL.getRandomElement(decoRNG).defaultBlockState()
-				.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG));
 		this.setBlockStateRotated(world, anvil, 13, y + 2, 13, rotation, sbb);
 
 		// fire pit
@@ -1079,7 +1082,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		int dy = getWorldY(y + 1);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		if (sbb.isInside(new BlockPos(dx, dy, dz))) {
-			ConfiguredFeature<?,?> treeGen = switch (treeNum) {
+			Holder<ConfiguredFeature<TreeConfiguration,?>> treeGen = switch (treeNum) {
 				case 1 ->
 						// jungle tree
 						TreeFeatures.JUNGLE_TREE; //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
@@ -1095,7 +1098,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
+				if (treeGen.value().place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
 					break;
 				}
 			}
@@ -1103,9 +1106,11 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	private void placeRandomPlant(WorldGenLevel world, Random decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		Block flowerPot = BlockTagGenerator.DARK_TOWER_ALLOWED_POTS.getRandomElement(decoRNG);
-		BlockState flowerPotState = flowerPot.defaultBlockState();
-		setBlockStateRotated(world, decoRNG.nextInt(10) == 0 ? Blocks.FLOWER_POT.defaultBlockState() : flowerPotState, x, y, z, rotation, sbb);
+		BlockState flowerPot = Registry.BLOCK.getTag(BlockTags.FLOWER_POTS)
+				.flatMap(tag -> tag.getRandomElement(decoRNG))
+				.map(holder -> holder.value().defaultBlockState())
+				.orElse(Blocks.FLOWER_POT.defaultBlockState());
+		setBlockStateRotated(world, decoRNG.nextInt(10) == 0 ? Blocks.FLOWER_POT.defaultBlockState() : flowerPot, x, y, z, rotation, sbb);
 	}
 
 	private void makeBottomEntrance(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {

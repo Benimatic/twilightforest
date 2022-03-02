@@ -7,7 +7,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import twilightforest.block.TFBlocks;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.tags.BlockTagGenerator;
 
 import java.util.Random;
 
@@ -229,7 +229,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	}
 
 	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
-		return BlockTagGenerator.ANTIBUILDER_IGNORES.contains(stateThere.getBlock()) || BlockTagGenerator.ANTIBUILDER_IGNORES.contains(replaceWith.getBlock());
+		return stateThere.is(BlockTagGenerator.ANTIBUILDER_IGNORES) || replaceWith.is(BlockTagGenerator.ANTIBUILDER_IGNORES);
 	}
 
 	private void captureBlockData() {

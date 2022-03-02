@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraftforge.api.distmarker.Dist;
@@ -132,7 +133,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static void enforceBiomeProgression(Player player, Level world) {
-		Biome currentBiome = world.getBiome(player.blockPosition());
+		Biome currentBiome = world.getBiome(player.blockPosition()).value();
 		if (isBiomeSafeFor(currentBiome, player))
 			return;
 		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(currentBiome.getRegistryName());
@@ -189,19 +190,19 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		}
 	}
 
-	public static Optional<StructureStart<?>> locateTFStructureInRange(WorldGenLevel world, BlockPos pos, int range) {
+	public static Optional<StructureStart> locateTFStructureInRange(WorldGenLevel world, BlockPos pos, int range) {
 		TFFeature featureCheck = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 
 		return locateTFStructureInRange(world, featureCheck, pos, range);
 	}
 
-	public static Optional<StructureStart<?>> locateTFStructureInRange(WorldGenLevel world, TFFeature featureCheck, BlockPos pos, int range) {
+	public static Optional<StructureStart> locateTFStructureInRange(WorldGenLevel world, TFFeature featureCheck, BlockPos pos, int range) {
 		int cx1 = Mth.floor((pos.getX() - range) >> 4);
 		int cx2 = Mth.ceil((pos.getX() + range) >> 4);
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (StructureFeature<?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
+		for (ConfiguredStructureFeature<?, ?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
 			if (!(structureFeature instanceof LegacyStructureFeature legacyData))
 				continue;
 			TFFeature feature = legacyData.feature;
@@ -210,8 +211,8 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 			for (int x = cx1; x <= cx2; ++x) {
 				for (int z = cz1; z <= cz2; ++z) {
-					Optional<StructureStart<?>> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).getReferencesForFeature(structureFeature).stream().
-							map((longVal) -> SectionPos.of(new ChunkPos(longVal), 0)).<StructureStart<?>>map((sectionPos) -> world.
+					Optional<StructureStart> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).getReferencesForFeature(structureFeature).stream().
+							map((longVal) -> SectionPos.of(new ChunkPos(longVal), 0)).map((sectionPos) -> world.
 									hasChunk(sectionPos.x(), sectionPos.z()) ? world.
 									getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS).getStartForFeature(structureFeature) : null).
 							filter((structureStart) -> structureStart != null && structureStart.isValid()).

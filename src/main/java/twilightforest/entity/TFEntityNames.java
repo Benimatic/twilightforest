@@ -114,6 +114,7 @@ public class TFEntityNames {
 	public static final ResourceLocation SLIME_BLOB = prefix("slime_blob");
 	public static final ResourceLocation THROWN_WEP = prefix("thrown_wep");
 	public static final ResourceLocation THROWN_ICE = prefix("thrown_ice");
+	public static final ResourceLocation THROWN_BLOCK = prefix("thrown_block");
 	public static final ResourceLocation SEEKER_ARROW = prefix("seeker_arrow");
 	public static final ResourceLocation ICE_ARROW = prefix("ice_arrow");
 	public static final ResourceLocation ICE_SNOWBALL = prefix("ice_snowball");

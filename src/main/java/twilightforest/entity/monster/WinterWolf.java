@@ -152,7 +152,7 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 	}
 
 	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-		Optional<ResourceKey<Biome>> key = world.getBiomeName(pos);
+		Optional<ResourceKey<Biome>> key = world.getBiome(pos).unwrapKey();
 		return world.getDifficulty() != Difficulty.PEACEFUL && Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(world, pos, random);
 	}
 }

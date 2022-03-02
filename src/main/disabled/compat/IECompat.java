@@ -5,6 +5,9 @@ import blusunrize.immersiveengineering.api.crafting.builders.ThermoelectricSourc
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.tool.RailgunHandler;
 import blusunrize.immersiveengineering.common.EventHandler;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -13,13 +16,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.TFClientEvents;
+import twilightforest.client.model.item.ShaderBagItemModel;
 import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.compat.ie.TFShaderGrabbagItem;
@@ -28,6 +34,7 @@ import twilightforest.entity.boss.*;
 import twilightforest.entity.projectile.CicadaShot;
 
 import javax.annotation.Nullable;
+import java.util.Locale;
 
 /**
  * FIXME a few things still dont work in IE compat. Here is a list:
@@ -115,5 +122,28 @@ public class IECompat extends TFCompat {
         excludeFromShaderBags(AlphaYeti.class);
         excludeFromShaderBags(SnowQueen.class);
         excludeFromShaderBags(PlateauBoss.class);
+    }
+
+    public static void registerShaderColors(ItemColors colors) {
+        colors.register(TFShaderItem::getShaderColors, ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
+        for(Rarity r: ShaderRegistry.rarityWeightMap.keySet()) {
+            colors.register((stack, tintIndex) -> {
+                int c = r.color.getColor();
+
+                float d = tintIndex + 1;
+
+                return (int) ((c >> 16 & 0xFF) / d) << 16
+                        | (int) ((c >> 8 & 0xFF) / d) << 8
+                        | (int) ((c & 0xFF) / d);
+            }, ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + r.name().toLowerCase(Locale.ROOT).replace(':', '_'))));
+        }
+    }
+
+    public static void registerShaderModels(ModelBakeEvent event) {
+        for (Rarity rarity : ShaderRegistry.rarityWeightMap.keySet()) {
+            ResourceLocation itemRL = TwilightForestMod.prefix("shader_bag_" + rarity.name().toLowerCase(Locale.ROOT).replace(':', '_'));
+            ModelResourceLocation mrl = new ModelResourceLocation(itemRL, "inventory");
+            event.getModelRegistry().put(mrl, new ShaderBagItemModel(event.getModelRegistry().get(mrl), new ItemStack(ForgeRegistries.ITEMS.getValue(itemRL))));
+        }
     }
 }

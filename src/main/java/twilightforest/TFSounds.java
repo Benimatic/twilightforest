@@ -237,6 +237,7 @@ public final class TFSounds {
 	public static final SoundEvent TOME_HURT = createEvent("entity.twilightforest.tome.hurt");
 	public static final SoundEvent TOME_AMBIENT = createEvent("entity.twilightforest.tome.ambient");
 	public static final SoundEvent TRANSFORMATION_CORE = createEvent("block.twilightforest.core.transformation");
+	public static final SoundEvent TROLL_THROWS_ROCK = createEvent("entity.twilightforest.troll.throw_rock");
 	public static final SoundEvent UNCRAFTING_TABLE_ACTIVATE = createEvent("block.twilightforest.uncrafting_table.activate");
 	public static final SoundEvent UNLOCK_VANISHING_BLOCK = createEvent("block.twilightforest.vanish.unlock");
 	public static final SoundEvent URGHAST_AMBIENT = createEvent("entity.twilightforest.urghast.ambient");

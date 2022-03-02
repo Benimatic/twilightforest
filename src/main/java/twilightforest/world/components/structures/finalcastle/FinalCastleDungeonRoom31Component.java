@@ -1,29 +1,28 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
-import net.minecraft.world.level.StructureFeatureManager;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.util.RotationUtil;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 import java.util.function.Predicate;
@@ -40,8 +39,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		super(piece, nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleDungeonRoom31Component(StructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
+	public FinalCastleDungeonRoom31Component(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, Direction direction, int level) {
 		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.spawnListIndex = 2; // dungeon monsters
@@ -99,7 +97,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
-		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(FinalCastlePieces.TFFCDunR31, getFeatureType(), rand, this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
+		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(FinalCastlePieces.TFFCDunR31, getFeatureType(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
 		BoundingBox largerBB = new BoundingBox(dRoom.getBoundingBox().getCenter());
 
@@ -109,7 +107,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		//largerBB.maxX() += expand;
 		//largerBB.maxZ() += expand;
 
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.getPieces(), largerBB, this);
 			if (intersect == null) {
 				list.addPiece(dRoom);
@@ -127,8 +125,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		rotation = rotation.getRotated(this.rotation);
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
-		FinalCastleDungeonExitComponent dRoom = new FinalCastleDungeonExitComponent(getFeatureType(), rand, this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
-		if (list instanceof StructureStart<?> start) {
+		FinalCastleDungeonExitComponent dRoom = new FinalCastleDungeonExitComponent(getFeatureType(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
+		if (list instanceof StructureStart start) {
 			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.getPieces(), dRoom.getBoundingBox(), this);
 			if (intersect == null) {
 				list.addPiece(dRoom);

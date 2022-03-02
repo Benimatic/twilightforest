@@ -53,7 +53,7 @@ public class TFGenDarkForestFeature extends Feature<RandomPatchConfiguration> {
 
         for(int l = 0; l < config.tries(); ++l) {
             blockpos$mutableblockpos.setWithOffset(pos, rand.nextInt(j) - rand.nextInt(j), rand.nextInt(k) - rand.nextInt(k), rand.nextInt(j) - rand.nextInt(j));
-            if (config.feature().get().place(reader, ctx.chunkGenerator(), rand, blockpos$mutableblockpos)) {
+            if (config.feature().value().place(reader, ctx.chunkGenerator(), rand, blockpos$mutableblockpos)) {
                 ++i;
             }
         }

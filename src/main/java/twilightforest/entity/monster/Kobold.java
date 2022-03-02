@@ -23,10 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
-import twilightforest.data.ItemTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.ai.FlockToSameKindGoal;
 import twilightforest.entity.ai.PanicOnFlockDeathGoal;
-import twilightforest.item.TFItems;
 
 import java.util.EnumSet;
 import java.util.List;

@@ -43,7 +43,6 @@ import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.TFCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.inventory.TFContainers;
@@ -120,13 +119,13 @@ public class TwilightForestMod {
 		new BiomeGrassColors();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-			try {
-				TFCompat.preInitCompat();
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading preInit compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
+//			try {
+//				TFCompat.preInitCompat();
+//			} catch (Exception e) {
+//				TFConfig.COMMON_CONFIG.doCompat.set(false);
+//				LOGGER.error("Had an error loading preInit compatibility!");
+//				LOGGER.catching(e.fillInStackTrace());
+//			}
 		} else {
 			LOGGER.warn("Skipping compatibility!");
 		}
@@ -166,7 +165,7 @@ public class TwilightForestMod {
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
-		TFCompat.sendIMCs();
+		//TFCompat.sendIMCs();
 	}
 
 	@SubscribeEvent
@@ -178,23 +177,23 @@ public class TwilightForestMod {
 		TFStats.init();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-			try {
-				TFCompat.initCompat();
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading init compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
+//			try {
+//				TFCompat.initCompat();
+//			} catch (Exception e) {
+//				TFConfig.COMMON_CONFIG.doCompat.set(false);
+//				LOGGER.error("Had an error loading init compatibility!");
+//				LOGGER.catching(e.fillInStackTrace());
+//			}
 		}
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-			try {
-				TFCompat.postInitCompat();
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading postInit compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
+//			try {
+//				TFCompat.postInitCompat();
+//			} catch (Exception e) {
+//				TFConfig.COMMON_CONFIG.doCompat.set(false);
+//				LOGGER.error("Had an error loading postInit compatibility!");
+//				LOGGER.catching(e.fillInStackTrace());
+//			}
 		}
 
 		TFConfig.build();

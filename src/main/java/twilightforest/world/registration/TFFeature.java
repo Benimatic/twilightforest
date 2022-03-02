@@ -26,9 +26,9 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
@@ -589,7 +589,7 @@ public class TFFeature {
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// what biome is at the center of the chunk?
-		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
+		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8)).value();
 		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed());
 	}
 

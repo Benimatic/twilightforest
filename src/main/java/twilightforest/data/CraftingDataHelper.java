@@ -1,6 +1,8 @@
 package twilightforest.data;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -8,7 +10,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -21,6 +23,7 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.TwilightChest;
+import twilightforest.data.tags.ItemTagGenerator;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -112,7 +115,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, loc);
 	}
 
-	protected final void compressedBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Tag.Named<Item> ingredient) {
+	protected final void compressedBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, TagKey<Item> ingredient) {
 		ShapedRecipeBuilder.shaped(result.get())
 				.pattern("###")
 				.pattern("###")
@@ -122,14 +125,14 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, TwilightForestMod.prefix("compressed_blocks/" + name));
 	}
 
-	protected final void reverseCompressBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> ingredient) {
+	protected final void reverseCompressBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, TagKey<Item> ingredient) {
 		ShapelessRecipeBuilder.shapeless(result.get(), 9)
 				.requires(ingredient)
 				.unlockedBy("has_item", has(ingredient))
 				.save(consumer, TwilightForestMod.prefix("compressed_blocks/reversed/" + name));
 	}
 
-	protected final void helmetItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material) {
+	protected final void helmetItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, TagKey<Item> material) {
 		ShapedRecipeBuilder.shaped(result.get())
 				.pattern("###")
 				.pattern("# #")
@@ -138,7 +141,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locEquip(name));
 	}
 
-	protected final void chestplateItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material) {
+	protected final void chestplateItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, TagKey<Item> material) {
 		ShapedRecipeBuilder.shaped(result.get())
 				.pattern("# #")
 				.pattern("###")
@@ -148,7 +151,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locEquip(name));
 	}
 
-	protected final void leggingsItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material) {
+	protected final void leggingsItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, TagKey<Item> material) {
 		ShapedRecipeBuilder.shaped(result.get())
 				.pattern("###")
 				.pattern("# #")
@@ -158,7 +161,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locEquip(name));
 	}
 
-	protected final void bootsItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material) {
+	protected final void bootsItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, TagKey<Item> material) {
 		ShapedRecipeBuilder.shaped(result.get())
 				.pattern("# #")
 				.pattern("# #")
@@ -167,7 +170,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locEquip(name));
 	}
 
-	protected final void pickaxeItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material, Tag.Named<Item> handle) {
+	protected final void pickaxeItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
 		ShapedRecipeBuilder.shaped(result.get())
 				.pattern("###")
 				.pattern(" X ")
@@ -178,7 +181,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locEquip(name));
 	}
 
-	protected final void swordItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material, Tag.Named<Item> handle) {
+	protected final void swordItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
 		ShapedRecipeBuilder.shaped(result.get())
 				.pattern("#")
 				.pattern("#")
@@ -189,7 +192,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locEquip(name));
 	}
 
-	protected final void axeItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Tag.Named<Item> material, Tag.Named<Item> handle) {
+	protected final void axeItem(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, TagKey<Item> material, TagKey<Item> handle) {
 		ShapedRecipeBuilder.shaped(result.get())
 				.pattern("##")
 				.pattern("#X")
@@ -353,5 +356,9 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 	protected final ResourceLocation locWood(String name) {
 		return TwilightForestMod.prefix("wood/" + name);
+	}
+
+	protected static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> p_206407_) {
+		return inventoryTrigger(ItemPredicate.Builder.item().of(p_206407_).build());
 	}
 }

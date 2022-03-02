@@ -1,6 +1,5 @@
 package twilightforest.client;
 
-import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -17,12 +16,10 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.StaticTagHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,22 +34,19 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
-import twilightforest.client.model.item.ShaderBagItemModel;
 import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.data.ItemTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.TFItems;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
@@ -87,11 +81,7 @@ public class TFClientEvents {
 			tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 
 			if(ModList.get().isLoaded("immersiveengineering")) {
-				for (Rarity rarity : ShaderRegistry.rarityWeightMap.keySet()) {
-					ResourceLocation itemRL = TwilightForestMod.prefix("shader_bag_" + rarity.name().toLowerCase(Locale.ROOT).replace(':', '_'));
-					ModelResourceLocation mrl = new ModelResourceLocation(itemRL, "inventory");
-					event.getModelRegistry().put(mrl, new ShaderBagItemModel(event.getModelRegistry().get(mrl), new ItemStack(ForgeRegistries.ITEMS.getValue(itemRL))));
-				}
+				//IECompat.registerShaderModels(event);
 			}
 		}
 

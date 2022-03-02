@@ -9,6 +9,7 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
+import twilightforest.data.tags.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
@@ -21,6 +22,7 @@ public class DataGenerators {
 		generator.addProvider(new PatchouliAdvancementGenerator(generator, helper));
 		generator.addProvider(new BlockstateGenerator(generator, helper));
 		generator.addProvider(new ItemModelGenerator(generator, helper));
+		generator.addProvider(new BiomeTagGenerator(generator));
 		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
 		generator.addProvider(blocktags);
 		generator.addProvider(new FluidTagGenerator(generator, helper));

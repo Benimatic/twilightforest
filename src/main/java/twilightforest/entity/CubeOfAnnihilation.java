@@ -18,7 +18,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 

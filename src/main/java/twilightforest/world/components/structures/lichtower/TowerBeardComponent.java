@@ -6,9 +6,9 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 

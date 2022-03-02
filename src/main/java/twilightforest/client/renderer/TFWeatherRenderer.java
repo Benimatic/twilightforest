@@ -109,7 +109,7 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 					double d0 = (double)this.rainxs[l1] * 0.5D;
 					double d1 = (double)this.rainzs[l1] * 0.5D;
 					blockpos$mutableblockpos.set(k1, 0, j1);
-					Biome biome = level.getBiome(blockpos$mutableblockpos);
+					Biome biome = level.getBiome(blockpos$mutableblockpos).value();
 					if (biome.getPrecipitation() != Biome.Precipitation.NONE) {
 						int i2 = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos$mutableblockpos).getY();
 						int j2 = j - l;
@@ -241,7 +241,7 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 					double ry = this.rainzs[idx] * 0.5D;
 
 					blockpos$mutableblockpos.set(x, 0, z);
-					Biome biome = world.getBiome(blockpos$mutableblockpos);
+					Biome biome = world.getBiome(blockpos$mutableblockpos).value();
 
 					// TF - check for our own biomes
 					if (!TFGenerationSettings.isBiomeSafeFor(biome, entity)) {
@@ -471,7 +471,7 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 
 		for (int z = pz - range; z <= pz + range; ++z) {
 			for (int x = px - range; x <= px + range; ++x) {
-				Biome biome = world.getBiome(pos.set(x, 0, z));
+				Biome biome = world.getBiome(pos.set(x, 0, z)).value();
 				if (!TFGenerationSettings.isBiomeSafeFor(biome, viewEntity)) {
 					return true;
 				}

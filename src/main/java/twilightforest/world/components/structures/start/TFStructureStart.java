@@ -6,6 +6,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -17,10 +18,11 @@ import twilightforest.world.registration.TFStructures;
 
 import java.util.List;
 
-public class TFStructureStart<C extends FeatureConfiguration> extends StructureStart<C> {
+public class TFStructureStart<C extends FeatureConfiguration> extends StructureStart {
 	private boolean conquered = false;
 
-	public TFStructureStart(StructureFeature<C> structureFeature, ChunkPos chunkPos, int references, PiecesContainer pieces) {
+	//FIXME this is probably very wrong, but I dont know structure shit so someone else fix it
+	public TFStructureStart(ConfiguredStructureFeature<C, ?> structureFeature, ChunkPos chunkPos, int references, PiecesContainer pieces) {
 		super(structureFeature, chunkPos, references, pieces);
 	}
 
@@ -44,7 +46,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 		return this.conquered;
 	}
 
-	private static int getSpawnListIndexAt(StructureStart<?> start, BlockPos pos) {
+	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
 		int highestFoundIndex = -1;
 		for (StructurePiece component : start.getPieces()) {
 			if (component.getBoundingBox().isInside(pos)) {
@@ -60,7 +62,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
 		for (StructureFeature<?> structure : TFStructures.SEPARATION_SETTINGS.keySet()) {
-			StructureStart<?> start = structureManager.getStructureAt(pos, structure);
+			StructureStart start = structureManager.getStructureAt(pos, structure);
 			if (!start.isValid())
 				continue;
 

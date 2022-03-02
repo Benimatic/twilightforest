@@ -48,7 +48,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		// add entrance tower
 		BoundingBox towerBB = new BoundingBox(this.boundingBox.getCenter());
 
-		if (list instanceof StructureStart<?> start)
+		if (list instanceof StructureStart start)
 			for (StructurePiece structurecomponent : start.getPieces())
 				towerBB.encapsulate(structurecomponent.getBoundingBox());
 
@@ -85,7 +85,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
 
 		list.addPiece(bridge);
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			bridge.addChildren(start.getPieces().get(0), list, rand);
 		}
 	}
@@ -97,7 +97,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		IceTowerWingComponent entrance = new IceTowerEntranceComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
 		list.addPiece(entrance);
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			entrance.addChildren(start.getPieces().get(0), list, rand);
 		}
 		addOpening(x, y, z, rotation);

@@ -24,7 +24,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
-import twilightforest.data.CustomTagGenerator;
+import twilightforest.data.tags.CustomTagGenerator;
 
 import javax.annotation.Nullable;
 import java.util.List;

@@ -1,20 +1,20 @@
 package twilightforest.block.entity;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.ExplosionDamageCalculator;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFSounds;
 import twilightforest.block.CarminiteReactorBlock;
 import twilightforest.block.TFBlocks;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.util.TFDamageSources;
@@ -214,9 +214,12 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 			// make pop thing for original block
 			level.levelEvent(2001, pos, Block.getId(stateThere));
 		}
-
+		BlockState ore = Registry.BLOCK.getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES)
+				.flatMap(tag -> tag.getRandomElement(level.random))
+				.map(holder -> holder.value().defaultBlockState())
+				.orElse(Blocks.NETHERRACK.defaultBlockState());
 		if (netherTransform && stateThere.getBlock() != Blocks.AIR) {
-			level.setBlock(pos, (level.random.nextInt(8) == 0 ? BlockTagGenerator.CARMINITE_REACTOR_ORES.getRandomElement(level.random).defaultBlockState() : Blocks.NETHERRACK.defaultBlockState()), 3);
+			level.setBlock(pos, (level.random.nextInt(8) == 0 ? state : Blocks.NETHERRACK.defaultBlockState()), 3);
 			// fire on top?
 			if (level.isEmptyBlock(pos.above()) && fuzz % 3 == 0) {
 				level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), 3);

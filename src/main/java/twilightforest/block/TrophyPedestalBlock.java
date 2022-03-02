@@ -26,7 +26,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.TFStats;
 import twilightforest.world.registration.TFGenerationSettings;

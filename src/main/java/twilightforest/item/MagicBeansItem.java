@@ -158,7 +158,7 @@ public class MagicBeansItem extends Item {
 	 */
 	private boolean tryToPlaceStalk(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().equals(TFBlocks.FLUFFY_CLOUD.get())) {
+		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || state.getBlock().equals(TFBlocks.FLUFFY_CLOUD.get())) {
 			world.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
 			if (pos.getY() > 150) {
 				for (int i = 0; i < 7; i++) {

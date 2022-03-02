@@ -9,7 +9,6 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
-import net.minecraft.resources.RegistryWriteOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.TerrainShaper;
@@ -225,9 +224,6 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
             NoiseSlider bottomSlideSettings,
             int noiseSizeHorizontal,
             int noiseSizeVertical,
-            boolean islandNoiseOverride,
-            boolean isAmplified,
-            boolean largeBiomes,
             TerrainShaper shaper
     ) {
         return NoiseSettings.create(
@@ -238,40 +234,33 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
                 bottomSlideSettings,
                 noiseSizeHorizontal,
                 noiseSizeVertical,
-                islandNoiseOverride,
-                isAmplified,
-                largeBiomes,
                 shaper
         );
     }
 
     @SuppressWarnings("SameParameterValue") // Keep this because Mojang's params are unmapped
     protected static NoiseGeneratorSettings makeDimensionSettings(
-            StructureSettings structureSettings,
             NoiseSettings noiseSettings,
             BlockState defaultBlock,
             BlockState defaultFluid,
+            NoiseRouterWithOnlyNoises noiseRouter,
             SurfaceRules.RuleSource rules,
             int seaLevel,
             boolean disableMobGeneration,
             boolean aquifersEnabled,
-            boolean noiseCavesEnabled,
             boolean oreVeinsEnabled,
-            boolean noodleCavesEnabled,
             boolean legacyRandomSource
     ) {
         return new NoiseGeneratorSettings(
-                structureSettings,
                 noiseSettings,
                 defaultBlock,
                 defaultFluid,
+                noiseRouter,
                 rules,
                 seaLevel,
                 disableMobGeneration,
                 aquifersEnabled,
-                noiseCavesEnabled,
                 oreVeinsEnabled,
-                noodleCavesEnabled,
                 legacyRandomSource
         );
     }

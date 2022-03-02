@@ -1,10 +1,10 @@
 package twilightforest.world.registration.features;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
-import twilightforest.world.components.placements.ChunkCenterModifier;
 import twilightforest.world.components.placements.OutOfStructureFilter;
 import twilightforest.world.registration.BlockConstants;
 import twilightforest.world.registration.TFBiomeFeatures;
@@ -28,99 +27,107 @@ import java.util.List;
 public class TFTreeFeatures {
 
 	//base configs
-	public static final ConfiguredFeature<TreeConfiguration, ?> TWILIGHT_OAK_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/twilight_oak"), Feature.TREE.configured(TreeConfigurations.TWILIGHT_OAK));
-	public static final ConfiguredFeature<TreeConfiguration, ?> SWAMPY_OAK_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/swampy_oak"), Feature.TREE.configured(TreeConfigurations.SWAMPY_OAK));
-	public static final ConfiguredFeature<TreeConfiguration, ?> CANOPY_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/canopy_tree"), Feature.TREE.configured(TreeConfigurations.CANOPY_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> FIREFLY_CANOPY_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/firefly_canopy_tree"), Feature.TREE.configured(TreeConfigurations.CANOPY_TREE_FIREFLY));
-	public static final ConfiguredFeature<TreeConfiguration, ?> DEAD_CANOPY_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/dead_canopy_tree"), Feature.TREE.configured(TreeConfigurations.CANOPY_TREE_DEAD));
-	public static final ConfiguredFeature<TreeConfiguration, ?> MANGROVE_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/mangrove_tree"), Feature.TREE.configured(TreeConfigurations.MANGROVE_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> DARKWOOD_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/darkwood_tree"), TFBiomeFeatures.DARK_CANOPY_TREE.get().configured(TreeConfigurations.DARKWOOD_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> HOMEGROWN_DARKWOOD_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/homegrown_darkwood_tree"), TFBiomeFeatures.DARK_CANOPY_TREE.get().configured(TreeConfigurations.HOMEGROWN_DARKWOOD_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> DARKWOOD_LANTERN_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/darkwood_lantern_tree"), TFBiomeFeatures.DARK_CANOPY_TREE.get().configured(TreeConfigurations.DARKWOOD_LANTERN_TREE));
-	public static final ConfiguredFeature<TFTreeFeatureConfig, ?> TIME_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/time_tree"), TFBiomeFeatures.TREE_OF_TIME.get().configured(TreeConfigurations.TIME_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> TRANSFORM_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/transform_tree"), Feature.TREE.configured(TreeConfigurations.TRANSFORM_TREE));
-	public static final ConfiguredFeature<TFTreeFeatureConfig, ?> MINING_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/mining_tree"), TFBiomeFeatures.MINERS_TREE.get().configured(TreeConfigurations.MINING_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> SORT_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/sort_tree"), Feature.TREE.configured(TreeConfigurations.SORT_TREE));
-	//public static final ConfiguredFeature<TFTreeFeatureConfig, ?> DENSE_OAK_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/dense_oak_tree"), TFBiomeFeatures.CANOPY_OAK.get().configured(TreeConfigurations.DENSE_OAK));
-	public static final ConfiguredFeature<TFTreeFeatureConfig, ?> HOLLOW_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/hollow_tree"), TFBiomeFeatures.HOLLOW_TREE.get().configured(TreeConfigurations.HOLLOW_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> RAINBOW_OAK_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/rainbow_oak"), Feature.TREE.configured(TreeConfigurations.RAINBOAK_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> LARGE_RAINBOW_OAK_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/large_rainbow_oak"), Feature.TREE.configured(TreeConfigurations.LARGE_RAINBOAK_TREE));
-	public static final ConfiguredFeature<TreeConfiguration, ?> BROWN_CANOPY_MUSHROOM_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/base/brown_canopy_mushroom"), Feature.TREE.configured(TreeConfigurations.MUSHROOM_BROWN));
-	public static final ConfiguredFeature<TreeConfiguration, ?> RED_CANOPY_MUSHROOM_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/base/red_canopy_mushroom"), Feature.TREE.configured(TreeConfigurations.MUSHROOM_RED));
-	public static final ConfiguredFeature<TreeConfiguration, ?> MEGA_SPRUCE_NO_PODZOL_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/mega_spruce_no_podzol"), TFBiomeFeatures.SNOW_TREE.get().configured(TreeConfigurations.BIG_SPRUCE));
-	public static final ConfiguredFeature<TFTreeFeatureConfig, ?> LARGE_WINTER_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/large_winter_tree_base"), TFBiomeFeatures.LARGE_WINTER_TREE.get().configured(TreeConfigurations.LARGE_WINTER));
-	public static final ConfiguredFeature<TreeConfiguration, ?> SNOW_SPRUCE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("snow_spruce"), TFBiomeFeatures.SNOW_TREE.get().configured(TreeFeatures.SPRUCE.config()));
-	public static final ConfiguredFeature<TreeConfiguration, ?> OAK_DARK_FOREST = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/oak_dark_forest"), TFBiomeFeatures.DARK_CANOPY_TREE.get().configured(TreeFeatures.OAK.config()));
-	public static final ConfiguredFeature<TreeConfiguration, ?> BIRCH_DARK_FOREST = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/birch_dark_forest"), TFBiomeFeatures.DARK_CANOPY_TREE.get().configured(TreeFeatures.BIRCH.config()));
-	public static final ConfiguredFeature<TreeConfiguration, ?> VANILLA_TF_OAK = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/vanilla_tf_oak"), Feature.TREE.configured(TreeFeatures.OAK.config()));
-	public static final ConfiguredFeature<TreeConfiguration, ?> VANILLA_TF_BIRCH = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/vanilla_tf_birch"), Feature.TREE.configured(TreeFeatures.BIRCH.config()));
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> TWILIGHT_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/twilight_oak_tree"), Feature.TREE, TreeConfigurations.TWILIGHT_OAK);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> SWAMPY_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/swampy_oak_tree"), Feature.TREE, TreeConfigurations.SWAMPY_OAK);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> CANOPY_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/canopy_tree"), Feature.TREE, TreeConfigurations.CANOPY_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> FIREFLY_CANOPY_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/firefly_canopy_tree"), Feature.TREE, TreeConfigurations.CANOPY_TREE_FIREFLY);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> DEAD_CANOPY_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dead_canopy_tree"), Feature.TREE, TreeConfigurations.CANOPY_TREE_DEAD);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> MANGROVE_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mangrove_tree"), Feature.TREE, TreeConfigurations.MANGROVE_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> DARKWOOD_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/darkwood_tree"), TFBiomeFeatures.DARK_CANOPY_TREE.get(), TreeConfigurations.DARKWOOD_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> HOMEGROWN_DARKWOOD_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/homegrown_darkwood_tree"), TFBiomeFeatures.DARK_CANOPY_TREE.get(), TreeConfigurations.HOMEGROWN_DARKWOOD_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> DARKWOOD_LANTERN_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/darkwood_lantern_tree"), TFBiomeFeatures.DARK_CANOPY_TREE.get(), TreeConfigurations.DARKWOOD_LANTERN_TREE);
+	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, Feature<TFTreeFeatureConfig>>> TIME_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/time_tree"), TFBiomeFeatures.TREE_OF_TIME.get(), TreeConfigurations.TIME_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> TRANSFORMATION_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/transformation_tree"), Feature.TREE, TreeConfigurations.TRANSFORM_TREE);
+	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, Feature<TFTreeFeatureConfig>>> MINING_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mining_tree"), TFBiomeFeatures.MINERS_TREE.get(), TreeConfigurations.MINING_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> SORTING_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/sorting_tree"), Feature.TREE, TreeConfigurations.SORT_TREE);
+	//public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, Feature<TFTreeFeatureConfig>>>> DENSE_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dense_oak_tree"), TFBiomeFeatures.CANOPY_OAK.get(), TreeConfigurations.DENSE_OAK);
+	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, Feature<TFTreeFeatureConfig>>> HOLLOW_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/hollow_tree"), TFBiomeFeatures.HOLLOW_TREE.get(), TreeConfigurations.HOLLOW_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> RAINBOW_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/rainbow_oak"), Feature.TREE, TreeConfigurations.RAINBOAK_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> LARGE_RAINBOW_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/large_rainbow_oak"), Feature.TREE, TreeConfigurations.LARGE_RAINBOAK_TREE);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> BROWN_CANOPY_MUSHROOM_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/brown_canopy_mushroom"), Feature.TREE, TreeConfigurations.MUSHROOM_BROWN);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> RED_CANOPY_MUSHROOM_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/red_canopy_mushroom"), Feature.TREE, TreeConfigurations.MUSHROOM_RED);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> MEGA_SPRUCE_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mega_spruce_tree"), TFBiomeFeatures.SNOW_TREE.get(), TreeConfigurations.BIG_SPRUCE);
+	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, Feature<TFTreeFeatureConfig>>> LARGE_WINTER_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/large_winter_tree"), TFBiomeFeatures.LARGE_WINTER_TREE.get(), TreeConfigurations.LARGE_WINTER);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> SNOWY_SPRUCE_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/snowy_spruce_tree"), TFBiomeFeatures.SNOW_TREE.get(), TreeFeatures.SPRUCE.value().config());
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> DARK_FOREST_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dark_forest_oak_tree"), TFBiomeFeatures.DARK_CANOPY_TREE.get(), TreeFeatures.OAK.value().config());
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> DARK_FOREST_BIRCH_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dark_forest_birch_tree"), TFBiomeFeatures.DARK_CANOPY_TREE.get(), TreeFeatures.BIRCH.value().config());
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> VANILLA_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/vanilla_oak_tree"), Feature.TREE, TreeFeatures.OAK.value().config());
+	public static final Holder<ConfiguredFeature<TreeConfiguration, Feature<TreeConfiguration>>> VANILLA_BIRCH_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/vanilla_birch_tree"), Feature.TREE, TreeFeatures.BIRCH.value().config());
 
 	//Placements
-	public static final PlacedFeature CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/canopy_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(CANOPY_TREE_BASE.filteredByBlockSurvival(TFBlocks.CANOPY_SAPLING.get()), 0.6F)), TWILIGHT_OAK_BASE.filteredByBlockSurvival(TFBlocks.TWILIGHT_OAK_SAPLING.get()))).placed(tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1)).build()));
-	public static final PlacedFeature DENSE_CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dense_canopy_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(CANOPY_TREE_BASE.filteredByBlockSurvival(TFBlocks.CANOPY_SAPLING.get()), 0.7F)), TWILIGHT_OAK_BASE.filteredByBlockSurvival(TFBlocks.TWILIGHT_OAK_SAPLING.get()))).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1)).build()));
-	public static final PlacedFeature DEAD_CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dead_canopy_trees"), DEAD_CANOPY_TREE_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1)).build()));
-	public static final PlacedFeature MANGROVE_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mangrove_trees"), MANGROVE_TREE_BASE.placed(PlacementUtils.countExtra(3, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(6), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlockConstants.MANGROVE_SAPLING, BlockPos.ZERO)), BiomeFilter.biome()));
-	public static final PlacedFeature TWILIGHT_OAK_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/twilight_oak_trees"), TWILIGHT_OAK_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1)).build()));
-	public static final PlacedFeature DENSE_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dense_trees"), TWILIGHT_OAK_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(7, 0.1F, 1)).build()));
-	public static final PlacedFeature SAVANNAH_OAK_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/savannah_oak_trees"), TWILIGHT_OAK_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(0, 0.1F, 1)).build()));
-	public static final PlacedFeature SWAMPY_OAK_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/swampy_oak_trees"), SWAMPY_OAK_BASE.placed(tfTreeCheckArea(PlacementUtils.countExtra(4, 0.1F, 1)).build()));
-	public static final PlacedFeature FIREFLY_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/firefly_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(CANOPY_TREE_BASE.placed(), 0.33F), new WeightedPlacedFeature(FIREFLY_CANOPY_TREE_BASE.placed(), 0.45F)), TWILIGHT_OAK_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1)).build()));
-	public static final PlacedFeature DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dark_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(BIRCH_DARK_FOREST.placed(), 0.35F), new WeightedPlacedFeature(OAK_DARK_FOREST.placed(), 0.35F)), DARKWOOD_TREE_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), false).build()));
-	public static final PlacedFeature DARKWOOD_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/darkwood_trees"), DARKWOOD_TREE_BASE.placed(PlacementUtils.countExtra(5, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new OutOfStructureFilter(true, false, 16), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlockConstants.DARKWOOD_SAPLING, BlockPos.ZERO)), BiomeFilter.biome()));
-	public static final PlacedFeature HIGHLANDS_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/highlands_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TreeFeatures.SPRUCE.placed(), 0.25F), new WeightedPlacedFeature(TreeFeatures.PINE.placed(), 0.1F)), MEGA_SPRUCE_NO_PODZOL_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1)).build()));
-	public static final PlacedFeature ENCHANTED_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/enchanted_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(VANILLA_TF_OAK.placed(), 0.15F), new WeightedPlacedFeature(VANILLA_TF_BIRCH.placed(), 0.15F), new WeightedPlacedFeature(LARGE_RAINBOW_OAK_BASE.placed(), 0.1F)), RAINBOW_OAK_TREE_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(10, 0.1F, 1)).build()));
-	public static final PlacedFeature SNOWY_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/snowy_forest_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(MEGA_SPRUCE_NO_PODZOL_BASE.placed(), 0.1F), new WeightedPlacedFeature(LARGE_WINTER_TREE_BASE.placed(), 0.01F)), SNOW_SPRUCE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(10, 0.1F, 1)).build()));
-	public static final PlacedFeature VANILLA_TF_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/vanilla_tf_trees"), Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(VANILLA_TF_BIRCH.placed(), 0.25F), new WeightedPlacedFeature(VANILLA_TF_OAK.placed(), 0.25F)), TWILIGHT_OAK_BASE.placed())).placed(tfTreeCheckArea(PlacementUtils.countExtra(10, 0.1F, 1)).build()));
-	public static final PlacedFeature SNOW_SPRUCE_SNOWY = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("snow_spruce_snowy"), SNOW_SPRUCE.placed(tfTreeCheckArea().build()));
-	public static final PlacedFeature VANILLA_TF_BIG_MUSH = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/vanilla/vanilla_tf_big_mush"), Feature.RANDOM_BOOLEAN_SELECTOR.configured(new RandomBooleanFeatureConfiguration(
-			TreeFeatures.HUGE_RED_MUSHROOM::placed,
-			TreeFeatures.HUGE_BROWN_MUSHROOM::placed
-	)).placed(tfTreeCheckArea().build()));
+	public static final Holder<PlacedFeature> PLACED_DEAD_CANOPY_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dead_canopy_tree"), DEAD_CANOPY_TREE, tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1), BlockConstants.CANOPY_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_MANGROVE_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mangrove_tree"), MANGROVE_TREE, List.of(PlacementUtils.countExtra(3, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(6), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), PlacementUtils.filteredByBlockSurvival(TFBlocks.DARKWOOD_SAPLING.get()), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> PLACED_TWILIGHT_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/twilight_oak_tree"), TWILIGHT_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1), BlockConstants.TF_OAK_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_DENSE_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dense_tree"), TWILIGHT_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(7, 0.1F, 1), BlockConstants.TF_OAK_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_SAVANNAH_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/savannah_oak_tree"), TWILIGHT_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(0, 0.1F, 1), BlockConstants.TF_OAK_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_SWAMPY_OAK_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/swampy_oak_tree"), SWAMPY_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(4, 0.1F, 1), BlockConstants.TF_OAK_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_DARKWOOD_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/darkwood_tree"), DARKWOOD_TREE, List.of(PlacementUtils.countExtra(5, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new OutOfStructureFilter(true, false, 16), PlacementUtils.filteredByBlockSurvival(TFBlocks.DARKWOOD_SAPLING.get()), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> PLACED_SNOWY_SPRUCE_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/snowy_spruce"), SNOWY_SPRUCE_TREE, tfTreeCheckArea(BlockConstants.SPRUCE_SAPLING));
+
+	//random selectors
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/canopy_trees"), Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(CANOPY_TREE), 0.6F)), PlacementUtils.inlinePlaced(TWILIGHT_OAK_TREE)));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> DENSE_CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/dense_canopy_trees"), Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(CANOPY_TREE), 0.7F)), PlacementUtils.inlinePlaced(TWILIGHT_OAK_TREE)));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> FIREFLY_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/firefly_forest_trees"), Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(CANOPY_TREE), 0.33F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(FIREFLY_CANOPY_TREE), 0.45F)), PlacementUtils.inlinePlaced(TWILIGHT_OAK_TREE)));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/dark_forest_trees"), Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(DARK_FOREST_BIRCH_TREE), 0.35F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(DARK_FOREST_OAK_TREE), 0.35F)), PlacementUtils.inlinePlaced(DARKWOOD_TREE)));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> HIGHLANDS_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/highlands_trees"), Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(TreeFeatures.SPRUCE), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(TreeFeatures.PINE), 0.1F)), PlacementUtils.inlinePlaced(MEGA_SPRUCE_TREE)));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> ENCHANTED_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/enchanted_forest_trees"), Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(VANILLA_OAK_TREE), 0.15F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(VANILLA_BIRCH_TREE), 0.15F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(LARGE_RAINBOW_OAK_TREE), 0.1F)), PlacementUtils.inlinePlaced(RAINBOW_OAK_TREE)));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> SNOWY_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/snowy_forest_trees"), Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(MEGA_SPRUCE_TREE), 0.1F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(LARGE_WINTER_TREE), 0.01F)), PlacementUtils.inlinePlaced(SNOWY_SPRUCE_TREE)));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> VANILLA_TF_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/vanilla_trees"), Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(VANILLA_BIRCH_TREE), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(VANILLA_OAK_TREE), 0.25F)), PlacementUtils.inlinePlaced(TWILIGHT_OAK_TREE)));
+	public static final Holder<ConfiguredFeature<RandomBooleanFeatureConfiguration, Feature<RandomBooleanFeatureConfiguration>>> VANILLA_TF_BIG_MUSH = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/vanilla/vanilla_mushrooms"), Feature.RANDOM_BOOLEAN_SELECTOR, new RandomBooleanFeatureConfiguration(PlacementUtils.inlinePlaced(TreeFeatures.HUGE_RED_MUSHROOM), PlacementUtils.inlinePlaced(TreeFeatures.HUGE_BROWN_MUSHROOM)));
+
+
+	public static final Holder<PlacedFeature> PLACED_CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/canopy_trees"), CANOPY_TREES, tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1), BlockConstants.CANOPY_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_DENSE_CANOPY_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/dense_canopy_trees"), DENSE_CANOPY_TREES, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), BlockConstants.CANOPY_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_FIREFLY_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/firefly_forest_trees"), FIREFLY_FOREST_TREES, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), BlockConstants.CANOPY_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/dark_forest_trees"), DARK_FOREST_TREES, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), BlockConstants.DARKWOOD_SAPLING, false));
+	public static final Holder<PlacedFeature> PLACED_HIGHLANDS_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/highlands_trees"), HIGHLANDS_TREES, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), BlockConstants.SPRUCE_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_ENCHANTED_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/enchanted_forest_trees"), ENCHANTED_FOREST_TREES, tfTreeCheckArea(PlacementUtils.countExtra(10, 0.1F, 1), BlockConstants.RAINBOW_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_SNOWY_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/snowy_forest_trees"), SNOWY_FOREST_TREES, tfTreeCheckArea(PlacementUtils.countExtra(10, 0.1F, 1), BlockConstants.CANOPY_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_VANILLA_TF_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/vanilla_trees"), VANILLA_TF_TREES, tfTreeCheckArea(PlacementUtils.countExtra(10, 0.1F, 1), BlockConstants.TF_OAK_SAPLING));
+	public static final Holder<PlacedFeature> PLACED_VANILLA_TF_BIG_MUSH = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/selector/vanilla_mushrooms"), VANILLA_TF_BIG_MUSH, tfTreeCheckArea(BlockConstants.CANOPY_SAPLING));
+
+	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, Feature<NoneFeatureConfiguration>>> DUMMY_TREE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/dummy"), Feature.NO_OP, NoneFeatureConfiguration.INSTANCE);
 
 	//super funky tree placement lists
-	public static final PlacedFeature CANOPY_MUSHROOMS_SPARSE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/canopy_mushrooms_sparse"),
-			Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(List.of(
-							new WeightedPlacedFeature(TFTreeFeatures.BROWN_CANOPY_MUSHROOM_TREE_BASE.placed(), 0.15f),
-							new WeightedPlacedFeature(TFTreeFeatures.BROWN_CANOPY_MUSHROOM_TREE_BASE.placed(), 0.05f)),
-							Feature.NO_OP.configured(NoneFeatureConfiguration.INSTANCE).placed()))
-					.placed(tfTreeCheckArea(PlacementUtils.countExtra(8, 0.1F, 1)).build()));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> CANOPY_MUSHROOMS_SPARSE =
+			TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/canopy_mushrooms_sparse"),
+					Feature.RANDOM_SELECTOR,
+					new RandomFeatureConfiguration(List.of(
+							new WeightedPlacedFeature(PlacementUtils.inlinePlaced(BROWN_CANOPY_MUSHROOM_TREE), 0.15f),
+							new WeightedPlacedFeature(PlacementUtils.inlinePlaced(RED_CANOPY_MUSHROOM_TREE), 0.05f)),
+							PlacementUtils.inlinePlaced(DUMMY_TREE)));
 
-	public static final PlacedFeature CANOPY_MUSHROOMS_DENSE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/canopy_mushrooms_dense"),
-			Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(List.of(
-					new WeightedPlacedFeature(TFTreeFeatures.BROWN_CANOPY_MUSHROOM_TREE_BASE.placed(), 0.675f),
-					new WeightedPlacedFeature(TFTreeFeatures.RED_CANOPY_MUSHROOM_TREE_BASE.placed(), 0.225f)),
-					Feature.NO_OP.configured(NoneFeatureConfiguration.INSTANCE).placed()))
-					.placed(tfTreeCheckArea(PlacementUtils.countExtra(8, 0.1F, 1)).build()));
+	public static final Holder<PlacedFeature> PLACED_CANOPY_MUSHROOMS_SPARSE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/canopy_mushrooms_sparse"), CANOPY_MUSHROOMS_SPARSE, tfTreeCheckArea(PlacementUtils.countExtra(8, 0.1F, 1), BlockConstants.CANOPY_SAPLING));
+
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, Feature<RandomFeatureConfiguration>>> CANOPY_MUSHROOMS_DENSE =
+			TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/canopy_mushrooms_dense"),
+					Feature.RANDOM_SELECTOR,
+					new RandomFeatureConfiguration(List.of(
+						new WeightedPlacedFeature(PlacementUtils.inlinePlaced(BROWN_CANOPY_MUSHROOM_TREE), 0.675f),
+						new WeightedPlacedFeature(PlacementUtils.inlinePlaced(RED_CANOPY_MUSHROOM_TREE), 0.225f)),
+						PlacementUtils.inlinePlaced(DUMMY_TREE)));
+
+	public static final Holder<PlacedFeature> PLACED_CANOPY_MUSHROOMS_DENSE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/canopy_mushrooms_dense"),
+			CANOPY_MUSHROOMS_DENSE, tfTreeCheckArea(PlacementUtils.countExtra(8, 0.1F, 1), BlockConstants.CANOPY_SAPLING));
 
 	//why does it only place hollow trees this way?
-	public static final PlacedFeature HOLLOW_TREE_PLACER = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/hollow_placer"),
-			Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(
-					new WeightedPlacedFeature(TFTreeFeatures.HOLLOW_TREE_BASE.placed(), 0.04f)),
-					Feature.NO_OP.configured(NoneFeatureConfiguration.INSTANCE).placed()))
-					.placed(
-							SurfaceWaterDepthFilter.forMaxDepth(0),
-							PlacementUtils.HEIGHTMAP_OCEAN_FLOOR,
-							new OutOfStructureFilter(true, false, 16),
-							ChunkCenterModifier.center(),
-							BiomeFilter.biome()
-					));
 
-	private static ImmutableList.Builder<PlacementModifier> tfTreeCheckArea() {
-		return ImmutableList.<PlacementModifier>builder().add(InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlockConstants.CANOPY_SAPLING, BlockPos.ZERO)), BiomeFilter.biome());
+	private static List<PlacementModifier> tfTreeCheckArea(BlockState sapling) {
+		return List.of(InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface(), PlacementUtils.filteredByBlockSurvival(sapling.getBlock()), BiomeFilter.biome());
 	}
 
-	private static ImmutableList.Builder<PlacementModifier> tfTreeCheckArea(PlacementModifier count) {
-		return tfTreeCheckArea(count, true);
+	private static List<PlacementModifier> tfTreeCheckArea(PlacementModifier count, BlockState sapling) {
+		return tfTreeCheckArea(count, sapling, true);
 	}
 
-	private static ImmutableList.Builder<PlacementModifier> tfTreeCheckArea(PlacementModifier count, boolean checkSurvival) {
+	private static List<PlacementModifier> tfTreeCheckArea(PlacementModifier count, BlockState sapling, boolean checkSurvival) {
 		ImmutableList.Builder<PlacementModifier> list = ImmutableList.<PlacementModifier>builder();
 		list.add(count, InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureFilter.checkSurface());
 		if (checkSurvival) {
-			list.add(BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlockConstants.CANOPY_SAPLING, BlockPos.ZERO)));
+			list.add(PlacementUtils.filteredByBlockSurvival(sapling.getBlock()));
 		}
 		list.add(BiomeFilter.biome());
-		return list;
+		return list.build();
 	}
 
 }

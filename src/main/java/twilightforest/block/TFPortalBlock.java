@@ -44,7 +44,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.PlayerHelper;
@@ -186,11 +186,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static boolean isNatureBlock(BlockState state) {
-		return BlockTagGenerator.PORTAL_DECO.contains(state.getBlock());
+		return state.is(BlockTagGenerator.PORTAL_DECO);
 	}
 
 	private static boolean isGrassOrDirt(BlockState state) {
-		return BlockTagGenerator.PORTAL_EDGE.contains(state.getBlock());
+		return state.is(BlockTagGenerator.PORTAL_EDGE);
 	}
 
 	@Override

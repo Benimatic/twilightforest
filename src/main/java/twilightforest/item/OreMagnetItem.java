@@ -29,9 +29,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.BlockTagGenerator;
-import twilightforest.data.CustomTagGenerator;
-import twilightforest.util.FeatureLogic;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
@@ -213,9 +211,7 @@ public class OreMagnetItem extends Item {
 
 	@Deprecated
 	private static boolean isReplaceable(BlockState state) {
-        Block block = state.getBlock();
-
-		return BlockTagGenerator.ORE_MAGNET_SAFE_REPLACE_BLOCK.contains(block);
+		return state.is(BlockTagGenerator.ORE_MAGNET_SAFE_REPLACE_BLOCK);
 	}
 
 	private static boolean findVein(Level world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {

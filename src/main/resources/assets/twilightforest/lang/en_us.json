@@ -1259,6 +1259,7 @@
   "subtitles.twilightforest.entity.tome.death": "Death Tome falls apart",
   "subtitles.twilightforest.entity.tome.hurt": "Death Tome creases",
   "subtitles.twilightforest.entity.tome.ambient": "Death Tome flips pages",
+  "subtitles.twilightforest.entity.troll.throw_block": "Troll chucks block",
   "subtitles.twilightforest.entity.urghast.ambient": "Ur-Ghast cries",
   "subtitles.twilightforest.entity.urghast.death": "Ur-Ghast dies",
   "subtitles.twilightforest.entity.urghast.hurt": "Ur-Ghast screams",
@@ -1375,6 +1376,8 @@
   "death.attack.twilightforest.knightmetal.player": "%1$s was spiked by a knightmetal block while escaping %2$s",
   "death.attack.twilightforest.fiery": "%1$s walked onto a fiery block",
   "death.attack.twilightforest.fiery.player": "%1$s walked onto a fiery block while escaping %2$s",
+  "death.attack.twilightforest.thrown_block": "%1$s was squashed by a thrown block",
+  "death.attack.twilightforest.thrown_block.player": "%1$s was squashed by a thrown block while escaping %2$s",
 
   "death.attack.twilightforest.axing": "%1$s was chopped up by %2$s",
   "death.attack.twilightforest.axing.item": "%1$s was chopped up by %2$s using %3$s",

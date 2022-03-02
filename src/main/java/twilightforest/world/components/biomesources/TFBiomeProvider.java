@@ -3,8 +3,8 @@ package twilightforest.world.components.biomesources;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.RegistryLookupCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -55,17 +55,17 @@ public class TFBiomeProvider extends BiomeSource {
 			BiomeKeys.SPOOKY_FOREST
 	);
 
-	private final Registry<Biome> registry;
+	private final Registry<Holder<Biome>> registry;
 	private final Layer genBiomes;
 	private final long seed;
 
-	public TFBiomeProvider(long seed, Registry<Biome> registryIn) {
+	public TFBiomeProvider(long seed, Registry<Holder<Biome>> registryIn) {
 		super(BIOMES
 				.stream()
 				.map(ResourceKey::location)
 				.map(registryIn::getOptional)
 				.filter(Optional::isPresent)
-				.map(opt -> opt::get)
+				.map(Optional::get)
 		);
 
 		this.seed = seed;
@@ -109,7 +109,7 @@ public class TFBiomeProvider extends BiomeSource {
 		return biomes;
 	}
 	
-	public static Layer makeLayers(long seed, Registry<Biome> registry) {
+	public static Layer makeLayers(long seed, Registry<Holder<Biome>> registry) {
 		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
 		// Debug code to render an image of the biome layout within the ide
 		/*final java.util.Map<Integer, Integer> remapColors = new java.util.HashMap<>();
@@ -159,9 +159,9 @@ public class TFBiomeProvider extends BiomeSource {
  		System.out.println("breakpoint");*/
 		return new Layer(areaFactory) {
 			@Override
-			public Biome get(Registry<Biome> p_242936_1_, int p_242936_2_, int p_242936_3_) {
+			public Holder<Biome> get(Registry<Holder<Biome>> p_242936_1_, int p_242936_2_, int p_242936_3_) {
 				int i = this.area.get(p_242936_2_, p_242936_3_);
-				Biome biome = registry.byId(i);
+				Holder<Biome> biome = registry.byId(i);
 				if (biome == null)
 					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
 				return biome;
@@ -180,7 +180,7 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	@Override
-	public Biome getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
+	public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
 		return genBiomes.get(registry, x, z);
 	}
 }

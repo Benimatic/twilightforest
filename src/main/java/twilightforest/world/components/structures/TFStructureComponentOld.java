@@ -20,13 +20,13 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -529,7 +529,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
-				if (!predicate.test(world.getBiome(pos.set(x, 0, z)))) {
+				if (!predicate.test(world.getBiome(pos.set(x, 0, z)).value())) {
 					return true;
 				}
 			}

@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import twilightforest.TFConfig;
 import twilightforest.block.TFBlocks;
-import twilightforest.data.ItemTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
 import twilightforest.inventory.slot.UncraftingSlot;

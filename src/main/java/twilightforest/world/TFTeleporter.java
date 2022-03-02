@@ -257,7 +257,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkBiome(Level world, BlockPos pos, Entity entity) {
-		return TFGenerationSettings.isBiomeSafeFor(world.getBiome(pos), entity);
+		return TFGenerationSettings.isBiomeSafeFor(world.getBiome(pos).value(), entity);
 	}
 
 	@Nullable

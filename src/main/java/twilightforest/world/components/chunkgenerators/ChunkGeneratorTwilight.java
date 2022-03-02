@@ -20,8 +20,6 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseSampler;
-import net.minecraftforge.common.world.StructureSpawnManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -48,7 +46,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private final Optional<Integer> darkForestCanopyHeight;
 
 	private final BlockState defaultBlock;
-	private final Optional<NoiseSampler> surfaceNoiseGetter;
+	private final Optional<Climate.Sampler> surfaceNoiseGetter;
 
 	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
 
@@ -87,6 +85,11 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		//noinspection OptionalIsPresent
 		if (this.darkForestCanopyHeight.isPresent())
 			this.addDarkForestCanopy(world, chunk, this.darkForestCanopyHeight.get());
+	}
+
+	@Override
+	public void addDebugScreenInfo(List<String> p_208054_, BlockPos p_208055_) {
+		//do we do anything with this? we need to implement it for some reason
 	}
 
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
@@ -353,7 +356,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
-						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2, null);
+						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2, null).value();
 						if (BiomeKeys.DARK_FOREST.location().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.location().equals(biome.getRegistryName())) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
@@ -447,9 +450,10 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructureStart.gatherPotentialSpawns(structureManager, mobCategory, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
-		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, mobCategory, pos);
-		if (spawns != null)
-			return spawns;
+		//FIXME forge has StructureSpawnManager commented out, find out if theyre redoing this class or removing it entirely
+//		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, mobCategory, pos);
+//		if (spawns != null)
+//			return spawns;
 		return mobCategory == MobCategory.MONSTER && pos.getY() >= this.getSeaLevel() ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, mobCategory, pos);
 	}
 

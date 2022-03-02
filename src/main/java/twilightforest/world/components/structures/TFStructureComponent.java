@@ -1,33 +1,31 @@
 package twilightforest.world.components.structures;
 
-import java.util.Set;
-
 import com.google.common.collect.ImmutableSet;
-
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
-import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.item.DyeColor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.material.FluidState;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
+import twilightforest.world.registration.TFFeature;
+
+import java.util.Set;
 
 @Deprecated
 // We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the

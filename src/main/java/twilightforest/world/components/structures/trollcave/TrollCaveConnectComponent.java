@@ -273,7 +273,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		//largeBox.maxY() += 30;
 		//largeBox.maxZ() += 30;
 
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			for (StructurePiece component : start.getPieces()) {
 				if (component instanceof TrollCaveGardenComponent && component.getBoundingBox().intersects(largeBox)) {
 					return component;

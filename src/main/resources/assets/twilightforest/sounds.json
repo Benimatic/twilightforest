@@ -177,6 +177,7 @@
   "entity.twilightforest.tome.death": { "subtitle": "subtitles.twilightforest.entity.tome.death", "sounds": [ "twilightforest:mob/tome/death" ] },
   "entity.twilightforest.tome.hurt": { "subtitle": "subtitles.twilightforest.entity.tome.hurt", "sounds": [ "twilightforest:mob/tome/hurt1", "twilightforest:mob/tome/hurt2", "twilightforest:mob/tome/hurt3" ] },
   "entity.twilightforest.tome.ambient": { "subtitle": "subtitles.twilightforest.entity.tome.ambient", "sounds": [ "twilightforest:mob/tome/idle1", "twilightforest:mob/tome/idle2" ] },
+  "entity.twilightforest.troll.throw_block": { "subtitle": "subtitles.twilightforest.entity.troll.throw_block", "sounds": ["random/bow"] },
   "entity.twilightforest.urghast.ambient": { "subtitle": "subtitles.twilightforest.entity.urghast.ambient", "sounds": [ "mob/ghast/moan1", "mob/ghast/moan2",  "mob/ghast/moan3", "mob/ghast/moan4", "mob/ghast/moan5", "mob/ghast/moan6", "mob/ghast/moan7" ] },
   "entity.twilightforest.urghast.death": { "subtitle": "subtitles.twilightforest.entity.urghast.death", "sounds": [ "mob/ghast/death" ] },
   "entity.twilightforest.urghast.hurt": { "subtitle": "subtitles.twilightforest.entity.urghast.hurt", "sounds": [  "mob/ghast/scream1", "mob/ghast/scream2", "mob/ghast/scream3", "mob/ghast/scream4", "mob/ghast/scream5" ] },

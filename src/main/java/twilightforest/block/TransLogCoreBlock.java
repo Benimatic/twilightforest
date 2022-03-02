@@ -41,7 +41,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			if (dPos.distSqr(pos) > 256.0)
 				continue;
 
-			Biome biomeAt = world.getBiome(dPos);
+			Biome biomeAt = world.getBiome(dPos).value();
 			if (biomeAt == targetBiome)
 				continue;
 

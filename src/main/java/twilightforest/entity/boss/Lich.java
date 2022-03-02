@@ -1,71 +1,58 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.BossEvent;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerBossEvent;
+import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
-import twilightforest.data.EntityTagGenerator;
+import twilightforest.block.TFBlocks;
+import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.entity.TFEntities;
+import twilightforest.entity.ai.LichMinionsGoal;
+import twilightforest.entity.ai.LichShadowsGoal;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBolt;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.monster.SwarmSpider;
-import twilightforest.entity.TFEntities;
-import twilightforest.entity.ai.LichMinionsGoal;
-import twilightforest.entity.ai.LichShadowsGoal;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Spider;
-import net.minecraft.world.entity.monster.Zombie;
 
 public class Lich extends Monster {
 
@@ -404,7 +391,7 @@ public class Lich extends Monster {
 	}
 
 	private void popNearbyMob() {
-		List<Mob> nearbyMobs = level.getEntitiesOfClass(Mob.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D), e -> EntityTagGenerator.LICH_POPPABLES.contains(e.getType()));
+		List<Mob> nearbyMobs = level.getEntitiesOfClass(Mob.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES));
 
 		for (Mob mob : nearbyMobs) {
 			if (getSensing().hasLineOfSight(mob)) {

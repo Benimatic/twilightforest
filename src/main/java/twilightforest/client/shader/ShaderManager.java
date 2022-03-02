@@ -12,7 +12,6 @@ package twilightforest.client.shader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
@@ -69,7 +68,7 @@ public final class ShaderManager {
     public static void initShaders() {
         ResourceManager iManager;
 
-        if ((iManager = Minecraft.getInstance().getResourceManager()) instanceof SimpleReloadableResourceManager) {
+        if ((iManager = Minecraft.getInstance().getResourceManager()) instanceof ReloadableResourceManager) {
 //            ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager, predicate) -> {
 //                if (predicate.test(VanillaResourceType.SHADERS)) reloadShaders();
 //            });

@@ -1,13 +1,12 @@
-package twilightforest.data;
+package twilightforest.data.tags;
 
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.tags.Tag;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.common.ForgeTagHandler;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeRegistryTagsProvider;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
@@ -15,12 +14,12 @@ import javax.annotation.Nullable;
 //a place to hold all custom tags, since I imagine we wont have a lot of them
 public class CustomTagGenerator {
 
-	public static class EnchantmentTagGenerator extends ForgeRegistryTagsProvider<Enchantment> {
+	public static class EnchantmentTagGenerator extends TagsProvider<Enchantment> {
 
-		public static final Tag.Named<Enchantment> PHANTOM_ARMOR_BANNED_ENCHANTS = ForgeTagHandler.createOptionalTag(ForgeRegistries.ENCHANTMENTS, TwilightForestMod.prefix("phantom_armor_banned_enchants"));
+		public static final TagKey<Enchantment> PHANTOM_ARMOR_BANNED_ENCHANTS = TagKey.create(Registry.ENCHANTMENT_REGISTRY, TwilightForestMod.prefix("phantom_armor_banned_enchants"));
 
 		public EnchantmentTagGenerator(DataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
-			super(generatorIn, ForgeRegistries.ENCHANTMENTS, TwilightForestMod.ID, existingFileHelper);
+			super(generatorIn, Registry.ENCHANTMENT, TwilightForestMod.ID, existingFileHelper);
 		}
 
 		@Override

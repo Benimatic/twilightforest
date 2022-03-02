@@ -22,6 +22,7 @@ public class TFDamageSources {
     public static final DamageSource FIRE_JET = new DamageSource(tfSource("fireJet"));
     public static final DamageSource REACTOR = new DamageSource(tfSource("reactor"));
     public static final DamageSource SLIDER = new DamageSource(tfSource("slider"));
+    public static final DamageSource THROWN_BLOCK = new DamageSource(tfSource("thrown_block")).damageHelmet();
 
     public static DamageSource axing(LivingEntity mob) {
         return new EntityDamageSource(tfSource("axing"), mob); //minotaur, minoshroom

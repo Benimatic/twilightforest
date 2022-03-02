@@ -32,7 +32,7 @@ public class LockedBiomeListener {
 		if(world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 5 == 0
 				&& TFGenerationSettings.isProgressionEnforced(world)
 				&& !player.isCreative() && !player.isSpectator() && !TFConfig.CLIENT_CONFIG.disableLockedBiomeToasts.get()) {
-			if (!TFGenerationSettings.isBiomeSafeFor(world.getBiome(player.blockPosition()), player)) {
+			if (!TFGenerationSettings.isBiomeSafeFor(world.getBiome(player.blockPosition()).value(), player)) {
 				timeUntilToast--;
 				ItemStack item;
 				if (world.getBiome(player.blockPosition()).equals(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(BiomeKeys.DARK_FOREST))) {

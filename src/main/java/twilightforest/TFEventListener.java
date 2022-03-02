@@ -68,17 +68,13 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.event.DropRulesEvent;
-import top.theillusivec4.curios.api.type.capability.ICurio;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.CharmEffect;
 import twilightforest.entity.IHostileMount;
@@ -348,12 +344,12 @@ public class TFEventListener {
 
 	private static boolean hasCharmCurio(Item item, Player player) {
 		if(ModList.get().isLoaded("curios")) {
-			ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item, player).map(ImmutableTriple::getRight).orElse(ItemStack.EMPTY);
-
-			if (!stack.isEmpty()) {
-				stack.shrink(1);
-				return true;
-			}
+//			ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item, player).map(ImmutableTriple::getRight).orElse(ItemStack.EMPTY);
+//
+//			if (!stack.isEmpty()) {
+//				stack.shrink(1);
+//				return true;
+//			}
 		}
 
 		return false;
@@ -519,20 +515,20 @@ public class TFEventListener {
 	}
 
 	//if we have any curios and die with a charm of keeping on us, keep our curios instead of dropping them
-	@SubscribeEvent
-	public static void keepCurios(DropRulesEvent event) {
-		if (event.getEntityLiving() instanceof Player player) {
-			CompoundTag playerData = getPlayerData(player);
-			if (!player.level.isClientSide && playerData.contains("TfCharmInventory")) { //Keep all Curios items
-				CuriosApi.getCuriosHelper().getEquippedCurios(player).ifPresent(modifiable -> {
-					for (int i = 0; i < modifiable.getSlots(); ++i) {
-						int finalI = i;
-						event.addOverride(stack -> stack == modifiable.getStackInSlot(finalI), ICurio.DropRule.ALWAYS_KEEP);
-					}
-				});
-			}
-		}
-	}
+//	@SubscribeEvent
+//	public static void keepCurios(DropRulesEvent event) {
+//		if (event.getEntityLiving() instanceof Player player) {
+//			CompoundTag playerData = getPlayerData(player);
+//			if (!player.level.isClientSide && playerData.contains("TfCharmInventory")) { //Keep all Curios items
+//				CuriosApi.getCuriosHelper().getEquippedCurios(player).ifPresent(modifiable -> {
+//					for (int i = 0; i < modifiable.getSlots(); ++i) {
+//						int finalI = i;
+//						event.addOverride(stack -> stack == modifiable.getStackInSlot(finalI), ICurio.DropRule.ALWAYS_KEEP);
+//					}
+//				});
+//			}
+//		}
+//	}
 
 	//stores the charm that was used for the effect later
 	private static ItemStack charmUsed;
@@ -775,9 +771,9 @@ public class TFEventListener {
 
 
 		if (chunkGenerator != null) {
-			Optional<StructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0);
+			Optional<StructureStart> struct = TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0);
 			if(struct.isPresent()) {
-				StructureStart<?> structure = struct.get();
+				StructureStart structure = struct.get();
 				if(structure.getBoundingBox().isInside(pos)) {
 					// what feature is nearby?  is it one the player has not unlocked?
 					TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world);

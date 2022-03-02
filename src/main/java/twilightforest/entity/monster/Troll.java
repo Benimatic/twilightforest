@@ -2,9 +2,11 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -21,14 +23,21 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.projectile.IceBomb;
+import twilightforest.entity.projectile.ThrownBlock;
 import twilightforest.util.WorldUtil;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Random;
 
 public class Troll extends Monster implements RangedAttackMob {
@@ -38,9 +47,13 @@ public class Troll extends Monster implements RangedAttackMob {
 
 	private RangedAttackGoal aiArrowAttack;
 	private MeleeAttackGoal aiAttackOnCollide;
+	private int rockCooldown;
+	@Nullable
+	private BlockState rock;
 
 	public Troll(EntityType<? extends Troll> type, Level world) {
 		super(type, world);
+		this.rockCooldown = 300;
 	}
 
 	@Override
@@ -54,10 +67,10 @@ public class Troll extends Monster implements RangedAttackMob {
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Troll.class));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 
-		if (level != null && !level.isClientSide) {
+		if (!level.isClientSide) {
 			this.setCombatTask();
 		}
 	}
@@ -67,6 +80,55 @@ public class Troll extends Monster implements RangedAttackMob {
 				.add(Attributes.MAX_HEALTH, 30.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.28D)
 				.add(Attributes.ATTACK_DAMAGE, 7.0D);
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		if (!this.level.isClientSide) {
+
+			if (!this.hasRock() && this.getTarget() != null) {
+				if (this.rockCooldown > 0) {
+					rockCooldown--;
+				} else {
+					//copied from EnderMan.EndermanTakeBlockGoal.tick()
+					Random random = this.getRandom();
+					Level level = this.level;
+					int i = Mth.floor(this.getX() - 2.0D + random.nextDouble() * 4.0D);
+					int j = Mth.floor(this.getY() + random.nextDouble() * 3.0D);
+					int k = Mth.floor(this.getZ() - 2.0D + random.nextDouble() * 4.0D);
+					BlockPos blockpos = new BlockPos(i, j, k);
+					BlockState blockstate = level.getBlockState(blockpos);
+					Vec3 vec3 = new Vec3((double) this.getBlockX() + 0.5D, (double) j + 0.5D, (double) this.getBlockZ() + 0.5D);
+					Vec3 vec31 = new Vec3((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D);
+					BlockHitResult blockhitresult = level.clip(new ClipContext(vec3, vec31, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
+					boolean flag = blockhitresult.getBlockPos().equals(blockpos);
+					if (blockstate.is(BlockTags.BASE_STONE_OVERWORLD) && flag) {
+						rock = level.getBlockState(blockpos);
+						level.removeBlock(blockpos, false);
+						level.gameEvent(this, GameEvent.BLOCK_DESTROY, blockpos);
+					}
+
+					if (rock != null) {
+						this.setHasRock(true);
+						ThrownBlock block = new ThrownBlock(level, this, rock);
+						block.startRiding(this);
+						level.addFreshEntity(block);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public double getPassengersRidingOffset() {
+		return super.getPassengersRidingOffset() + 1.75D;
+	}
+
+	@Override
+	public void positionRider(Entity entity) {
+		super.positionRider(entity);
+		entity.setXRot(this.getXRot());
 	}
 
 	@Override
@@ -84,11 +146,11 @@ public class Troll extends Monster implements RangedAttackMob {
 
 		if (!level.isClientSide) {
 			if (rock) {
-				if (!getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
-					this.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(ROCK_MODIFIER);
+				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ROCK_MODIFIER)) {
+					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ROCK_MODIFIER);
 				}
 			} else {
-				this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
+				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ROCK_MODIFIER);
 			}
 			this.setCombatTask();
 		}
@@ -104,12 +166,18 @@ public class Troll extends Monster implements RangedAttackMob {
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("HasRock", this.hasRock());
+		compound.putInt("RockCooldown", this.rockCooldown);
+		if (this.rock != null) {
+			compound.put("RockState", NbtUtils.writeBlockState(this.rock));
+		}
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.setHasRock(compound.getBoolean("HasRock"));
+		this.rockCooldown = compound.getInt("RockCooldown");
+		this.rock = NbtUtils.readBlockState(compound.getCompound("RockState"));
 	}
 
 	private void setCombatTask() {
@@ -149,23 +217,29 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.hasRock()) {
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE, this.level, this);
+			ThrownBlock blocc = new ThrownBlock(this.level, this, rock);
 
-			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getX() - this.getX();
-			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - ice.getY();
+			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - blocc.getY();
 			double d2 = target.getZ() - this.getZ();
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.level.getDifficulty().getId() * 4);
+			blocc.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 4 - this.level.getDifficulty().getId());
 
-			this.playSound(TFSounds.ICEBOMB_FIRED, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			this.level.addFreshEntity(ice);
+			this.playSound(TFSounds.TROLL_THROWS_ROCK, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.level.addFreshEntity(blocc);
+			this.setHasRock(false);
+			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK) {
+				this.getFirstPassenger().discard();
+			}
+			this.rockCooldown = 300;
+			rock = null;
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public static boolean canSpawn(EntityType<? extends Troll> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
 		BlockPos blockpos = pos.below();
-		return  world.getDifficulty() != Difficulty.PEACEFUL &&
+		return world.getDifficulty() != Difficulty.PEACEFUL &&
 				world.getBlockState(blockpos).getBlock() != TFBlocks.GIANT_OBSIDIAN.get() &&
 				!world.canSeeSky(pos);
 	}

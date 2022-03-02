@@ -123,7 +123,7 @@ public class MagicMapItem extends MapItem {
 				Biome[] array = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
 				for(int l = 0; l < 128 * biomesPerPixel; ++l) {
 					for(int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
-						array[l * 128 * biomesPerPixel + i1] = world.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel));
+						array[l * 128 * biomesPerPixel + i1] = world.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel)).value();
 					}
 				}
 				return array;

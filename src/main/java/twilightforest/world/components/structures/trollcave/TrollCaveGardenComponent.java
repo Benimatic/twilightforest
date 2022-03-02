@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.trollcave;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -26,12 +28,12 @@ import java.util.Random;
 
 public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 	// FIXME These should probably reference stuff from the datapack
-	private final ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.MYCELIUM, UniformInt.of(3, 5), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK)));
-	private final ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.DIRT, UniformInt.of(2, 5), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK)));
-	private final ConfiguredFeature<?,?> smallUberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(2, 3), 0, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
-	private final ConfiguredFeature<?,?> bigRedMushroomGen = TreeFeatures.HUGE_RED_MUSHROOM;
-	private final ConfiguredFeature<?,?> bigBrownMushroomGen = TreeFeatures.HUGE_BROWN_MUSHROOM;
-	private final ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().configured(FeatureConfiguration.NONE);
+	private final Holder<ConfiguredFeature<?,?>> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.MYCELIUM, UniformInt.of(3, 5), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK)));
+	private final Holder<ConfiguredFeature<?,?>> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.DIRT, UniformInt.of(2, 5), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK)));
+	private final Holder<ConfiguredFeature<?,?>> smallUberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(2, 3), 0, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
+	private final Holder<ConfiguredFeature<HugeMushroomFeatureConfiguration, ?>> bigRedMushroomGen = TreeFeatures.HUGE_RED_MUSHROOM;
+	private final Holder<ConfiguredFeature<HugeMushroomFeatureConfiguration, ?>> bigBrownMushroomGen = TreeFeatures.HUGE_BROWN_MUSHROOM;
+	private final Holder<ConfiguredFeature<?,?>> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get();
 
 	public TrollCaveGardenComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCGard, nbt);

@@ -1,4 +1,4 @@
-package twilightforest.data;
+package twilightforest.data.tags;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -6,67 +6,66 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import top.theillusivec4.curios.api.CuriosApi;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
 public class ItemTagGenerator extends ItemTagsProvider {
-	public static final Tag.Named<Item> TWILIGHT_OAK_LOGS = ItemTags.bind(TwilightForestMod.prefix("twilight_oak_logs").toString());
-	public static final Tag.Named<Item> CANOPY_LOGS = ItemTags.bind(TwilightForestMod.prefix("canopy_logs").toString());
-	public static final Tag.Named<Item> MANGROVE_LOGS = ItemTags.bind(TwilightForestMod.prefix("mangrove_logs").toString());
-	public static final Tag.Named<Item> DARKWOOD_LOGS = ItemTags.bind(TwilightForestMod.prefix("darkwood_logs").toString());
-	public static final Tag.Named<Item> TIME_LOGS = ItemTags.bind(TwilightForestMod.prefix("timewood_logs").toString());
-	public static final Tag.Named<Item> TRANSFORMATION_LOGS = ItemTags.bind(TwilightForestMod.prefix("transwood_logs").toString());
-	public static final Tag.Named<Item> MINING_LOGS = ItemTags.bind(TwilightForestMod.prefix("mining_logs").toString());
-	public static final Tag.Named<Item> SORTING_LOGS = ItemTags.bind(TwilightForestMod.prefix("sortwood_logs").toString());
+	public static final TagKey<Item> TWILIGHT_OAK_LOGS = ItemTags.create(TwilightForestMod.prefix("twilight_oak_logs"));
+	public static final TagKey<Item> CANOPY_LOGS = ItemTags.create(TwilightForestMod.prefix("canopy_logs"));
+	public static final TagKey<Item> MANGROVE_LOGS = ItemTags.create(TwilightForestMod.prefix("mangrove_logs"));
+	public static final TagKey<Item> DARKWOOD_LOGS = ItemTags.create(TwilightForestMod.prefix("darkwood_logs"));
+	public static final TagKey<Item> TIME_LOGS = ItemTags.create(TwilightForestMod.prefix("timewood_logs"));
+	public static final TagKey<Item> TRANSFORMATION_LOGS = ItemTags.create(TwilightForestMod.prefix("transwood_logs"));
+	public static final TagKey<Item> MINING_LOGS = ItemTags.create(TwilightForestMod.prefix("mining_logs"));
+	public static final TagKey<Item> SORTING_LOGS = ItemTags.create(TwilightForestMod.prefix("sortwood_logs"));
 
-	public static final Tag.Named<Item> TWILIGHT_LOGS = ItemTags.bind(TwilightForestMod.prefix("logs").toString());
-	public static final Tag.Named<Item> TF_FENCES = ItemTags.bind(TwilightForestMod.prefix("fences").toString());
-	public static final Tag.Named<Item> TF_FENCE_GATES = ItemTags.bind(TwilightForestMod.prefix("fence_gates").toString());
+	public static final TagKey<Item> TWILIGHT_LOGS = ItemTags.create(TwilightForestMod.prefix("logs"));
+	public static final TagKey<Item> TF_FENCES = ItemTags.create(TwilightForestMod.prefix("fences"));
+	public static final TagKey<Item> TF_FENCE_GATES = ItemTags.create(TwilightForestMod.prefix("fence_gates"));
 
-	public static final Tag.Named<Item> PAPER = ItemTags.bind("forge:paper");
+	public static final TagKey<Item> PAPER = ItemTags.create(new ResourceLocation("forge", "paper"));
 
-	public static final Tag.Named<Item> TOWERWOOD = ItemTags.bind(TwilightForestMod.prefix("towerwood").toString());
+	public static final TagKey<Item> TOWERWOOD = ItemTags.create(TwilightForestMod.prefix("towerwood"));
 
-	public static final Tag.Named<Item> FIERY_VIAL = ItemTags.bind(TwilightForestMod.prefix("fiery_vial").toString());
+	public static final TagKey<Item> FIERY_VIAL = ItemTags.create(TwilightForestMod.prefix("fiery_vial"));
 
-	public static final Tag.Named<Item> ARCTIC_FUR = ItemTags.bind(TwilightForestMod.prefix("arctic_fur").toString());
-	public static final Tag.Named<Item> CARMINITE_GEMS = ItemTags.bind("forge:gems/carminite");
-	public static final Tag.Named<Item> FIERY_INGOTS = ItemTags.bind("forge:ingots/fiery");
-	public static final Tag.Named<Item> IRONWOOD_INGOTS = ItemTags.bind("forge:ingots/ironwood");
-	public static final Tag.Named<Item> KNIGHTMETAL_INGOTS = ItemTags.bind("forge:ingots/knightmetal");
-	public static final Tag.Named<Item> STEELEAF_INGOTS = ItemTags.bind("forge:ingots/steeleaf");
+	public static final TagKey<Item> ARCTIC_FUR = ItemTags.create(TwilightForestMod.prefix("arctic_fur"));
+	public static final TagKey<Item> CARMINITE_GEMS = ItemTags.create(new ResourceLocation("forge", "gems/carminite"));
+	public static final TagKey<Item> FIERY_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/fiery"));
+	public static final TagKey<Item> IRONWOOD_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/ironwood"));
+	public static final TagKey<Item> KNIGHTMETAL_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/knightmetal"));
+	public static final TagKey<Item> STEELEAF_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/steeleaf"));
 
-	public static final Tag.Named<Item> STORAGE_BLOCKS_ARCTIC_FUR = ItemTags.bind("forge:storage_blocks/arctic_fur");
-	public static final Tag.Named<Item> STORAGE_BLOCKS_CARMINITE = ItemTags.bind("forge:storage_blocks/carminite");
-	public static final Tag.Named<Item> STORAGE_BLOCKS_FIERY = ItemTags.bind("forge:storage_blocks/fiery");
-	public static final Tag.Named<Item> STORAGE_BLOCKS_IRONWOOD = ItemTags.bind("forge:storage_blocks/ironwood");
-	public static final Tag.Named<Item> STORAGE_BLOCKS_KNIGHTMETAL = ItemTags.bind("forge:storage_blocks/knightmetal");
-	public static final Tag.Named<Item> STORAGE_BLOCKS_STEELEAF = ItemTags.bind("forge:storage_blocks/steeleaf");
+	public static final TagKey<Item> STORAGE_BLOCKS_ARCTIC_FUR = ItemTags.create(new ResourceLocation("forge", "storage_blocks/arctic_fur"));
+	public static final TagKey<Item> STORAGE_BLOCKS_CARMINITE = ItemTags.create(new ResourceLocation("forge", "storage_blocks/carminite"));
+	public static final TagKey<Item> STORAGE_BLOCKS_FIERY = ItemTags.create(new ResourceLocation("forge", "storage_blocks/fiery"));
+	public static final TagKey<Item> STORAGE_BLOCKS_IRONWOOD = ItemTags.create(new ResourceLocation("forge", "storage_blocks/ironwood"));
+	public static final TagKey<Item> STORAGE_BLOCKS_KNIGHTMETAL = ItemTags.create(new ResourceLocation("forge", "storage_blocks/knightmetal"));
+	public static final TagKey<Item> STORAGE_BLOCKS_STEELEAF = ItemTags.create(new ResourceLocation("forge", "storage_blocks/steeleaf"));
 
-	public static final Tag.Named<Item> ORES_IRONWOOD = ItemTags.bind("forge:ores/ironwood");
-	public static final Tag.Named<Item> ORES_KNIGHTMETAL = ItemTags.bind("forge:ores/knightmetal");
+	public static final TagKey<Item> ORES_IRONWOOD = ItemTags.create(new ResourceLocation("forge", "ores/ironwood"));
+	public static final TagKey<Item> ORES_KNIGHTMETAL = ItemTags.create(new ResourceLocation("forge", "ores/knightmetal"));
 
-	public static final Tag.Named<Item> PORTAL_ACTIVATOR = ItemTags.bind(TwilightForestMod.prefix("portal/activator").toString());
+	public static final TagKey<Item> PORTAL_ACTIVATOR = ItemTags.create(TwilightForestMod.prefix("portal/activator"));
 
-	public static final Tag.Named<Item> WIP = ItemTags.bind(TwilightForestMod.prefix("wip").toString());
-	public static final Tag.Named<Item> NYI = ItemTags.bind(TwilightForestMod.prefix("nyi").toString());
+	public static final TagKey<Item> WIP = ItemTags.create(TwilightForestMod.prefix("wip"));
+	public static final TagKey<Item> NYI = ItemTags.create(TwilightForestMod.prefix("nyi"));
 
-	public static final Tag.Named<Item> KOBOLD_PACIFICATION_BREADS = ItemTags.bind(TwilightForestMod.prefix("kobold_pacification_breads").toString());
+	public static final TagKey<Item> KOBOLD_PACIFICATION_BREADS = ItemTags.create(TwilightForestMod.prefix("kobold_pacification_breads"));
 
-	public static final Tag.Named<Item> TF_MUSIC_DISCS = ItemTags.bind(TwilightForestMod.prefix("tf_music_discs").toString());
+	public static final TagKey<Item> TF_MUSIC_DISCS = ItemTags.create(TwilightForestMod.prefix("tf_music_discs"));
 
-	public static final Tag.Named<Item> BANNED_UNCRAFTING_INGREDIENTS = ItemTags.bind(TwilightForestMod.prefix("banned_uncrafting_ingredients").toString());
-	public static final Tag.Named<Item> BANNED_UNCRAFTABLES = ItemTags.bind(TwilightForestMod.prefix("banned_uncraftables").toString());
+	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = ItemTags.create(TwilightForestMod.prefix("banned_uncrafting_ingredients"));
+	public static final TagKey<Item> BANNED_UNCRAFTABLES = ItemTags.create(TwilightForestMod.prefix("banned_uncraftables"));
 
-	private static final Tag.Named<Item> CHARM = ItemTags.createOptional(new ResourceLocation(CuriosApi.MODID, "charm"));
-	private static final Tag.Named<Item> HEAD = ItemTags.createOptional(new ResourceLocation(CuriosApi.MODID, "head"));
+	private static final TagKey<Item> CHARM = ItemTags.create(new ResourceLocation("curios", "charm"));
+	private static final TagKey<Item> HEAD = ItemTags.create(new ResourceLocation("curios", "head"));
 
 	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
 		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);

@@ -1,7 +1,7 @@
 package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.worldgen.biome.Biomes;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -18,7 +18,7 @@ public final class WorldUtil {
 	private WorldUtil() {}
 
 	public static Biome voidFallback() {
-		return Biomes.THE_VOID;
+		return OverworldBiomes.theVoid();
 	}
 
 	/**

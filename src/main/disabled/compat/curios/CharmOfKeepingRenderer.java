@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.item;
+package twilightforest.compat.curios;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

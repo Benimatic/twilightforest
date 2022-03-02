@@ -14,7 +14,7 @@ import java.util.List;
 
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import twilightforest.data.ItemTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 
 public class KnightmetalShieldItem extends ShieldItem {
 

@@ -1,24 +1,23 @@
 package twilightforest.block.entity;
 
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
 import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.block.TFBlocks;
@@ -118,9 +117,9 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		BlockPos pos = getBlockPos().offset(dx, dy, dz);
 
 		if (this.level.hasChunkAt(pos)) {
-			Block nearbyBlock = this.getLevel().getBlockState(pos).getBlock();
+			BlockState nearbyBlock = this.getLevel().getBlockState(pos);
 
-			if (nearbyBlock != TFBlocks.CINDER_LOG.get() && BlockTags.LOGS.contains(nearbyBlock)) {
+			if (!nearbyBlock.is(TFBlocks.CINDER_LOG.get()) && nearbyBlock.is(BlockTags.LOGS)) {
 				this.getLevel().setBlock(pos, getCinderLog(dx, dy, dz), 2);
 				this.getLevel().levelEvent(2004, pos, 0);
 				this.getLevel().levelEvent(2004, pos, 0);
@@ -239,7 +238,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	}
 
 	private boolean canMultiply(ItemStack input, ItemStack output) {
-		return ItemTags.LOGS.contains(input.getItem()) || Tags.Items.ORES.contains(input.getItem());
+		return input.is(ItemTags.LOGS) || input.is(Tags.Items.ORES);
 	}
 
 	/**

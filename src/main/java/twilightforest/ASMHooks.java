@@ -131,7 +131,7 @@ public class ASMHooks {
 	@OnlyIn(Dist.CLIENT)
 	public static Music music(Music music) {
 		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFGenerationSettings.isTwilightWorldOnClient(Minecraft.getInstance().level))
-			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).getBackgroundMusic().orElse(Musics.GAME);
+			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME);
 		return music;
 	}
 
@@ -311,7 +311,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.level.levelgen.feature.StructureFeature#loadStaticStart(ServerLevel, CompoundTag, long)} <br>
 	 * [AFTER {@link net.minecraft.world.level.levelgen.feature.StructureFeature#createStart(ChunkPos, int, long)}]
 	 */
-	public static StructureStart<?> conquered(StructureStart<?> start, CompoundTag nbt) {
+	public static StructureStart conquered(StructureStart start, CompoundTag nbt) {
 		if (start instanceof TFStructureStart<?> s)
 			s.load(nbt);
 		return start;

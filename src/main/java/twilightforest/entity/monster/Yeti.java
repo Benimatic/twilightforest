@@ -177,7 +177,7 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-		Optional<ResourceKey<Biome>> key = world.getBiomeName(pos);
+		Optional<ResourceKey<Biome>> key = world.getBiome(pos).unwrapKey();
 		if (Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST))) {
 			return checkMobSpawnRules(entityType, world, reason, pos, random);
 		} else {
@@ -191,7 +191,7 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos blockPos, Random random) {
-		Optional<ResourceKey<Biome>> key = world.getBiomeName(blockPos);
+		Optional<ResourceKey<Biome>> key = world.getBiome(blockPos).unwrapKey();
 		if (world.getBrightness(LightLayer.SKY, blockPos) > random.nextInt(32)) {
 			return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
 		} else {

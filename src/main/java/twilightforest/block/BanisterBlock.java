@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ToolActions;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
 
 import javax.annotation.Nullable;
@@ -57,7 +57,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
         return this.defaultBlockState()
                 .setValue(FACING, context.getHorizontalDirection())
                 //.setValue(SHAPE, direction != Direction.DOWN && (direction == Direction.UP || !(context.getClickLocation().y - pos.getY() > 0.5D)) ? BanisterShape.SHORT : BanisterShape.TALL)
-                .setValue(SHAPE, BlockTagGenerator.BANISTERS.contains(context.getLevel().getBlockState(pos.above()).getBlock()) ? BanisterShape.CONNECTED : BanisterShape.TALL)
+                .setValue(SHAPE, context.getLevel().getBlockState(pos.above()).is(BlockTagGenerator.BANISTERS) ? BanisterShape.CONNECTED : BanisterShape.TALL)
                 .setValue(WATERLOGGED, context.getLevel().getFluidState(pos).getType() == Fluids.WATER);
     }
 

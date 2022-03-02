@@ -143,11 +143,11 @@ public class MazeMapItem extends MapItem {
 
 									multiset.add(state.getMapColor(world, blockpos$mutableblockpos));
 
-									if (state.getBlock() == Blocks.STONE || state.getBlock() == Blocks.AIR) {
+									if (state.is(Blocks.STONE) || state.isAir()) {
 										for (int i = -YSEARCH; i <= YSEARCH; i++) {
 											blockpos$mutableblockpos.setY(yCenter + i);
 											BlockState searchID = chunk.getBlockState(blockpos$mutableblockpos);
-											if (searchID.getBlock() != Blocks.STONE && searchID.getBlock() != Blocks.AIR) {
+											if (searchID.is(Blocks.STONE) && !searchID.isAir()) {
 												state = searchID;
 												if (i > 0) {
 													brightness = 2;
@@ -163,21 +163,21 @@ public class MazeMapItem extends MapItem {
 
 									if (mapOres) {
 										// recolor ores
-										if (state.getBlock() == BlockTags.COAL_ORES) {
+										if (state.is(BlockTags.COAL_ORES)) {
 											multiset.add(MaterialColor.COLOR_BLACK, 1000);
-										} else if (state.getBlock() == BlockTags.GOLD_ORES) {
+										} else if (state.is(BlockTags.GOLD_ORES)) {
 											multiset.add(MaterialColor.GOLD, 1000);
-										} else if (state.getBlock() == BlockTags.IRON_ORES) {
+										} else if (state.is(BlockTags.IRON_ORES)) {
 											multiset.add(MaterialColor.METAL, 1000);
-										} else if (state.getBlock() == BlockTags.LAPIS_ORES) {
+										} else if (state.is(BlockTags.LAPIS_ORES)) {
 											multiset.add(MaterialColor.LAPIS, 1000);
-										} else if (state.getBlock() == BlockTags.REDSTONE_ORES) {
+										} else if (state.is(BlockTags.REDSTONE_ORES)) {
 											multiset.add(MaterialColor.COLOR_RED, 1000);
-										} else if (state.getBlock() == BlockTags.DIAMOND_ORES) {
+										} else if (state.is(BlockTags.DIAMOND_ORES)) {
 											multiset.add(MaterialColor.DIAMOND, 1000);
-										} else if (state.getBlock() == BlockTags.EMERALD_ORES) {
+										} else if (state.is(BlockTags.EMERALD_ORES)) {
 											multiset.add(MaterialColor.EMERALD, 1000);
-										}else if (state.getBlock() == BlockTags.COPPER_ORES) {
+										}else if (state.is(BlockTags.COPPER_ORES)) {
 												multiset.add(MaterialColor.COLOR_ORANGE, 1000);
 										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
 											multiset.add(MaterialColor.COLOR_PINK, 1000);

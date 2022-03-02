@@ -35,7 +35,7 @@ public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeCompone
 		MushroomTowerMainComponent wing = new MushroomTowerMainComponent(getFeatureType(), index, dx[0], dx[1], dx[2], 15, wingHeight, direction);
 
 		list.addPiece(wing);
-		if (list instanceof StructureStart<?> start) {
+		if (list instanceof StructureStart start) {
 			wing.addChildren(start.getPieces().get(0), list, rand);
 		}
 		addOpening(x, y, z, rotation);
