@@ -2,13 +2,11 @@ package twilightforest.world.components.biomesources;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
-
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class LandmarkBiomeSource extends BiomeSource {
     public static final Codec<LandmarkBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -28,7 +26,7 @@ public class LandmarkBiomeSource extends BiomeSource {
     private final SpecialBiomePalette palette;
 
     protected LandmarkBiomeSource(long seed, SpecialBiomePalette palette) {
-        super(palette.allBiomes().stream().map(Supplier::get).collect(Collectors.toList()));
+        super(palette.allBiomes().stream());
 
         this.seed = seed;
         this.palette = palette;
@@ -45,7 +43,7 @@ public class LandmarkBiomeSource extends BiomeSource {
     }
 
     @Override
-    public Biome getNoiseBiome(int x, int y, int z, Climate.Sampler climateSampler) {
+    public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler climateSampler) {
         // TODO Fractal Voronoi coordinate filtering
 
         int mapX = x >> MAP_POW_2;
@@ -58,7 +56,7 @@ public class LandmarkBiomeSource extends BiomeSource {
         // Test if we're in range of returning a biome from a landmark group
         float distance = (float) Mth.length(((x) % LANDMARK_SCALE) - LANDMARK_HALF_SCALE, ((z) % LANDMARK_SCALE) - LANDMARK_HALF_SCALE);
         var biome = this.palette.getNearestLandmark(distance * 0.66f, landmarkIndex, cellSeed);
-        if (biome != null) return biome.get();
+        if (biome != null) return biome;
 
         // We're good to place something else now!
 
@@ -69,8 +67,8 @@ public class LandmarkBiomeSource extends BiomeSource {
         // TODO Use nonzero negative offset value in the config's Climate.ParameterList to put Twilight Underground Biome
     }
 
-    public Biome getNoiseBiome(Climate.TargetPoint climateSample) {
-        return this.palette.regularBiomes().findValue(climateSample, this.palette.river()).get();
+    public Holder<Biome> getNoiseBiome(Climate.TargetPoint climateSample) {
+        return this.palette.regularBiomes().findValue(climateSample);
     }
 
     private static int landmarkIndex(int x, int z) {

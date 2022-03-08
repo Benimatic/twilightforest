@@ -6,19 +6,20 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import net.minecraft.Util;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import twilightforest.util.Codecs;
-import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-public record SpecialBiomePalette(Supplier<Biome> river, Climate.ParameterList<Supplier<Biome>> regularBiomes, List<Supplier<Biome>> specialBiomes, List<Float2ObjectAVLTreeMap<Supplier<Biome>>> landmarkGradients, List<Supplier<Biome>> allBiomes) {
+public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> regularBiomes, HolderSet<Biome> specialBiomes, List<Float2ObjectAVLTreeMap<Holder<Biome>>> landmarkGradients, List<Holder<Biome>> allBiomes) {
     public static final Codec<SpecialBiomePalette> CODEC = Util.make(() -> {
         Codec<SpecialBiomePalette> codec = RecordCodecBuilder.create(instance -> instance.group(
                 Biome.CODEC.fieldOf("river").forGetter(SpecialBiomePalette::river),
@@ -33,21 +34,21 @@ public record SpecialBiomePalette(Supplier<Biome> river, Climate.ParameterList<S
 
     private static SpecialBiomePalette create() {
         // FIXME populate correct biomes
-        return create(WorldUtil::voidFallback, new Climate.ParameterList<>(Collections.emptyList()), Collections.emptyList(), Collections.emptyList());
+        return create(Holder.direct(OverworldBiomes.theVoid()), new Climate.ParameterList<>(Collections.emptyList()), HolderSet.direct(), Collections.emptyList());
     }
 
-    private static SpecialBiomePalette create(Supplier<Biome> river, Climate.ParameterList<Supplier<Biome>> common, List<Supplier<Biome>> rare, List<Float2ObjectAVLTreeMap<Supplier<Biome>>> clusters) {
-        return new SpecialBiomePalette(river, common, rare, clusters, ImmutableList.<Supplier<Biome>>builder().add(river).addAll(common.values().stream().map(Pair::getSecond).iterator()).addAll(rare).addAll(clusters.stream().flatMap(tree -> tree.float2ObjectEntrySet().stream()).map(Map.Entry::getValue).iterator()).build());
+    private static SpecialBiomePalette create(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> common, HolderSet<Biome> rare, List<Float2ObjectAVLTreeMap<Holder<Biome>>> clusters) {
+        return new SpecialBiomePalette(river, common, rare, clusters, ImmutableList.<Holder<Biome>>builder().add(river).addAll(common.values().stream().map(Pair::getSecond).iterator()).addAll(rare).addAll(clusters.stream().flatMap(tree -> tree.float2ObjectEntrySet().stream()).map(Map.Entry::getValue).iterator()).build());
     }
 
     @Nullable
-    public Supplier<Biome> getNearestLandmark(float distanceRelative, int landmarkIndex, long permutation) {
+    public Holder<Biome> getNearestLandmark(float distanceRelative, int landmarkIndex, long permutation) {
         if (distanceRelative > 1) return null; // Outside the gradient
 
         return this.getNearestLandmark(landmarkIndex, permutation).get(distanceRelative);
     }
 
-    private Float2ObjectAVLTreeMap<Supplier<Biome>> getNearestLandmark(int landmarkIndex, long permutation) {
+    private Float2ObjectAVLTreeMap<Holder<Biome>> getNearestLandmark(int landmarkIndex, long permutation) {
         return this.landmarkGradients().get(BINARY_GRID_PERMUTATIONS[(int) (permutation % 24)][landmarkIndex]);
     }
 

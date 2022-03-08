@@ -61,7 +61,7 @@ public final class TwilightFeatures {
         return Registry.register(Registry.TREE_DECORATOR_TYPES, name, type);
     }
 
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, F>> registerWorldFeature(ResourceLocation rl, F feature, FC featureConfiguration) {
+    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> registerWorldFeature(ResourceLocation rl, F feature, FC featureConfiguration) {
         return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, rl.toString(), new ConfiguredFeature<>(feature, featureConfiguration));
     }
 
