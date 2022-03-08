@@ -157,7 +157,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 
 	private void spawnGhastNear(int x, int y, int z) {
-		CarminiteGhastling ghast = new CarminiteGhastling(TFEntities.CARMINITE_GHASTLING, level);
+		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.get().create(level);
 		ghast.moveTo(x - 1.5 + level.random.nextFloat() * 3.0, y - 1.5 + level.random.nextFloat() * 3.0, z - 1.5 + level.random.nextFloat() * 3.0, level.random.nextFloat() * 360F, 0.0F);
 		ghast.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200));
 		level.addFreshEntity(ghast);

@@ -407,7 +407,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		world.setBlock(pos.above(), Blocks.SPAWNER.defaultBlockState(), 16 | 2);
 		SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(pos.above());
 		if (ms != null) {
-			ms.getSpawner().setEntityId(TFEntities.SWARM_SPIDER);
+			ms.getSpawner().setEntityId(TFEntities.SWARM_SPIDER.get());
 		}
 
 		// treasure chests?

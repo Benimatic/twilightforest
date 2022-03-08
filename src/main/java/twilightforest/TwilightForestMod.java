@@ -45,6 +45,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
+import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.FieryPickItem;
 import twilightforest.item.TFItems;
@@ -101,7 +102,9 @@ public class TwilightForestMod {
 		modbus.addListener(this::sendIMCs);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		TFBlocks.BLOCKS.register(modbus);
+		TFEntities.ENTITIES.register(modbus);
 		TFItems.ITEMS.register(modbus);
+		TFEntities.SPAWN_EGGS.register(modbus);
 		TFMobEffects.MOB_EFFECTS.register(modbus);
 		//TFPotions.POTIONS.register(modbus);
 		BiomeKeys.BIOMES.register(modbus);

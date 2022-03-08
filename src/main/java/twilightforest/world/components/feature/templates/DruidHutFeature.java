@@ -80,7 +80,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
                 BlockEntity tile = world.getBlockEntity(blockPos);
 
                 if (tile instanceof SpawnerBlockEntity ms) {
-                    ms.getSpawner().setEntityId(TFEntities.SKELETON_DRUID);
+                    ms.getSpawner().setEntityId(TFEntities.SKELETON_DRUID.get());
                 }
             }
         } else if (s.startsWith("loot")) {

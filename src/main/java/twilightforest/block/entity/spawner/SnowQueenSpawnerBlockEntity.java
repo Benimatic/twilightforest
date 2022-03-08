@@ -2,18 +2,17 @@ package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.SnowQueen;
-import twilightforest.block.entity.TFBlockEntities;
 
 public class SnowQueenSpawnerBlockEntity extends BossSpawnerBlockEntity<SnowQueen> {
 
 	public SnowQueenSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.SNOW_QUEEN, pos, state);
+		super(TFBlockEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.SNOW_QUEEN.get(), pos, state);
 	}
 
 	@Override

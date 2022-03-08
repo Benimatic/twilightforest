@@ -89,7 +89,7 @@ public class TFGenMonolith extends Feature<NoneFeatureConfiguration> {
 			dPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, dPos);
 
 			if (dPos.getY() > 0) {
-				Raven raven = new Raven(TFEntities.RAVEN, world.getLevel());
+				Raven raven = TFEntities.RAVEN.get().create(world.getLevel());
 				raven.moveTo(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
 				world.addFreshEntity(raven);

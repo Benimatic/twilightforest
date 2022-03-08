@@ -17,7 +17,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import twilightforest.entity.TFEntities;
 
 import java.util.Random;
@@ -42,7 +41,7 @@ public class Penguin extends Bird {
 
 	@Override
 	public Animal getBreedOffspring(ServerLevel world, AgeableMob entityanimal) {
-		return TFEntities.PENGUIN.create(world);
+		return TFEntities.PENGUIN.get().create(world);
 	}
 
 	@Override

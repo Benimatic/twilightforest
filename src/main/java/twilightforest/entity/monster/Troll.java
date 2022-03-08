@@ -228,7 +228,7 @@ public class Troll extends Monster implements RangedAttackMob {
 			this.playSound(TFSounds.TROLL_THROWS_ROCK, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.level.addFreshEntity(blocc);
 			this.setHasRock(false);
-			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK) {
+			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {
 				this.getFirstPassenger().discard();
 			}
 			this.rockCooldown = 300;

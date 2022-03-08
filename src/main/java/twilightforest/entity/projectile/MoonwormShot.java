@@ -36,7 +36,7 @@ public class MoonwormShot extends TFThrowable {
 		shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1.0F);
 	}
 	public MoonwormShot(Level worldIn, double x, double y, double z) {
-		super(TFEntities.MOONWORM_SHOT, worldIn, x, y, z);
+		super(TFEntities.MOONWORM_SHOT.get(), worldIn, x, y, z);
 	}
 
 

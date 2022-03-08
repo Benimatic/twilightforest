@@ -25,7 +25,7 @@ public class IceCrystal extends BaseIceMob {
 	private int maxCrystalAge = -1;
 
 	public IceCrystal(Level worldIn) {
-		super(TFEntities.ICE_CRYSTAL, worldIn);
+		super(TFEntities.ICE_CRYSTAL.get(), worldIn);
 	}
 
 	public IceCrystal(EntityType<? extends IceCrystal> type, Level world) {

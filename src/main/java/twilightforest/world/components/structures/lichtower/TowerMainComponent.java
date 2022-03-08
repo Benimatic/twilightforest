@@ -255,7 +255,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		// place spawner in the middle
 		EntityType<?> mobID = switch (rand.nextInt(4)) {
 			case 2 -> EntityType.ZOMBIE;
-			case 3 -> TFEntities.SWARM_SPIDER;
+			case 3 -> TFEntities.SWARM_SPIDER.get();
 			default -> EntityType.SKELETON;
 		};
 		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);

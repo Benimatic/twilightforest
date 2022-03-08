@@ -1089,8 +1089,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				case 2 ->
 						// birch
 						TreeFeatures.BIRCH;
-				case 3 -> TFTreeFeatures.TWILIGHT_OAK_BASE;
-				case 4 -> TFTreeFeatures.RAINBOW_OAK_TREE_BASE;
+				case 3 -> TFTreeFeatures.TWILIGHT_OAK_TREE;
+				case 4 -> TFTreeFeatures.RAINBOW_OAK_TREE;
 				default ->
 						// oak tree
 						TreeFeatures.OAK;
@@ -1229,7 +1229,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	 * Make a mini ghast spawner and then set the spawn range and max entities for that spawner
 	 */
 	private void makeMiniGhastSpawner(WorldGenLevel world, int y, int sx, int sz, BoundingBox sbb) {
-		setSpawner(world, sx, y + 2, sz, sbb, TFEntities.CARMINITE_GHASTLING, spawner -> {
+		setSpawner(world, sx, y + 2, sz, sbb, TFEntities.CARMINITE_GHASTLING.get(), spawner -> {
 			var base = spawner.getSpawner();
 
 			base.spawnRange = 16;

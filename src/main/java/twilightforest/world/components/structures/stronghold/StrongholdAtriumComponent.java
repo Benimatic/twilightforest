@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.stronghold;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -132,15 +134,15 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isInside(pos)) {
-			ConfiguredFeature<?,?> treeGen = switch (treeNum) {
+			Holder<ConfiguredFeature<TreeConfiguration, ?>> treeGen = switch (treeNum) {
 				case 1 ->
 						// jungle tree
 						TreeFeatures.JUNGLE_TREE;
 				case 2 ->
 						// birch
 						TreeFeatures.BIRCH;
-				case 3 -> TFTreeFeatures.TWILIGHT_OAK_BASE;
-				case 4 -> TFTreeFeatures.RAINBOW_OAK_TREE_BASE;
+				case 3 -> TFTreeFeatures.TWILIGHT_OAK_TREE;
+				case 4 -> TFTreeFeatures.RAINBOW_OAK_TREE;
 				default ->
 						// oak tree
 						TreeFeatures.OAK;
@@ -150,7 +152,7 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 			//TODO: All trees here grab configs from DefaultBiomeFeatures or TFBiomeDecorator, and will not have "minHeight"
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.place(world, generator, world.getRandom(), pos)) {
+				if (treeGen.value().place(world, generator, world.getRandom(), pos)) {
 					break;
 				}
 			}

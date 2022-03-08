@@ -69,8 +69,8 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 					double y = (double) pos.getY() + (level.random.nextDouble() - level.random.nextDouble());
 					double z = pos.relative(dir).getZ() + (level.random.nextDouble() - level.random.nextDouble()) * 2.0D;
 
-					if (level.noCollision(mob.orElse(TFEntities.DEATH_TOME).getAABB(x, y, z)) && mob.isPresent()) {
-						Entity entity = mob.orElse(TFEntities.DEATH_TOME).create(level);
+					if (level.noCollision(mob.orElse(TFEntities.DEATH_TOME.get()).getAABB(x, y, z)) && mob.isPresent()) {
+						Entity entity = mob.orElse(TFEntities.DEATH_TOME.get()).create(level);
 						entity.moveTo(new BlockPos(x, y, z), entity.getYRot(), entity.getXRot());
 						if(fire) entity.setSecondsOnFire(10);
 						level.addFreshEntity(entity);

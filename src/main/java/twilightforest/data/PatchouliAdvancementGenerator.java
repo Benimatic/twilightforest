@@ -6,15 +6,11 @@ import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.advancements.ArmorInventoryChangedTrigger;
 import twilightforest.advancements.HasAdvancementTrigger;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -22,7 +18,6 @@ import twilightforest.item.TFItems;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
-import java.util.Locale;
 import java.util.function.Consumer;
 
 public class PatchouliAdvancementGenerator extends AdvancementProvider {
@@ -68,72 +63,72 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 		makeBiomeAdvancement("twilight_lake", BiomeKeys.LAKE, consumer, root);
 
 		//entities
-		entityAdvancement(TFEntities.ADHERENT, consumer, root);
-		entityAdvancement(TFEntities.ARMORED_GIANT, consumer, root);
-		entityAdvancement(TFEntities.BIGHORN_SHEEP, consumer, root);
-		entityAdvancement(TFEntities.BLOCKCHAIN_GOBLIN, consumer, root);
-		entityAdvancement(TFEntities.DWARF_RABBIT, consumer, root);
-		entityAdvancement(TFEntities.DEATH_TOME, consumer, root);
-		entityAdvancement(TFEntities.DEER, consumer, root);
-		entityAdvancement(TFEntities.FIRE_BEETLE, consumer, root);
-		entityAdvancement(TFEntities.GIANT_MINER, consumer, root);
-		entityAdvancement(TFEntities.HARBINGER_CUBE, consumer, root);
-		entityAdvancement(TFEntities.HEDGE_SPIDER, consumer, root);
-		entityAdvancement(TFEntities.HELMET_CRAB, consumer, root);
-		entityAdvancement(TFEntities.HOSTILE_WOLF, consumer, root);
-		entityAdvancement(TFEntities.HYDRA, consumer, root);
-		entityAdvancement(TFEntities.ICE_CRYSTAL, consumer, root);
-		entityAdvancement(TFEntities.KING_SPIDER, consumer, root);
-		entityAdvancement(TFEntities.KNIGHT_PHANTOM, consumer, root);
-		entityAdvancement(TFEntities.KOBOLD, consumer, root);
-		entityAdvancement(TFEntities.LICH, consumer, root);
-		entityAdvancement(TFEntities.LICH_MINION, consumer, root);
-		entityAdvancement(TFEntities.MAZE_SLIME, consumer, root);
-		entityAdvancement(TFEntities.CARMINITE_GHASTLING, consumer, root);
-		entityAdvancement(TFEntities.MINOSHROOM, consumer, root);
-		entityAdvancement(TFEntities.MINOTAUR, consumer, root);
-		entityAdvancement(TFEntities.MIST_WOLF, consumer, root);
-		entityAdvancement(TFEntities.MOSQUITO_SWARM, consumer, root);
-		entityAdvancement(TFEntities.NAGA, consumer, root);
-		entityAdvancement(TFEntities.PENGUIN, consumer, root);
-		entityAdvancement(TFEntities.PINCH_BEETLE, consumer, root);
-		entityAdvancement(TFEntities.RAVEN, consumer, root);
-		entityAdvancement(TFEntities.REDCAP, consumer, root);
-		entityAdvancement(TFEntities.REDCAP_SAPPER, consumer, root);
-		entityAdvancement(TFEntities.SKELETON_DRUID, consumer, root);
-		entityAdvancement(TFEntities.SLIME_BEETLE, consumer, root);
-		entityAdvancement(TFEntities.SNOW_GUARDIAN, consumer, root);
-		entityAdvancement(TFEntities.SNOW_QUEEN, consumer, root);
-		entityAdvancement(TFEntities.SQUIRREL, consumer, root);
-		entityAdvancement(TFEntities.STABLE_ICE_CORE, consumer, root);
-		entityAdvancement(TFEntities.SWARM_SPIDER, consumer, root);
-		entityAdvancement(TFEntities.TINY_BIRD, consumer, root);
-		entityAdvancement(TFEntities.CARMINITE_BROODLING, consumer, root);
-		entityAdvancement(TFEntities.CARMINITE_GHASTGUARD, consumer, root);
-		entityAdvancement(TFEntities.CARMINITE_GOLEM, consumer, root);
-		entityAdvancement(TFEntities.TOWERWOOD_BORER, consumer, root);
-		entityAdvancement(TFEntities.TROLL, consumer, root);
-		entityAdvancement(TFEntities.UNSTABLE_ICE_CORE, consumer, root);
-		entityAdvancement(TFEntities.UR_GHAST, consumer, root);
-		entityAdvancement(TFEntities.BOAR, consumer, root);
-		entityAdvancement(TFEntities.WINTER_WOLF, consumer, root);
-		entityAdvancement(TFEntities.WRAITH, consumer, root);
-		entityAdvancement(TFEntities.YETI, consumer, root);
-		entityAdvancement(TFEntities.ALPHA_YETI, consumer, root);
+		entityAdvancement(TFEntities.ADHERENT.get(), consumer, root);
+		entityAdvancement(TFEntities.ARMORED_GIANT.get(), consumer, root);
+		entityAdvancement(TFEntities.BIGHORN_SHEEP.get(), consumer, root);
+		entityAdvancement(TFEntities.BLOCKCHAIN_GOBLIN.get(), consumer, root);
+		entityAdvancement(TFEntities.DWARF_RABBIT.get(), consumer, root);
+		entityAdvancement(TFEntities.DEATH_TOME.get(), consumer, root);
+		entityAdvancement(TFEntities.DEER.get(), consumer, root);
+		entityAdvancement(TFEntities.FIRE_BEETLE.get(), consumer, root);
+		entityAdvancement(TFEntities.GIANT_MINER.get(), consumer, root);
+		entityAdvancement(TFEntities.HARBINGER_CUBE.get(), consumer, root);
+		entityAdvancement(TFEntities.HEDGE_SPIDER.get(), consumer, root);
+		entityAdvancement(TFEntities.HELMET_CRAB.get(), consumer, root);
+		entityAdvancement(TFEntities.HOSTILE_WOLF.get(), consumer, root);
+		entityAdvancement(TFEntities.HYDRA.get(), consumer, root);
+		entityAdvancement(TFEntities.ICE_CRYSTAL.get(), consumer, root);
+		entityAdvancement(TFEntities.KING_SPIDER.get(), consumer, root);
+		entityAdvancement(TFEntities.KNIGHT_PHANTOM.get(), consumer, root);
+		entityAdvancement(TFEntities.KOBOLD.get(), consumer, root);
+		entityAdvancement(TFEntities.LICH.get(), consumer, root);
+		entityAdvancement(TFEntities.LICH_MINION.get(), consumer, root);
+		entityAdvancement(TFEntities.MAZE_SLIME.get(), consumer, root);
+		entityAdvancement(TFEntities.CARMINITE_GHASTLING.get(), consumer, root);
+		entityAdvancement(TFEntities.MINOSHROOM.get(), consumer, root);
+		entityAdvancement(TFEntities.MINOTAUR.get(), consumer, root);
+		entityAdvancement(TFEntities.MIST_WOLF.get(), consumer, root);
+		entityAdvancement(TFEntities.MOSQUITO_SWARM.get(), consumer, root);
+		entityAdvancement(TFEntities.NAGA.get(), consumer, root);
+		entityAdvancement(TFEntities.PENGUIN.get(), consumer, root);
+		entityAdvancement(TFEntities.PINCH_BEETLE.get(), consumer, root);
+		entityAdvancement(TFEntities.RAVEN.get(), consumer, root);
+		entityAdvancement(TFEntities.REDCAP.get(), consumer, root);
+		entityAdvancement(TFEntities.REDCAP_SAPPER.get(), consumer, root);
+		entityAdvancement(TFEntities.SKELETON_DRUID.get(), consumer, root);
+		entityAdvancement(TFEntities.SLIME_BEETLE.get(), consumer, root);
+		entityAdvancement(TFEntities.SNOW_GUARDIAN.get(), consumer, root);
+		entityAdvancement(TFEntities.SNOW_QUEEN.get(), consumer, root);
+		entityAdvancement(TFEntities.SQUIRREL.get(), consumer, root);
+		entityAdvancement(TFEntities.STABLE_ICE_CORE.get(), consumer, root);
+		entityAdvancement(TFEntities.SWARM_SPIDER.get(), consumer, root);
+		entityAdvancement(TFEntities.TINY_BIRD.get(), consumer, root);
+		entityAdvancement(TFEntities.CARMINITE_BROODLING.get(), consumer, root);
+		entityAdvancement(TFEntities.CARMINITE_GHASTGUARD.get(), consumer, root);
+		entityAdvancement(TFEntities.CARMINITE_GOLEM.get(), consumer, root);
+		entityAdvancement(TFEntities.TOWERWOOD_BORER.get(), consumer, root);
+		entityAdvancement(TFEntities.TROLL.get(), consumer, root);
+		entityAdvancement(TFEntities.UNSTABLE_ICE_CORE.get(), consumer, root);
+		entityAdvancement(TFEntities.UR_GHAST.get(), consumer, root);
+		entityAdvancement(TFEntities.BOAR.get(), consumer, root);
+		entityAdvancement(TFEntities.WINTER_WOLF.get(), consumer, root);
+		entityAdvancement(TFEntities.WRAITH.get(), consumer, root);
+		entityAdvancement(TFEntities.YETI.get(), consumer, root);
+		entityAdvancement(TFEntities.ALPHA_YETI.get(), consumer, root);
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("hurt_by_indirect", EntityHurtPlayerTrigger.TriggerInstance.entityHurtPlayer(DamagePredicate.Builder.damageInstance().sourceEntity(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT).build())))
-				.addCriterion("slain_by", KilledTrigger.TriggerInstance.entityKilledPlayer(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT)))
-				.addCriterion("hurt", PlayerHurtEntityTrigger.TriggerInstance.playerHurtEntity(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT).build()))
-				.addCriterion("slay", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT)))
-				.addCriterion("summon", SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT)))
-				.addCriterion("tame", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT).build()))
-				.addCriterion("hurt_by_indirect_alt", EntityHurtPlayerTrigger.TriggerInstance.entityHurtPlayer(DamagePredicate.Builder.damageInstance().sourceEntity(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT).build())))
-				.addCriterion("slain_by_alt", KilledTrigger.TriggerInstance.entityKilledPlayer(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT)))
-				.addCriterion("hurt_alt", PlayerHurtEntityTrigger.TriggerInstance.playerHurtEntity(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT).build()))
-				.addCriterion("slay_alt", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT)))
-				.addCriterion("summon_alt", SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT)))
-				.addCriterion("tame_alt", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT).build()))
+				.addCriterion("hurt_by_indirect", EntityHurtPlayerTrigger.TriggerInstance.entityHurtPlayer(DamagePredicate.Builder.damageInstance().sourceEntity(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT.get()).build())))
+				.addCriterion("slain_by", KilledTrigger.TriggerInstance.entityKilledPlayer(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT.get())))
+				.addCriterion("hurt", PlayerHurtEntityTrigger.TriggerInstance.playerHurtEntity(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT.get()).build()))
+				.addCriterion("slay", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT.get())))
+				.addCriterion("summon", SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT.get())))
+				.addCriterion("tame", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(TFEntities.LOWER_GOBLIN_KNIGHT.get()).build()))
+				.addCriterion("hurt_by_indirect_alt", EntityHurtPlayerTrigger.TriggerInstance.entityHurtPlayer(DamagePredicate.Builder.damageInstance().sourceEntity(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT.get()).build())))
+				.addCriterion("slain_by_alt", KilledTrigger.TriggerInstance.entityKilledPlayer(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT.get())))
+				.addCriterion("hurt_alt", PlayerHurtEntityTrigger.TriggerInstance.playerHurtEntity(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT.get()).build()))
+				.addCriterion("slay_alt", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT.get())))
+				.addCriterion("summon_alt", SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT.get())))
+				.addCriterion("tame_alt", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(TFEntities.UPPER_GOBLIN_KNIGHT.get()).build()))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/goblin_knight");
 

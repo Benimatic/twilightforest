@@ -2,21 +2,19 @@ package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.Lich;
-import twilightforest.block.entity.TFBlockEntities;
 
 public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	public LichSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.LICH_SPAWNER.get(), TFEntities.LICH, pos, state);
+		super(TFBlockEntities.LICH_SPAWNER.get(), TFEntities.LICH.get(), pos, state);
 	}
 
 	@Override

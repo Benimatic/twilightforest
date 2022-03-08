@@ -202,7 +202,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (ConfiguredStructureFeature<?, ?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
+		for (StructureFeature<?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
 			if (!(structureFeature instanceof LegacyStructureFeature legacyData))
 				continue;
 			TFFeature feature = legacyData.feature;

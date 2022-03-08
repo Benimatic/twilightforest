@@ -68,7 +68,7 @@ public class Deer extends Animal {
 
 	@Override
 	public Deer getBreedOffspring(ServerLevel p_241840_1_, AgeableMob mate) {
-		return TFEntities.DEER.create(level);
+		return TFEntities.DEER.get().create(level);
 	}
 
 	@Override

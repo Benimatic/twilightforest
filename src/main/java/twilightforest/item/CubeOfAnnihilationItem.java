@@ -1,23 +1,22 @@
 package twilightforest.item;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import twilightforest.entity.CubeOfAnnihilation;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
-
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
 
 public class CubeOfAnnihilationItem extends Item {
 
@@ -42,7 +41,7 @@ public class CubeOfAnnihilationItem extends Item {
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 		if (!world.isClientSide) {
-			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION, world, player);
+			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), world, player);
 			world.addFreshEntity(launchedCube);
 			setThrownEntity(stack, launchedCube);
 		}

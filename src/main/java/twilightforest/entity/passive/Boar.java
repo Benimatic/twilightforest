@@ -20,7 +20,7 @@ public class Boar extends Pig {
 
 	@Override
 	public Pig getBreedOffspring(ServerLevel world, AgeableMob entityanimal) {
-		return TFEntities.BOAR.create(world);
+		return TFEntities.BOAR.get().create(world);
 	}
 	
 	@Override

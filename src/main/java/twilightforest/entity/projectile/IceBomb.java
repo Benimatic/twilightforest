@@ -38,7 +38,7 @@ public class IceBomb extends TFThrowable {
 	}
 
 	public IceBomb(Level world, Position pos) {
-		super(TFEntities.THROWN_ICE, world, pos.x(), pos.y(), pos.z());
+		super(TFEntities.THROWN_ICE.get(), world, pos.x(), pos.y(), pos.z());
 	}
 
 	@Override

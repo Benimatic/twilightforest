@@ -490,10 +490,10 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level, player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
 			player.level.addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level, player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
 			effect2.offset = (float) Math.PI;
 			player.level.addFreshEntity(effect2);
 
@@ -636,10 +636,10 @@ public class TFEventListener {
 
 		// spawn effect thingers
 		if (charmUsed != null) {
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, charmUsed.getItem());
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level, player, charmUsed.getItem());
 			player.level.addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT, player.level, player, charmUsed.getItem());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level, player, charmUsed.getItem());
 			effect2.offset = (float) Math.PI;
 			player.level.addFreshEntity(effect2);
 

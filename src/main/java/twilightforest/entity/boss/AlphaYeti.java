@@ -312,7 +312,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage) {
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE, this.level, this);
+			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.level, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getX() - this.getX();

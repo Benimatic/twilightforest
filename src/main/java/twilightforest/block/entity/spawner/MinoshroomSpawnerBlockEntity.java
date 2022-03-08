@@ -2,19 +2,17 @@ package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.Minoshroom;
-import twilightforest.block.entity.TFBlockEntities;
 
 public class MinoshroomSpawnerBlockEntity extends BossSpawnerBlockEntity<Minoshroom> {
 
 	public MinoshroomSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.MINOSHROOM_SPAWNER.get(), TFEntities.MINOSHROOM, pos, state);
+		super(TFBlockEntities.MINOSHROOM_SPAWNER.get(), TFEntities.MINOSHROOM.get(), pos, state);
 	}
 
 	@Override

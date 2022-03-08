@@ -49,7 +49,7 @@ public class ChainBlockItem extends DiggerItem {
 		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 0.5F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isClientSide) {
-			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK, world, player, hand, stack);
+			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), world, player, hand, stack);
 			world.addFreshEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 

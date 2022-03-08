@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,8 +18,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.entity.TFEntities;
+import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nonnull;
@@ -48,7 +47,7 @@ public class ZombieWandItem extends Item {
 			BlockHitResult blockray = EntityUtil.rayTrace(player, 20.0);
 
 			if (blockray.getType() != HitResult.Type.MISS) {
-				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.create(world);
+				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.get().create(world);
 				Direction face = blockray.getDirection();
 				zombie.absMoveTo(blockray.getBlockPos().getX() + 0.5F + face.getStepX(), blockray.getBlockPos().getY() + face.getStepY(), blockray.getBlockPos().getZ() + 0.5F + face.getStepZ(), 1.0F, 1.0F);
 				zombie.setTame(true);

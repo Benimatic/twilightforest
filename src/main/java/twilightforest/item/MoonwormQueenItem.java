@@ -103,7 +103,7 @@ public class MoonwormQueenItem extends Item {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
 		if (!world.isClientSide && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
-			boolean fired = world.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT, world, living));
+			boolean fired = world.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), world, living));
 
 			if (fired) {
 				stack.hurt(2, world.random, null);

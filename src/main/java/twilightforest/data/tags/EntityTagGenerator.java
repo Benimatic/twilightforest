@@ -24,70 +24,70 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
 
     @Override
     protected void addTags() {
-        tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID);
-        tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW, TFEntities.SEEKER_ARROW);
-        tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE);
+        tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID.get());
+        tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW.get(), TFEntities.SEEKER_ARROW.get());
+        tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());
 
         tag(BOSSES).add(
-                TFEntities.NAGA,
-                TFEntities.LICH,
-                TFEntities.MINOSHROOM,
-                TFEntities.HYDRA,
-                TFEntities.KNIGHT_PHANTOM,
-                TFEntities.UR_GHAST,
-                TFEntities.ALPHA_YETI,
-                TFEntities.SNOW_QUEEN,
-                TFEntities.PLATEAU_BOSS
+                TFEntities.NAGA.get(),
+                TFEntities.LICH.get(),
+                TFEntities.MINOSHROOM.get(),
+                TFEntities.HYDRA.get(),
+                TFEntities.KNIGHT_PHANTOM.get(),
+                TFEntities.UR_GHAST.get(),
+                TFEntities.ALPHA_YETI.get(),
+                TFEntities.SNOW_QUEEN.get(),
+                TFEntities.PLATEAU_BOSS.get()
         );
 
         tag(EntityTypeTags.IMPACT_PROJECTILES).add(
-                TFEntities.NATURE_BOLT,
-                TFEntities.LICH_BOLT,
-                TFEntities.WAND_BOLT,
-                TFEntities.LICH_BOMB,
-                TFEntities.CICADA_SHOT,
-                TFEntities.MOONWORM_SHOT,
-                TFEntities.SLIME_BLOB,
-                TFEntities.THROWN_WEP,
-                TFEntities.THROWN_ICE,
-                TFEntities.FALLING_ICE,
-                TFEntities.ICE_SNOWBALL
+                TFEntities.NATURE_BOLT.get(),
+                TFEntities.LICH_BOLT.get(),
+                TFEntities.WAND_BOLT.get(),
+                TFEntities.LICH_BOMB.get(),
+                TFEntities.CICADA_SHOT.get(),
+                TFEntities.MOONWORM_SHOT.get(),
+                TFEntities.SLIME_BLOB.get(),
+                TFEntities.THROWN_WEP.get(),
+                TFEntities.THROWN_ICE.get(),
+                TFEntities.FALLING_ICE.get(),
+                TFEntities.ICE_SNOWBALL.get()
         );
 
         tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).add(
-                TFEntities.PENGUIN,
-                TFEntities.STABLE_ICE_CORE,
-                TFEntities.UNSTABLE_ICE_CORE,
-                TFEntities.SNOW_GUARDIAN,
-                TFEntities.ICE_CRYSTAL
+                TFEntities.PENGUIN.get(),
+                TFEntities.STABLE_ICE_CORE.get(),
+                TFEntities.UNSTABLE_ICE_CORE.get(),
+                TFEntities.SNOW_GUARDIAN.get(),
+                TFEntities.ICE_CRYSTAL.get()
         ).add(
-                TFEntities.RAVEN,
-                TFEntities.SQUIRREL,
-                TFEntities.DWARF_RABBIT,
-                TFEntities.TINY_BIRD,
-                TFEntities.KOBOLD,
-                TFEntities.DEATH_TOME,
-                TFEntities.MOSQUITO_SWARM,
-                TFEntities.TOWERWOOD_BORER
+                TFEntities.RAVEN.get(),
+                TFEntities.SQUIRREL.get(),
+                TFEntities.DWARF_RABBIT.get(),
+                TFEntities.TINY_BIRD.get(),
+                TFEntities.KOBOLD.get(),
+                TFEntities.DEATH_TOME.get(),
+                TFEntities.MOSQUITO_SWARM.get(),
+                TFEntities.TOWERWOOD_BORER.get()
         );
 
         tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(
-                TFEntities.PENGUIN,
-                TFEntities.STABLE_ICE_CORE,
-                TFEntities.UNSTABLE_ICE_CORE,
-                TFEntities.SNOW_GUARDIAN,
-                TFEntities.ICE_CRYSTAL
+                TFEntities.PENGUIN.get(),
+                TFEntities.STABLE_ICE_CORE.get(),
+                TFEntities.UNSTABLE_ICE_CORE.get(),
+                TFEntities.SNOW_GUARDIAN.get(),
+                TFEntities.ICE_CRYSTAL.get()
         ).add(
-                TFEntities.WRAITH,
-                TFEntities.KNIGHT_PHANTOM,
-                TFEntities.WINTER_WOLF,
-                TFEntities.YETI
+                TFEntities.WRAITH.get(),
+                TFEntities.KNIGHT_PHANTOM.get(),
+                TFEntities.WINTER_WOLF.get(),
+                TFEntities.YETI.get()
         ).addTag(BOSSES);
 
-        tag(LICH_POPPABLES).addTag(EntityTypeTags.SKELETONS).add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER);
+        tag(LICH_POPPABLES).addTag(EntityTypeTags.SKELETONS).add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get());
 
         // These entities forcefully take players from the entity they're riding
-        tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE, TFEntities.YETI, TFEntities.ALPHA_YETI);
+        tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {

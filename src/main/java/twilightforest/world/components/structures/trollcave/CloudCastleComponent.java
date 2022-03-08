@@ -97,7 +97,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			if (sbb.isInside(pos)) {
 				this.minerPlaced = true;
 
-				GiantMiner miner = new GiantMiner(TFEntities.GIANT_MINER, world.getLevel());
+				GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
 				miner.setPos(bx, by, bz);
 				miner.setPersistenceRequired();
 				miner.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
@@ -114,7 +114,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			if (sbb.isInside(pos)) {
 				this.warriorPlaced = true;
 
-				ArmoredGiant warrior = new ArmoredGiant(TFEntities.ARMORED_GIANT, world.getLevel());
+				ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
 				warrior.setPos(bx, by, bz);
 				warrior.setPersistenceRequired();
 				warrior.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);

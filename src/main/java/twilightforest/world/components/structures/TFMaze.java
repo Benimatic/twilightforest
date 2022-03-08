@@ -386,7 +386,7 @@ public class TFMaze {
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
 		if (sbb.isInside(pos)) {
-			TFTreeFeatures.CANOPY_TREE_BASE.value().place(world, generator, rand, pos);
+			TFTreeFeatures.CANOPY_TREE.value().place(world, generator, rand, pos);
 		}
 	}
 

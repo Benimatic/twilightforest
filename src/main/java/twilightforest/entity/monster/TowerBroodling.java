@@ -57,7 +57,7 @@ public class TowerBroodling extends SwarmSpider {
 
 	@Override
 	protected boolean spawnAnother() {
-		SwarmSpider another = new TowerBroodling(TFEntities.CARMINITE_BROODLING, level, false);
+		SwarmSpider another = new TowerBroodling(TFEntities.CARMINITE_BROODLING.get(), level, false);
 
 		double sx = getX() + (random.nextBoolean() ? 0.9 : -0.9);
 		double sy = getY();
