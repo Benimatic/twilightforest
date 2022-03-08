@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
@@ -201,28 +202,28 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 				.save(consumer, "twilightforest:alt/entities/wolves");
 
 		//landmarks
-		landmarkAdvancement(TFStructures.DARK_TOWER, consumer, root);
-		landmarkAdvancement(TFStructures.FINAL_CASTLE, consumer, root);
-		landmarkAdvancement(TFStructures.HEDGE_MAZE, consumer, root);
-		landmarkAdvancement(TFStructures.HYDRA_LAIR, consumer, root);
-		landmarkAdvancement(TFStructures.AURORA_PALACE, consumer, root);
-		landmarkAdvancement(TFStructures.KNIGHT_STRONGHOLD, consumer, root);
-		landmarkAdvancement(TFStructures.LABYRINTH, consumer, root);
-		landmarkAdvancement(TFStructures.HOLLOW_HILL_LARGE, consumer, root);
-		landmarkAdvancement(TFStructures.LICH_TOWER, consumer, root);
-		landmarkAdvancement(TFStructures.HOLLOW_HILL_MEDIUM, consumer, root);
-		landmarkAdvancement(TFStructures.MUSHROOM_TOWER, consumer, root);
-		landmarkAdvancement(TFStructures.NAGA_COURTYARD, consumer, root);
-		landmarkAdvancement(TFStructures.QUEST_GROVE, consumer, root);
-		landmarkAdvancement(TFStructures.HOLLOW_HILL_SMALL, consumer, root);
-		landmarkAdvancement(TFStructures.YETI_CAVE, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_DARK_TOWER, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_FINAL_CASTLE, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_HEDGE_MAZE, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_HYDRA_LAIR, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_AURORA_PALACE, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_KNIGHT_STRONGHOLD, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_LABYRINTH, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_HOLLOW_HILL_LARGE, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_LICH_TOWER, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_HOLLOW_HILL_MEDIUM, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_MUSHROOM_TOWER, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_NAGA_COURTYARD, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_QUEST_GROVE, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_HOLLOW_HILL_SMALL, consumer, root);
+		landmarkAdvancement(TFStructures.KEY_YETI_CAVE, consumer, root);
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFStructures.TROLL_CAVE).setY(MinMaxBounds.Doubles.atLeast(150)).build()))
+				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFStructures.KEY_TROLL_CAVE).setY(MinMaxBounds.Doubles.atLeast(150)).build()))
 				.save(consumer, "twilightforest:alt/major_landmarks/giant_cloud");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFStructures.TROLL_CAVE).setY(MinMaxBounds.Doubles.atMost(50)).build()))
+				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFStructures.KEY_TROLL_CAVE).setY(MinMaxBounds.Doubles.atMost(50)).build()))
 				.save(consumer, "twilightforest:alt/major_landmarks/troll_cave");
 
 		Advancement.Builder.advancement().parent(root)
@@ -701,7 +702,7 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 				.save(consumer, "twilightforest:alt/entities/" + entity.getRegistryName().getPath());
 	}
 
-	private void landmarkAdvancement(StructureFeature<?> structure, Consumer<Advancement> consumer, Advancement root) {
+	private void landmarkAdvancement(ResourceKey<ConfiguredStructureFeature<?, ?>> structure, Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(structure)))
 				.save(consumer, "twilightforest:alt/major_landmarks/" + structure.getRegistryName().getPath());
