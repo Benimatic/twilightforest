@@ -1,39 +1,27 @@
 package twilightforest.world.components.structures.trollcave;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.BlockConstants;
-import twilightforest.world.registration.TFBiomeFeatures;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.features.TFVegetationFeatures;
 
 import java.util.Random;
 
 public class TrollCaveGardenComponent extends TrollCaveMainComponent {
-	// FIXME These should probably reference stuff from the datapack
-	private final Holder<ConfiguredFeature<?,?>> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.MYCELIUM, UniformInt.of(3, 5), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK)));
-	private final Holder<ConfiguredFeature<?,?>> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.DIRT, UniformInt.of(2, 5), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK)));
-	private final Holder<ConfiguredFeature<?,?>> smallUberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(2, 3), 0, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
-	private final Holder<ConfiguredFeature<HugeMushroomFeatureConfiguration, ?>> bigRedMushroomGen = TreeFeatures.HUGE_RED_MUSHROOM;
-	private final Holder<ConfiguredFeature<HugeMushroomFeatureConfiguration, ?>> bigBrownMushroomGen = TreeFeatures.HUGE_BROWN_MUSHROOM;
-	private final Holder<ConfiguredFeature<?,?>> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get();
 
 	public TrollCaveGardenComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TrollCavePieces.TFTCGard, nbt);
@@ -68,35 +56,35 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		// dirt!
 		for (int i = 0; i < 24; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, generator, dirtGen, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
+			generate(world, generator, TFVegetationFeatures.TROLL_CAVE_DIRT, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
 		}
 
 		// mycelium!
 		for (int i = 0; i < 16; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, generator, myceliumBlobGen, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
+			generate(world, generator, TFVegetationFeatures.TROLL_CAVE_MYCELIUM, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
 		}
 
 		// uberous!
 		for (int i = 0; i < 16; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, generator, smallUberousGen, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
+			generate(world, generator, TFVegetationFeatures.UBEROUS_SOIL_PATCH_SMALL, decoRNG, dest.getX(), 0, dest.getZ(), sbb);
 
-			generateAtSurface(world, generator, smallUberousGen, decoRNG, dest.getX(), dest.getZ(), sbb);
+			generateAtSurface(world, generator, TFVegetationFeatures.UBEROUS_SOIL_PATCH_SMALL, decoRNG, dest.getX(), dest.getZ(), sbb);
 		}
 
 		// mushglooms first
 		for (int i = 0; i < 16; i++) {
 			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
-			generate(world, generator, bigMushgloomGen, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
+			generate(world, generator, TFVegetationFeatures.BIG_MUSHGLOOM, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
 
 		// mushrooms!
 		for (int i = 0; i < 32; i++) {
 			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
-			generate(world, generator, rand.nextBoolean() ? bigBrownMushroomGen : bigRedMushroomGen, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
+			generate(world, generator, rand.nextBoolean() ? TreeFeatures.HUGE_BROWN_MUSHROOM : TreeFeatures.HUGE_RED_MUSHROOM, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
 
 		// stone stalactites!
@@ -106,7 +94,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		}
 	}
 
-	protected void generate(WorldGenLevel world, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, BoundingBox sbb) {
+	protected <FC extends FeatureConfiguration> void generate(WorldGenLevel world, ChunkGenerator generator, Holder<ConfiguredFeature<FC, ?>> feature, Random rand, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
@@ -114,7 +102,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos)) {
-			feature.place(world, generator, rand, pos);
+			feature.value().place(world, generator, rand, pos);
 		}
 	}
 }

@@ -15,12 +15,12 @@ public class Layer {
 		this.area = p_76714_.make();
 	}
 
-	public Holder<Biome> get(Registry<Holder<Biome>> p_76716_, int p_76717_, int p_76718_) {
+	public Holder<Biome> get(Registry<Biome> p_76716_, int p_76717_, int p_76718_) {
 		int i = this.area.get(p_76717_, p_76718_);
-		Holder<Biome> biome = p_76716_.byId(i);
+		Holder<Biome> biome = Holder.direct(p_76716_.byId(i));
 		if (biome == null) {
 			Util.logAndPauseIfInIde("Unknown biome id: " + i);
-			return p_76716_.get(Biomes.PLAINS.registry());
+			return Holder.direct(p_76716_.get(Biomes.PLAINS.registry()));
 		} else {
 			return biome;
 		}

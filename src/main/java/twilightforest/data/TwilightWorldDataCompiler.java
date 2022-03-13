@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.Lifecycle;
+import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -152,7 +153,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		this.getOrCreateInRegistry(this.dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), () -> twilightType);
 
 		return ImmutableMap.of(
-				TwilightForestMod.prefix("twilightforest"), new LevelStem(() -> twilightType, new ChunkGeneratorTwilight(forestChunkGen, true, true, Optional.of(12), true))//,
+				TwilightForestMod.prefix("twilightforest"), new LevelStem(Holder.direct(twilightType), new ChunkGeneratorTwilight(forestChunkGen, true, true, Optional.of(12), true))//,
 				//TwilightForestMod.prefix("skylight_forest"), new LevelStem(() -> twilightType, skyChunkGen)
 				// TODO add *actual* twilightforest:void world without islands
 		);

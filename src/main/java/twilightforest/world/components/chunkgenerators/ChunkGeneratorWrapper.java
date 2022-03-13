@@ -6,17 +6,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -24,7 +29,8 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     public final ChunkGenerator delegate;
 
     public ChunkGeneratorWrapper(ChunkGenerator delegate) {
-        super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
+        //FIXME 1st and 2nd parameters are definitely wrong
+        super(null, Optional.empty(), delegate.getBiomeSource(), delegate.getBiomeSource(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.ringPlacementSeed);
 
         this.delegate = delegate;
     }
@@ -140,11 +146,6 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     @Override
     public int getFirstOccupiedHeight(int x, int z, Heightmap.Types heightMapType, LevelHeightAccessor level) {
         return this.delegate.getFirstOccupiedHeight(x, z, heightMapType, level);
-    }
-
-    @Override
-    public boolean hasStronghold(ChunkPos chunkPos) {
-        return this.delegate.hasStronghold(chunkPos);
     }
 
     @Override

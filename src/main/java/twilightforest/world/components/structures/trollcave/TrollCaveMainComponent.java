@@ -1,8 +1,8 @@
 package twilightforest.world.components.structures.trollcave;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
-import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -30,9 +30,8 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.BlockConstants;
-import twilightforest.world.registration.TFBiomeFeatures;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.features.TFVegetationFeatures;
 
 import java.util.Objects;
 import java.util.Random;
@@ -44,9 +43,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 	protected int size;
 	protected int height;
-
-	// FIXME Can we just pluck it from the data pack?
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(4, 8), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
 
 	public TrollCaveMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TrollCavePieces.TFTCMai, nbt);
@@ -135,7 +131,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		// uberous!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateAtSurface(world, generator, uberousGen, decoRNG, dest.getX(), dest.getZ(), sbb);
+			generateAtSurface(world, generator, TFVegetationFeatures.UBEROUS_SOIL_PATCH_BIG, decoRNG, dest.getX(), dest.getZ(), sbb);
 		}
 	}
 
@@ -245,7 +241,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	/**
 	 * Use the generator at the surface above specified coords
 	 */
-	protected void generateAtSurface(WorldGenLevel world, ChunkGenerator generator, ConfiguredFeature<?, ?> feature, Random rand, int x, int z, BoundingBox sbb) {
+	protected <FC extends FeatureConfiguration> void generateAtSurface(WorldGenLevel world, ChunkGenerator generator, Holder<ConfiguredFeature<FC, ?>> feature, Random rand, int x, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getWorldX(x, z);
 		int dz = getWorldZ(x, z);
@@ -255,7 +251,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		for(int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
 			if (sbb.isInside(pos) && world.getBlockState(pos.above()).isAir()) {
-				feature.place(world, generator, rand, pos);
+				feature.value().place(world, generator, rand, pos);
 				break;
 			}
 		}

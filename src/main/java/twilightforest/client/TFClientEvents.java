@@ -314,17 +314,21 @@ public class TFClientEvents {
 			somehow the game attempts to load a tooltip for an item in the main menu or something upon
 			resourcepack reload when the player has not loaded into a save. See Issue #1270 for crashlog
 		*/
-		boolean wip = (ItemTagGenerator.WIP instanceof StaticTagHelper.Wrapper<Item> wrappedWIP) && wrappedWIP.tag != null && item.is(wrappedWIP);
-		// WIP takes precedence over NYI
-		boolean nyi = !wip && (ItemTagGenerator.NYI instanceof StaticTagHelper.Wrapper<Item> wrappedNYI) && wrappedNYI.tag != null && item.is(wrappedNYI);
 
-		if (!wip && !nyi)
-			return;
+		//TODO do we need this anymore? If so, ho do we re-add it?
+//		boolean wip = (ItemTagGenerator.WIP instanceof StaticTagHelper.Wrapper<Item> wrappedWIP) && wrappedWIP.tag != null && item.is(wrappedWIP);
+		// WIP takes precedence over NYI
+//		boolean nyi = !wip && (ItemTagGenerator.NYI instanceof StaticTagHelper.Wrapper<Item> wrappedNYI) && wrappedNYI.tag != null && item.is(wrappedNYI);
+
+//		if (!wip && !nyi)
+//			return;
 
 		//if (item.getDisplayName() instanceof MutableComponent displayName)
 		//	displayName/*.append(wip ? " [WIP]" : " [NYI]")*/.setStyle(displayName.getStyle().withColor(ChatFormatting.DARK_GRAY));
 
-		if (wip) {
+		if(!item.is(ItemTagGenerator.WIP) && !item.is(ItemTagGenerator.NYI)) return;
+
+		if (item.is(ItemTagGenerator.WIP)) {
 			event.getToolTip().add(WIP_TEXT_0);
 			event.getToolTip().add(WIP_TEXT_1);
 		} else {

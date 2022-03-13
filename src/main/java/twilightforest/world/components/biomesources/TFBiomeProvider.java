@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -29,7 +30,7 @@ import java.util.function.LongFunction;
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
-			RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry)
+			RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
 	private static final List<ResourceKey<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
@@ -55,17 +56,17 @@ public class TFBiomeProvider extends BiomeSource {
 			BiomeKeys.SPOOKY_FOREST
 	);
 
-	private final Registry<Holder<Biome>> registry;
+	private final Registry<Biome> registry;
 	private final Layer genBiomes;
 	private final long seed;
 
-	public TFBiomeProvider(long seed, Registry<Holder<Biome>> registryIn) {
+	public TFBiomeProvider(long seed, Registry<Biome> registryIn) {
 		super(BIOMES
 				.stream()
 				.map(ResourceKey::location)
 				.map(registryIn::getOptional)
 				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.map(opt -> Holder.direct(opt.get()))
 		);
 
 		this.seed = seed;
@@ -109,7 +110,7 @@ public class TFBiomeProvider extends BiomeSource {
 		return biomes;
 	}
 	
-	public static Layer makeLayers(long seed, Registry<Holder<Biome>> registry) {
+	public static Layer makeLayers(long seed, Registry<Biome> registry) {
 		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
 		// Debug code to render an image of the biome layout within the ide
 		/*final java.util.Map<Integer, Integer> remapColors = new java.util.HashMap<>();
@@ -159,9 +160,9 @@ public class TFBiomeProvider extends BiomeSource {
  		System.out.println("breakpoint");*/
 		return new Layer(areaFactory) {
 			@Override
-			public Holder<Biome> get(Registry<Holder<Biome>> p_242936_1_, int p_242936_2_, int p_242936_3_) {
+			public Holder<Biome> get(Registry<Biome> p_242936_1_, int p_242936_2_, int p_242936_3_) {
 				int i = this.area.get(p_242936_2_, p_242936_3_);
-				Holder<Biome> biome = registry.byId(i);
+				Holder<Biome> biome = Holder.direct(registry.byId(i));
 				if (biome == null)
 					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
 				return biome;

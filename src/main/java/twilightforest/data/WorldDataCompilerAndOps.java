@@ -9,6 +9,7 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.TerrainShaper;
@@ -32,7 +33,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<Format> implements DataProvider {
+public abstract class WorldDataCompilerAndOps<Format> extends RegistryOps<Format> implements DataProvider {
     protected static final Logger LOGGER = LogManager.getLogger();
     protected static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create(); // Todo registerTypeAdapter for custom printing
     protected final DataGenerator generator;
@@ -194,21 +195,21 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
         return instanceKey;
     }
 
-    @Override
-    protected <Resource> DataResult<Format> encode(Resource resource, Format dynamic, ResourceKey<? extends Registry<Resource>> registryKey, Codec<Resource> codec) {
-        Optional<ResourceLocation> instanceKey = rummageForResourceLocation(resource, registryKey);
-
-        // five freaking locations to check... Let's see if we won a prize
-        if (instanceKey.isPresent()) {
-            if (TwilightForestMod.ID.equals(instanceKey.get().getNamespace())) // This avoids generating anything that belongs to Minecraft
-                serialize(registryKey, instanceKey.get(), resource, codec);
-
-            return ResourceLocation.CODEC.encode(instanceKey.get(), this.delegate, dynamic);
-        }
-
-        // AND we turned out empty-handed. Inline the object begrudgingly instead.
-        return codec.encode(resource, this, dynamic);
-    }
+//    @Override
+//    protected <Resource> DataResult<Format> encode(Resource resource, Format dynamic, ResourceKey<? extends Registry<Resource>> registryKey, Codec<Resource> codec) {
+//        Optional<ResourceLocation> instanceKey = rummageForResourceLocation(resource, registryKey);
+//
+//        // five freaking locations to check... Let's see if we won a prize
+//        if (instanceKey.isPresent()) {
+//            if (TwilightForestMod.ID.equals(instanceKey.get().getNamespace())) // This avoids generating anything that belongs to Minecraft
+//                serialize(registryKey, instanceKey.get(), resource, codec);
+//
+//            return ResourceLocation.CODEC.encode(instanceKey.get(), this.delegate, dynamic);
+//        }
+//
+//        // AND we turned out empty-handed. Inline the object begrudgingly instead.
+//        return codec.encode(resource, this, dynamic);
+//    }
 
     @Override
     public String getName() {
