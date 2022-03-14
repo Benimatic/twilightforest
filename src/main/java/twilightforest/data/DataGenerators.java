@@ -22,7 +22,7 @@ public class DataGenerators {
 		generator.addProvider(new PatchouliAdvancementGenerator(generator, helper));
 		generator.addProvider(new BlockstateGenerator(generator, helper));
 		generator.addProvider(new ItemModelGenerator(generator, helper));
-		generator.addProvider(new BiomeTagGenerator(generator));
+		//generator.addProvider(new BiomeTagGenerator(generator));
 		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
 		generator.addProvider(blocktags);
 		generator.addProvider(new FluidTagGenerator(generator, helper));
@@ -32,7 +32,7 @@ public class DataGenerators {
 		generator.addProvider(new LootGenerator(generator));
 		generator.addProvider(new StonecuttingGenerator(generator));
 		generator.addProvider(new CraftingGenerator(generator));
-		generator.addProvider(new TwilightWorldDataCompiler(generator));
+		generator.addProvider(new WorldGenerator(generator));
 
 		generator.addProvider(new CrumbleHornGenerator(generator, helper));
 		generator.addProvider(new TransformationPowderGenerator(generator, helper));

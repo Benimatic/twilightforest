@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import twilightforest.block.CritterBlock;
+import twilightforest.compat.CuriosCompat;
 
 import javax.annotation.Nullable;
 
@@ -32,7 +33,7 @@ public class WearableItem extends BlockItem {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         if(ModList.get().isLoaded("curios") && this.getBlock() instanceof CritterBlock) {
-            //CuriosCompat.setupCuriosCapability(stack);
+            CuriosCompat.setupCuriosCapability(stack);
         }
         return super.initCapabilities(stack, nbt);
     }

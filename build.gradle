@@ -192,8 +192,8 @@ repositories {
 
 dependencies {
     // progwml6
-    //compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    //runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     //implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}")
     //implementation fg.deobf("slimeknights:TConstruct:${minecraft_version}-${tcon_version}")
@@ -206,7 +206,7 @@ dependencies {
     //implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // theillusivec4
-    //implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
     // player
     //deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"

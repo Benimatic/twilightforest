@@ -1,14 +1,15 @@
 {
   "replace": false,
   "values": [
-    "#twilightforest:ore_magnet/block_replace_ore",
     "#minecraft:dirt",
     "#forge:gravel",
     "#forge:sand",
-    "minecraft:granite",
-    "minecraft:andesite",
-    "minecraft:diorite",
-    "minecraft:tuff",
-    "minecraft:calcite"
+    "#minecraft:nylium",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:base_stone_nether",
+    "#forge:end_stones",
+    "#minecraft:deepslate_ore_replaceables",
+    "#minecraft:stone_ore_replaceables",
+    "#forge:ore_bearing_ground/root"
   ]
 }

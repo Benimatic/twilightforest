@@ -1,4 +1,4 @@
-package twilightforest.client.model.item;
+package twilightforest.compat.ie;
 
 import blusunrize.immersiveengineering.client.ClientUtils;
 import com.mojang.blaze3d.platform.GlStateManager;

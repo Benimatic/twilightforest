@@ -174,7 +174,7 @@ public class TFEntities {
 		if(fireproof) builder.fireImmune();
 		RegistryObject<EntityType<E>> ret = ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
 		if(primary != 0 && secondary != 0) {
-			SPAWN_EGGS.register(id + "_spawn_egg", () -> new ForgeSpawnEggItem(() -> (EntityType<? extends Mob>) ret.get(), primary, secondary, TFItems.defaultBuilder()));
+			SPAWN_EGGS.register(id.getPath() + "_spawn_egg", () -> new ForgeSpawnEggItem(() -> (EntityType<? extends Mob>) ret.get(), primary, secondary, TFItems.defaultBuilder()));
 		}
 		return ret;
 	}

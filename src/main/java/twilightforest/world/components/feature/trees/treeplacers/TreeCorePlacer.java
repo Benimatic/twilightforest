@@ -1,12 +1,7 @@
 package twilightforest.world.components.feature.trees.treeplacers;
 
-import java.util.List;
-import java.util.Random;
-import java.util.function.BiConsumer;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,6 +9,10 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.world.registration.TwilightFeatures;
+
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiConsumer;
 
 public class TreeCorePlacer extends TreeDecorator {
 
@@ -33,7 +32,7 @@ public class TreeCorePlacer extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<TreeCorePlacer> type() {
-		return TwilightFeatures.CORE_PLACER;
+		return TwilightFeatures.CORE_PLACER.get();
 	}
 
 	@Override

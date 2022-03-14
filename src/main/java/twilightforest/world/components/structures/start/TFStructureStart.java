@@ -1,22 +1,23 @@
 package twilightforest.world.components.structures.start;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponent;
-import twilightforest.world.registration.TFStructures;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TFStructureStart<C extends FeatureConfiguration> extends StructureStart {
 	private boolean conquered = false;
@@ -61,12 +62,12 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 	}
 
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (StructureFeature<?> structure : TFStructures.SEPARATION_SETTINGS.keySet()) {
+		for (ConfiguredStructureFeature<?, ?> structure : BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.stream().filter(feature -> feature.feature.getRegistryName().getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toList())) {
 			StructureStart start = structureManager.getStructureAt(pos, structure);
 			if (!start.isValid())
 				continue;
 
-			if (!(structure instanceof LegacyStructureFeature legacyData)) continue;
+			if (!(structure.feature instanceof LegacyStructureFeature legacyData)) continue;
 
 			if (classification != MobCategory.MONSTER)
 				return legacyData.feature.getSpawnableList(classification);

@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 
 import javax.annotation.Nullable;
@@ -28,9 +29,8 @@ import java.util.concurrent.Executor;
 public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     public final ChunkGenerator delegate;
 
-    public ChunkGeneratorWrapper(ChunkGenerator delegate) {
-        //FIXME 1st and 2nd parameters are definitely wrong
-        super(null, Optional.empty(), delegate.getBiomeSource(), delegate.getBiomeSource(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.ringPlacementSeed);
+    public ChunkGeneratorWrapper(Registry<StructureSet> structures, ChunkGenerator delegate) {
+        super(structures, Optional.empty(), delegate.getBiomeSource(), delegate.getBiomeSource(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.ringPlacementSeed);
 
         this.delegate = delegate;
     }

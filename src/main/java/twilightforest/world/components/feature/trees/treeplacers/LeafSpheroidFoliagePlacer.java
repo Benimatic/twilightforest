@@ -54,7 +54,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<LeafSpheroidFoliagePlacer> type() {
-        return TwilightFeatures.FOLIAGE_SPHEROID;
+        return TwilightFeatures.FOLIAGE_SPHEROID.get();
     }
 
     @Override

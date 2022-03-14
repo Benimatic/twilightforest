@@ -73,7 +73,7 @@ public class TreeRootsDecorator extends TreeDecorator {
 
     @Override
     protected TreeDecoratorType<TreeRootsDecorator> type() {
-        return TwilightFeatures.TREE_ROOTS;
+        return TwilightFeatures.TREE_ROOTS.get();
     }
 
     @Override

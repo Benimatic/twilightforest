@@ -43,6 +43,7 @@ import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.TFCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
@@ -113,22 +114,23 @@ public class TwilightForestMod {
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
-		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
+		TwilightFeatures.TREE_DECORATORS.register(modbus);
+		TwilightFeatures.FOLIAGE_PLACERS.register(modbus);
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new TwilightFeatures();
 		new BiomeGrassColors();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-//			try {
-//				TFCompat.preInitCompat();
-//			} catch (Exception e) {
-//				TFConfig.COMMON_CONFIG.doCompat.set(false);
-//				LOGGER.error("Had an error loading preInit compatibility!");
-//				LOGGER.catching(e.fillInStackTrace());
-//			}
+			try {
+				TFCompat.preInitCompat();
+			} catch (Exception e) {
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				LOGGER.error("Had an error loading preInit compatibility!");
+				LOGGER.catching(e.fillInStackTrace());
+			}
 		} else {
 			LOGGER.warn("Skipping compatibility!");
 		}
@@ -159,6 +161,7 @@ public class TwilightForestMod {
 		//How do I add a condition serializer as fast as possible? An event that fires really early
 		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
 		TFTreasure.init();
+		TFNoiseGenerationSettings.init();
 	}
 
 	@SubscribeEvent
@@ -168,7 +171,7 @@ public class TwilightForestMod {
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
-		//TFCompat.sendIMCs();
+		TFCompat.sendIMCs();
 	}
 
 	@SubscribeEvent
@@ -178,25 +181,27 @@ public class TwilightForestMod {
 		BiomeKeys.addBiomeTypes();
 		TFDimensions.init();
 		TFStats.init();
+		TFRecipes.init();
+		TwilightFeatures.init();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-//			try {
-//				TFCompat.initCompat();
-//			} catch (Exception e) {
-//				TFConfig.COMMON_CONFIG.doCompat.set(false);
-//				LOGGER.error("Had an error loading init compatibility!");
-//				LOGGER.catching(e.fillInStackTrace());
-//			}
+			try {
+				TFCompat.initCompat();
+			} catch (Exception e) {
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				LOGGER.error("Had an error loading init compatibility!");
+				LOGGER.catching(e.fillInStackTrace());
+			}
 		}
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-//			try {
-//				TFCompat.postInitCompat();
-//			} catch (Exception e) {
-//				TFConfig.COMMON_CONFIG.doCompat.set(false);
-//				LOGGER.error("Had an error loading postInit compatibility!");
-//				LOGGER.catching(e.fillInStackTrace());
-//			}
+			try {
+				TFCompat.postInitCompat();
+			} catch (Exception e) {
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				LOGGER.error("Had an error loading postInit compatibility!");
+				LOGGER.catching(e.fillInStackTrace());
+			}
 		}
 
 		TFConfig.build();

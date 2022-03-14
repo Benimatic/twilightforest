@@ -1,24 +1,16 @@
 package twilightforest.world.registration;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.world.components.structures.darktower.DarkTowerPieces;
 import twilightforest.world.components.structures.finalcastle.FinalCastlePieces;
@@ -30,7 +22,6 @@ import twilightforest.world.components.structures.mushroomtower.MushroomTowerPie
 import twilightforest.world.components.structures.start.LegacyStructureFeature;
 import twilightforest.world.components.structures.stronghold.StrongholdPieces;
 import twilightforest.world.components.structures.trollcave.TrollCavePieces;
-import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,11 +32,11 @@ public class TFStructures {
 	public static final Map<StructureFeature<?>, FeatureConfiguration> SEPARATION_SETTINGS = new HashMap<>();
 
 	public static final StructureFeature<NoneFeatureConfiguration> HEDGE_MAZE = new LegacyStructureFeature(TFFeature.HEDGE_MAZE);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_HEDGE_MAZE = HEDGE_MAZE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_HEDGE_MAZE = HEDGE_MAZE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_HEDGE_MAZE = createKey("hedge_maze");
 
 	public static final StructureFeature<NoneFeatureConfiguration> QUEST_GROVE = new LegacyStructureFeature(TFFeature.QUEST_GROVE);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_QUEST_GROVE = QUEST_GROVE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_QUEST_GROVE = QUEST_GROVE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_QUEST_GROVE = createKey("quest_grove");
 
 	public static final StructureFeature<NoneFeatureConfiguration> MUSHROOM_TOWER = new LegacyStructureFeature(TFFeature.MUSHROOM_TOWER);
@@ -65,15 +56,15 @@ public class TFStructures {
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_HOLLOW_HILL_LARGE = createKey("large_hollow_hill");
 
 	public static final StructureFeature<NoneFeatureConfiguration> NAGA_COURTYARD = new LegacyStructureFeature(TFFeature.NAGA_COURTYARD);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_NAGA_COURTYARD = NAGA_COURTYARD.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_NAGA_COURTYARD_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_NAGA_COURTYARD = NAGA_COURTYARD.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_NAGA_COURTYARD_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_NAGA_COURTYARD = createKey("naga_courtyard");
 
 	public static final StructureFeature<NoneFeatureConfiguration> LICH_TOWER = new LegacyStructureFeature(TFFeature.LICH_TOWER);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_LICH_TOWER = LICH_TOWER.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_LICH_TOWER_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_LICH_TOWER = LICH_TOWER.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_LICH_TOWER_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_LICH_TOWER = createKey("lich_tower");
 
 	public static final StructureFeature<NoneFeatureConfiguration> LABYRINTH = new LegacyStructureFeature(TFFeature.LABYRINTH);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_LABYRINTH = LABYRINTH.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_LABYRINTH_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_LABYRINTH = LABYRINTH.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_LABYRINTH_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_LABYRINTH = createKey("labyrinth");
 
 	public static final StructureFeature<NoneFeatureConfiguration> HYDRA_LAIR = new LegacyStructureFeature(TFFeature.HYDRA_LAIR);
@@ -81,11 +72,11 @@ public class TFStructures {
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_HYDRA_LAIR = createKey("hydra_lair");
 
 	public static final StructureFeature<NoneFeatureConfiguration> KNIGHT_STRONGHOLD = new LegacyStructureFeature(TFFeature.KNIGHT_STRONGHOLD);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_KNIGHT_STRONGHOLD = KNIGHT_STRONGHOLD.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_KNIGHT_STRONGHOLD = KNIGHT_STRONGHOLD.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_KNIGHT_STRONGHOLD_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_KNIGHT_STRONGHOLD = createKey("knight_stronghold");
 
 	public static final StructureFeature<NoneFeatureConfiguration> DARK_TOWER = new LegacyStructureFeature(TFFeature.DARK_TOWER);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_DARK_TOWER = DARK_TOWER.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_DARK_TOWER_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_DARK_TOWER = DARK_TOWER.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_DARK_TOWER_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_DARK_TOWER = createKey("dark_tower");
 
 	public static final StructureFeature<NoneFeatureConfiguration> YETI_CAVE = new LegacyStructureFeature(TFFeature.YETI_CAVE);
@@ -97,12 +88,16 @@ public class TFStructures {
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_AURORA_PALACE = createKey("aurora_palace");
 
 	public static final StructureFeature<NoneFeatureConfiguration> TROLL_CAVE = new LegacyStructureFeature(TFFeature.TROLL_CAVE);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_TROLL_CAVE = TROLL_CAVE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_TROLL_CAVE = TROLL_CAVE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_TROLL_CAVE = createKey("troll_cave");
 
 	public static final StructureFeature<NoneFeatureConfiguration> FINAL_CASTLE = new LegacyStructureFeature(TFFeature.FINAL_CASTLE);
-	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_FINAL_CASTLE = FINAL_CASTLE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_FINAL_CASTLE_BIOMES);
+	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_FINAL_CASTLE = FINAL_CASTLE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_FINAL_CASTLE_BIOMES, true);
 	public static final ResourceKey<ConfiguredStructureFeature<?, ?>> KEY_FINAL_CASTLE = createKey("final_castle");
+
+	private static ResourceKey<ConfiguredStructureFeature<?, ?>> createKey(String name) {
+		return ResourceKey.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, TwilightForestMod.prefix(name));
+	}
 
 	public static void register(RegistryEvent.Register<StructureFeature<?>> event) {
 		SEPARATION_SETTINGS.clear();
@@ -135,80 +130,16 @@ public class TFStructures {
 		register(event, TROLL_CAVE, CONFIGURED_TROLL_CAVE, TwilightForestMod.prefix("troll_cave"), 0, 1);
 		register(event, FINAL_CASTLE, CONFIGURED_FINAL_CASTLE, TwilightForestMod.prefix("final_castle"), 0, 1);
 
-		// TODO Beardify more structures (Or bury)
-		StructureFeature.NOISE_AFFECTING_FEATURES = ImmutableList.<StructureFeature<?>>builder().addAll(StructureFeature.NOISE_AFFECTING_FEATURES).add(HEDGE_MAZE, QUEST_GROVE, NAGA_COURTYARD, LICH_TOWER, LABYRINTH, KNIGHT_STRONGHOLD, DARK_TOWER, TROLL_CAVE, FINAL_CASTLE).build();
 	}
 
 	private static void register(RegistryEvent.Register<StructureFeature<?>> event, StructureFeature<?> structure, ConfiguredStructureFeature<?, ?> config, ResourceLocation name, int min, int max) {
 		event.getRegistry().register(structure.setRegistryName(name));
-		StructureFeature.STRUCTURES_REGISTRY.put(name.toString(), structure);
-		StructureFeatureConfiguration seperation = new StructureFeatureConfiguration(max, min, 0);
-		StructureSettings.DEFAULTS = ImmutableMap.<StructureFeature<?>, StructureFeatureConfiguration>builder().putAll(StructureSettings.DEFAULTS).
-				put(structure, seperation).build();
-		SEPARATION_SETTINGS.put(structure, seperation);
+//		StructureFeature.STRUCTURES_REGISTRY.put(name.toString(), structure);
+//		RandomSpreadStructurePlacement separation = new RandomSpreadStructurePlacement(max, min, RandomSpreadType.LINEAR, 0);
+//		StructureSettings.DEFAULTS = ImmutableMap.<StructureFeature<?>, RandomSpreadStructurePlacement>builder().putAll(StructureSettings.DEFAULTS).
+//				put(structure, separation).build();
+//		SEPARATION_SETTINGS.put(structure, separation);
 		Registry.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, new ResourceLocation(name.getNamespace(), "configured_".concat(name.getPath())), config);
 		//FlatLevelGeneratorSettings.STRUCTURE_FEATURES.put(structure, config);
-	}
-
-	private static ResourceKey<ConfiguredStructureFeature<?, ?>> createKey(String name) {
-		return ResourceKey.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, TwilightForestMod.prefix(name));
-	}
-
-	public static void load(WorldEvent.Load event) {
-		if(event.getWorld() instanceof ServerLevel serverWorld && serverWorld.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight tfChunkGen) {
-			Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(serverWorld.getChunkSource().getGenerator().getSettings().structureConfig());
-			tempMap.putAll(SEPARATION_SETTINGS);
-			serverWorld.getChunkSource().getGenerator().getSettings().structureConfig = tempMap;
-			HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tmpMap = new HashMap<>();
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_HOLLOW_HILL_SMALL, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_HOLLOW_HILL_MEDIUM, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_HOLLOW_HILL_LARGE, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
-
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_NAGA_COURTYARD, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_LICH_TOWER, BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.FIREFLY_FOREST, BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST);
-
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_LABYRINTH, BiomeKeys.SWAMP);
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_HYDRA_LAIR, BiomeKeys.FIRE_SWAMP);
-
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_KNIGHT_STRONGHOLD, BiomeKeys.DARK_FOREST);
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_DARK_TOWER, BiomeKeys.DARK_FOREST_CENTER);
-
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_YETI_CAVE, BiomeKeys.SNOWY_FOREST);
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_AURORA_PALACE, BiomeKeys.GLACIER);
-
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_TROLL_CAVE, BiomeKeys.HIGHLANDS);
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_FINAL_CASTLE, BiomeKeys.FINAL_PLATEAU);
-
-			associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_QUEST_GROVE, BiomeKeys.ENCHANTED_FOREST);
-			//get taunted
-			//associateBiomeToConfiguredStructure(tmpMap, CONFIGURED_MUSHROOM_TOWER, BiomeKeys.DENSE_MUSHROOM_FOREST);
-
-			ImmutableMap.Builder<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tempStructureToMultiMap = ImmutableMap.builder();
-			tfChunkGen.getSettings().configuredStructures.entrySet().stream().filter(entry -> !tmpMap.containsKey(entry.getKey())).forEach(tempStructureToMultiMap::put);
-			tmpMap.forEach((key, value) -> tempStructureToMultiMap.put(key, ImmutableMultimap.copyOf(value)));
-			tfChunkGen.getSettings().configuredStructures = tempStructureToMultiMap.build();
-		}
-	}
-
-	@SafeVarargs
-	private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> map, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome>... biomeRegistryKey) {
-		map.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
-		HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = map.get(configuredStructureFeature.feature);
-		for (ResourceKey<Biome> biome : biomeRegistryKey) {
-			if (configuredStructureToBiomeMultiMap.containsValue(biome)) {
-				TwilightForestMod.LOGGER.error("""
-								    Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.
-								    This issue happens with vanilla too and is why a Snowy Village and Plains Village cannot spawn in the same biome because they both use the Village base structure.
-								    The two conflicting ConfiguredStructures are: {}, {}
-								    The biome that is attempting to be shared: {}
-								""",
-						BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureFeature),
-						BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureToBiomeMultiMap.entries().stream().filter(e -> e.getValue() == biome).findFirst().get().getKey()),
-						biome
-				);
-			} else {
-				configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biome);
-			}
-		}
 	}
 }

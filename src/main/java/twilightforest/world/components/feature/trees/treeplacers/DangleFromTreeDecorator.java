@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
@@ -48,7 +47,7 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 
     @Override
     protected TreeDecoratorType<DangleFromTreeDecorator> type() {
-        return TwilightFeatures.DANGLING_DECORATOR;
+        return TwilightFeatures.DANGLING_DECORATOR.get();
     }
 
     @Override

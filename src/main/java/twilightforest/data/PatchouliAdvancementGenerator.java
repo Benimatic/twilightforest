@@ -700,7 +700,7 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 	private void landmarkAdvancement(ResourceKey<ConfiguredStructureFeature<?, ?>> structure, Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(structure)))
-				.save(consumer, "twilightforest:alt/major_landmarks/" + structure.getRegistryName().getPath());
+				.save(consumer, "twilightforest:alt/major_landmarks/" + structure.location().getPath());
 	}
 
 	private void minorKeyBiomes(Consumer<Advancement> consumer, Advancement root) {

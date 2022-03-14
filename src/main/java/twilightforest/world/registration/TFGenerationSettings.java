@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -202,8 +202,8 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (StructureFeature<?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
-			if (!(structureFeature instanceof LegacyStructureFeature legacyData))
+		for (ConfiguredStructureFeature<?, ?> structureFeature : BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.stream().toList()) {
+			if (!(structureFeature.feature instanceof LegacyStructureFeature legacyData))
 				continue;
 			TFFeature feature = legacyData.feature;
 			if (feature != featureCheck)

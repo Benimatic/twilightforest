@@ -191,7 +191,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader",
               "default": "minecraft:gold_nugget"
             },
             {
@@ -218,7 +217,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader_bag_twilight",
               "default": "minecraft:gold_nugget"
             }
           ],

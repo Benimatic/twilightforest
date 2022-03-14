@@ -16,7 +16,13 @@ public class TFRecipes {
 	public static final RegistryObject<RecipeSerializer<CrumbleRecipe>> CRUMBLE_SERIALIZER = RECIPE_SERIALIZERS.register("crumble_horn", CrumbleRecipe.Serializer::new);
 	public static final RegistryObject<RecipeSerializer<TransformPowderRecipe>> TRANSFORMATION_SERIALIZER = RECIPE_SERIALIZERS.register("transformation_powder", TransformPowderRecipe.Serializer::new);
 
-	public static final RecipeType<UncraftingRecipe> UNCRAFTING_RECIPE = RecipeType.register("twilightforest:unique_uncrafting");
-	public static final RecipeType<CrumbleRecipe> CRUMBLE_RECIPE = RecipeType.register("twilightforest:crumble_horn");
-	public static final RecipeType<TransformPowderRecipe> TRANSFORM_POWDER_RECIPE = RecipeType.register("twilightforest:transformation_powder");
+	public static RecipeType<UncraftingRecipe> UNCRAFTING_RECIPE;
+	public static RecipeType<CrumbleRecipe> CRUMBLE_RECIPE;
+	public static RecipeType<TransformPowderRecipe> TRANSFORM_POWDER_RECIPE;
+
+	public static void init() {
+		UNCRAFTING_RECIPE = RecipeType.register("twilightforest:unique_uncrafting");
+		CRUMBLE_RECIPE = RecipeType.register("twilightforest:crumble_horn");
+		TRANSFORM_POWDER_RECIPE = RecipeType.register("twilightforest:transformation_powder");
+	}
 }

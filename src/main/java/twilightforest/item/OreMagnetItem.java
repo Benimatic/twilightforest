@@ -2,9 +2,9 @@ package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,12 +18,10 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -184,7 +182,7 @@ public class OreMagnetItem extends Item {
 				BlockPos replacePos = coord.offset(offX, offY, offZ);
 				BlockState replaceState = world.getBlockState(replacePos);
 
-				if (isReplaceable(replaceState) || replaceState.getBlock() instanceof AirBlock) {
+				if (isReplaceable(replaceState) || replaceState.getMaterial().isReplaceable() || replaceState.isAir()) {
 					world.setBlock(coord, replacementBlock, 2);
 
 					// set close to ore material
@@ -257,30 +255,49 @@ public class OreMagnetItem extends Item {
 
 		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
 
-		for (Block blockReplaceOre : BlockTagGenerator.ORE_MAGNET_BLOCK_REPLACE_ORE.getValues()) {
-			ResourceLocation rl = blockReplaceOre.getRegistryName();
-			Tag<Block> tag = BlockTags.getAllTags().getTagOrEmpty(TwilightForestMod.prefix("ore_magnet/" + rl.getNamespace() + "/" + rl.getPath()));
+		//collect all tags
+		for (TagKey<Block> tag : Registry.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("forge")).collect(Collectors.toList())) {
+			//check if the tag is a valid ore tag
+			if (tag.location().getPath().contains("ores_in_ground/")) {
+				//grab the part after the slash for use later
+				String oreground = tag.location().getPath().substring(15);
+				//check if a tag for ore grounds matches up with our ores in ground tag
+				if(Registry.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("forge")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
+					//add each ground type to each ore
+					Objects.requireNonNull(Registry.BLOCK.getTag(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ore_bearing_ground/" + oreground)))).get().forEach(groundHolder ->
+							Objects.requireNonNull(Registry.BLOCK.getTag(tag)).get().forEach(oreHolder ->
+									ORE_TO_BLOCK_REPLACEMENTS.put(oreHolder.value(), groundHolder.value())));
+				}
 
-			for (Block oreBlock : tag.getValues()) {
-				ORE_TO_BLOCK_REPLACEMENTS.put(oreBlock, blockReplaceOre);
+
 			}
 		}
 
-		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getValues());
-		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
-		remainingOres.removeIf(b -> "minecraft".equals(b.getRegistryName().getNamespace()));
-		if (!remainingOres.isEmpty()) {
-			TwilightForestMod.LOGGER.warn(remainingOres
-					.stream()
-					.peek(ore -> ORE_TO_BLOCK_REPLACEMENTS.put(ore, Blocks.STONE))
-					.map(Block::getRegistryName)
-					.map(ResourceLocation::toString)
-					.collect(Collectors.joining(", ", "Partially supported ores with Ore Magnet, [", "], will relate these to `minecraft:stone`. Mod packers/Mod devs are encouraged to add support for their ores to our ore magnet through block tag jsons"))
-			);
-		} else {
-			// You're probably NEVER going to see this message on a modpack
-			TwilightForestMod.LOGGER.info("No remaining ores to map!");
-		}
+		//keeping just in case
+//		for (Block blockReplaceOre : BlockTagGenerator.ORE_MAGNET_BLOCK_REPLACE_ORE.getValues()) {
+//			ResourceLocation rl = blockReplaceOre.getRegistryName();
+//			Tag<Block> tag = BlockTags.getAllTags().getTagOrEmpty(TwilightForestMod.prefix("ore_magnet/" + rl.getNamespace() + "/" + rl.getPath()));
+//
+//			for (Block oreBlock : tag.getValues()) {
+//				ORE_TO_BLOCK_REPLACEMENTS.put(oreBlock, blockReplaceOre);
+//			}
+//		}
+//
+//		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getValues());
+//		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
+//		remainingOres.removeIf(b -> "minecraft".equals(b.getRegistryName().getNamespace()));
+//		if (!remainingOres.isEmpty()) {
+//			TwilightForestMod.LOGGER.warn(remainingOres
+//					.stream()
+//					.peek(ore -> ORE_TO_BLOCK_REPLACEMENTS.put(ore, Blocks.STONE))
+//					.map(Block::getRegistryName)
+//					.map(ResourceLocation::toString)
+//					.collect(Collectors.joining(", ", "Partially supported ores with Ore Magnet, [", "], will relate these to `minecraft:stone`. Mod packers/Mod devs are encouraged to add support for their ores to our ore magnet through block tag jsons"))
+//			);
+//		} else {
+//			// You're probably NEVER going to see this message on a modpack
+//			TwilightForestMod.LOGGER.info("No remaining ores to map!");
+//		}
 
 		cacheNeedsBuild = false;
 	}

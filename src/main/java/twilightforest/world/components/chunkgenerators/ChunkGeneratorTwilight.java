@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -36,6 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
+			RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(o -> o.structureSets),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
 			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
@@ -51,9 +55,9 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight, boolean owSeed) {
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight, boolean owSeed) {
 		//super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
-		super(owSeed ? delegate = delegate.withSeed(TFDimensions.seed) : delegate);
+		super(structures, owSeed ? delegate = delegate.withSeed(TFDimensions.seed) : delegate);
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
@@ -74,7 +78,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Override
 	public ChunkGenerator withSeed(long newSeed) {
-		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel, this.darkForestCanopyHeight, false);
+		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.structureSets, this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel, this.darkForestCanopyHeight, false);
 	}
 
 	@Override
