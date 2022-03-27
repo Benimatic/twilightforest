@@ -19,12 +19,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+/*
+
+So what I had planned to do was keep the same idea from our old system. The way I understood it worked seeing it on the Magic Maps, is that you subdivide each map into quarters.
+In each quarter, you place the center of a *Progression Landmark*. You will need to factor in spacing centers away from centers of other quadrants, or you will see an obvious cut with Biome placement.
+
+*Progression Landmarks* are the Twilight Swamps, Snowy Lands, Dark Forest, and the Highlands.
+Programmatically, a Progression Landmark is a system that determines biome placement as well as the required terraforming.
+For the ease of logic I enforced having specifically 4 because a very nice algorithm skips needing to shuffle Progression Landmarks around.
+
+You will need to make a class `ProgressionLandmarkConfig` that determines the influences (most likely `Depth` and `Scale`) on noise generation that you wish for each biome.
+You could also instead build an Enum for handling the noise generation influence, and each entry has their own functions implemented to handle the algorithms you want on the terrain.
+
+Progression Landmark systems should have a common implementation that we can worry about extending later when we REALLY wanna customize the biomes.
+For now, I've made the system test for the centers, then it determines which biome to place based on distance from center.
+In 3 of our cases, this is just two biomes. However our 4th case are the Highlands. These will need 3 biomes because of the Thornlands biome.
+
+You'll need to worry about deterministically placing the centers randomly inside the blockworld, so the systems that back the Progression Landmark systems can function with positions relative to the center of the Progression Landmark System.
+*/
 public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> regularBiomes, HolderSet<Biome> specialBiomes, List<Float2ObjectAVLTreeMap<Holder<Biome>>> landmarkGradients, List<Holder<Biome>> allBiomes) {
     public static final Codec<SpecialBiomePalette> CODEC = Util.make(() -> {
         Codec<SpecialBiomePalette> codec = RecordCodecBuilder.create(instance -> instance.group(
-                Biome.CODEC.fieldOf("river").forGetter(SpecialBiomePalette::river),
-                Codecs.CLIMATE_SYSTEM.fieldOf("common").forGetter(SpecialBiomePalette::regularBiomes),
-                Biome.LIST_CODEC.fieldOf("special").forGetter(SpecialBiomePalette::specialBiomes),
+                Biome.CODEC.fieldOf("river").forGetter(SpecialBiomePalette::river), // This is so we can predictably subdivide biomes in the voronoi mesh
+                Codecs.CLIMATE_SYSTEM.fieldOf("common").forGetter(SpecialBiomePalette::regularBiomes), // Regular biomes like Canopy Forest, Savanna, etc.
+                Biome.LIST_CODEC.fieldOf("special").forGetter(SpecialBiomePalette::specialBiomes), // Special ones like Dense Mushroom Forest, Enchanted Grove, Spooky Forest, etc
                 Codecs.floatTreeCodec(Biome.CODEC).listOf().comapFlatMap(l -> Util.fixedSize(l, 4), Function.identity()).fieldOf("landmarks").forGetter(SpecialBiomePalette::landmarkGradients)
         ).apply(instance, SpecialBiomePalette::create));
 

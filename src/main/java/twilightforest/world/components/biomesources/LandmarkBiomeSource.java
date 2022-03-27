@@ -49,13 +49,14 @@ public class LandmarkBiomeSource extends BiomeSource {
         int mapX = x >> MAP_POW_2;
         int mapZ = z >> MAP_POW_2;
         long cellSeed = Mth.getSeed(mapX, (int) this.seed, mapZ);
-        int landmarkIndex = landmarkIndex(x, z);
+        int landmarkIndex = indexForQuadrant(x, z);
 
-        // TODO Set up mild offsets for the centers of each landmark group
+        // TODO Set up mild offsets for the centers of each landmark group, so we can move them around inside each quadrant
 
         // Test if we're in range of returning a biome from a landmark group
         float distance = (float) Mth.length(((x) % LANDMARK_SCALE) - LANDMARK_HALF_SCALE, ((z) % LANDMARK_SCALE) - LANDMARK_HALF_SCALE);
-        var biome = this.palette.getNearestLandmark(distance * 0.66f, landmarkIndex, cellSeed);
+        // Multiplied the distance [ * 1.5f ] so the distance cutoff happens sooner because the algorithm thinks the position is further away than it actually is. This shrinks the Progression Landmark and allows us to move it around inside the quadrant.
+        var biome = this.palette.getNearestLandmark(distance * 1.5f, landmarkIndex, cellSeed);
         if (biome != null) return biome;
 
         // We're good to place something else now!
@@ -71,7 +72,7 @@ public class LandmarkBiomeSource extends BiomeSource {
         return this.palette.regularBiomes().findValue(climateSample);
     }
 
-    private static int landmarkIndex(int x, int z) {
+    private static int indexForQuadrant(int x, int z) {
         return ((z >> (LANDMARK_POW_2 - 1)) & 2) + ((x >> LANDMARK_POW_2) & 1);
     }
 }
