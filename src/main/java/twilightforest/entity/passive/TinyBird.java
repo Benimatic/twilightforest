@@ -2,7 +2,6 @@ package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -137,7 +136,7 @@ public class TinyBird extends Bird {
 		super.tick();
 		// while we are flying, try to level out somewhat
 		if (!this.isBirdLanded()) {
-			this.setDeltaMovement(this.getDeltaMovement().multiply(1.0F, 0.6000000238418579D, 1.0F));
+			this.setDeltaMovement(this.getDeltaMovement().multiply(1.0F, 0.6D, 1.0F));
 		}
 	}
 
@@ -145,54 +144,55 @@ public class TinyBird extends Bird {
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 
+		BlockPos blockpos = this.blockPosition();
 		if (this.isBirdLanded()) {
 			this.currentFlightTime = 0;
 
-			if (isSpooked() || isInWater() || level.containsAnyLiquid(getBoundingBox()) || (this.random.nextInt(200) == 0 && !isLandableBlock(new BlockPos(getX(), getY() - 1, getZ())))) {
+			boolean flag = this.isSilent();
+			if (this.isSpooked() || this.isInWater() || level.containsAnyLiquid(getBoundingBox()) || (this.random.nextInt(200) == 0 && !this.isLandableBlock(this.blockPosition().below()))) {
 				this.setIsBirdLanded(false);
-				this.level.levelEvent(1025, new BlockPos(this.blockPosition()), 0);
-				this.setDeltaMovement(this.getDeltaMovement().x(), 0.4F, this.getDeltaMovement().z());
+				if (!flag) {
+					this.level.levelEvent(null, 1025, blockpos, 0);
+				}
 			}
 		} else {
 			this.currentFlightTime++;
 
-			// [VanillaCopy] Modified version of last half of EntityBat.updateAITasks. Edits noted
-			if (this.spawnPosition != null && (!this.level.isEmptyBlock(this.spawnPosition) || this.spawnPosition.getY() < 1)) {
+			// [VanillaCopy] Modified version of last half of Bat.customServerAiStep(). Edits noted
+			if (this.spawnPosition != null && (!this.level.isEmptyBlock(this.spawnPosition) || this.spawnPosition.getY() <= this.level.getMinBuildHeight())) {
 				this.spawnPosition = null;
 			}
 
+			//TF - no drowning birds
 			if (isInWater() || level.containsAnyLiquid(getBoundingBox())) {
 				currentFlightTime = 0; // reset timer for MAX FLIGHT :v
 				this.setDeltaMovement(this.getDeltaMovement().x(), 0.1F, this.getDeltaMovement().z());
 			}
 
-			if (this.spawnPosition == null || this.random.nextInt(30) == 0 || this.spawnPosition.distSqr(new Vec3i(((int) this.getX()), ((int) this.getY()), ((int) this.getZ()))) < 4.0D) {
+			if (this.spawnPosition == null || this.random.nextInt(30) == 0 || this.spawnPosition.closerToCenterThan(this.position(), 2.0D)) {
 				// TF - modify shift factor of Y
 				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
-				this.spawnPosition = new BlockPos((int) this.getX() + this.random.nextInt(7) - this.random.nextInt(7), (int) this.getY() + this.random.nextInt(6) - yTarget, (int) this.getZ() + this.random.nextInt(7) - this.random.nextInt(7));
+				this.spawnPosition = new BlockPos(
+						this.getX() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7),
+						this.getY() + (double)this.random.nextInt(6) - yTarget,
+						this.getZ() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7));
 			}
 
-			double d0 = this.spawnPosition.getX() + 0.5D - this.getX();
-			double d1 = this.spawnPosition.getY() + 0.1D - this.getY();
-			double d2 = this.spawnPosition.getZ() + 0.5D - this.getZ();
-
-			this.getDeltaMovement().add(new Vec3(
-					(Math.signum(d0) * 0.5D - this.getDeltaMovement().x()) * 0.10000000149011612D,
-					(Math.signum(d1) * 0.699999988079071D - this.getDeltaMovement().y()) * 0.10000000149011612D,
-					(Math.signum(d2) * 0.5D - this.getDeltaMovement().z()) * 0.10000000149011612D
-			));
-
-			float f = (float) (Mth.atan2(this.getDeltaMovement().z(), this.getDeltaMovement().x()) * (180D / Math.PI)) - 90.0F;
+			double d2 = (double)this.spawnPosition.getX() + 0.5D - this.getX();
+			double d0 = (double)this.spawnPosition.getY() + 0.1D - this.getY();
+			double d1 = (double)this.spawnPosition.getZ() + 0.5D - this.getZ();
+			Vec3 vec3 = this.getDeltaMovement();
+			Vec3 vec31 = vec3.add((Math.signum(d2) * 0.5D - vec3.x) * (double)0.1F, (Math.signum(d0) * (double)0.7F - vec3.y) * (double)0.1F, (Math.signum(d1) * 0.5D - vec3.z) * (double)0.1F);
+			this.setDeltaMovement(vec31);
+			float f = (float)(Mth.atan2(vec31.z, vec31.x) * (double)(180F / (float)Math.PI)) - 90.0F;
 			float f1 = Mth.wrapDegrees(f - this.getYRot());
 			this.zza = 0.5F;
 			this.setYRot(this.getYRot() + f1);
-
 			// TF - change chance 100 -> 10; change check to isLandable
-			if (this.random.nextInt(100) == 0 && isLandableBlock(new BlockPos(getX(), getY() - 1, getZ()))) //this.world.getBlockState(blockpos1).isNormalCube())
-			{
-				// this.setIsBatHanging(true); TF - land the bird
-				setIsBirdLanded(true);
-				this.setDeltaMovement(this.getDeltaMovement().x(), 0.0F, this.getDeltaMovement().z());
+			if (this.random.nextInt(10) == 0 && this.isLandableBlock(this.blockPosition().below())) {
+				//TF - land the bird
+				this.setIsBirdLanded(true);
+				this.setDeltaMovement(this.getDeltaMovement().multiply(1.0F, 0.0F, 1.0F));
 			}
 			// End copy
 		}
@@ -229,6 +229,11 @@ public class TinyBird extends Bird {
 
 	@Override
 	protected void doPush(Entity entity) {
+	}
+
+	@Override
+	public boolean isIgnoringBlockTriggers() {
+		return true;
 	}
 
 	@Override
