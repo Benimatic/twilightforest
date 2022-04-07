@@ -103,7 +103,7 @@ public class LichMinionsGoal extends Goal {
 			minion.playSound(TFSounds.MINION_SUMMON, 1.0F, ((lich.getRandom().nextFloat() - lich.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
 			// make sparkles leading to it
-			lich.makeBlackMagicTrail(lich.getX(), lich.getY() + lich.getEyeHeight(), lich.getZ(), minionSpot.x, minionSpot.y + minion.getBbHeight() / 2.0, minionSpot.z);
+			lich.makeBlackMagicTrail(lich.eyeBlockPosition(), minion.eyeBlockPosition());
 		}
 	}
 

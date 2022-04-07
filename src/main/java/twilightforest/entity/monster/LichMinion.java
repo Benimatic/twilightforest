@@ -86,7 +86,9 @@ public class LichMinion extends Zombie {
 				this.master = nearbyLich;
 
 				// animate our new linkage!
-				master.makeBlackMagicTrail(getX(), getY() + this.getEyeHeight(), getZ(), master.getX(), master.getY() + master.getEyeHeight(), master.getZ());
+				if(!level.isClientSide) {
+					master.makeBlackMagicTrail(this.eyeBlockPosition(), master.eyeBlockPosition());
+				}
 
 				// become angry at our masters target
 				setTarget(master.getTarget());

@@ -35,13 +35,13 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
 import twilightforest.block.TFBlocks;
-import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.TFEntities;
+import twilightforest.entity.ai.AlwaysWatchTargetGoal;
 import twilightforest.entity.ai.LichMinionsGoal;
+import twilightforest.entity.ai.LichPopMobsGoal;
 import twilightforest.entity.ai.LichShadowsGoal;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBolt;
@@ -53,10 +53,9 @@ import twilightforest.world.registration.TFGenerationSettings;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Lich extends Monster {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/lich");
 
 	private static final EntityDataAccessor<Boolean> DATA_ISCLONE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Byte> DATA_SHIELDSTRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BYTE);
@@ -71,6 +70,7 @@ public class Lich extends Monster {
 
 	private Lich masterLich;
 	private int attackCooldown;
+	private int popCooldown;
 	private int spawnTime;
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_6);
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
@@ -103,6 +103,14 @@ public class Lich extends Monster {
 		attackCooldown = cooldown;
 	}
 
+	public int getPopCooldown() {
+		return popCooldown;
+	}
+
+	public void setPopCooldown(int cooldown) {
+		popCooldown = cooldown;
+	}
+
 	@Override
 	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
@@ -112,9 +120,11 @@ public class Lich extends Monster {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new LichShadowsGoal(this));
-		this.goalSelector.addGoal(2, new LichMinionsGoal(this));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 0.75D, true) {
+		this.goalSelector.addGoal(1, new AlwaysWatchTargetGoal(this));
+		this.goalSelector.addGoal(1, new LichPopMobsGoal(this));
+		this.goalSelector.addGoal(2, new LichShadowsGoal(this));
+		this.goalSelector.addGoal(3, new LichMinionsGoal(this));
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.75D, true) {
 			@Override
 			public boolean canUse() {
 				return getPhase() == 3 && super.canUse();
@@ -127,7 +137,15 @@ public class Lich extends Monster {
 			}
 		});
 
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this) {
+			@Override
+			public boolean canUse() {
+				if (this.mob instanceof Lich main && this.mob.getLastHurtByMob() instanceof Lich lich && lich.masterLich == main.masterLich) {
+					return false;
+				}
+				return super.canUse();
+			}
+		});
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
 	}
 
@@ -291,13 +309,8 @@ public class Lich extends Monster {
 		}
 
 		if (super.hurt(src, damage)) {
-			// Prevent AIHurtByTarget from targeting our own companions
-			if (getLastHurtByMob() instanceof Lich && ((Lich) getLastHurtByMob()).masterLich == this.masterLich) {
-				setLastHurtByMob(null);
-			}
-
 			if (this.getPhase() < 3 || random.nextInt(4) == 0) {
-				this.teleportToSightOfEntity(getTarget());
+				this.teleportToSightOfEntity(this.getTarget());
 			}
 
 			if(src.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
@@ -314,29 +327,22 @@ public class Lich extends Monster {
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 
-		if (getTarget() == null) {
-			return;
-		}
-
 		if (attackCooldown > 0 && spawnTime <= 0) {
 			attackCooldown--;
 		}
 
-		if (spawnTime > 0 && hasLineOfSight(getTarget())) {
-			spawnTime--;
-			if(spawnTime <= 0) {
-				extinguishNearbyCandles();
+		if (popCooldown > 0) {
+			popCooldown--;
+		}
+
+		if(this.getTarget() != null) {
+			if (spawnTime > 0 && hasLineOfSight(getTarget())) {
+				spawnTime--;
+				if (spawnTime <= 0) {
+					extinguishNearbyCandles();
+				}
 			}
 		}
-
-		// TODO: AI task?
-		if (!isShadowClone() && attackCooldown % 15 == 0) {
-			popNearbyMob();
-		}
-
-		// always watch our target
-		// TODO: make into AI task
-		this.getLookControl().setLookAt(getTarget(), 100F, 100F);
 	}
 
 	private void extinguishNearbyCandles() {
@@ -358,7 +364,7 @@ public class Lich extends Monster {
 		double sy = getY() + (getBbHeight() * 0.82);
 		double sz = getZ() + (Mth.sin(bodyFacingAngle) * 0.65);
 
-		double tx = getTarget().getX() - sx;
+		double tx = Objects.requireNonNull(getTarget()).getX() - sx;
 		double ty = (getTarget().getBoundingBox().minY + getTarget().getBbHeight() / 2.0F) - (getY() + getBbHeight() / 2.0F);
 		double tz = getTarget().getZ() - sz;
 
@@ -377,7 +383,7 @@ public class Lich extends Monster {
 		double sy = getY() + (getBbHeight() * 0.82);
 		double sz = getZ() + (Mth.sin(bodyFacingAngle) * 0.65);
 
-		double tx = getTarget().getX() - sx;
+		double tx = Objects.requireNonNull(getTarget()).getX() - sx;
 		double ty = (getTarget().getBoundingBox().minY + getTarget().getBbHeight() / 2.0F) - (getY() + getBbHeight() / 2.0F);
 		double tz = getTarget().getZ() - sz;
 
@@ -388,24 +394,6 @@ public class Lich extends Monster {
 		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 
 		level.addFreshEntity(projectile);
-	}
-
-	private void popNearbyMob() {
-		List<Mob> nearbyMobs = level.getEntitiesOfClass(Mob.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES));
-
-		for (Mob mob : nearbyMobs) {
-			if (getSensing().hasLineOfSight(mob)) {
-				mob.spawnAnim();
-				mob.discard();
-				// play death sound
-//					world.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-
-				// make trail so it's clear that we did it
-				makeRedMagicTrail(mob.getX(), mob.getY() + mob.getBbHeight() / 2.0, mob.getZ(), this.getX(), this.getY() + this.getBbHeight() / 2.0, this.getZ());
-
-				break;
-			}
-		}
 	}
 
 	public boolean wantsNewClone(Lich clone) {
@@ -444,13 +432,13 @@ public class Lich extends Monster {
 				.count();
 	}
 
-	public void teleportToSightOfEntity(Entity entity) {
+	public void teleportToSightOfEntity(@Nullable Entity entity) {
 		Vec3 dest = findVecInLOSOf(entity);
 		double srcX = getX();
 		double srcY = getY();
 		double srcZ = getZ();
 
-		if (dest != null) {
+		if (dest != null && entity != null) {
 			teleportToNoChecks(dest.x, dest.y, dest.z);
 			this.getLookControl().setLookAt(entity, 100F, 100F);
 			this.yBodyRot = this.getYRot();
@@ -466,7 +454,7 @@ public class Lich extends Monster {
 	 * Returns null if we can't find anything
 	 */
 	@Nullable
-	public Vec3 findVecInLOSOf(Entity targetEntity) {
+	public Vec3 findVecInLOSOf(@Nullable Entity targetEntity) {
 		if (targetEntity == null) return null;
 		double origX = getX();
 		double origY = getY();
@@ -526,31 +514,31 @@ public class Lich extends Monster {
 		}
 	}
 
-	private void makeRedMagicTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
-		int particles = 32;
+	public void makeRedMagicTrail(BlockPos source, BlockPos target) {
+		int particles = 60;
 		for (int i = 0; i < particles; i++) {
 			double trailFactor = i / (particles - 1.0D);
 			float f = 1.0F;
 			float f1 = 0.5F;
 			float f2 = 0.5F;
-			double tx = srcX + (destX - srcX) * trailFactor + random.nextGaussian() * 0.005;
-			double ty = srcY + (destY - srcY) * trailFactor + random.nextGaussian() * 0.005;
-			double tz = srcZ + (destZ - srcZ) * trailFactor + random.nextGaussian() * 0.005;
+			double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + random.nextGaussian() * 0.005;
+			double ty = source.getY() + (target.getY() - source.getY()) * trailFactor + random.nextGaussian() * 0.005;
+			double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + random.nextGaussian() * 0.005;
 			level.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
 
-	public void makeBlackMagicTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	public void makeBlackMagicTrail(BlockPos source, BlockPos target) {
 		// make particle trail
-		int particles = 32;
+		int particles = 60;
 		for (int i = 0; i < particles; i++) {
 			double trailFactor = i / (particles - 1.0D);
 			float f = 0.2F;
 			float f1 = 0.2F;
 			float f2 = 0.2F;
-			double tx = srcX + (destX - srcX) * trailFactor + random.nextGaussian() * 0.005;
-			double ty = srcY + (destY - srcY) * trailFactor + random.nextGaussian() * 0.005;
-			double tz = srcZ + (destZ - srcZ) * trailFactor + random.nextGaussian() * 0.005;
+			double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + random.nextGaussian() * 0.005;
+			double ty = source.getY() + (target.getY() - source.getY()) * trailFactor + random.nextGaussian() * 0.005;
+			double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + random.nextGaussian() * 0.005;
 			level.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
@@ -605,7 +593,7 @@ public class Lich extends Monster {
 
 	@Override
 	public ResourceLocation getDefaultLootTable() {
-		return !isShadowClone() ? LOOT_TABLE : null;
+		return !isShadowClone() ? super.getDefaultLootTable() : null;
 	}
 
 	@Override
