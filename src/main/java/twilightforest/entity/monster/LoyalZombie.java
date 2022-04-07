@@ -72,7 +72,9 @@ public class LoyalZombie extends TamableAnimal {
 		// once our damage boost effect wears out, start to burn
 		// the effect here is that we die shortly after our 60 second lifespan
 		if (!this.level.isClientSide && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
-			this.setSecondsOnFire(100);
+			if(this.tickCount % 20 == 0) {
+				this.hurt(DamageSource.GENERIC, 2);
+			}
 		}
 
 		super.aiStep();
