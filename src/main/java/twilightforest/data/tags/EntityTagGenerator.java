@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
     public static final TagKey<EntityType<?>> LICH_POPPABLES = create(TwilightForestMod.prefix("lich_poppables"));
+    public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
     public static final TagKey<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = create(TwilightForestMod.prefix("rides_obstruct_snatching"));
 
     public EntityTagGenerator(DataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
@@ -85,6 +86,24 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
         ).addTag(BOSSES);
 
         tag(LICH_POPPABLES).addTag(EntityTypeTags.SKELETONS).add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get());
+
+        tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).add(
+                EntityType.IRON_GOLEM,
+                EntityType.SHULKER,
+                EntityType.SKELETON_HORSE,
+                EntityType.SLIME,
+                EntityType.SNOW_GOLEM,
+                TFEntities.CARMINITE_GOLEM.get(),
+                TFEntities.DEATH_TOME.get(),
+                TFEntities.ICE_CRYSTAL.get(),
+                TFEntities.KNIGHT_PHANTOM.get(),
+                TFEntities.LICH.get(),
+                TFEntities.MAZE_SLIME.get(),
+                TFEntities.MOSQUITO_SWARM.get(),
+                TFEntities.SNOW_GUARDIAN.get(),
+                TFEntities.STABLE_ICE_CORE.get(),
+                TFEntities.UNSTABLE_ICE_CORE.get(),
+                TFEntities.WRAITH.get());
 
         // These entities forcefully take players from the entity they're riding
         tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
