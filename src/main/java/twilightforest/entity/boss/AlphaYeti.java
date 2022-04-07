@@ -45,7 +45,6 @@ import twilightforest.entity.ai.YetiRampageGoal;
 import twilightforest.entity.ai.YetiTiredGoal;
 import twilightforest.entity.projectile.FallingIce;
 import twilightforest.entity.projectile.IceBomb;
-import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
@@ -180,7 +179,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
-		if (!this.canRampage && !this.isTired() && (source.isProjectile() || source.getDirectEntity() instanceof TwilightWandBolt)) {
+		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
 			return false;
 		}
 
