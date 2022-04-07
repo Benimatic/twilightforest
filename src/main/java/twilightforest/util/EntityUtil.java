@@ -1,20 +1,23 @@
 package twilightforest.util;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.function.DoubleUnaryOperator;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.BlockHitResult;
 
 public class EntityUtil {
 
@@ -47,5 +50,22 @@ public class EntityUtil {
 	public static BlockHitResult rayTrace(Player player, @Nullable DoubleUnaryOperator modifier) {
 		double range = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
+	}
+
+	private static Method getDeathSound;
+
+	public static SoundEvent getDeathSound(LivingEntity living) {
+		try {
+			if (getDeathSound == null) {
+				getDeathSound = LivingEntity.class.getDeclaredMethod("getDeathSound");
+				getDeathSound.setAccessible(true);
+			}
+
+			return (SoundEvent) getDeathSound.invoke(living);
+		} catch (NoSuchMethodException ex) {
+			throw new RuntimeException(ex);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+			return SoundEvents.ZOMBIE_DEATH;
+		}
 	}
 }
