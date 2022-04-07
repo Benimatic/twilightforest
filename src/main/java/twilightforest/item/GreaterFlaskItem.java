@@ -58,7 +58,7 @@ public class GreaterFlaskItem extends BrittleFlaskItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if(allowdedIn(tab)) {
+		if (allowdedIn(tab)) {
 			ItemStack stack = new ItemStack(this);
 			stack.getOrCreateTag().putInt("Uses", 0);
 			items.add(stack);
