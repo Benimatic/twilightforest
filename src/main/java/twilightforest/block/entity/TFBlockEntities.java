@@ -11,6 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.entity.spawner.*;
+import twilightforest.client.renderer.item.RedThreadRenderer;
 import twilightforest.client.renderer.tileentity.*;
 
 public class TFBlockEntities {
@@ -94,6 +95,9 @@ public class TFBlockEntities {
 	public static final RegistryObject<BlockEntityType<TomeSpawnerBlockEntity>> TOME_SPAWNER = TILE_ENTITIES.register("tome_spawner", () ->
 			BlockEntityType.Builder.of(TomeSpawnerBlockEntity::new, TFBlocks.DEATH_TOME_SPAWNER.get()).build(null));
 
+	public static final RegistryObject<BlockEntityType<RedThreadBlockEntity>> RED_THREAD = TILE_ENTITIES.register("red_thread", () ->
+			BlockEntityType.Builder.of(RedThreadBlockEntity::new, TFBlocks.RED_THREAD.get()).build(null));
+
 	@OnlyIn(Dist.CLIENT)
 	public static void registerTileEntityRenders() {
 		// tile entities
@@ -105,5 +109,6 @@ public class TFBlockEntities {
 		BlockEntityRenderers.register(TF_CHEST.get(), TwilightChestRenderer::new);
 		BlockEntityRenderers.register(KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
 		BlockEntityRenderers.register(SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);
+		BlockEntityRenderers.register(RED_THREAD.get(), RedThreadRenderer::new);
 	}
 }

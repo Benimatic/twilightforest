@@ -136,6 +136,21 @@
         {
           "type": "minecraft:item",
           "name": "twilightforest:ironwood_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 5.0,
+                "max": 15.0
+              },
+              "add": false
+            }
+          ],
+          "name": "twilightforest:red_thread"
         }
       ]
     },

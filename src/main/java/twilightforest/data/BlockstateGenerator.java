@@ -85,12 +85,24 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.condition(LadderBlock.FACING, d).condition(IronLadderBlock.RIGHT, true).end();
 		}
 
+		//terrorcotta my beloved
 		//terrorcotta();
 		towerBlocks();
 
+		ModelFile thread = models().getExistingFile(TwilightForestMod.prefix("block/red_thread"));
+
+		getMultipartBuilder(TFBlocks.RED_THREAD.get())
+				.part().modelFile(thread).uvLock(true).addModel().condition(BlockStateProperties.DOWN, true).end()
+				.part().modelFile(thread).uvLock(true).rotationX(180).addModel().condition(BlockStateProperties.UP, true).end()
+				.part().modelFile(thread).uvLock(true).rotationX(90).rotationY(90).addModel().condition(BlockStateProperties.WEST, true).end()
+				.part().modelFile(thread).uvLock(true).rotationX(-90).rotationY(90).addModel().condition(BlockStateProperties.EAST, true).end()
+				.part().modelFile(thread).uvLock(true).rotationX(90).addModel().condition(BlockStateProperties.SOUTH, true).end()
+				.part().modelFile(thread).uvLock(true).rotationX(-90).addModel().condition(BlockStateProperties.NORTH, true).end();
+
+
 		simpleBlock(TFBlocks.FAKE_GOLD.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
 		simpleBlock(TFBlocks.FAKE_DIAMOND.get(), models().getExistingFile(new ResourceLocation("block/diamond_block")));
-		
+
 		simpleBlock(TFBlocks.NAGA_TROPHY.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.LICH_TROPHY.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.MINOSHROOM_TROPHY.get(), models().getExistingFile(new ResourceLocation("block/skull")));

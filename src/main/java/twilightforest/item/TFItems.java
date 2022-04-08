@@ -99,6 +99,7 @@ public class TFItems {
 	public static final RegistryObject<Item> GOLDEN_MINOTAUR_AXE = ITEMS.register("gold_minotaur_axe", () -> new MinotaurAxeItem(Tiers.GOLD, defaultBuilder().rarity(Rarity.COMMON)));
 	public static final RegistryObject<Item> DIAMOND_MINOTAUR_AXE = ITEMS.register("diamond_minotaur_axe", () -> new MinotaurAxeItem(Tiers.DIAMOND, defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> MAZEBREAKER_PICKAXE = ITEMS.register("mazebreaker_pickaxe", () -> new MazebreakerPickItem(Tiers.DIAMOND, defaultBuilder().setNoRepair().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> RED_THREAD = ITEMS.register("red_thread", () -> new BlockItem(TFBlocks.RED_THREAD.get(), defaultBuilder()));
 	public static final RegistryObject<Item> TRANSFORMATION_POWDER = ITEMS.register("transformation_powder", () -> new TransformPowderItem(defaultBuilder()));
 	public static final RegistryObject<Item> RAW_MEEF = ITEMS.register("raw_meef", () -> new Item(defaultBuilder().food(MEEF_RAW)));
 	public static final RegistryObject<Item> COOKED_MEEF = ITEMS.register("cooked_meef", () -> new Item(defaultBuilder().food(MEEF_COOKED)));

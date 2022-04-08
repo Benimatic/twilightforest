@@ -507,6 +507,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .setRolls(ConstantValue.exactly(1))
                                 //specialBiomes loot
                                 .add(LootItem.lootTableItem(Items.GOLDEN_APPLE))
+								.add(LootItem.lootTableItem(TFBlocks.RED_THREAD.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(10.0F, 36.0F))))
                                 .add(LootItem.lootTableItem(Items.BLAZE_ROD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))))));
@@ -533,7 +534,8 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_BOOTS.get()))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_PICKAXE.get()))
                                 .add(LootItem.lootTableItem(TFItems.IRONWOOD_CHESTPLATE.get()))
-                                .add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD.get())))
+                                .add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD.get()))
+								.add(LootItem.lootTableItem(TFBlocks.RED_THREAD.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(5.0F, 15.0F)))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 //specialBiomes loot
@@ -547,6 +549,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
                                 //common loot
+								.add(LootItem.lootTableItem(TFBlocks.RED_THREAD.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(20.0F, 56.0F))))
                                 .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 9))))
                                 .add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))))
                                 .add(LootItem.lootTableItem(TFItems.IRONWOOD_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 9))))

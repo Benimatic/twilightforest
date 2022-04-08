@@ -7,6 +7,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -136,6 +137,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.MOSSY_MAZESTONE.get());
 		dropSelf(TFBlocks.MAZESTONE_MOSAIC.get());
 		dropSelf(TFBlocks.MAZESTONE_BORDER.get());
+		add(TFBlocks.RED_THREAD.get(), redThread());
 		dropWhenSilkTouch(TFBlocks.HEDGE.get());
 		add(TFBlocks.ROOT_BLOCK.get(), createSingleItemTableWithSilkTouch(TFBlocks.ROOT_BLOCK.get(), Items.STICK, UniformGenerator.between(3, 5)));
 		add(TFBlocks.LIVEROOT_BLOCK.get(), createSilkTouchDispatchTable(TFBlocks.LIVEROOT_BLOCK.get(), applyExplosionCondition(TFBlocks.LIVEROOT_BLOCK.get(), LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))));
@@ -529,6 +531,37 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(TFItems.TORCHBERRIES.get())
 								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(pBlock).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TorchberryPlantBlock.HAS_BERRIES, true)))));
+	}
+
+	protected static LootTable.Builder redThread() {
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.add(applyExplosionDecay(TFBlocks.RED_THREAD.get(), LootItem.lootTableItem(TFBlocks.RED_THREAD.get())
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(PipeBlock.EAST, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(PipeBlock.WEST, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(PipeBlock.NORTH, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(PipeBlock.SOUTH, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(PipeBlock.UP, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.RED_THREAD.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(PipeBlock.DOWN, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
 	}
 
 	private static LootTable.Builder dropWithoutSilk(Block block) {

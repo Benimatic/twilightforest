@@ -163,5 +163,6 @@ public class RenderLayerRegistration {
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.POTTED_THORN.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.POTTED_GREEN_THORN.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.POTTED_DEAD_THORN.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(TFBlocks.RED_THREAD.get(), cutout);
 	}
 }

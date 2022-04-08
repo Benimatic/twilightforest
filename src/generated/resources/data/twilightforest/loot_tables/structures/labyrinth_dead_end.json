@@ -202,6 +202,21 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
+                "min": 10.0,
+                "max": 36.0
+              },
+              "add": false
+            }
+          ],
+          "name": "twilightforest:red_thread"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
                 "min": 1.0,
                 "max": 2.0
               },

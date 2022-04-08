@@ -141,6 +141,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.MOSSY_MAZESTONE.get());
 		toBlock(TFBlocks.MAZESTONE_MOSAIC.get());
 		toBlock(TFBlocks.MAZESTONE_BORDER.get());
+		generated(TFBlocks.RED_THREAD.getId().getPath(), TwilightForestMod.prefix("items/red_thread"));
 		toBlock(TFBlocks.HEDGE.get());
 		toBlock(TFBlocks.ROOT_BLOCK.get());
 		toBlock(TFBlocks.LIVEROOT_BLOCK.get());
