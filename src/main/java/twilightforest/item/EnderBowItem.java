@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -11,6 +12,8 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EnderBowItem extends BowItem {
@@ -27,18 +30,29 @@ public class EnderBowItem extends BowItem {
 						&& evt.getRayTraceResult() instanceof EntityHitResult
 						&& ((EntityHitResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity living) {
 
-			if (arrow.getPersistentData().contains(KEY) && player.getVehicle() == null) {
+			if (arrow.getPersistentData().contains(KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
 				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
+				@Nullable Entity playerVehicle = player.getVehicle();
 
 				player.setYRot(living.getYRot());
-				player.setXRot(living.getXRot());
 				player.teleportTo(living.getX(), living.getY(), living.getZ());
+				player.invulnerableTime = 40;
+				player.level.broadcastEntityEvent(player, (byte) 46);
+				if(living.isPassenger() && living.getVehicle() != null) {
+					player.startRiding(living.getVehicle(), true);
+					living.stopRiding();
+				}
 				player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 
 				living.setYRot(sourceYaw);
 				living.setXRot(sourcePitch);
 				living.teleportTo(sourceX, sourceY, sourceZ);
+				living.level.broadcastEntityEvent(player, (byte) 46);
+				if (playerVehicle != null) {
+					living.startRiding(playerVehicle, true);
+					player.stopRiding();
+				}
 				living.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 			}
 		}
