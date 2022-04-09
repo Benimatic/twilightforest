@@ -1,19 +1,15 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
@@ -116,16 +112,28 @@ public class SeekerArrow extends TFArrow {
 			List<LivingEntity> entityList = this.level.getEntitiesOfClass(LivingEntity.class, targetBB);
 			List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).collect(Collectors.toList());
 
-			if(!monsters.isEmpty() && monsters.get(0).hasLineOfSight(this)) {
-				setTarget(monsters.get(0));
-				return;
+			if(!monsters.isEmpty()) {
+				for (LivingEntity monster : monsters) {
+					if (((Monster) monster).getTarget() == this.getOwner()) {
+						setTarget(monster);
+						return;
+					}
+				}
+				for (LivingEntity monster : monsters) {
+					if(monster instanceof NeutralMob) continue;
+
+					if (monster.hasLineOfSight(this)) {
+						setTarget(monster);
+						return;
+					}
+				}
 			}
 
 			for (LivingEntity living : entityList) {
 
 				if(!living.hasLineOfSight(this)) continue;
 
-				if (living instanceof Player) continue;
+				if (living == this.getOwner()) continue;
 
 				if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) continue;
 
