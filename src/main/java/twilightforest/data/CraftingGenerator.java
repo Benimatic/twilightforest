@@ -1,13 +1,12 @@
 package twilightforest.data;
 
-import com.google.gson.JsonObject;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.data.*;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.SimpleCookingSerializer;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCookingSerializer;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import twilightforest.TwilightForestMod;
@@ -17,18 +16,11 @@ import twilightforest.item.TFItems;
 import twilightforest.item.recipe.TFRecipes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 
-import java.nio.file.Path;
 import java.util.function.Consumer;
 
 public class CraftingGenerator extends CraftingDataHelper {
 	public CraftingGenerator(DataGenerator generator) {
 		super(generator);
-	}
-
-	@Override
-	protected void saveAdvancement(HashCache p_208310_1_, JsonObject p_208310_2_, Path p_208310_3_) {
-		//Silence. This just makes it so that we don't gen advancements
-		//TODO Recipe advancements control the unlock of a recipe, so if we ever consider actually making them, recipes should unlock based on also possible prerequisite conditions, instead of ONLY obtaining the item itself
 	}
 
 	@Override
@@ -86,7 +78,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.pattern("#")
 				.pattern("#")
 				.define('#', Ingredient.of(TFBlocks.AURORA_BLOCK.get()))
-				.unlockedBy("has_" + TFBlocks.AURORA_PILLAR.getId().getPath(), has(TFBlocks.AURORA_PILLAR.get()))
+				.unlockedBy("has_slab", has(TFBlocks.AURORA_SLAB.get()))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(TFBlocks.IRON_LADDER.get(), 3)
@@ -94,7 +86,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.pattern("-#-")
 				.define('#', Ingredient.of(Blocks.IRON_BARS))
 				.define('-', Tags.Items.NUGGETS_IRON)
-				.unlockedBy("has_" + TFBlocks.IRON_LADDER.getId().getPath(), has(TFBlocks.IRON_LADDER.get()))
+				.unlockedBy("has_iron_bars", has(Blocks.IRON_BARS))
 				.save(consumer);
 
 		ShapelessRecipeBuilder.shapeless(TFBlocks.FIREFLY_JAR.get())
@@ -255,7 +247,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('6', ItemTagGenerator.CARMINITE_GEMS)
 				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.get()))
 				.define('o', Ingredient.of(Blocks.DISPENSER))
-				.unlockedBy("has_item", has(TFItems.CARMINITE.get()))
+				.unlockedBy("has_item", has(ItemTagGenerator.CARMINITE_GEMS))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(TFBlocks.CARMINITE_REACTOR.get())
@@ -265,7 +257,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('6', ItemTagGenerator.CARMINITE_GEMS)
 				.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD.get()))
 				.define('%', Tags.Items.ORES_REDSTONE)
-				.unlockedBy("has_item", has(TFBlocks.CARMINITE_REACTOR.get()))
+				.unlockedBy("has_item", has(ItemTagGenerator.CARMINITE_GEMS))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(TFBlocks.REAPPEARING_BLOCK.get(), 2)
@@ -287,6 +279,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('6', ItemTagGenerator.CARMINITE_GEMS)
 				.unlockedBy("has_item", has(TFBlocks.REAPPEARING_BLOCK.get()))
 				.save(consumer);
+
 		ShapelessRecipeBuilder.shapeless(TFBlocks.MOSSY_TOWERWOOD.get())
 			.requires(Ingredient.of(TFBlocks.TOWERWOOD.get()))
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
@@ -352,7 +345,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		ShapelessRecipeBuilder.shapeless(Blocks.OAK_LEAVES, 64)
 				.requires(TFBlocks.GIANT_LEAVES.get())
-				.unlockedBy("has_item", has(TFBlocks.GIANT_LOG.get()))
+				.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES.get()))
 				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + Blocks.OAK_LEAVES.asItem().getRegistryName().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.BLOCK_AND_CHAIN.get())
@@ -361,7 +354,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.requires(ItemTagGenerator.KNIGHTMETAL_INGOTS)
 				.requires(ItemTagGenerator.KNIGHTMETAL_INGOTS)
 				.requires(Ingredient.of(TFItems.KNIGHTMETAL_RING.get()))
-				.unlockedBy("has_item", has(TFBlocks.KNIGHTMETAL_BLOCK.get()))
+				.unlockedBy("has_block", has(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL))
+				.unlockedBy("has_ingot", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
+				.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.get()))
 				.save(consumer, locEquip(TFItems.BLOCK_AND_CHAIN.getId().getPath()));
 
 		ShapedRecipeBuilder.shaped(TFItems.KNIGHTMETAL_RING.get())
@@ -369,7 +364,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.pattern("- -")
 				.pattern(" - ")
 				.define('-', ItemTagGenerator.KNIGHTMETAL_INGOTS)
-				.unlockedBy("has_item", has(TFItems.KNIGHTMETAL_INGOT.get()))
+				.unlockedBy("has_item", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
 				.save(consumer, locEquip(TFItems.KNIGHTMETAL_RING.getId().getPath()));
 
 		ShapedRecipeBuilder.shaped(TFItems.KNIGHTMETAL_SHIELD.get())
@@ -379,7 +374,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('-', ItemTagGenerator.KNIGHTMETAL_INGOTS)
 				.define('#', ItemTagGenerator.TOWERWOOD)
 				.define('o', Ingredient.of(TFItems.KNIGHTMETAL_RING.get()))
-				.unlockedBy("has_item", has(TFItems.KNIGHTMETAL_INGOT.get()))
+				.unlockedBy("has_ingot", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
+				.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.get()))
 				.save(consumer, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.LIFEDRAIN_SCEPTER.get())
@@ -445,7 +441,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.requires(TFItems.RAVEN_FEATHER.get())
 				.requires(TFItems.TORCHBERRIES.get())
 				.requires(Tags.Items.DUSTS_GLOWSTONE)
-				.unlockedBy("has_item", has(TFItems.TORCHBERRIES.get()))
+				.unlockedBy("has_berries", has(TFItems.TORCHBERRIES.get()))
+				.unlockedBy("has_feather", has(TFItems.RAVEN_FEATHER.get()))
 				.save(consumer);
 
 		ShapedRecipeBuilder.shaped(TFItems.MAGIC_MAP.get())
@@ -471,7 +468,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.requires(Tags.Items.STORAGE_BLOCKS_DIAMOND)
 				.requires(Tags.Items.STORAGE_BLOCKS_GOLD)
 				.requires(Tags.Items.STORAGE_BLOCKS_IRON)
-				.unlockedBy("has_item", has(TFItems.ORE_MAGNET.get()))
+				.unlockedBy("has_item", has(TFItems.MAZE_MAP.get()))
 				.save(consumer);
 	}
 

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "twilightforest:hydra_banner_pattern"
+    ]
+  },
+  "criteria": {
+    "has_trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hydra_trophy"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "twilightforest:hydra_banner_pattern"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_trophy",
+      "has_the_recipe"
+    ]
+  ]
+}
