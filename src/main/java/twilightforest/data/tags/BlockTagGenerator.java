@@ -68,6 +68,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> WORLDGEN_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("worldgen_replaceables"));
 
 	public static final TagKey<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = BlockTags.create(TwilightForestMod.prefix("ore_magnet/ore_safe_replace_block"));
+	public static final TagKey<Block> ORE_MAGNET_IGNORE = BlockTags.create(TwilightForestMod.prefix("ore_magnet/ignored_ores"));
 	public static final TagKey<Block> ROOT_GROUND = BlockTags.create(new ResourceLocation("forge", "ore_bearing_ground/root"));
 	public static final TagKey<Block> ROOT_ORES = BlockTags.create(new ResourceLocation("forge", "ores_in_ground/root"));
 
@@ -419,6 +420,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				BlockTags.STONE_ORE_REPLACEABLES,
 				ROOT_GROUND
 		);
+
+		tag(ORE_MAGNET_IGNORE).addTag(BlockTags.COAL_ORES);
 
 		tag(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
 		tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());

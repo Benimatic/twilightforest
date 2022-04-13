@@ -3836,6 +3836,7 @@ b1dd9880a466c709e1cbbbe4beeaf9f1dd85a7f5 data/twilightforest/tags/blocks/hollow_
 a37b73dfad5c44955a5937b4b3a3ffdbb00be92b data/twilightforest/tags/blocks/logs.json
 84260beae7e3103b490b14db8e75029fecccc738 data/twilightforest/tags/blocks/mangrove_logs.json
 42aae51d05e2cf26bc4c7badb73a3f881dfc04f9 data/twilightforest/tags/blocks/mining_logs.json
+d3bffaf4e15811d862ef844776523767615cb11f data/twilightforest/tags/blocks/ore_magnet/ignored_ores.json
 d1e89f77157d8f0324c8240d2bc6f2acdf72d8fc data/twilightforest/tags/blocks/ore_magnet/ore_safe_replace_block.json
 74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/twilightforest/tags/blocks/ores/ironwood.json
 74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/twilightforest/tags/blocks/ores/knightmetal.json
