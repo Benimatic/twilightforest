@@ -172,10 +172,10 @@ repositories {
         name 'progwm\'s Maven' // JEI + Mantle + TCon
         url 'https://dvs1.progwml6.com/files/maven'
     }
-    //maven {
-    //    name 'tterrag\'s Maven' // CTM
-    //    url 'https://maven.tterrag.com/'
-    //}
+    maven {
+        name 'tterrag\'s Maven' // CTM
+        url 'https://maven.tterrag.com/'
+    }
     maven {
         name 'Jared\'s Maven' // Immersive Engineering + Patchouli
         url 'https://maven.blamejared.com/'
@@ -199,11 +199,11 @@ dependencies {
     //implementation fg.deobf("slimeknights:TConstruct:${minecraft_version}-${tcon_version}")
 
     // tterrag
-    //implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
+    implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
 
     // blamejared
-    //implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
-    //implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
+    implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // theillusivec4
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")

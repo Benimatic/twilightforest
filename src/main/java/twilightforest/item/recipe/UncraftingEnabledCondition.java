@@ -15,8 +15,15 @@ public class UncraftingEnabledCondition implements ICondition {
 	}
 
 	@Override
-	public boolean test() {
+	public boolean test(IContext ctx) {
 		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(); //(because true is off and false is on)
+	}
+
+	//implementing ICondition requires this to be implemented, remove this once its not required
+	@SuppressWarnings("removal")
+	@Override
+	public boolean test() {
+		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get();
 	}
 
 	public static class Serializer implements IConditionSerializer<UncraftingEnabledCondition> {

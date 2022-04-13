@@ -14,6 +14,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.TFCompat;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.enums.TowerDeviceVariant;
@@ -550,7 +551,7 @@ public class TFBlocks {
 	@SubscribeEvent
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		TFBlockItems.registerBlockItems(evt);
-		//TFCompat.initCompatItems(evt);
+		TFCompat.initCompatItems(evt);
 	}
 
 	private static BlockBehaviour.Properties logProperties(MaterialColor color) {

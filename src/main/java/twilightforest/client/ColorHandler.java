@@ -18,6 +18,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.block.TFBlocks;
+import twilightforest.compat.IECompat;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.TFItems;
@@ -407,7 +408,7 @@ public final class ColorHandler {
 				TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
 
 		if (ModList.get().isLoaded("immersiveengineering")) {
-			//IECompat.registerShaderColors(itemColors);
+			IECompat.registerShaderColors(itemColors);
 		}
 	}
 }

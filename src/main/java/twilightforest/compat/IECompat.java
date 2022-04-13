@@ -25,9 +25,9 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.TFClientEvents;
-import twilightforest.client.model.item.ShaderBagItemModel;
 import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.ie.IEShaderRegister;
+import twilightforest.compat.ie.ShaderBagItemModel;
 import twilightforest.compat.ie.TFShaderGrabbagItem;
 import twilightforest.compat.ie.TFShaderItem;
 import twilightforest.entity.boss.*;
@@ -91,6 +91,7 @@ public class IECompat extends TFCompat {
         IEShaderRegister.initShaders();
 
         //prevent our bosses from dropping epic shader bags
+        //TODO workaround, IMCs dont seem to be working for IE atm
         EventHandler.listOfBoringBosses.add(Naga.class);
         EventHandler.listOfBoringBosses.add(Lich.class);
         EventHandler.listOfBoringBosses.add(Minoshroom.class);
