@@ -11,6 +11,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fml.ModList;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
 
@@ -22,6 +25,16 @@ public class FieryBlock extends Block {
 	@Override
 	public float getShadeBrightness(BlockState state, BlockGetter getter, BlockPos pos) {
 		return 1.0F;
+	}
+
+	@Override
+	public boolean skipRendering(BlockState state, BlockState otherState, Direction direction) {
+		return ModList.get().isLoaded("ctm") && otherState.getBlock() instanceof FieryBlock;
+	}
+
+	@Override
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter getter, BlockPos pos) {
+		return Shapes.empty();
 	}
 
 	@Override
