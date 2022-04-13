@@ -54,6 +54,7 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlo
 	public void render(@Nullable FireflyBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
 		float glow = te != null ? te.glowIntensity : BugModelAnimationHelper.glowIntensity;
+		float randRot = te != null ? te.randRot : 0.0F;
 
 		ms.pushPose();
 		Direction facing = te != null ? te.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
@@ -61,7 +62,7 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlo
 		ms.translate(0.5F, 0.5F, 0.5F);
 		ms.mulPose(facing.getRotation());
 		ms.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
-		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F + randRot));
 		ms.mulPose(Vector3f.YN.rotationDegrees(yaw));
 
 		ms.pushPose();

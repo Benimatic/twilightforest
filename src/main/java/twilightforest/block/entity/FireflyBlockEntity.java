@@ -6,6 +6,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.client.particle.TFParticleType;
 
+import java.util.Random;
+
 public class FireflyBlockEntity extends BlockEntity {
 
 	private int yawDelay;
@@ -15,6 +17,7 @@ public class FireflyBlockEntity extends BlockEntity {
 	public float glowIntensity;
 	private boolean glowing;
 	private int glowDelay;
+	public float randRot = new Random().nextInt(3) * 90.0F;
 
 	public FireflyBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.FIREFLY.get(), pos, state);

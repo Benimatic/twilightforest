@@ -45,28 +45,23 @@ import twilightforest.util.TFStats;
 import javax.annotation.Nullable;
 
 public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
-	private final float WIDTH = getWidth();
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	private final VoxelShape DOWN_BB  = Shapes.create(new AABB(0.5F - WIDTH, 0.8F, 0.2F, 0.5F + WIDTH, 1.0F, 0.8F));
-	private final VoxelShape UP_BB    = Shapes.create(new AABB(0.5F - WIDTH, 0.0F, 0.2F, 0.5F + WIDTH, 0.2F, 0.8F));
-	private final VoxelShape NORTH_BB = Shapes.create(new AABB(0.5F - WIDTH, 0.2F, 0.8F, 0.5F + WIDTH, 0.8F, 1.0F));
-	private final VoxelShape SOUTH_BB = Shapes.create(new AABB(0.5F - WIDTH, 0.2F, 0.0F, 0.5F + WIDTH, 0.8F, 0.2F));
-	private final VoxelShape WEST_BB  = Shapes.create(new AABB(0.8F, 0.2F, 0.5F - WIDTH, 1.0F, 0.8F, 0.5F + WIDTH));
-	private final VoxelShape EAST_BB  = Shapes.create(new AABB(0.0F, 0.2F, 0.5F - WIDTH, 0.2F, 0.8F, 0.5F + WIDTH));
+	private final VoxelShape DOWN_BB = Shapes.create(new AABB(0.2F, 0.85F, 0.2F, 0.8F, 1.0F, 0.8F));
+	private final VoxelShape UP_BB = Shapes.create(new AABB(0.2F, 0.0F, 0.2F, 0.8F, 0.15F, 0.8F));
+	private final VoxelShape NORTH_BB = Shapes.create(new AABB(0.2F, 0.2F, 0.85F, 0.8F, 0.8F, 1.0F));
+	private final VoxelShape SOUTH_BB = Shapes.create(new AABB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.15F));
+	private final VoxelShape WEST_BB = Shapes.create(new AABB(0.85F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F));
+	private final VoxelShape EAST_BB = Shapes.create(new AABB(0.0F, 0.2F, 0.2F, 0.15F, 0.8F, 0.8F));
 
-	protected CritterBlock(Properties props) {
-		super(props);
-		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.FALSE));
-	}
-
-	public float getWidth() {
-		return 0.15F;
+	protected CritterBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.FALSE));
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return switch (state.getValue(FACING)) {
 			case DOWN -> DOWN_BB;
 			default -> UP_BB;
@@ -87,7 +82,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction clicked = context.getClickedFace();
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-		BlockState state = defaultBlockState().setValue(FACING, clicked).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+		BlockState state = defaultBlockState().setValue(FACING, clicked).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
 		if (canSurvive(state, context.getLevel(), context.getClickedPos())) {
 			return state;
@@ -104,23 +99,23 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	@Deprecated
-	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
 		if (state.getValue(WATERLOGGED)) {
-			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-		if (!canSurvive(state, world, pos)) {
+		if (!canSurvive(state, level, pos)) {
 			return Blocks.AIR.defaultBlockState();
 		} else {
-			return super.updateShape(state, direction, neighborState, world, pos, neighborPos);
+			return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
 		}
 	}
 
 	@Override
 	@Deprecated
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		Direction facing = state.getValue(DirectionalBlock.FACING);
 		BlockPos restingPos = pos.relative(facing.getOpposite());
-		return canSupportCenter(world, restingPos, facing);
+		return canSupportCenter(level, restingPos, facing);
 	}
 
 	public abstract ItemStack getSquishResult(); // oh no! TODO Return Loot Table instead?
@@ -131,19 +126,20 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		ItemStack stack = player.getItemInHand(handIn);
-		if(stack.getItem() == Items.GLASS_BOTTLE) {
-			if(this == TFBlocks.FIREFLY.get()) {
-				if(!player.isCreative()) stack.shrink(1);
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (stack.getItem() == Items.GLASS_BOTTLE) {
+			if (this == TFBlocks.FIREFLY.get()) {
+				if (!player.isCreative()) stack.shrink(1);
 				player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.get()));
-				worldIn.setBlockAndUpdate(pos,state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
+				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 				return InteractionResult.SUCCESS;
-			} else if(this == TFBlocks.CICADA.get()) {
-				if(!player.isCreative()) stack.shrink(1);
+			} else if (this == TFBlocks.CICADA.get()) {
+				if (!player.isCreative()) stack.shrink(1);
 				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
-				if(worldIn.isClientSide) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
-				worldIn.setBlockAndUpdate(pos,state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
+				if (level.isClientSide())
+					Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
+				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -151,22 +147,23 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-		if ((entityIn instanceof Projectile && !(entityIn instanceof MoonwormShot) && !(entityIn instanceof CicadaShot)) || entityIn instanceof FallingBlockEntity) {
-			worldIn.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
-			if(worldIn.isClientSide) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
-			worldIn.playSound(null, pos, TFSounds.BUG_SQUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
-			ItemEntity squish = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), this.getSquishResult());
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if ((entity instanceof Projectile && !(entity instanceof MoonwormShot) && !(entity instanceof CicadaShot)) || entity instanceof FallingBlockEntity) {
+			level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
+			if (level.isClientSide())
+				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
+			level.playSound(null, pos, TFSounds.BUG_SQUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
+			ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), this.getSquishResult());
 			squish.spawnAtLocation(squish.getItem());
-			for(int i = 0; i < 50; i++) {
+			for (int i = 0; i < 50; i++) {
 				boolean wallBug = state.getValue(FACING) != Direction.UP;
-				worldIn.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true,
-						pos.getX() + Mth.nextFloat(worldIn.random, 0.25F, 0.75F),
+				level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true,
+						pos.getX() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
 						pos.getY() + (wallBug ? 0.5F : 0.0F),
-						pos.getZ() + Mth.nextFloat(worldIn.random, 0.25F, 0.75F),
+						pos.getZ() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
 						0.0D, 0.0D, 0.0D);
 			}
-			if(entityIn instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
+			if (entity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
 				player.awardStat(TFStats.BUGS_SQUISHED);
 				TFAdvancements.KILL_BUG.trigger(player, state);
 			}

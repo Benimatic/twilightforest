@@ -5,10 +5,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Random;
+
 public class MoonwormBlockEntity extends BlockEntity {
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
+	public float randRot = new Random().nextInt(3) * 90.0F;
 
 	public MoonwormBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.MOONWORM.get(), pos, state);

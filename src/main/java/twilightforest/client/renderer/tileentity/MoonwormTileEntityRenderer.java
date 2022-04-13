@@ -32,6 +32,7 @@ public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormB
 	public void render(@Nullable MoonwormBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentRotation;
 		if (te == null) partialTicks = Minecraft.getInstance().getFrameTime();
+		float randRot = te != null ? te.randRot : 0.0F;
 
 		ms.pushPose();
 		Direction facing = te != null ? te.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
@@ -39,7 +40,7 @@ public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormB
 		ms.translate(0.5F, 0.5F, 0.5F);
 		ms.mulPose(facing.getRotation());
 		ms.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
-		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F + randRot));
 		ms.mulPose(Vector3f.YN.rotationDegrees(yaw));
 
 		VertexConsumer builder = buffer.getBuffer(this.moonwormModel.renderType(textureLoc));
