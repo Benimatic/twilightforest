@@ -22,7 +22,7 @@ public class DataGenerators {
 		generator.addProvider(new PatchouliAdvancementGenerator(generator, helper));
 		generator.addProvider(new BlockstateGenerator(generator, helper));
 		generator.addProvider(new ItemModelGenerator(generator, helper));
-		//generator.addProvider(new BiomeTagGenerator(generator));
+		generator.addProvider(new BiomeTagGenerator(generator, helper));
 		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
 		generator.addProvider(blocktags);
 		generator.addProvider(new FluidTagGenerator(generator, helper));

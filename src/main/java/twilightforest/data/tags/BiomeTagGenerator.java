@@ -5,6 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
@@ -27,8 +28,8 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 	public static final TagKey<Biome> VALID_TROLL_CAVE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_troll_cave_biomes"));
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
-	public BiomeTagGenerator(DataGenerator generator) {
-		super(generator);
+	public BiomeTagGenerator(DataGenerator generator, ExistingFileHelper helper) {
+		super(generator, TwilightForestMod.ID, helper);
 	}
 
 	@Override
