@@ -35,7 +35,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		nagastoneRecipes(consumer);
 		darkTowerRecipes(consumer);
 		castleRecipes(consumer);
-		
+
 		bannerPattern(consumer, "naga_banner_pattern", TFBlocks.NAGA_TROPHY, TFItems.NAGA_BANNER_PATTERN);
 		bannerPattern(consumer, "lich_banner_pattern", TFBlocks.LICH_TROPHY, TFItems.LICH_BANNER_PATTERN);
 		bannerPattern(consumer, "minoshroom_banner_pattern", TFBlocks.MINOSHROOM_TROPHY, TFItems.MINOSHROOM_BANNER_PATTERN);
@@ -151,7 +151,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		ingotRecipes(consumer, "smelted", RecipeSerializer.SMELTING_RECIPE, 200);
 		ingotRecipes(consumer, "blasted", RecipeSerializer.BLASTING_RECIPE, 100);
-		
+
 		crackedWoodRecipes(consumer);
 		crackedStoneRecipes(consumer);
 
@@ -281,10 +281,10 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer);
 
 		ShapelessRecipeBuilder.shapeless(TFBlocks.MOSSY_TOWERWOOD.get())
-			.requires(Ingredient.of(TFBlocks.TOWERWOOD.get()))
-			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-			.unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get()))
-			.save(consumer, TwilightForestMod.prefix("wood/" + TFBlocks.MOSSY_TOWERWOOD.getId().getPath()));
+				.requires(Ingredient.of(TFBlocks.TOWERWOOD.get()))
+				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
+				.unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get()))
+				.save(consumer, TwilightForestMod.prefix("wood/" + TFBlocks.MOSSY_TOWERWOOD.getId().getPath()));
 
 	}
 
@@ -332,6 +332,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 		charmRecipe(consumer, "charm_of_life_2", TFItems.CHARM_OF_LIFE_2, TFItems.CHARM_OF_LIFE_1);
 
 		SpecialRecipeBuilder.special(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.get()).save(consumer, TwilightForestMod.prefix("moonworm_queen_repair_recipe").toString());
+		SpecialRecipeBuilder.special(TFRecipes.MAGIC_MAP_CLONING_RECIPE.get()).save(consumer, TwilightForestMod.prefix("magic_map_cloning_recipe").toString());
+		SpecialRecipeBuilder.special(TFRecipes.MAZE_MAP_CLONING_RECIPE.get()).save(consumer, TwilightForestMod.prefix("maze_map_cloning_recipe").toString());
 
 		ShapelessRecipeBuilder.shapeless(Blocks.COBBLESTONE, 64)
 				.requires(TFBlocks.GIANT_COBBLESTONE.get())
@@ -425,7 +427,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		reverseCompressBlock(consumer, "carminite_block_to_item", TFItems.CARMINITE, ItemTagGenerator.STORAGE_BLOCKS_CARMINITE);
 		reverseCompressBlock(consumer, "fiery_block_to_ingot", TFItems.FIERY_INGOT, ItemTagGenerator.STORAGE_BLOCKS_FIERY);
 		reverseCompressBlock(consumer, "ironwood_block_ingot", TFItems.IRONWOOD_INGOT, ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD);
-		reverseCompressBlock(consumer, "knightmetal_block_ingot", TFItems.KNIGHTMETAL_INGOT,ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL);
+		reverseCompressBlock(consumer, "knightmetal_block_ingot", TFItems.KNIGHTMETAL_INGOT, ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL);
 		reverseCompressBlock(consumer, "steeleaf_block_ingot", TFItems.STEELEAF_INGOT, ItemTagGenerator.STORAGE_BLOCKS_STEELEAF);
 
 		compressedBlock(consumer, "arctic_block", TFBlocks.ARCTIC_FUR_BLOCK, ItemTagGenerator.ARCTIC_FUR);
@@ -651,18 +653,18 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		stairsBlock(consumer, locNaga("mossy_nagastone_stairs_left"), TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT, TFBlocks.MOSSY_ETCHED_NAGASTONE, TFBlocks.MOSSY_ETCHED_NAGASTONE.get());
 		stairsRightBlock(consumer, locNaga("mossy_nagastone_stairs_right"), TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT, TFBlocks.MOSSY_ETCHED_NAGASTONE, TFBlocks.MOSSY_ETCHED_NAGASTONE.get());
-		
+
 		ShapelessRecipeBuilder.shapeless(TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), 1)
-			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-			.requires(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()))
-			.unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get()))
-			.save(consumer, locNaga("mossy_etched_nagastone"));
-		
+				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
+				.requires(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()))
+				.unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get()))
+				.save(consumer, locNaga("mossy_etched_nagastone"));
+
 		ShapelessRecipeBuilder.shapeless(TFBlocks.MOSSY_NAGASTONE_PILLAR.get(), 1)
-			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
-			.requires(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()))
-			.unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get()))
-			.save(consumer, locNaga("mossy_nagastone_pillar"));
+				.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
+				.requires(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()))
+				.unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get()))
+				.save(consumer, locNaga("mossy_nagastone_pillar"));
 
 		stairsBlock(consumer, locNaga("cracked_nagastone_stairs_left"), TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT, TFBlocks.CRACKED_ETCHED_NAGASTONE, TFBlocks.CRACKED_ETCHED_NAGASTONE.get());
 		stairsRightBlock(consumer, locNaga("cracked_nagastone_stairs_right"), TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT, TFBlocks.CRACKED_ETCHED_NAGASTONE, TFBlocks.CRACKED_ETCHED_NAGASTONE.get());
@@ -737,14 +739,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void ingotRecipes(Consumer<FinishedRecipe> consumer, String processName, SimpleCookingSerializer<?> process, int smeltingTime) {
-		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFItems.ARMOR_SHARD_CLUSTER.get()), TFItems.KNIGHTMETAL_INGOT.get(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.ARMOR_SHARD_CLUSTER.get())).save(consumer, TwilightForestMod.prefix( "material/" + processName + "_knightmetal_ingot").toString());
-		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFItems.RAW_IRONWOOD.get()), TFItems.IRONWOOD_INGOT.get(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD.get())).save(consumer, TwilightForestMod.prefix( "material/" + processName + "_ironwood_ingot").toString());
+		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFItems.ARMOR_SHARD_CLUSTER.get()), TFItems.KNIGHTMETAL_INGOT.get(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.ARMOR_SHARD_CLUSTER.get())).save(consumer, TwilightForestMod.prefix("material/" + processName + "_knightmetal_ingot").toString());
+		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFItems.RAW_IRONWOOD.get()), TFItems.IRONWOOD_INGOT.get(), 1.0f, smeltingTime, process).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD.get())).save(consumer, TwilightForestMod.prefix("material/" + processName + "_ironwood_ingot").toString());
 	}
-	
+
 	private void crackedWoodRecipes(Consumer<FinishedRecipe> consumer) {
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.TOWERWOOD.get()), TFBlocks.CRACKED_TOWERWOOD.get(), 0.3f, 100, RecipeSerializer.SMOKING_RECIPE).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get())).save(consumer, TwilightForestMod.prefix("wood/" + "smoked" + "_cracked_towerwood").toString());
 	}
-	
+
 	private void crackedStoneRecipes(Consumer<FinishedRecipe> consumer) {
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()), TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get())).save(consumer, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_nagastone_pillar").toString());
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()), TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get())).save(consumer, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_etched_nagastone").toString());

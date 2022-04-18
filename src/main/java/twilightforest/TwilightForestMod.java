@@ -2,6 +2,7 @@ package twilightforest;
 
 import com.google.common.collect.Maps;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -60,6 +61,8 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFMobEffects;
 import twilightforest.util.TFStats;
 import twilightforest.world.components.BiomeGrassColors;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.*;
 import twilightforest.world.registration.biomes.BiomeKeys;
