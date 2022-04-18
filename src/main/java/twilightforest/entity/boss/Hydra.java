@@ -219,13 +219,13 @@ public class Hydra extends Mob implements Enemy {
 		dz = getZ() + Mth.cos(angle) * 10.5;
 		tail.setPos(dx, dy, dz);
 
+		if (hurtTime == 0) {
+			this.collideWithEntities(this.level.getEntities(this, this.body.getBoundingBox()), this.body);
+			this.collideWithEntities(this.level.getEntities(this, this.tail.getBoundingBox()), this.tail);
+		}
+
 		// destroy blocks
 		if (!this.level.isClientSide) {
-			if (hurtTime == 0) {
-				this.collideWithEntities(this.level.getEntities(this, this.body.getBoundingBox()), this.body);
-				this.collideWithEntities(this.level.getEntities(this, this.tail.getBoundingBox()), this.tail);
-			}
-
 			this.destroyBlocksInAABB(this.body.getBoundingBox());
 			this.destroyBlocksInAABB(this.tail.getBoundingBox());
 
@@ -787,6 +787,16 @@ public class Hydra extends Mob implements Enemy {
 					vx, vy, vz
 			);
 		}
+	}
+
+	@Override
+	protected boolean updateInWaterStateAndDoFluidPushing() {
+		return false;
+	}
+
+	@Override
+	protected float getWaterSlowDown() {
+		return 1.0F;
 	}
 
 	@Override

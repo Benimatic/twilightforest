@@ -887,6 +887,16 @@ public class Naga extends Monster {
 	}
 
 	@Override
+	protected boolean updateInWaterStateAndDoFluidPushing() {
+		return false;
+	}
+
+	@Override
+	protected float getWaterSlowDown() {
+		return 1.0F;
+	}
+
+	@Override
 	public boolean canChangeDimensions() {
 		return false;
 	}

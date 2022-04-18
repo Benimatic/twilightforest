@@ -1,59 +1,58 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.BossEvent;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerBossEvent;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.advancements.TFAdvancements;
-import twilightforest.entity.TFPart;
-import twilightforest.entity.monster.IceCrystal;
-import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.ai.HoverBeamGoal;
-import twilightforest.entity.ai.HoverSummonGoal;
-import twilightforest.entity.ai.HoverThenDropGoal;
-import twilightforest.util.TFDamageSources;
-import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFGenerationSettings;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.TFSounds;
+import twilightforest.advancements.TFAdvancements;
+import twilightforest.block.TFBlocks;
+import twilightforest.client.particle.TFParticleType;
+import twilightforest.entity.IBreathAttacker;
+import twilightforest.entity.TFPart;
+import twilightforest.entity.ai.HoverBeamGoal;
+import twilightforest.entity.ai.HoverSummonGoal;
+import twilightforest.entity.ai.HoverThenDropGoal;
+import twilightforest.entity.monster.IceCrystal;
+import twilightforest.loot.TFTreasure;
+import twilightforest.util.TFDamageSources;
+import twilightforest.util.WorldUtil;
+import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFGenerationSettings;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SnowQueen extends Monster implements IBreathAttacker {
 
@@ -468,6 +467,16 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 	@Override
 	protected boolean canRide(Entity entityIn) {
 		return false;
+	}
+
+	@Override
+	protected boolean updateInWaterStateAndDoFluidPushing() {
+		return false;
+	}
+
+	@Override
+	protected float getWaterSlowDown() {
+		return 1.0F;
 	}
 
 	@Override
