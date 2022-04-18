@@ -45,7 +45,14 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 		//Registry<LevelStem> skylight = this.registerSkylightSettings(registryaccess);
 		//TODO void world
 
+		RegistryAccess.knownRegistries().forEach((data) ->
+				dumpRegistryCap(cache, path, registryaccess, dynamicops, data));
+
 		dumpRegistry(path, cache, dynamicops, Registry.LEVEL_STEM_REGISTRY, twilight, LevelStem.CODEC);
+	}
+
+	private static <T> void dumpRegistryCap(HashCache cache, Path path, RegistryAccess access, DynamicOps<JsonElement> ops, RegistryAccess.RegistryData<T> data) {
+		dumpRegistry(path, cache, ops, data.key(), access.ownedRegistryOrThrow(data.key()), data.codec());
 	}
 
 	private Registry<LevelStem> registerTFSettings(RegistryAccess access) {
@@ -82,8 +89,10 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private static <E, T extends Registry<E>> void dumpRegistry(Path path, HashCache cache, DynamicOps<JsonElement> ops, ResourceKey<? extends T> key, T registry, Encoder<E> encoder) {
 		for (Map.Entry<ResourceKey<E>, E> entry : registry.entrySet()) {
-			Path otherPath = createPath(path, key.location(), entry.getKey().location());
-			dumpValue(otherPath, cache, ops, encoder, entry.getValue());
+			if(entry.getKey().location().getNamespace().equals(TwilightForestMod.ID)) {
+				Path otherPath = createPath(path, key.location(), entry.getKey().location());
+				dumpValue(otherPath, cache, ops, encoder, entry.getValue());
+			}
 		}
 
 	}
@@ -103,11 +112,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 	}
 
 	private static Path createPath(Path path, ResourceLocation registry, ResourceLocation entry) {
-		return resolveTopPath(path).resolve(entry.getNamespace()).resolve(registry.getPath()).resolve(entry.getPath() + ".json");
-	}
-
-	private static Path resolveTopPath(Path path) {
-		return path.resolve("reports").resolve("worldgen");
+		return path.resolve("data").resolve(entry.getNamespace()).resolve(registry.getPath()).resolve(entry.getPath() + ".json");
 	}
 
 	public String getName() {

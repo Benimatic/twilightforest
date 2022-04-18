@@ -1,0 +1,6 @@
+{
+  "config": {},
+  "biomes": "#twilightforest:valid_yeti_cave_biomes",
+  "spawn_overrides": {},
+  "type": "twilightforest:yeti_cave"
+}

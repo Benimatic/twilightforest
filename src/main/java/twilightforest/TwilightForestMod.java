@@ -165,6 +165,9 @@ public class TwilightForestMod {
 		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
 		TFTreasure.init();
 		TFNoiseGenerationSettings.init();
+		//TODO find a better place for these? they work fine here but idk
+		Registry.register(Registry.CHUNK_GENERATOR, prefix("tf_chunk_gen"), ChunkGeneratorTwilight.CODEC);
+		Registry.register(Registry.BIOME_SOURCE, prefix("tf_biome_provider"), TFBiomeProvider.TF_CODEC);
 	}
 
 	@SubscribeEvent

@@ -1,0 +1,36 @@
+{
+  "type": {
+    "logical_height": 288,
+    "infiniburn": "#minecraft:infiniburn_overworld",
+    "effects": "twilightforest:renderer",
+    "ambient_light": 0.0,
+    "respawn_anchor_works": true,
+    "has_raids": false,
+    "min_y": -32,
+    "height": 288,
+    "natural": true,
+    "coordinate_scale": 0.125,
+    "piglin_safe": false,
+    "bed_works": true,
+    "fixed_time": 13000,
+    "has_skylight": true,
+    "has_ceiling": false,
+    "ultrawarm": false
+  },
+  "generator": {
+    "monster_spawns_below_sealevel": true,
+    "dark_forest_canopy_height": 12,
+    "use_overworld_seed": false,
+    "wrapped_generator": {
+      "biome_source": {
+        "seed": 0,
+        "type": "twilightforest:tf_biome_provider"
+      },
+      "seed": 0,
+      "settings": "twilightforest:twilightforest",
+      "type": "minecraft:noise"
+    },
+    "generate_dark_forest_canopy": true,
+    "type": "twilightforest:tf_chunk_gen"
+  }
+}
