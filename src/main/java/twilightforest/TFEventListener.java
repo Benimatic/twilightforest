@@ -304,7 +304,7 @@ public class TFEventListener {
 					}
 					if(!event.getPlayer().getAbilities().instabuild) stack.shrink(1);
 					event.getPlayer().swing(event.getHand());
-					if(event.getPlayer() instanceof ServerPlayer) event.getPlayer().awardStat(TFStats.SKULL_CANDLES_MADE);
+					if(event.getPlayer() instanceof ServerPlayer) event.getPlayer().awardStat(TFStats.SKULL_CANDLES_MADE.get());
 					//this is to prevent anything from being placed afterwords
 					event.setCanceled(true);
 				}
@@ -499,7 +499,7 @@ public class TFEventListener {
 
 			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE, player.getSoundSource(), 1, 1);
 
-			if(player instanceof ServerPlayer) player.awardStat(TFStats.LIFE_CHARMS_ACTIVATED);
+			if(player instanceof ServerPlayer) player.awardStat(TFStats.LIFE_CHARMS_ACTIVATED.get());
 
 			return true;
 		}
@@ -644,7 +644,7 @@ public class TFEventListener {
 			player.level.addFreshEntity(effect2);
 
 			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP, player.getSoundSource(), 1.5F, 1.0F);
-			if(player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED);
+			if(player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.get());
 			charmUsed = null;
 		}
 

@@ -1,0 +1,53 @@
+{
+  "feature": {
+    "config": {
+      "state": {
+        "Properties": {
+          "snowy": "false"
+        },
+        "Name": "minecraft:mycelium"
+      },
+      "radius": {
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 4,
+          "max_inclusive": 6
+        }
+      },
+      "half_height": 3,
+      "targets": [
+        {
+          "Properties": {
+            "snowy": "false"
+          },
+          "Name": "minecraft:grass_block"
+        }
+      ]
+    },
+    "type": "twilightforest:mycelium_blob"
+  },
+  "placement": [
+    {
+      "chance": 3,
+      "type": "minecraft:rarity_filter"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "value": {
+        "occupies_surface": true,
+        "occupies_underground": false,
+        "additional_clearance": 0
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

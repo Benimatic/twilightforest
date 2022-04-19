@@ -34,7 +34,7 @@ import java.util.OptionalLong;
 public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	public void run(HashCache cache) {
 		Path path = this.generator.getOutputFolder();
@@ -64,7 +64,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
 						new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null)),
 						0L,
-						access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.TWILIGHT)
+						access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.TWILIGHT_NOISE_GEN.getKey())
 				);
 
 		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("twilightforest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), true, true, Optional.of(12), true)), Lifecycle.experimental());
@@ -80,7 +80,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
 						new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null)),
 						4L, //drull had it set like this so its staying until he changes it
-						access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFNoiseGenerationSettings.SKYLIGHT)
+						access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.SKYLIGHT_NOISE_GEN.getKey())
 				);
 
 		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), true, true, Optional.of(12), true)), Lifecycle.stable());
@@ -89,7 +89,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private static <E, T extends Registry<E>> void dumpRegistry(Path path, HashCache cache, DynamicOps<JsonElement> ops, ResourceKey<? extends T> key, T registry, Encoder<E> encoder) {
 		for (Map.Entry<ResourceKey<E>, E> entry : registry.entrySet()) {
-			if(entry.getKey().location().getNamespace().equals(TwilightForestMod.ID)) {
+			if (entry.getKey().location().getNamespace().equals(TwilightForestMod.ID)) {
 				Path otherPath = createPath(path, key.location(), entry.getKey().location());
 				dumpValue(otherPath, cache, ops, encoder, entry.getValue());
 			}
@@ -133,8 +133,8 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				true, //respawn anchor works
 				false, //raids
 				-32, // Minimum Y Level
-				32+256, // Height + Min Y = Max Y
-				32+256, // Logical Height
+				32 + 256, // Height + Min Y = Max Y
+				32 + 256, // Logical Height
 				BlockTags.INFINIBURN_OVERWORLD, //infiburn
 				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
 				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0

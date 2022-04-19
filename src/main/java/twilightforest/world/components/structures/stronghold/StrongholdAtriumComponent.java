@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.features.TFTreeFeatures;
+import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import java.util.Random;
 
@@ -141,8 +141,8 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 				case 2 ->
 						// birch
 						TreeFeatures.BIRCH;
-				case 3 -> TFTreeFeatures.TWILIGHT_OAK_TREE;
-				case 4 -> TFTreeFeatures.RAINBOW_OAK_TREE;
+				case 3 -> Holder.direct(TFConfiguredFeatures.TWILIGHT_OAK_TREE.get());
+				case 4 -> Holder.direct(TFConfiguredFeatures.RAINBOW_OAK_TREE.get());
 				default ->
 						// oak tree
 						TreeFeatures.OAK;

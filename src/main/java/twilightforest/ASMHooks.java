@@ -47,16 +47,11 @@ import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.world.registration.TwilightFeatures;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -71,7 +66,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
-		TFDimensions.seed = seed;
+		TwilightFeatures.seed = seed;
 		return seed;
 	}
 
@@ -81,7 +76,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE]
 	 */
 	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
-		TFDimensions.seed = ((CompoundTag) seed.getValue()).getLong("seed");
+		TwilightFeatures.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 

@@ -27,8 +27,8 @@ import net.minecraft.world.level.levelgen.structure.StructureSet;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
@@ -57,7 +57,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight, boolean owSeed) {
 		//super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
-		super(structures, owSeed ? delegate = delegate.withSeed(TFDimensions.seed) : delegate);
+		super(structures, owSeed ? delegate = delegate.withSeed(TwilightFeatures.seed) : delegate);
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
 		this.darkForestCanopyHeight = darkForestCanopyHeight;

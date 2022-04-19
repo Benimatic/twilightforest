@@ -484,7 +484,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.experiment_115_3"),
 						new TranslatableComponent("advancement.twilightforest.experiment_115_3.desc"),
 						null, FrameType.CHALLENGE, true, true, true)
-				.addCriterion("eat_115_e115", LocationTrigger.TriggerInstance.located(EntityPredicate.Builder.entity().player(PlayerPredicate.Builder.player().addStat(Stats.CUSTOM.get(TFStats.E115_SLICES_EATEN), MinMaxBounds.Ints.atLeast(115)).build()).build()))
+				.addCriterion("eat_115_e115", LocationTrigger.TriggerInstance.located(EntityPredicate.Builder.entity().player(PlayerPredicate.Builder.player().addStat(Stats.CUSTOM.get(TFStats.E115_SLICES_EATEN.get()), MinMaxBounds.Ints.atLeast(115)).build()).build()))
 				.save(consumer, "twilightforest:experiment_115_115");
 
 		Advancement.Builder.advancement().parent(e115).display(

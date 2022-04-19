@@ -24,13 +24,13 @@
     "wrapped_generator": {
       "biome_source": {
         "seed": 0,
-        "type": "twilightforest:tf_biome_provider"
+        "type": "twilightforest:twilight_biomes"
       },
       "seed": 0,
-      "settings": "twilightforest:twilightforest",
+      "settings": "twilightforest:twilight_noise_gen",
       "type": "minecraft:noise"
     },
     "generate_dark_forest_canopy": true,
-    "type": "twilightforest:tf_chunk_gen"
+    "type": "twilightforest:structure_locating_wrapper"
   }
 }

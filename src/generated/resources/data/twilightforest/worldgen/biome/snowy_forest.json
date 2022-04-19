@@ -1,20 +1,6 @@
 {
   "carvers": {},
-  "features": [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [
-      "minecraft:void_start_platform"
-    ]
-  ],
+  "features": [],
   "spawners": {
     "monster": [],
     "creature": [],
@@ -28,19 +14,13 @@
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:snowy_forest",
   "precipitation": "none",
-  "temperature": 0.5,
-  "downfall": 0.5,
+  "temperature": 0.0,
+  "downfall": 0.0,
   "category": "none",
   "effects": {
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2.0
-    },
-    "sky_color": 8103167,
-    "fog_color": 12638463,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "sky_color": 0,
+    "fog_color": 0,
+    "water_color": 0,
+    "water_fog_color": 0
   }
 }
