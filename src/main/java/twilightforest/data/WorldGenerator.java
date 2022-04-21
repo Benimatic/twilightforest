@@ -3,6 +3,7 @@ package twilightforest.data;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Encoder;
@@ -16,17 +17,22 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import org.slf4j.Logger;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.warp.TerrainPoint;
 import twilightforest.world.registration.TFNoiseGenerationSettings;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
@@ -57,33 +63,37 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private Registry<LevelStem> registerTFSettings(RegistryAccess access) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
+		Registry<Biome> biomeRegistry = access.registryOrThrow(Registry.BIOME_REGISTRY);
+		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.TWILIGHT_NOISE_GEN.getKey());
 
 		NoiseBasedChunkGenerator forestChunkGen =
 				new NoiseBasedChunkGenerator(
 						access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
-						new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null)),
+						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), -0.5F, 1.0F),
 						0L,
-						access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.TWILIGHT_NOISE_GEN.getKey())
+						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("twilightforest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), true, true, Optional.of(12), true)), Lifecycle.experimental());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("twilightforest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true)), Lifecycle.experimental());
 		return writableregistry;
 	}
 
 	private Registry<LevelStem> registerSkylightSettings(RegistryAccess access) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
+		Registry<Biome> biomeRegistry = new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null);
+		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.SKYLIGHT_NOISE_GEN.getKey());
 
 		NoiseBasedChunkGenerator forestChunkGen =
 				new NoiseBasedChunkGenerator(
 						access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
-						new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null)),
+						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), 0.0F, 1.0F),
 						4L, //drull had it set like this so its staying until he changes it
-						access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.SKYLIGHT_NOISE_GEN.getKey())
+						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), true, true, Optional.of(12), true)), Lifecycle.stable());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true)), Lifecycle.stable());
 		return writableregistry;
 	}
 
@@ -139,5 +149,40 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
 				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0
 		);
+	}
+
+	private List<Pair<TerrainPoint, Holder<Biome>>> makeBiomeList(Registry<Biome> registry) {
+		return List.of(
+				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.FOREST),
+				pairBiome(registry, 0.1F, 0.2F, BiomeKeys.DENSE_FOREST),
+				pairBiome(registry, 0.0625F, 0.05F, BiomeKeys.FIREFLY_FOREST),
+				pairBiome(registry, 0.005F, 0.005F, BiomeKeys.CLEARING),
+				pairBiome(registry, 0.05F, 0.1F, BiomeKeys.OAK_SAVANNAH),
+				pairBiome(registry, -0.8F, 0.0F, BiomeKeys.STREAM),
+				pairBiome(registry, -0.9F, 0.1F, BiomeKeys.LAKE),
+
+				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.MUSHROOM_FOREST),
+				pairBiome(registry, 0.05F, 0.05F, BiomeKeys.DENSE_MUSHROOM_FOREST),
+
+				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.ENCHANTED_FOREST),
+				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.SPOOKY_FOREST),
+
+				pairBiome(registry, -0.125F, 0.15F, BiomeKeys.SWAMP),
+				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.FIRE_SWAMP),
+
+				pairBiome(registry, 0.025F, 0.025F, BiomeKeys.DARK_FOREST),
+				pairBiome(registry, 0.025F, 0.025F, BiomeKeys.DARK_FOREST_CENTER),
+
+				pairBiome(registry, 0.05F, 0.15F, BiomeKeys.SNOWY_FOREST),
+				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.GLACIER),
+
+				pairBiome(registry, 1.75F, 0.05F, BiomeKeys.HIGHLANDS),
+				pairBiome(registry, 3.0F, 0.1F, BiomeKeys.THORNLANDS),
+				pairBiome(registry, 5.25F, 0.025F, BiomeKeys.FINAL_PLATEAU)
+		);
+	}
+
+	private Pair<TerrainPoint, Holder<Biome>> pairBiome(Registry<Biome> registry, float depth, float scale, ResourceKey<Biome> key) {
+		return Pair.of(new TerrainPoint(depth, scale), Holder.Reference.createStandAlone(registry, key));
 	}
 }

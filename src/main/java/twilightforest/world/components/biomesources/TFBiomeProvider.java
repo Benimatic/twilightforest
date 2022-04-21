@@ -1,6 +1,7 @@
 package twilightforest.world.components.biomesources;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
+import twilightforest.world.components.chunkgenerators.warp.TerrainPoint;
 import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.Layer;
 import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
@@ -24,13 +26,20 @@ import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.LongFunction;
 
 @Deprecated // TODO move to TwilightBiomeSource
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TwilightFeatures.seed).forGetter((obj) -> obj.seed),
-			RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry)
+			RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry),
+			RecordCodecBuilder.<Pair<TerrainPoint, Holder<Biome>>>create((pair) -> pair.group(
+					TerrainPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst),
+					Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)
+			).apply(pair, Pair::of)).listOf().fieldOf("biomes").forGetter((obj) -> obj.biomeList),
+			Codec.FLOAT.fieldOf("base_offset").forGetter((obj) -> obj.baseOffset),
+			Codec.FLOAT.fieldOf("base_factor").forGetter((obj) -> obj.baseFactor)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
 	private static final List<ResourceKey<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
@@ -57,10 +66,13 @@ public class TFBiomeProvider extends BiomeSource {
 	);
 
 	private final Registry<Biome> registry;
+	private final List<Pair<TerrainPoint, Holder<Biome>>> biomeList;
 	private final Layer genBiomes;
 	private final long seed;
+	private final float baseOffset;
+	private final float baseFactor;
 
-	public TFBiomeProvider(long seed, Registry<Biome> registryIn) {
+	public TFBiomeProvider(long seed, Registry<Biome> registryIn, List<Pair<TerrainPoint, Holder<Biome>>> list, float offset, float factor) {
 		super(BIOMES
 				.stream()
 				.map(ResourceKey::location)
@@ -70,6 +82,8 @@ public class TFBiomeProvider extends BiomeSource {
 		);
 
 		this.seed = seed;
+		this.baseOffset = offset;
+		this.baseFactor = factor;
 		//getBiomesToSpawnIn().clear();
 		//getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());
 		//getBiomesToSpawnIn().add(TFBiomes.denseTwilightForest.get());
@@ -78,6 +92,7 @@ public class TFBiomeProvider extends BiomeSource {
 		//getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
 
 		registry = registryIn;
+		biomeList = list;
 		genBiomes = makeLayers(seed, registryIn);
 	}
 
@@ -177,7 +192,37 @@ public class TFBiomeProvider extends BiomeSource {
 
 	@Override
 	public BiomeSource withSeed(long l) {
-		return new TFBiomeProvider(l, registry);
+		return new TFBiomeProvider(l, registry, biomeList, baseOffset, baseFactor);
+	}
+
+	public float getBaseOffset() {
+		return this.baseOffset;
+	}
+
+	public float getBaseFactor() {
+		return this.baseFactor;
+	}
+
+	public float getBiomeDepth(int x, int y, int z, Climate.Sampler sampler) {
+		Biome biome = this.getNoiseBiome(x, y, z, sampler).value();
+		return this.getBiomeDepth(biome);
+	}
+
+	public float getBiomeDepth(Biome biome) {
+		return this.getBiomeValue(biome, TerrainPoint::depth);
+	}
+
+	public float getBiomeScale(int x, int y, int z, Climate.Sampler sampler) {
+		Biome biome = this.getNoiseBiome(x, y, z, sampler).value();
+		return this.getBiomeScale(biome);
+	}
+
+	public float getBiomeScale(Biome biome) {
+		return getBiomeValue(biome, TerrainPoint::scale);
+	}
+
+	private float getBiomeValue(Biome biome, Function<? super TerrainPoint, Float> function) {
+		return this.biomeList.stream().filter(p -> p.getSecond().value().equals(biome)).map(Pair::getFirst).map(function).findFirst().orElse(0.0F);
 	}
 
 	@Override
