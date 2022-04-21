@@ -13,6 +13,6 @@ public class RainboakTree extends AbstractTreeGrower {
 	@Nullable
 	@Override
 	protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random random, boolean b) {
-		return Holder.direct(TFConfiguredFeatures.RAINBOW_OAK_TREE.get());
+		return TFConfiguredFeatures.RAINBOW_OAK_TREE;
 	}
 }

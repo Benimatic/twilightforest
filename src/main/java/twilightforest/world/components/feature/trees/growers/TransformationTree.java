@@ -11,6 +11,6 @@ public class TransformationTree extends AbstractTreeGrower {
 
 	@Override
 	public Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random rand, boolean largeHive) {
-		return Holder.direct(TFConfiguredFeatures.TRANSFORMATION_TREE.get());
+		return TFConfiguredFeatures.TRANSFORMATION_TREE;
 	}
 }

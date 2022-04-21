@@ -1089,8 +1089,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				case 2 ->
 						// birch
 						TreeFeatures.BIRCH;
-				case 3 -> Holder.direct(TFConfiguredFeatures.TWILIGHT_OAK_TREE.get());
-				case 4 -> Holder.direct(TFConfiguredFeatures.RAINBOW_OAK_TREE.get());
+				case 3 -> TFConfiguredFeatures.TWILIGHT_OAK_TREE;
+				case 4 -> TFConfiguredFeatures.RAINBOW_OAK_TREE;
 				default ->
 						// oak tree
 						TreeFeatures.OAK;

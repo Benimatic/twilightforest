@@ -13,6 +13,6 @@ public class SmallOakTree extends AbstractTreeGrower {
 	@Nullable
 	@Override
 	protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random random, boolean b) {
-		return Holder.direct(TFConfiguredFeatures.TWILIGHT_OAK_TREE.get());
+		return TFConfiguredFeatures.TWILIGHT_OAK_TREE;
 	}
 }

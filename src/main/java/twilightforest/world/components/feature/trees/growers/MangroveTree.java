@@ -11,6 +11,6 @@ public class MangroveTree extends AbstractTreeGrower {
 
 	@Override
 	public Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random rand, boolean largeHive) {
-		return Holder.direct(TFConfiguredFeatures.MANGROVE_TREE.get());
+		return TFConfiguredFeatures.MANGROVE_TREE;
 	}
 }

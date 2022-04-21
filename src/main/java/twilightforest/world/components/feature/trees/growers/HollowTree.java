@@ -8,6 +8,6 @@ public class HollowTree extends TFTree {
 
 	@Override
 	public Holder<? extends ConfiguredFeature<?, ?>> createTreeFeature() {
-		return Holder.direct(TFConfiguredFeatures.HOLLOW_TREE.get());
+		return TFConfiguredFeatures.HOLLOW_TREE;
 	}
 }

@@ -11,6 +11,6 @@ public class SortingTree extends AbstractTreeGrower {
 
 	@Override
 	public Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random rand, boolean largeHive) {
-		return Holder.direct(TFConfiguredFeatures.SORTING_TREE.get());
+		return TFConfiguredFeatures.SORTING_TREE;
 	}
 }

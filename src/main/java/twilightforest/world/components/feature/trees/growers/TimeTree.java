@@ -8,6 +8,6 @@ public class TimeTree extends TFTree {
 
 	@Override
 	public Holder<? extends ConfiguredFeature<?, ?>> createTreeFeature() {
-		return Holder.direct(TFConfiguredFeatures.TIME_TREE.get());
+		return TFConfiguredFeatures.TIME_TREE;
 	}
 }

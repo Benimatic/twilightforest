@@ -70,8 +70,6 @@ import twilightforest.world.registration.TFNoiseGenerationSettings;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.registration.biomes.BiomeKeys;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
-import twilightforest.world.registration.features.TFPlacedFeatures;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -117,7 +115,6 @@ public class TwilightForestMod {
 		BiomeKeys.BIOMES.register(modbus);
 		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
 		TFBlocks.BLOCKS.register(modbus);
-		TFConfiguredFeatures.CONFIGURED_FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
@@ -127,7 +124,6 @@ public class TwilightForestMod {
 		TFMobEffects.MOB_EFFECTS.register(modbus);
 		TFNoiseGenerationSettings.NOISE_GENERATORS.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
-		TFPlacedFeatures.PLACED_FEATURES.register(modbus);
 		TwilightFeatures.PLACEMENT_MODIFIERS.register(modbus);
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFRecipes.RECIPE_TYPES.register(modbus);

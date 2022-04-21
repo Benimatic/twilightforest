@@ -29,6 +29,7 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.chunkgenerators.warp.TerrainPoint;
 import twilightforest.world.registration.TFNoiseGenerationSettings;
 import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.world.registration.biomes.BiomeMaker;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
+import java.util.stream.Collectors;
 
 public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
@@ -53,6 +55,12 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 		RegistryAccess.knownRegistries().forEach((data) ->
 				dumpRegistryCap(cache, path, registryaccess, dynamicops, data));
+
+		WritableRegistry<Biome> biomeRegistry = new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null);
+		Map<ResourceLocation, Biome> biomes = this.getBiomes();
+		biomes.forEach((rl, biome) -> registryaccess.registry(Registry.BIOME_REGISTRY).ifPresent(reg ->
+				biomeRegistry.register(ResourceKey.create(Registry.BIOME_REGISTRY, rl), biome, Lifecycle.experimental())));
+		dumpRegistry(path, cache, dynamicops, Registry.BIOME_REGISTRY, biomeRegistry, Biome.DIRECT_CODEC);
 
 		dumpRegistry(path, cache, dynamicops, Registry.LEVEL_STEM_REGISTRY, twilight, LevelStem.CODEC);
 	}
@@ -149,6 +157,15 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
 				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0
 		);
+	}
+
+	private Map<ResourceLocation, Biome> getBiomes() {
+		return BiomeMaker
+				.BIOMES
+				.entrySet()
+				.stream()
+				.peek(registryKeyBiomeEntry -> registryKeyBiomeEntry.getValue().setRegistryName(registryKeyBiomeEntry.getKey().location()))
+				.collect(Collectors.toMap(entry -> entry.getKey().location(), Map.Entry::getValue));
 	}
 
 	private List<Pair<TerrainPoint, Holder<Biome>>> makeBiomeList(Registry<Biome> registry) {

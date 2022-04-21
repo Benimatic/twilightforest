@@ -8,6 +8,6 @@ public class MinersTree extends TFTree {
 
 	@Override
 	public Holder<? extends ConfiguredFeature<?, ?>> createTreeFeature() {
-		return Holder.direct(TFConfiguredFeatures.MINING_TREE.get());
+		return TFConfiguredFeatures.MINING_TREE;
 	}
 }

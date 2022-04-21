@@ -131,7 +131,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		// uberous!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateAtSurface(world, generator, Holder.direct(TFConfiguredFeatures.UBEROUS_SOIL_PATCH_BIG.get()), decoRNG, dest.getX(), dest.getZ(), sbb);
+			generateAtSurface(world, generator, TFConfiguredFeatures.UBEROUS_SOIL_PATCH_BIG, decoRNG, dest.getX(), dest.getZ(), sbb);
 		}
 	}
 
