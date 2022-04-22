@@ -1,6 +1,66 @@
 {
-  "carvers": {},
-  "features": [],
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
+  "features": [
+    [],
+    [
+      "twilightforest:lava_lake"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:disk_clay",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite",
+      "twilightforest:wood_roots",
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
+      "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
+      "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
+      "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
+      "minecraft:ore_lapis",
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
+    ],
+    [],
+    [
+      "minecraft:patch_grass_forest",
+      "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:tree/swampy_oak_tree",
+      "twilightforest:grass_placer",
+      "twilightforest:fire_jet",
+      "twilightforest:smoker",
+      "minecraft:patch_sugar_cane_swamp",
+      "minecraft:vines",
+      "minecraft:brown_mushroom_swamp"
+    ]
+  ],
   "spawners": {
     "monster": [],
     "creature": [],
@@ -14,13 +74,33 @@
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:fire_swamp",
   "precipitation": "none",
-  "temperature": 0.0,
-  "downfall": 0.0,
-  "category": "none",
+  "temperature": 1.0,
+  "downfall": 0.4,
+  "category": "swamp",
   "effects": {
-    "sky_color": 0,
-    "fog_color": 0,
-    "water_color": 0,
-    "water_fog_color": 0
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:white_ash"
+      },
+      "probability": 0.1
+    },
+    "sky_color": 2105930,
+    "foliage_color": 6563343,
+    "grass_color": 5713443,
+    "fog_color": 12648408,
+    "water_color": 7089196,
+    "water_fog_color": 329011
   }
 }

@@ -1,9 +1,49 @@
 {
-  "carvers": {},
-  "features": [],
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_coal_upper",
+      "minecraft:ore_coal_lower",
+      "minecraft:ore_iron_upper",
+      "minecraft:ore_iron_middle",
+      "minecraft:ore_iron_small",
+      "minecraft:ore_gold",
+      "minecraft:ore_gold_lower",
+      "minecraft:ore_redstone",
+      "minecraft:ore_redstone_lower",
+      "minecraft:ore_diamond",
+      "minecraft:ore_diamond_large",
+      "minecraft:ore_diamond_buried",
+      "minecraft:ore_lapis",
+      "minecraft:ore_lapis_buried",
+      "minecraft:ore_copper",
+      "minecraft:underwater_magma"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
+    ]
+  ],
+  "creature_spawn_probability": 0.2,
   "spawners": {
     "monster": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "twilightforest:penguin",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
@@ -13,14 +53,26 @@
   },
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:glacier",
-  "precipitation": "none",
-  "temperature": 0.0,
-  "downfall": 0.0,
-  "category": "none",
+  "precipitation": "snow",
+  "temperature": 0.8,
+  "downfall": 0.1,
+  "category": "icy",
   "effects": {
-    "sky_color": 0,
-    "fog_color": 0,
-    "water_color": 0,
-    "water_fog_color": 0
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "sky_color": 2105930,
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011
   }
 }

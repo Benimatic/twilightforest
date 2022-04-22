@@ -1,6 +1,24 @@
 {
   "carvers": {},
-  "features": [],
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:thorns"
+    ]
+  ],
   "spawners": {
     "monster": [],
     "creature": [],
@@ -13,14 +31,26 @@
   },
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:thornlands",
-  "precipitation": "none",
-  "temperature": 0.0,
-  "downfall": 0.0,
+  "precipitation": "rain",
+  "temperature": 0.3,
+  "downfall": 0.2,
   "category": "none",
   "effects": {
-    "sky_color": 0,
-    "fog_color": 0,
-    "water_color": 0,
-    "water_fog_color": 0
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "sky_color": 2105930,
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011
   }
 }
