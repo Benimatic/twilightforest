@@ -102,11 +102,6 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> TROLL_CAVE_DIRT = register("troll_cave_dirt", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(Blocks.DIRT.defaultBlockState(), UniformInt.of(2, 5), 0, ImmutableList.of(Blocks.STONE.defaultBlockState(), TFBlocks.DEADROCK.get().defaultBlockState())));
 	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> UBEROUS_SOIL_PATCH_SMALL = register("uberous_soil_patch_small", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(TFBlocks.UBEROUS_SOIL.get().defaultBlockState(), UniformInt.of(2, 3), 0, ImmutableList.of(Blocks.PODZOL.defaultBlockState(), Blocks.COARSE_DIRT.defaultBlockState(), Blocks.DIRT.defaultBlockState())));
 
-	//random selector stuff
-	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> WELL_PLACER = register("well_placer", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TFPlacedFeatures.PLACED_FANCY_WELL, 0.07F)), TFPlacedFeatures.PLACED_SIMPLE_WELL));
-	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> LAMPPOST_PLACER = register("lamppost_placer", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TFPlacedFeatures.PLACED_CICADA_LAMPPOST, 0.1F)), TFPlacedFeatures.PLACED_FIREFLY_LAMPPOST));
-	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> DEFAULT_FALLEN_LOGS = register("default_fallen_logs", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TFPlacedFeatures.PLACED_BIRCH_FALLEN_LOG, 0.1F), new WeightedPlacedFeature(TFPlacedFeatures.PLACED_OAK_FALLEN_LOG, 0.2F), new WeightedPlacedFeature(TFPlacedFeatures.PLACED_CANOPY_FALLEN_LOG, 0.4F)), TFPlacedFeatures.PLACED_TF_OAK_FALLEN_LOG));
-
 	//Trees!
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> TWILIGHT_OAK_TREE = register("tree/twilight_oak_tree", Feature.TREE, TreeConfigurations.TWILIGHT_OAK);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> SWAMPY_OAK_TREE = register("tree/swampy_oak_tree", Feature.TREE, TreeConfigurations.SWAMPY_OAK);

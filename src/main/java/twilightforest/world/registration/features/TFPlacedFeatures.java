@@ -9,7 +9,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -69,9 +71,16 @@ public class TFPlacedFeatures {
 	public static final Holder<PlacedFeature> PLACED_DARK_MUSHROOMS = register("dark_mushrooms", TFConfiguredFeatures.DARK_MUSHROOMS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_DARK_DEAD_BUSHES = register("dark_dead_bushes", TFConfiguredFeatures.DARK_DEAD_BUSHES, ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(15), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build());
 
-	public static final Holder<PlacedFeature> PLACED_WELL_PLACER = register("well_placer", TFConfiguredFeatures.WELL_PLACER, tfFeatureCheckArea(OutOfStructureFilter.checkBoth(), 80).build());
-	public static final Holder<PlacedFeature> PLACED_LAMPPOST_PLACER = register("lamppost_placer", TFConfiguredFeatures.LAMPPOST_PLACER, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 2).build());
-	public static final Holder<PlacedFeature> PLACED_DEFAULT_FALLEN_LOGS = register("default_fallen_logs", TFConfiguredFeatures.DEFAULT_FALLEN_LOGS, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
+	// !!!!!!!!!!!!!!!!!!!!!!!!!! WARNING!!!! DUE TO CLASSLOAD ISSUES THESE ***MUST***, ABSOLUTELY MUST!!!! BE HERE, DO NOT FUCKING MOVE THIS !!!!!!!!!!!!!!!!!!!!!!!
+	//random selector stuff
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> WELL_PLACER = TFConfiguredFeatures.register("well_placer", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TFPlacedFeatures.PLACED_FANCY_WELL, 0.07F)), TFPlacedFeatures.PLACED_SIMPLE_WELL));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> LAMPPOST_PLACER = TFConfiguredFeatures.register("lamppost_placer", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TFPlacedFeatures.PLACED_CICADA_LAMPPOST, 0.1F)), TFPlacedFeatures.PLACED_FIREFLY_LAMPPOST));
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> DEFAULT_FALLEN_LOGS = TFConfiguredFeatures.register("default_fallen_logs", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TFPlacedFeatures.PLACED_BIRCH_FALLEN_LOG, 0.1F), new WeightedPlacedFeature(TFPlacedFeatures.PLACED_OAK_FALLEN_LOG, 0.2F), new WeightedPlacedFeature(TFPlacedFeatures.PLACED_CANOPY_FALLEN_LOG, 0.4F)), TFPlacedFeatures.PLACED_TF_OAK_FALLEN_LOG));
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	public static final Holder<PlacedFeature> PLACED_WELL_PLACER = register("well_placer", WELL_PLACER, tfFeatureCheckArea(OutOfStructureFilter.checkBoth(), 80).build());
+	public static final Holder<PlacedFeature> PLACED_LAMPPOST_PLACER = register("lamppost_placer", LAMPPOST_PLACER, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 2).build());
+	public static final Holder<PlacedFeature> PLACED_DEFAULT_FALLEN_LOGS = register("default_fallen_logs", DEFAULT_FALLEN_LOGS, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
 
 	public static final Holder<PlacedFeature> PLACED_GRASS_PLACER = register("grass_placer", TFConfiguredFeatures.GRASS_PLACER, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, CountPlacement.of(30), InSquarePlacement.spread(), RarityFilter.onAverageOnceEvery(3)).build());
 	public static final Holder<PlacedFeature> PLACED_FOREST_GRASS_PLACER = register("forest_grass_placer", TFConfiguredFeatures.FOREST_GRASS_PLACER, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, CountPlacement.of(30), InSquarePlacement.spread(), RarityFilter.onAverageOnceEvery(3)).build());

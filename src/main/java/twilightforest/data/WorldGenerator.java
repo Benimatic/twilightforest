@@ -10,6 +10,7 @@ import com.mojang.serialization.Encoder;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.*;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -38,6 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
@@ -46,26 +48,27 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	public void run(HashCache cache) {
 		Path path = this.generator.getOutputFolder();
-		RegistryAccess registryaccess = RegistryAccess.BUILTIN.get();
+		RegistryAccess registryaccess = BuiltinRegistries.ACCESS;
 		DynamicOps<JsonElement> dynamicops = RegistryOps.create(JsonOps.INSTANCE, registryaccess);
 
 		Registry<LevelStem> twilight = this.registerTFSettings(registryaccess);
 		//Registry<LevelStem> skylight = this.registerSkylightSettings(registryaccess);
 		//TODO void world
 
-		RegistryAccess.knownRegistries().forEach((data) ->
-				dumpRegistryCap(cache, path, registryaccess, dynamicops, data));
-
 		WritableRegistry<Biome> biomeRegistry = new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null);
 		Map<ResourceLocation, Biome> biomes = this.getBiomes();
-		biomes.forEach((rl, biome) -> registryaccess.registry(Registry.BIOME_REGISTRY).ifPresent(reg ->
-				biomeRegistry.register(ResourceKey.create(Registry.BIOME_REGISTRY, rl), biome, Lifecycle.experimental())));
-		dumpRegistry(path, cache, dynamicops, Registry.BIOME_REGISTRY, biomeRegistry, Biome.DIRECT_CODEC);
+		biomes.forEach((rl, biome) -> biomeRegistry.register(ResourceKey.create(Registry.BIOME_REGISTRY, rl), biome, Lifecycle.experimental()));
+
+		StreamSupport.stream(RegistryAccess.knownRegistries().spliterator(), false)
+				.filter(r -> BuiltinRegistries.ACCESS.ownedRegistry(r.key()).isPresent())
+				.forEach((data) -> dumpRegistryCap(cache, path, registryaccess, dynamicops, data));
+
 
 		dumpRegistry(path, cache, dynamicops, Registry.LEVEL_STEM_REGISTRY, twilight, LevelStem.CODEC);
 	}
 
 	private static <T> void dumpRegistryCap(HashCache cache, Path path, RegistryAccess access, DynamicOps<JsonElement> ops, RegistryAccess.RegistryData<T> data) {
+		LOGGER.info("Dumping: {}", data.key());
 		dumpRegistry(path, cache, ops, data.key(), access.ownedRegistryOrThrow(data.key()), data.codec());
 	}
 
@@ -108,6 +111,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 	private static <E, T extends Registry<E>> void dumpRegistry(Path path, HashCache cache, DynamicOps<JsonElement> ops, ResourceKey<? extends T> key, T registry, Encoder<E> encoder) {
 		for (Map.Entry<ResourceKey<E>, E> entry : registry.entrySet()) {
 			if (entry.getKey().location().getNamespace().equals(TwilightForestMod.ID)) {
+				LOGGER.info("\t{}", entry.getKey().location().getPath());
 				Path otherPath = createPath(path, key.location(), entry.getKey().location());
 				dumpValue(otherPath, cache, ops, encoder, entry.getValue());
 			}

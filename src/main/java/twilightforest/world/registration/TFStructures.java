@@ -23,13 +23,8 @@ import twilightforest.world.components.structures.start.LegacyStructureFeature;
 import twilightforest.world.components.structures.stronghold.StrongholdPieces;
 import twilightforest.world.components.structures.trollcave.TrollCavePieces;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @SuppressWarnings("deprecation")
 public class TFStructures {
-
-	public static final Map<StructureFeature<?>, FeatureConfiguration> SEPARATION_SETTINGS = new HashMap<>();
 
 	public static final StructureFeature<NoneFeatureConfiguration> HEDGE_MAZE = new LegacyStructureFeature(TFFeature.HEDGE_MAZE);
 	public static final ConfiguredStructureFeature<?, ?> CONFIGURED_HEDGE_MAZE = HEDGE_MAZE.configured(FeatureConfiguration.NONE, BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES, true);
@@ -100,7 +95,6 @@ public class TFStructures {
 	}
 
 	public static void register(RegistryEvent.Register<StructureFeature<?>> event) {
-		SEPARATION_SETTINGS.clear();
 		TFFeature.init();
 		new MushroomTowerPieces();
 		new NagaCourtyardPieces();
@@ -134,12 +128,6 @@ public class TFStructures {
 
 	private static void register(RegistryEvent.Register<StructureFeature<?>> event, StructureFeature<?> structure, ConfiguredStructureFeature<?, ?> config, ResourceLocation name, int min, int max) {
 		event.getRegistry().register(structure.setRegistryName(name));
-//		StructureFeature.STRUCTURES_REGISTRY.put(name.toString(), structure);
-//		RandomSpreadStructurePlacement separation = new RandomSpreadStructurePlacement(max, min, RandomSpreadType.LINEAR, 0);
-//		StructureSettings.DEFAULTS = ImmutableMap.<StructureFeature<?>, RandomSpreadStructurePlacement>builder().putAll(StructureSettings.DEFAULTS).
-//				put(structure, separation).build();
-//		SEPARATION_SETTINGS.put(structure, separation);
 		Registry.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, new ResourceLocation(name.getNamespace(), "configured_".concat(name.getPath())), config);
-		//FlatLevelGeneratorSettings.STRUCTURE_FEATURES.put(structure, config);
 	}
 }
