@@ -1,6 +1,44 @@
 {
-  "carvers": {},
-  "features": [],
+  "carvers": {
+    "air": "twilightforest:highland_caves"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
+    [],
+    [
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
+    ],
+    [
+      "twilightforest:troll_roots"
+    ],
+    [],
+    [
+      "twilightforest:grove_ruins",
+      "twilightforest:foundation",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:tree/selector/highlands_trees",
+      "minecraft:forest_rock",
+      "minecraft:patch_grass_taiga",
+      "twilightforest:spruce_fallen_log"
+    ]
+  ],
   "spawners": {
     "monster": [
       {
