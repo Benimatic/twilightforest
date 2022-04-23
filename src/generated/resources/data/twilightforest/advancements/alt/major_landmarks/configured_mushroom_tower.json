@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:labyrinth"
+          "feature": "twilightforest:configured_mushroom_tower"
         }
       }
     }

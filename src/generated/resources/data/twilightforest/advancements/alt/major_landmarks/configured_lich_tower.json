@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:yeti_lair"
+          "feature": "twilightforest:configured_lich_tower"
         }
       }
     }

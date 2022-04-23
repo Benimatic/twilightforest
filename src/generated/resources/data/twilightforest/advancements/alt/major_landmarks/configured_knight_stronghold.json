@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:knight_stronghold"
+          "feature": "twilightforest:configured_knight_stronghold"
         }
       }
     }

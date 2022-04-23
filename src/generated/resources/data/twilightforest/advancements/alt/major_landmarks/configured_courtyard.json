@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:hydra_lair"
+          "feature": "twilightforest:configured_courtyard"
         }
       }
     }

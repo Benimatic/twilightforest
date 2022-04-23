@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:large_hollow_hill"
+          "feature": "twilightforest:configured_hedge_maze"
         }
       }
     }

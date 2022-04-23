@@ -1,8 +1,12 @@
 package twilightforest.world.registration;
 
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.world.components.structures.darktower.DarkTowerPieces;
@@ -18,6 +22,8 @@ import twilightforest.world.components.structures.trollcave.TrollCavePieces;
 
 @SuppressWarnings("deprecation")
 public class TFStructures {
+
+	public static final DeferredRegister<StructureFeature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, TwilightForestMod.ID);
 
 	public static final StructureFeature<NoneFeatureConfiguration> HEDGE_MAZE = new LegacyStructureFeature(TFFeature.HEDGE_MAZE);
 	public static final StructureFeature<NoneFeatureConfiguration> QUEST_GROVE = new LegacyStructureFeature(TFFeature.QUEST_GROVE);

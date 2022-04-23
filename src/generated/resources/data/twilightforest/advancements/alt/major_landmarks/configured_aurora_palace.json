@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:quest_grove"
+          "feature": "twilightforest:configured_aurora_palace"
         }
       }
     }

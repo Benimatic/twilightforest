@@ -197,28 +197,28 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 				.save(consumer, "twilightforest:alt/entities/wolves");
 
 		//landmarks
-		landmarkAdvancement(TFConfiguredStructures.KEY_DARK_TOWER, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_FINAL_CASTLE, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_HEDGE_MAZE, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_HYDRA_LAIR, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_AURORA_PALACE, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_KNIGHT_STRONGHOLD, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_LABYRINTH, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_HOLLOW_HILL_LARGE, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_LICH_TOWER, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_HOLLOW_HILL_MEDIUM, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_MUSHROOM_TOWER, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_NAGA_COURTYARD, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_QUEST_GROVE, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_HOLLOW_HILL_SMALL, consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.KEY_YETI_CAVE, consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_DARK_TOWER.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_FINAL_CASTLE.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HEDGE_MAZE.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HYDRA_LAIR.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_AURORA_PALACE.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_KNIGHT_STRONGHOLD.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_LABYRINTH.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_LARGE.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_LICH_TOWER.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_MEDIUM.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_MUSHROOM_TOWER.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_NAGA_COURTYARD.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_QUEST_GROVE.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_SMALL.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_YETI_CAVE.unwrapKey().orElseThrow(), consumer, root);
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFConfiguredStructures.KEY_TROLL_CAVE).setY(MinMaxBounds.Doubles.atLeast(150)).build()))
+				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFConfiguredStructures.CONFIGURED_TROLL_CAVE.unwrapKey().orElseThrow()).setY(MinMaxBounds.Doubles.atLeast(150)).build()))
 				.save(consumer, "twilightforest:alt/major_landmarks/giant_cloud");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFConfiguredStructures.KEY_TROLL_CAVE).setY(MinMaxBounds.Doubles.atMost(50)).build()))
+				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFConfiguredStructures.CONFIGURED_TROLL_CAVE.unwrapKey().orElseThrow()).setY(MinMaxBounds.Doubles.atMost(50)).build()))
 				.save(consumer, "twilightforest:alt/major_landmarks/troll_cave");
 
 		Advancement.Builder.advancement().parent(root)

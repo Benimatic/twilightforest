@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:lich_tower"
+          "feature": "twilightforest:configured_dark_tower"
         }
       }
     }

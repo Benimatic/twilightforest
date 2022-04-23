@@ -237,7 +237,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.troll.desc",
 								new TranslatableComponent(TFEntities.TROLL.get().getDescriptionId())),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("troll", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.TROLL.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.KEY_TROLL_CAVE))))
+				.addCriterion("troll", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.TROLL.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_TROLL_CAVE.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:troll");
 
 		Advancement beanstalk = Advancement.Builder.advancement().parent(troll).display(
@@ -276,7 +276,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.progress_thorns"),
 						new TranslatableComponent("advancement.twilightforest.progress_thorns.desc"),
 						null, FrameType.GOAL, true, true, false)
-				.addCriterion("castle", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(TFConfiguredStructures.KEY_FINAL_CASTLE)))
+				.addCriterion("castle", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_FINAL_CASTLE.unwrapKey().orElseThrow())))
 				.addCriterion("previous_progression", HasAdvancementTrigger.Instance.hasAdvancement(lamp.getId()))
 				.save(consumer, "twilightforest:progress_thorns");
 
@@ -285,7 +285,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.progress_castle"),
 						new TranslatableComponent("advancement.twilightforest.progress_castle.desc"),
 						null, FrameType.GOAL, true, true, false)
-				.addCriterion("castle", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(TFConfiguredStructures.KEY_FINAL_CASTLE)))
+				.addCriterion("castle", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_FINAL_CASTLE.unwrapKey().orElseThrow())))
 				.addCriterion("previous_progression", HasAdvancementTrigger.Instance.hasAdvancement(thornlands.getId()))
 				.save(consumer, "twilightforest:progress_castle");
 
@@ -354,7 +354,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 								new TranslatableComponent(TFEntities.REDCAP.get().getDescriptionId()),
 								new TranslatableComponent("structure.small_hollow_hill")),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.KEY_HOLLOW_HILL_SMALL))))
+				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_SMALL.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill1");
 
 		Advancement hill2 =  Advancement.Builder.advancement().parent(hill1).display(
@@ -364,7 +364,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 								new TranslatableComponent(TFEntities.REDCAP_SAPPER.get().getDescriptionId()),
 								new TranslatableComponent("structure.medium_hollow_hill")),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP_SAPPER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.KEY_HOLLOW_HILL_MEDIUM))))
+				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP_SAPPER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_MEDIUM.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill2");
 
 		Advancement.Builder.advancement().parent(hill2).display(
@@ -374,7 +374,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 								new TranslatableComponent(TFEntities.WRAITH.get().getDescriptionId()),
 								new TranslatableComponent("structure.large_hollow_hill")),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.WRAITH.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.KEY_HOLLOW_HILL_LARGE))))
+				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.WRAITH.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_LARGE.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill3");
 
 		Advancement.Builder.advancement().parent(root).display(
@@ -383,8 +383,8 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.hedge.desc",
 								new TranslatableComponent("structure.hedge_maze")),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("hedge_spider", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.HEDGE_SPIDER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.KEY_HEDGE_MAZE))))
-				.addCriterion("swarm_spider", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.SWARM_SPIDER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.KEY_HEDGE_MAZE))))
+				.addCriterion("hedge_spider", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.HEDGE_SPIDER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HEDGE_MAZE.unwrapKey().orElseThrow()))))
+				.addCriterion("swarm_spider", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.SWARM_SPIDER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HEDGE_MAZE.unwrapKey().orElseThrow()))))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:hedge");
 

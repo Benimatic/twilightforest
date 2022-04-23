@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:dark_tower"
+          "feature": "twilightforest:configured_hollow_hill_large"
         }
       }
     }

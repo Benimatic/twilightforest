@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:medium_hollow_hill"
+          "feature": "twilightforest:configured_final_castle"
         }
       }
     }
