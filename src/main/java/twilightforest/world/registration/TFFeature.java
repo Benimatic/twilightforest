@@ -930,14 +930,12 @@ public class TFFeature {
 
 	public Optional<StructurePiece> generatePieces(PieceGeneratorSupplier.Context<?> context) {
 		ChunkPos chunkPos = context.chunkPos();
-		int gridX = Math.round(chunkPos.x / 16F) * 16;
-		int gridZ = Math.round(chunkPos.z / 16F) * 16;
-		if (chunkPos.x != gridX || chunkPos.z != gridZ)
+		if (!TFFeature.isInFeatureChunk(chunkPos.x << 4, chunkPos.z << 4))
 			return Optional.empty();
 		boolean dontCenter = this == TFFeature.LICH_TOWER || this == TFFeature.TROLL_CAVE || this == TFFeature.YETI_CAVE;
 		int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
-		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, context.heightAccessor()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
+		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
 		Holder<Biome> holder = context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z));
 		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed()))
 			return Optional.empty();
