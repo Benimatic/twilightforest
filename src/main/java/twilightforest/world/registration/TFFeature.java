@@ -1,11 +1,7 @@
 package twilightforest.world.registration;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.QuartPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.*;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
@@ -21,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -608,6 +603,7 @@ public class TFFeature {
 
 		// does the biome have a feature?
 		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
+
 		if(biomeFeature != null)
 			return biomeFeature;
 
@@ -933,7 +929,7 @@ public class TFFeature {
 	}
 
 	public Optional<StructurePiece> generatePieces(PieceGeneratorSupplier.Context<?> context) {
-		if (this == NAGA_COURTYARD || this == ICE_TOWER) // FIXME: Naga templates and palaces are crashing
+		if (this == NAGA_COURTYARD) // FIXME: Naga templates and palaces are crashing
 			return Optional.empty();
 		ChunkPos chunkPos = context.chunkPos();
 		int gridX = Math.round(chunkPos.x / 16F) * 16;
@@ -950,7 +946,6 @@ public class TFFeature {
 		return Optional.ofNullable(this.provideFirstPiece(context.structureManager(), context.chunkGenerator(), new Random(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z));
 	}
 
-	//TODO Mayby better way has....?
 	public GenerationStep.Decoration getDecorationStage() {
 		return GenerationStep.Decoration.SURFACE_STRUCTURES;
 	}

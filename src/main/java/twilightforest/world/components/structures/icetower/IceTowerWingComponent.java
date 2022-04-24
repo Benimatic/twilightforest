@@ -47,6 +47,11 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	protected IceTowerWingComponent(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
+
+		// decorator
+		if (this.deco == null) {
+			this.deco = new IceTowerDecorator();
+		}
 	}
 
 	@Override
