@@ -12,7 +12,7 @@ body:
   - type: input
     attributes:
       label: Twilight Forest Version
-      description: What version of Twilight Forest are you running? This can be found on the jar file you have downloaded or the Mod Options menu. Please note "latest" is NOT a version. If this is a development build: STOP, we don't want reports from those.
+      description: What version of Twilight Forest are you running? This can be found on the jar file you have downloaded or the Mod Options menu. Please note "latest" is NOT a version. If this is a development build... STOP, we don't want reports from those.
       placeholder: "Example: 4.0.546"
     validations:
       required: true
