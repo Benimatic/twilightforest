@@ -4,14 +4,15 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
-
 @Deprecated
 public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeatureConfiguration> {
     public final TFFeature feature;
 
     public LegacyStructureFeature(@Deprecated TFFeature feature) {
-        super(NoneFeatureConfiguration.CODEC, configContext -> feature.generatePieces(configContext.chunkGenerator(), configContext.structureManager(), configContext.chunkPos(), configContext.heightAccessor(), new Random()).map(piece -> (structurePiecesBuilder, context) -> structurePiecesBuilder.addPiece(piece)));
+        super(NoneFeatureConfiguration.CODEC, configContext -> feature.generatePieces(configContext).map(piece -> (structurePiecesBuilder, context) -> {
+			piece.addChildren(piece, structurePiecesBuilder, context.random());
+			structurePiecesBuilder.addPiece(piece);
+		}));
         this.feature = feature;
     }
 

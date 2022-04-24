@@ -3,6 +3,8 @@ package twilightforest.world.registration;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -28,6 +30,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
@@ -929,20 +932,22 @@ public class TFFeature {
 		return null;
 	}
 
-	public Optional<StructurePiece> generatePieces(ChunkGenerator chunkGenerator, StructureManager structureManager, ChunkPos chunkPos, LevelHeightAccessor levelHeightAccessor, Random random) {
+	public Optional<StructurePiece> generatePieces(PieceGeneratorSupplier.Context<?> context) {
+		if (this == NAGA_COURTYARD || this == ICE_TOWER) // FIXME: Naga templates and palaces are crashing
+			return Optional.empty();
+		ChunkPos chunkPos = context.chunkPos();
+		int gridX = Math.round(chunkPos.x / 16F) * 16;
+		int gridZ = Math.round(chunkPos.z / 16F) * 16;
+		if (chunkPos.x != gridX || chunkPos.z != gridZ)
+			return Optional.empty();
 		boolean dontCenter = this == TFFeature.LICH_TOWER || this == TFFeature.TROLL_CAVE || this == TFFeature.YETI_CAVE;
 		int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
-		int y = this.shouldAdjustToTerrain() ? Mth.clamp(chunkGenerator.getFirstOccupiedHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, levelHeightAccessor), chunkGenerator.getSeaLevel() + 1, chunkGenerator.getSeaLevel() + 7) : chunkGenerator.getSeaLevel();
-		//StructurePiece start = this.provideFirstPiece(structureManager, chunkGenerator, random, x, y, z);
-		//if(start == null)
-		//	return;
-		//this.addPiece(start);
-		//.addChildren(start, this, random);
-		//createBoundingBox();
-
-		//im currently isolating one structure monstosity at 0 0. Otherwise they spawn every chunk and freeze the game. FIXME once the structures are correctly fixed
-		return chunkPos.x == 0 && chunkPos.z == 0 ? Optional.ofNullable(this.provideFirstPiece(structureManager, chunkGenerator, random, x, y, z)) : Optional.empty();
+		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, context.heightAccessor()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
+		Holder<Biome> holder = context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z));
+		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed()))
+			return Optional.empty();
+		return Optional.ofNullable(this.provideFirstPiece(context.structureManager(), context.chunkGenerator(), new Random(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z));
 	}
 
 	//TODO Mayby better way has....?
