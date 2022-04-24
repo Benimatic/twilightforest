@@ -929,8 +929,6 @@ public class TFFeature {
 	}
 
 	public Optional<StructurePiece> generatePieces(PieceGeneratorSupplier.Context<?> context) {
-		if (this == NAGA_COURTYARD) // FIXME: Naga templates and palaces are crashing
-			return Optional.empty();
 		ChunkPos chunkPos = context.chunkPos();
 		int gridX = Math.round(chunkPos.x / 16F) * 16;
 		int gridZ = Math.round(chunkPos.z / 16F) * 16;
