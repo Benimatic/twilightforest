@@ -30,6 +30,7 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
@@ -39,6 +40,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.entity.TFEntities;
@@ -130,7 +132,7 @@ public class ASMHooks {
 		return music;
 	}
 
-	private static final WeakHashMap<Level, List<TFPart<?>>> cache = new WeakHashMap<>();
+	private static final WeakHashMap<LevelAccessor, List<TFPart<?>>> cache = new WeakHashMap<>();
 	private static final Int2ObjectMap<TFPart<?>> multiparts = new Int2ObjectOpenHashMap<>();
 
 	// This only works on the client side in 1.17...
@@ -140,8 +142,8 @@ public class ASMHooks {
 			synchronized (cache) {
 				cache.computeIfAbsent(event.getWorld(), (w) -> new ArrayList<>());
 				cache.get(event.getWorld()).addAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
-						filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj).
-						collect(Collectors.toList()));
+						filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj)
+						.toList());
 
 			}
 		});
@@ -150,12 +152,15 @@ public class ASMHooks {
 			synchronized (cache) {
 				cache.computeIfPresent(event.getWorld(), (world, list) -> {
 					list.removeAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
-							filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj).
-							collect(Collectors.toList()));
+							filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj)
+							.toList());
 					return list;
 				});
+				if (cache.get(event.getWorld()).isEmpty())
+					cache.remove(event.getWorld());
 			}
 		});
+		bus.addListener((Consumer<WorldEvent.Unload>) event -> cache.remove(event.getWorld()));
 	}
 
 	/**
@@ -192,6 +197,8 @@ public class ASMHooks {
 					parts.removeAll(list);
 					return parts;
 				});
+				if (cache.get(entity.level).isEmpty())
+					cache.remove(entity.level);
 			}
 		}
 	}
