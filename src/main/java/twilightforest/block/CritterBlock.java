@@ -1,10 +1,13 @@
 package twilightforest.block;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -150,7 +153,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if ((entity instanceof Projectile && !(entity instanceof MoonwormShot) && !(entity instanceof CicadaShot)) || entity instanceof FallingBlockEntity) {
+		if ((entity instanceof Projectile && !entity.getType().is(EntityTagGenerator.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
 			level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 			if (level.isClientSide())
 				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
