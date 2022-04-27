@@ -1,17 +1,22 @@
 package twilightforest.compat;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
+import top.theillusivec4.curios.api.event.DropRulesEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.common.capability.CurioItemCapability;
+import twilightforest.TFEventListener;
 import twilightforest.block.TFBlocks;
 import twilightforest.compat.curios.CharmOfKeepingRenderer;
 import twilightforest.compat.curios.CharmOfLife1NecklaceRenderer;
@@ -33,13 +38,11 @@ public class CuriosCompat extends TFCompat {
 	}
 
 	@Override
-	protected void init() {
-
+	protected void init(FMLCommonSetupEvent event) {
 	}
 
 	@Override
 	protected void postInit() {
-
 	}
 
 	@Override
@@ -50,7 +53,6 @@ public class CuriosCompat extends TFCompat {
 
 	@Override
 	protected void initItems(RegistryEvent.Register<Item> evt) {
-
 	}
 
 	public static ICapabilityProvider setupCuriosCapability(ItemStack stack) {
