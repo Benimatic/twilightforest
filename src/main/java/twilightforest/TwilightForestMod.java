@@ -28,6 +28,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.Bindings;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -47,7 +48,9 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
+import twilightforest.compat.UndergardenCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
@@ -133,10 +136,17 @@ public class TwilightForestMod {
 		TwilightFeatures.TREE_DECORATORS.register(modbus);
 		TwilightFeatures.TRUNK_PLACERS.register(modbus);
 
+		if(ModList.get().isLoaded("undergarden")) {
+			UndergardenCompat.ENTITIES.register(modbus);
+		}
+
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
 		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
 		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
+		if(ModList.get().isLoaded("curios")) {
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+		}
 
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
@@ -205,7 +215,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.initCompat();
+				TFCompat.initCompat(evt);
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");
