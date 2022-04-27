@@ -45,15 +45,15 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.PacketDistributor;
+import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFPart;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
 import twilightforest.util.EntityUtil;
+import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -887,7 +887,7 @@ public class Naga extends Monster {
 	}
 
 	@Override
-	protected boolean updateInWaterStateAndDoFluidPushing() {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 
