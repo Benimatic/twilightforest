@@ -780,12 +780,14 @@ public class Naga extends Monster {
 			double idealX = -Mth.sin(angle) * straightenForce;
 			double idealZ = Mth.cos(angle) * straightenForce;
 
+			double groundY = bodySegments[i].isInWall() ? followY + 2F : followY;
+			double idealY = (groundY - followY) * straightenForce;
 
 			Vec3 diff = new Vec3(bodySegments[i].getX() - followX, bodySegments[i].getY() - followY, bodySegments[i].getZ() - followZ);
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position
-			diff = diff.add(idealX, 0, idealZ).normalize();
+			diff = diff.add(idealX, idealY, idealZ).normalize();
 
 			double f = 2.0D;
 
