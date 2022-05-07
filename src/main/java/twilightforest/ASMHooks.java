@@ -189,15 +189,6 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.Minecraft#doLoadLevel(String, RegistryAccess.RegistryHolder, Function, Function4, boolean, Minecraft.ExperimentalDialogType, boolean)}<br>
-	 * [AFTER ALL ALOAD 6]
-	 */
-	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
-		return TFConfig.CLIENT_CONFIG.disableHereBeDragons.get() ? Minecraft.ExperimentalDialogType.NONE : type;
-	}
-
-	/**
-	 * Injection Point:<br>
 	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}<br>
 	 * [BEFORE IRETURN]
 	 */
