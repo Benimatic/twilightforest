@@ -108,7 +108,6 @@ public class TwilightForestMod {
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
-		ASMHooks.registerMultipartEvents(MinecraftForge.EVENT_BUS);
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInitiator::call);
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
