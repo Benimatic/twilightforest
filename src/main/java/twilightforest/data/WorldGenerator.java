@@ -3,6 +3,7 @@ package twilightforest.data;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DynamicOps;
@@ -89,7 +90,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("twilightforest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true)), Lifecycle.experimental());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("twilightforest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true), true), Lifecycle.experimental());
 		return writableregistry;
 	}
 
@@ -114,7 +115,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 	private static <E, T extends Registry<E>> void dumpRegistry(Path path, HashCache cache, DynamicOps<JsonElement> ops, ResourceKey<? extends T> key, T registry, Encoder<E> encoder) {
 		for (Map.Entry<ResourceKey<E>, E> entry : registry.entrySet()) {
 			if (entry.getKey().location().getNamespace().equals(TwilightForestMod.ID)) {
-				LOGGER.info("\t{}", entry.getKey().location().getPath());
+				LOGGER.info("\t\t{}", entry.getKey().location().getPath());
 				Path otherPath = createPath(path, key.location(), entry.getKey().location());
 				dumpValue(otherPath, cache, ops, encoder, entry.getValue());
 			}
@@ -128,6 +129,21 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				LOGGER.error("Couldn't serialize element {}: {}", path, p_206405_);
 			});
 			if (optional.isPresent()) {
+				if (optional.get().isJsonObject()) {
+					JsonObject object = optional.get().getAsJsonObject();
+					if (object.has("generator") && object.get("generator").isJsonObject()) {
+						JsonObject generator = object.getAsJsonObject("generator");
+						if (generator.has("use_overworld_seed")) {
+							generator.remove("use_overworld_seed");
+							generator.addProperty("use_overworld_seed", true);
+						}
+						if (generator.has("wrapped_generator")) {
+							JsonObject wrapped_generator = generator.getAsJsonObject("wrapped_generator");
+							if (wrapped_generator.has("biome_source"))
+								wrapped_generator.getAsJsonObject("biome_source").remove("seed");
+						}
+					}
+				}
 				DataProvider.save(GSON, cache, optional.get(), path);
 			}
 		} catch (IOException ioexception) {
