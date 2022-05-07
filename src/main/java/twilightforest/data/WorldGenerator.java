@@ -84,7 +84,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				new NoiseBasedChunkGenerator(
 						access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
-						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), -0.5F, 1.0F),
+						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), -0.49F, 1.0F),
 						0L,
 						noiseGenSettings
 				);
