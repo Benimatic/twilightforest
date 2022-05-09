@@ -68,10 +68,7 @@ import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.registration.TFBiomeFeatures;
-import twilightforest.world.registration.TFNoiseGenerationSettings;
-import twilightforest.world.registration.TFStructures;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.world.registration.*;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.io.IOException;
@@ -132,6 +129,7 @@ public class TwilightForestMod {
 		//TFPotions.POTIONS.register(modbus);
 		TFEntities.SPAWN_EGGS.register(modbus);
 		TFStats.STATS.register(modbus);
+		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
 		TwilightFeatures.TREE_DECORATORS.register(modbus);
 		TwilightFeatures.TRUNK_PLACERS.register(modbus);
 
