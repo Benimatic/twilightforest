@@ -26,7 +26,7 @@ public class ThrowSpikeBlockGoal extends Goal {
 			this.cooldown--;
 			return false;
 		} else {
-			return this.attacker.isAlive() && this.attacker.hasLineOfSight(target);
+			return this.attacker.isAlive() && this.attacker.hasLineOfSight(target) && this.attacker.level.random.nextInt(56) == 0;
 		}
 	}
 
