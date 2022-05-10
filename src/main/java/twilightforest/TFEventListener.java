@@ -596,13 +596,22 @@ public class TFEventListener {
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+		if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
 		if (event.isEndConquered()) {
-			updateCapabilities((ServerPlayer) event.getPlayer(), event.getPlayer());
+			updateCapabilities(serverPlayer, serverPlayer);
 		} else {
 			if(casketExpiration) {
-				event.getPlayer().sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), event.getPlayer().getUUID());
+				serverPlayer.sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), serverPlayer.getUUID());
 			}
-			returnStoredItems(event.getPlayer());
+			returnStoredItems(serverPlayer);
+		}
+
+		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && serverPlayer.getRespawnPosition() == null) {
+			CompoundTag tagCompound = serverPlayer.getPersistentData();
+			CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
+			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
+			tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
+			banishNewbieToTwilightZone(serverPlayer);
 		}
 	}
 
