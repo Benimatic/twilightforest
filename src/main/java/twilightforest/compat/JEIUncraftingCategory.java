@@ -6,6 +6,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
-    public static ResourceLocation UNCRAFTING = TwilightForestMod.prefix("uncrafting_jei");
+    public static final RecipeType<CraftingRecipe> UNCRAFTING = RecipeType.create(TwilightForestMod.ID, "uncrafting", CraftingRecipe.class);
     public static final int width = 116;
     public static final int height = 54;
     private final IDrawable background;
@@ -33,15 +34,23 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
     public JEIUncraftingCategory(IGuiHelper guiHelper) {
         ResourceLocation location = TwilightForestMod.getGuiTexture("uncrafting_jei.png");
         this.background = guiHelper.createDrawable(location, 0, 0, width, height);
-        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()));
+        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()));
         this.localizedName = new TranslatableComponent("gui.uncrafting_jei");
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public RecipeType<CraftingRecipe> getRecipeType() {
         return UNCRAFTING;
     }
 
+    @SuppressWarnings("removal")
+    @Override
+    public ResourceLocation getUid() {
+        return UNCRAFTING.getUid();
+    }
+
+
+    @SuppressWarnings("removal")
     @Override
     public Class<? extends CraftingRecipe> getRecipeClass() {
         return CraftingRecipe.class;

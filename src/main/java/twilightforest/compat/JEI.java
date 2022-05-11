@@ -3,7 +3,7 @@ package twilightforest.compat;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.VanillaRecipeCategoryUid;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IIngredientManager;
@@ -30,20 +30,20 @@ import java.util.Objects;
 public class JEI implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), VanillaRecipeCategoryUid.CRAFTING);
+        registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), RecipeTypes.CRAFTING);
         registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), JEIUncraftingCategory.UNCRAFTING);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(UncraftingContainer.class, VanillaRecipeCategoryUid.CRAFTING, 11, 9, 20, 36);
+        registration.addRecipeTransferHandler(UncraftingContainer.class, RecipeTypes.CRAFTING, 11, 9, 20, 36);
     }
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         IIngredientManager ingredientManager = jeiRuntime.getIngredientManager();
         ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
-                ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM, List.of(
+                ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
                         ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
                 )));
     }
@@ -67,12 +67,12 @@ public class JEI implements IModPlugin {
                 TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) ||
                 TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() != TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace()));//Prevents things that are tagged as banned from showing up
         recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-        registration.addRecipes(recipes, JEIUncraftingCategory.UNCRAFTING);
+        registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(UncraftingGui.class, 34, 33, 27, 20, JEIUncraftingCategory.UNCRAFTING);
-        registration.addRecipeClickArea(UncraftingGui.class, 115, 33, 27, 20, VanillaRecipeCategoryUid.CRAFTING);
+        registration.addRecipeClickArea(UncraftingGui.class, 115, 33, 27, 20, RecipeTypes.CRAFTING);
     }
 }
