@@ -543,8 +543,8 @@ public class HydraHeadContainer {
 		double pz = headEntity.getZ() + vector.z * dist;
 
 		if (headEntity.getState() == State.FLAME_BEGINNING) {
-			headEntity.level.addParticle(ParticleTypes.FLAME, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
-			headEntity.level.addParticle(ParticleTypes.SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.FLAME, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.FLAMING) {
@@ -565,23 +565,23 @@ public class HydraHeadContainer {
 				dy *= velocity;
 				dz *= velocity;
 
-				headEntity.level.addParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
+				headEntity.level.addAlwaysVisibleParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 
 		if (headEntity.getState() == State.BITE_BEGINNING || headEntity.getState() == State.BITE_READY) {
-			headEntity.level.addParticle(ParticleTypes.SPLASH, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.SPLASH, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.MORTAR_BEGINNING) {
-			headEntity.level.addParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
 	private void playSounds() {
 		if (headEntity.getState() == State.FLAMING && headEntity.tickCount % 5 == 0) {
 			// fire breathing!
-			headEntity.playSound(TFSounds.HYDRA_SHOOT, 0.5F + headEntity.level.random.nextFloat(), headEntity.level.random.nextFloat() * 0.7F + 0.3F);
+			headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE, 0.5F + headEntity.level.random.nextFloat(), headEntity.level.random.nextFloat() * 0.7F + 0.3F);
 		}
 		if (headEntity.getState() == State.ROAR_RAWR) {
 			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
