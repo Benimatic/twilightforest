@@ -45,6 +45,7 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.compat.IECompat;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.TFItems;
 
@@ -85,7 +86,7 @@ public class TFClientEvents {
 				tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 			}
 
-			if(ModList.get().isLoaded("immersiveengineering")) {
+			if(ModList.get().isLoaded(TFCompat.IE_ID)) {
 				IECompat.registerShaderModels(event);
 			}
 		}

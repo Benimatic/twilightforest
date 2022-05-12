@@ -42,6 +42,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
+import twilightforest.compat.TFCompat;
 import twilightforest.compat.UndergardenCompat;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
@@ -411,7 +412,7 @@ public class TFEntities {
 		event.registerEntityRenderer(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		event.registerEntityRenderer(ICE_ARROW.get(), DefaultArrowRenderer::new);
 
-		if(ModList.get().isLoaded("undergarden")) {
+		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
 			UndergardenCompat.registerSlingshotRenders(event);
 		}
 	}

@@ -408,7 +408,7 @@
   "block.twilightforest.keepsake_casket": "Keepsake Casket",
   "block.twilightforest.casket.broken": "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.",
   "block.twilightforest.casket.locked": "This Casket can only be opened by %s!",
-  
+
   "block.twilightforest.candelabra": "Candelabra",
   "block.twilightforest.red_thread": "Red Thread",
 
@@ -440,7 +440,7 @@
   "block.twilightforest.potted_thorn": "Potted Thorn",
   "block.twilightforest.potted_green_thorn": "Potted Green Thorn",
   "block.twilightforest.potted_dead_thorn": "Potted Burnt Thorn",
-  
+
   "block.twilightforest.oak_banister": "Oak Banister",
   "block.twilightforest.spruce_banister": "Spruce Banister",
   "block.twilightforest.birch_banister": "Birch Banister",
@@ -552,7 +552,7 @@
   "block.twilightforest.sorting_sign": "Sortingwood Sign",
   "block.twilightforest.sorting_wall_sign": "Sortingwood Wall Sign",
   "block.twilightforest.sorting_banister": "Sortingwood Banister",
-  
+
   "block.twilightforest.twilight_oak_chest": "Twilight Oak Chest",
   "block.twilightforest.canopy_chest": "Canopy Chest",
   "block.twilightforest.mangrove_chest": "Mangrove Chest",
@@ -1281,7 +1281,7 @@
   "subtitles.twilightforest.entity.yeti.growl": "Yeti growls",
   "subtitles.twilightforest.entity.yeti.hurt": "Yeti hurts",
   "subtitles.twilightforest.entity.yeti.throw": "Yeti yeets player",
-  
+
   "subtitles.twilightforest.entity.alphayeti.parrot": "Parrot coldly growls",
   "subtitles.twilightforest.entity.carminitegolem.parrot": "Parrot thunks",
   "subtitles.twilightforest.entity.hostilewolf.parrot": "Parrot growls",
@@ -1598,31 +1598,41 @@
   "twilightforest.book.unknown.2": "something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.",
 
   // Fluid
+  "fluid.twilightforest.molten_fiery": "Molten Fiery",
+  "fluid.twilightforest.molten_knightmetal": "Molten Knightmetal",
+  "fluid.twilightforest.fiery_essence": "Fiery Essence",
 
-  "fluid.fierymetal": "Molten Fiery",
-  "fluid.knightmetal": "Molten Knightmetal",
-  "fluid.fiery_essence": "Fiery Essence",
+  "item.twilightforest.molten_fiery_bucket": "Molten Fiery Bucket",
+  "item.twilightforest.molten_knightmetal_bucket": "Molten Knightmetal Bucket",
+  "item.twilightforest.fiery_essence_bucket": "Fiery Essence Bucket",
 
   // TCon
+  "material.twilightforest.nagascale": "Naga Scale",
+  "material.twilightforest.steeleaf": "Steeleaf",
+  "material.twilightforest.fiery": "Fiery",
+  "material.twilightforest.knightmetal": "Knightmetal",
+  "material.twilightforest.raven_feather": "Raven Feather",
 
-  "material.nagascale": "Naga Scale",
-  "material.steeleaf": "Steeleaf",
-  "material.fierymetal": "Fiery",
-  "material.knightmetal": "Knightly",
-  "material.raven_feather": "Raven Feather",
-
-  "modifier.twilit": "Twilit",
-  "modifier.twilit.desc": "§oThe Twilight Forest's illuminating blessing.§r\nSpeedier in the Twilight Forest.\nMore damage outside the Twilight Forest.",
-  "modifier.twilit.extra.speed": "Mining Speed in Twilight Forest: +%s",
-  "modifier.twilit.extra.damage": "Damage outside the Twilight Forest: +%s",
-  "modifier.precipitate": "Precipitate",
-  "modifier.precipitate.desc": "§oThe last standing escape plan.§r\nThe less health you have, the speedier it is!",
-  "modifier.synergy": "Synergy",
-  "modifier.synergy.desc": "§oLook ma, no moss!§r\nWill repair itself if you have Steeleaves in your hotbar.",
-  "modifier.stalwart": "Stalwart",
-  "modifier.stalwart.desc": "§o_The Brave and Bold.§r\nHitting an entity can make you feel emboldened.",
-  "modifier.veiled": "Veiled",
-  "modifier.veiled.desc": "§oLike a Specter!§r\nProjectile will be invisible.",
+  "modifier.twilightforest.precipitate": "Precipitate",
+  "modifier.twilightforest.precipitate.flavor": "The last standing escape plan.",
+  "modifier.twilightforest.precipitate.description": "The less health you have, the speedier it is!",
+  "modifier.twilightforest.stalwart": "Stalwart",
+  "modifier.twilightforest.stalwart.flavor": "The Brave and Bold.",
+  "modifier.twilightforest.stalwart.description": "Hitting an entity can make you feel emboldened.",
+  "modifier.twilightforest.superheat": "Superheat",
+  "modifier.twilightforest.superheat.flavor": "Turn up the heat!",
+  "modifier.twilightforest.superheat.description": "Deal bonus damage to enemies on fire.",
+  "modifier.twilightforest.synergy": "Synergy",
+  "modifier.twilightforest.synergy.flavor": "Look ma, no moss!",
+  "modifier.twilightforest.synergy.description": "Will repair itself if you have Steeleaves in your hotbar.",
+  "modifier.twilightforest.twilit": "Twilit",
+  "modifier.twilightforest.twilit.flavor": "The Twilight Forest's illuminating blessing.",
+  "modifier.twilightforest.twilit.description": "Speedier in the Twilight Forest, more damage outside the Twilight Forest.",
+  "modifier.twilightforest.twilit.extra.speed": "Mining Speed in Twilight Forest: +%s",
+  "modifier.twilightforest.twilit.extra.damage": "Damage outside the Twilight Forest: +%s",
+  "modifier.twilightforest.veiled": "Veiled",
+  "modifier.twilightforest.veiled.flavor": "Like a Specter!",
+  "modifier.twilightforest.veiled.description": "Projectile will be invisible.",
 
   // Immersive Engineering
   "desc.immersiveengineering.info.shader.rarity.twilight": "Twilight",
@@ -1659,7 +1669,7 @@
   "twilightforest.gui.optifine.title": "WARNING: OPTIFINE DETECTED",
   "twilightforest.gui.optifine.message": "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.",
   "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead.",
-  
+
   // JEI
   "gui.uncrafting_jei": "Uncrafting"
 }

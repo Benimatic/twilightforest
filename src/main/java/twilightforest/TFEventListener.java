@@ -76,6 +76,7 @@ import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.CharmEffect;
@@ -346,7 +347,7 @@ public class TFEventListener {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if(ModList.get().isLoaded("curios")) {
+		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
 			ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item, player).map(ImmutableTriple::getRight).orElse(ItemStack.EMPTY);
 
 			if (!stack.isEmpty()) {
