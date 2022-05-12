@@ -3,17 +3,25 @@ package twilightforest.entity.boss;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.TFEntities;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.network.ThrowPlayerPacket;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
@@ -683,9 +691,28 @@ public class HydraHeadContainer {
 			List<Entity> nearbyList = headEntity.level.getEntities(headEntity, headEntity.getBoundingBox().inflate(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
-				if (nearby instanceof LivingEntity && nearby != hydra) {
+				if (nearby instanceof LivingEntity living && nearby != hydra) {
+					//is a player holding a shield? Let's do some extra stuff!
+					if (nearby instanceof Player player && player.isUsingItem() && player.getUseItem().getItem().canPerformAction(player.getUseItem(), ToolActions.SHIELD_BLOCK)) {
+						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
+							//cause severe damage and play a shatter sound
+							headEntity.level.playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS : TFSounds.METAL_SHIELD_SHATTERS, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+							player.getUseItem().hurtAndBreak(112, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
+						}
+						//add cooldown and knockback
+						player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
+						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ThrowPlayerPacket(-headEntity.getDirection().getStepX() * 0.5F, 0.15F, -headEntity.getDirection().getStepZ() * 0.5F));
+					}
+
 					// bite it!
 					nearby.hurt(TFDamageSources.HYDRA_BITE, BITE_DAMAGE);
+
+					//knockback!
+					if(living instanceof Player player) {
+						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ThrowPlayerPacket(-headEntity.getDirection().getStepX() * 0.5F, 0.1F, -headEntity.getDirection().getStepZ() * 0.5F));
+					} else {
+						living.knockback(-headEntity.getDirection().getStepX(), 0.1F, -headEntity.getDirection().getStepZ());
+					}
 				}
 			}
 		}
