@@ -681,8 +681,7 @@ public class HydraHeadContainer {
 					mortar.setToBlasting();
 				}
 
-				headEntity.level.levelEvent(1016, new BlockPos(headEntity.blockPosition()), 0);
-
+				headEntity.playSound(TFSounds.HYDRA_SHOOT, 10.0F, (headEntity.getLevel().getRandom().nextFloat() - headEntity.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F);
 				headEntity.level.addFreshEntity(mortar);
 			}
 		}

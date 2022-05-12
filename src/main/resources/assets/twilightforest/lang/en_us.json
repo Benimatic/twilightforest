@@ -1175,7 +1175,8 @@
   "subtitles.twilightforest.entity.hydra.growl": "Hydra growls",
   "subtitles.twilightforest.entity.hydra.hurt": "Hydra hurts",
   "subtitles.twilightforest.entity.hydra.roar": "Hydra roars",
-  "subtitles.twilightforest.entity.hydra.shoot": "Hydra shoots fire",
+  "subtitles.twilightforest.entity.hydra.shoot": "Hydra shoots",
+  "subtitles.twilightforest.entity.hydra.shoot_fire": "Hydra shoots fire",
   "subtitles.twilightforest.entity.hydra.warn": "Hydra prepares to bite",
   "subtitles.twilightforest.entity.ice.death": "Ice Core dies",
   "subtitles.twilightforest.entity.ice.hurt": "Ice Core hurts",
@@ -1260,6 +1261,7 @@
   "subtitles.twilightforest.entity.tinybird.chirp": "Bird chirps",
   "subtitles.twilightforest.entity.tinybird.hurt": "Bird hurts",
   "subtitles.twilightforest.entity.tinybird.song": "Bird sings",
+  "subtitles.twilightforest.entity.tinybird.takeoff": "Bird takes off",
   "subtitles.twilightforest.entity.tome.death": "Death Tome falls apart",
   "subtitles.twilightforest.entity.tome.hurt": "Death Tome creases",
   "subtitles.twilightforest.entity.tome.ambient": "Death Tome flips pages",
@@ -1341,6 +1343,7 @@
   "subtitles.twilightforest.item.flask.crack": "Brittle Flask cracks",
   "subtitles.twilightforest.item.flask.fill": "Potion Flask fills",
   "subtitles.twilightforest.item.icebomb.fired": "Ice Bomb thrown",
+  "subtitles.twilightforest.item.knightmetal_shield.shatter": "Metal Shield shatters",
   "subtitles.twilightforest.item.lamp.burn": "Lamp of Cinders burns area",
   "subtitles.twilightforest.item.magnet.grab": "Magnet pulls up ore",
   "subtitles.twilightforest.item.moonworm.squish": "Moonworm fires",
@@ -1348,6 +1351,7 @@
   "subtitles.twilightforest.item.scepter.drain": "Life Scepter drains",
   "subtitles.twilightforest.item.scepter.use": "Scepter used",
   "subtitles.twilightforest.item.scepter.pearl": "Twilight Scepter throws pearl",
+  "subtitles.twilightforest.item.shield.shatter": "Wooden Shield shatters",
 
   // Death Messages
   "death.attack.twilightforest.ghastTear": "%1$s was scalded by fiery tears",
