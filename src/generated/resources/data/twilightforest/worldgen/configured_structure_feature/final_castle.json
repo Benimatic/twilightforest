@@ -1,0 +1,73 @@
+{
+  "config": {},
+  "biomes": "#twilightforest:valid_final_castle_biomes",
+  "adapt_noise": true,
+  "spawn_overrides": {
+    "monster": {
+      "bounding_box": "piece",
+      "spawns": [
+        {
+          "type": "twilightforest:kobold",
+          "weight": 10,
+          "minCount": 4,
+          "maxCount": 4
+        },
+        {
+          "type": "twilightforest:adherent",
+          "weight": 10,
+          "minCount": 1,
+          "maxCount": 1
+        },
+        {
+          "type": "twilightforest:harbinger_cube",
+          "weight": 10,
+          "minCount": 1,
+          "maxCount": 1
+        },
+        {
+          "type": "minecraft:enderman",
+          "weight": 10,
+          "minCount": 1,
+          "maxCount": 1
+        },
+        {
+          "type": "twilightforest:kobold",
+          "weight": 10,
+          "minCount": 4,
+          "maxCount": 4
+        },
+        {
+          "type": "twilightforest:adherent",
+          "weight": 10,
+          "minCount": 1,
+          "maxCount": 1
+        },
+        {
+          "type": "twilightforest:harbinger_cube",
+          "weight": 10,
+          "minCount": 1,
+          "maxCount": 1
+        },
+        {
+          "type": "twilightforest:armored_giant",
+          "weight": 10,
+          "minCount": 1,
+          "maxCount": 1
+        },
+        {
+          "type": "twilightforest:adherent",
+          "weight": 10,
+          "minCount": 1,
+          "maxCount": 1
+        },
+        {
+          "type": "minecraft:blaze",
+          "weight": 10,
+          "minCount": 1,
+          "maxCount": 1
+        }
+      ]
+    }
+  },
+  "type": "twilightforest:final_castle"
+}

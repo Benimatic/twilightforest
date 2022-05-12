@@ -5,12 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "position": {
-            "y": {
-              "max": 50.0
-            }
-          },
-          "feature": "twilightforest:troll_cave"
+          "feature": "twilightforest:small_hollow_hil"
         }
       }
     }
