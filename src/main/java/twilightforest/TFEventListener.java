@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -30,6 +29,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -159,25 +159,14 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void onCrafting(PlayerEvent.ItemCraftedEvent event) {
 		ItemStack itemStack = event.getCrafting();
-		Player player = event.getPlayer();
 
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-		//TODO: Can this be an Ingredient?
-		if (itemStack.getItem() == Item.byBlock(Blocks.OAK_PLANKS) && itemStack.getCount() == 64 && doesCraftMatrixHaveGiantLog(event.getInventory())) {
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
+		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.get().asItem()) > 0) {
+			Player player = event.getPlayer();
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 		}
-	}
-
-	private static boolean doesCraftMatrixHaveGiantLog(Container inv) {
-		Item giantLogItem = Item.byBlock(TFBlocks.GIANT_LOG.get());
-		for (int i = 0; i < inv.getContainerSize(); i++) {
-			if (inv.getItem(i).getItem() == giantLogItem) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
