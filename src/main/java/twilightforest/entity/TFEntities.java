@@ -423,12 +423,12 @@ public class TFEntities {
 		private static final Map<ResourceLocation, EntityRenderer<?>> renderers = new HashMap<>();
 
 		public static void bakeMultiPartRenderers(EntityRendererProvider.Context context) {
-			BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_legacy_resources");
+			boolean legacy = Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_legacy_resources");
 			renderers.put(TFPart.RENDERER, new NoopRenderer<>(context));
-			renderers.put(HydraHead.RENDERER, legacy.getAsBoolean() ? new LegacyHydraHeadRenderer(context) : new HydraHeadRenderer(context));
-			renderers.put(HydraNeck.RENDERER, legacy.getAsBoolean() ? new LegacyHydraNeckRenderer(context) : new HydraNeckRenderer(context));
+			renderers.put(HydraHead.RENDERER, legacy ? new LegacyHydraHeadRenderer(context) : new HydraHeadRenderer(context));
+			renderers.put(HydraNeck.RENDERER, legacy ? new LegacyHydraNeckRenderer(context) : new HydraNeckRenderer(context));
 			renderers.put(SnowQueenIceShield.RENDERER, new SnowQueenIceShieldLayer<>(context));
-			renderers.put(NagaSegment.RENDERER, legacy.getAsBoolean() ? new LegacyNagaSegmentRenderer<>(context) : new NagaSegmentRenderer<>(context));
+			renderers.put(NagaSegment.RENDERER, legacy ? new LegacyNagaSegmentRenderer<>(context) : new NagaSegmentRenderer<>(context));
 		}
 
 		public static EntityRenderer<?> lookup(ResourceLocation location) {
