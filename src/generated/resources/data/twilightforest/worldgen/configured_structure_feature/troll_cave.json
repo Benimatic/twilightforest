@@ -2,48 +2,6 @@
   "config": {},
   "biomes": "#twilightforest:valid_troll_cave_biomes",
   "adapt_noise": true,
-  "spawn_overrides": {
-    "monster": {
-      "bounding_box": "piece",
-      "spawns": [
-        {
-          "type": "minecraft:creeper",
-          "weight": 5,
-          "minCount": 4,
-          "maxCount": 4
-        },
-        {
-          "type": "minecraft:skeleton",
-          "weight": 10,
-          "minCount": 4,
-          "maxCount": 4
-        },
-        {
-          "type": "twilightforest:troll",
-          "weight": 20,
-          "minCount": 4,
-          "maxCount": 4
-        },
-        {
-          "type": "minecraft:witch",
-          "weight": 5,
-          "minCount": 1,
-          "maxCount": 1
-        },
-        {
-          "type": "twilightforest:giant_miner",
-          "weight": 10,
-          "minCount": 1,
-          "maxCount": 1
-        },
-        {
-          "type": "twilightforest:armored_giant",
-          "weight": 10,
-          "minCount": 1,
-          "maxCount": 1
-        }
-      ]
-    }
-  },
+  "spawn_overrides": {},
   "type": "twilightforest:troll_cave"
 }

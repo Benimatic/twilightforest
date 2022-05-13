@@ -1,18 +1,6 @@
 {
   "config": {},
   "biomes": "#twilightforest:valid_yeti_cave_biomes",
-  "spawn_overrides": {
-    "monster": {
-      "bounding_box": "piece",
-      "spawns": [
-        {
-          "type": "twilightforest:yeti",
-          "weight": 10,
-          "minCount": 4,
-          "maxCount": 4
-        }
-      ]
-    }
-  },
+  "spawn_overrides": {},
   "type": "twilightforest:yeti_cave"
 }
