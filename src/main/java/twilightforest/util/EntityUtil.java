@@ -56,7 +56,7 @@ public class EntityUtil {
 
 	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
 	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "m_5592_");
-	private static MethodHandle handle_LivingEntity_getDeathSound;
+	private static final MethodHandle handle_LivingEntity_getDeathSound;
 
 	static {
 		MethodHandle tmp_handle_LivingEntity_getDeathSound = null;
