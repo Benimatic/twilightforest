@@ -31,7 +31,7 @@
             "predicate": {
               "type": "twilightforest:redcap",
               "location": {
-                "feature": "twilightforest:small_hollow_hil"
+                "feature": "twilightforest:small_hollow_hill"
               }
             },
             "entity": "this"

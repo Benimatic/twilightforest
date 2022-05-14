@@ -5,7 +5,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:small_hollow_hil"
+          "feature": "twilightforest:small_hollow_hill"
         }
       }
     }
