@@ -772,8 +772,10 @@ public class TFEventListener {
 							return false;
 
 						// send protection packet
-						BoundingBox bb = structure.getBoundingBox();//new MutableBoundingBox(pos, pos.add(16, 16, 16)); // todo 1.15 get from structure
-						sendAreaProtectionPacket(world, pos, bb);
+						List<BoundingBox> boxes = new ArrayList<>();
+						structure.getPieces().forEach(piece -> boxes.add(piece.getBoundingBox()));
+
+						sendAreaProtectionPacket(world, pos, boxes);
 
 						// send a hint monster?
 						nearbyFeature.trySpawnHintMonster(world, player, pos);
@@ -786,7 +788,7 @@ public class TFEventListener {
 		return false;
 	}
 
-	private static void sendAreaProtectionPacket(Level world, BlockPos pos, BoundingBox sbb) {
+	private static void sendAreaProtectionPacket(Level world, BlockPos pos, List<BoundingBox> sbb) {
 		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.dimension());
 		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));
 	}
