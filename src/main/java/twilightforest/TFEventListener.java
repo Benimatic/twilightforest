@@ -773,7 +773,10 @@ public class TFEventListener {
 
 						// send protection packet
 						List<BoundingBox> boxes = new ArrayList<>();
-						structure.getPieces().forEach(piece -> boxes.add(piece.getBoundingBox()));
+						structure.getPieces().forEach(piece -> {
+							if (piece.getBoundingBox().isInside(pos))
+								boxes.add(piece.getBoundingBox());
+						});
 
 						sendAreaProtectionPacket(world, pos, boxes);
 
