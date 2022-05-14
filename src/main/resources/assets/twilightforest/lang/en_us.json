@@ -6,17 +6,17 @@
 
   // General progression
   "advancement.twilightforest.hedge": "Bug Stomper",
-  "advancement.twilightforest.hedge.desc": "Defeat a spider in a %s.",
+  "advancement.twilightforest.hedge.desc": "Defeat a spider in a Hedge Maze.",
 
   "advancement.twilightforest.kill_cicada": "Shut",
   "advancement.twilightforest.kill_cicada.desc": "Kill a cicada",
 
   "advancement.twilightforest.hill1": "The Boots Are Mine!",
-  "advancement.twilightforest.hill1.desc": "Defeat a %s in a %s.",
+  "advancement.twilightforest.hill1.desc": "Defeat a %s in a Small Hollow Hill.",
   "advancement.twilightforest.hill2": "What Was That Noise?",
-  "advancement.twilightforest.hill2.desc": "Defeat a %s in a %s.",
+  "advancement.twilightforest.hill2.desc": "Defeat a %s in a Medium Hollow Hill.",
   "advancement.twilightforest.hill3": "I See Right Through You",
-  "advancement.twilightforest.hill3.desc": "Defeat a %s in a %s.",
+  "advancement.twilightforest.hill3.desc": "Defeat a %s in a Large Hollow Hill.",
 
   "advancement.twilightforest.quest_ram": "Consummate Baaahs",
   "advancement.twilightforest.quest_ram.desc": "Give the %s what it is missing.",
@@ -76,7 +76,7 @@
   "advancement.twilightforest.progress_yeti": "Alpha Fur",
   "advancement.twilightforest.progress_yeti.desc": "Line your garments with the soft fur from the %s, keeping you safe from the Glacier's cold.",
   "advancement.twilightforest.progress_glacier": "Clear Skies",
-  "advancement.twilightforest.progress_glacier.desc": "Defeat the %s atop the %s.",
+  "advancement.twilightforest.progress_glacier.desc": "Defeat the %s atop the Aurora Palace.",
   "advancement.twilightforest.arctic_dyed": "Getting in Fashion",
   "advancement.twilightforest.arctic_dyed.desc": "Dye all four pieces of Arctic Armor.",
 
@@ -616,24 +616,25 @@
   "block.arctic.tooltip": "Reduces fall damage by 90%",
   "block.knightmetal.tooltip": "Works as a stronger cactus",
 
+  "dimension.twilightforest.twilightforest": "Twilight Forest",
+
   // Structures
-  "structure.twilight_portal": "Twilight Portal",
-  "structure.hedge_maze": "Hedge Maze",
-  "structure.small_hollow_hill": "Small Hollow Hill",
-  "structure.medium_hollow_hill": "Medium Hollow Hill",
-  "structure.large_hollow_hill": "Large Hollow Hill",
-  "structure.quest_grove": "Quest Grove",
-  "structure.mushroom_tower": "Mushroom Castle",
-  "structure.naga_courtyard": "Naga Courtyard",
-  "structure.lich_tower": "Lich Tower",
-  "structure.labyrinth": "Minotaur Labyrinth",
-  "structure.hydra_lair": "Hydra's Lair",
-  "structure.knight_stronghold": "Knight Stronghold",
-  "structure.dark_tower": "Dark Tower",
-  "structure.yeti_lairs": "Yeti Cave",
-  "structure.ice_tower": "Aurora Palace",
-  "structure.troll_lairs": "Troll Caves",
-  "structure.final_castle": "Final Castle",
+  "structure.twilightforest.hedge_maze": "Hedge Maze",
+  "structure.twilightforest.small_hollow_hill": "Small Hollow Hill",
+  "structure.twilightforest.medium_hollow_hill": "Medium Hollow Hill",
+  "structure.twilightforest.large_hollow_hill": "Large Hollow Hill",
+  "structure.twilightforest.quest_grove": "Quest Grove",
+  "structure.twilightforest.mushroom_tower": "Mushroom Castle",
+  "structure.twilightforest.naga_courtyard": "Naga Courtyard",
+  "structure.twilightforest.lich_tower": "Lich Tower",
+  "structure.twilightforest.labyrinth": "Minotaur Labyrinth",
+  "structure.twilightforest.hydra_lair": "Hydra's Lair",
+  "structure.twilightforest.knight_stronghold": "Knight Stronghold",
+  "structure.twilightforest.dark_tower": "Dark Tower",
+  "structure.twilightforest.yeti_cave": "Yeti Cave",
+  "structure.twilightforest.aurora_palace": "Aurora Palace",
+  "structure.twilightforest.troll_cave": "Troll Caves",
+  "structure.twilightforest.final_castle": "Final Castle",
 
   // Items
   "item.twilightforest.boarkchop": "Boarkchop",

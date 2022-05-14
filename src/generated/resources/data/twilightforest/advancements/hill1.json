@@ -13,9 +13,6 @@
       "with": [
         {
           "translate": "entity.twilightforest.redcap"
-        },
-        {
-          "translate": "structure.small_hollow_hill"
         }
       ]
     },

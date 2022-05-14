@@ -8,12 +8,7 @@
       "translate": "advancement.twilightforest.hedge"
     },
     "description": {
-      "translate": "advancement.twilightforest.hedge.desc",
-      "with": [
-        {
-          "translate": "structure.hedge_maze"
-        }
-      ]
+      "translate": "advancement.twilightforest.hedge.desc"
     },
     "frame": "task",
     "show_toast": true,

@@ -12,9 +12,6 @@
       "with": [
         {
           "translate": "entity.twilightforest.wraith"
-        },
-        {
-          "translate": "structure.large_hollow_hill"
         }
       ]
     },
