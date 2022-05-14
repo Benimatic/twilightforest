@@ -154,7 +154,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.progress_knights"),
 						new TranslatableComponent("advancement.twilightforest.progress_knights.desc"),
 						null, FrameType.GOAL, true, true, false)
-				.addCriterion("knight", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.KNIGHT_PHANTOM.get())))
+				.addCriterion("all_knights", KillAllPhantomsTrigger.Instance.killThemAll())
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.KNIGHT_PHANTOM_TROPHY.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.Instance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.KNIGHT_PHANTOM.get())))
 				.addCriterion("previous_progression", HasAdvancementTrigger.Instance.hasAdvancement(trophy_pedestal.getId()))
