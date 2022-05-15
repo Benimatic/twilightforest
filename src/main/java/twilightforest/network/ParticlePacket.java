@@ -23,8 +23,10 @@ public class ParticlePacket {
     public ParticlePacket(FriendlyByteBuf buf) {
         int size = buf.readInt();
         for (int i = 0; i < size; i++) {
-            ParticleOptions particleOptions = this.readParticle(Objects.requireNonNull(Registry.PARTICLE_TYPE.byId(buf.readInt())), buf);
-            this.queuedParticles.add(new QueuedParticle(particleOptions, buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
+			ParticleType<?> type = Registry.PARTICLE_TYPE.byId(buf.readInt());
+			if (type == null)
+				break; // Fail silently and end execution entirely. Due to Type serialization we now have completely unknown data in the pipeline without any way to safely read it all
+            this.queuedParticles.add(new QueuedParticle(readParticle(type, buf), buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
         }
     }
 
@@ -38,6 +40,7 @@ public class ParticlePacket {
         for (QueuedParticle queuedParticle : this.queuedParticles) {
             int d = Registry.PARTICLE_TYPE.getId(queuedParticle.particleOptions.getType());
             buf.writeInt(d);
+			queuedParticle.particleOptions.writeToNetwork(buf);
             buf.writeBoolean(queuedParticle.b);
             buf.writeDouble(queuedParticle.x);
             buf.writeDouble(queuedParticle.y);
@@ -45,7 +48,6 @@ public class ParticlePacket {
             buf.writeDouble(queuedParticle.x2);
             buf.writeDouble(queuedParticle.y2);
             buf.writeDouble(queuedParticle.z2);
-            queuedParticle.particleOptions.writeToNetwork(buf);
         }
     }
 
