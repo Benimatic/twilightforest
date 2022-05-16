@@ -54,13 +54,11 @@ public class ParticlePacket {
 		this.queuedParticles.add(new QueuedParticle(particleOptions, b, x, y, z, x2, y2, z2));
 	}
 
-	public void queueParticle(ParticleOptions particleOptions, boolean b, Vec3 vec3, double x2, double y2, double z2) {
-		this.queuedParticles.add(new QueuedParticle(particleOptions, b, vec3.x, vec3.y, vec3.z, x2, y2, z2));
+	public void queueParticle(ParticleOptions particleOptions, boolean b, Vec3 xyz, Vec3 xyz2) {
+		this.queuedParticles.add(new QueuedParticle(particleOptions, b, xyz.x, xyz.y, xyz.z, xyz2.x, xyz2.y, xyz2.z));
 	}
 
-	private record QueuedParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2,
-								  double y2, double z2) {
-	}
+	private record QueuedParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) {}
 
 	public static class Handler {
 		public static boolean onMessage(ParticlePacket message, Supplier<NetworkEvent.Context> ctx) {
