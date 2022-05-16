@@ -10,7 +10,6 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
 import twilightforest.entity.boss.NagaSegment;
 
-//FIXME legacy: scaling was commented out since textures are bigger now
 public class NagaSegmentRenderer<T extends NagaSegment> extends TFPartRenderer<T, NagaModel<T>> {
 	private static final ResourceLocation part_TextureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
 
@@ -33,9 +32,6 @@ public class NagaSegmentRenderer<T extends NagaSegment> extends TFPartRenderer<T
 
 			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(yaw2));
 			matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityIn.getXRot()));
-
-			//matrixStackIn.scale(2.0F, 2.0F, 2.0F);
-			//matrixStackIn.translate(0.0D, -1.501F, 0.0D);
 
 			int light = entityRenderDispatcher.getPackedLightCoords(entityIn.getParent(), partialTicks);
 			super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, light);
