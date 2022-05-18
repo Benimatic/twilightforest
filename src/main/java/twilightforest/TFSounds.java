@@ -145,6 +145,7 @@ public final class TFSounds {
 	public static final SoundEvent LOYAL_ZOMBIE_DEATH = createEvent("entity.twilightforest.loyalzombie.death");
 	public static final SoundEvent LOYAL_ZOMBIE_HURT = createEvent("entity.twilightforest.loyalzombie.hurt");
 	public static final SoundEvent LOYAL_ZOMBIE_STEP = createEvent("entity.twilightforest.loyalzombie.step");
+	public static final SoundEvent LOYAL_ZOMBIE_SUMMON = createEvent("entity.twilightforest.loyalzombie.summon");
 	public static final SoundEvent MAGNET_GRAB = createEvent("item.twilightforest.magnet.grab");
 	public static final SoundEvent MAZE_SLIME_DEATH = createEvent("entity.twilightforest.mazeslime.death");
 	public static final SoundEvent MAZE_SLIME_DEATH_SMALL = createEvent("entity.twilightforest.mazeslimesmall.death");
@@ -335,7 +336,7 @@ public final class TFSounds {
 				LAMP_BURN,
 				LICH_AMBIENT, LICH_CLONE_HURT, LICH_DEATH, LICH_HURT, LICH_POP_MOB, LICH_SHOOT, LICH_TELEPORT,
 				LOCKED_VANISHING_BLOCK,
-				LOYAL_ZOMBIE_AMBIENT, LOYAL_ZOMBIE_DEATH, LOYAL_ZOMBIE_HURT, LOYAL_ZOMBIE_STEP,
+				LOYAL_ZOMBIE_AMBIENT, LOYAL_ZOMBIE_DEATH, LOYAL_ZOMBIE_HURT, LOYAL_ZOMBIE_STEP, LOYAL_ZOMBIE_SUMMON,
 				MAGNET_GRAB,
 				MAZE_SLIME_DEATH, MAZE_SLIME_DEATH_SMALL, MAZE_SLIME_HURT, MAZE_SLIME_HURT_SMALL, MAZE_SLIME_SQUISH, MAZE_SLIME_SQUISH_SMALL,
 				METAL_SHIELD_SHATTERS,

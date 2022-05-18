@@ -106,6 +106,7 @@
   "entity.twilightforest.loyalzombie.death": { "subtitle": "subtitles.twilightforest.entity.loyalzombie.death", "sounds": [ "mob/zombie/death" ] },
   "entity.twilightforest.loyalzombie.hurt": { "subtitle": "subtitles.twilightforest.entity.loyalzombie.hurt", "sounds": [  "mob/zombie/hurt1", "mob/zombie/hurt2" ] },
   "entity.twilightforest.loyalzombie.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/zombie/step1", "mob/zombie/step2", "mob/zombie/step3",  "mob/zombie/step4", "mob/zombie/step5" ] },
+  "entity.twilightforest.loyalzombie.summon": { "subtitle": "subtitles.twilightforest.entity.loyalzombie.summon", "sounds": ["random/pop"] },
   "entity.twilightforest.mazeslime.death": { "subtitle": "subtitles.twilightforest.entity.mazeslime.death", "sounds": [  "mob/slime/big1", "mob/slime/big2", "mob/slime/big3", "mob/slime/big4" ] },
   "entity.twilightforest.mazeslime.hurt": { "subtitle": "subtitles.twilightforest.entity.mazeslime.hurt", "sounds": [   "mob/slime/big1", "mob/slime/big2", "mob/slime/big3", "mob/slime/big4" ] },
   "entity.twilightforest.mazeslime.squish": { "subtitle": "subtitles.twilightforest.entity.mazeslime.squish", "sounds": [ "mob/slime/big1", "mob/slime/big2", "mob/slime/big3", "mob/slime/big4" ] },

@@ -1203,6 +1203,7 @@
   "subtitles.twilightforest.entity.loyalzombie.ambient": "Loyal Zombie groans",
   "subtitles.twilightforest.entity.loyalzombie.death": "Loyal Zombie dies",
   "subtitles.twilightforest.entity.loyalzombie.hurt": "Loyal Zombie hurts",
+  "subtitles.twilightforest.entity.loyalzombie.summon": "Loyal Zombie summoned",
   "subtitles.twilightforest.entity.mazeslime.death": "Maze Slime dies",
   "subtitles.twilightforest.entity.mazeslime.hurt": "Maze Slime hurts",
   "subtitles.twilightforest.entity.mazeslime.squish": "Maze Slime squishes",
@@ -1388,6 +1389,8 @@
   "death.attack.twilightforest.fiery.player": "%1$s walked onto a fiery block while escaping %2$s",
   "death.attack.twilightforest.thrown_block": "%1$s was squashed by a thrown block",
   "death.attack.twilightforest.thrown_block.player": "%1$s was squashed by a thrown block while escaping %2$s",
+  "death.attack.twilightforest.expired": "%1$s's life expired",
+  "death.attack.twilightforest.expired.player": "%1$s's life expired",
 
   "death.attack.twilightforest.axing": "%1$s was chopped up by %2$s",
   "death.attack.twilightforest.axing.item": "%1$s was chopped up by %2$s using %3$s",
