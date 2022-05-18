@@ -1,6 +1,7 @@
 package twilightforest.compat;
 
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
+import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -14,11 +15,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.UncraftingGui;
+import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.item.recipe.TFRecipes;
@@ -42,10 +45,19 @@ public class JEI implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         IIngredientManager ingredientManager = jeiRuntime.getIngredientManager();
-        ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
-                ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
-                        ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
-                )));
+
+        if(ModList.get().isLoaded(TFCompat.IE_ID)) {
+            ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
+                    ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
+                            ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
+                    )));
+
+            for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.getAllTwilightShaders()) {
+                ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
+                ItemNBTHelper.putString(stack, "shader_name", entry.getName().toString());
+                ingredientManager.addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(stack));
+            }
+        }
     }
 
     @Override
