@@ -137,6 +137,7 @@ public final class TFSounds {
 	public static final SoundEvent LICH_CLONE_HURT = createEvent("entity.twilightforest.lichclone.hurt");
 	public static final SoundEvent LICH_DEATH = createEvent("entity.twilightforest.lich.death");
 	public static final SoundEvent LICH_HURT = createEvent("entity.twilightforest.lich.hurt");
+	public static final SoundEvent LICH_POP_MOB = createEvent("entity.twilightforest.lich.pop_mob");
 	public static final SoundEvent LICH_SHOOT = createEvent("entity.twilightforest.lich.shoot");
 	public static final SoundEvent LICH_TELEPORT = createEvent("entity.twilightforest.lich.teleport");
 	public static final SoundEvent LOCKED_VANISHING_BLOCK = createEvent("block.twilightforest.vanish.locked");
@@ -332,7 +333,7 @@ public final class TFSounds {
 				KNIGHTMETAL_EQUIP,
 				KOBOLD_AMBIENT, KOBOLD_DEATH, KOBOLD_HURT, KOBOLD_MUNCH,
 				LAMP_BURN,
-				LICH_AMBIENT, LICH_CLONE_HURT, LICH_DEATH, LICH_HURT, LICH_SHOOT, LICH_TELEPORT,
+				LICH_AMBIENT, LICH_CLONE_HURT, LICH_DEATH, LICH_HURT, LICH_POP_MOB, LICH_SHOOT, LICH_TELEPORT,
 				LOCKED_VANISHING_BLOCK,
 				LOYAL_ZOMBIE_AMBIENT, LOYAL_ZOMBIE_DEATH, LOYAL_ZOMBIE_HURT, LOYAL_ZOMBIE_STEP,
 				MAGNET_GRAB,

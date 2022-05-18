@@ -98,6 +98,7 @@
   "entity.twilightforest.lich.ambient": { "subtitle": "subtitles.twilightforest.entity.lich.ambient", "sounds": [ "mob/blaze/breathe1", "mob/blaze/breathe2", "mob/blaze/breathe3", "mob/blaze/breathe4" ] },
   "entity.twilightforest.lich.death": { "subtitle": "subtitles.twilightforest.entity.lich.death", "sounds": [ "mob/blaze/death" ] },
   "entity.twilightforest.lich.hurt": { "subtitle": "subtitles.twilightforest.entity.lich.hurt", "sounds": [  "mob/blaze/hit1", "mob/blaze/hit2", "mob/blaze/hit3", "mob/blaze/hit4" ] },
+  "entity.twilightforest.lich.pop_mob": { "subtitle": "subtitles.twilightforest.entity.lich.pop_mob", "sounds": ["mob/chicken/plop"] },
   "entity.twilightforest.lich.shoot": { "subtitle": "subtitles.twilightforest.entity.lich.shoot", "sounds": [ "mob/ghast/fireball4" ] },
   "entity.twilightforest.lich.teleport": { "subtitle": "subtitles.twilightforest.entity.lich.teleport", "sounds": [ "mob/endermen/portal", "mob/endermen/portal2" ] },
   "entity.twilightforest.lichclone.hurt": { "subtitle": "subtitles.twilightforest.entity.lichclone.hurt", "sounds": ["random/fizz"] },
