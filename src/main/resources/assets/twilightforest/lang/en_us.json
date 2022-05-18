@@ -1416,6 +1416,8 @@
   "death.attack.twilightforest.schooled.item": "%1$s was schooled by %2$s using %3$s",
   "death.attack.twilightforest.snowballFight": "%1$s lost a snowball fight to %2$s",
   "death.attack.twilightforest.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",
+  "death.attack.twilightforest.lifedrain": "%1$s's life was drained by %2$s",
+  "death.attack.twilightforest.lifedrain.item": "%1$s's life was drained by %2$s using %3$s",
   "death.attack.twilightforest.yeeted": "%1$s was yeeted for the last time by %2$s",
   "death.attack.twilightforest.yeeted.item": "%1$s was yeeted for the last time by %2$s while somehow holding %3$s",
 
