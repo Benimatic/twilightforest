@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -22,6 +23,10 @@ import java.lang.reflect.Method;
 import java.util.function.DoubleUnaryOperator;
 
 public class EntityUtil {
+
+	public static BlockPos bossChestLocation(Mob boss) {
+		return boss.getRestrictCenter() == BlockPos.ZERO ? boss.blockPosition() : boss.getRestrictCenter().below();
+	}
 
 	public static boolean canDestroyBlock(Level world, BlockPos pos, Entity entity) {
 		return canDestroyBlock(world, pos, world.getBlockState(pos), entity);

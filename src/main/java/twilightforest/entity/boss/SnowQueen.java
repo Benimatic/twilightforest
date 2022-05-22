@@ -46,6 +46,7 @@ import twilightforest.entity.ai.HoverSummonGoal;
 import twilightforest.entity.ai.HoverThenDropGoal;
 import twilightforest.entity.monster.IceCrystal;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFFeature;
@@ -260,7 +261,7 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState(), new BlockPos(this.position()));
+			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
