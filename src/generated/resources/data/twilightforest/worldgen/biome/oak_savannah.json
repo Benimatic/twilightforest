@@ -36,6 +36,8 @@
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
       "twilightforest:tree/hollow_oak",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",
