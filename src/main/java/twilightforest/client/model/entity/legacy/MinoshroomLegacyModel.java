@@ -188,26 +188,28 @@ public class MinoshroomLegacyModel extends HumanoidModel<Minoshroom> {
 		float f1 = entity.getChargeAnimationScale(f);
 		f1 = f1 * f1;
 		float f2 = 1.0F - f1;
-		if (f1 > 0) {
 
-			if (entity.getMainArm() == HumanoidArm.RIGHT) {
-				this.rightArm.xRot = f1 * -1.8F;
-				this.leftArm.xRot = 0.0F;
-				this.rightArm.zRot = -0.2F;
-			} else {
-				this.rightArm.xRot = 0.0F;
-				this.leftArm.xRot = f1 * -1.8F;
-				this.leftArm.zRot = 0.2F;
-			}
-			this.cowbody.xRot = ((float) Math.PI / 2F) - f1 * (float) Math.PI * 0.2F;
-			this.leg3.y = 12.0F + (-5.8F * f1);
-			this.leg3.z = -4.0F + (-5.8F * f1);
-			this.leg3.xRot -= f1 * (float) Math.PI * 0.3F;
-
-			this.leg4.y = this.leg3.y;
-			this.leg4.z = this.leg3.z;
-			this.leg4.xRot -= f1 * (float) Math.PI * 0.3F;
-			this.body.y = -6F + -3.0F * f1;
+		if (entity.getMainArm() == HumanoidArm.RIGHT) {
+			this.rightArm.xRot = f1 * -1.8F;
+			this.leftArm.xRot = 0.0F;
+			this.rightArm.zRot = -0.2F;
+		} else {
+			this.rightArm.xRot = 0.0F;
+			this.leftArm.xRot = f1 * -1.8F;
+			this.leftArm.zRot = 0.2F;
 		}
+		this.cowbody.xRot = ((float) Math.PI / 2F) - f1 * (float) Math.PI * 0.2F;
+		this.leg3.y = 12.0F + (-7F * f1);
+		this.leg3.z = -4.0F + (-5.8F * f1);
+		this.leg3.xRot -= f1 * (float) Math.PI * 0.3F;
+
+		this.leg4.y = this.leg3.y;
+		this.leg4.z = this.leg3.z;
+		this.leg4.xRot -= f1 * (float) Math.PI * 0.3F;
+		this.body.y = -6F + -3.0F * f1;
+		this.rightArm.y = -4F - f1;
+		this.rightArm.z = -9F + f1;
+		this.leftArm.y = rightArm.y;
+		this.leftArm.z = rightArm.z;
 	}
 }
