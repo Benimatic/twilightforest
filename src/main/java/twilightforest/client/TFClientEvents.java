@@ -283,7 +283,7 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent event) {
-		if (event.phase != TickEvent.Phase.END) return;
+		if (event.phase != TickEvent.Phase.END || Minecraft.getInstance().isPaused()) return;
 		time++;
 
 		Minecraft mc = Minecraft.getInstance();
