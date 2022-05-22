@@ -27,8 +27,9 @@ public class EnderBowItem extends BowItem {
 	public static void onHit(ProjectileImpactEvent evt) {
 		Projectile arrow = evt.getProjectile();
 		if (arrow.getOwner() instanceof Player player
-						&& evt.getRayTraceResult() instanceof EntityHitResult
-						&& ((EntityHitResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity living) {
+						&& evt.getRayTraceResult() instanceof EntityHitResult result
+						&& result.getEntity() instanceof LivingEntity living
+						&& arrow.getOwner() != result.getEntity()) {
 
 			if (arrow.getPersistentData().contains(KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
