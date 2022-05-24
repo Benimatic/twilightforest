@@ -97,6 +97,7 @@ public class TFBlocks {
 	public static final RegistryObject<AbstractSkullCandleBlock> CREEPER_WALL_SKULL_CANDLE = BLOCKS.register("creeper_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.CREEPER, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD)));
 	public static final RegistryObject<AbstractSkullCandleBlock> PLAYER_SKULL_CANDLE = BLOCKS.register("player_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.PLAYER, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD)));
 	public static final RegistryObject<AbstractSkullCandleBlock> PLAYER_WALL_SKULL_CANDLE = BLOCKS.register("player_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.PLAYER, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD)));
+	public static final RegistryObject<Block> ROPE = BLOCKS.register("rope", () -> new RopeBlock(BlockBehaviour.Properties.of(Material.CLOTH_DECORATION).instabreak().noCollission().sound(SoundType.WOOL)));
 
 	//labyrinth
 	public static final RegistryObject<Block> MAZESTONE = BLOCKS.register("mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
@@ -163,6 +164,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> GIANT_OBSIDIAN = BLOCKS.register("giant_obsidian", () -> new GiantBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN).requiresCorrectToolForDrops().strength(50.0F * 64.0F * 64.0F, 2000.0F * 64.0F * 64.0F)));
 	public static final RegistryObject<Block> UBEROUS_SOIL = BLOCKS.register("uberous_soil", () -> new UberousSoilBlock(BlockBehaviour.Properties.of(Material.DIRT).strength(0.6F).sound(SoundType.GRAVEL)));
 	public static final RegistryObject<RotatedPillarBlock> HUGE_STALK = BLOCKS.register("huge_stalk", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PLANT).strength(1.5F, 3.0F).sound(SoundType.STEM)));
+	public static final RegistryObject<Block> BEANSTALK_GROWER = BLOCKS.register("beanstalk_grower", () -> new GrowingBeanstalkBlock(BlockBehaviour.Properties.of(Material.AIR).strength(-1.0F, 6000000.0F).noCollission().noOcclusion().noDrops()));
 	public static final RegistryObject<Block> HUGE_MUSHGLOOM = BLOCKS.register("huge_mushgloom", () -> new HugeMushroomBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_ORANGE).strength(0.2F).sound(SoundType.WOOD).lightLevel((state) -> 5)));
 	public static final RegistryObject<Block> HUGE_MUSHGLOOM_STEM = BLOCKS.register("huge_mushgloom_stem", () -> new HugeMushroomBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_ORANGE).strength(0.2F).sound(SoundType.WOOD).lightLevel((state) -> 5)));
 	public static final RegistryObject<Block> TROLLVIDR = BLOCKS.register("trollvidr", () -> new TrollRootBlock(BlockBehaviour.Properties.of(Material.PLANT).sound(SoundType.AZALEA_LEAVES).instabreak().noCollission()));
@@ -442,7 +444,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> CANOPY_FENCE = BLOCKS.register("canopy_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
 	public static final RegistryObject<Block> CANOPY_GATE = BLOCKS.register("canopy_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
 	public static final RegistryObject<Block> CANOPY_PLATE = BLOCKS.register("canopy_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).noCollission().strength(0.5F)));
-	public static final RegistryObject<DoorBlock> CANOPY_DOOR = BLOCKS.register("canopy_door", () -> new DoorBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(3.0F).noOcclusion()));
+	public static final RegistryObject<DoorBlock> CANOPY_DOOR = BLOCKS.register("canopy_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).strength(3.0F).noOcclusion()));
 	public static final RegistryObject<TrapDoorBlock> CANOPY_TRAPDOOR = BLOCKS.register("canopy_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final RegistryObject<StandingSignBlock> CANOPY_SIGN = BLOCKS.register("canopy_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).strength(1.0F).noOcclusion().noCollission(), CANOPY));
 	public static final RegistryObject<WallSignBlock> CANOPY_WALL_SIGN = BLOCKS.register("canopy_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).strength(1.0F).noOcclusion().noCollission(), CANOPY));
