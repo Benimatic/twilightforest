@@ -7,10 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
-import twilightforest.world.components.feature.config.HollowLogConfig;
-import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
-import twilightforest.world.components.feature.config.ThornsConfig;
+import twilightforest.world.components.feature.config.*;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
 import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
@@ -84,8 +81,8 @@ public class TFBiomeFeatures {
 			new SimpleWellFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FANCY_WELL = FEATURES.register("fancy_well", () ->
 			new FancyWellFeature(NoneFeatureConfiguration.CODEC));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WOOD_ROOTS = FEATURES.register("wood_roots", () ->
-			new TFGenWoodRoots(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<RootConfig>> WOOD_ROOTS = FEATURES.register("wood_roots", () ->
+			new TFGenWoodRoots(RootConfig.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SNOW_UNDER_TREES = FEATURES.register("snow_under_trees", () ->
 			new SnowUnderTrees(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<TreeConfiguration>> SNOW_TREE = FEATURES.register("anywhere_tree", () ->

@@ -26,12 +26,10 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.TorchberryPlantBlock;
-import twilightforest.world.components.feature.config.HollowLogConfig;
-import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
-import twilightforest.world.components.feature.config.ThornsConfig;
+import twilightforest.world.components.feature.config.*;
 import twilightforest.world.registration.TFBiomeFeatures;
 import twilightforest.world.registration.TreeConfigurations;
+import twilightforest.world.registration.TreeDecorators;
 
 import java.util.List;
 
@@ -73,7 +71,7 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> TROLL_ROOTS = register("troll_roots", TFBiomeFeatures.TROLL_VINES.get(), new BlockStateConfiguration(TFBlocks.TROLLVIDR.get().defaultBlockState()));
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> VANILLA_ROOTS = register("vanilla_roots", TFBiomeFeatures.UNDERGROUND_PLANTS.get(), new BlockStateConfiguration(Blocks.HANGING_ROOTS.defaultBlockState()));
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> WEBS = register("webs", TFBiomeFeatures.WEBS.get(), FeatureConfiguration.NONE);
-	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> WOOD_ROOTS_SPREAD = register("ore/wood_roots_spread", TFBiomeFeatures.WOOD_ROOTS.get(), FeatureConfiguration.NONE);
+	public static final Holder<ConfiguredFeature<RootConfig, ?>> WOOD_ROOTS_SPREAD = register("ore/wood_roots_spread", TFBiomeFeatures.WOOD_ROOTS.get(), new RootConfig(TreeDecorators.ROOT_BLEND_PROVIDER, BlockStateProvider.simple(TFBlocks.LIVEROOT_BLOCK.get())));
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> SNOW_UNDER_TREES = register("snow_under_trees", TFBiomeFeatures.SNOW_UNDER_TREES.get(), FeatureConfiguration.NONE);
 
 	//fallen logs!
