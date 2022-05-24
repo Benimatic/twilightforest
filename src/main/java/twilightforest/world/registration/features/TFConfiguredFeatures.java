@@ -12,6 +12,7 @@ import net.minecraft.sounds.Music;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -129,8 +130,8 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, ?>> HOLLOW_TREE = register("tree/hollow_tree", TFBiomeFeatures.HOLLOW_TREE.get(), TreeConfigurations.HOLLOW_TREE);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> RAINBOW_OAK_TREE = register("tree/rainbow_oak", Feature.TREE, TreeConfigurations.RAINBOAK_TREE);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> LARGE_RAINBOW_OAK_TREE = register("tree/large_rainbow_oak", Feature.TREE, TreeConfigurations.LARGE_RAINBOAK_TREE);
-	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> BROWN_CANOPY_MUSHROOM_TREE = register("mushroom/brown_canopy_mushroom", Feature.TREE, TreeConfigurations.MUSHROOM_BROWN);
-	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> RED_CANOPY_MUSHROOM_TREE = register("mushroom/red_canopy_mushroom", Feature.TREE, TreeConfigurations.MUSHROOM_RED);
+	public static final Holder<ConfiguredFeature<HugeMushroomFeatureConfiguration, ?>> BROWN_CANOPY_MUSHROOM_TREE = register("mushroom/brown_canopy_mushroom", TFBiomeFeatures.CANOPY_BROWN_MUSHROOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3));
+	public static final Holder<ConfiguredFeature<HugeMushroomFeatureConfiguration, ?>> RED_CANOPY_MUSHROOM_TREE = register("mushroom/red_canopy_mushroom", TFBiomeFeatures.CANOPY_RED_MUSHROOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3));
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> MEGA_SPRUCE_TREE = register("tree/mega_spruce_tree", TFBiomeFeatures.SNOW_TREE.get(), TreeConfigurations.BIG_SPRUCE);
 	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, ?>> LARGE_WINTER_TREE = register("tree/large_winter_tree", TFBiomeFeatures.LARGE_WINTER_TREE.get(), TreeConfigurations.LARGE_WINTER);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> SNOWY_SPRUCE_TREE = register("tree/snowy_spruce_tree", TFBiomeFeatures.SNOW_TREE.get(), TreeFeatures.SPRUCE.value().config());
