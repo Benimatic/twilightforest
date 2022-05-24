@@ -648,7 +648,7 @@ public class TFEventListener {
 
 	@SubscribeEvent
 	public static void preventMountDismount(EntityMountEvent event) {
-		if (!event.getEntityBeingMounted().level.isClientSide() && !event.isMounting() && event.getEntityBeingMounted().isAlive() && event.getEntityMounting() instanceof LivingEntity living && isRidingUnfriendly(living) && !allowDismount)
+		if (!event.getEntityBeingMounted().level.isClientSide() && !event.isMounting() && event.getEntityBeingMounted().isAlive() && event.getEntityMounting() instanceof LivingEntity living && living.isAlive() && isRidingUnfriendly(living) && !allowDismount)
 			event.setCanceled(true);
 	}
 
