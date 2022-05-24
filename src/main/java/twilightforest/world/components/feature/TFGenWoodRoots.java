@@ -77,7 +77,7 @@ public class TFGenWoodRoots extends Feature<NoneFeatureConfiguration> {
 
 		// if both the start and the end are in stone, put a root there
 		for (BlockPos coord : new VoxelBresenhamIterator(pos, dest)) {
-			this.placeRootBlock(world, coord, rootBlock);
+			if (!this.placeRootBlock(world, coord, rootBlock)) break;
 		}
 
 
@@ -115,9 +115,7 @@ public class TFGenWoodRoots extends Feature<NoneFeatureConfiguration> {
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
-	protected void placeRootBlock(LevelAccessor world, BlockPos pos, BlockState state) {
-		if (FeatureLogic.canRootGrowIn(world, pos)) {
-			world.setBlock(pos, state, 3);
-		}
+	protected boolean placeRootBlock(LevelAccessor world, BlockPos pos, BlockState state) {
+		return FeatureLogic.canRootGrowIn(world, pos) && world.setBlock(pos, state, 3);
 	}
 }

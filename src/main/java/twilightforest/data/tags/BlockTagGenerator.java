@@ -66,6 +66,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> STRUCTURE_BANNED_INTERACTIONS = BlockTags.create(TwilightForestMod.prefix("structure_banned_interactions"));
 
 	public static final TagKey<Block> WORLDGEN_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("worldgen_replaceables"));
+	public static final TagKey<Block> ROOT_TRACE_SKIP = BlockTags.create(TwilightForestMod.prefix("tree_roots_skip"));
 
 	public static final TagKey<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = BlockTags.create(TwilightForestMod.prefix("ore_magnet/ore_safe_replace_block"));
 	public static final TagKey<Block> ORE_MAGNET_IGNORE = BlockTags.create(TwilightForestMod.prefix("ore_magnet/ignored_ores"));
@@ -433,6 +434,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.FEATURES_CANNOT_REPLACE).addTag(COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get());
 		// For anything that permits replacement during Worldgen
 		tag(WORLDGEN_REPLACEABLES).addTags(BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.REPLACEABLE_PLANTS);
+
+		tag(ROOT_TRACE_SKIP).addTags(BlockTags.FEATURES_CANNOT_REPLACE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get());
 
 		tag(BlockTags.REPLACEABLE_PLANTS).add(
 				TFBlocks.MAYAPPLE.get(),
