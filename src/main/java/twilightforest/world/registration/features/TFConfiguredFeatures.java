@@ -124,7 +124,7 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> TRANSFORMATION_TREE = register("tree/transformation_tree", Feature.TREE, TreeConfigurations.TRANSFORM_TREE);
 	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, ?>> MINING_TREE = register("tree/mining_tree", TFBiomeFeatures.MINERS_TREE.get(), TreeConfigurations.MINING_TREE);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> SORTING_TREE = register("tree/sorting_tree", Feature.TREE, TreeConfigurations.SORT_TREE);
-	//public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, ?>>> DENSE_OAK_TREE = register("tree/dense_oak_tree", TFBiomeFeatures.CANOPY_OAK, TreeConfigurations.DENSE_OAK);
+	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, ?>> DENSE_OAK_TREE = register("tree/dense_oak_tree", TFBiomeFeatures.CANOPY_OAK.get(), TreeConfigurations.DENSE_OAK);
 	public static final Holder<ConfiguredFeature<TFTreeFeatureConfig, ?>> HOLLOW_TREE = register("tree/hollow_tree", TFBiomeFeatures.HOLLOW_TREE.get(), TreeConfigurations.HOLLOW_TREE);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> RAINBOW_OAK_TREE = register("tree/rainbow_oak", Feature.TREE, TreeConfigurations.RAINBOAK_TREE);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> LARGE_RAINBOW_OAK_TREE = register("tree/large_rainbow_oak", Feature.TREE, TreeConfigurations.LARGE_RAINBOAK_TREE);

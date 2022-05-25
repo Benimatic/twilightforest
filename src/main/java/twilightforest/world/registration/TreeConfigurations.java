@@ -235,6 +235,7 @@ public class TreeConfigurations {
             BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.get()),
             BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
     )
+            .minHeight(20)
             .build();
 
     public static final TFTreeFeatureConfig HOLLOW_TREE = new TFTreeFeatureConfig.Builder(

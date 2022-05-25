@@ -14,10 +14,12 @@ import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
 
+@ParametersAreNonnullByDefault
 public class TFGenCanopyOak extends TFGenCanopyTree {
 
 	private final List<BlockPos> leaves = Lists.newArrayList();
@@ -31,7 +33,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		// determine a height
 		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
-			treeHeight += random.nextInt(5);
+			treeHeight += random.nextInt(20);
 
 			if (random.nextInt(config.chanceAddFiveSecond) == 0) {
 				treeHeight += random.nextInt(5);

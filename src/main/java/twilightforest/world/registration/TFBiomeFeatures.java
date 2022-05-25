@@ -25,8 +25,8 @@ public class TFBiomeFeatures {
 			new TFGenCanopyMushroomBrown(HugeMushroomFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_MUSHROOM = FEATURES.register("canopy_red_mushroom", () ->
 			new TFGenCanopyMushroomRed(HugeMushroomFeatureConfiguration.CODEC));
-	//public static final RegistryObject<Feature<TFTreeFeatureConfig>> CANOPY_OAK = FEATURES.register("canopy_oak", () ->
-	//		new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
+	public static final RegistryObject<Feature<TFTreeFeatureConfig>> CANOPY_OAK = FEATURES.register("canopy_oak", () ->
+			new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<SpikeConfig>> CAVE_STALACTITE = FEATURES.register("block_spike", () ->
 			new BlockSpikeFeature(SpikeConfig.CODEC));
 	public static final RegistryObject<Feature<TreeConfiguration>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
