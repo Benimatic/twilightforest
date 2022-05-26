@@ -69,7 +69,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
 			else if (bonemealableBlock instanceof MushroomBlock)
 				newState = Blocks.MYCELIUM.defaultBlockState();
-			else if (bonemealableBlock instanceof GrassBlock || bonemealableBlock instanceof TallGrassBlock)
+			else if (bonemealableBlock instanceof BushBlock) //TODO: Figure out if you can make the resulting block (for example: tall grass) not instantly break upon growth
 				newState = Blocks.GRASS_BLOCK.defaultBlockState();
 
 			if (world instanceof ServerLevel serverLevel && bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
