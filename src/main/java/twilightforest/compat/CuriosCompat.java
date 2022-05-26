@@ -2,6 +2,7 @@ package twilightforest.compat;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -10,6 +11,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
@@ -22,9 +24,12 @@ import twilightforest.compat.curios.CharmOfKeepingRenderer;
 import twilightforest.compat.curios.CharmOfLife1NecklaceRenderer;
 import twilightforest.compat.curios.CharmOfLife2NecklaceRenderer;
 import twilightforest.compat.curios.CurioHeadRenderer;
+import twilightforest.item.SkullCandleItem;
 import twilightforest.item.TFItems;
+import twilightforest.item.TrophyItem;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class CuriosCompat extends TFCompat {
 
@@ -111,5 +116,15 @@ public class CuriosCompat extends TFCompat {
 		CuriosRendererRegistry.register(TFBlocks.CICADA.get().asItem(), CurioHeadRenderer::new);
 		CuriosRendererRegistry.register(TFBlocks.FIREFLY.get().asItem(), CurioHeadRenderer::new);
 		CuriosRendererRegistry.register(TFBlocks.MOONWORM.get().asItem(), CurioHeadRenderer::new);
+	}
+
+	public static boolean isTrophyCurioEquipped(LivingEntity entity) {
+		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.getItem() instanceof TrophyItem);
+		return slot.isPresent() && slot.get().slotContext().visible();
+	}
+
+	public static boolean isSkullCurioEquipped(LivingEntity entity) {
+		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.getItem() instanceof SkullCandleItem);
+		return slot.isPresent() && slot.get().slotContext().visible();
 	}
 }
