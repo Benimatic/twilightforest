@@ -23,6 +23,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
@@ -120,7 +121,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		// only hit living things
-		if (!level.isClientSide && result.getEntity() instanceof LivingEntity && result.getEntity() != this.getOwner()) {
+		if (!level.isClientSide && (result.getEntity() instanceof LivingEntity || result.getEntity() instanceof PartEntity<?>) && result.getEntity() != this.getOwner()) {
 			if (result.getEntity().hurt(TFDamageSources.spiked(this, (LivingEntity)this.getOwner()), 10)) {
 				playSound(TFSounds.BLOCKCHAIN_HIT, 1.0f, this.random.nextFloat());
 				// age when we hit a monster so that we go back to the player faster
