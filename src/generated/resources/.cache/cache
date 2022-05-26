@@ -2334,7 +2334,7 @@ f4838518bcfd60b744cb0e3e403ec06e104bb9ad assets/twilightforest/tinkering/materia
 4ccd0b77bfce5511b636d0b1ff80d52b9f774945 assets/twilightforest/tinkering/materials/nagascale.json
 95e5f6d6428d98364dfcd4d1e96e5bf5571a35bd assets/twilightforest/tinkering/materials/steeleaf.json
 92a9519500b7a64255a10d54a379394267e970b8 data/curios/tags/items/charm.json
-ce486fcb5333857356d9f0dc5ebda5efa5058e94 data/curios/tags/items/head.json
+e4bda5219029af523edf5b8ad53e74b297eea845 data/curios/tags/items/head.json
 80450bc0043e21f804114bb001afd1a6577dd4dd data/forge/tags/blocks/chests/wooden.json
 97ab9940ecc8ecaef427531b18df690fbdda10a0 data/forge/tags/blocks/fence_gates.json
 97ab9940ecc8ecaef427531b18df690fbdda10a0 data/forge/tags/blocks/fence_gates/wooden.json
