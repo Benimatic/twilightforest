@@ -384,7 +384,7 @@ public class TFClientEvents {
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
 		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			return !CuriosCompat.isTrophyCurioEquipped(entity) && !CuriosCompat.isSkullCurioEquipped(entity);
+			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
 		}
 		return false;
 	}
