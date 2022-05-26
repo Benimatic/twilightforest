@@ -19,8 +19,8 @@ public class TFBiomeFeatures {
 
 	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, TwilightForestMod.ID);
 	
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () ->
-			new TFGenBigMushgloom(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<HugeMushroomFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () ->
+			new TFGenBigMushgloom(HugeMushroomFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<HugeMushroomFeatureConfiguration>> CANOPY_BROWN_MUSHROOM = FEATURES.register("canopy_brown_mushroom", () ->
 			new TFGenCanopyMushroomBrown(HugeMushroomFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_MUSHROOM = FEATURES.register("canopy_red_mushroom", () ->

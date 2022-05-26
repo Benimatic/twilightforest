@@ -46,7 +46,7 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> GRAVEYARD = register("graveyard", TFBiomeFeatures.GRAVEYARD.get(), FeatureConfiguration.NONE);
 
 	//all the fun little things you find around the dimension
-	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> BIG_MUSHGLOOM = register("big_mushgloom", TFBiomeFeatures.BIG_MUSHGLOOM.get(), FeatureConfiguration.NONE);
+	public static final Holder<ConfiguredFeature<HugeMushroomFeatureConfiguration, ?>> BIG_MUSHGLOOM = register("mushroom/big_mushgloom", TFBiomeFeatures.BIG_MUSHGLOOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(TFBlocks.HUGE_MUSHGLOOM.get().defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(TFBlocks.HUGE_MUSHGLOOM_STEM.get().defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 1));
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> FALLEN_LEAVES = register("fallen_leaves", TFBiomeFeatures.FALLEN_LEAVES.get(), FeatureConfiguration.NONE);
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FIDDLEHEAD = register("fiddlehead", Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.FIDDLEHEAD.get()))));
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> FIRE_JET = register("fire_jet", TFBiomeFeatures.FIRE_JET.get(), new BlockStateConfiguration(TFBlocks.FIRE_JET.get().defaultBlockState()));
