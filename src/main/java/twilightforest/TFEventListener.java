@@ -68,8 +68,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
@@ -337,10 +337,10 @@ public class TFEventListener {
 
 	private static boolean hasCharmCurio(Item item, Player player) {
 		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item, player).map(ImmutableTriple::getRight).orElse(ItemStack.EMPTY);
+			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
 
-			if (!stack.isEmpty()) {
-				stack.shrink(1);
+			if (slot.isPresent()) {
+				slot.get().stack().shrink(1);
 				return true;
 			}
 		}
