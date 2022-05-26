@@ -19,7 +19,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
+import net.minecraftforge.common.Tags;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
+import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -52,22 +55,46 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		BlockState above = world.getBlockState(pos.above());
-		Material aboveMaterial = above.getMaterial();
+		if (fromPos.getY() == pos.getY() + 1) {
+			BlockState above = world.getBlockState(fromPos);
+			if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(TFBlocks.UBEROUS_SOIL.get()))) {
+				if (above.getMaterial().isSolid())
+					world.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), world, pos));
+				return;
+			}
 
-		if (aboveMaterial.isSolid()) {
-			world.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), world, pos));
-		}
+			BlockState newState = Blocks.DIRT.defaultBlockState();
 
-		if (above.getBlock() instanceof BonemealableBlock) {
+			if (bonemealableBlock instanceof CropBlock || bonemealableBlock instanceof StemBlock)
+				newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
+			else if (bonemealableBlock instanceof MushroomBlock)
+				newState = Blocks.MYCELIUM.defaultBlockState();
+			else if (bonemealableBlock instanceof GrassBlock || bonemealableBlock instanceof TallGrassBlock)
+				newState = Blocks.GRASS_BLOCK.defaultBlockState();
+
+			if (world instanceof ServerLevel serverLevel && bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
+				/*
+				  This seems a bit hacky, but it's the easiest way of letting the mushgloom only be grown by uberous soil
+				  If we make it growable by bonemeal as well, just delete this if statement and update the appropriate method inside the mushgloom class
+				 */
+				world.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, world, pos));
+				mushgloomBlock.growMushroom(serverLevel, fromPos, above, serverLevel.random);
+				world.levelEvent(2005, fromPos, 0);
+				return;
+			}
+
+			world.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, world, pos));
+
 			// apply bonemeal
 			// I wanted to make a while loop that checks if the block above can be bonemealed or not and iterate the growing process until fully grown,
 			// but putting isValidBonemealTarget in a while loop freezes the server. This will do for now I guess
-			for(int i = 0; i < 15; i++) BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			world.levelEvent(2005, pos.above(), 0);
-			if(above.getBlock() instanceof CropBlock || above.getBlock() instanceof StemBlock) {
-				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7));
+			if (world instanceof ServerLevel serverLevel) {
+				for (int i = 0; i < 15; i++) {
+					BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(serverLevel));
+				}
 			}
+
+			world.levelEvent(2005, fromPos, 0);
 		}
 	}
 
