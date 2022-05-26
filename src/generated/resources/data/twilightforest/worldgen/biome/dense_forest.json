@@ -49,7 +49,7 @@
       "twilightforest:tree/selector/vanilla_trees",
       "minecraft:jungle_bush",
       "twilightforest:default_fallen_logs",
-      "twilightforest:tree/dense_tree"
+      "twilightforest:tree/forest_canopy_oak_tree"
     ]
   ],
   "spawners": {
