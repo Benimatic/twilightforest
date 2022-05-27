@@ -58,7 +58,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.hdiam = (hillSize * 2 + 1) * 16;
 
 		// can we determine the size here?
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / hillSize - 1, radius * 2, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / (hillSize == 1 ? 2 : hillSize - 1), radius * 2, Direction.SOUTH);
 	}
 
 	@Override
