@@ -3,6 +3,8 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
@@ -14,17 +16,18 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
-import net.minecraftforge.common.Tags;
-import twilightforest.TwilightForestMod;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import twilightforest.item.TFItems;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class UberousSoilBlock extends Block implements BonemealableBlock {
@@ -65,12 +68,14 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 			BlockState newState = Blocks.DIRT.defaultBlockState();
 
-			if (bonemealableBlock instanceof CropBlock || bonemealableBlock instanceof StemBlock)
+			if (bonemealableBlock instanceof IPlantable iPlantable && iPlantable.getPlantType(world, fromPos) == PlantType.CROP)
 				newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
 			else if (bonemealableBlock instanceof MushroomBlock)
 				newState = Blocks.MYCELIUM.defaultBlockState();
-			else if (bonemealableBlock instanceof BushBlock) //TODO: Figure out if you can make the resulting block (for example: tall grass) not instantly break upon growth
+			else if (bonemealableBlock instanceof BushBlock)
 				newState = Blocks.GRASS_BLOCK.defaultBlockState();
+			else if (bonemealableBlock instanceof MossBlock mossBlock)
+				newState = mossBlock.defaultBlockState();
 
 			if (world instanceof ServerLevel serverLevel && bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
 				/*
@@ -83,15 +88,19 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				return;
 			}
 
+			/*
+			 The block must be set to a new one before we attempt to bonemeal the plant, otherwise, we can end up with an infinite block update loop
+			 For example, if we try to grow a mushroom but there isn't enough room for it to grow. (For some reason mushroom code does a block update when failing to grow)
+			 */
 			world.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, world, pos));
 
-			// apply bonemeal
-			// I wanted to make a while loop that checks if the block above can be bonemealed or not and iterate the growing process until fully grown,
-			// but putting isValidBonemealTarget in a while loop freezes the server. This will do for now I guess
 			if (world instanceof ServerLevel serverLevel) {
-				for (int i = 0; i < 15; i++) {
-					BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(serverLevel));
-				}
+				MinecraftServer server = serverLevel.getServer();
+				FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
+				server.tell(new TickTask(server.getTickCount(), () -> {
+					//We need to use a tick task so that plants that grow into tall variants don't just break upon growth
+					for (int i = 0; i < 15; i++) BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
+				}));
 			}
 
 			world.levelEvent(2005, fromPos, 0);
@@ -150,7 +159,9 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	//check each side of the block, as well as above and below each of those positions to check for a place to put a block
 	//the above and below checks allow the patch to jump to a new y level, makes spreading easier
 	public void performBonemeal(ServerLevel world, Random rand, BlockPos pos, BlockState state) {
-		for(Direction dir: Direction.values()) {
+		List<Direction> directions = Arrays.asList(Direction.values());
+		Collections.shuffle(directions);
+		for(Direction dir: directions) {
 			if(dir != Direction.UP && dir != Direction.DOWN) {
 				BlockState blockAt = world.getBlockState(pos.relative(dir));
 				if (
