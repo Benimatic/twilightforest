@@ -64,6 +64,7 @@ public class QuestRam extends Animal {
 		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL), false));
 		this.goalSelector.addGoal(3, new EatLooseGoal(this));
 		this.goalSelector.addGoal(4, new FindLooseGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL)));
+		this.goalSelector.addGoal(4, new MoveTowardsRestrictionGoal(this, 0.75D));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 	}
@@ -92,28 +93,22 @@ public class QuestRam extends Animal {
 		if (--this.randomTickDivider <= 0) {
 			this.randomTickDivider = 70 + this.random.nextInt(50);
 
-			// check if we're near a quest grove and if so, set that as home
-			int chunkX = Mth.floor(this.getX()) / 16;
-			int chunkZ = Mth.floor(this.getZ()) / 16;
-
-			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, (ServerLevel) this.level);
-
-			if (nearFeature != TFFeature.QUEST_GROVE) {
-				this.hasRestriction();
-			} else {
-				// set our home position to the center of the quest grove
-				BlockPos cc = TFFeature.getNearestCenterXYZ(Mth.floor(this.getX()), Mth.floor(this.getZ()));
-				this.restrictTo(cc, 13);
-			}
-
-			if (countColorsSet() > 15 && !getRewarded()) {
-				rewardQuest();
-				setRewarded(true);
+			if (this.countColorsSet() > 15 && !this.getRewarded()) {
+				this.rewardQuest();
+				this.setRewarded(true);
 			}
 
 		}
 
+		}
+
 		super.customServerAiStep();
+	}
+
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		if(type == MobSpawnType.STRUCTURE) this.restrictTo(this.blockPosition(), 13);
+		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
 	}
 
 	private void rewardQuest() {
@@ -184,6 +179,8 @@ public class QuestRam extends Animal {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("ColorFlags", this.getColorFlags());
 		compound.putBoolean("Rewarded", this.getRewarded());
+		BlockPos home = this.getRestrictCenter();
+		compound.put("HomePos", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
 	}
 
 	@Override
@@ -191,6 +188,13 @@ public class QuestRam extends Animal {
 		super.readAdditionalSaveData(compound);
 		this.setColorFlags(compound.getInt("ColorFlags"));
 		this.setRewarded(compound.getBoolean("Rewarded"));
+		if (compound.contains("HomePos", 9)) {
+			ListTag nbttaglist = compound.getList("HomePos", 6);
+			int hx = (int) nbttaglist.getDouble(0);
+			int hy = (int) nbttaglist.getDouble(1);
+			int hz = (int) nbttaglist.getDouble(2);
+			this.restrictTo(new BlockPos(hx, hy, hz), 13);
+		}
 	}
 
 	private int getColorFlags() {
