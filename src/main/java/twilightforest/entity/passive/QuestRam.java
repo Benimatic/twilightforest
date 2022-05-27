@@ -38,8 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.entity.ai.EatLooseGoal;
-import twilightforest.entity.ai.FindLooseGoal;
+import twilightforest.entity.ai.QuestRamEatWoolGoal;
 import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
@@ -61,9 +60,8 @@ public class QuestRam extends Animal {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL), false));
-		this.goalSelector.addGoal(3, new EatLooseGoal(this));
-		this.goalSelector.addGoal(4, new FindLooseGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL)));
+		this.goalSelector.addGoal(2, new QuestRamEatWoolGoal(this));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL), false));
 		this.goalSelector.addGoal(4, new MoveTowardsRestrictionGoal(this, 0.75D));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -158,7 +156,7 @@ public class QuestRam extends Animal {
 	}
 
 	@Nullable
-	public static DyeColor guessColor(ItemStack stack) {
+	public DyeColor guessColor(ItemStack stack) {
 		List<Item> wools = ImmutableList.of(
 						Blocks.WHITE_WOOL.asItem(), Blocks.ORANGE_WOOL.asItem(), Blocks.MAGENTA_WOOL.asItem(), Blocks.LIGHT_BLUE_WOOL.asItem(),
 						Blocks.YELLOW_WOOL.asItem(), Blocks.LIME_WOOL.asItem(), Blocks.PINK_WOOL.asItem(), Blocks.GRAY_WOOL.asItem(),
