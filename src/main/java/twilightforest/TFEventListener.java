@@ -878,15 +878,6 @@ public class TFEventListener {
 		if (shouldBanishPlayer) TFPortalBlock.attemptSendEntity(player, true, TFConfig.COMMON_CONFIG.DIMENSION.portalForNewPlayerSpawn.get()); // See ya hate to be ya
 	}
 
-	// Advancement Trigger
-	@SubscribeEvent
-	public static void onAdvancementGet(AdvancementEvent event) {
-		Player player = event.getPlayer();
-		if (player instanceof ServerPlayer) {
-			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((ServerPlayer) player, event.getAdvancement());
-		}
-	}
-
 	@SubscribeEvent
 	public static void armorChanged(LivingEquipmentChangeEvent event) {
 		LivingEntity living = event.getEntityLiving();
