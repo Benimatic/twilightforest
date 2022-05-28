@@ -22,8 +22,6 @@ import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class FierySwordItem extends SwordItem {
@@ -39,14 +37,7 @@ public class FierySwordItem extends SwordItem {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
-
-		for (Enchantment ench : enchants.keySet()) {
-			if (Objects.equals(ench.getRegistryName(), Enchantments.FIRE_ASPECT.getRegistryName())) {
-				return false;
-			}
-		}
-		return false;
+		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.FIRE_ASPECT) && super.isBookEnchantable(stack, book);
 	}
 
 	@Override
