@@ -1,7 +1,9 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -9,9 +11,11 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import slimeknights.tconstruct.TConstruct;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ProtectionBoxModel;
+import twilightforest.client.renderer.TFRenderTypes;
 import twilightforest.entity.ProtectionBox;
 
 public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRenderer<T> {
@@ -39,9 +43,9 @@ public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRender
 			alpha = entity.lifeTime / 20F;
 		}
 
-		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.energySwirl(getTextureLocation(entity), (-t * 0.15F) % 1.0F, -t * 0.10F % 1.0F));
+		VertexConsumer vertexconsumer = buffer.getBuffer(TFRenderTypes.getProtectionBox(getTextureLocation(entity), (-t * 0.15F) % 1.0F, -t * 0.10F % 1.0F));
 		boxModel.prepareMobModel(entity, 0, 0, 0);
-		boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, alpha, alpha, alpha, alpha);
+		boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY,  1.0F, 1.0F, 1.0F, alpha);
 	}
 
 	@Override
