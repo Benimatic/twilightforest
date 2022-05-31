@@ -330,7 +330,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		//simpleBlock(TFBlocks.lapis_block.get(), lapisModels);
 		registerWoodBlocks();
 		registerNagastone();
-		registerForceFields();
+		//registerForceFields(); FIXME: Uncomment to gen the force fields
 		simpleBlock(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), models().getExistingFile(prefix("block/potted_twilight_oak_sapling")));
 		simpleBlock(TFBlocks.POTTED_CANOPY_SAPLING.get(), models().getExistingFile(prefix("block/potted_canopy_sapling")));
 		simpleBlock(TFBlocks.POTTED_MANGROVE_SAPLING.get(), models().getExistingFile(prefix("block/potted_mangrove_sapling")));
