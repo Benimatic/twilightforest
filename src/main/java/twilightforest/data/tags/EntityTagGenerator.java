@@ -20,6 +20,7 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
     public static final TagKey<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = create(TwilightForestMod.prefix("rides_obstruct_snatching"));
     public static final TagKey<EntityType<?>> DONT_KILL_BUGS = create(TwilightForestMod.prefix("dont_kill_bugs"));
+    public static final TagKey<EntityType<?>> SORTABLE_ENTITIES = create(TwilightForestMod.prefix("sortable_entities"));
 
     public EntityTagGenerator(DataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
         super(dataGenerator, TwilightForestMod.ID, existingFileHelper);
@@ -115,6 +116,14 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
                 .addOptional(UndergardenCompat.CICADA_SLINGSHOT.get().getRegistryName())
                 .addOptional(UndergardenCompat.FIREFLY_SLINGSHOT.get().getRegistryName())
                 .addOptional(UndergardenCompat.MOONWORM_SLINGSHOT.get().getRegistryName());
+
+        tag(SORTABLE_ENTITIES).add(
+                EntityType.CHEST_MINECART,
+                EntityType.HOPPER_MINECART,
+                EntityType.LLAMA,
+                EntityType.TRADER_LLAMA,
+                EntityType.DONKEY,
+                EntityType.MULE);
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {
