@@ -64,6 +64,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> CARMINITE_REACTOR_IMMUNE = BlockTags.create(TwilightForestMod.prefix("carminite_reactor_immune"));
 	public static final TagKey<Block> CARMINITE_REACTOR_ORES = BlockTags.create(TwilightForestMod.prefix("carminite_reactor_ores"));
 	public static final TagKey<Block> STRUCTURE_BANNED_INTERACTIONS = BlockTags.create(TwilightForestMod.prefix("structure_banned_interactions"));
+	public static final TagKey<Block> PROGRESSION_ALLOW_BREAKING = BlockTags.create(TwilightForestMod.prefix("progression_allow_breaking"));
 
 	public static final TagKey<Block> WORLDGEN_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("worldgen_replaceables"));
 	public static final TagKey<Block> ROOT_TRACE_SKIP = BlockTags.create(TwilightForestMod.prefix("tree_roots_skip"));
@@ -408,6 +409,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(STRUCTURE_BANNED_INTERACTIONS)
 				.addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS).add(Blocks.LEVER)
 				.add(TFBlocks.ANTIBUILDER.get());
+
+		// TODO add more grave mods to this list 
+		tag(PROGRESSION_ALLOW_BREAKING)
+				.add(TFBlocks.KEEPSAKE_CASKET.get())
+				.addOptional(new ResourceLocation("gravestone", "gravestone"));
 
 		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
 				BlockTags.DIRT,
