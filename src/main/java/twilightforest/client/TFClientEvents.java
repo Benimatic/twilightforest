@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -21,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -377,9 +379,13 @@ public class TFClientEvents {
 		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
 			headedModel.getHead().visible = visible;
 			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible;
+				humanoidModel.hat.visible = visible && partShown(event.getEntity());
 			}
 		}
+	}
+
+	private static boolean partShown(Entity entity) {
+		return entity instanceof AbstractClientPlayer player && player.isModelPartShown(PlayerModelPart.HAT);
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
