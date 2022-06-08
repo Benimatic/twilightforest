@@ -1,9 +1,7 @@
-// For those who want the bleeding edge
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net/' }
         maven { url = 'https://maven.parchmentmc.org' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -19,18 +17,6 @@ apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
 apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
-///////////////////////////////////////////////////
-// IDE Settings
-///////////////////////////////////////////////////
-idea {
-    project {
-        languageLevel = '17' // Not sure this is proper or even needed anymore, verify it
-    }
-}
-
-///////////////////////////////////////////////////
-// ForgeGradle
-///////////////////////////////////////////////////
 version = (hasProperty("CIRevision") ? CIRevision : mod_version)
 group = group_name
 archivesBaseName = "${mod_id}-${minecraft_version}"
@@ -47,19 +33,11 @@ minecraft {
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    //replace '@mod_version@', version
-    //replace '@mod_id@', mod_id
-    //replace '@ci_build@', hasProperty("CIRevision") ? 'true' : 'false'
-
-    //replaceIn 'TwilightForestMod.java'
-    //replace '@VERSION@', project.version
-
     runs {
         client {
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
-
             property 'forge.logging.console.level', 'debug'
             property 'fml.earlyprogresswindow', 'false'
             property 'mixin.env.disableRefMap', 'true'
@@ -74,9 +52,22 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.disableRefMap', 'true'
+
+            mods {
+                twilightforest {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        gameTestServer {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'twilightforest'
 
             mods {
                 twilightforest {
@@ -107,40 +98,6 @@ minecraft {
 sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
-
-/*
-processResources {
-    //replaceIn 'assets/twilightforest/patchouli_books/guide/book.json'
-    //replace '@EDITION@', project.version
-
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        //include '.info'
-        //include '.properties'
-        include 'assets/twilightforest/patchouli_books/guide/book.json'
-
-        // replace version and mcversion
-        expand ([
-                'version':project.version,
-                'mcversion':project.minecraft.version,
-                'forge_version': forge_version,
-                'mod_version': mod_version,
-                'minecraft_version': minecraft_version,
-                'edition': (project.version - (mod_version + '.')),
-                's': '$'
-        ])
-    }
-
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-        exclude 'assets/twilightforest/patchouli_books/guide/book.json'
-    }
-}*/
 
 compileJava {
     options.encoding = 'UTF-8'
@@ -198,26 +155,26 @@ repositories {
 
 dependencies {
     // progwml6
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    //compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_version}-${mantle_version}")
-    implementation fg.deobf("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tcon_version}")
+    //implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_version}-${mantle_version}")
+    //implementation fg.deobf("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tcon_version}")
 
     // tterrag
-    implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
+    //implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
 
     // blamejared
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
-    implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    //implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
+    //implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // theillusivec4
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+    //implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
     // player
     //deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"
 
-    implementation fg.deobf("curse.maven:the-undergarden-379849:3810810")
+    //implementation fg.deobf("curse.maven:the-undergarden-379849:3810810")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }
