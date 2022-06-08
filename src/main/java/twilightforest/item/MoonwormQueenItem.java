@@ -108,7 +108,7 @@ public class MoonwormQueenItem extends Item {
 			if (fired) {
 				stack.hurt(2, world.random, null);
 
-				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH, living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1, 1);
+				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1, 1);
 			}
 		}
 

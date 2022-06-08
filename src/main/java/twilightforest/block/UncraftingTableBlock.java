@@ -50,7 +50,7 @@ public class UncraftingTableBlock extends Block {
 			boolean flag = worldIn.hasNeighborSignal(pos);
 			if (flag != state.getValue(POWERED)) {
 				if (flag && worldIn.getBlockState(pos.below()).is(Blocks.AMETHYST_BLOCK)) {
-					worldIn.playSound(null, pos, TFSounds.UNCRAFTING_TABLE_ACTIVATE, SoundSource.BLOCKS, 0.5F, 1.0F);
+					worldIn.playSound(null, pos, TFSounds.UNCRAFTING_TABLE_ACTIVATE.get(), SoundSource.BLOCKS, 0.5F, 1.0F);
 				}
 				worldIn.setBlockAndUpdate(pos, state.setValue(POWERED, flag));
 			}

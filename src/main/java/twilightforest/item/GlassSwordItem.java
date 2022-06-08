@@ -23,7 +23,7 @@ public class GlassSwordItem extends SwordItem {
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK, attacker.getSoundSource(), 1F, 0.5F);
+		attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
 		target.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState()), target.getX(), target.getY(), target.getZ(), 1, 1, 1);
 		stack.hurtAndBreak(stack.getMaxDamage() + 1, attacker, (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 		return true;
@@ -33,7 +33,7 @@ public class GlassSwordItem extends SwordItem {
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
 		super.fillItemCategory(tab, items);
 
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack stack = new ItemStack(this);
 			CompoundTag tags = new CompoundTag();
 			tags.putBoolean("Unbreakable", true);

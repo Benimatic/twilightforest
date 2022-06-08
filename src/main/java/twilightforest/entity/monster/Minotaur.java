@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -75,13 +76,13 @@ public class Minotaur extends Monster implements ITFCharger {
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
-		this.populateDefaultEquipmentSlots(difficulty);
-		this.populateDefaultEquipmentEnchantments(difficulty);
+		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 		return data;
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+	protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance difficulty) {
 		int random = this.getRandom().nextInt(10);
 		float additionalDiff = difficulty.getEffectiveDifficulty() + 1;
 		int result = (int) (random / additionalDiff);
@@ -141,7 +142,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	}
 
 	protected SoundEvent getChargeSound() {
-		return TFSounds.MINOTAUR_ATTACK;
+		return TFSounds.MINOTAUR_ATTACK.get();
 	}
 
 	@Override
@@ -155,22 +156,22 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOTAUR_AMBIENT;
+		return TFSounds.MINOTAUR_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOTAUR_HURT;
+		return TFSounds.MINOTAUR_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOTAUR_DEATH;
+		return TFSounds.MINOTAUR_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(TFSounds.MINOTAUR_STEP, 0.15F, 0.8F);
+		playSound(TFSounds.MINOTAUR_STEP.get(), 0.15F, 0.8F);
 	}
 
 	@Override

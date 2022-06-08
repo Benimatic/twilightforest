@@ -1,10 +1,9 @@
 package twilightforest.world.components.structures.stronghold;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
-
-import java.util.RandomSource;
 
 public class KnightStones extends StructurePiece.BlockSelector {
 

@@ -48,6 +48,6 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, Random rand) {
-		level.playSound(null, pos, TFSounds.TIME_CORE, SoundSource.BLOCKS, 0.1F, 0.5F);
+		level.playSound(null, pos, TFSounds.TIME_CORE.get(), SoundSource.BLOCKS, 0.1F, 0.5F);
 	}
 }

@@ -20,8 +20,6 @@ import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
-
 public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureComponentTemplate {
 
     private final ResourceLocation HEDGE;

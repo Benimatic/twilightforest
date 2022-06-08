@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -59,29 +60,33 @@ public class GiantMiner extends Monster {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
-		populateDefaultEquipmentSlots(difficulty);
-		populateDefaultEquipmentEnchantments(difficulty);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
+		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
+		populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 
 		return data;
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
 		setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GIANT_PICKAXE.get()));
 	}
 
 	@Override
-	protected void enchantSpawnedWeapon(float chance) {}
+	protected void enchantSpawnedWeapon(RandomSource random, float chance) {
+
+	}
 
 	@Override
-	protected void enchantSpawnedArmor(float chance, EquipmentSlot slot) {}
+	protected void enchantSpawnedArmor(RandomSource random, float chance, EquipmentSlot slot) {
+
+	}
 
 	@Override
-	public boolean doHurtTarget(Entity entityIn) {
-		entityIn.hurt(TFDamageSources.ant(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return super.doHurtTarget(entityIn);
+	public boolean doHurtTarget(Entity entity) {
+		entity.hurt(TFDamageSources.ant(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		return super.doHurtTarget(entity);
 	}
 
 	@Override
@@ -95,7 +100,7 @@ public class GiantMiner extends Monster {
 		return giantsNearby.size() < 10;
 	}
 
-	public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
+	public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
 		return Monster.checkMonsterSpawnRules(type, world, reason, pos, rand) || world.getBlockState(pos).getBlock() == TFBlocks.WISPY_CLOUD.get() || world.getBlockState(pos).getBlock() == TFBlocks.FLUFFY_CLOUD.get();
 	}
 

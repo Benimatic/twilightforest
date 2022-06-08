@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -47,7 +48,7 @@ public class MosquitoSwarm extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MOSQUITO;
+		return TFSounds.MOSQUITO.get();
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class MosquitoSwarm extends Monster {
 		}
 	}
 
-	public static boolean canSpawn(EntityType<? extends Monster> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
+	public static boolean canSpawn(EntityType<? extends Monster> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && Monster.checkAnyLightMonsterSpawnRules(type, world, reason, pos, rand);
 	}
 

@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -75,7 +76,7 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
 		super.destroy(level, pos, state);
 		if (level.isClientSide())
-			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.BLOCKS);
+			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.BLOCKS);
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (this == TFBlocks.FIREFLY_JAR.get()) {
 			for (int i = 0; i < 2; i++) {
 				double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
@@ -102,7 +103,7 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 			level.addParticle(ParticleTypes.NOTE, dx, dy, dz, 0, 0, 0);
 
 			if (!TFConfig.CLIENT_CONFIG.silentCicadas.get() && level.getRandom().nextInt(75) == 0) {
-				level.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, TFSounds.CICADA, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+				level.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, TFSounds.CICADA.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			}
 		}
 	}

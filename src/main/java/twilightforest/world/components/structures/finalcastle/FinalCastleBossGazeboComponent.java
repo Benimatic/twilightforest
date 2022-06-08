@@ -21,7 +21,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.RandomSource;
+
 
 @ParametersAreNonnullByDefault
 public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {

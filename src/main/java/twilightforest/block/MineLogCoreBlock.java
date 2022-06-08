@@ -24,7 +24,7 @@ public class MineLogCoreBlock extends SpecialMagicLogBlock {
 		int moved = OreMagnetItem.doMagnet(world, pos, dPos);
 
 		if (moved > 0) {
-			world.playSound(null, pos, TFSounds.MAGNET_GRAB, SoundSource.BLOCKS, 0.1F, 1.0F);
+			world.playSound(null, pos, TFSounds.MAGNET_GRAB.get(), SoundSource.BLOCKS, 0.1F, 1.0F);
 		}
 	}
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -52,7 +53,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (!world.isClientSide && state.getValue(STATE) == TowerDeviceVariant.BUILDER_INACTIVE && world.hasNeighborSignal(pos)) {
 			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
-			world.playSound(null, pos, TFSounds.BUILDER_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.BUILDER_ON.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 
@@ -67,13 +68,13 @@ public class BuilderBlock extends BaseEntityBlock {
 
 		if (variant == TowerDeviceVariant.BUILDER_INACTIVE && world.hasNeighborSignal(pos)) {
 			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
-			world.playSound(null, pos, TFSounds.BUILDER_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.BUILDER_ON.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			world.scheduleTick(pos, this, 4);
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && !world.hasNeighborSignal(pos)) {
 			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
-			world.playSound(null, pos, TFSounds.BUILDER_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.BUILDER_OFF.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			world.scheduleTick(pos, this, 4);
 		}
 
@@ -84,7 +85,7 @@ public class BuilderBlock extends BaseEntityBlock {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		TowerDeviceVariant variant = state.getValue(STATE);
 
 		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && world.hasNeighborSignal(pos)) {
@@ -109,7 +110,7 @@ public class BuilderBlock extends BaseEntityBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 		if (state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE) {
 			this.sparkle(world, pos);
 		}
@@ -117,7 +118,7 @@ public class BuilderBlock extends BaseEntityBlock {
 
 	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
 	public void sparkle(Level worldIn, BlockPos pos) {
-		Random random = worldIn.random;
+		RandomSource random = worldIn.random;
 		double d0 = 0.0625D;
 
 		for (int i = 0; i < 6; ++i) {
@@ -166,7 +167,7 @@ public class BuilderBlock extends BaseEntityBlock {
 
 		if (state.getBlock() == TFBlocks.BUILT_BLOCK.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
 			world.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
-			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundSource.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.BUILDER_REPLACE.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			world.scheduleTick(pos, state.getBlock(), 10);
 		}
 	}

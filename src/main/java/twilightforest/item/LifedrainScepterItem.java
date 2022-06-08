@@ -155,7 +155,7 @@ public class LifedrainScepterItem extends Item {
 						if (target instanceof Mob mob) {
 							mob.spawnAnim();
 						}
-						target.playSound(TFSounds.SCEPTER_DRAIN, 1.0F, living.getVoicePitch());
+						target.playSound(TFSounds.SCEPTER_DRAIN.get(), 1.0F, living.getVoicePitch());
 						level.playSound(null, target.blockPosition(), EntityUtil.getDeathSound(target), SoundSource.HOSTILE, 1.0F, target.getVoicePitch());
 						target.die(TFDamageSources.lifedrain(living, living));
 						target.discard();

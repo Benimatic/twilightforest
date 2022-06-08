@@ -126,17 +126,17 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TOME_AMBIENT;
+		return TFSounds.TOME_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TOME_HURT;
+		return TFSounds.TOME_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TOME_DEATH;
+		return TFSounds.TOME_DEATH.get();
 	}
 
 	@Override

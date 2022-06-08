@@ -16,7 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.List;
-import java.util.RandomSource;
+
 
 public final class SideTowerCover extends TwilightTemplateStructurePiece {
     private static final List<String> SMALL_COVERS = ImmutableList.of(

@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent {
 

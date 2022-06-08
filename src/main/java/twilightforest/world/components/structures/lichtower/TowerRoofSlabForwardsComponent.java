@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 /**
  * A flat tower roof using slabs that is larger than the tower under it.

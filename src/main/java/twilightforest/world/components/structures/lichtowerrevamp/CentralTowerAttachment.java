@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
-import java.util.RandomSource;
+
 
 public final class CentralTowerAttachment extends TwilightTemplateStructurePiece {
     private final int width;

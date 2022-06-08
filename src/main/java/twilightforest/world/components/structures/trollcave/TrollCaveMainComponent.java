@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -35,7 +34,7 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import java.util.Objects;
-import java.util.RandomSource;
+
 import java.util.function.Predicate;
 
 public class TrollCaveMainComponent extends TFStructureComponentOld {
@@ -113,7 +112,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		RandomSource decoRNG = new RandomSource(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
@@ -264,10 +263,5 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.defaultBlockState(), Blocks.OBSIDIAN.defaultBlockState(), false);
 		this.generateAirBox(world, sbb, mid - 1, 1, mid - 1, mid, 2, mid);
 		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFTreasure.TROLL_GARDEN, false, sbb);
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BURY;
 	}
 }

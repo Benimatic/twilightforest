@@ -19,7 +19,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class YetiCaveComponent extends HollowHillComponent {
 	private static final SpikeConfig BLUE_ICE_SPIKE = new SpikeConfig(BlockStateProvider.simple(Blocks.BLUE_ICE.defaultBlockState()), UniformInt.of(8, 8), ConstantInt.of(4), true);

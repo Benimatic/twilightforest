@@ -689,17 +689,17 @@ public class Hydra extends Mob implements Enemy {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HYDRA_GROWL;
+		return TFSounds.HYDRA_GROWL.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HYDRA_HURT;
+		return TFSounds.HYDRA_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HYDRA_DEATH;
+		return TFSounds.HYDRA_DEATH.get();
 	}
 
 	@Override
@@ -765,7 +765,7 @@ public class Hydra extends Mob implements Enemy {
 
 		if (this.deathTime == 200) {
 			if (!this.level.isClientSide && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
-				int i = this.getExperienceReward(this.lastHurtByPlayer);
+				int i = this.getExperienceReward();
 				i = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i);
 				while (i > 0) {
 					int j = ExperienceOrb.getExperienceValue(i);

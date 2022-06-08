@@ -64,17 +64,17 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.FIRE_BEETLE_HURT;
+		return TFSounds.FIRE_BEETLE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.FIRE_BEETLE_DEATH;
+		return TFSounds.FIRE_BEETLE_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(TFSounds.FIRE_BEETLE_STEP, 0.15F, 1.0F);
+		playSound(TFSounds.FIRE_BEETLE_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override
@@ -119,16 +119,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 				level.addParticle(ParticleTypes.FLAME, px, py, pz, dx, dy, dz);
 			}
 
-			playSound(TFSounds.FIRE_BEETLE_SHOOT, random.nextFloat() * 0.5F, random.nextFloat() * 0.5F);
-		}
-	}
-
-	@Override
-	public float getBrightness() {
-		if (isBreathing()) {
-			return 15728880;
-		} else {
-			return super.getBrightness();
+			playSound(TFSounds.FIRE_BEETLE_SHOOT.get(), random.nextFloat() * 0.5F, random.nextFloat() * 0.5F);
 		}
 	}
 

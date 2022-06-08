@@ -91,17 +91,17 @@ public class TinyBird extends Bird {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TINYBIRD_CHIRP;
+		return TFSounds.TINYBIRD_CHIRP.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TINYBIRD_HURT;
+		return TFSounds.TINYBIRD_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TINYBIRD_HURT;
+		return TFSounds.TINYBIRD_HURT.get();
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class TinyBird extends Bird {
 			if (this.isSpooked() || this.isInWater() || level.containsAnyLiquid(getBoundingBox()) || (this.random.nextInt(200) == 0 && !this.isLandableBlock(this.blockPosition().below()))) {
 				this.setIsBirdLanded(false);
 				if (!flag) {
-					this.playSound(TFSounds.TINYBIRD_TAKEOFF, 0.05F, this.getVoicePitch());
+					this.playSound(TFSounds.TINYBIRD_TAKEOFF.get(), 0.05F, this.getVoicePitch());
 				}
 			}
 		} else {

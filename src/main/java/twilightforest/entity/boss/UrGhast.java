@@ -201,27 +201,27 @@ public class UrGhast extends CarminiteGhastguard {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-	      return TFSounds.URGHAST_AMBIENT;
+	      return TFSounds.URGHAST_AMBIENT.get();
 	   }
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.URGHAST_HURT;
+	      return TFSounds.URGHAST_HURT.get();
 	   }
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.URGHAST_DEATH;
+	      return TFSounds.URGHAST_DEATH.get();
 	   }
 
 	@Override
 	public SoundEvent getFireSound() {
-		return TFSounds.URGHAST_SHOOT;
+		return TFSounds.URGHAST_SHOOT.get();
 	}
 
 	@Override
 	public SoundEvent getWarnSound() {
-		return TFSounds.URGHAST_WARN;
+		return TFSounds.URGHAST_WARN.get();
 	}
 
 	@Override

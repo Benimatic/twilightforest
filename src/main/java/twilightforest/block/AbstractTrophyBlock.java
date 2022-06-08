@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -47,7 +48,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 		super(builder);
 		this.variant = variant;
 		this.comparatorValue = value;
-		registerDefaultState(stateDefinition.any().setValue(POWERED, Boolean.valueOf(false)));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false));
 	}
 
 	public int getComparatorValue() {
@@ -62,7 +63,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 				if (flag) {
 					this.playSound(worldIn, pos);
 				}
-				worldIn.setBlockAndUpdate(pos, state.setValue(POWERED, Boolean.valueOf(flag)));
+				worldIn.setBlockAndUpdate(pos, state.setValue(POWERED, flag));
 			}
 		}
 	}
@@ -108,40 +109,40 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 			float pitch = 0.9F;
 			switch (variant) {
 				case NAGA -> {
-					sound = TFSounds.NAGA_RATTLE;
+					sound = TFSounds.NAGA_RATTLE.get();
 					volume = 1.25F;
 					pitch = 1.2F;
 				}
 				case LICH -> {
-					sound = TFSounds.LICH_AMBIENT;
+					sound = TFSounds.LICH_AMBIENT.get();
 					volume = 0.35F;
 					pitch = 1.1F;
 				}
 				case HYDRA -> {
-					sound = TFSounds.HYDRA_GROWL;
+					sound = TFSounds.HYDRA_GROWL.get();
 					pitch = 1.2F;
 				}
 				case UR_GHAST -> {
-					sound = TFSounds.URGHAST_AMBIENT;
+					sound = TFSounds.URGHAST_AMBIENT.get();
 					pitch = 0.6F;
 				}
-				case SNOW_QUEEN -> sound = TFSounds.SNOW_QUEEN_AMBIENT;
+				case SNOW_QUEEN -> sound = TFSounds.SNOW_QUEEN_AMBIENT.get();
 				case KNIGHT_PHANTOM -> {
-					sound = TFSounds.PHANTOM_AMBIENT;
+					sound = TFSounds.PHANTOM_AMBIENT.get();
 					pitch = 1.1F;
 				}
 				case MINOSHROOM -> {
-					sound = TFSounds.MINOSHROOM_AMBIENT;
+					sound = TFSounds.MINOSHROOM_AMBIENT.get();
 					volume = 0.75F;
 					pitch = 0.7F;
 				}
 				case ALPHA_YETI -> {
-					sound = world.random.nextInt(50) == 0 ? TFSounds.ALPHAYETI_ROAR : TFSounds.ALPHAYETI_GROWL;
+					sound = world.random.nextInt(50) == 0 ? TFSounds.ALPHAYETI_ROAR.get() : TFSounds.ALPHAYETI_GROWL.get();
 					volume = 0.75F;
 					pitch = 0.75F;
 				}
 				case QUEST_RAM -> {
-					sound = TFSounds.QUEST_RAM_AMBIENT;
+					sound = TFSounds.QUEST_RAM_AMBIENT.get();
 					pitch = 0.7F;
 				}
 				default -> { }
@@ -155,7 +156,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 	public void createParticle(Level world, BlockPos pos) {
 		BlockEntity te = world.getBlockEntity(pos);
 		if (te instanceof TrophyBlockEntity) {
-			Random rand = world.getRandom();
+			RandomSource rand = world.getRandom();
 			if(world instanceof ServerLevel) {
 				switch (variant) {
 					case NAGA:

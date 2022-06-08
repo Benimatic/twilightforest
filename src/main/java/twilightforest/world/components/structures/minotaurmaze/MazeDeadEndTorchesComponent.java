@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class MazeDeadEndTorchesComponent extends MazeDeadEndComponent {
 

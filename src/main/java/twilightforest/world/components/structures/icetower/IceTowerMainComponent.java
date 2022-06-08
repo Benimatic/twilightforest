@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class IceTowerMainComponent extends IceTowerWingComponent {
 	public boolean hasBossWing = false;

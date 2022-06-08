@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -90,7 +91,7 @@ public class CastleDoorBlock extends Block {
 		if (state.getValue(VANISHED) || state.getValue(ACTIVE)) return InteractionResult.FAIL;
 
 		if (isBlockLocked(level, pos)) {
-			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED, SoundSource.BLOCKS, 1.0F, 0.3F);
+			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			return InteractionResult.PASS;
 		} else {
 			changeToActiveBlock(level, pos, state);
@@ -116,7 +117,7 @@ public class CastleDoorBlock extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(VANISHED)) {
 			if (state.getValue(ACTIVE)) {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, false).setValue(ACTIVE, false));
@@ -142,11 +143,11 @@ public class CastleDoorBlock extends Block {
 	}
 
 	private static void playVanishSound(Level level, BlockPos pos) {
-		level.playSound(null, pos, TFSounds.DOOR_VANISH, SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.75F);
+		level.playSound(null, pos, TFSounds.DOOR_VANISH.get(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.75F);
 	}
 
 	private static void playReappearSound(Level level, BlockPos pos) {
-		level.playSound(null, pos, TFSounds.DOOR_REAPPEAR, SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.25F);
+		level.playSound(null, pos, TFSounds.DOOR_REAPPEAR.get(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.25F);
 	}
 
 	/**
@@ -161,7 +162,7 @@ public class CastleDoorBlock extends Block {
 	}
 
 	private static void vanishParticles(Level level, BlockPos pos) {
-		Random rand = level.getRandom();
+		RandomSource rand = level.getRandom();
 		if(level instanceof ServerLevel) {
 			for (int dx = 0; dx < 4; ++dx) {
 				for (int dy = 0; dy < 4; ++dy) {

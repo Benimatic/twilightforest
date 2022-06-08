@@ -9,6 +9,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -36,17 +37,16 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands) {
 		super(codec);
 		this.liquids = ImmutableSet.of(Fluids.WATER, Fluids.LAVA);
-		this.replaceableBlocks = ImmutableSet.of(Blocks.SAND, Blocks.GRAVEL);
 		this.isHighlands = isHighlands;
 	}
 
 	@Override
-	public boolean isStartChunk(CaveCarverConfiguration config, Random rand) {
+	public boolean isStartChunk(CaveCarverConfiguration config, RandomSource rand) {
 		return rand.nextFloat() <= config.probability;
 	}
 
 	@Override
-	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, Random rand, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
+	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, RandomSource rand, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
 		int i = SectionPos.sectionToBlockCoord(this.getRange() * 2 - 1);
 		int j = rand.nextInt(rand.nextInt(rand.nextInt(this.getCaveBound()) + 1) + 1);
 
@@ -88,7 +88,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		//We dont want caves to go so far down you can see bedrock, so lets stop them right before
 		if (pos.getY() < access.getMinBuildHeight() + 6) return false;
 
-		if (!this.canReplaceBlock(blockstate) && !isDebugEnabled(config)) {
+		if (!this.canReplaceBlock(config, blockstate) && !isDebugEnabled(config)) {
 			return false;
 		} else {
 			BlockState blockstate2 = this.getCarveState(ctx, config, pos, aquifer);
@@ -143,7 +143,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		return 15;
 	}
 
-	protected float getThickness(Random rand) {
+	protected float getThickness(RandomSource rand) {
 		float f = rand.nextFloat() * 2.0F + rand.nextFloat();
 		if (rand.nextInt(10) == 0) {
 			f *= rand.nextFloat() * rand.nextFloat() * 3.0F + 1.0F;
@@ -198,12 +198,6 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			}
 		}
 
-	}
-
-	//make our own list of replaceables since otherwise it breaks structures like the yeti cave
-	@Override
-	protected boolean canReplaceBlock(BlockState state) {
-		return this.replaceableBlocks.contains(state.getBlock()) || state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT) || state.is(TFBlocks.TROLLSTEINN.get());
 	}
 
 	private static boolean shouldSkip(double posX, double posY, double posZ, double minY) {

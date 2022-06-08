@@ -85,13 +85,13 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
 				super.checkAndPerformAttack(victim, p_190102_2_);
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_GRAB, 4F, 0.75F + getRandom().nextFloat() * 0.25F);
+					playSound(TFSounds.ALPHAYETI_GRAB.get(), 4F, 0.75F + getRandom().nextFloat() * 0.25F);
 			}
 
 			@Override
 			public void stop() {
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_THROW, 4F, 0.75F + getRandom().nextFloat() * 0.25F);
+					playSound(TFSounds.ALPHAYETI_THROW.get(), 4F, 0.75F + getRandom().nextFloat() * 0.25F);
 				super.stop();
 			}
 		});
@@ -171,7 +171,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public void setTarget(@Nullable LivingEntity entity) {
 		if (entity != null && entity != getTarget())
-			playSound(TFSounds.ALPHAYETI_ALERT, 4F, 0.5F + getRandom().nextFloat() * 0.5F);
+			playSound(TFSounds.ALPHAYETI_ALERT.get(), 4F, 0.5F + getRandom().nextFloat() * 0.5F);
 		super.setTarget(entity);
 	}
 
@@ -192,17 +192,17 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ALPHAYETI_GROWL;
+		return TFSounds.ALPHAYETI_GROWL.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.ALPHAYETI_HURT;
+		return TFSounds.ALPHAYETI_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ALPHAYETI_DEATH;
+		return TFSounds.ALPHAYETI_DEATH.get();
 	}
 
 	@Override
@@ -319,7 +319,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
 			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.level.getDifficulty().getId() * 4);
 
-			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.level.addFreshEntity(ice);
 		}
 	}
@@ -366,7 +366,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
 
 		if (!this.level.isClientSide && isRampaging()) {
-			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			hitNearbyEntities();
 		}
 

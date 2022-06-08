@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -71,22 +72,22 @@ public class SwarmSpider extends Spider {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-	      return TFSounds.SWARM_SPIDER_AMBIENT;
+	      return TFSounds.SWARM_SPIDER_AMBIENT.get();
 	   }
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.SWARM_SPIDER_HURT;
+	      return TFSounds.SWARM_SPIDER_HURT.get();
 	   }
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.SWARM_SPIDER_DEATH;
+	      return TFSounds.SWARM_SPIDER_DEATH.get();
 	   }
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-	      this.playSound(TFSounds.SWARM_SPIDER_STEP, 0.15F, 1.0F);
+	      this.playSound(TFSounds.SWARM_SPIDER_STEP.get(), 0.15F, 1.0F);
 	   }
 
 	@Override
@@ -132,11 +133,11 @@ public class SwarmSpider extends Spider {
 		return true;
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends SwarmSpider> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<? extends SwarmSpider> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos pos, Random random) {
+	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos pos, RandomSource random) {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.

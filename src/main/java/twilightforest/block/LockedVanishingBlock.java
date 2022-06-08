@@ -53,7 +53,7 @@ public class LockedVanishingBlock extends VanishingBlock {
 			if (!world.isClientSide) {
 				stack.shrink(1);
 				world.setBlockAndUpdate(pos, state.setValue(LOCKED, false));
-				world.playSound(null, pos, TFSounds.UNLOCK_VANISHING_BLOCK, SoundSource.BLOCKS, 0.3F, 0.6F);
+				world.playSound(null, pos, TFSounds.UNLOCK_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			}
 			return InteractionResult.SUCCESS;
 		}

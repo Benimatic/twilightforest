@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -69,17 +70,17 @@ public class CarminiteGhastguard extends Ghast {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-	      return TFSounds.GHASTGUARD_AMBIENT;
+	      return TFSounds.GHASTGUARD_AMBIENT.get();
 	   }
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.GHASTGUARD_HURT;
+	      return TFSounds.GHASTGUARD_HURT.get();
 	   }
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.GHASTGUARD_DEATH;
+	      return TFSounds.GHASTGUARD_DEATH.get();
 	   }
 
 	// [VanillaCopy] from EntityGhast but we use wanderFactor instead, we also stop moving when we have a target
@@ -112,7 +113,7 @@ public class CarminiteGhastguard extends Ghast {
 
 		@Override
 		public void start() {
-			Random random = this.parentEntity.getRandom();
+			RandomSource random = this.parentEntity.getRandom();
 			double d0 = this.parentEntity.getX() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
 			double d1 = this.parentEntity.getY() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
 			double d2 = this.parentEntity.getZ() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
@@ -155,7 +156,7 @@ public class CarminiteGhastguard extends Ghast {
 		// From AIStayNearHome but use move helper instead of PathNavigate
 		@Override
 		public void start() {
-			Random random = this.parentEntity.getRandom();
+			RandomSource random = this.parentEntity.getRandom();
 			double d0 = this.parentEntity.getX() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
 			double d1 = this.parentEntity.getY() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
 			double d2 = this.parentEntity.getZ() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
@@ -240,11 +241,11 @@ public class CarminiteGhastguard extends Ghast {
 	}
 
 	public SoundEvent getFireSound() {
-		return TFSounds.GHASTGUARD_SHOOT;
+		return TFSounds.GHASTGUARD_SHOOT.get();
 	}
 
 	public SoundEvent getWarnSound() {
-		return TFSounds.GHASTGUARD_WARN;
+		return TFSounds.GHASTGUARD_WARN.get();
 	}
 
 	@Override
@@ -265,9 +266,9 @@ public class CarminiteGhastguard extends Ghast {
 	@Override
 	public void aiStep() {
 		// age when in light, like mobs
-		if (getBrightness() > 0.5F) {
-			this.noActionTime += 2;
-		}
+//		if (getBrightness() > 0.5F) {
+//			this.noActionTime += 2;
+//		}
 
 		if (this.random.nextBoolean()) {
 			this.level.addParticle(DustParticleOptions.REDSTONE, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.random.nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
@@ -331,7 +332,7 @@ public class CarminiteGhastguard extends Ghast {
 		}
 	}
 
-	public static boolean ghastSpawnHandler(EntityType<? extends CarminiteGhastguard> entityType, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean ghastSpawnHandler(EntityType<? extends CarminiteGhastguard> entityType, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entityType, world, reason, pos, random);
 	}
 

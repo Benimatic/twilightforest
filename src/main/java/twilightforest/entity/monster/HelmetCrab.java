@@ -50,17 +50,17 @@ public class HelmetCrab extends Monster {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HELMET_CRAB_HURT;
+		return TFSounds.HELMET_CRAB_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HELMET_CRAB_DEATH;
+		return TFSounds.HELMET_CRAB_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.HELMET_CRAB_STEP, 0.15F, 1.0F);
+		this.playSound(TFSounds.HELMET_CRAB_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override

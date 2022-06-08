@@ -13,8 +13,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.features.TFConfiguredFeatures;
 
-import java.util.RandomSource;
-
 /**
  * This is a maze of cells and walls.
  * <p>

@@ -80,7 +80,7 @@ public class CicadaBlockEntity extends BlockEntity {
 
 	private void playSong() {
 		if (!TFConfig.CLIENT_CONFIG.silentCicadas.get()) {
-			level.playLocalSound(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), TFSounds.CICADA, SoundSource.NEUTRAL, 1.0f, (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F, false);
+			level.playLocalSound(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), TFSounds.CICADA.get(), SoundSource.NEUTRAL, 1.0f, (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F, false);
 		}
 	}
 }

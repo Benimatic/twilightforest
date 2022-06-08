@@ -35,6 +35,8 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.resource.PathResourcePack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -68,6 +70,7 @@ import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -123,6 +126,7 @@ public class TwilightForestMod {
 		TFRecipes.RECIPE_TYPES.register(modbus);
 		//TFPotions.POTIONS.register(modbus);
 		TFEntities.SPAWN_EGGS.register(modbus);
+		TFSounds.SOUNDS.register(modbus);
 		TFStats.STATS.register(modbus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
 		TwilightFeatures.TREE_DECORATORS.register(modbus);
@@ -139,7 +143,6 @@ public class TwilightForestMod {
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
-		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
 		modbus.addGenericListener(Structure.class, TFStructures::register);
 //		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
 //			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
@@ -182,22 +185,26 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
-	public static void registerSerializers(RegistryEvent.Register<RecipeSerializer<?>> evt) {
-		//How do I add a condition serializer as fast as possible? An event that fires really early
-		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
-		TFTreasure.init();
+	public static void registerSerializers(RegisterEvent evt) {
+		if(Objects.equals(evt.getForgeRegistry(), ForgeRegistries.RECIPE_SERIALIZERS)) {
+			//How do I add a condition serializer as fast as possible? An event that fires really early
+			CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
+			TFTreasure.init();
 
-		//TODO find a better place for these? they work fine here but idk
-		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
-		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
+			//TODO find a better place for these? they work fine here but idk
+			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
+			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 
-		Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+			Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+		}
 	}
 
 	@SubscribeEvent
-	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
-		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
-		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
+	public static void registerLootModifiers(RegisterEvent evt) {
+		if(Objects.equals(evt.getForgeRegistry(), ForgeRegistries.LOOT_MODIFIER_SERIALIZERS.get())) {
+			evt.getForgeRegistry().register(prefix("fiery_pick_smelting"), new FieryPickItem.Serializer());
+			evt.getForgeRegistry().register(prefix("giant_block_grouping"), new TFEventListener.Serializer());
+		}
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {

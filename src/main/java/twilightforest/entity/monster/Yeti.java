@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -56,13 +57,13 @@ public class Yeti extends Monster implements IHostileMount {
 			protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
 				super.checkAndPerformAttack(victim, p_190102_2_);
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.YETI_GRAB, 1F, 1.25F + getRandom().nextFloat() * 0.5F);
+					playSound(TFSounds.YETI_GRAB.get(), 1F, 1.25F + getRandom().nextFloat() * 0.5F);
 			}
 
 			@Override
 			public void stop() {
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.YETI_THROW, 1F, 1.25F + getRandom().nextFloat() * 0.5F);
+					playSound(TFSounds.YETI_THROW.get(), 1F, 1.25F + getRandom().nextFloat() * 0.5F);
 				super.stop();
 			}
 		});
@@ -176,7 +177,7 @@ public class Yeti extends Monster implements IHostileMount {
 		return true;
 	}
 
-	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		Optional<ResourceKey<Biome>> key = world.getBiome(pos).unwrapKey();
 		if (Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST))) {
 			return checkMobSpawnRules(entityType, world, reason, pos, random);
@@ -186,11 +187,11 @@ public class Yeti extends Monster implements IHostileMount {
 		}
 	}
 
-	public static boolean normalYetiSpawnHandler(EntityType<? extends Monster> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean normalYetiSpawnHandler(EntityType<? extends Monster> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos blockPos, Random random) {
+	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos blockPos, RandomSource random) {
 		Optional<ResourceKey<Biome>> key = world.getBiome(blockPos).unwrapKey();
 		if (world.getBrightness(LightLayer.SKY, blockPos) > random.nextInt(32)) {
 			return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
@@ -208,16 +209,16 @@ public class Yeti extends Monster implements IHostileMount {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.YETI_GROWL;
+		return TFSounds.YETI_GROWL.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.YETI_HURT;
+		return TFSounds.YETI_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.YETI_DEATH;
+		return TFSounds.YETI_DEATH.get();
 	}
 }

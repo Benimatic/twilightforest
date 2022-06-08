@@ -5,7 +5,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.util.ArrayList;
-import java.util.RandomSource;
 
 /**
  * An area that we're going to destroy.  Default is just a MutableBoundingBox

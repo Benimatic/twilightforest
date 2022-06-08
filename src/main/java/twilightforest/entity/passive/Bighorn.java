@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -61,7 +62,7 @@ public class Bighorn extends Sheep {
 		}
 	}
 
-	private static DyeColor getRandomFleeceColor(Random random) {
+	private static DyeColor getRandomFleeceColor(RandomSource random) {
 		return random.nextBoolean()
 				? DyeColor.BROWN
 				: DyeColor.byId(random.nextInt(16));
@@ -69,9 +70,9 @@ public class Bighorn extends Sheep {
 
 	@Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
-        livingdata = super.finalizeSpawn(worldIn, difficulty, reason, livingdata, dataTag);
-        this.setColor(getRandomFleeceColor(this.level.random));
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
+        livingdata = super.finalizeSpawn(accessor, difficulty, reason, livingdata, dataTag);
+        this.setColor(getRandomFleeceColor(accessor.getRandom()));
         return livingdata;
     }
 
@@ -90,21 +91,21 @@ public class Bighorn extends Sheep {
     
     @Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BIGHORN_AMBIENT;
+		return TFSounds.BIGHORN_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BIGHORN_HURT;
+		return TFSounds.BIGHORN_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BIGHORN_DEATH;
+		return TFSounds.BIGHORN_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.BIGHORN_STEP, 0.15F, 1.0F);
+		this.playSound(TFSounds.BIGHORN_STEP.get(), 0.15F, 1.0F);
 	}
 }

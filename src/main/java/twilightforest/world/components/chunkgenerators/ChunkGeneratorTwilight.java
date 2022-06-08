@@ -58,8 +58,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
-			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
-			Codec.BOOL.fieldOf("use_overworld_seed").forGetter(o -> false) // Don't make this persistent, we want to load the stored seed on existing worlds! This is purely used on world creation ONLY!!
+			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight)
 	).apply(instance, instance.stable(ChunkGeneratorTwilight::new)));
 
 	private final Holder<NoiseGeneratorSettings> noiseGeneratorSettings;
@@ -75,8 +74,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight, boolean owSeed) {
-		//super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight) {
 		super(structures, delegate);
 		this.noiseGeneratorSettings = noiseGenSettings;
 		this.genDarkForestCanopy = genDarkForestCanopy;

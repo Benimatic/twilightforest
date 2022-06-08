@@ -18,7 +18,7 @@ import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class StrongholdTreasureRoomComponent extends StructureTFStrongholdComponent {
 

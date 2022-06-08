@@ -59,7 +59,7 @@ public class ZombieWandItem extends Item {
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, new BlockPos(result.getLocation()));
 
 				stack.hurt(1, level.getRandom(), null);
-				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON, 1.0F, zombie.getVoicePitch());
+				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.get(), 1.0F, zombie.getVoicePitch());
 			}
 		}
 

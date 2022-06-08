@@ -147,18 +147,18 @@ public class DwarfRabbit extends Animal {
 	@Nullable
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.DWARF_DEATH;
+		return TFSounds.DWARF_DEATH.get();
 	}
 
 	@Nullable
 	@Override
 	protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-		return TFSounds.DWARF_HURT;
+		return TFSounds.DWARF_HURT.get();
 	}
 
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DWARF_AMBIENT;
+		return TFSounds.DWARF_AMBIENT.get();
 	}
 }

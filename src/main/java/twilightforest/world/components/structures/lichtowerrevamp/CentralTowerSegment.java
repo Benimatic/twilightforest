@@ -20,7 +20,7 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.RandomSource;
+
 
 public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     static final int SIDE_LENGTH = 30;

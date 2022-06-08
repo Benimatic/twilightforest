@@ -53,7 +53,7 @@ public class CicadaBlock extends CritterBlock {
 	@Override
 	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
 		super.destroy(level, pos, state);
-		if(level.isClientSide()) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
+		if(level.isClientSide()) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
 	}
 
 	@Override

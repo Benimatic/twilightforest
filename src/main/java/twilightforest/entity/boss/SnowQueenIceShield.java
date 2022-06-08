@@ -26,7 +26,7 @@ public class SnowQueenIceShield extends TFPart<SnowQueen> {
 
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-        playSound(TFSounds.SNOW_QUEEN_BREAK, 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+        playSound(TFSounds.SNOW_QUEEN_BREAK.get(), 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
         return false;
     }
 

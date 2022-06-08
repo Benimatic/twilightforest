@@ -133,17 +133,17 @@ public class LowerGoblinKnight extends Monster {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT : TFSounds.GOBLIN_KNIGHT_AMBIENT;
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.get() : TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH : TFSounds.GOBLIN_KNIGHT_DEATH;
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH.get() : TFSounds.GOBLIN_KNIGHT_DEATH.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT : TFSounds.GOBLIN_KNIGHT_HURT;
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT.get() : TFSounds.GOBLIN_KNIGHT_HURT.get();
 	}
 
 	@Override

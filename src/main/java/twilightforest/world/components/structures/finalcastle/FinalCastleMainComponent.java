@@ -24,7 +24,7 @@ import twilightforest.world.registration.TFFeature;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.RandomSource;
+
 
 public class FinalCastleMainComponent extends TFStructureComponentOld {
 

@@ -33,12 +33,12 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 
 		if (!state.getValue(ACTIVE) && powered) {
 			world.setBlock(pos, state.setValue(ACTIVE, true), 3);
-			world.playSound(null, pos, TFSounds.SMOKER_START, SoundSource.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.SMOKER_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 
 		if (state.getValue(ACTIVE) && !powered) {
 			world.setBlock(pos, state.setValue(ACTIVE, false), 3);
-			world.playSound(null, pos, TFSounds.SMOKER_START, SoundSource.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.SMOKER_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 }

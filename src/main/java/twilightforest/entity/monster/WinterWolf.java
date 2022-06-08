@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -109,26 +110,26 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	@Override
 	protected SoundEvent getTargetSound() {
-		return TFSounds.WINTER_WOLF_TARGET;
+		return TFSounds.WINTER_WOLF_TARGET.get();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.WINTER_WOLF_AMBIENT;
+		return TFSounds.WINTER_WOLF_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.WINTER_WOLF_HURT;
+		return TFSounds.WINTER_WOLF_HURT.get();
 	}
 
 	private void playBreathSound() {
-		playSound(TFSounds.WINTER_WOLF_SHOOT, random.nextFloat() * 0.5F, random.nextFloat() * 0.5F);
+		playSound(TFSounds.WINTER_WOLF_SHOOT.get(), random.nextFloat() * 0.5F, random.nextFloat() * 0.5F);
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.WINTER_WOLF_DEATH;
+	      return TFSounds.WINTER_WOLF_DEATH.get();
 	}
 
 	@Override
@@ -151,7 +152,7 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 		target.hurt(DamageSource.mobAttack(this), BREATH_DAMAGE);
 	}
 
-	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		Optional<ResourceKey<Biome>> key = world.getBiome(pos).unwrapKey();
 		return world.getDifficulty() != Difficulty.PEACEFUL && Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(world, pos, random);
 	}

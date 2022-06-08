@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import java.util.RandomSource;
+
 
 public class StrongholdUpperAscenderComponent extends StructureTFStrongholdComponent {
 

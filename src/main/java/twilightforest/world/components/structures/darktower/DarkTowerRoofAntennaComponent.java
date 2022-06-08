@@ -12,8 +12,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
-
 public class DarkTowerRoofAntennaComponent extends DarkTowerRoofComponent {
 
 	public DarkTowerRoofAntennaComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {

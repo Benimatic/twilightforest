@@ -123,7 +123,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 			if (!this.level.isClientSide) {
 				if (this.slideTime % 5 == 0) {
-					playSound(TFSounds.SLIDER, 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
+					playSound(TFSounds.SLIDER.get(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
 
 				BlockPos pos = new BlockPos(this.blockPosition());

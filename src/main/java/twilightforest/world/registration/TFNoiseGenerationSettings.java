@@ -1,14 +1,16 @@
 package twilightforest.world.registration;
 
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.util.CubicSpline;
-import net.minecraft.world.level.biome.TerrainShaper;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
+
+import java.util.List;
 
 public class TFNoiseGenerationSettings {
 
@@ -21,19 +23,15 @@ public class TFNoiseGenerationSettings {
 		NoiseSettings tfNoise = NoiseSettings.create(
 				-32, //TODO Deliberate over this. For now it'll be -32
 				256,
-				new NoiseSamplingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-				new NoiseSlider(-10, 3, 0),
-				new NoiseSlider(15, 3, 0),
 				1,
-				2,
-				new TerrainShaper(CubicSpline.constant(-0.45F), CubicSpline.constant(10.0F), CubicSpline.constant(0.0F))
+				2
 		);
 
 		return new NoiseGeneratorSettings(
 				tfNoise,
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				new NoiseRouterWithOnlyNoises(
+				new NoiseRouter(
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
@@ -51,6 +49,7 @@ public class TFNoiseGenerationSettings {
 						DensityFunctions.zero()
 				),
 				TFSurfaceRules.tfSurface(),
+				List.of(),
 				0,
 				false,
 				false,
@@ -63,12 +62,8 @@ public class TFNoiseGenerationSettings {
 		NoiseSettings skylightNoise = NoiseSettings.create(
 				-32, //min height
 				256, // height
-				new NoiseSamplingSettings(3.0D, 1.0D, 256.0D, 16.0D), // sampling
-				new NoiseSlider(-3000, 92, -66), // top_slide
-				new NoiseSlider(-30, 7, 1), // bottom_slide
 				2, // size_horizontal
-				1, // size_vertical
-				new TerrainShaper(CubicSpline.constant(0.0F), CubicSpline.constant(0.0F), CubicSpline.constant(0.0F)) //terrain_shaper TODO
+				1 // size_vertical
 		);
 
 		// Problem island at /tp 9389.60 90.00 11041.66
@@ -78,8 +73,25 @@ public class TFNoiseGenerationSettings {
 				skylightNoise,
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				NoiseRouterData.noNewCaves(skylightNoise),
+				new NoiseRouter(
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero()
+				),
 				TFSurfaceRules.tfSurface(),
+				List.of(),
 				0,
 				false,
 				false,

@@ -19,7 +19,7 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 
 import java.util.List;
-import java.util.RandomSource;
+
 
 public class StrongholdEntranceComponent extends StructureTFStrongholdComponent {
 

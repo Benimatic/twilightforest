@@ -14,7 +14,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class IceTowerBeardComponent extends TFStructureComponentOld {
 

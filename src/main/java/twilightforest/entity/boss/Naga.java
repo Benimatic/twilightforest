@@ -384,7 +384,7 @@ public class Naga extends Monster {
 
 		private void doIntimidate() {
 			movementState = MovementState.INTIMIDATE;
-			taskOwner.playSound(TFSounds.NAGA_RATTLE, taskOwner.getSoundVolume() * 4F, taskOwner.getVoicePitch());
+			taskOwner.playSound(TFSounds.NAGA_RATTLE.get(), taskOwner.getSoundVolume() * 4F, taskOwner.getVoicePitch());
 
 			stateCounter += 15 + taskOwner.random.nextInt(10);
 			taskOwner.goSlow();
@@ -542,17 +542,17 @@ public class Naga extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.NAGA_HISS;
+		return TFSounds.NAGA_HISS.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.NAGA_HURT;
+		return TFSounds.NAGA_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.NAGA_HURT;
+		return TFSounds.NAGA_HURT.get();
 	}
 
 	private void crumbleBelowTarget(int range) {

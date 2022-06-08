@@ -581,13 +581,13 @@ public class HydraHeadContainer {
 	private void playSounds() {
 		if (headEntity.getState() == State.FLAMING && headEntity.tickCount % 5 == 0) {
 			// fire breathing!
-			headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE, 0.5F + headEntity.level.random.nextFloat(), headEntity.level.random.nextFloat() * 0.7F + 0.3F);
+			headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE.get(), 0.5F + headEntity.level.random.nextFloat(), headEntity.level.random.nextFloat() * 0.7F + 0.3F);
 		}
 		if (headEntity.getState() == State.ROAR_RAWR) {
-			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
+			headEntity.playSound(TFSounds.HYDRA_ROAR.get(), 1.25F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
 		}
 		if (headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
-			headEntity.playSound(TFSounds.HYDRA_WARN, 2.0F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
+			headEntity.playSound(TFSounds.HYDRA_WARN.get(), 2.0F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
 		}
 	}
 
@@ -681,7 +681,7 @@ public class HydraHeadContainer {
 					mortar.setToBlasting();
 				}
 
-				headEntity.playSound(TFSounds.HYDRA_SHOOT, 10.0F, (headEntity.getLevel().getRandom().nextFloat() - headEntity.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F);
+				headEntity.playSound(TFSounds.HYDRA_SHOOT.get(), 10.0F, (headEntity.getLevel().getRandom().nextFloat() - headEntity.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F);
 				headEntity.level.addFreshEntity(mortar);
 			}
 		}
@@ -695,7 +695,7 @@ public class HydraHeadContainer {
 					if (nearby instanceof Player player && player.isUsingItem() && player.getUseItem().getItem().canPerformAction(player.getUseItem(), ToolActions.SHIELD_BLOCK)) {
 						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
 							//cause severe damage and play a shatter sound
-							headEntity.level.playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS : TFSounds.METAL_SHIELD_SHATTERS, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+							headEntity.level.playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
 							player.getUseItem().hurtAndBreak(112, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
 						}
 						//add cooldown and knockback

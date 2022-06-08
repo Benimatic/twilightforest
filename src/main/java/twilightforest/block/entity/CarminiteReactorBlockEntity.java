@@ -149,7 +149,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 			} else {
 				if (te.counter % 5 == 0 && te.counter <= 250) {
-					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT, SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT.get(), SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
 				}
 			}
 		}

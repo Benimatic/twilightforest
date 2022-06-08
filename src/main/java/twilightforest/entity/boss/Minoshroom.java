@@ -143,27 +143,27 @@ public class Minoshroom extends Minotaur {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOSHROOM_AMBIENT;
+		return TFSounds.MINOSHROOM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOSHROOM_HURT;
+		return TFSounds.MINOSHROOM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOSHROOM_DEATH;
+		return TFSounds.MINOSHROOM_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.MINOSHROOM_STEP, 0.15F, 0.8F);
+		this.playSound(TFSounds.MINOSHROOM_STEP.get(), 0.15F, 0.8F);
 	}
 
 	@Override
 	protected SoundEvent getChargeSound() {
-		return TFSounds.MINOSHROOM_ATTACK;
+		return TFSounds.MINOSHROOM_ATTACK.get();
 	}
 
 	@OnlyIn(Dist.CLIENT)

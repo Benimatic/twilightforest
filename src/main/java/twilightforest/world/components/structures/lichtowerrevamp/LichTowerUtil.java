@@ -6,7 +6,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Mirror;
 import twilightforest.util.IntPair;
 
-import java.util.RandomSource;
+
 
 public final class LichTowerUtil {
     // Segment step refers to the stair level for a given side. Consider it almost like a min-chunk

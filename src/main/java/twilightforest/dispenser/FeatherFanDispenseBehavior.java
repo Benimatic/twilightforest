@@ -1,5 +1,6 @@
 package twilightforest.dispenser;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.BlockSource;
@@ -49,8 +50,8 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
     @Override
     protected void playSound(BlockSource source) {
         if (fired) {
-            Random random = source.getLevel().getRandom();
-            source.getLevel().playSound(null, source.getPos(), TFSounds.FAN_WOOSH, SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+            RandomSource random = source.getLevel().getRandom();
+            source.getLevel().playSound(null, source.getPos(), TFSounds.FAN_WOOSH.get(), SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
             fired = false;
         } else {
             source.getLevel().levelEvent(1001, source.getPos(), 0);
@@ -63,7 +64,7 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
     protected void playAnimation(BlockSource source, Direction direction) {
         BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
         Level world = source.getLevel();
-        Random random = world.getRandom();
+        RandomSource random = world.getRandom();
 
         int j1 = direction.getStepX();
         int j2 = direction.getStepY();

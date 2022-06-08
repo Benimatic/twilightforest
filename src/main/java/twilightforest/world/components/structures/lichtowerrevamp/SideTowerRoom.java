@@ -20,7 +20,7 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 
 import java.util.EnumMap;
 import java.util.List;
-import java.util.RandomSource;
+
 
 public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     // TODO make more advanced, assign sided configurations of what covers can be used (walls/windows/bridges)

@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -51,17 +52,17 @@ public class SnowGuardian extends BaseIceMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_GUARDIAN_AMBIENT;
+		return TFSounds.ICE_GUARDIAN_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_GUARDIAN_HURT;
+		return TFSounds.ICE_GUARDIAN_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_GUARDIAN_DEATH;
+		return TFSounds.ICE_GUARDIAN_DEATH.get();
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class SnowGuardian extends BaseIceMob {
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
 		int type = random.nextInt(4);
 		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(this.makeItemForSlot(EquipmentSlot.MAINHAND, type)));
 		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(this.makeItemForSlot(EquipmentSlot.CHEST, type)));
@@ -113,10 +114,10 @@ public class SnowGuardian extends BaseIceMob {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
-		this.populateDefaultEquipmentSlots(difficulty);
-		this.populateDefaultEquipmentEnchantments(difficulty);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
+		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 		return data;
 	}
 

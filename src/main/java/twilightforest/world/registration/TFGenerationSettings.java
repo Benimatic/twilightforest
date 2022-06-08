@@ -71,7 +71,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		registerBiomeProgressionEnforcement(BiomeKeys.FINAL_PLATEAU, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 1.5F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 				// TODO: change this when there's a book for the castle
 				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);
 			}
@@ -91,7 +91,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		registerBiomeProgressionEnforcement(BiomeKeys.HIGHLANDS, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 0.5F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);
 			}
 		});
@@ -115,7 +115,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		registerBiomeProgressionEnforcement(BiomeKeys.THORNLANDS, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 1.0F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
 				// hint monster?
 				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);

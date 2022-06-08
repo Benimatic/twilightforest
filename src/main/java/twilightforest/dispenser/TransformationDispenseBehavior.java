@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,7 +25,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
 		Level world = source.getLevel();
-		Random random = world.getRandom();
+		RandomSource random = world.getRandom();
 		BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
 		if (!world.isClientSide) {
 			for (LivingEntity livingentity : world.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos), EntitySelector.NO_SPECTATORS)) {
@@ -53,7 +54,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 								((Mob) livingentity).spawnAnim();
 								((Mob) livingentity).spawnAnim();
 							}
-							livingentity.playSound(TFSounds.POWDER_USE, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+							livingentity.playSound(TFSounds.POWDER_USE.get(), 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 							stack.shrink(1);
 							fired = true;
 						}

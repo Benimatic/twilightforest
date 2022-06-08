@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -92,7 +93,7 @@ public class Troll extends Monster implements RangedAttackMob {
 					rockCooldown--;
 				} else {
 					//copied from EnderMan.EndermanTakeBlockGoal.tick()
-					Random random = this.getRandom();
+					RandomSource random = this.getRandom();
 					Level level = this.level;
 					int i = Mth.floor(this.getX() - 2.0D + random.nextDouble() * 4.0D);
 					int j = Mth.floor(this.getY() + random.nextDouble() * 3.0D);
@@ -225,7 +226,7 @@ public class Troll extends Monster implements RangedAttackMob {
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
 			blocc.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 4 - this.level.getDifficulty().getId());
 
-			this.playSound(TFSounds.TROLL_THROWS_ROCK, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.TROLL_THROWS_ROCK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.level.addFreshEntity(blocc);
 			this.setHasRock(false);
 			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {

@@ -210,7 +210,7 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FLOWER_PLACER = register("flower_placer", Feature.FLOWER, SMALL_FLOWER_CONFIG);
 
 	//music!
-	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC, 1200, 12000, true);
+	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC.get(), 1200, 12000, true);
 
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String name, F feature, FC featureConfiguration) {
 		return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, TwilightForestMod.prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));

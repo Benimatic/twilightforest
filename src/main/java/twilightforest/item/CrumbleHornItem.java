@@ -44,7 +44,7 @@ public class CrumbleHornItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
-		player.playSound(TFSounds.QUEST_RAM_AMBIENT, 1.0F, 0.8F);
+		player.playSound(TFSounds.QUEST_RAM_AMBIENT.get(), 1.0F, 0.8F);
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
 
@@ -57,7 +57,7 @@ public class CrumbleHornItem extends Item {
 				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
 			}
 
-			living.level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT, living.getSoundSource(), 1.0F, 0.8F);
+			living.level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
 		}
 	}
 

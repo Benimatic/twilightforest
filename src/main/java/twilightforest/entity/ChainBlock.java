@@ -123,7 +123,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		// only hit living things
 		if (!level.isClientSide && (result.getEntity() instanceof LivingEntity || result.getEntity() instanceof PartEntity<?>) && result.getEntity() != this.getOwner()) {
 			if (result.getEntity().hurt(TFDamageSources.spiked(this, getOwner()), 10)) {
-				playSound(TFSounds.BLOCKCHAIN_HIT, 1.0f, this.random.nextFloat());
+				playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 				// age when we hit a monster so that we go back to the player faster
 				this.tickCount += 60;
 			}
@@ -136,7 +136,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		if (!level.isClientSide && !this.level.isEmptyBlock(result.getBlockPos())) {
 
 			if (!this.isReturning) {
-				playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.125f, this.random.nextFloat());
+				playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
 			}
 
 			if (this.blocksSmashed < MAX_SMASH) {

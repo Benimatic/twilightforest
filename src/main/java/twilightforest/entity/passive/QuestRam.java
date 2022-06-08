@@ -256,21 +256,21 @@ public class QuestRam extends Animal {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.QUEST_RAM_AMBIENT;
+		return TFSounds.QUEST_RAM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.QUEST_RAM_HURT;
+		return TFSounds.QUEST_RAM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.QUEST_RAM_DEATH;
+		return TFSounds.QUEST_RAM_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.QUEST_RAM_STEP, 0.15F, 1.0F);
+		this.playSound(TFSounds.QUEST_RAM_STEP.get(), 0.15F, 1.0F);
 	}
 }

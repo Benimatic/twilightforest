@@ -15,8 +15,6 @@ import twilightforest.world.components.processors.SmoothStoneVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightDoubleTemplateStructurePiece;
 
-import java.util.RandomSource;
-
 public class CourtyardWallCornerOuter extends TwilightDoubleTemplateStructurePiece {
     public CourtyardWallCornerOuter(StructurePieceSerializationContext ctx, CompoundTag nbt) {
         super(NagaCourtyardPieces.TFNCWC,

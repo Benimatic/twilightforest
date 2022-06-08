@@ -76,7 +76,7 @@ public class IECompat extends TFCompat {
                     public Entity getProjectile(@Nullable Player shooter, ItemStack ammo, Entity projectile) {
                         Vec3 look = shooter.getLookAngle();
                         //we zoomin
-                        shooter.level.playSound(null, shooter.blockPosition(), TFSounds.CICADA_FLYING, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        shooter.level.playSound(null, shooter.blockPosition(), TFSounds.CICADA_FLYING.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         //FallingBlockEntity doesnt like cicadas, so custom entity it is
                         return new CicadaShot(shooter.level, shooter, look.x * 20.0D, look.y * 20.0D, look.z * 20.0D);
                     }

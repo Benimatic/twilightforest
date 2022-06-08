@@ -39,17 +39,17 @@ public class Raven extends TinyBird {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.RAVEN_CAW;
+		return TFSounds.RAVEN_CAW.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.RAVEN_SQUAWK;
+		return TFSounds.RAVEN_SQUAWK.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.RAVEN_SQUAWK;
+		return TFSounds.RAVEN_SQUAWK.get();
 	}
 
 	@Override

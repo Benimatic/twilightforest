@@ -2,84 +2,85 @@ package twilightforest.block;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DoubleHighBlockItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.ISTER;
 import twilightforest.item.*;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
-//FIXME registry events no longer exist. i'll take care of this later, this is just here to remind myself -Giz
+//TODO move this out of the register event. I would ideally like to register these alongside blocks
 public class TFBlockItems {
 
-	public static void registerBlockItems(RegistryEvent.Register<Item> event) {
-		IForgeRegistry<Item> r = event.getRegistry();
+	public static void registerBlockItems(RegisterEvent event) {
+		register(event, trophyBlock(TFBlocks.NAGA_TROPHY, TFBlocks.NAGA_WALL_TROPHY));
+		register(event, trophyBlock(TFBlocks.LICH_TROPHY, TFBlocks.LICH_WALL_TROPHY));
+		register(event, trophyBlock(TFBlocks.MINOSHROOM_TROPHY, TFBlocks.MINOSHROOM_WALL_TROPHY));
+		register(event, trophyBlock(TFBlocks.HYDRA_TROPHY, TFBlocks.HYDRA_WALL_TROPHY));
+		register(event, trophyBlock(TFBlocks.KNIGHT_PHANTOM_TROPHY, TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY));
+		register(event, trophyBlock(TFBlocks.UR_GHAST_TROPHY, TFBlocks.UR_GHAST_WALL_TROPHY));
+		register(event, trophyBlock(TFBlocks.ALPHA_YETI_TROPHY, TFBlocks.ALPHA_YETI_WALL_TROPHY));
+		register(event, trophyBlock(TFBlocks.SNOW_QUEEN_TROPHY, TFBlocks.SNOW_QUEEN_WALL_TROPHY));
+		register(event, trophyBlock(TFBlocks.QUEST_RAM_TROPHY, TFBlocks.QUEST_RAM_WALL_TROPHY));
 
-		r.register(trophyBlock(TFBlocks.NAGA_TROPHY, TFBlocks.NAGA_WALL_TROPHY));
-		r.register(trophyBlock(TFBlocks.LICH_TROPHY, TFBlocks.LICH_WALL_TROPHY));
-		r.register(trophyBlock(TFBlocks.MINOSHROOM_TROPHY, TFBlocks.MINOSHROOM_WALL_TROPHY));
-		r.register(trophyBlock(TFBlocks.HYDRA_TROPHY, TFBlocks.HYDRA_WALL_TROPHY));
-		r.register(trophyBlock(TFBlocks.KNIGHT_PHANTOM_TROPHY, TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY));
-		r.register(trophyBlock(TFBlocks.UR_GHAST_TROPHY, TFBlocks.UR_GHAST_WALL_TROPHY));
-		r.register(trophyBlock(TFBlocks.ALPHA_YETI_TROPHY, TFBlocks.ALPHA_YETI_WALL_TROPHY));
-		r.register(trophyBlock(TFBlocks.SNOW_QUEEN_TROPHY, TFBlocks.SNOW_QUEEN_WALL_TROPHY));
-		r.register(trophyBlock(TFBlocks.QUEST_RAM_TROPHY, TFBlocks.QUEST_RAM_WALL_TROPHY));
+		register(event, blockItem(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.HOLLOW_HILL_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.MUSHROOM_TOWER_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.QUEST_GROVE_MINIATURE_STRUCTURE));
+		register(event, blockItem(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE));
+		register(event, blockItem(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE));
+//      register(event, blockItem(TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE));
 
-		r.register(blockItem(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.HOLLOW_HILL_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.MUSHROOM_TOWER_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.QUEST_GROVE_MINIATURE_STRUCTURE));
-		r.register(blockItem(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE));
-		r.register(blockItem(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE));
-//      r.register(blockItem(TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE));
+		register(event, blockItem(TFBlocks.NAGA_BOSS_SPAWNER));
+		register(event, blockItem(TFBlocks.LICH_BOSS_SPAWNER));
+		register(event, blockItem(TFBlocks.MINOSHROOM_BOSS_SPAWNER));
+		register(event, blockItem(TFBlocks.HYDRA_BOSS_SPAWNER));
+		register(event, blockItem(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER));
+		register(event, blockItem(TFBlocks.UR_GHAST_BOSS_SPAWNER));
+		register(event, blockItem(TFBlocks.ALPHA_YETI_BOSS_SPAWNER));
+		register(event, blockItem(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER));
+		register(event, blockItem(TFBlocks.FINAL_BOSS_BOSS_SPAWNER));
 
-		r.register(blockItem(TFBlocks.NAGA_BOSS_SPAWNER));
-		r.register(blockItem(TFBlocks.LICH_BOSS_SPAWNER));
-		r.register(blockItem(TFBlocks.MINOSHROOM_BOSS_SPAWNER));
-		r.register(blockItem(TFBlocks.HYDRA_BOSS_SPAWNER));
-		r.register(blockItem(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER));
-		r.register(blockItem(TFBlocks.UR_GHAST_BOSS_SPAWNER));
-		r.register(blockItem(TFBlocks.ALPHA_YETI_BOSS_SPAWNER));
-		r.register(blockItem(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER));
-		r.register(blockItem(TFBlocks.FINAL_BOSS_BOSS_SPAWNER));
-
-		r.register(blockItem(TFBlocks.ETCHED_NAGASTONE));
-		r.register(blockItem(TFBlocks.CRACKED_ETCHED_NAGASTONE));
-		r.register(blockItem(TFBlocks.MOSSY_ETCHED_NAGASTONE));
-		r.register(blockItem(TFBlocks.NAGASTONE_PILLAR));
-		r.register(blockItem(TFBlocks.CRACKED_NAGASTONE_PILLAR));
-		r.register(blockItem(TFBlocks.MOSSY_NAGASTONE_PILLAR));
-		r.register(blockItem(TFBlocks.NAGASTONE_STAIRS_LEFT));
-		r.register(blockItem(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT));
-		r.register(blockItem(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT));
-		r.register(blockItem(TFBlocks.NAGASTONE_STAIRS_RIGHT));
-		r.register(blockItem(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT));
-		r.register(blockItem(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT));
-		r.register(blockItem(TFBlocks.NAGASTONE_HEAD));
-		r.register(blockItem(TFBlocks.NAGASTONE));
-		r.register(blockItem(TFBlocks.SPIRAL_BRICKS));
-//      r.register(blockItem(TFBlocks.TERRORCOTTA_CIRCLE));
-//      r.register(blockItem(TFBlocks.TERRORCOTTA_DIAGONAL));
-//      r.register(blockItem(TFBlocks.LAPIS_BLOCK));
-		r.register(blockItem(TFBlocks.TWISTED_STONE));
-		r.register(blockItem(TFBlocks.TWISTED_STONE_PILLAR));
-		r.register(makeBlockItem(new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant()) {
+		register(event, blockItem(TFBlocks.ETCHED_NAGASTONE));
+		register(event, blockItem(TFBlocks.CRACKED_ETCHED_NAGASTONE));
+		register(event, blockItem(TFBlocks.MOSSY_ETCHED_NAGASTONE));
+		register(event, blockItem(TFBlocks.NAGASTONE_PILLAR));
+		register(event, blockItem(TFBlocks.CRACKED_NAGASTONE_PILLAR));
+		register(event, blockItem(TFBlocks.MOSSY_NAGASTONE_PILLAR));
+		register(event, blockItem(TFBlocks.NAGASTONE_STAIRS_LEFT));
+		register(event, blockItem(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT));
+		register(event, blockItem(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT));
+		register(event, blockItem(TFBlocks.NAGASTONE_STAIRS_RIGHT));
+		register(event, blockItem(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT));
+		register(event, blockItem(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT));
+		register(event, blockItem(TFBlocks.NAGASTONE_HEAD));
+		register(event, blockItem(TFBlocks.NAGASTONE));
+		register(event, blockItem(TFBlocks.SPIRAL_BRICKS));
+//      register(event, blockItem(TFBlocks.TERRORCOTTA_CIRCLE));
+//      register(event, blockItem(TFBlocks.TERRORCOTTA_DIAGONAL));
+//      register(event, blockItem(TFBlocks.LAPIS_BLOCK));
+		register(event, blockItem(TFBlocks.TWISTED_STONE));
+		register(event, blockItem(TFBlocks.TWISTED_STONE_PILLAR));
+		register(event, new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant()) {
 			@Override
 			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 				consumer.accept(new IItemRenderProperties() {
@@ -89,336 +90,336 @@ public class TFBlockItems {
 					}
 				});
 			}
-		}, TFBlocks.KEEPSAKE_CASKET));
-		r.register(blockItem(TFBlocks.CANDELABRA));
-		r.register(blockItem(TFBlocks.BOLD_STONE_PILLAR));
-		r.register(blockItem(TFBlocks.DEATH_TOME_SPAWNER));
-		r.register(blockItem(TFBlocks.EMPTY_CANOPY_BOOKSHELF));
-		r.register(skullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE));
-		r.register(skullCandleItem(TFBlocks.SKELETON_SKULL_CANDLE, TFBlocks.SKELETON_WALL_SKULL_CANDLE));
-		r.register(skullCandleItem(TFBlocks.WITHER_SKELE_SKULL_CANDLE, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE));
-		r.register(skullCandleItem(TFBlocks.CREEPER_SKULL_CANDLE, TFBlocks.CREEPER_WALL_SKULL_CANDLE));
-		r.register(skullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE, TFBlocks.PLAYER_WALL_SKULL_CANDLE));
-		r.register(makeBlockItem(new HugeWaterLilyItem(TFBlocks.HUGE_WATER_LILY.get(), TFItems.defaultBuilder()), TFBlocks.HUGE_WATER_LILY));
-		r.register(makeBlockItem(new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), TFItems.defaultBuilder()), TFBlocks.HUGE_LILY_PAD));
-		r.register(blockItem(TFBlocks.MAZESTONE));
-		r.register(blockItem(TFBlocks.MAZESTONE_BRICK));
-		r.register(blockItem(TFBlocks.CRACKED_MAZESTONE));
-		r.register(blockItem(TFBlocks.MOSSY_MAZESTONE));
-		r.register(blockItem(TFBlocks.DECORATIVE_MAZESTONE));
-		r.register(blockItem(TFBlocks.CUT_MAZESTONE));
-		r.register(blockItem(TFBlocks.MAZESTONE_BORDER));
-		r.register(blockItem(TFBlocks.MAZESTONE_MOSAIC));
-		r.register(blockItem(TFBlocks.SMOKER));
-		r.register(blockItem(TFBlocks.ENCASED_SMOKER));
-		r.register(blockItem(TFBlocks.FIRE_JET));
-		r.register(blockItem(TFBlocks.ENCASED_FIRE_JET));
-		r.register(blockItem(TFBlocks.STRONGHOLD_SHIELD));
-		r.register(blockItem(TFBlocks.TROPHY_PEDESTAL));
-		r.register(blockItem(TFBlocks.UNDERBRICK));
-		r.register(blockItem(TFBlocks.CRACKED_UNDERBRICK));
-		r.register(blockItem(TFBlocks.MOSSY_UNDERBRICK));
-		r.register(blockItem(TFBlocks.UNDERBRICK_FLOOR));
-		r.register(blockItem(TFBlocks.TOWERWOOD));
-		r.register(blockItem(TFBlocks.CRACKED_TOWERWOOD));
-		r.register(blockItem(TFBlocks.MOSSY_TOWERWOOD));
-		r.register(blockItem(TFBlocks.INFESTED_TOWERWOOD));
-		r.register(blockItem(TFBlocks.ENCASED_TOWERWOOD));
-		r.register(blockItem(TFBlocks.VANISHING_BLOCK));
-		r.register(blockItem(TFBlocks.REAPPEARING_BLOCK));
-		r.register(blockItem(TFBlocks.LOCKED_VANISHING_BLOCK));
-		r.register(blockItem(TFBlocks.CARMINITE_BUILDER));
-		r.register(blockItem(TFBlocks.ANTIBUILDER));
-		r.register(blockItem(TFBlocks.CARMINITE_REACTOR));
-		r.register(blockItem(TFBlocks.GHAST_TRAP));
-		r.register(blockItem(TFBlocks.AURORA_BLOCK));
-		r.register(blockItem(TFBlocks.AURORA_PILLAR));
-		r.register(blockItem(TFBlocks.AURORA_SLAB));
-		r.register(blockItem(TFBlocks.AURORALIZED_GLASS));
-		r.register(blockItem(TFBlocks.TROLLSTEINN));
-		r.register(blockItem(TFBlocks.TROLLVIDR));
-		r.register(blockItem(TFBlocks.UNRIPE_TROLLBER));
-		r.register(blockItem(TFBlocks.TROLLBER));
-		r.register(blockItem(TFBlocks.HUGE_MUSHGLOOM));
-		r.register(blockItem(TFBlocks.HUGE_MUSHGLOOM_STEM));
-		r.register(blockItem(TFBlocks.UBEROUS_SOIL));
-		r.register(blockItem(TFBlocks.HUGE_STALK));
-		r.register(blockItem(TFBlocks.BEANSTALK_LEAVES));
-		r.register(blockItem(TFBlocks.WISPY_CLOUD));
-		r.register(blockItem(TFBlocks.FLUFFY_CLOUD));
-		r.register(blockItem(TFBlocks.GIANT_COBBLESTONE));
-		r.register(blockItem(TFBlocks.GIANT_LOG));
-		r.register(blockItem(TFBlocks.GIANT_LEAVES));
-		r.register(blockItem(TFBlocks.GIANT_OBSIDIAN));
-		r.register(blockItem(TFBlocks.DEADROCK));
-		r.register(blockItem(TFBlocks.CRACKED_DEADROCK));
-		r.register(blockItem(TFBlocks.WEATHERED_DEADROCK));
-		r.register(blockItem(TFBlocks.BROWN_THORNS));
-		r.register(blockItem(TFBlocks.GREEN_THORNS));
-		r.register(blockItem(TFBlocks.BURNT_THORNS));
-		r.register(blockItem(TFBlocks.THORN_ROSE));
-		r.register(blockItem(TFBlocks.THORN_LEAVES));
-		r.register(blockItem(TFBlocks.CASTLE_BRICK));
-		r.register(blockItem(TFBlocks.WORN_CASTLE_BRICK));
-		r.register(blockItem(TFBlocks.CRACKED_CASTLE_BRICK));
-		r.register(blockItem(TFBlocks.MOSSY_CASTLE_BRICK));
-		r.register(blockItem(TFBlocks.THICK_CASTLE_BRICK));
-		r.register(blockItem(TFBlocks.CASTLE_ROOF_TILE));
-		r.register(blockItem(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR));
-		r.register(blockItem(TFBlocks.ENCASED_CASTLE_BRICK_TILE));
-		r.register(blockItem(TFBlocks.BOLD_CASTLE_BRICK_PILLAR));
-		r.register(blockItem(TFBlocks.BOLD_CASTLE_BRICK_TILE));
-		r.register(blockItem(TFBlocks.CASTLE_BRICK_STAIRS));
-		r.register(blockItem(TFBlocks.WORN_CASTLE_BRICK_STAIRS));
-		r.register(blockItem(TFBlocks.CRACKED_CASTLE_BRICK_STAIRS));
-		r.register(blockItem(TFBlocks.MOSSY_CASTLE_BRICK_STAIRS));
-		r.register(blockItem(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS));
-		r.register(blockItem(TFBlocks.BOLD_CASTLE_BRICK_STAIRS));
-		r.register(blockItem(TFBlocks.PINK_CASTLE_RUNE_BRICK));
-		r.register(blockItem(TFBlocks.YELLOW_CASTLE_RUNE_BRICK));
-		r.register(blockItem(TFBlocks.BLUE_CASTLE_RUNE_BRICK));
-		r.register(blockItem(TFBlocks.VIOLET_CASTLE_RUNE_BRICK));
-		r.register(blockItem(TFBlocks.PINK_CASTLE_DOOR));
-		r.register(blockItem(TFBlocks.YELLOW_CASTLE_DOOR));
-		r.register(blockItem(TFBlocks.BLUE_CASTLE_DOOR));
-		r.register(blockItem(TFBlocks.VIOLET_CASTLE_DOOR));
-		r.register(blockItem(TFBlocks.PINK_FORCE_FIELD));
-		r.register(blockItem(TFBlocks.ORANGE_FORCE_FIELD));
-		r.register(blockItem(TFBlocks.GREEN_FORCE_FIELD));
-		r.register(blockItem(TFBlocks.BLUE_FORCE_FIELD));
-		r.register(blockItem(TFBlocks.VIOLET_FORCE_FIELD));
+		});
+		register(event, blockItem(TFBlocks.CANDELABRA));
+		register(event, blockItem(TFBlocks.BOLD_STONE_PILLAR));
+		register(event, blockItem(TFBlocks.DEATH_TOME_SPAWNER));
+		register(event, blockItem(TFBlocks.EMPTY_CANOPY_BOOKSHELF));
+		register(event, skullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE));
+		register(event, skullCandleItem(TFBlocks.SKELETON_SKULL_CANDLE, TFBlocks.SKELETON_WALL_SKULL_CANDLE));
+		register(event, skullCandleItem(TFBlocks.WITHER_SKELE_SKULL_CANDLE, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE));
+		register(event, skullCandleItem(TFBlocks.CREEPER_SKULL_CANDLE, TFBlocks.CREEPER_WALL_SKULL_CANDLE));
+		register(event, skullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE, TFBlocks.PLAYER_WALL_SKULL_CANDLE));
+		register(event, new HugeWaterLilyItem(TFBlocks.HUGE_WATER_LILY.get(), TFItems.defaultBuilder()));
+		register(event, new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), TFItems.defaultBuilder()));
+		register(event, blockItem(TFBlocks.MAZESTONE));
+		register(event, blockItem(TFBlocks.MAZESTONE_BRICK));
+		register(event, blockItem(TFBlocks.CRACKED_MAZESTONE));
+		register(event, blockItem(TFBlocks.MOSSY_MAZESTONE));
+		register(event, blockItem(TFBlocks.DECORATIVE_MAZESTONE));
+		register(event, blockItem(TFBlocks.CUT_MAZESTONE));
+		register(event, blockItem(TFBlocks.MAZESTONE_BORDER));
+		register(event, blockItem(TFBlocks.MAZESTONE_MOSAIC));
+		register(event, blockItem(TFBlocks.SMOKER));
+		register(event, blockItem(TFBlocks.ENCASED_SMOKER));
+		register(event, blockItem(TFBlocks.FIRE_JET));
+		register(event, blockItem(TFBlocks.ENCASED_FIRE_JET));
+		register(event, blockItem(TFBlocks.STRONGHOLD_SHIELD));
+		register(event, blockItem(TFBlocks.TROPHY_PEDESTAL));
+		register(event, blockItem(TFBlocks.UNDERBRICK));
+		register(event, blockItem(TFBlocks.CRACKED_UNDERBRICK));
+		register(event, blockItem(TFBlocks.MOSSY_UNDERBRICK));
+		register(event, blockItem(TFBlocks.UNDERBRICK_FLOOR));
+		register(event, blockItem(TFBlocks.TOWERWOOD));
+		register(event, blockItem(TFBlocks.CRACKED_TOWERWOOD));
+		register(event, blockItem(TFBlocks.MOSSY_TOWERWOOD));
+		register(event, blockItem(TFBlocks.INFESTED_TOWERWOOD));
+		register(event, blockItem(TFBlocks.ENCASED_TOWERWOOD));
+		register(event, blockItem(TFBlocks.VANISHING_BLOCK));
+		register(event, blockItem(TFBlocks.REAPPEARING_BLOCK));
+		register(event, blockItem(TFBlocks.LOCKED_VANISHING_BLOCK));
+		register(event, blockItem(TFBlocks.CARMINITE_BUILDER));
+		register(event, blockItem(TFBlocks.ANTIBUILDER));
+		register(event, blockItem(TFBlocks.CARMINITE_REACTOR));
+		register(event, blockItem(TFBlocks.GHAST_TRAP));
+		register(event, blockItem(TFBlocks.AURORA_BLOCK));
+		register(event, blockItem(TFBlocks.AURORA_PILLAR));
+		register(event, blockItem(TFBlocks.AURORA_SLAB));
+		register(event, blockItem(TFBlocks.AURORALIZED_GLASS));
+		register(event, blockItem(TFBlocks.TROLLSTEINN));
+		register(event, blockItem(TFBlocks.TROLLVIDR));
+		register(event, blockItem(TFBlocks.UNRIPE_TROLLBER));
+		register(event, blockItem(TFBlocks.TROLLBER));
+		register(event, blockItem(TFBlocks.HUGE_MUSHGLOOM));
+		register(event, blockItem(TFBlocks.HUGE_MUSHGLOOM_STEM));
+		register(event, blockItem(TFBlocks.UBEROUS_SOIL));
+		register(event, blockItem(TFBlocks.HUGE_STALK));
+		register(event, blockItem(TFBlocks.BEANSTALK_LEAVES));
+		register(event, blockItem(TFBlocks.WISPY_CLOUD));
+		register(event, blockItem(TFBlocks.FLUFFY_CLOUD));
+		register(event, blockItem(TFBlocks.GIANT_COBBLESTONE));
+		register(event, blockItem(TFBlocks.GIANT_LOG));
+		register(event, blockItem(TFBlocks.GIANT_LEAVES));
+		register(event, blockItem(TFBlocks.GIANT_OBSIDIAN));
+		register(event, blockItem(TFBlocks.DEADROCK));
+		register(event, blockItem(TFBlocks.CRACKED_DEADROCK));
+		register(event, blockItem(TFBlocks.WEATHERED_DEADROCK));
+		register(event, blockItem(TFBlocks.BROWN_THORNS));
+		register(event, blockItem(TFBlocks.GREEN_THORNS));
+		register(event, blockItem(TFBlocks.BURNT_THORNS));
+		register(event, blockItem(TFBlocks.THORN_ROSE));
+		register(event, blockItem(TFBlocks.THORN_LEAVES));
+		register(event, blockItem(TFBlocks.CASTLE_BRICK));
+		register(event, blockItem(TFBlocks.WORN_CASTLE_BRICK));
+		register(event, blockItem(TFBlocks.CRACKED_CASTLE_BRICK));
+		register(event, blockItem(TFBlocks.MOSSY_CASTLE_BRICK));
+		register(event, blockItem(TFBlocks.THICK_CASTLE_BRICK));
+		register(event, blockItem(TFBlocks.CASTLE_ROOF_TILE));
+		register(event, blockItem(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR));
+		register(event, blockItem(TFBlocks.ENCASED_CASTLE_BRICK_TILE));
+		register(event, blockItem(TFBlocks.BOLD_CASTLE_BRICK_PILLAR));
+		register(event, blockItem(TFBlocks.BOLD_CASTLE_BRICK_TILE));
+		register(event, blockItem(TFBlocks.CASTLE_BRICK_STAIRS));
+		register(event, blockItem(TFBlocks.WORN_CASTLE_BRICK_STAIRS));
+		register(event, blockItem(TFBlocks.CRACKED_CASTLE_BRICK_STAIRS));
+		register(event, blockItem(TFBlocks.MOSSY_CASTLE_BRICK_STAIRS));
+		register(event, blockItem(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS));
+		register(event, blockItem(TFBlocks.BOLD_CASTLE_BRICK_STAIRS));
+		register(event, blockItem(TFBlocks.PINK_CASTLE_RUNE_BRICK));
+		register(event, blockItem(TFBlocks.YELLOW_CASTLE_RUNE_BRICK));
+		register(event, blockItem(TFBlocks.BLUE_CASTLE_RUNE_BRICK));
+		register(event, blockItem(TFBlocks.VIOLET_CASTLE_RUNE_BRICK));
+		register(event, blockItem(TFBlocks.PINK_CASTLE_DOOR));
+		register(event, blockItem(TFBlocks.YELLOW_CASTLE_DOOR));
+		register(event, blockItem(TFBlocks.BLUE_CASTLE_DOOR));
+		register(event, blockItem(TFBlocks.VIOLET_CASTLE_DOOR));
+		register(event, blockItem(TFBlocks.PINK_FORCE_FIELD));
+		register(event, blockItem(TFBlocks.ORANGE_FORCE_FIELD));
+		register(event, blockItem(TFBlocks.GREEN_FORCE_FIELD));
+		register(event, blockItem(TFBlocks.BLUE_FORCE_FIELD));
+		register(event, blockItem(TFBlocks.VIOLET_FORCE_FIELD));
 
-		r.register(blockItem(TFBlocks.UNCRAFTING_TABLE));
-		r.register(blockItem(TFBlocks.CINDER_FURNACE));
-		r.register(blockItem(TFBlocks.CINDER_LOG));
-		r.register(blockItem(TFBlocks.CINDER_WOOD));
-		r.register(blockItem(TFBlocks.SLIDER));
-		r.register(blockItem(TFBlocks.IRON_LADDER));
+		register(event, blockItem(TFBlocks.UNCRAFTING_TABLE));
+		register(event, blockItem(TFBlocks.CINDER_FURNACE));
+		register(event, blockItem(TFBlocks.CINDER_LOG));
+		register(event, blockItem(TFBlocks.CINDER_WOOD));
+		register(event, blockItem(TFBlocks.SLIDER));
+		register(event, blockItem(TFBlocks.IRON_LADDER));
 
-		r.register(blockItem(TFBlocks.IRONWOOD_BLOCK));
-		r.register(blockItem(TFBlocks.STEELEAF_BLOCK));
-		r.register(fireImmuneBlock(TFBlocks.FIERY_BLOCK));
-		r.register(blockItem(TFBlocks.KNIGHTMETAL_BLOCK));
-		r.register(blockItem(TFBlocks.CARMINITE_BLOCK));
-		r.register(blockItem(TFBlocks.ARCTIC_FUR_BLOCK));
+		register(event, blockItem(TFBlocks.IRONWOOD_BLOCK));
+		register(event, blockItem(TFBlocks.STEELEAF_BLOCK));
+		register(event, fireImmuneBlock(TFBlocks.FIERY_BLOCK));
+		register(event, blockItem(TFBlocks.KNIGHTMETAL_BLOCK));
+		register(event, blockItem(TFBlocks.CARMINITE_BLOCK));
+		register(event, blockItem(TFBlocks.ARCTIC_FUR_BLOCK));
 
-		r.register(blockItem(TFBlocks.MOSS_PATCH));
-		r.register(blockItem(TFBlocks.MAYAPPLE));
-		r.register(blockItem(TFBlocks.CLOVER_PATCH));
-		r.register(blockItem(TFBlocks.FIDDLEHEAD));
-		r.register(blockItem(TFBlocks.MUSHGLOOM));
-		r.register(blockItem(TFBlocks.TORCHBERRY_PLANT));
-		r.register(blockItem(TFBlocks.ROOT_STRAND));
-		r.register(blockItem(TFBlocks.FALLEN_LEAVES));
-		r.register(wearableBlock(TFBlocks.FIREFLY, TFBlockEntities.FIREFLY));
-		r.register(wearableBlock(TFBlocks.CICADA, TFBlockEntities.CICADA));
-		r.register(wearableBlock(TFBlocks.MOONWORM, TFBlockEntities.MOONWORM));
-		r.register(blockItem(TFBlocks.FIREFLY_JAR));
-		r.register(blockItem(TFBlocks.FIREFLY_SPAWNER));
-		r.register(blockItem(TFBlocks.CICADA_JAR));
-		r.register(blockItem(TFBlocks.HEDGE));
-		r.register(blockItem(TFBlocks.ROOT_BLOCK));
-		r.register(blockItem(TFBlocks.LIVEROOT_BLOCK));
-		r.register(blockItem(TFBlocks.MANGROVE_ROOT));
+		register(event, blockItem(TFBlocks.MOSS_PATCH));
+		register(event, blockItem(TFBlocks.MAYAPPLE));
+		register(event, blockItem(TFBlocks.CLOVER_PATCH));
+		register(event, blockItem(TFBlocks.FIDDLEHEAD));
+		register(event, blockItem(TFBlocks.MUSHGLOOM));
+		register(event, blockItem(TFBlocks.TORCHBERRY_PLANT));
+		register(event, blockItem(TFBlocks.ROOT_STRAND));
+		register(event, blockItem(TFBlocks.FALLEN_LEAVES));
+		register(event, wearableBlock(TFBlocks.FIREFLY, TFBlockEntities.FIREFLY));
+		register(event, wearableBlock(TFBlocks.CICADA, TFBlockEntities.CICADA));
+		register(event, wearableBlock(TFBlocks.MOONWORM, TFBlockEntities.MOONWORM));
+		register(event, blockItem(TFBlocks.FIREFLY_JAR));
+		register(event, blockItem(TFBlocks.FIREFLY_SPAWNER));
+		register(event, blockItem(TFBlocks.CICADA_JAR));
+		register(event, blockItem(TFBlocks.HEDGE));
+		register(event, blockItem(TFBlocks.ROOT_BLOCK));
+		register(event, blockItem(TFBlocks.LIVEROOT_BLOCK));
+		register(event, blockItem(TFBlocks.MANGROVE_ROOT));
 
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_LEAVES));
-		r.register(blockItem(TFBlocks.CANOPY_LEAVES));
-		r.register(blockItem(TFBlocks.MANGROVE_LEAVES));
-		r.register(blockItem(TFBlocks.DARK_LEAVES));
-		r.register(blockItem(TFBlocks.TIME_LEAVES));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_LEAVES));
-		r.register(blockItem(TFBlocks.MINING_LEAVES));
-		r.register(blockItem(TFBlocks.SORTING_LEAVES));
-		r.register(blockItem(TFBlocks.RAINBOW_OAK_LEAVES));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_LOG));
-		r.register(blockItem(TFBlocks.CANOPY_LOG));
-		r.register(blockItem(TFBlocks.MANGROVE_LOG));
-		r.register(blockItem(TFBlocks.DARK_LOG));
-		r.register(blockItem(TFBlocks.TIME_LOG));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_LOG));
-		r.register(blockItem(TFBlocks.MINING_LOG));
-		r.register(blockItem(TFBlocks.SORTING_LOG));
-		r.register(blockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG));
-		r.register(blockItem(TFBlocks.STRIPPED_CANOPY_LOG));
-		r.register(blockItem(TFBlocks.STRIPPED_MANGROVE_LOG));
-		r.register(blockItem(TFBlocks.STRIPPED_DARK_LOG));
-		r.register(blockItem(TFBlocks.STRIPPED_TIME_LOG));
-		r.register(blockItem(TFBlocks.STRIPPED_TRANSFORMATION_LOG));
-		r.register(blockItem(TFBlocks.STRIPPED_MINING_LOG));
-		r.register(blockItem(TFBlocks.STRIPPED_SORTING_LOG));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_WOOD));
-		r.register(blockItem(TFBlocks.CANOPY_WOOD));
-		r.register(blockItem(TFBlocks.MANGROVE_WOOD));
-		r.register(blockItem(TFBlocks.DARK_WOOD));
-		r.register(blockItem(TFBlocks.TIME_WOOD));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_WOOD));
-		r.register(blockItem(TFBlocks.MINING_WOOD));
-		r.register(blockItem(TFBlocks.SORTING_WOOD));
-		r.register(blockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD));
-		r.register(blockItem(TFBlocks.STRIPPED_CANOPY_WOOD));
-		r.register(blockItem(TFBlocks.STRIPPED_MANGROVE_WOOD));
-		r.register(blockItem(TFBlocks.STRIPPED_DARK_WOOD));
-		r.register(blockItem(TFBlocks.STRIPPED_TIME_WOOD));
-		r.register(blockItem(TFBlocks.STRIPPED_TRANSFORMATION_WOOD));
-		r.register(blockItem(TFBlocks.STRIPPED_MINING_WOOD));
-		r.register(blockItem(TFBlocks.STRIPPED_SORTING_WOOD));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_LEAVES));
+		register(event, blockItem(TFBlocks.CANOPY_LEAVES));
+		register(event, blockItem(TFBlocks.MANGROVE_LEAVES));
+		register(event, blockItem(TFBlocks.DARK_LEAVES));
+		register(event, blockItem(TFBlocks.TIME_LEAVES));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_LEAVES));
+		register(event, blockItem(TFBlocks.MINING_LEAVES));
+		register(event, blockItem(TFBlocks.SORTING_LEAVES));
+		register(event, blockItem(TFBlocks.RAINBOW_OAK_LEAVES));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_LOG));
+		register(event, blockItem(TFBlocks.CANOPY_LOG));
+		register(event, blockItem(TFBlocks.MANGROVE_LOG));
+		register(event, blockItem(TFBlocks.DARK_LOG));
+		register(event, blockItem(TFBlocks.TIME_LOG));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_LOG));
+		register(event, blockItem(TFBlocks.MINING_LOG));
+		register(event, blockItem(TFBlocks.SORTING_LOG));
+		register(event, blockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG));
+		register(event, blockItem(TFBlocks.STRIPPED_CANOPY_LOG));
+		register(event, blockItem(TFBlocks.STRIPPED_MANGROVE_LOG));
+		register(event, blockItem(TFBlocks.STRIPPED_DARK_LOG));
+		register(event, blockItem(TFBlocks.STRIPPED_TIME_LOG));
+		register(event, blockItem(TFBlocks.STRIPPED_TRANSFORMATION_LOG));
+		register(event, blockItem(TFBlocks.STRIPPED_MINING_LOG));
+		register(event, blockItem(TFBlocks.STRIPPED_SORTING_LOG));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_WOOD));
+		register(event, blockItem(TFBlocks.CANOPY_WOOD));
+		register(event, blockItem(TFBlocks.MANGROVE_WOOD));
+		register(event, blockItem(TFBlocks.DARK_WOOD));
+		register(event, blockItem(TFBlocks.TIME_WOOD));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_WOOD));
+		register(event, blockItem(TFBlocks.MINING_WOOD));
+		register(event, blockItem(TFBlocks.SORTING_WOOD));
+		register(event, blockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD));
+		register(event, blockItem(TFBlocks.STRIPPED_CANOPY_WOOD));
+		register(event, blockItem(TFBlocks.STRIPPED_MANGROVE_WOOD));
+		register(event, blockItem(TFBlocks.STRIPPED_DARK_WOOD));
+		register(event, blockItem(TFBlocks.STRIPPED_TIME_WOOD));
+		register(event, blockItem(TFBlocks.STRIPPED_TRANSFORMATION_WOOD));
+		register(event, blockItem(TFBlocks.STRIPPED_MINING_WOOD));
+		register(event, blockItem(TFBlocks.STRIPPED_SORTING_WOOD));
 
-		r.register(blockItem(TFBlocks.TIME_LOG_CORE));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_LOG_CORE));
-		r.register(blockItem(TFBlocks.MINING_LOG_CORE));
-		r.register(blockItem(TFBlocks.SORTING_LOG_CORE));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_SAPLING));
-		r.register(blockItem(TFBlocks.CANOPY_SAPLING));
-		r.register(blockItem(TFBlocks.MANGROVE_SAPLING));
-		r.register(blockItem(TFBlocks.DARKWOOD_SAPLING));
-		r.register(blockItem(TFBlocks.HOLLOW_OAK_SAPLING));
-		r.register(blockItem(TFBlocks.TIME_SAPLING));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_SAPLING));
-		r.register(blockItem(TFBlocks.MINING_SAPLING));
-		r.register(blockItem(TFBlocks.SORTING_SAPLING));
-		r.register(blockItem(TFBlocks.RAINBOW_OAK_SAPLING));
+		register(event, blockItem(TFBlocks.TIME_LOG_CORE));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_LOG_CORE));
+		register(event, blockItem(TFBlocks.MINING_LOG_CORE));
+		register(event, blockItem(TFBlocks.SORTING_LOG_CORE));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_SAPLING));
+		register(event, blockItem(TFBlocks.CANOPY_SAPLING));
+		register(event, blockItem(TFBlocks.MANGROVE_SAPLING));
+		register(event, blockItem(TFBlocks.DARKWOOD_SAPLING));
+		register(event, blockItem(TFBlocks.HOLLOW_OAK_SAPLING));
+		register(event, blockItem(TFBlocks.TIME_SAPLING));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_SAPLING));
+		register(event, blockItem(TFBlocks.MINING_SAPLING));
+		register(event, blockItem(TFBlocks.SORTING_SAPLING));
+		register(event, blockItem(TFBlocks.RAINBOW_OAK_SAPLING));
 
-		r.register(burningItem(TFBlocks.OAK_BANISTER, 300));
-		r.register(burningItem(TFBlocks.SPRUCE_BANISTER, 300));
-		r.register(burningItem(TFBlocks.BIRCH_BANISTER, 300));
-		r.register(burningItem(TFBlocks.JUNGLE_BANISTER, 300));
-		r.register(burningItem(TFBlocks.ACACIA_BANISTER, 300));
-		r.register(burningItem(TFBlocks.DARK_OAK_BANISTER, 300));
-		r.register(burningItem(TFBlocks.CRIMSON_BANISTER, 300));
-		r.register(burningItem(TFBlocks.WARPED_BANISTER, 300));
+		register(event, burningItem(TFBlocks.OAK_BANISTER, 300));
+		register(event, burningItem(TFBlocks.SPRUCE_BANISTER, 300));
+		register(event, burningItem(TFBlocks.BIRCH_BANISTER, 300));
+		register(event, burningItem(TFBlocks.JUNGLE_BANISTER, 300));
+		register(event, burningItem(TFBlocks.ACACIA_BANISTER, 300));
+		register(event, burningItem(TFBlocks.DARK_OAK_BANISTER, 300));
+		register(event, burningItem(TFBlocks.CRIMSON_BANISTER, 300));
+		register(event, burningItem(TFBlocks.WARPED_BANISTER, 300));
 
-		r.register(hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE, "hollow_oak_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL, TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL, TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE, "hollow_spruce_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL, TFBlocks.HOLLOW_BIRCH_LOG_VERTICAL, TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE, "hollow_birch_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL, TFBlocks.HOLLOW_JUNGLE_LOG_VERTICAL, TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE, "hollow_jungle_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL, TFBlocks.HOLLOW_ACACIA_LOG_VERTICAL, TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE, "hollow_acacia_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE, "hollow_dark_oak_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL, TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL, TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE, "hollow_crimson_stem"));
-		r.register(hollowLog(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL, TFBlocks.HOLLOW_WARPED_STEM_VERTICAL, TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE, "hollow_warped_stem"));
+		register(event, hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE, "hollow_oak_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL, TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL, TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE, "hollow_spruce_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL, TFBlocks.HOLLOW_BIRCH_LOG_VERTICAL, TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE, "hollow_birch_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL, TFBlocks.HOLLOW_JUNGLE_LOG_VERTICAL, TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE, "hollow_jungle_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL, TFBlocks.HOLLOW_ACACIA_LOG_VERTICAL, TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE, "hollow_acacia_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE, "hollow_dark_oak_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL, TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL, TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE, "hollow_crimson_stem"));
+		register(event, hollowLog(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL, TFBlocks.HOLLOW_WARPED_STEM_VERTICAL, TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE, "hollow_warped_stem"));
 
-		r.register(hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, "hollow_twilight_oak_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, "hollow_canopy_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL, TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE, "hollow_mangrove_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_LOG_VERTICAL, TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE, "hollow_dark_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL, TFBlocks.HOLLOW_TIME_LOG_VERTICAL, TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE, "hollow_time_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE, "hollow_transformation_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL, TFBlocks.HOLLOW_MINING_LOG_VERTICAL, TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE, "hollow_mining_log"));
-		r.register(hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL, TFBlocks.HOLLOW_SORTING_LOG_VERTICAL, TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE, "hollow_sorting_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, "hollow_twilight_oak_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, "hollow_canopy_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL, TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE, "hollow_mangrove_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_LOG_VERTICAL, TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE, "hollow_dark_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL, TFBlocks.HOLLOW_TIME_LOG_VERTICAL, TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE, "hollow_time_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE, "hollow_transformation_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL, TFBlocks.HOLLOW_MINING_LOG_VERTICAL, TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE, "hollow_mining_log"));
+		register(event, hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL, TFBlocks.HOLLOW_SORTING_LOG_VERTICAL, TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE, "hollow_sorting_log"));
 
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_PLANKS));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_STAIRS));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_SLAB));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_BUTTON));
-		r.register(burningItem(TFBlocks.TWILIGHT_OAK_FENCE, 300));
-		r.register(burningItem(TFBlocks.TWILIGHT_OAK_GATE, 300));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_PLATE));
-		r.register(blockItem(TFBlocks.TWILIGHT_OAK_TRAPDOOR));
-		r.register(tallBlock(TFBlocks.TWILIGHT_OAK_DOOR));
-		r.register(signBlock(TFBlocks.TWILIGHT_OAK_SIGN, TFBlocks.TWILIGHT_WALL_SIGN));
-		r.register(burningItem(TFBlocks.TWILIGHT_OAK_BANISTER, 300));
-		r.register(blockItem(TFBlocks.CANOPY_PLANKS));
-		r.register(blockItem(TFBlocks.CANOPY_STAIRS));
-		r.register(blockItem(TFBlocks.CANOPY_SLAB));
-		r.register(blockItem(TFBlocks.CANOPY_BUTTON));
-		r.register(burningItem(TFBlocks.CANOPY_FENCE, 300));
-		r.register(burningItem(TFBlocks.CANOPY_GATE, 300));
-		r.register(blockItem(TFBlocks.CANOPY_PLATE));
-		r.register(blockItem(TFBlocks.CANOPY_TRAPDOOR));
-		r.register(tallBlock(TFBlocks.CANOPY_DOOR));
-		r.register(signBlock(TFBlocks.CANOPY_SIGN, TFBlocks.CANOPY_WALL_SIGN));
-		r.register(burningItem(TFBlocks.CANOPY_BANISTER, 300));
-		r.register(blockItem(TFBlocks.CANOPY_BOOKSHELF));
-		r.register(blockItem(TFBlocks.MANGROVE_PLANKS));
-		r.register(blockItem(TFBlocks.MANGROVE_STAIRS));
-		r.register(blockItem(TFBlocks.MANGROVE_SLAB));
-		r.register(blockItem(TFBlocks.MANGROVE_BUTTON));
-		r.register(burningItem(TFBlocks.MANGROVE_FENCE, 300));
-		r.register(burningItem(TFBlocks.MANGROVE_GATE, 300));
-		r.register(blockItem(TFBlocks.MANGROVE_PLATE));
-		r.register(blockItem(TFBlocks.MANGROVE_TRAPDOOR));
-		r.register(tallBlock(TFBlocks.MANGROVE_DOOR));
-		r.register(signBlock(TFBlocks.MANGROVE_SIGN, TFBlocks.MANGROVE_WALL_SIGN));
-		r.register(burningItem(TFBlocks.MANGROVE_BANISTER, 300));
-		r.register(blockItem(TFBlocks.DARK_PLANKS));
-		r.register(blockItem(TFBlocks.DARK_STAIRS));
-		r.register(blockItem(TFBlocks.DARK_SLAB));
-		r.register(blockItem(TFBlocks.DARK_BUTTON));
-		r.register(burningItem(TFBlocks.DARK_FENCE, 300));
-		r.register(burningItem(TFBlocks.DARK_GATE, 300));
-		r.register(blockItem(TFBlocks.DARK_PLATE));
-		r.register(blockItem(TFBlocks.DARK_TRAPDOOR));
-		r.register(tallBlock(TFBlocks.DARK_DOOR));
-		r.register(signBlock(TFBlocks.DARKWOOD_SIGN, TFBlocks.DARKWOOD_WALL_SIGN));
-		r.register(burningItem(TFBlocks.DARKWOOD_BANISTER, 300));
-		r.register(blockItem(TFBlocks.TIME_PLANKS));
-		r.register(blockItem(TFBlocks.TIME_STAIRS));
-		r.register(blockItem(TFBlocks.TIME_SLAB));
-		r.register(blockItem(TFBlocks.TIME_BUTTON));
-		r.register(burningItem(TFBlocks.TIME_FENCE, 300));
-		r.register(burningItem(TFBlocks.TIME_GATE, 300));
-		r.register(blockItem(TFBlocks.TIME_PLATE));
-		r.register(blockItem(TFBlocks.TIME_TRAPDOOR));
-		r.register(tallBlock(TFBlocks.TIME_DOOR));
-		r.register(signBlock(TFBlocks.TIME_SIGN, TFBlocks.TIME_WALL_SIGN));
-		r.register(burningItem(TFBlocks.TIME_BANISTER, 300));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_PLANKS));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_STAIRS));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_SLAB));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_BUTTON));
-		r.register(burningItem(TFBlocks.TRANSFORMATION_FENCE, 300));
-		r.register(burningItem(TFBlocks.TRANSFORMATION_GATE, 300));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_PLATE));
-		r.register(blockItem(TFBlocks.TRANSFORMATION_TRAPDOOR));
-		r.register(tallBlock(TFBlocks.TRANSFORMATION_DOOR));
-		r.register(signBlock(TFBlocks.TRANSFORMATION_SIGN, TFBlocks.TRANSFORMATION_WALL_SIGN));
-		r.register(burningItem(TFBlocks.TRANSFORMATION_BANISTER, 300));
-		r.register(blockItem(TFBlocks.MINING_PLANKS));
-		r.register(blockItem(TFBlocks.MINING_STAIRS));
-		r.register(blockItem(TFBlocks.MINING_SLAB));
-		r.register(blockItem(TFBlocks.MINING_BUTTON));
-		r.register(burningItem(TFBlocks.MINING_FENCE, 300));
-		r.register(burningItem(TFBlocks.MINING_GATE, 300));
-		r.register(blockItem(TFBlocks.MINING_PLATE));
-		r.register(blockItem(TFBlocks.MINING_TRAPDOOR));
-		r.register(tallBlock(TFBlocks.MINING_DOOR));
-		r.register(signBlock(TFBlocks.MINING_SIGN, TFBlocks.MINING_WALL_SIGN));
-		r.register(burningItem(TFBlocks.MINING_BANISTER, 300));
-		r.register(blockItem(TFBlocks.SORTING_PLANKS));
-		r.register(blockItem(TFBlocks.SORTING_STAIRS));
-		r.register(blockItem(TFBlocks.SORTING_SLAB));
-		r.register(blockItem(TFBlocks.SORTING_BUTTON));
-		r.register(burningItem(TFBlocks.SORTING_FENCE, 300));
-		r.register(burningItem(TFBlocks.SORTING_GATE, 300));
-		r.register(blockItem(TFBlocks.SORTING_PLATE));
-		r.register(blockItem(TFBlocks.SORTING_TRAPDOOR));
-		r.register(tallBlock(TFBlocks.SORTING_DOOR));
-		r.register(signBlock(TFBlocks.SORTING_SIGN, TFBlocks.SORTING_WALL_SIGN));
-		r.register(burningItem(TFBlocks.SORTING_BANISTER, 300));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_PLANKS));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_STAIRS));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_SLAB));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_BUTTON));
+		register(event, burningItem(TFBlocks.TWILIGHT_OAK_FENCE, 300));
+		register(event, burningItem(TFBlocks.TWILIGHT_OAK_GATE, 300));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_PLATE));
+		register(event, blockItem(TFBlocks.TWILIGHT_OAK_TRAPDOOR));
+		register(event, tallBlock(TFBlocks.TWILIGHT_OAK_DOOR));
+		register(event, signBlock(TFBlocks.TWILIGHT_OAK_SIGN, TFBlocks.TWILIGHT_WALL_SIGN));
+		register(event, burningItem(TFBlocks.TWILIGHT_OAK_BANISTER, 300));
+		register(event, blockItem(TFBlocks.CANOPY_PLANKS));
+		register(event, blockItem(TFBlocks.CANOPY_STAIRS));
+		register(event, blockItem(TFBlocks.CANOPY_SLAB));
+		register(event, blockItem(TFBlocks.CANOPY_BUTTON));
+		register(event, burningItem(TFBlocks.CANOPY_FENCE, 300));
+		register(event, burningItem(TFBlocks.CANOPY_GATE, 300));
+		register(event, blockItem(TFBlocks.CANOPY_PLATE));
+		register(event, blockItem(TFBlocks.CANOPY_TRAPDOOR));
+		register(event, tallBlock(TFBlocks.CANOPY_DOOR));
+		register(event, signBlock(TFBlocks.CANOPY_SIGN, TFBlocks.CANOPY_WALL_SIGN));
+		register(event, burningItem(TFBlocks.CANOPY_BANISTER, 300));
+		register(event, blockItem(TFBlocks.CANOPY_BOOKSHELF));
+		register(event, blockItem(TFBlocks.MANGROVE_PLANKS));
+		register(event, blockItem(TFBlocks.MANGROVE_STAIRS));
+		register(event, blockItem(TFBlocks.MANGROVE_SLAB));
+		register(event, blockItem(TFBlocks.MANGROVE_BUTTON));
+		register(event, burningItem(TFBlocks.MANGROVE_FENCE, 300));
+		register(event, burningItem(TFBlocks.MANGROVE_GATE, 300));
+		register(event, blockItem(TFBlocks.MANGROVE_PLATE));
+		register(event, blockItem(TFBlocks.MANGROVE_TRAPDOOR));
+		register(event, tallBlock(TFBlocks.MANGROVE_DOOR));
+		register(event, signBlock(TFBlocks.MANGROVE_SIGN, TFBlocks.MANGROVE_WALL_SIGN));
+		register(event, burningItem(TFBlocks.MANGROVE_BANISTER, 300));
+		register(event, blockItem(TFBlocks.DARK_PLANKS));
+		register(event, blockItem(TFBlocks.DARK_STAIRS));
+		register(event, blockItem(TFBlocks.DARK_SLAB));
+		register(event, blockItem(TFBlocks.DARK_BUTTON));
+		register(event, burningItem(TFBlocks.DARK_FENCE, 300));
+		register(event, burningItem(TFBlocks.DARK_GATE, 300));
+		register(event, blockItem(TFBlocks.DARK_PLATE));
+		register(event, blockItem(TFBlocks.DARK_TRAPDOOR));
+		register(event, tallBlock(TFBlocks.DARK_DOOR));
+		register(event, signBlock(TFBlocks.DARKWOOD_SIGN, TFBlocks.DARKWOOD_WALL_SIGN));
+		register(event, burningItem(TFBlocks.DARKWOOD_BANISTER, 300));
+		register(event, blockItem(TFBlocks.TIME_PLANKS));
+		register(event, blockItem(TFBlocks.TIME_STAIRS));
+		register(event, blockItem(TFBlocks.TIME_SLAB));
+		register(event, blockItem(TFBlocks.TIME_BUTTON));
+		register(event, burningItem(TFBlocks.TIME_FENCE, 300));
+		register(event, burningItem(TFBlocks.TIME_GATE, 300));
+		register(event, blockItem(TFBlocks.TIME_PLATE));
+		register(event, blockItem(TFBlocks.TIME_TRAPDOOR));
+		register(event, tallBlock(TFBlocks.TIME_DOOR));
+		register(event, signBlock(TFBlocks.TIME_SIGN, TFBlocks.TIME_WALL_SIGN));
+		register(event, burningItem(TFBlocks.TIME_BANISTER, 300));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_PLANKS));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_STAIRS));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_SLAB));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_BUTTON));
+		register(event, burningItem(TFBlocks.TRANSFORMATION_FENCE, 300));
+		register(event, burningItem(TFBlocks.TRANSFORMATION_GATE, 300));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_PLATE));
+		register(event, blockItem(TFBlocks.TRANSFORMATION_TRAPDOOR));
+		register(event, tallBlock(TFBlocks.TRANSFORMATION_DOOR));
+		register(event, signBlock(TFBlocks.TRANSFORMATION_SIGN, TFBlocks.TRANSFORMATION_WALL_SIGN));
+		register(event, burningItem(TFBlocks.TRANSFORMATION_BANISTER, 300));
+		register(event, blockItem(TFBlocks.MINING_PLANKS));
+		register(event, blockItem(TFBlocks.MINING_STAIRS));
+		register(event, blockItem(TFBlocks.MINING_SLAB));
+		register(event, blockItem(TFBlocks.MINING_BUTTON));
+		register(event, burningItem(TFBlocks.MINING_FENCE, 300));
+		register(event, burningItem(TFBlocks.MINING_GATE, 300));
+		register(event, blockItem(TFBlocks.MINING_PLATE));
+		register(event, blockItem(TFBlocks.MINING_TRAPDOOR));
+		register(event, tallBlock(TFBlocks.MINING_DOOR));
+		register(event, signBlock(TFBlocks.MINING_SIGN, TFBlocks.MINING_WALL_SIGN));
+		register(event, burningItem(TFBlocks.MINING_BANISTER, 300));
+		register(event, blockItem(TFBlocks.SORTING_PLANKS));
+		register(event, blockItem(TFBlocks.SORTING_STAIRS));
+		register(event, blockItem(TFBlocks.SORTING_SLAB));
+		register(event, blockItem(TFBlocks.SORTING_BUTTON));
+		register(event, burningItem(TFBlocks.SORTING_FENCE, 300));
+		register(event, burningItem(TFBlocks.SORTING_GATE, 300));
+		register(event, blockItem(TFBlocks.SORTING_PLATE));
+		register(event, blockItem(TFBlocks.SORTING_TRAPDOOR));
+		register(event, tallBlock(TFBlocks.SORTING_DOOR));
+		register(event, signBlock(TFBlocks.SORTING_SIGN, TFBlocks.SORTING_WALL_SIGN));
+		register(event, burningItem(TFBlocks.SORTING_BANISTER, 300));
 
-		makeBEWLRItem(r, TFBlocks.TWILIGHT_OAK_CHEST, TFBlockEntities.TF_CHEST.getId());
-		makeBEWLRItem(r, TFBlocks.CANOPY_CHEST, TFBlockEntities.TF_CHEST.getId());
-		makeBEWLRItem(r, TFBlocks.MANGROVE_CHEST, TFBlockEntities.TF_CHEST.getId());
-		makeBEWLRItem(r, TFBlocks.DARKWOOD_CHEST, TFBlockEntities.TF_CHEST.getId());
-		makeBEWLRItem(r, TFBlocks.TIME_CHEST, TFBlockEntities.TF_CHEST.getId());
-		makeBEWLRItem(r, TFBlocks.TRANSFORMATION_CHEST, TFBlockEntities.TF_CHEST.getId());
-		makeBEWLRItem(r, TFBlocks.MINING_CHEST, TFBlockEntities.TF_CHEST.getId());
-		makeBEWLRItem(r, TFBlocks.SORTING_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(event, TFBlocks.TWILIGHT_OAK_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(event, TFBlocks.CANOPY_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(event, TFBlocks.MANGROVE_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(event, TFBlocks.DARKWOOD_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(event, TFBlocks.TIME_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(event, TFBlocks.TRANSFORMATION_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(event, TFBlocks.MINING_CHEST, TFBlockEntities.TF_CHEST.getId());
+		makeBEWLRItem(event, TFBlocks.SORTING_CHEST, TFBlockEntities.TF_CHEST.getId());
 	}
 
-	private static <B extends Block> Item hollowLog(RegistryObject<HollowLogHorizontal> horizontalLog, RegistryObject<HollowLogVertical> verticalLog, RegistryObject<HollowLogClimbable> climbable, String name) {
-		return new HollowLogItem(horizontalLog, verticalLog, climbable, TFItems.defaultBuilder()).setRegistryName(TwilightForestMod.ID, name);
+	private static <B extends Block> BlockItem hollowLog(RegistryObject<HollowLogHorizontal> horizontalLog, RegistryObject<HollowLogVertical> verticalLog, RegistryObject<HollowLogClimbable> climbable, String name) {
+		return new HollowLogItem(horizontalLog, verticalLog, climbable, TFItems.defaultBuilder());
 	}
 
-	private static <B extends Block> Item blockItem(RegistryObject<B> block) {
-		return makeBlockItem(new BlockItem(block.get(), TFItems.defaultBuilder()), block);
+	private static <B extends Block> BlockItem blockItem(RegistryObject<B> block) {
+		return new BlockItem(block.get(), TFItems.defaultBuilder());
 	}
 
-	private static <B extends Block> Item fireImmuneBlock(RegistryObject<B> block) {
-		return makeBlockItem(new BlockItem(block.get(), TFItems.defaultBuilder().fireResistant()), block);
+	private static <B extends Block> BlockItem fireImmuneBlock(RegistryObject<B> block) {
+		return new BlockItem(block.get(), TFItems.defaultBuilder().fireResistant());
 	}
 
-	private static <B extends AbstractSkullCandleBlock> Item skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
-		return makeBlockItem(new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)) {
+	private static <B extends AbstractSkullCandleBlock> BlockItem skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
+		return new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)) {
 			@Override
 			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 				consumer.accept(new IItemRenderProperties() {
@@ -428,15 +429,15 @@ public class TFBlockItems {
 					}
 				});
 			}
-		}, floor);
+		};
 	}
 
-	private static <B extends Block> Item burningItem(RegistryObject<B> block, int burntime) {
-		return makeBlockItem(new FurnaceFuelItem(block.get(), TFItems.defaultBuilder(), burntime), block);
+	private static <B extends Block> BlockItem burningItem(RegistryObject<B> block, int burntime) {
+		return new FurnaceFuelItem(block.get(), TFItems.defaultBuilder(), burntime);
 	}
 
-	private static <B extends Block, W extends Block> Item trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		return makeBlockItem(new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())) {
+	private static <B extends Block, W extends Block> BlockItem trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
+		return new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())) {
 			@Override
 			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 				consumer.accept(new IItemRenderProperties() {
@@ -446,11 +447,11 @@ public class TFBlockItems {
 					}
 				});
 			}
-		}, block);
+		};
 	}
 
-	private static <T extends Block, E extends BlockEntity> Item wearableBlock(RegistryObject<T> block, RegistryObject<BlockEntityType<E>> tileentity) {
-		return makeBlockItem(new WearableItem(block.get(), TFItems.defaultBuilder()) {
+	private static <T extends Block, E extends BlockEntity> BlockItem wearableBlock(RegistryObject<T> block, RegistryObject<BlockEntityType<E>> tileentity) {
+		return new WearableItem(block.get(), TFItems.defaultBuilder()) {
 			@Override
 			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 				consumer.accept(new IItemRenderProperties() {
@@ -460,23 +461,19 @@ public class TFBlockItems {
 					}
 				});
 			}
-		}, block);
+		};
 	}
 
-	private static <B extends Block> Item tallBlock(RegistryObject<B> block) {
-		return makeBlockItem(new DoubleHighBlockItem(block.get(), TFItems.defaultBuilder()), block);
+	private static <B extends Block> BlockItem tallBlock(RegistryObject<B> block) {
+		return new DoubleHighBlockItem(block.get(), TFItems.defaultBuilder());
 	}
 
-	private static <B extends Block, W extends Block> Item signBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		return makeBlockItem(new SignItem(TFItems.defaultBuilder().stacksTo(16), block.get(), wallblock.get()), block);
+	private static <B extends Block, W extends Block> BlockItem signBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
+		return new SignItem(TFItems.defaultBuilder().stacksTo(16), block.get(), wallblock.get());
 	}
 
-	private static Item makeBlockItem(Item blockitem, RegistryObject<? extends Block> block) {
-		return blockitem.setRegistryName(Objects.requireNonNull(block.getId()));
-	}
-
-	private static void makeBEWLRItem(IForgeRegistry<Item> r, RegistryObject<? extends Block> block, ResourceLocation rl) {
-		r.register(makeBlockItem(new BlockItem(block.get(), TFItems.defaultBuilder()) {
+	private static void makeBEWLRItem(RegisterEvent event, RegistryObject<? extends Block> block, ResourceLocation rl) {
+		register(event, new BlockItem(block.get(), TFItems.defaultBuilder()) {
 			@Override
 			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 				consumer.accept(new IItemRenderProperties() {
@@ -486,6 +483,10 @@ public class TFBlockItems {
 					}
 				});
 			}
-		}, block));
+		});
+	}
+
+	private static void register(RegisterEvent event, BlockItem item) {
+		event.register(ForgeRegistries.Keys.ITEMS, helper -> helper.register(ForgeRegistries.BLOCKS.getKey(item.getBlock()), item));
 	}
 }

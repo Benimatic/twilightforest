@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -55,7 +56,7 @@ public class HedgeSpider extends Spider {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
-	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos pos, Random random) {
+	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos pos, RandomSource random) {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
@@ -65,25 +66,25 @@ public class HedgeSpider extends Spider {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HEDGE_SPIDER_AMBIENT;
+		return TFSounds.HEDGE_SPIDER_AMBIENT.get();
 	}
 	
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.HEDGE_SPIDER_HURT;
+		return TFSounds.HEDGE_SPIDER_HURT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HEDGE_SPIDER_DEATH;
+		return TFSounds.HEDGE_SPIDER_DEATH.get();
 	}
 	
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound(TFSounds.HEDGE_SPIDER_STEP, 0.15F, 1.0F);
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		this.playSound(TFSounds.HEDGE_SPIDER_STEP.get(), 0.15F, 1.0F);
 	}
 
-	public static boolean canSpawn(EntityType<HedgeSpider> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean canSpawn(EntityType<HedgeSpider> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random);
 	}
 }

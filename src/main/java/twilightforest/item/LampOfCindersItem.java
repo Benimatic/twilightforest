@@ -64,7 +64,7 @@ public class LampOfCindersItem extends Item {
 			if (player instanceof ServerPlayer)
 				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, player.getItemInHand(context.getHand()));
 
-			player.playSound(TFSounds.LAMP_BURN, 0.5F, 1.5F);
+			player.playSound(TFSounds.LAMP_BURN.get(), 0.5F, 1.5F);
 
 			// spawn flame particles
 			for (int i = 0; i < 10; i++) {

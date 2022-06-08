@@ -281,7 +281,7 @@ public class Lich extends Monster {
 		}
 
 		if (this.isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
-			this.playSound(TFSounds.LICH_CLONE_HURT, 1.0F, this.getVoicePitch() * 2.0F);
+			this.playSound(TFSounds.LICH_CLONE_HURT.get(), 1.0F, this.getVoicePitch() * 2.0F);
 			return false;
 		}
 
@@ -296,10 +296,10 @@ public class Lich extends Monster {
 				// reduce shield for magic damage greater than 1 heart
 				if (this.getShieldStrength() > 0) {
 					this.setShieldStrength(this.getShieldStrength() - 1);
-					this.playSound(TFSounds.SHIELD_BREAK, 1.0F, this.getVoicePitch() * 2.0F);
+					this.playSound(TFSounds.SHIELD_BREAK.get(), 1.0F, this.getVoicePitch() * 2.0F);
 				}
 			} else {
-				this.playSound(TFSounds.SHIELD_BREAK, 1.0F, this.getVoicePitch() * 2.0F);
+				this.playSound(TFSounds.SHIELD_BREAK.get(), 1.0F, this.getVoicePitch() * 2.0F);
 				if (src.getEntity() instanceof LivingEntity living) {
 					this.setLastHurtByMob(living);
 				}
@@ -363,7 +363,7 @@ public class Lich extends Monster {
 		double ty = (this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F) - (this.getY() + this.getBbHeight() / 2.0F);
 		double tz = this.getTarget().getZ() - sz;
 
-		this.playSound(TFSounds.LICH_SHOOT, this.getSoundVolume(), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
+		this.playSound(TFSounds.LICH_SHOOT.get(), this.getSoundVolume(), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
 
 		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
@@ -467,8 +467,8 @@ public class Lich extends Monster {
 		this.teleportTo(destX, destY, destZ);
 
 		this.makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.getLevel().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT, this.getSoundSource(), 1.0F, 1.0F);
-		this.playSound(TFSounds.LICH_TELEPORT, 1.0F, 1.0F);
+		this.getLevel().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT.get(), this.getSoundSource(), 1.0F, 1.0F);
+		this.playSound(TFSounds.LICH_TELEPORT.get(), 1.0F, 1.0F);
 
 		// sometimes we need to do this
 		this.jumping = false;
@@ -629,17 +629,17 @@ public class Lich extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.LICH_AMBIENT;
+		return TFSounds.LICH_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.LICH_HURT;
+		return TFSounds.LICH_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.LICH_DEATH;
+		return TFSounds.LICH_DEATH.get();
 	}
 
 	@Override

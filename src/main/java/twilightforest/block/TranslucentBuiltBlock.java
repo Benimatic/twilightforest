@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -32,10 +33,10 @@ public class TranslucentBuiltBlock extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		if (state.getValue(ACTIVE)) {
 			world.removeBlock(pos, false);
-			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundSource.BLOCKS, 0.3F, 0.5F);
+			world.playSound(null, pos, TFSounds.BUILDER_REPLACE.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
 
 			for (Direction e : Direction.values()) {
 				BuilderBlock.activateBuiltBlocks(world, pos.relative(e));

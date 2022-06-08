@@ -46,7 +46,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 		double ty = (targetedEntity.getBoundingBox().minY + targetedEntity.getBbHeight() / 2.0F) - (boss.getY() + boss.getBbHeight() / 2.0F);
 		double tz = targetedEntity.getZ() - sz;
 
-		boss.playSound(TFSounds.PHANTOM_THROW_AXE, 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
+		boss.playSound(TFSounds.PHANTOM_THROW_AXE.get(), 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
 		ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), boss.level, boss).setItem(new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
 
 		float speed = 0.75F;
@@ -59,7 +59,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 	}
 
 	private void launchPicks() {
-		boss.playSound(TFSounds.PHANTOM_THROW_PICK, 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
+		boss.playSound(TFSounds.PHANTOM_THROW_PICK.get(), 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
 
 		for (int i = 0; i < 8; i++) {
 			float throwAngle = i * 3.14159165F / 4F;

@@ -42,7 +42,6 @@ import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.RandomSource;
 
 public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	private boolean placedKeys = false;

@@ -4,8 +4,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 
-import java.util.RandomSource;
-
 public class StrongholdStones extends StructurePiece.BlockSelector {
 
 	@Override

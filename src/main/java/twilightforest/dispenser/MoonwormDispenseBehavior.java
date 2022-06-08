@@ -37,7 +37,7 @@ public abstract class MoonwormDispenseBehavior extends DefaultDispenseItemBehavi
 
     protected void playSound(BlockSource source) {
         if(fired) {
-            source.getLevel().playSound(null, source.x(), source.y(), source.z(), TFSounds.MOONWORM_SQUISH, SoundSource.NEUTRAL, 1, 1);
+            source.getLevel().playSound(null, source.x(), source.y(), source.z(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.NEUTRAL, 1, 1);
             fired = false;
         } else {
             source.getLevel().levelEvent(1001, source.getPos(), 0);

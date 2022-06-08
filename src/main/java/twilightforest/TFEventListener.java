@@ -483,7 +483,7 @@ public class TFEventListener {
 			effect2.offset = (float) Math.PI;
 			player.level.addFreshEntity(effect2);
 
-			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE, player.getSoundSource(), 1, 1);
+			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE.get(), player.getSoundSource(), 1, 1);
 
 			if(player instanceof ServerPlayer) player.awardStat(TFStats.LIFE_CHARMS_ACTIVATED.get());
 
@@ -623,7 +623,7 @@ public class TFEventListener {
 			effect2.offset = (float) Math.PI;
 			player.level.addFreshEntity(effect2);
 
-			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP, player.getSoundSource(), 1.5F, 1.0F);
+			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP.get(), player.getSoundSource(), 1.5F, 1.0F);
 			if(player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.get());
 			charmUsed = null;
 		}

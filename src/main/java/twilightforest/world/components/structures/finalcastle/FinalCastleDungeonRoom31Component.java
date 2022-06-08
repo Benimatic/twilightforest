@@ -11,7 +11,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -26,7 +25,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 import java.util.function.Predicate;
 
 public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
@@ -160,7 +159,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			return;
 		}
 
-		RandomSource decoRNG = new RandomSource(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.STONE);
 
@@ -208,10 +207,5 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			return TFBlocks.GREEN_FORCE_FIELD.get().defaultBlockState();
 		else
 			return TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState();
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BURY;
 	}
 }

@@ -16,7 +16,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class MazeRoomBossComponent extends MazeRoomComponent {
 

@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -41,7 +42,7 @@ public class MazeSlime extends Slime {
 		this.xpReward += 3;
 	}
 
-	public static boolean getCanSpawnHere(EntityType<MazeSlime> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<MazeSlime> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entity, world, reason, pos, random) && Monster.isDarkEnoughToSpawn(world, pos, random);
 	}
 
@@ -59,23 +60,23 @@ public class MazeSlime extends Slime {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return this.isTiny() ? TFSounds.MAZE_SLIME_HURT_SMALL : TFSounds.MAZE_SLIME_HURT;
+	protected SoundEvent getHurtSound(DamageSource source) {
+	      return this.isTiny() ? TFSounds.MAZE_SLIME_HURT_SMALL.get() : TFSounds.MAZE_SLIME_HURT.get();
 	   }
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return this.isTiny() ? TFSounds.MAZE_SLIME_DEATH_SMALL : TFSounds.MAZE_SLIME_DEATH;
+	      return this.isTiny() ? TFSounds.MAZE_SLIME_DEATH_SMALL.get() : TFSounds.MAZE_SLIME_DEATH.get();
 	   }
 
 	@Override
 	protected SoundEvent getSquishSound() {
-	      return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL : TFSounds.MAZE_SLIME_SQUISH;
+	      return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL.get() : TFSounds.MAZE_SLIME_SQUISH.get();
 	   }
 	
 	@Override
 	protected SoundEvent getJumpSound() {
-	      return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL : TFSounds.MAZE_SLIME_SQUISH;
+	      return this.isTiny() ? TFSounds.MAZE_SLIME_SQUISH_SMALL.get() : TFSounds.MAZE_SLIME_SQUISH.get();
 	   }
 
 	@Override

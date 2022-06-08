@@ -46,11 +46,6 @@ public class MoonwormShot extends TFThrowable {
 		makeTrail();
 	}
 
-	@Override
-	public float getBrightness() {
-		return 1.0F;
-	}
-
 	private void makeTrail() {
 //		for (int i = 0; i < 5; i++) {
 //			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 

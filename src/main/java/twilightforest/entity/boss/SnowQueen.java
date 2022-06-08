@@ -126,17 +126,17 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.SNOW_QUEEN_AMBIENT;
+		return TFSounds.SNOW_QUEEN_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.SNOW_QUEEN_HURT;
+		return TFSounds.SNOW_QUEEN_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.SNOW_QUEEN_DEATH;
+		return TFSounds.SNOW_QUEEN_DEATH.get();
 	}
 
 	@Override
@@ -291,7 +291,7 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 			if (collided instanceof LivingEntity && super.doHurtTarget(collided)) {
 				Vec3 motion = collided.getDeltaMovement();
 				collided.setDeltaMovement(motion.x, motion.y + 0.4, motion.z);
-				this.playSound(TFSounds.SNOW_QUEEN_ATTACK, 1.0F, 1.0F);
+				this.playSound(TFSounds.SNOW_QUEEN_ATTACK.get(), 1.0F, 1.0F);
 			}
 		}
 	}

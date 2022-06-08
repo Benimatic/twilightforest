@@ -62,19 +62,19 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 			if (chargeLevel >= 1 && te.counter % 10 == 0) {
 				TFBlocks.GHAST_TRAP.get().sparkle(level, pos);
-				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			}
 			if (chargeLevel >= 2) {
 				level.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.00, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
 				if (te.counter % 10 == 0) {
-					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT, SoundSource.BLOCKS, 1.2F, 0.8F, false);
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT.get(), SoundSource.BLOCKS, 1.2F, 0.8F, false);
 				}
 			}
 			if (chargeLevel >= 3) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.05, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
 				TFBlocks.GHAST_TRAP.get().sparkle(level, pos);
 				if (te.counter % 5 == 0) {
-					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT, SoundSource.BLOCKS, 1.5F, 2F, false);
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT.get(), SoundSource.BLOCKS, 1.5F, 2F, false);
 				}
 			}
 		}
@@ -149,11 +149,11 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 			// appropriate sound
 			if (te.counter < 30) {
-				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_WARMUP, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_WARMUP.get(), SoundSource.BLOCKS, 1.0F, 4.0F, false);
 			} else if (te.counter < 80) {
-				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_ON, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_ON.get(), SoundSource.BLOCKS, 1.0F, 4.0F, false);
 			} else {
-				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_SPINDOWN, SoundSource.BLOCKS, 1.0F, 4.0F, false);
+				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_SPINDOWN.get(), SoundSource.BLOCKS, 1.0F, 4.0F, false);
 			}
 		} else {
 			// trap nearby ghasts

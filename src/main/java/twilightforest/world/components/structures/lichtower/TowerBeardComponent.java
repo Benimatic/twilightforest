@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class TowerBeardComponent extends TFStructureComponentOld {
 

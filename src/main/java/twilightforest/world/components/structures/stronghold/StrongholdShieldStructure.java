@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 
-import java.util.RandomSource;
+
 
 public class StrongholdShieldStructure extends StructureTFStrongholdComponent {
 

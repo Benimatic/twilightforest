@@ -25,7 +25,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
 
-import java.util.RandomSource;
+
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	protected static final SpikeConfig STONE_STALACTITE_SMALL = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(5, 5), UniformInt.of(2, 3), true);

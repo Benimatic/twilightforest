@@ -49,12 +49,6 @@ public class CicadaShot extends TFThrowable {
         this.shoot(motion.x, motion.y, motion.z, 2*1.5F, 1.0F);
     }
 
-
-    @Override
-    public float getBrightness() {
-        return 1.0F;
-    }
-
     @Override
     public boolean isPickable() {
         return true;
@@ -102,7 +96,7 @@ public class CicadaShot extends TFThrowable {
                 if (entity.getEntity() != null) {
                     if(entity.getEntity() instanceof Player player && !player.hasItemInSlot(EquipmentSlot.HEAD)) {
                         player.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFBlocks.CICADA.get()));
-                        if(!TFConfig.CLIENT_CONFIG.silentCicadas.get()) player.playSound(TFSounds.CICADA, 1.0F, 1.0F);
+                        if(!TFConfig.CLIENT_CONFIG.silentCicadas.get()) player.playSound(TFSounds.CICADA.get(), 1.0F, 1.0F);
                     } else {
                         entity.getEntity().hurt(new IndirectEntityDamageSource("cicada", this, null), 2);
                     }

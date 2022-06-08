@@ -70,17 +70,17 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.CARMINITE_GOLEM_HURT;
+		return TFSounds.CARMINITE_GOLEM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.CARMINITE_GOLEM_DEATH;
+		return TFSounds.CARMINITE_GOLEM_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.CARMINITE_GOLEM_STEP, 1.0F, 1.0F);
+		this.playSound(TFSounds.CARMINITE_GOLEM_STEP.get(), 1.0F, 1.0F);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class CarminiteGolem extends Monster {
 	public void handleEntityEvent(byte id) {
 		if (id == 4) {
 			this.attackTimer = 10;
-			this.playSound(TFSounds.CARMINITE_GOLEM_ATTACK, 1.0F, 1.0F);
+			this.playSound(TFSounds.CARMINITE_GOLEM_ATTACK.get(), 1.0F, 1.0F);
 		} else {
 			super.handleEntityEvent(id);
 		}

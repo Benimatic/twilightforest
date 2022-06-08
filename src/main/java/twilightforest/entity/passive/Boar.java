@@ -25,21 +25,21 @@ public class Boar extends Pig {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BOAR_AMBIENT;
+		return TFSounds.BOAR_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.BOAR_HURT;
+		return TFSounds.BOAR_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BOAR_DEATH;
+		return TFSounds.BOAR_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound(TFSounds.BOAR_STEP, 0.15F, 1.0F);
+		this.playSound(TFSounds.BOAR_STEP.get(), 0.15F, 1.0F);
 	}
 }

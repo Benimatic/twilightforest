@@ -3,6 +3,7 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -137,7 +138,7 @@ public class Wraith extends FlyingMob implements Enemy {
 
 		@Override
 		public void start() {
-			Random random = this.parentEntity.getRandom();
+			RandomSource random = this.parentEntity.getRandom();
 			double d0 = this.parentEntity.getX() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
 			double d1 = this.parentEntity.getY() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
 			double d2 = this.parentEntity.getZ() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
@@ -269,20 +270,20 @@ public class Wraith extends FlyingMob implements Enemy {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.WRAITH_AMBIENT;
+		return TFSounds.WRAITH_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.WRAITH_HURT;
+		return TFSounds.WRAITH_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.WRAITH_DEATH;
+		return TFSounds.WRAITH_DEATH.get();
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends Wraith> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<? extends Wraith> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 }

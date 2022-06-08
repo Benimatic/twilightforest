@@ -32,7 +32,7 @@ import java.util.UUID;
 @OnlyIn(value = Dist.CLIENT, _interface = LidBlockEntity.class)
 public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
     private static final int limit = 9 * 5;
-    public final NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
+    public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
     @Nullable
     public String name;
     @Nullable
@@ -124,7 +124,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
         }
         te.prevLidAngle = te.lidAngle;
         if (te.numPlayersUsing > 0 && te.lidAngle == 0.0F) {
-            level.playSound(null, pos, TFSounds.CASKET_OPEN, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+            level.playSound(null, pos, TFSounds.CASKET_OPEN.get(), SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
         }
         if (te.numPlayersUsing == 0 && te.lidAngle > 0.0F || te.numPlayersUsing > 0 && te.lidAngle < 1.0F) {
             float f2 = te.lidAngle;
@@ -135,7 +135,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
             if (te.lidAngle > 1.0F) te.lidAngle = 1.0F;
 
             if (te.lidAngle < 0.4F && f2 >= 0.4F) {
-                level.playSound(null, pos, TFSounds.CASKET_CLOSE, SoundSource.BLOCKS, 0.75F, level.random.nextFloat() * 0.1F + 0.9F);
+                level.playSound(null, pos, TFSounds.CASKET_CLOSE.get(), SoundSource.BLOCKS, 0.75F, level.random.nextFloat() * 0.1F + 0.9F);
             }
             if (te.lidAngle < 0.0F) te.lidAngle = 0.0F;
         }
@@ -172,7 +172,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
             if(user.hasPermissions(3) || user.getGameProfile().getId().equals(playeruuid)) {
                 return super.canOpen(user);
             } else {
-                user.playNotifySound(TFSounds.CASKET_LOCKED, SoundSource.BLOCKS, 0.5F, 0.5F);
+                user.playNotifySound(TFSounds.CASKET_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F);
                 user.displayClientMessage(Component.translatable("block.twilightforest.casket.locked", name).withStyle(ChatFormatting.RED), true);
                 return false;
             }

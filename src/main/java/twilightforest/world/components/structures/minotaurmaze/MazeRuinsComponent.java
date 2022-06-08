@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 /**
  * This component is the base for the maze/ruins combo feature.  There are village-like ruins above and a maze underneath.

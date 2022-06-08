@@ -71,7 +71,7 @@ public class PeacockFanItem extends Item {
 							lookVec.x, lookVec.y, lookVec.z);
 				}
 			}
-			player.playSound(TFSounds.FAN_WOOSH, 1.0F + world.random.nextFloat(), world.random.nextFloat() * 0.7F + 0.3F);
+			player.playSound(TFSounds.FAN_WOOSH.get(), 1.0F + world.random.nextFloat(), world.random.nextFloat() * 0.7F + 0.3F);
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 		}
 

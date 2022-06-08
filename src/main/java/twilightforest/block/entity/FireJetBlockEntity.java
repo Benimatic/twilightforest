@@ -51,7 +51,7 @@ public class FireJetBlockEntity extends BlockEntity {
 				{
 					level.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
 				}
-				level.playSound(null, pos, TFSounds.JET_POP, SoundSource.BLOCKS, 0.2F + level.random.nextFloat() * 0.2F, 0.9F + level.random.nextFloat() * 0.15F);
+				level.playSound(null, pos, TFSounds.JET_POP.get(), SoundSource.BLOCKS, 0.2F + level.random.nextFloat() * 0.2F, 0.9F + level.random.nextFloat() * 0.15F);
 			}
 		}
 	}
@@ -85,10 +85,10 @@ public class FireJetBlockEntity extends BlockEntity {
 
 			// sounds
 			if (te.counter % 4 == 0) {
-				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_ACTIVE, SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
+				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_ACTIVE.get(), SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
 
 			} else if (te.counter == 1) {
-				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_START, SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
+				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_START.get(), SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
 			}
 		}
 

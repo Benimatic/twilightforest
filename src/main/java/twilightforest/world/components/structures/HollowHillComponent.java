@@ -23,7 +23,7 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class HollowHillComponent extends TFStructureComponentOld {
 	private final static int[] stalactitesForSizes = {0, 128, 256, 512};

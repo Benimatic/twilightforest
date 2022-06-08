@@ -8,13 +8,12 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOld {
 
@@ -35,10 +34,5 @@ public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOl
 
 		// sign
 		this.placeSignAtCurrentPosition(world, 25, 0, 25, "Mini-boss 2", "Gives talisman", sbb);
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BURY;
 	}
 }

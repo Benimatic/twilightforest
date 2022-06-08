@@ -19,7 +19,6 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
 import java.util.function.Predicate;
 
 public class FinalCastleFoundation13Component extends TFStructureComponentOld {

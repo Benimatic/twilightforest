@@ -3,6 +3,7 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -46,27 +47,27 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-	      return TFSounds.GHASTLING_AMBIENT;
+	      return TFSounds.GHASTLING_AMBIENT.get();
 	   }
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.GHASTLING_HURT;
+	      return TFSounds.GHASTLING_HURT.get();
 	   }
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.GHASTLING_DEATH;
+	      return TFSounds.GHASTLING_DEATH.get();
 	   }
 
 	@Override
 	public SoundEvent getFireSound() {
-		return TFSounds.GHASTLING_SHOOT;
+		return TFSounds.GHASTLING_SHOOT.get();
 	}
 
 	@Override
 	public SoundEvent getWarnSound() {
-		return TFSounds.GHASTLING_WARN;
+		return TFSounds.GHASTLING_WARN.get();
 	}
 
 	// Loosely based on EntityEnderman.shouldAttackPlayer
@@ -88,7 +89,7 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	}
 
 	//This does not factor into whether the entity is a Minion or not. However, since it is spawned via MOB_SUMMONED, it will always spawn if that is the SpawnReason
-	public static boolean canSpawnHere(EntityType<CarminiteGhastling> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean canSpawnHere(EntityType<CarminiteGhastling> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.MOB_SUMMONED || Monster.isDarkEnoughToSpawn(world, pos, random)) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 

@@ -57,17 +57,17 @@ public class IceCrystal extends BaseIceMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_CORE_AMBIENT;
+		return TFSounds.ICE_CORE_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_CORE_HURT;
+		return TFSounds.ICE_CORE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_CORE_DEATH;
+		return TFSounds.ICE_CORE_DEATH.get();
 	}
 
 	public void setToDieIn30Seconds() {

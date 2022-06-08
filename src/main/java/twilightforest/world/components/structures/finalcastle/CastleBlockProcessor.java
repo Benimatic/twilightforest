@@ -5,8 +5,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
 
-import java.util.RandomSource;
-
 public class CastleBlockProcessor extends StructurePiece.BlockSelector {
 
 	@Override

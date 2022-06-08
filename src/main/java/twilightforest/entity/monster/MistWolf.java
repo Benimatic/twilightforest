@@ -27,7 +27,7 @@ public class MistWolf extends HostileWolf {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (super.doHurtTarget(entity)) {
-			float myBrightness = this.getBrightness();
+			float myBrightness = this.level.getSkyDarken();
 
 			if (entity instanceof LivingEntity && myBrightness < 0.10F) {
 				int effectDuration = switch (level.getDifficulty()) {
@@ -36,7 +36,7 @@ public class MistWolf extends HostileWolf {
 					default -> 7;
 				};
 
-				if (effectDuration > 0 && !level.getBlockState(this.eyeBlockPosition()).getMaterial().isSolid()) {
+				if (effectDuration > 0 && !level.getBlockState(this.blockPosition()).getMaterial().isSolid()) {
 					((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, effectDuration * 20, 0));
 				}
 			}
@@ -49,22 +49,22 @@ public class MistWolf extends HostileWolf {
 
 	@Override
 	protected SoundEvent getTargetSound() {
-		return TFSounds.MISTWOLF_TARGET;
+		return TFSounds.MISTWOLF_TARGET.get();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MISTWOLF_AMBIENT;
+		return TFSounds.MISTWOLF_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.MISTWOLF_HURT;
+		return TFSounds.MISTWOLF_HURT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.MISTWOLF_DEATH;
+	      return TFSounds.MISTWOLF_DEATH.get();
 	}
 
 	@Override

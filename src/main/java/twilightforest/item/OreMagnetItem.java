@@ -106,7 +106,7 @@ public class OreMagnetItem extends Item {
 
 			if (moved > 0) {
 				stack.hurtAndBreak(moved, living, user -> user.broadcastBreakEvent(living.getUsedItemHand()));
-				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB, living.getSoundSource(), 1.0F, 1.0F);
+				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
 			}
 		}
 	}

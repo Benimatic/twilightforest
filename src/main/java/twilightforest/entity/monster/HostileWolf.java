@@ -3,6 +3,7 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -46,8 +47,8 @@ public class HostileWolf extends Monster {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends HostileWolf> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, Random pRandom) {
-		return pLevel.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(pLevel, pPos, pRandom) && checkMobSpawnRules(pType, pLevel, pReason, pPos, pRandom);
+	public static boolean getCanSpawnHere(EntityType<? extends HostileWolf> entity, ServerLevelAccessor accessor, MobSpawnType type, BlockPos pos, RandomSource random) {
+		return accessor.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(accessor, pos, random) && checkMobSpawnRules(entity, accessor, type, pos, random);
 	}
 
 	@Override
@@ -58,22 +59,22 @@ public class HostileWolf extends Monster {
 	}
 
 	protected SoundEvent getTargetSound() {
-		return TFSounds.HOSTILE_WOLF_TARGET;
+		return TFSounds.HOSTILE_WOLF_TARGET.get();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HOSTILE_WOLF_AMBIENT;
+		return TFSounds.HOSTILE_WOLF_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.HOSTILE_WOLF_HURT;
+		return TFSounds.HOSTILE_WOLF_HURT.get();
 	}
 	
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.HOSTILE_WOLF_DEATH;
+	      return TFSounds.HOSTILE_WOLF_DEATH.get();
 	}
 
 	@Override

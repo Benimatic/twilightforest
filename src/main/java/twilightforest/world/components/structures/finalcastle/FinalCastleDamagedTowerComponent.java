@@ -18,7 +18,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.ArrayList;
-import java.util.RandomSource;
+
 
 public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Component {
 

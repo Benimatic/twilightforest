@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -53,22 +54,22 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-	      return TFSounds.SKELETON_DRUID_AMBIENT;
+	      return TFSounds.SKELETON_DRUID_AMBIENT.get();
 	   }
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.SKELETON_DRUID_HURT;
+	      return TFSounds.SKELETON_DRUID_HURT.get();
 	   }
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.SKELETON_DRUID_DEATH;
+	      return TFSounds.SKELETON_DRUID_DEATH.get();
 	   }
 
 	@Override
 	protected SoundEvent getStepSound() {
-	      return TFSounds.SKELETON_DRUID_STEP;
+	      return TFSounds.SKELETON_DRUID_STEP.get();
 	   }
 
 
@@ -88,7 +89,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
 		if (this.isBaby()) {
 			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STICK));
 		} else {
@@ -100,7 +101,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	public void performRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem) {
 			NatureBolt natureBolt = new NatureBolt(this.level, this);
-			playSound(TFSounds.SKELETON_DRUID_SHOOT, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
+			playSound(TFSounds.SKELETON_DRUID_SHOOT.get(), 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
 
 			double tx = attackTarget.getX() - this.getX();
 			double ty = attackTarget.getY() + attackTarget.getEyeHeight() - 2.699999988079071D - this.getY();
@@ -113,12 +114,12 @@ public class SkeletonDruid extends AbstractSkeleton {
 		}
 	}
 
-	public static boolean skeletonDruidSpawnHandler(EntityType<? extends SkeletonDruid> entity, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean skeletonDruidSpawnHandler(EntityType<? extends SkeletonDruid> entity, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
 	// [VanillaCopy] of super. Edits noted.
-	public static boolean isValidLightLevel(LevelAccessor world, BlockPos pos, Random random) {
+	public static boolean isValidLightLevel(LevelAccessor world, BlockPos pos, RandomSource random) {
 		if (world.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
@@ -161,12 +162,12 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	protected int getExperienceReward(Player player) {
+	public int getExperienceReward() {
 		if (this.isBaby()) {
 			this.xpReward = (int) (this.xpReward * 2.5F);
 		}
 
-		return super.getExperienceReward(player);
+		return super.getExperienceReward();
 	}
 
 	@Override

@@ -91,7 +91,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
 						if (canAnnihilate(pos, state)) {
 							this.level.removeBlock(pos, false);
-							this.playSound(TFSounds.BLOCK_ANNIHILATED, 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
+							this.playSound(TFSounds.BLOCK_ANNIHILATED.get(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
 							this.annihilateParticles(level, pos);
 						} else {
 							this.hasHitObstacle = true;

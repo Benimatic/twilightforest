@@ -73,7 +73,7 @@ public class TFDispenserBehaviors {
 			@Override
 			protected void playSound(BlockSource source) {
 				BlockPos pos = source.getPos();
-				source.getLevel().playSound(null, pos, TFSounds.SCEPTER_PEARL, SoundSource.BLOCKS, 1, 1);
+				source.getLevel().playSound(null, pos, TFSounds.SCEPTER_PEARL.get(), SoundSource.BLOCKS, 1, 1);
 			}
 		});
 

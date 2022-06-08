@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -72,7 +73,7 @@ public class VanishingBlock extends Block {
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if (!isVanished(state) && !state.getValue(ACTIVE)) {
 			if (areBlocksLocked(world, pos)) {
-				world.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK, SoundSource.BLOCKS, 1.0F, 0.3F);
+				world.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			} else {
 				activate(world, pos);
 			}
@@ -134,7 +135,7 @@ public class VanishingBlock extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		if (world.isClientSide) {
 			return;
 		}
@@ -146,7 +147,7 @@ public class VanishingBlock extends Block {
 				world.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 				world.scheduleTick(pos, this, 15);
 			}
-			world.playSound(null, pos, TFSounds.REAPPEAR_BLOCK, SoundSource.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.REAPPEAR_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		} else {
 			if (state.getValue(ACTIVE)) {
 				if (state.hasProperty(VANISHED)) {
@@ -156,7 +157,7 @@ public class VanishingBlock extends Block {
 					world.removeBlock(pos, false);
 				}
 
-				world.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK.get() ? TFSounds.REAPPEAR_POOF : TFSounds.VANISHING_BLOCK, SoundSource.BLOCKS, 0.3F, 0.5F);
+				world.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK.get() ? TFSounds.REAPPEAR_POOF.get() : TFSounds.VANISHING_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
 					activate(world, pos.relative(e));
@@ -167,7 +168,7 @@ public class VanishingBlock extends Block {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 		if (state.getValue(ACTIVE)) {
 			this.sparkle(world, pos);
 		}
@@ -175,7 +176,7 @@ public class VanishingBlock extends Block {
 
 	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
 	public void sparkle(Level worldIn, BlockPos pos) {
-		Random random = worldIn.random;
+		RandomSource random = worldIn.random;
 		double d0 = 0.0625D;
 
 		for (int i = 0; i < 6; ++i) {

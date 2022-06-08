@@ -135,7 +135,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				if (stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get() && state.getValue(BREAKAGE) > 0) {
 					if (!player.isCreative()) stack.shrink(1);
 					level.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
-					level.playSound(null, pos, TFSounds.CASKET_REPAIR, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+					level.playSound(null, pos, TFSounds.CASKET_REPAIR.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 					flag = true;
 				}
 			}

@@ -1,7 +1,6 @@
 package twilightforest.world.components.structures.start;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 

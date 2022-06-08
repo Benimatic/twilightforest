@@ -18,7 +18,7 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 /**
  * Foundation that makes thorns go all through the tower

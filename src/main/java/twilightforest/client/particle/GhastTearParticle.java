@@ -37,7 +37,7 @@ public class GhastTearParticle extends TextureSheetParticle {
 	@Override
 	public void tick() {
 		if (this.onGround && random.nextBoolean()) {
-			level.playSound(null, this.x, this.y + 1D, this.z, TFSounds.TEAR_BREAK, SoundSource.HOSTILE, 0.5F, 1.0F);
+			level.playSound(null, this.x, this.y + 1D, this.z, TFSounds.TEAR_BREAK.get(), SoundSource.HOSTILE, 0.5F, 1.0F);
 
 			ItemStack itemID = new ItemStack(Items.GHAST_TEAR);
 			for (int i = 0; i < 20; ++i) {

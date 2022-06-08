@@ -9,7 +9,6 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -18,8 +17,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
-import java.util.RandomSource;
 
 public class MazeRoomComponent extends TFStructureComponentOld {
 
@@ -72,10 +69,5 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 			generateBox(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);
 			generateAirBox(world, sbb, 15, 1, 7, 15, 3, 8);
 		}
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BURY;
 	}
 }

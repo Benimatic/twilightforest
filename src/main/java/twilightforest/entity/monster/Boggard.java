@@ -41,16 +41,16 @@ public class Boggard extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.REDCAP_AMBIENT;
+		return TFSounds.REDCAP_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.REDCAP_HURT;
+		return TFSounds.REDCAP_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.REDCAP_AMBIENT;
+		return TFSounds.REDCAP_AMBIENT.get();
 	}
 }

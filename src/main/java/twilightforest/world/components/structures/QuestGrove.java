@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -25,7 +24,7 @@ import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.processors.TargetedRotProcessor;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.RandomSource;
+
 
 public class QuestGrove extends TwilightTemplateStructurePiece {
 	private static final TargetedRotProcessor MOSSY_BRICK_DECAY = new TargetedRotProcessor(ImmutableSet.of(Blocks.MOSSY_STONE_BRICKS.defaultBlockState()), 0.5f);

@@ -68,7 +68,7 @@ public class TransformPowderItem extends Item {
 					((Mob) target).spawnAnim();
 					((Mob) target).spawnAnim();
 				}
-				target.playSound(TFSounds.POWDER_USE, 1.0F + target.level.random.nextFloat(), target.level.random.nextFloat() * 0.7F + 0.3F);
+				target.playSound(TFSounds.POWDER_USE.get(), 1.0F + target.level.random.nextFloat(), target.level.random.nextFloat() * 0.7F + 0.3F);
 				flag.set(true);
 			}
 		});
