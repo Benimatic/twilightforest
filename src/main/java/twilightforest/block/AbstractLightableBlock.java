@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -75,11 +76,11 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 	protected abstract Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor level, BlockPos pos);
 
 	// Original methods used Vec3 but here we can avoid creation of extraneous vectors
-	protected static void addParticlesAndSound(Level level, BlockPos pos, double xFraction, double yFraction, double zFraction, Random rand, boolean ominous) {
+	protected static void addParticlesAndSound(Level level, BlockPos pos, double xFraction, double yFraction, double zFraction, RandomSource rand, boolean ominous) {
 		addParticlesAndSound(level, pos.getX() + xFraction, pos.getY() + yFraction, pos.getZ() + zFraction, rand, ominous);
 	}
 
-	protected static void addParticlesAndSound(Level level, double x, double y, double z, Random rand, boolean ominous) {
+	protected static void addParticlesAndSound(Level level, double x, double y, double z, RandomSource rand, boolean ominous) {
 		float var3 = rand.nextFloat();
 		if (var3 < 0.3F) {
 			if(!ominous) level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
@@ -92,7 +93,7 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 	}
 
 	//still, we should include the vector method because im too lazy to convert :P
-	protected static void addParticlesAndSound(Level level, Vec3 vec, Random rand, boolean ominous) {
+	protected static void addParticlesAndSound(Level level, Vec3 vec, RandomSource rand, boolean ominous) {
 		float var3 = rand.nextFloat();
 		if (var3 < 0.3F) {
 			if(!ominous) level.addParticle(ParticleTypes.SMOKE, vec.x, vec.y, vec.z, 0.0D, 0.0D, 0.0D);

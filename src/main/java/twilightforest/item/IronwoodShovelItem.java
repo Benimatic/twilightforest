@@ -15,7 +15,7 @@ public class IronwoodShovelItem extends ShovelItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			istack.enchant(Enchantments.UNBREAKING, 1);
 			list.add(istack);

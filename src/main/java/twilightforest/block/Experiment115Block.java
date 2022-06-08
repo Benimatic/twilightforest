@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -38,8 +39,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFStats;
-
-import java.util.Random;
 
 public class Experiment115Block extends Block {
 
@@ -136,7 +135,7 @@ public class Experiment115Block extends Block {
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(REGENERATE) && state.getValue(BITES_TAKEN) != 0) {
 			level.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, state.getValue(BITES_TAKEN) - 1));
 		}

@@ -110,7 +110,7 @@ public class LampOfCindersItem extends Item {
 		int range = 4;
 
 		if (!world.isClientSide) {
-			world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.LAMP_BURN, living.getSoundSource(), 1.5F, 0.8F);
+			world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.LAMP_BURN.get(), living.getSoundSource(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <= range; dx++) {

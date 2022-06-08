@@ -3,6 +3,7 @@ package twilightforest.world.components.feature.trees.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
@@ -43,7 +44,7 @@ public class TrunkSideDecorator extends TreeDecorator {
     }
 
     @Override
-    public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
+    public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
         int blockCount = trunkBlocks.size();
 
         if (blockCount <= 0) {

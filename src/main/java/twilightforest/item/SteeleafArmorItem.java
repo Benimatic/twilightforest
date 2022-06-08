@@ -27,7 +27,7 @@ public class SteeleafArmorItem extends ArmorItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.slot) {
 				case HEAD -> istack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);

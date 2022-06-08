@@ -3,6 +3,7 @@ package twilightforest.world.components.feature.trees.growers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,14 +20,14 @@ public abstract class TFTree extends AbstractTreeGrower {
 
 	@Nullable
 	@Override
-	protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random random, boolean b) {
+	protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean b) {
 		return null;
 	}
 
 	public abstract Holder<? extends ConfiguredFeature<?, ?>> createTreeFeature();
 
 	@Override
-	public boolean growTree(ServerLevel world, ChunkGenerator generator, BlockPos pos, BlockState state, Random rand) {
+	public boolean growTree(ServerLevel world, ChunkGenerator generator, BlockPos pos, BlockState state, RandomSource rand) {
 		Holder<? extends ConfiguredFeature<?, ?>> feature = this.createTreeFeature();
 		if (feature == null) {
 			return false;

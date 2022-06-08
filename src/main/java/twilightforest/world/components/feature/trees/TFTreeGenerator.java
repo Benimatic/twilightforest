@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -31,7 +32,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	@Override
 	public final boolean place(FeaturePlaceContext<T> context) {
 		WorldGenLevel contextWorldGenLevel = context.level();
-		Random contextRandom = context.random();
+		RandomSource contextRandom = context.random();
 		BlockPos contextBlockPos = context.origin();
 		T contextConfig = context.config();
 		Set<BlockPos> trunkSet = Sets.newHashSet();
@@ -73,6 +74,6 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	/**
 	 * This works akin to the AbstractTreeFeature.generate, but put our branches and roots here
 	 */
-	protected abstract boolean generate(WorldGenLevel world, Random random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, T config);
+	protected abstract boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, T config);
 
 }

@@ -2,6 +2,7 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -25,7 +26,7 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 	public boolean place(FeaturePlaceContext<BlockStateConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random random = ctx.random();
+		RandomSource random = ctx.random();
 
 		int copyX = pos.getX();
 		int copyZ = pos.getZ();

@@ -15,7 +15,7 @@ public class SteeleafSwordItem extends SwordItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			istack.enchant(Enchantments.MOB_LOOTING, 2);
 			list.add(istack);

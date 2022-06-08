@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -27,7 +28,7 @@ public class TwilightThorns extends Feature<ThornsConfig> {
 	public boolean place(FeaturePlaceContext<ThornsConfig> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 
 
 		// make a 3-5 long stack going up
@@ -39,7 +40,7 @@ public class TwilightThorns extends Feature<ThornsConfig> {
 		return true;
 	}
 
-	private void placeThorns(WorldGenLevel world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos, ThornsConfig config, boolean avoidGiantCloud) {
+	private void placeThorns(WorldGenLevel world, RandomSource rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos, ThornsConfig config, boolean avoidGiantCloud) {
 		boolean complete = false;
 		for (int i = 0; i < length; i++) {
 			BlockPos dPos = pos.relative(dir, i);

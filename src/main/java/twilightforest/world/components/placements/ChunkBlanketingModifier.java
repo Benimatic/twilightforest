@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
@@ -41,7 +42,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos placement) {
+    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos placement) {
         int chunkOriginX = placement.getX() & 0xfffffff0;
         int chunkOriginZ = placement.getZ() & 0xfffffff0;
 

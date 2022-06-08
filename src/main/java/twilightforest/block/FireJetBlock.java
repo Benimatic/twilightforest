@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -16,14 +17,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import twilightforest.block.entity.FireJetBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.block.entity.FireJetBlockEntity;
-import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class FireJetBlock extends BaseEntityBlock {
 
@@ -53,7 +53,7 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		if (!world.isClientSide && state.getValue(STATE) == FireJetVariant.IDLE) {
 			BlockPos lavaPos = findLavaAround(world, pos.below());
 

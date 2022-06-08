@@ -15,7 +15,7 @@ public class IronwoodAxeItem extends AxeItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			istack.enchant(Enchantments.BLOCK_FORTUNE, 1);
 			list.add(istack);

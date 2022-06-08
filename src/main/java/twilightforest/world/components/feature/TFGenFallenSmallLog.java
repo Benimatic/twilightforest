@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -30,7 +31,7 @@ public class TFGenFallenSmallLog extends Feature<HollowLogConfig> {
 	public boolean place(FeaturePlaceContext<HollowLogConfig> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 		HollowLogConfig config = ctx.config();
 		boolean shouldMakeAllHollow = rand.nextBoolean();
 
@@ -139,7 +140,7 @@ public class TFGenFallenSmallLog extends Feature<HollowLogConfig> {
 		return ((shouldBeHollow || level.getRandom().nextInt(3) == 0) && hollow != null) ? hollow : normal;
 	}
 
-	private HollowLogVariants.Horizontal determineHollowProperties(WorldGenLevel world, BlockPos pos, Random rand) {
+	private HollowLogVariants.Horizontal determineHollowProperties(WorldGenLevel world, BlockPos pos, RandomSource rand) {
 		return  //If we're underwater, submerge in water
 				world.getBlockState(pos).getMaterial() == Material.WATER ? HollowLogVariants.Horizontal.WATERLOGGED :
 						//if we're in snow, add some snow

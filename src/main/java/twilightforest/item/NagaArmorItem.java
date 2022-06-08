@@ -26,7 +26,7 @@ public class NagaArmorItem extends ArmorItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.slot) {
 				case CHEST -> istack.enchant(Enchantments.FIRE_PROTECTION, 3);

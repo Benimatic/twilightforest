@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,7 +37,7 @@ public class TFGenHugeLilyPad extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random random = ctx.random();
+		RandomSource random = ctx.random();
 
 		for (int i = 0; i < 10; i++) {
 			BlockPos dPos = pos.offset(

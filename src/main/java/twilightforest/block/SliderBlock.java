@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -90,7 +91,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		if (!world.isClientSide && this.isConnectedInRange(world, pos)) {
 			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
 			//world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.SLIDER, SoundCategory.BLOCKS, 0.75F, 1.5F);

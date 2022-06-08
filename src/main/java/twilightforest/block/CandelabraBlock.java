@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -23,7 +24,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 // The code is flexible to allow colors but I'm not sure if they'd look good on Candelabra
 public class CandelabraBlock extends AbstractLightableBlock implements SimpleWaterloggedBlock {
@@ -169,7 +169,7 @@ public class CandelabraBlock extends AbstractLightableBlock implements SimpleWat
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
         boolean ominous = state.getValue(LIGHTING) == Lighting.OMINOUS;
         if (state.getValue(LIGHTING) != Lighting.NONE) {
             this.getParticleOffsets(state, level, pos).forEach(vec3 -> addParticlesAndSound(level, pos, vec3.x, vec3.y, vec3.z, rand, ominous));

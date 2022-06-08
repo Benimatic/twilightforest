@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -18,8 +19,6 @@ import twilightforest.network.ChangeBiomePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.biomes.BiomeKeys;
-
-import java.util.Random;
 
 public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
@@ -32,7 +31,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	 * TODO: also change entities
 	 */
 	@Override
-	void performTreeEffect(Level world, BlockPos pos, Random rand) {
+	void performTreeEffect(Level world, BlockPos pos, RandomSource rand) {
 		ResourceKey<Biome> target = BiomeKeys.ENCHANTED_FOREST;
 		Holder<Biome> biome = world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getHolderOrThrow(target);
 		for (int i = 0; i < 16; i++) {
@@ -75,7 +74,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	}
 
 	@Override
-	protected void playSound(Level level, BlockPos pos, Random rand) {
+	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
 		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.get(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2F);
 	}
 }

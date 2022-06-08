@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
@@ -19,7 +20,7 @@ public class TFGenBigMushgloom extends AbstractHugeMushroomFeature {
 	}
 
 	@Override
-	protected int getTreeHeight(Random rand) {
+	protected int getTreeHeight(RandomSource rand) {
 		return 2 + rand.nextInt(2);
 	}
 
@@ -29,7 +30,7 @@ public class TFGenBigMushgloom extends AbstractHugeMushroomFeature {
 	}
 
 	@Override
-	protected void makeCap(LevelAccessor levelAccessor, Random random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+	protected void makeCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
 		int i = featureConfiguration.foliageRadius;
 
 		int capHeight = random.nextBoolean() ? 1 : 2;

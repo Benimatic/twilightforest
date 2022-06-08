@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -14,8 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-
-import java.util.Random;
 
 public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 
@@ -46,7 +45,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource rand) {
 		if (world.isClientSide || !state.getValue(ACTIVE)) return;
 
 		playSound(world, pos, rand);
@@ -70,7 +69,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 		return InteractionResult.PASS;
 	}
 
-	abstract void performTreeEffect(Level world, BlockPos pos, Random rand);
+	abstract void performTreeEffect(Level world, BlockPos pos, RandomSource rand);
 
-	protected void playSound(Level level, BlockPos pos, Random rand) { }
+	protected void playSound(Level level, BlockPos pos, RandomSource rand) { }
 }

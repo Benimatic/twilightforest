@@ -3,6 +3,8 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -25,8 +27,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.client.particle.TFParticleType;
 
-import java.util.Random;
-
 public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements SimpleWaterloggedBlock {
 
 	private static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 14.0D, 13.0D);
@@ -43,7 +43,7 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		super.animateTick(state, level, pos, rand);
 
 		if(rand.nextInt(5) == 0) {

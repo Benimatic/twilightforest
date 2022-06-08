@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -22,7 +23,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(WorldGenLevel world, Random random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
 		if (world.isOutsideBuildHeight(pos.getY() + 12)) {
 			return false;
 		}
@@ -72,7 +73,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	protected static void putBranchWithLeaves(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
+	protected static void putBranchWithLeaves(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
 		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos, config.branchProvider);
 
 		for (int lx = -1; lx <= 1; lx++) {

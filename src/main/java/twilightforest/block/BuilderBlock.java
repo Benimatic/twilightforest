@@ -26,7 +26,6 @@ import twilightforest.enums.TowerDeviceVariant;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
-import java.util.Random;
 
 public class BuilderBlock extends BaseEntityBlock {
 

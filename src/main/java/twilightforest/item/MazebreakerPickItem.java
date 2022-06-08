@@ -18,7 +18,7 @@ public class MazebreakerPickItem extends PickaxeItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			istack.enchant(Enchantments.BLOCK_EFFICIENCY, 4);
 			istack.enchant(Enchantments.UNBREAKING, 3);

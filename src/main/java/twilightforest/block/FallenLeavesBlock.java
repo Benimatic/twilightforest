@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -21,8 +22,6 @@ import net.minecraftforge.network.PacketDistributor;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.network.SpawnFallenLeafFromPacket;
 import twilightforest.network.TFPacketHandler;
-
-import java.util.Random;
 
 public class FallenLeavesBlock extends TFPlantBlock {
 
@@ -45,13 +44,13 @@ public class FallenLeavesBlock extends TFPlantBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
-		super.animateTick(state, world, pos, random);
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+		super.animateTick(state, level, pos, random);
 		if (random.nextInt(50) == 0) {
 			float dist = 10F;
-			if (!world.canSeeSkyFromBelowWater(pos)) {
+			if (!level.canSeeSkyFromBelowWater(pos)) {
 				for (int y = 0; y <= dist; y++)
-					if (world.getBlockState(pos.above(y)).getMaterial() == Material.LEAVES) {
+					if (level.getBlockState(pos.above(y)).getMaterial() == Material.LEAVES) {
 						dist = y;
 						break;
 					}
@@ -59,34 +58,34 @@ public class FallenLeavesBlock extends TFPlantBlock {
 					return;
 			}
 
-			int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), world, pos, 0);
-			int r = Mth.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			int g = Mth.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			int b = Mth.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			world.addParticle(new LeafParticleData(r, g, b), pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
+			int r = Mth.clamp(((color >> 16) & 0xFF) + random.nextInt(0x22) - 0x11, 0x00, 0xFF);
+			int g = Mth.clamp(((color >> 8) & 0xFF) + random.nextInt(0x22) - 0x11, 0x00, 0xFF);
+			int b = Mth.clamp((color & 0xFF) + random.nextInt(0x22) - 0x11, 0x00, 0xFF);
+			level.addParticle(new LeafParticleData(r, g, b), pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
 	@Deprecated
-	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entityIn) {
-		super.entityInside(state, world, pos, entityIn);
-		if (entityIn instanceof LivingEntity && (entityIn.getDeltaMovement().x() != 0 || entityIn.getDeltaMovement().z() != 0) && RANDOM.nextBoolean()) {
-			if(world.isClientSide) {
-				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), world, pos, 0);
-				int r = Mth.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
-				int g = Mth.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
-				int b = Mth.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
-				world.addParticle(new LeafParticleData(r, g, b),
-						pos.getX() + world.random.nextFloat(),
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn) {
+		super.entityInside(state, level, pos, entityIn);
+		if (entityIn instanceof LivingEntity && (entityIn.getDeltaMovement().x() != 0 || entityIn.getDeltaMovement().z() != 0) && level.random.nextBoolean()) {
+			if(level.isClientSide) {
+				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
+				int r = Mth.clamp(((color >> 16) & 0xFF) + level.random.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int g = Mth.clamp(((color >> 8) & 0xFF) + level.random.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int b = Mth.clamp((color & 0xFF) + level.random.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				level.addParticle(new LeafParticleData(r, g, b),
+						pos.getX() + level.random.nextFloat(),
 						pos.getY(),
-						pos.getZ() + world.random.nextFloat(),
+						pos.getZ() + level.random.nextFloat(),
 
-						(world.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().x(),
-						world.random.nextFloat() * 0.5F + 0.25F,
-						(world.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().z()
+						(level.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().x(),
+						level.random.nextFloat() * 0.5F + 0.25F,
+						(level.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().z()
 				);
-			} else if (world instanceof ServerLevel)
+			} else if (level instanceof ServerLevel)
 				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
 		}
 	}

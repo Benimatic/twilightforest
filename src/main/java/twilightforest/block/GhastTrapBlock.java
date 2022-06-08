@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -21,7 +22,6 @@ import twilightforest.block.entity.GhastTrapBlockEntity;
 import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class GhastTrapBlock extends BaseEntityBlock {
 	public static final int ACTIVATE_EVENT = 0;
@@ -78,7 +78,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 
 	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
 	public void sparkle(Level worldIn, BlockPos pos) {
-		Random random = worldIn.random;
+		RandomSource random = worldIn.random;
 		double d0 = 0.0625D;
 
 		for (int i = 0; i < 6; ++i) {

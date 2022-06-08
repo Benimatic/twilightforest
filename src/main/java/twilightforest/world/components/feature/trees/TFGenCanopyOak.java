@@ -2,13 +2,14 @@ package twilightforest.world.components.feature.trees;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
@@ -17,7 +18,6 @@ import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 @ParametersAreNonnullByDefault
@@ -30,7 +30,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 	}
 
 	@Override
-	protected boolean generate(WorldGenLevel world, Random random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
 		// determine a height
 		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
@@ -82,11 +82,11 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		return true;
 	}
 
-	private void makeLeafBlob(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> leafPlacer, Random rand, BlockPos leafPos, TFTreeFeatureConfig config) {
+	private void makeLeafBlob(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> leafPlacer, RandomSource rand, BlockPos leafPos, TFTreeFeatureConfig config) {
 		FeaturePlacers.placeSpheroid(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos, 2.5f, 2.5f, config.leavesProvider);
 	}
 
-	private static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {
+	private static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource random, BlockPos pos, TFTreeFeatureConfig config) {
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);
@@ -102,7 +102,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		}
 	}
 
-	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, Random rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
+	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config.trunkProvider);
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider);
@@ -131,7 +131,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
 	@Override
-	void buildBranch(LevelAccessor world, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, TFTreeFeatureConfig config) {
+	void buildBranch(LevelAccessor world, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
 		BlockPos src = pos.above(height);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 

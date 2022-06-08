@@ -1,5 +1,6 @@
 package twilightforest.enchantment;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,13 +43,13 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
-		Random random = user.getRandom();
+		RandomSource random = user.getRandom();
 		if (shouldHit(level, random, attacker)) {
 			attacker.setSecondsOnFire(2 + (random.nextInt(level) * 3));
 		}
 	}
 
-	public static boolean shouldHit(int level, Random pRnd, Entity attacker) {
+	public static boolean shouldHit(int level, RandomSource pRnd, Entity attacker) {
 		if (level <= 0 || attacker.fireImmune()) {
 			return false;
 		} else {

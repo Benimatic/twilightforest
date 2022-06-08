@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +31,6 @@ import twilightforest.block.entity.CinderFurnaceBlockEntity;
 import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 
@@ -97,7 +97,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 		if (state.getValue(LIT)) {
 			Blocks.FURNACE.animateTick(state, world, pos, random);
 		}

@@ -2,6 +2,7 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -22,7 +23,7 @@ public class TFGenDarkForestFeature extends Feature<RandomPatchConfiguration> {
     public boolean place(FeaturePlaceContext<RandomPatchConfiguration> ctx) {
         WorldGenLevel reader = ctx.level();
         BlockPos pos = ctx.origin();
-        Random rand = ctx.random();
+        RandomSource rand = ctx.random();
         RandomPatchConfiguration config = ctx.config();
 
         boolean foundDirt = false;

@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
@@ -58,7 +59,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, TreeConfiguration baseTreeFeatureConfig, int trunkHeight, FoliageAttachment foliage, int foliageHeight, int radius, int offset) {
+    protected void createFoliage(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, TreeConfiguration baseTreeFeatureConfig, int trunkHeight, FoliageAttachment foliage, int foliageHeight, int radius, int offset) {
         BlockPos center = foliage.pos().above(offset); // foliage.getCenter
 
         FeaturePlacers.placeSpheroid(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, random, center, foliage.radiusOffset() + this.horizontalRadius + random.nextInt(this.randomHorizontal + 1), foliage.radiusOffset() + this.verticalRadius + random.nextInt(this.randomVertical + 1), this.verticalBias, baseTreeFeatureConfig.foliageProvider);
@@ -78,7 +79,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
         }
     }
 
-    private static void placeLeafCluster(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, BlockStateProvider state) {
+    private static void placeLeafCluster(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockPos pos, BlockStateProvider state) {
         FeaturePlacers.placeProvidedBlock(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, pos, state, random);
         FeaturePlacers.placeProvidedBlock(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, pos.east(), state, random);
         FeaturePlacers.placeProvidedBlock(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, pos.south(), state, random);
@@ -86,12 +87,12 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     }
 
     @Override // foliage Height
-    public int foliageHeight(Random random, int i, TreeConfiguration baseTreeFeatureConfig) {
+    public int foliageHeight(RandomSource random, int i, TreeConfiguration baseTreeFeatureConfig) {
         return 0;
     }
 
     @Override
-    protected boolean shouldSkipLocation(Random random, int i, int i1, int i2, int i3, boolean b) {
+    protected boolean shouldSkipLocation(RandomSource random, int i, int i1, int i2, int i3, boolean b) {
         return false;
     }
 }

@@ -2,21 +2,21 @@ package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Vector3f;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
-import java.util.Random;
 
 public class TrollsteinnBlock extends Block {
 	private static final BooleanProperty DOWN_LIT = BooleanProperty.create("down");
@@ -51,7 +51,7 @@ public class TrollsteinnBlock extends Block {
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		BlockState newState = state;
 		for (Direction direction : Direction.values()) newState = newState.setValue(PROPERTY_MAP.get(direction), level.getMaxLocalRawBrightness(pos.relative(direction)) > LIGHT_THRESHOLD);
 		if (!newState.equals(state)) level.setBlockAndUpdate(pos, newState);
@@ -81,13 +81,13 @@ public class TrollsteinnBlock extends Block {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand) {
 		if (rand.nextInt(2) == 0) this.sparkle(world, pos);
 	}
 
 	// [VanillaCopy] Based on BlockRedstoneOre.spawnParticles
 	private void sparkle(Level world, BlockPos pos) {
-		Random random = world.random;
+		RandomSource random = world.random;
 		int threshold = LIGHT_THRESHOLD;
 
 		for (Direction side : Direction.values()) {

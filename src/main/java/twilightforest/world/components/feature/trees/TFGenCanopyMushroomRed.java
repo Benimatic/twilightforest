@@ -2,6 +2,7 @@ package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,17 +27,17 @@ public class TFGenCanopyMushroomRed extends TFGenCanopyMushroom {
     }
 
     @Override
-    protected int getTreeHeight(Random random) {
+    protected int getTreeHeight(RandomSource random) {
         return super.getTreeHeight(random) + 3;
     }
 
     @Override
-    protected int getBranches(Random random) {
+    protected int getBranches(RandomSource random) {
         return 3;
     }
 
     @Override
-    protected double getLength(Random random) {
+    protected double getLength(RandomSource random) {
         return 10 + random.nextInt(2);
     }
 
@@ -47,7 +48,7 @@ public class TFGenCanopyMushroomRed extends TFGenCanopyMushroom {
      * 1% chance for it to be a flat cap, same as the brown mushroom one, these used to be in older versions of TF
      */
     @Override
-    protected void makeCap(LevelAccessor levelAccessor, Random random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+    protected void makeCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
         if (this.altHeads <= 33) {
             this.makeVanillaCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
         } else if (this.altHeads <= 66) {
@@ -58,7 +59,7 @@ public class TFGenCanopyMushroomRed extends TFGenCanopyMushroom {
     }
 
     //Pretty much a 1:1 vanilla copy of the big red mushroom cap code
-    protected void makeVanillaCap(LevelAccessor levelAccessor, Random random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+    protected void makeVanillaCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
         for(int y = height - 3; y <= height; ++y) {
             int j = y < height ? featureConfiguration.foliageRadius : featureConfiguration.foliageRadius - 1;
             int k = featureConfiguration.foliageRadius - 2;
@@ -93,7 +94,7 @@ public class TFGenCanopyMushroomRed extends TFGenCanopyMushroom {
         }
     }
 
-    protected void makeSmoothCap(LevelAccessor levelAccessor, Random random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+    protected void makeSmoothCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
         for(int y = height - 2; y <= height + 1; ++y) {
             int j = featureConfiguration.foliageRadius - Math.max(0, y - (height - 1)) + 1;
 
@@ -142,7 +143,7 @@ public class TFGenCanopyMushroomRed extends TFGenCanopyMushroom {
         return xMinMax != zMinMax || (Math.abs(x) == Math.abs(z) && Math.abs(x) == j - 1);
     }
 
-    protected void makeSpheroidCap(LevelAccessor levelAccessor, Random random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+    protected void makeSpheroidCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
         for(int y = height - 2; y <= height; ++y) {
             int j = y == height - 1 ? featureConfiguration.foliageRadius + 2 : featureConfiguration.foliageRadius + 1;
 

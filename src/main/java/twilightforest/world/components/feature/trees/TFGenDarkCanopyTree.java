@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -49,7 +50,7 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 	public boolean place(FeaturePlaceContext<TreeConfiguration> ctx) {
 		WorldGenLevel reader = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 		TreeConfiguration config = ctx.config();
 
 		// if we are given leaves as a starting position, seek dirt or grass underneath
@@ -119,7 +120,7 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 	}
 
 	//Mostly [VanillaCopy] of TreeFeature.doPlace, edits noted
-	private boolean doPlace(WorldGenLevel level, Random p_160512_, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
+	private boolean doPlace(WorldGenLevel level, RandomSource  p_160512_, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
 		int i = config.trunkPlacer.getTreeHeight(p_160512_);
 		int j = config.foliagePlacer.foliageHeight(p_160512_, i, config);
 		int k = i - j;

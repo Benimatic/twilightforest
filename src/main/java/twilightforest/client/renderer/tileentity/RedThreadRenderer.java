@@ -72,7 +72,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 
 					false,
 
-					new Random(),
+					thread.getLevel().random,
 
 					thread.getBlockState().getSeed(thread.getBlockPos()),
 

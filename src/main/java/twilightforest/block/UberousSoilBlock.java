@@ -7,6 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
@@ -28,7 +29,6 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class UberousSoilBlock extends Block implements BonemealableBlock {
 
@@ -108,7 +108,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if(level.isClientSide && rand.nextInt(5) == 0) {
 			for(Player player : level.players()) {
 				if (player.getMainHandItem().getItem().equals(TFItems.MAGIC_BEANS.get()) || player.getOffhandItem().getItem().equals(TFItems.MAGIC_BEANS.get())) {
@@ -151,14 +151,14 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level world, Random rand, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level world, RandomSource rand, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
 	//check each side of the block, as well as above and below each of those positions to check for a place to put a block
 	//the above and below checks allow the patch to jump to a new y level, makes spreading easier
-	public void performBonemeal(ServerLevel world, Random rand, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel world, RandomSource rand, BlockPos pos, BlockState state) {
 		List<Direction> directions = Arrays.asList(Direction.values());
 		Collections.shuffle(directions);
 		for(Direction dir: directions) {

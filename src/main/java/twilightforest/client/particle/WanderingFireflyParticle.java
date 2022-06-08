@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -83,7 +84,7 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			Random rand = world.random;
+			RandomSource rand = world.random;
 			double speedX = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
 			double speedY = (double)rand.nextFloat() * -0.25D * (double)rand.nextFloat() * 0.1D;
 			double speedZ = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
@@ -101,7 +102,7 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			Random rand = world.random;
+			RandomSource rand = world.random;
 			double speedX = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
 			double speedY = (double)rand.nextFloat() * -0.25D * (double)rand.nextFloat() * 0.1D;
 			double speedZ = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;

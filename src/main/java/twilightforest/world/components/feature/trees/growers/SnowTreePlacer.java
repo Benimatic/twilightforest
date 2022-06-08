@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -69,7 +70,7 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
         return isAirOrLeaves(p_67273_, p_67274_) || isReplaceablePlant(p_67273_, p_67274_) || isBlockWater(p_67273_, p_67274_);
     }
 
-    private boolean doPlace(WorldGenLevel p_160511_, Random p_160512_, BlockPos p_160513_, BiConsumer<BlockPos, BlockState> p_160514_, BiConsumer<BlockPos, BlockState> p_160515_, TreeConfiguration p_160516_) {
+    private boolean doPlace(WorldGenLevel p_160511_, RandomSource p_160512_, BlockPos p_160513_, BiConsumer<BlockPos, BlockState> p_160514_, BiConsumer<BlockPos, BlockState> p_160515_, TreeConfiguration p_160516_) {
         int i = p_160516_.trunkPlacer.getTreeHeight(p_160512_);
         int j = p_160516_.foliagePlacer.foliageHeight(p_160512_, i, p_160516_);
         int k = i - j;
@@ -122,7 +123,7 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
     @Override
     public final boolean place(FeaturePlaceContext<TreeConfiguration> p_160530_) {
         WorldGenLevel worldgenlevel = p_160530_.level();
-        Random random = p_160530_.random();
+        RandomSource random = p_160530_.random();
         BlockPos blockpos = p_160530_.origin();
         TreeConfiguration treeconfiguration = p_160530_.config();
         Set<BlockPos> set = Sets.newHashSet();

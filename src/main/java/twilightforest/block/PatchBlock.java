@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -87,7 +88,7 @@ public class PatchBlock extends TFPlantBlock {
         );
     }
 
-    public static AABB AABBFromRandom(Random random) {
+    public static AABB AABBFromRandom(RandomSource random) {
         return AABBFromLong(random.nextLong());
     }
 

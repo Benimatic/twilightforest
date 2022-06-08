@@ -3,6 +3,7 @@ package twilightforest.world.components.feature.trees.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -36,7 +37,7 @@ public class TreeCorePlacer extends TreeDecorator {
 	}
 
 	@Override
-	public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
+	public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
 		BlockPos pos = trunkBlocks.get(0).offset(0, this.corePos, 0);
 		worldPlacer.accept(pos, this.core.getState(random, pos));
 	}

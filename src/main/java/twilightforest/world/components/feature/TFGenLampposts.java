@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -26,7 +27,7 @@ public class TFGenLampposts extends Feature<BlockStateConfiguration> {
 	public boolean place(FeaturePlaceContext<BlockStateConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 		BlockStateConfiguration config = ctx.config();
 
 		// we should start on a grass block

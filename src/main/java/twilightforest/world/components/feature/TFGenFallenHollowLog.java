@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -34,12 +35,12 @@ public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 		
 		return rand.nextBoolean() ? makeLog4Z(world, rand, pos) : makeLog4X(world, rand, pos);
 	}
 
-	private boolean makeLog4Z(WorldGenLevel world, Random rand, BlockPos pos) {
+	private boolean makeLog4Z(WorldGenLevel world, RandomSource rand, BlockPos pos) {
 		// +Z 4x4 log
 		if (!FeatureUtil.isAreaSuitable(world, pos, 4, 3, 9)) {
 			return false;
@@ -141,7 +142,7 @@ public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 	/**
 	 * Make a 4x4 log in the +X direction
 	 */
-	private boolean makeLog4X(WorldGenLevel world, Random rand, BlockPos pos) {
+	private boolean makeLog4X(WorldGenLevel world, RandomSource rand, BlockPos pos) {
 		// +Z 4x4 log
 		if (!FeatureUtil.isAreaSuitable(world, pos, 9, 3, 4)) {
 			return false;

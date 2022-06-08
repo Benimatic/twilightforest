@@ -88,7 +88,7 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     }
 
     @Override
-    private void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
+    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
 
     }
 

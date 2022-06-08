@@ -25,8 +25,6 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
-import java.util.Random;
-
 public class CastleDoorBlock extends Block {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");

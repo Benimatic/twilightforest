@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,7 +22,6 @@ import twilightforest.util.WorldUtil;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
@@ -30,7 +30,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 	}
 
 	@Override
-	void performTreeEffect(Level level, BlockPos pos, Random rand) {
+	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
 		Map<IItemHandler, Vec3> inputHandlers = new HashMap<>();
 		Map<IItemHandler, Vec3> outputHandlers = new HashMap<>();
 

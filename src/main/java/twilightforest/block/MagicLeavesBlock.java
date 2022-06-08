@@ -2,13 +2,12 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.client.particle.TFParticleType;
-
-import java.util.Random;
 
 public class MagicLeavesBlock extends LeavesBlock {
 
@@ -17,7 +16,7 @@ public class MagicLeavesBlock extends LeavesBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 		if (state.getBlock() == TFBlocks.TRANSFORMATION_LEAVES.get()) {
 			for (int i = 0; i < 1; ++i) {
 				this.sparkleRunes(world, pos, random);
@@ -25,7 +24,7 @@ public class MagicLeavesBlock extends LeavesBlock {
 		}
 	}
 
-	private void sparkleRunes(Level world, BlockPos pos, Random rand) {
+	private void sparkleRunes(Level world, BlockPos pos, RandomSource rand) {
 		double offset = 0.0625D;
 
 		Direction side = Direction.getRandom(rand); //random?

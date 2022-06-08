@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -24,7 +25,7 @@ public class TFGenWoodRoots extends Feature<RootConfig> {
 	public boolean place(FeaturePlaceContext<RootConfig> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 
 		// start must be in stone
 		if (world.getBlockState(pos).getBlock() != Blocks.STONE) {
@@ -42,7 +43,7 @@ public class TFGenWoodRoots extends Feature<RootConfig> {
 		return drawRoot(world, rand, pos, pos, length, rand.nextFloat(), tilt, ctx.config().blockRoot(), ctx.config().oreRoot());
 	}
 
-	private boolean drawRoot(LevelAccessor world, Random rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt, BlockStateProvider rootBlock, BlockStateProvider oreBlock) {
+	private boolean drawRoot(LevelAccessor world, RandomSource rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt, BlockStateProvider rootBlock, BlockStateProvider oreBlock) {
 		// generate a direction and a length
 		BlockPos dest = FeatureLogic.translate(pos, length, angle, tilt);
 
@@ -103,7 +104,7 @@ public class TFGenWoodRoots extends Feature<RootConfig> {
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
-	protected boolean placeRootBlock(LevelAccessor world, BlockPos pos, BlockStateProvider state, Random random) {
+	protected boolean placeRootBlock(LevelAccessor world, BlockPos pos, BlockStateProvider state, RandomSource random) {
 		return FeatureLogic.canRootGrowIn(world, pos) && world.setBlock(pos, state.getState(random, pos), 3);
 	}
 }

@@ -3,6 +3,7 @@ package twilightforest.world;
 import com.google.common.collect.Maps;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -67,7 +68,7 @@ public class TFTeleporter implements ITeleporter {
 		int i = 200; // scan radius up to 200, and also un-inline this variable back into below
 		boolean flag = true;
 		BlockPos blockpos = BlockPos.ZERO;
-		ColumnPos columnPos = new ColumnPos(pos);
+		ColumnPos columnPos = new ColumnPos(pos.getX(), pos.getZ());
 
 		if (!isPlayer && columnMap.containsKey(columnPos)) {
 			return null;
@@ -141,7 +142,7 @@ public class TFTeleporter implements ITeleporter {
 			if (flag) {
 				destinationCoordinateCache.putIfAbsent(world.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
 				destinationCoordinateCache.get(world.dimension().location()).put(columnPos, new PortalPosition(blockpos, world.getGameTime()));
-				world.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x, blockpos.getY(), columnPos.z));
+				world.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x(), blockpos.getY(), columnPos.z()));
 			}
 
 			// replace with our own placement logic
@@ -462,7 +463,7 @@ public class TFTeleporter implements ITeleporter {
 		return pos;
 	}
 
-	private static BlockState randNatureBlock(Random random) {
+	private static BlockState randNatureBlock(RandomSource random) {
 		Block[] blocks = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.GRASS, Blocks.POPPY, Blocks.DANDELION};
 		return blocks[random.nextInt(blocks.length)].defaultBlockState();
 	}

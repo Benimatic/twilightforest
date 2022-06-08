@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
@@ -27,7 +28,7 @@ public class TFGenFallenLeaves extends Feature<NoneFeatureConfiguration> {
 		WorldGenLevel worldIn = ctx.level();
 		ChunkGenerator generator = ctx.chunkGenerator();
 		BlockPos position = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 
 		do {
 			BlockState state = worldIn.getBlockState(position.below());

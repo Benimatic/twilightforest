@@ -2,6 +2,7 @@ package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.LevelAccessor;
@@ -9,7 +10,6 @@ import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 /**
@@ -24,7 +24,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 	}
 
 	@Override
-	public boolean generate(WorldGenLevel world, Random random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	public boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
 		int radius = random.nextInt(2) + 2;
 
 		if (!FeatureUtil.isAreaSuitable(world, pos.offset(-radius, 0, -radius), 2 * radius, 6, 2 * radius)) {
@@ -44,7 +44,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 	}
 
 	@Override
-	protected void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, int diameter, int maxheight, TFTreeFeatureConfig config) {
+	protected void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource  random, BlockPos pos, int diameter, int maxheight, TFTreeFeatureConfig config) {
 		int hollow = diameter >> 1;
 
 		// go down 4 squares and fill in extra trunk as needed, in case we're on uneven terrain

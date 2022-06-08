@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,7 +24,6 @@ import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	private static final int SMELT_LOG_FACTOR = 10;
@@ -109,7 +109,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	}
 
 	private void cinderizeNearbyLog() {
-		Random rand = this.getLevel().random;
+		RandomSource rand = this.getLevel().random;
 
 		int dx = rand.nextInt(2) - rand.nextInt(2);
 		int dy = rand.nextInt(2) - rand.nextInt(2);

@@ -1,16 +1,14 @@
 package twilightforest.item;
 
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ComplexItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class EmptyMazeMapItem extends ComplexItem {
 	final boolean mapOres;

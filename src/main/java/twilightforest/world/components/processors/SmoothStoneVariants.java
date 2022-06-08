@@ -2,6 +2,7 @@ package twilightforest.world.components.processors;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -23,7 +24,7 @@ public class SmoothStoneVariants extends StructureProcessor {
 
     @Override
     public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-        Random random = settings.getRandom(modifiedBlockInfo.pos);
+        RandomSource random = settings.getRandom(modifiedBlockInfo.pos);
 
         // We use nextBoolean in other processors so this lets us re-seed deterministically
         random.setSeed(random.nextLong() * 4);

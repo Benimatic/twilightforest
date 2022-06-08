@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -12,8 +13,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.PlantType;
-
-import java.util.Random;
 
 public abstract class TFPlantBlock extends BushBlock implements BonemealableBlock {
 
@@ -51,12 +50,12 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level pLevel, Random pRandom, BlockPos pPos, BlockState pState) {
+	public boolean isBonemealSuccess(Level pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
 		return false;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel pLevel, Random pRandom, BlockPos pPos, BlockState pState) { }
+	public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) { }
 
 	@Override
 	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {

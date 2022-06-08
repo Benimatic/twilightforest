@@ -3,13 +3,13 @@ package twilightforest.world.components.feature.trees;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class TFGenTreeOfTime extends TFGenHollowTree {
@@ -18,7 +18,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 	}
 
 	@Override
-	public boolean generate(WorldGenLevel world, Random random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	public boolean generate(WorldGenLevel world, RandomSource  random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
 		final int height = 8;
 		final int diameter = 1;
 
@@ -58,7 +58,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 	 * Build the crown of the tree. This builds a smaller crown, since the large
 	 * ones were causing some performance issues
 	 */
-	protected void buildTinyCrown(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
+	protected void buildTinyCrown(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
 		final int crownRadius = 4;
 		final int bvar = 1;
 

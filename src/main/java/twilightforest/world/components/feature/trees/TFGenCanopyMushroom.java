@@ -3,6 +3,7 @@ package twilightforest.world.components.feature.trees;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.HugeMushroomBlock;
@@ -34,7 +35,7 @@ public abstract class TFGenCanopyMushroom extends AbstractHugeMushroomFeature {
     }
 
     @Override
-    protected void placeTrunk(LevelAccessor levelAccessor, Random random, BlockPos pos, HugeMushroomFeatureConfiguration featureConfiguration, int height, BlockPos.MutableBlockPos mutableBlockPos) {
+    protected void placeTrunk(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, HugeMushroomFeatureConfiguration featureConfiguration, int height, BlockPos.MutableBlockPos mutableBlockPos) {
         for(int i = 0; i < height; ++i) {
             mutableBlockPos.set(pos).move(Direction.UP, i);
             if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
@@ -55,9 +56,9 @@ public abstract class TFGenCanopyMushroom extends AbstractHugeMushroomFeature {
     }
 
     /**
-     * Add a firefly on a random face of a block
+     * Add a firefly on a RandomSource face of a block
      */
-    protected void addFirefly(LevelAccessor levelAccessor, BlockPos pos, Random random) {
+    protected void addFirefly(LevelAccessor levelAccessor, BlockPos pos, RandomSource random) {
         Direction direction = Direction.getRandom(random);
         if (direction.getAxis() != Direction.Axis.Y) {
             BlockPos.MutableBlockPos bugPos = new BlockPos.MutableBlockPos();
@@ -71,15 +72,15 @@ public abstract class TFGenCanopyMushroom extends AbstractHugeMushroomFeature {
     }
 
     @Override
-    protected int getTreeHeight(Random random) {
+    protected int getTreeHeight(RandomSource random) {
         return 9 + random.nextInt(5);
     }
 
-    protected abstract int getBranches(Random random);
+    protected abstract int getBranches(RandomSource random);
 
-    protected abstract double getLength(Random random);
+    protected abstract double getLength(RandomSource random);
 
-    private void buildABranch(LevelAccessor levelAccessor, BlockPos pos, int height, double length, double angle, Random random, HugeMushroomFeatureConfiguration featureConfiguration) {
+    private void buildABranch(LevelAccessor levelAccessor, BlockPos pos, int height, double length, double angle, RandomSource random, HugeMushroomFeatureConfiguration featureConfiguration) {
         BlockPos src = pos.above(height);
         BlockPos dest = FeatureLogic.translate(src, length, angle, 0.2);
 
@@ -113,7 +114,7 @@ public abstract class TFGenCanopyMushroom extends AbstractHugeMushroomFeature {
     }
 
     @Override//Pretty much a 1:1 vanilla copy of the big brown mushroom cap code
-    protected void makeCap(LevelAccessor levelAccessor, Random random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+    protected void makeCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
         int i = featureConfiguration.foliageRadius;
 
         for(int x = -i; x <= i; ++x) {

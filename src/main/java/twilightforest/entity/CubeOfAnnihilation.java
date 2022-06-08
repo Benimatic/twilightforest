@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -111,7 +112,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	}
 
 	private void annihilateParticles(Level world, BlockPos pos) {
-		Random rand = world.getRandom();
+		RandomSource rand = world.getRandom();
 		if(world instanceof ServerLevel) {
 			for (int dx = 0; dx < 3; ++dx) {
 				for (int dy = 0; dy < 3; ++dy) {

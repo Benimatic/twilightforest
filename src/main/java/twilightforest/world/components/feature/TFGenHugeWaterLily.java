@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.core.BlockPos;
@@ -27,7 +28,7 @@ public class TFGenHugeWaterLily extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random random = ctx.random();
+		RandomSource random = ctx.random();
 
 		for (int i = 0; i < 4; i++) {
 			BlockPos pos_ = pos.offset(

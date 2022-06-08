@@ -1,6 +1,7 @@
 package twilightforest.enchantment;
 
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -44,7 +45,7 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
-		Random random = user.getRandom();
+		RandomSource random = user.getRandom();
 		if (shouldHit(level, random)) {
 			if(attacker instanceof LivingEntity entity) {
 				if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
@@ -59,7 +60,7 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 		}
 	}
 
-	public static boolean shouldHit(int level, Random pRnd) {
+	public static boolean shouldHit(int level, RandomSource pRnd) {
 		if (level <= 0) {
 			return false;
 		} else {

@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -27,7 +28,6 @@ import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class HedgeBlock extends Block {
 
@@ -81,7 +81,7 @@ public class HedgeBlock extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		// find players within range
 		List<Player> nearbyPlayers = world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(8.0));
 

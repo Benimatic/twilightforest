@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -23,8 +24,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFStats;
-
-import java.util.Random;
 
 public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBlock {
 
@@ -65,12 +64,12 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, Random rand, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, RandomSource rand, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, Random rand, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel level, RandomSource rand, BlockPos pos, BlockState state) {
 		level.setBlock(pos, state.setValue(HAS_BERRIES, true), 2);
 	}
 

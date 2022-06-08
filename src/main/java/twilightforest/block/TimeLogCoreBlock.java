@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -10,8 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFSounds;
 import twilightforest.util.WorldUtil;
-
-import java.util.Random;
 
 public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
@@ -24,7 +23,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 	 */
 	@Override
 	@SuppressWarnings("unchecked") // Vanilla also makes this dirty cast on block entity tickers, poor mojank design.
-	void performTreeEffect(Level world, BlockPos pos, Random rand) {
+	void performTreeEffect(Level world, BlockPos pos, RandomSource rand) {
 		int numticks = 8 * 3 * this.tickRate();
 
 		for (int i = 0; i < numticks; i++) {
@@ -47,7 +46,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 	}
 
 	@Override
-	protected void playSound(Level level, BlockPos pos, Random rand) {
+	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
 		level.playSound(null, pos, TFSounds.TIME_CORE.get(), SoundSource.BLOCKS, 0.1F, 0.5F);
 	}
 }
