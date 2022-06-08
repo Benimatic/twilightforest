@@ -25,7 +25,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    mappings channel: "official", version: "1.18.2"
+    mappings channel: "official", version: "1.19"
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
     //mappings channel: 'parchment', version: '2021.10.31-1.17.1'
 
