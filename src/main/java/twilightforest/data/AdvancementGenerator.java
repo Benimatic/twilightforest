@@ -1,9 +1,6 @@
 package twilightforest.data;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
@@ -225,7 +222,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						Component.translatable("advancement.twilightforest.troll.desc",
 								Component.translatable(TFEntities.TROLL.get().getDescriptionId())),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("troll", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.TROLL.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_TROLL_CAVE.unwrapKey().orElseThrow()))))
+				.addCriterion("troll", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.TROLL.get()).located(LocationPredicate.inStructure(TFConfiguredStructures.CONFIGURED_TROLL_CAVE.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:troll");
 
 		Advancement beanstalk = Advancement.Builder.advancement().parent(troll).display(
@@ -264,7 +261,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						Component.translatable("advancement.twilightforest.progress_thorns"),
 						Component.translatable("advancement.twilightforest.progress_thorns.desc"),
 						null, FrameType.GOAL, true, true, false)
-				.addCriterion("castle", PlayerTrigger.TriggerInstance.located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_FINAL_CASTLE.unwrapKey().orElseThrow())))
+				.addCriterion("castle", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(TFConfiguredStructures.CONFIGURED_FINAL_CASTLE.unwrapKey().orElseThrow())))
 				.addCriterion("previous_progression", this.advancementTrigger(lamp))
 				.save(consumer, "twilightforest:progress_thorns");
 
@@ -341,7 +338,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						Component.translatable("advancement.twilightforest.hill1.desc",
 								Component.translatable(TFEntities.REDCAP.get().getDescriptionId())),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_SMALL.unwrapKey().orElseThrow()))))
+				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP.get()).located(LocationPredicate.inStructure(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_SMALL.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill1");
 
 		Advancement hill2 =  Advancement.Builder.advancement().parent(hill1).display(
@@ -350,7 +347,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						Component.translatable("advancement.twilightforest.hill2.desc",
 								Component.translatable(TFEntities.REDCAP_SAPPER.get().getDescriptionId())),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP_SAPPER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_MEDIUM.unwrapKey().orElseThrow()))))
+				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP_SAPPER.get()).located(LocationPredicate.inStructure(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_MEDIUM.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill2");
 
 		Advancement.Builder.advancement().parent(hill2).display(
@@ -359,7 +356,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						Component.translatable("advancement.twilightforest.hill3.desc",
 								Component.translatable(TFEntities.WRAITH.get().getDescriptionId())),
 						null, FrameType.TASK, true, true, false)
-				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.WRAITH.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_LARGE.unwrapKey().orElseThrow()))))
+				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.WRAITH.get()).located(LocationPredicate.inStructure(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_LARGE.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill3");
 
 		Advancement.Builder.advancement().parent(root).display(
@@ -468,7 +465,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						Component.translatable("advancement.twilightforest.experiment_115_3"),
 						Component.translatable("advancement.twilightforest.experiment_115_3.desc"),
 						null, FrameType.CHALLENGE, true, true, true)
-				.addCriterion("eat_115_e115", PlayerTrigger.TriggerInstance.located(EntityPredicate.Builder.entity().player(PlayerPredicate.Builder.player().addStat(Stats.CUSTOM.get(TFStats.E115_SLICES_EATEN.get()), MinMaxBounds.Ints.atLeast(115)).build()).build()))
+				.addCriterion("eat_115_e115", PlayerTrigger.TriggerInstance.located(EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().addStat(Stats.CUSTOM.get(TFStats.E115_SLICES_EATEN.get()), MinMaxBounds.Ints.atLeast(115)).build()).build()))
 				.save(consumer, "twilightforest:experiment_115_115");
 
 		Advancement.Builder.advancement().parent(e115).display(
@@ -552,11 +549,11 @@ public class AdvancementGenerator extends AdvancementProvider {
 		return builder;
 	}
 
-	private TickTrigger.TriggerInstance advancementTrigger(Advancement advancement) {
+	private PlayerTrigger.TriggerInstance advancementTrigger(Advancement advancement) {
 		return this.advancementTrigger(advancement.getId().getPath());
 	}
 
-	private TickTrigger.TriggerInstance advancementTrigger(String name) {
-		return new TickTrigger.TriggerInstance(EntityPredicate.Composite.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().player(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()));
+	private PlayerTrigger.TriggerInstance advancementTrigger(String name) {
+		return new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), EntityPredicate.Composite.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()));
 	}
 }
