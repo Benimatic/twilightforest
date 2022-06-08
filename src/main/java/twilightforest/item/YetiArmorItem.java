@@ -9,7 +9,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class YetiArmorItem extends ArmorItem {
-	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
 		super(material, slot, props);
@@ -45,7 +44,7 @@ public class YetiArmorItem extends ArmorItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack istack = new ItemStack(this);
 			switch (this.slot) {
 				case HEAD, CHEST, LEGS -> istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);

@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -14,7 +15,7 @@ import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Component {
 
@@ -22,12 +23,12 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		super(FinalCastlePieces.TFFCEnTo, nbt);
 	}
 
-	public FinalCastleEntranceTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
+	public FinalCastleEntranceTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
 		super(FinalCastlePieces.TFFCEnTo, feature, rand, i, x, y, z, 3, 2, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -78,7 +79,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		bridge.addChildren(this, list, rand);
 	}
 
-	private boolean buildSideTower(StructurePieceAccessor list, Random rand, int middleFloors, Direction facing, int howFar) {
+	private boolean buildSideTower(StructurePieceAccessor list, RandomSource rand, int middleFloors, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// build towards
@@ -114,7 +115,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
 	@Override
-	public BlockPos getValidOpeningCC(Random rand, Direction facing) {
+	public BlockPos getValidOpeningCC(RandomSource rand, Direction facing) {
 		BlockPos opening = super.getValidOpeningCC(rand, facing);
 		return new BlockPos(opening.getX(), 0, opening.getZ());
 	}

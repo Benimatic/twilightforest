@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -14,11 +15,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class DarkTowerBeardComponent extends TFStructureComponentOld {
 
-	protected int size;
+	protected final int size;
 	protected int height;
 
 	public DarkTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -50,7 +51,7 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	 * Makes a dark tower type beard
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		makeDarkBeard(world, sbb, 0, 0, size - 1, height - 1, size - 1);
 	}
 

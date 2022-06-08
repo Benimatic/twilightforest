@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
@@ -33,7 +32,7 @@ import java.util.UUID;
 @OnlyIn(value = Dist.CLIENT, _interface = LidBlockEntity.class)
 public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
     private static final int limit = 9 * 5;
-    public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
+    public final NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
     @Nullable
     public String name;
     @Nullable
@@ -84,7 +83,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 
     @Override
     protected Component getDefaultName() {
-        return new TranslatableComponent("block.twilightforest.keepsake_casket");
+        return Component.translatable("block.twilightforest.keepsake_casket");
     }
 
     @Override
@@ -174,7 +173,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
                 return super.canOpen(user);
             } else {
                 user.playNotifySound(TFSounds.CASKET_LOCKED, SoundSource.BLOCKS, 0.5F, 0.5F);
-                user.displayClientMessage(new TranslatableComponent("block.twilightforest.casket.locked", name).withStyle(ChatFormatting.RED), true);
+                user.displayClientMessage(Component.translatable("block.twilightforest.casket.locked", name).withStyle(ChatFormatting.RED), true);
                 return false;
             }
         } else {

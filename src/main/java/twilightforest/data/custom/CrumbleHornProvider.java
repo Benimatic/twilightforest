@@ -1,12 +1,13 @@
 package twilightforest.data.custom;
 
 import com.google.common.collect.Maps;
+import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -44,13 +45,13 @@ public abstract class CrumbleHornProvider implements DataProvider {
 	public abstract void registerTransforms();
 
 	@Override
-	public void run(HashCache cache) throws IOException {
+	public void run(CachedOutput cache) {
 		this.builders.clear();
 		this.registerTransforms();
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> ForgeRegistries.BLOCKS.containsKey(transform.getA().getBlock().getRegistryName()))
-					.filter(s -> ForgeRegistries.BLOCKS.containsKey(transform.getB().getBlock().getRegistryName()))
+					.filter(s -> ForgeRegistries.BLOCKS.containsValue(transform.getA().getBlock()))
+					.filter(s -> ForgeRegistries.BLOCKS.containsValue(transform.getB().getBlock()))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.collect(Collectors.toList());
@@ -63,7 +64,7 @@ public abstract class CrumbleHornProvider implements DataProvider {
 				Path path = createPath(new ResourceLocation(modId, name));
 				try {
 					String s = GSON.toJson(obj);
-					String s1 = SHA1.hashUnencodedChars(s).toString();
+					String s1 = Hashing.sha1().hashUnencodedChars(s).toString();
 					if (!Objects.equals(cache.getHash(path), s1) || !Files.exists(path)) {
 						Files.createDirectories(path.getParent());
 						BufferedWriter bufferedwriter = Files.newBufferedWriter(path);

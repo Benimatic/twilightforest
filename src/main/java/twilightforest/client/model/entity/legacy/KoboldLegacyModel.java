@@ -15,8 +15,8 @@ import twilightforest.entity.monster.Kobold;
 
 public class KoboldLegacyModel extends HumanoidModel<Kobold> {
 
-	ModelPart jaw;
-	boolean isJumping;
+	final ModelPart jaw;
+	final boolean isJumping;
 
 	public KoboldLegacyModel(ModelPart root) {
 		super(root);

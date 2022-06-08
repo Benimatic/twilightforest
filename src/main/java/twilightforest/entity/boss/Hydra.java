@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -659,8 +659,8 @@ public class Hydra extends Mob implements Enemy {
 	}
 
 	@Override
-	public void recreateFromPacket(ClientboundAddMobPacket p_147206_) {
-		super.recreateFromPacket(p_147206_);
+	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+		super.recreateFromPacket(packet);
 		TFPart.assignPartIDs(this);
 	}
 

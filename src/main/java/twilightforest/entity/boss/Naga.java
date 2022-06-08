@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -860,8 +860,8 @@ public class Naga extends Monster {
 	}
 
 	@Override
-	public void recreateFromPacket(ClientboundAddMobPacket p_147206_) {
-		super.recreateFromPacket(p_147206_);
+	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+		super.recreateFromPacket(packet);
 		TFPart.assignPartIDs(this);
 	}
 

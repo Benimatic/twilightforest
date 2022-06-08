@@ -30,7 +30,7 @@ public class FogHandler {
 				final boolean inverse = real > spoop;
 				spoopColors[i] = real == spoop ? spoop : Mth.clampedLerp(inverse ? spoop : real, inverse ? real : spoop, spoopColor);
 			}
-			float shift = (float) (0.01F * event.getPartialTicks());
+			float shift = (float) (0.01F * event.getPartialTick());
 			if (flag)
 				spoopColor += shift;
 			else
@@ -48,7 +48,7 @@ public class FogHandler {
 		if (flag || spoopFog < 1F) {
 			float f = 48F;
 			f = f >= event.getFarPlaneDistance() ? event.getFarPlaneDistance() : Mth.clampedLerp(f, event.getFarPlaneDistance(), spoopFog);
-			float shift = (float) (0.001F * event.getPartialTicks());
+			float shift = (float) (0.001F * event.getPartialTick());
 			if (flag)
 				spoopFog -= shift;
 			else

@@ -15,7 +15,7 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 
 	private T entity;
 
-	public ModelPart box;
+	public final ModelPart box;
 	private int lastPixelsX;
 	private int lastPixelsY;
 	private int lastPixelsZ;

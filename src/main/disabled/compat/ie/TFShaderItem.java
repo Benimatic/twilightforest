@@ -63,12 +63,12 @@ public class TFShaderItem extends Item implements IShaderItem {
     public Component getName(ItemStack stack) {
         ResourceLocation rawShaderName = this.getShaderName(stack);
         String unlocalizedShaderName = ("item." + rawShaderName.getNamespace() + ".shader.name." + rawShaderName.getPath().replace(' ', '_').toLowerCase(Locale.ROOT));
-        String localizedShaderName = new TranslatableComponent(unlocalizedShaderName).getString();
+        String localizedShaderName = Component.translatable(unlocalizedShaderName).getString();
 
         if (unlocalizedShaderName.equals(localizedShaderName))
-            return new TranslatableComponent(this.getDescriptionId(stack), rawShaderName.getPath()).append(" *TRANSLATION FAILURE*").withStyle(ChatFormatting.DARK_RED); // Translation failure
+            return Component.translatable(this.getDescriptionId(stack), rawShaderName.getPath()).append(" *TRANSLATION FAILURE*").withStyle(ChatFormatting.DARK_RED); // Translation failure
         else
-            return new TranslatableComponent(this.getDescriptionId(stack), localizedShaderName);
+            return Component.translatable(this.getDescriptionId(stack), localizedShaderName);
     }
 
     //Copy of ShaderItem.onItemUse so we can apply to banners
@@ -117,16 +117,16 @@ public class TFShaderItem extends Item implements IShaderItem {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list, TooltipFlag flag) {
-        list.add(new TranslatableComponent(Lib.DESC_INFO + "shader.level").append(TextUtils.applyFormat(new TranslatableComponent(Lib.DESC_INFO + "shader.rarity." + this.getRarity(stack).name().toLowerCase(Locale.US)), getRarity(stack).color)));
+        list.add(Component.translatable(Lib.DESC_INFO + "shader.level").append(TextUtils.applyFormat(Component.translatable(Lib.DESC_INFO + "shader.rarity." + this.getRarity(stack).name().toLowerCase(Locale.US)), getRarity(stack).color)));
         if(ShaderRegistry.shaderRegistry.containsKey(getShaderName(stack))) {
             if (!Screen.hasShiftDown())
-                list.add(new TranslatableComponent(Lib.DESC_INFO + "shader.applyTo").append(" ").append(new TranslatableComponent(Lib.DESC_INFO + "holdShift")));
+                list.add(Component.translatable(Lib.DESC_INFO + "shader.applyTo").append(" ").append(Component.translatable(Lib.DESC_INFO + "holdShift")));
             else {
-                list.add(new TranslatableComponent(Lib.DESC_INFO + "shader.applyTo"));
+                list.add(Component.translatable(Lib.DESC_INFO + "shader.applyTo"));
 
                 for (ShaderCase sCase : ShaderRegistry.shaderRegistry.get(getShaderName(stack)).getCases())
                     if (!(sCase instanceof ShaderCaseItem))
-                        list.add(TextUtils.applyFormat(new TranslatableComponent(Lib.DESC_INFO + "shader." + sCase.getShaderType()), ChatFormatting.DARK_GRAY));
+                        list.add(TextUtils.applyFormat(Component.translatable(Lib.DESC_INFO + "shader." + sCase.getShaderType()), ChatFormatting.DARK_GRAY));
             }
         }
     }

@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import com.google.gson.JsonObject;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,16 +16,15 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FieryPickItem extends PickaxeItem {
@@ -52,7 +52,7 @@ public class FieryPickItem extends PickaxeItem {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 
 	private static class SmeltModifier extends LootModifier {
@@ -65,9 +65,9 @@ public class FieryPickItem extends PickaxeItem {
 		}
 
 		@Override
-		public List<ItemStack> doApply(List<ItemStack> originalLoot, LootContext context) {
-			List<ItemStack> newLoot = new ArrayList<>();
-			originalLoot.forEach((stack) -> newLoot.add(
+		protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+			ObjectArrayList<ItemStack> newLoot = new ObjectArrayList<>();
+			generatedLoot.forEach((stack) -> newLoot.add(
 					context.getLevel().getRecipeManager()
 							.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
 							.map(SmeltingRecipe::getResultItem)

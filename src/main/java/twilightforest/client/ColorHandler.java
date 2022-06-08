@@ -12,14 +12,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.block.TFBlocks;
-import twilightforest.compat.IECompat;
-import twilightforest.compat.TFCompat;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.TFItems;
@@ -408,8 +405,8 @@ public final class ColorHandler {
 				tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
 				TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
 
-		if (ModList.get().isLoaded(TFCompat.IE_ID)) {
-			IECompat.registerShaderColors(itemColors);
-		}
+//		if (ModList.get().isLoaded(TFCompat.IE_ID)) {
+//			IECompat.registerShaderColors(itemColors);
+//		}
 	}
 }

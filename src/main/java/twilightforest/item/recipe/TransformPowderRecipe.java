@@ -12,21 +12,10 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class TransformPowderRecipe implements Recipe<Container> {
-
-	private final ResourceLocation recipeID;
-	private final EntityType<?> input;
-	private final EntityType<?> result;
-
-	public TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result) {
-		this.recipeID = recipeID;
-		this.input = input;
-		this.result = result;
-	}
+public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result) implements Recipe<Container> {
 
 	public EntityType<?> getInput() {
 		return input;
@@ -71,13 +60,13 @@ public class TransformPowderRecipe implements Recipe<Container> {
 		return TFRecipes.TRANSFORM_POWDER_RECIPE.get();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<TransformPowderRecipe> {
+	public static class Serializer implements RecipeSerializer<TransformPowderRecipe> {
 
 		@Override
 		public TransformPowderRecipe fromJson(ResourceLocation id, JsonObject object) {
 			EntityType<?> input = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
 			EntityType<?> output = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
-			if(input != null && output != null) {
+			if (input != null && output != null) {
 				return new TransformPowderRecipe(id, input, output);
 			}
 			return new TransformPowderRecipe(id, EntityType.PIG, EntityType.ZOMBIFIED_PIGLIN);

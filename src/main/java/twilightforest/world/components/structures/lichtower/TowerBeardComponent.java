@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.lichtower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -12,11 +13,11 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class TowerBeardComponent extends TFStructureComponentOld {
 
-	int size;
+	final int size;
 	int height;
 
 	public TowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -51,11 +52,11 @@ public class TowerBeardComponent extends TFStructureComponentOld {
 	 * Makes a pyramid-shaped beard
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		makePyramidBeard(world, rand, sbb);
 	}
 
-	private void makePyramidBeard(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	private void makePyramidBeard(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		for (int y = 0; y <= height; y++) {
 			int min = y;
 			int max = size - y - 1;

@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.trollcave;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -13,7 +14,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class CloudTreeComponent extends TFStructureComponentOld {
 
@@ -38,7 +39,7 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// leaves
 		this.generateBox(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);

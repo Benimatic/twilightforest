@@ -7,7 +7,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -35,7 +34,6 @@ import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class JarBlock extends Block implements SimpleWaterloggedBlock {

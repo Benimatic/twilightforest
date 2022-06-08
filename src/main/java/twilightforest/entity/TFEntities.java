@@ -28,10 +28,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,8 +41,6 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
-import twilightforest.compat.TFCompat;
-import twilightforest.compat.UndergardenCompat;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
@@ -195,6 +191,7 @@ public class TFEntities {
 				setShouldReceiveVelocityUpdates(true);
 	}
 
+	//FIXME move somewhere else
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityType<?>> evt) {
 		SpawnPlacements.register(BOAR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
@@ -413,9 +410,9 @@ public class TFEntities {
 		event.registerEntityRenderer(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		event.registerEntityRenderer(ICE_ARROW.get(), DefaultArrowRenderer::new);
 
-		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
-			UndergardenCompat.registerSlingshotRenders(event);
-		}
+//		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
+//			UndergardenCompat.registerSlingshotRenders(event);
+//		}
 	}
 
 	@OnlyIn(Dist.CLIENT)

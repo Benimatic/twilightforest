@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.mushroomtower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -14,7 +15,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.util.RotationUtil;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
@@ -22,11 +23,11 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 		super(MushroomTowerPieces.TFMTMai, nbt);
 	}
 
-	public MushroomTowerMainComponent(TFFeature feature, Random rand, int index, int x, int y, int z) {
+	public MushroomTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z) {
 		this(feature, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, Direction.NORTH);
 	}
 
-	public MushroomTowerMainComponent(TFFeature feature, Random rand, int index, int x, int y, int z, Direction rotation) {
+	public MushroomTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
 		super(MushroomTowerPieces.TFMTMai, feature, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
 
 //		// check to make sure we can build the whole tower
@@ -51,7 +52,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -99,7 +100,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	/**
 	 * Make a new ascender tower.  Returns direction if successful, null if not.
 	 */
-	private Rotation makeAscenderTower(StructurePieceAccessor list, Random rand) {
+	private Rotation makeAscenderTower(StructurePieceAccessor list, RandomSource rand) {
 
 		Rotation mainDir = RotationUtil.ROTATIONS[rand.nextInt(4)];
 		int[] dest = getValidOpening(rand, mainDir);
@@ -119,7 +120,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	 * Make a mushroom roof!
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);

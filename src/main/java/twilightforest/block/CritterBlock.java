@@ -1,13 +1,11 @@
 package twilightforest.block;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -40,10 +38,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fml.ModList;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.util.TFStats;
 
@@ -189,8 +185,8 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, getter, tooltip, flag);
-		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
-			tooltip.add((new TranslatableComponent("tooltip.pebble")).withStyle(ChatFormatting.GRAY));
-		}
+//		if (ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
+//			tooltip.add((Component.translatable("tooltip.pebble")).withStyle(ChatFormatting.GRAY));
+//		}
 	}
 }

@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -13,7 +14,7 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 /**
  * A larger foundation that comes all the way from the top of a tower
@@ -26,14 +27,14 @@ public class FinalCastleBellFoundation21Component extends FinalCastleFoundation1
 		super(FinalCastlePieces.TFFCBeF21, nbt);
 	}
 
-	public FinalCastleBellFoundation21Component(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleBellFoundation21Component(TFFeature feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(FinalCastlePieces.TFFCBeF21, feature, rand, i, sideTower, x, y, z);
 
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().minX() + 2, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 2);
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int mid = 16;
 		int low = 32;
 

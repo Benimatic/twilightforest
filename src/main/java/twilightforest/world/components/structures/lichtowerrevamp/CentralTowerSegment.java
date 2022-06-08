@@ -5,11 +5,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import twilightforest.TwilightForestMod;
@@ -19,7 +20,7 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.RandomSource;
 
 public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     static final int SIDE_LENGTH = 30;
@@ -31,16 +32,16 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
         super(LichTowerRevampPieces.CENTRAL_TOWER, compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
     }
 
-    public CentralTowerSegment(StructureManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
+    public CentralTowerSegment(StructureTemplateManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
         this(structureManager, TwilightForestMod.prefix("lich_tower/central_tower"), makeSettings(rotation).addProcessor(sideTowerStarts), startPosition);
     }
 
-    private CentralTowerSegment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
+    private CentralTowerSegment(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
         super(LichTowerRevampPieces.CENTRAL_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
     }
 
     @Override
-    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, Random random, BoundingBox boundingBox) {
+    private void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
 
     }
 

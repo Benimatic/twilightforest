@@ -5,10 +5,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -22,7 +23,7 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class HollowHillComponent extends TFStructureComponentOld {
 	private final static int[] stalactitesForSizes = {0, 128, 256, 512};
@@ -71,7 +72,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int stalactiteCount = stalactitesForSizes[this.hillSize]; // number of stalactites mga = {0, 3, 9, 18}
 
 		// fill in features
@@ -142,7 +143,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	protected void generateTreasureChest(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
 		// generate an RNG for this chest
 		//TODO: MOAR RANDOM!
-		Random chestRNG = new Random(world.getSeed() + (long) x * z);
+		RandomSource chestRNG = RandomSource.create(world.getSeed() + (long) x * z);
 
 		// try placing it
 		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFTreasure.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFTreasure.MEDIUM_HOLLOW_HILL : TFTreasure.SMALL_HOLLOW_HILL), sbb);
@@ -167,7 +168,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
 			//TODO: MOAR RANDOM!
-			Random stalRNG = new Random(world.getSeed() + (long) dx * dz);
+			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite
 			SpikeConfig stalag = BlockSpikeFeature.makeRandomOreStalactite(stalRNG, this.hillSize);
@@ -184,7 +185,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
 			//TODO: MOAR RANDOM!
-			Random stalRNG = new Random(world.getSeed() + (long) dx * dz);
+			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite
 			BlockSpikeFeature.startSpike(world, pos, config, stalRNG);
@@ -204,7 +205,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	@Deprecated // Use randomPolarCoordinates
-	int[] randomCoordinatesInHill2D(Random rand) {
+	int[] randomCoordinatesInHill2D(RandomSource rand) {
 		return this.randomCoordinatesInHill2D(rand, radius);
 	}
 
@@ -212,13 +213,13 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * @return a two element array containing some coordinates in the hill
 	 */
 	@Deprecated // Use randomPolarCoordinates
-	int[] randomCoordinatesInHill2D(Random rand, int maximumRadius) {
+	int[] randomCoordinatesInHill2D(RandomSource rand, int maximumRadius) {
 		Vec3i pos = this.randomFloorCoordinates(rand, maximumRadius);
 
 		return new int[]{pos.getX(), pos.getZ()};
 	}
 
-	BlockPos.MutableBlockPos randomFloorCoordinates(Random rand, float maximumRadius) {
+	BlockPos.MutableBlockPos randomFloorCoordinates(RandomSource rand, float maximumRadius) {
 		float degree = rand.nextFloat() * Mth.TWO_PI;
 		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
 		float radius = rand.nextFloat() * 0.9f * maximumRadius;
@@ -229,7 +230,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height, maximumRadius - Mth.sin(degree) * radius);
 	}
 
-	BlockPos.MutableBlockPos randomCeilingCoordinates(Random rand, float maximumRadius) {
+	BlockPos.MutableBlockPos randomCeilingCoordinates(RandomSource rand, float maximumRadius) {
 		float degree = rand.nextFloat() * Mth.TWO_PI;
 		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
 		float radius = rand.nextFloat() * 0.9f * maximumRadius;
@@ -243,7 +244,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * Gets the id of a mob appropriate to the current hill size.
 	 */
-	protected EntityType<?> getMobID(Random rand) {
+	protected EntityType<?> getMobID(RandomSource rand) {
 		return getMobID(rand, this.hillSize);
 	}
 
@@ -253,7 +254,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * @param level
 	 * @return
 	 */
-	protected EntityType<?> getMobID(Random rand, int level) {
+	protected EntityType<?> getMobID(RandomSource rand, int level) {
 		if (level == 1) {
 			return getLevel1Mob(rand);
 		}
@@ -270,7 +271,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * Returns a mob string appropriate for a level 1 hill
 	 */
-	public EntityType<?> getLevel1Mob(Random rand) {
+	public EntityType<?> getLevel1Mob(RandomSource rand) {
 		return switch (rand.nextInt(10)) {
 			case 3, 4, 5 -> EntityType.SPIDER;
 			case 6, 7 -> EntityType.ZOMBIE;
@@ -283,7 +284,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * Returns a mob string appropriate for a level 2 hill
 	 */
-	public EntityType<?> getLevel2Mob(Random rand) {
+	public EntityType<?> getLevel2Mob(RandomSource rand) {
 		return switch (rand.nextInt(10)) {
 			case 3, 4, 5 -> EntityType.ZOMBIE;
 			case 6, 7 -> EntityType.SKELETON;
@@ -296,7 +297,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * Returns a mob string appropriate for a level 3 hill.  The level 3 also has 2 mid-air wraith spawners.
 	 */
-	public EntityType<?> getLevel3Mob(Random rand) {
+	public EntityType<?> getLevel3Mob(RandomSource rand) {
 		return switch (rand.nextInt(11)) {
 			case 0 -> TFEntities.SLIME_BEETLE.get();
 			case 1 -> TFEntities.FIRE_BEETLE.get();

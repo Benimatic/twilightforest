@@ -18,32 +18,13 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressWarnings("NullableProblems")
-public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<CraftingContainer> {
-    private final ResourceLocation recipeID;
-    private final int cost;
-    private final int width;
-    private final int height;
-    private final Ingredient ingredient;
-    private final int count;
-    private final NonNullList<Ingredient> resultItems;
-
-    public UncraftingRecipe(ResourceLocation recipeID, int cost, int width, int height, Ingredient ingredient, int count, NonNullList<Ingredient> resultItems) {
-        this.recipeID = recipeID;
-        this.cost = cost;
-        this.width = width;
-        this.height = height;
-        this.ingredient = ingredient;
-        this.count = count;
-        this.resultItems = resultItems;
-    }
+public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, int height, Ingredient ingredient, int count, NonNullList<Ingredient> resultItems) implements IUncraftingRecipe, IShapedRecipe<CraftingContainer> {
 
     @Override //This method is never used, but it has to be implemented
     public boolean matches(CraftingContainer pContainer, Level pLevel) {
@@ -113,7 +94,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
         return this.count;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<UncraftingRecipe> {
+    public static class Serializer implements RecipeSerializer<UncraftingRecipe> {
         /**
          * This is mostly vanilla's shaped recipe serializer, with some changes made to make it work with the slightly different recipe type.
          * The recipe json has inputs for "cost", which determines how many levels the recipe will cost.
@@ -144,7 +125,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
 
         private static Map<String, Ingredient> keyFromJson(JsonObject json) {
             Map<String, Ingredient> map = Maps.newHashMap();
-            for(Map.Entry<String, JsonElement> entry : json.entrySet()) {
+            for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
                 if (entry.getKey().length() != 1)
                     throw new JsonSyntaxException("Invalid key entry: '" + entry.getKey() + "' is an invalid symbol (must be 1 character only).");
                 if (" ".equals(entry.getKey()))
@@ -161,7 +142,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
             int k = 0;
             int l = 0;
 
-            for(int i1 = 0; i1 < prePattern.length; ++i1) {
+            for (int i1 = 0; i1 < prePattern.length; ++i1) {
                 String s = prePattern[i1];
                 i = Math.min(i, firstNonSpace(s));
                 int j1 = lastNonSpace(s);
@@ -175,7 +156,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
             if (prePattern.length == l) return new String[0];
             else {
                 String[] shrunk = new String[prePattern.length - l - k];
-                for(int k1 = 0; k1 < shrunk.length; ++k1) shrunk[k1] = prePattern[k1 + k].substring(i, j + 1);
+                for (int k1 = 0; k1 < shrunk.length; ++k1) shrunk[k1] = prePattern[k1 + k].substring(i, j + 1);
                 return shrunk;
             }
         }
@@ -201,7 +182,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
             } else if (stringPattern.length == 0) {
                 throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
             } else {
-                for(int i = 0; i < stringPattern.length; ++i) {
+                for (int i = 0; i < stringPattern.length; ++i) {
                     String s = GsonHelper.convertToString(pattern.get(i), "pattern[" + i + "]");
                     if (s.length() > 3)
                         throw new JsonSyntaxException("Invalid pattern: too many columns, 3 is maximum");
@@ -218,8 +199,8 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
             Set<String> set = Sets.newHashSet(key.keySet());
             set.remove(" ");
 
-            for(int i = 0; i < pattern.length; ++i) {
-                for(int j = 0; j < pattern[i].length(); ++j) {
+            for (int i = 0; i < pattern.length; ++i) {
+                for (int j = 0; j < pattern[i].length(); ++j) {
                     String s = pattern[i].substring(j, j + 1);
                     Ingredient ingredient = key.get(s);
                     if (ingredient == null)
@@ -229,7 +210,8 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
                 }
             }
 
-            if (!set.isEmpty()) throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
+            if (!set.isEmpty())
+                throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
             else return results;
         }
 
@@ -242,7 +224,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
             Ingredient result = Ingredient.fromNetwork(buffer);
             int count = buffer.readVarInt();
             NonNullList<Ingredient> ingredients = NonNullList.withSize(width * height, Ingredient.EMPTY);
-            for(int k = 0; k < ingredients.size(); ++k) ingredients.set(k, Ingredient.fromNetwork(buffer));
+            for (int k = 0; k < ingredients.size(); ++k) ingredients.set(k, Ingredient.fromNetwork(buffer));
             return new UncraftingRecipe(id, cost, width, height, result, count, ingredients);
         }
 

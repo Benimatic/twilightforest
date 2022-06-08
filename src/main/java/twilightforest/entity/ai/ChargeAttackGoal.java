@@ -25,7 +25,7 @@ public class ChargeAttackGoal extends Goal {
 	private LivingEntity chargeTarget;
 	private Vec3 chargePos;
 
-	protected float speed;
+	protected final float speed;
 	private final boolean canBreak;
 	private int windup;
 	private boolean hasAttacked;

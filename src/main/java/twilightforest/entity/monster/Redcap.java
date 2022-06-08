@@ -31,8 +31,8 @@ import javax.annotation.Nullable;
 public class Redcap extends Monster {
 
 	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE);
-	public ItemStack heldTNT = new ItemStack(Blocks.TNT);
-	public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL);
+	public final ItemStack heldTNT = new ItemStack(Blocks.TNT);
+	public final ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL);
 
 	public Redcap(EntityType<? extends Redcap> type, Level world) {
 		super(type, world);

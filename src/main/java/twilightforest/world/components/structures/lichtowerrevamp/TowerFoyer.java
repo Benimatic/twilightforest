@@ -3,12 +3,14 @@ package twilightforest.world.components.structures.lichtowerrevamp;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -18,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.BoxCuttingProcessor;
@@ -26,19 +28,19 @@ import twilightforest.world.components.structures.TwilightTemplateStructurePiece
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+import java.util.RandomSource;
 
 public final class TowerFoyer extends TwilightTemplateStructurePiece {
     public TowerFoyer(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
         super(LichTowerRevampPieces.TOWER_FOYER, compoundTag, ctx, readSettings(compoundTag));
     }
 
-    public TowerFoyer(StructureManager structureManager, BlockPos startPosition) {
+    public TowerFoyer(StructureTemplateManager structureManager, BlockPos startPosition) {
         super(LichTowerRevampPieces.TOWER_FOYER, 0, structureManager, TwilightForestMod.prefix("lich_tower/foyer"), makeSettings(Rotation.NONE), startPosition.above(3));
     }
 
     @Override
-    public void addChildren(StructurePiece parent, StructurePieceAccessor structureStart, Random random) {
+    public void addChildren(StructurePiece parent, StructurePieceAccessor structureStart, RandomSource random) {
         super.addChildren(parent, structureStart, random);
 
         int randomCountTowerSegments = random.nextInt(5) + 15;
@@ -73,7 +75,7 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
         }
     }
 
-    private void beginSideTowers(StructurePieceAccessor structureStart, Random random, int totalSegments, int segmentStart, Direction front, Rotation fromFront, BlockPos centralTowerOrigin, Map<BlockPos, Direction> sideTowerStarts) {
+    private void beginSideTowers(StructurePieceAccessor structureStart, RandomSource random, int totalSegments, int segmentStart, Direction front, Rotation fromFront, BlockPos centralTowerOrigin, Map<BlockPos, Direction> sideTowerStarts) {
         // Pre-process for the side-towers to attach to the sides of the central
         for (int i = segmentStart; i < totalSegments; i++) {
             float weight = (float) i / totalSegments * 2;
@@ -101,14 +103,14 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    public void postProcess(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
+    public void postProcess(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
         this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
 
         BlockPos placement = new BlockPos(this.boundingBox.getCenter().getX() + 1, this.boundingBox.minY() + 7, this.boundingBox.minZ() + 16);
 
         if (boundingBox.isInside(placement)) {
             final ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, level.getLevel());
-            armorStand.setCustomName(new TextComponent("Welcome to the new Lich Tower! The design is heavily WIP and will be fleshed out significantly in later development builds"));
+            armorStand.setCustomName(Component.literal("Welcome to the new Lich Tower! The design is heavily WIP and will be fleshed out significantly in later development builds"));
             armorStand.moveTo(placement.getX(), placement.getY() + 0.5, placement.getZ() + 0.5, 0, 0);
             armorStand.setInvulnerable(true);
             armorStand.setInvisible(true);
@@ -122,12 +124,7 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, Random random, BoundingBox boundingBox) {
+    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
 
-    }
-
-    @Override
-    public NoiseEffect getNoiseEffect() {
-        return NoiseEffect.BEARD;
     }
 }

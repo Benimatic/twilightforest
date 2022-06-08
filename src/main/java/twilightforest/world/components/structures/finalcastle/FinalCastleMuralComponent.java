@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -14,7 +15,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class FinalCastleMuralComponent extends TFStructureComponentOld {
 
@@ -35,11 +36,11 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		this.height = this.boundingBox.getYSpan();
 		this.width = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.getZSpan() : this.boundingBox.getXSpan();
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		if (mural == null) {
 			// only make it once
@@ -81,21 +82,21 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		}
 	}
 
-	private void makeHorizontalTree(Random decoRNG, byte[][] mural, int centerX, int centerY, int branchLength, boolean positive) {
+	private void makeHorizontalTree(RandomSource decoRNG, byte[][] mural, int centerX, int centerY, int branchLength, boolean positive) {
 		this.fillHorizontalLine(mural, centerX, centerY, branchLength, positive);
 
 		this.makeHorizontalBranch(mural, decoRNG, centerX, centerY, branchLength, positive, true);
 		this.makeHorizontalBranch(mural, decoRNG, centerX, centerY, branchLength, positive, false);
 	}
 
-	private void makeVerticalTree(Random decoRNG, byte[][] mural, int centerX, int centerY, int branchLength, boolean positive) {
+	private void makeVerticalTree(RandomSource decoRNG, byte[][] mural, int centerX, int centerY, int branchLength, boolean positive) {
 		this.fillVerticalLine(mural, centerX, centerY, branchLength, positive);
 
 		this.makeVerticalBranch(mural, decoRNG, centerX, centerY, branchLength, positive, true);
 		this.makeVerticalBranch(mural, decoRNG, centerX, centerY, branchLength, positive, false);
 	}
 
-	private boolean makeHorizontalBranch(byte[][] mural, Random rand, int sx, int sy, int length, boolean plusX, boolean plusY) {
+	private boolean makeHorizontalBranch(byte[][] mural, RandomSource rand, int sx, int sy, int length, boolean plusX, boolean plusY) {
 		int downLine = (length / 2) + 1 + rand.nextInt(Math.max(length / 2, 2));
 		int branchLength = rand.nextInt(width / 8) + width / 8;
 
@@ -143,7 +144,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		}
 	}
 
-	private boolean makeVerticalBranch(byte[][] mural, Random rand, int sx, int sy, int length, boolean plusY, boolean plusX) {
+	private boolean makeVerticalBranch(byte[][] mural, RandomSource rand, int sx, int sy, int length, boolean plusY, boolean plusX) {
 		int downLine = (length / 2) + 1 + rand.nextInt(Math.max(length / 2, 2));
 		int branchLength = rand.nextInt(height / 8) + height / 8;
 
@@ -217,7 +218,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		}
 	}
 
-	private void makeStripes(Random decoRNG, byte[][] mural2) {
+	private void makeStripes(RandomSource decoRNG, byte[][] mural2) {
 		// stagger slightly on our way down
 		for (int y = this.height - 2; y > this.height / 3; y -= (2 + decoRNG.nextInt(2))) {
 			makeSingleStripe(mural2, y);

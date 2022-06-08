@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.icetower;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -11,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class IceTowerBossWingComponent extends IceTowerWingComponent {
 
@@ -28,7 +29,7 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected boolean shouldHaveBase(Random rand) {
+	protected boolean shouldHaveBase(RandomSource rand) {
 		return false;
 	}
 
@@ -36,7 +37,7 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 	 * Put down planks or whatevs for a floor
 	 */
 	@Override
-	protected void placeFloor(WorldGenLevel world, Random rand, BoundingBox sbb, int floorHeight, int floor) {
+	protected void placeFloor(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int floorHeight, int floor) {
 		for (int x = 1; x < size - 1; x++) {
 			for (int z = 1; z < size - 1; z++) {
 
@@ -60,7 +61,7 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 	 * @param ladderDownDir
 	 */
 	@Override
-	protected void decorateFloor(WorldGenLevel world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 
 		Rotation r = ladderDownDir;
 		for (int y = 0; y < 3; y++) {
@@ -70,7 +71,7 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 		}
 	}
 
-	private void placeIceStairs(WorldGenLevel world, BoundingBox sbb, Random rand, int y, Rotation rotation) {
+	private void placeIceStairs(WorldGenLevel world, BoundingBox sbb, RandomSource rand, int y, Rotation rotation) {
 		final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
 		this.fillBlocksRotated(world, sbb, 8, y + 1, 1, 10, y + 1, 3, packedIce, rotation);
 		if (y > 1) {
@@ -83,7 +84,7 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected void decorateTopFloor(WorldGenLevel world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateTopFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		for (int x = 1; x < size - 1; x++) {
 			for (int z = 1; z < size - 1; z++) {
 

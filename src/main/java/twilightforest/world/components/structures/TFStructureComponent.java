@@ -3,7 +3,7 @@ package twilightforest.world.components.structures;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -134,7 +133,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 
 			if (sbb.isInside(pos)) {
 				final ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, world.getLevel());
-				armorStand.setCustomName(new TextComponent(s));
+				armorStand.setCustomName(Component.literal(s));
 				armorStand.moveTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
 				armorStand.setInvulnerable(true);
 				armorStand.setInvisible(true);
@@ -178,7 +177,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	protected void setDebugEntity(Level world, BlockPos blockpos, String s) {
 		if (shouldDebug()) {
 			final Sheep sheep = new Sheep(EntityType.SHEEP, world);
-			sheep.setCustomName(new TextComponent(s));
+			sheep.setCustomName(Component.literal(s));
 			sheep.setNoAi(true);
 			sheep.moveTo(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
 			sheep.setInvulnerable(true);
@@ -202,10 +201,5 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	 */
 	public boolean isComponentProtected() {
 		return true;
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.NONE;
 	}
 }

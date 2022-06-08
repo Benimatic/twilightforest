@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.lichtower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -13,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class TowerRoofComponent extends TFStructureComponentOld {
 
@@ -80,7 +81,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel worldIn, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel worldIn, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 	}
 

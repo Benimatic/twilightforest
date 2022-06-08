@@ -26,8 +26,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.compat.CuriosCompat;
-import twilightforest.compat.TFCompat;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 

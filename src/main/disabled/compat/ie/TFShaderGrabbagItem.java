@@ -41,7 +41,7 @@ public class TFShaderGrabbagItem extends Item {
 
     @Override
     public Component getName(ItemStack stack) {
-        return (new TranslatableComponent("item.twilightforest.shader_bag", new TranslatableComponent(Lib.DESC_INFO + "shader.rarity." + rarity.name().toLowerCase(Locale.US))));
+        return (Component.translatable("item.twilightforest.shader_bag", Component.translatable(Lib.DESC_INFO + "shader.rarity." + rarity.name().toLowerCase(Locale.US))));
     }
 
     @Override

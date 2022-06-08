@@ -4,8 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.WorldGenLevel;
@@ -31,7 +33,7 @@ import twilightforest.world.registration.TFFeature;
 import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
+import java.util.RandomSource;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -260,8 +262,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 			SignBlockEntity teSign = (SignBlockEntity) world.getBlockEntity(pos);
 			if (teSign != null) {
-				teSign.setMessage(1, new TextComponent(string0));
-				teSign.setMessage(2, new TextComponent(string1));
+				teSign.setMessage(1, Component.literal(string0));
+				teSign.setMessage(2, Component.literal(string1));
 			}
 		}
 	}
@@ -416,7 +418,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	// [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
-	protected void randomlyFillBlocksRotated(WorldGenLevel worldIn, BoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
+	protected void randomlyFillBlocksRotated(WorldGenLevel worldIn, BoundingBox boundingboxIn, RandomSource rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
 		Direction oldBase = fakeBaseMode(rotation);
 		final boolean minimumLightLevel = true;
 		generateMaybeBox(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);

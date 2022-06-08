@@ -9,8 +9,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -127,7 +125,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 	protected void renderLabels(PoseStack ms, int mouseX, int mouseY) {
 		this.font.draw(ms, I18n.get(TFBlocks.UNCRAFTING_TABLE.get().getDescriptionId()), 6, 6, 4210752);
 		if(TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) {
-			this.font.draw(ms, new TranslatableComponent("container.uncrafting_table.disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752);
+			this.font.draw(ms, Component.translatable("container.uncrafting_table.disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752);
 		} else {
 			this.font.draw(ms, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 4210752);
 		}
@@ -218,7 +216,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 
 		//check if we're hovering over a banned uncraftable item
 		if(container.slots.get(0).hasItem() && container.slots.get(0).getItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) && container.slots.get(0).equals(hoveredSlot)) {
-			this.renderTooltip(pPoseStack, new TranslatableComponent("container.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED), pX, pY);
+			this.renderTooltip(pPoseStack, Component.translatable("container.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED), pX, pY);
 		} else {
 			super.renderTooltip(pPoseStack, pX, pY);
 		}

@@ -9,7 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SnowParticle extends TextureSheetParticle {
 
-	float initialParticleScale;
+	final float initialParticleScale;
 
 	SnowParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, vx, vy, vz, 1.0F);

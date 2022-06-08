@@ -1,12 +1,10 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -144,7 +142,7 @@ public class LifedrainScepterItem extends Item {
 
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
 				if(level.isClientSide()) {
-					this.makeRedMagicTrail(level, living, target.eyeBlockPosition());
+					this.makeRedMagicTrail(level, living, target.getEyePosition());
 				}
 
 				if (target.getHealth() <= 3 && target.hurt(TFDamageSources.lifedrain(living, living), 1)) {
@@ -195,7 +193,7 @@ public class LifedrainScepterItem extends Item {
 		}
 	}
 
-	private void makeRedMagicTrail(Level level, LivingEntity source, BlockPos target) {
+	private void makeRedMagicTrail(Level level, LivingEntity source, Vec3 target) {
 		// make particle trail
 		int particles = 32;
 		for (int i = 0; i < particles; i++) {
@@ -204,9 +202,9 @@ public class LifedrainScepterItem extends Item {
 			float f1 = 0.5F;
 			float f2 = 0.5F;
 			double handOffset = source.getItemInHand(InteractionHand.OFF_HAND).is(this) ? -0.35D : 0.35D;
-			double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
-			double ty = source.getEyeY() - 0.1D + (target.getY() - source.getEyeY()) * trailFactor + level.getRandom().nextGaussian() * 0.005D - 0.1D;
-			double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
+			double tx = source.getX() + (target.x() - source.getX()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
+			double ty = source.getEyeY() - 0.1D + (target.y() - source.getEyeY()) * trailFactor + level.getRandom().nextGaussian() * 0.005D - 0.1D;
+			double tz = source.getZ() + (target.z() - source.getZ()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
 			level.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
@@ -235,6 +233,6 @@ public class LifedrainScepterItem extends Item {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

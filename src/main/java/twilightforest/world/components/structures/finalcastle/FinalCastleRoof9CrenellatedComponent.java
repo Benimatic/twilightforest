@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -15,7 +16,7 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOld {
 
@@ -23,7 +24,7 @@ public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOl
 		super(FinalCastlePieces.TFFCRo9Cr, nbt);
 	}
 
-	public FinalCastleRoof9CrenellatedComponent(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleRoof9CrenellatedComponent(TFFeature feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(FinalCastlePieces.TFFCRo9Cr, feature, i, x, y, z);
 
 		int height = 5;
@@ -33,14 +34,14 @@ public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOl
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			this.fillBlocksRotated(world, sbb, 0, -1, 0, 2, 3, 2, deco.blockState, rotation);
 			this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);

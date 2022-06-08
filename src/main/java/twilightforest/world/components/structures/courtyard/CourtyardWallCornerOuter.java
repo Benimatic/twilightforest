@@ -2,13 +2,12 @@ package twilightforest.world.components.structures.courtyard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.NagastoneVariants;
@@ -16,7 +15,7 @@ import twilightforest.world.components.processors.SmoothStoneVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightDoubleTemplateStructurePiece;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class CourtyardWallCornerOuter extends TwilightDoubleTemplateStructurePiece {
     public CourtyardWallCornerOuter(StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -28,7 +27,7 @@ public class CourtyardWallCornerOuter extends TwilightDoubleTemplateStructurePie
         );
     }
 
-    public CourtyardWallCornerOuter(int i, int x, int y, int z, Rotation rotation, StructureManager structureManager) {
+    public CourtyardWallCornerOuter(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
         super(NagaCourtyardPieces.TFNCWC,
                 i,
                 structureManager,
@@ -41,12 +40,7 @@ public class CourtyardWallCornerOuter extends TwilightDoubleTemplateStructurePie
     }
 
     @Override
-    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, Random random, BoundingBox boundingBox) {
+    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
 
-    }
-
-    @Override
-    public NoiseEffect getNoiseEffect() {
-        return NoiseEffect.BEARD;
     }
 }

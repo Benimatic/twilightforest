@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -14,7 +15,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class MazeRoomVaultComponent extends MazeRoomComponent {
 
@@ -22,7 +23,7 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 		super(MinotaurMazePieces.TFMMRV, nbt);
 	}
 
-	public MazeRoomVaultComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
+	public MazeRoomVaultComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
 		super(MinotaurMazePieces.TFMMRV, feature, i, rand, x, y, z);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
@@ -30,7 +31,7 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fill room with bricks
 		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, false);

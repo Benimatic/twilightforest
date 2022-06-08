@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
@@ -18,6 +17,7 @@ import twilightforest.item.*;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+//FIXME registry events no longer exist. i'll take care of this later, this is just here to remind myself -Giz
 public class TFBlockItems {
 
 	public static void registerBlockItems(RegistryEvent.Register<Item> event) {

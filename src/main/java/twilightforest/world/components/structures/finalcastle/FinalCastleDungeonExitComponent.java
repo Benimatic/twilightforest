@@ -4,8 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +20,7 @@ import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Component {
 
@@ -32,7 +33,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -55,7 +56,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
@@ -83,7 +84,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	@Override
-	protected BlockState getForceFieldColor(Random decoRNG) {
+	protected BlockState getForceFieldColor(RandomSource decoRNG) {
 		return TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
 	}
 

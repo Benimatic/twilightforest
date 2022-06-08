@@ -4,12 +4,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class TowerwoodProcessor extends StructurePiece.BlockSelector {
 
 	@Override
-	public void next(Random random, int x, int y, int z, boolean isWall) {
+	public void next(RandomSource random, int x, int y, int z, boolean isWall) {
 		if (!isWall) {
 			this.next = Blocks.AIR.defaultBlockState();
 		} else {

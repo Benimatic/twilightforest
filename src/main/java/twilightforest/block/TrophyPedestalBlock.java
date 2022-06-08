@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -19,7 +20,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
@@ -112,7 +112,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	private void warnIneligiblePlayers(Level world, BlockPos pos) {
 		for (Player player : world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
 			if (!isPlayerEligible(player)) {
-				player.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
+				player.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
 			}
 		}
 	}

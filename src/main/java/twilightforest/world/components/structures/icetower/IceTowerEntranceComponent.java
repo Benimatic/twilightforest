@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.icetower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.Rotation;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class IceTowerEntranceComponent extends IceTowerWingComponent {
 
@@ -27,12 +28,12 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	protected boolean shouldHaveBase(Random rand) {
+	protected boolean shouldHaveBase(RandomSource rand) {
 		return true;
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponent tfStructureComponent) {
 			this.deco = tfStructureComponent.deco;
 		}
@@ -55,7 +56,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	/**
 	 * Add some stairs leading to this tower
 	 */
-	private boolean addStairs(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean addStairs(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
 		// add door
 		this.addOpening(x, y, z, rotation);
 
@@ -73,7 +74,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		return false;
 	}
 
@@ -81,7 +82,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 	 * No floors
 	 */
 	@Override
-	protected void makeFloorsForTower(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void makeFloorsForTower(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		decoratePillarsCornersHigh(world, 0, 11, Rotation.NONE, sbb);
 	}
 

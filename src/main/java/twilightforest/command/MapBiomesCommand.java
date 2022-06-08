@@ -9,9 +9,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import twilightforest.item.MagicMapItem;
@@ -104,13 +103,13 @@ public class MapBiomesCommand {
 
             //send a progress update to let people know the server isn't dying
             if (x % progressUpdate == 0) {
-                source.getSource().sendSuccess(new TranslatableComponent(((double) x / img.getHeight()) * 100 + "% Done mapping"), true);
+                source.getSource().sendSuccess(Component.translatable(((double) x / img.getHeight()) * 100 + "% Done mapping"), true);
             }
         }
 
-        source.getSource().sendSuccess(new TextComponent("Approximate biome-block counts within an 2048x2048 region"), true);
+        source.getSource().sendSuccess(Component.literal("Approximate biome-block counts within an 2048x2048 region"), true);
         int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
-        biomeCount.forEach((biome, integer) -> source.getSource().sendSuccess(new TextComponent(biome.toString()).append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
+        biomeCount.forEach((biome, integer) -> source.getSource().sendSuccess(Component.literal(biome.toString()).append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
 
         //save the biome map
         Path p = Paths.get("biomemap.png");
@@ -121,7 +120,7 @@ public class MapBiomesCommand {
             return 0;
         }
 
-        source.getSource().sendSuccess(new TextComponent("Image saved!"), true);
+        source.getSource().sendSuccess(Component.literal("Image saved!"), true);
 
         return Command.SINGLE_SUCCESS;
     }

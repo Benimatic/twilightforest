@@ -3,13 +3,13 @@ package twilightforest;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -57,7 +57,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -68,15 +67,14 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
-import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.CharmEffect;
@@ -103,7 +101,6 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -178,10 +175,9 @@ public class TFEventListener {
 			super(conditionsIn);
 		}
 
-		@Nonnull
 		@Override
-		protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
-			List<ItemStack> newLoot = new ArrayList<>();
+		protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+			ObjectArrayList<ItemStack> newLoot = new ObjectArrayList<>();
 			boolean flag = false;
 			if (shouldMakeGiantCobble && generatedLoot.size() > 0) {
 				// turn the next 64 cobblestone drops into one giant cobble
@@ -223,8 +219,7 @@ public class TFEventListener {
 		Entity trueSource = damageSource.getEntity();
 
 		// fire aura
-		if (living instanceof Player && (damageType.equals("mob") || damageType.equals("player")) && trueSource != null) {
-			Player player = (Player) living;
+		if (living instanceof Player player && (damageType.equals("mob") || damageType.equals("player")) && trueSource != null) {
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.getInventory(), damageSource);
 
 			if (fireLevel > 0 && player.getRandom().nextInt(25) < fireLevel) {
@@ -233,8 +228,7 @@ public class TFEventListener {
 		}
 
 		// chill aura
-		if (living instanceof Player && (damageType.equals("mob") || damageType.equals("player")) && trueSource instanceof LivingEntity) {
-			Player player = (Player) living;
+		if (living instanceof Player player && (damageType.equals("mob") || damageType.equals("player")) && trueSource instanceof LivingEntity) {
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.getInventory(), damageSource);
 
 			if (chillLevel > 0) {
@@ -243,8 +237,7 @@ public class TFEventListener {
 		}
 
 		// triple bow strips hurtResistantTime
-		if (damageType.equals("arrow") && trueSource instanceof Player) {
-			Player player = (Player) trueSource;
+		if (damageType.equals("arrow") && trueSource instanceof Player player) {
 
 			if (player.getMainHandItem().getItem() == TFItems.TRIPLE_BOW.get() || player.getOffhandItem().getItem() == TFItems.TRIPLE_BOW.get()) {
 				living.invulnerableTime = 0;
@@ -266,8 +259,8 @@ public class TFEventListener {
 		BlockPos pos = event.getPos();
 		BlockState state = world.getBlockState(pos);
 		if(!TFConfig.COMMON_CONFIG.disableSkullCandles.get()) {
-			if (stack.is(ItemTags.CANDLES) && stack.getItem().getRegistryName().getNamespace().equals("minecraft") && !event.getPlayer().isShiftKeyDown()) {
-				if (state.getBlock() instanceof AbstractSkullBlock && state.getBlock().getRegistryName().getNamespace().equals("minecraft")) {
+			if (stack.is(ItemTags.CANDLES) && ForgeRegistries.ITEMS.getKey(stack.getItem()).getNamespace().equals("minecraft") && !event.getPlayer().isShiftKeyDown()) {
+				if (state.getBlock() instanceof AbstractSkullBlock && ForgeRegistries.BLOCKS.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
 					SkullBlock.Types type = (SkullBlock.Types) ((AbstractSkullBlock) state.getBlock()).getType();
 					boolean wall = state.getBlock() instanceof WallSkullBlock;
 					switch (type) {
@@ -336,14 +329,14 @@ public class TFEventListener {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
-
-			if (slot.isPresent()) {
-				slot.get().stack().shrink(1);
-				return true;
-			}
-		}
+//		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+//			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
+//
+//			if (slot.isPresent()) {
+//				slot.get().stack().shrink(1);
+//				return true;
+//			}
+//		}
 
 		return false;
 	}
@@ -408,7 +401,7 @@ public class TFEventListener {
 					else modifiedName = player.getName().getString();
 					casket.name = player.getName().getString();
 					casket.casketname = modifiedName;
-					casket.setCustomName(new TextComponent(modifiedName + "'s " + (world.random.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
+					casket.setCustomName(Component.literal(modifiedName + "'s " + (world.random.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
 					int damage = world.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
 					if (world.random.nextFloat() <= 0.15F) {
 						if (damage >= 2) {
@@ -591,7 +584,7 @@ public class TFEventListener {
 			updateCapabilities(serverPlayer, serverPlayer);
 		} else {
 			if(casketExpiration) {
-				serverPlayer.sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), serverPlayer.getUUID());
+				serverPlayer.sendSystemMessage(Component.translatable("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED));
 			}
 			returnStoredItems(serverPlayer);
 		}

@@ -14,21 +14,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class CrumbleRecipe implements Recipe<Container> {
-
-	private final ResourceLocation recipeID;
-	private final BlockState input;
-	private final BlockState result;
-
-	public CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) {
-		this.recipeID = recipeID;
-		this.input = input;
-		this.result = result;
-	}
+public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) implements Recipe<Container> {
 
 	public BlockState getInput() {
 		return input;
@@ -73,13 +62,13 @@ public class CrumbleRecipe implements Recipe<Container> {
 		return TFRecipes.CRUMBLE_RECIPE.get();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<CrumbleRecipe> {
+	public static class Serializer implements RecipeSerializer<CrumbleRecipe> {
 
 		@Override
 		public CrumbleRecipe fromJson(ResourceLocation id, JsonObject object) {
 			Block input = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
 			Block output = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
-			if(input != null && output != null) {
+			if (input != null && output != null) {
 				return new CrumbleRecipe(id, input.defaultBlockState(), output.defaultBlockState());
 			}
 			return new CrumbleRecipe(id, Blocks.AIR.defaultBlockState(), Blocks.AIR.defaultBlockState());

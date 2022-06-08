@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -17,7 +18,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
@@ -25,7 +26,7 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		super(FinalCastlePieces.TFFCLaTo, nbt);
 	}
 
-	public FinalCastleLargeTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
+	public FinalCastleLargeTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction rotation) {
 		super(FinalCastlePieces.TFFCLaTo, feature, i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 13;
@@ -35,7 +36,7 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -46,8 +47,8 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		RandomSource decoRNG = new RandomSource(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		generateBox(world, sbb, 0, 0, 0, 12, 59, 12, false, rand, deco.randomBlocks);
 

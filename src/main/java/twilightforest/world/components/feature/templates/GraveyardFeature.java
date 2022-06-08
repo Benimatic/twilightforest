@@ -115,7 +115,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 
-		StructureManager templatemanager = world.getLevel().getServer().getStructureManager();
+		StructureTemplateManager templatemanager = world.getLevel().getServer().getStructureManager();
 		StructureTemplate base = templatemanager.getOrCreate(GRAVEYARD);
 		if (base == null)
 			return false;

@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -149,7 +149,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 			BlockEntity tile = level.getBlockEntity(pos);
 			if (tile instanceof KeepsakeCasketBlockEntity casket) {
 				ItemStack stack = new ItemStack(this);
-				String nameCheck = new TextComponent(casket.name + "'s " + casket.getDisplayName()).getString();
+				String nameCheck = new Component.literal(casket.name + "'s " + casket.getDisplayName()).getString();
 				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
 				CompoundTag nbt = new CompoundTag();
 				nbt.putInt("damage", state.getValue(BREAKAGE));

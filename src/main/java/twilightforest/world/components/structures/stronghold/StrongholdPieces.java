@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.stronghold;
 
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -9,7 +10,7 @@ import twilightforest.world.registration.TFFeature;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.RandomSource;
 
 public class StrongholdPieces {
 
@@ -89,7 +90,7 @@ public class StrongholdPieces {
 		return flag;
 	}
 
-	public StructureTFStrongholdComponent getNextComponent(StructurePiece parent, StructurePieceAccessor list, Random random, TFFeature feature, int index, Direction facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent getNextComponent(StructurePiece parent, StructurePieceAccessor list, RandomSource random, TFFeature feature, int index, Direction facing, int x, int y, int z) {
 		if (!hasMoreLimitedPieces()) {
 			return null;
 		} else {

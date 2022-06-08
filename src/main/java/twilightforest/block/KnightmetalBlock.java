@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -36,7 +35,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
-	private static final MutableComponent TOOLTIP = new TranslatableComponent("block.knightmetal.tooltip").withStyle(ChatFormatting.GRAY);
+	private static final MutableComponent TOOLTIP = Component.translatable("block.knightmetal.tooltip").withStyle(ChatFormatting.GRAY);
 
 	private static final VoxelShape SHAPE = Shapes.create(new AABB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F));
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;

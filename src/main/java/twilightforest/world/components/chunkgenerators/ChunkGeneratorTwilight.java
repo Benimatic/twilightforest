@@ -28,6 +28,7 @@ import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
@@ -38,7 +39,6 @@ import twilightforest.world.components.chunkgenerators.warp.TFTerrainWarp;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
@@ -77,7 +77,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight, boolean owSeed) {
 		//super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
-		super(structures, owSeed ? delegate = delegate.withSeed(TwilightFeatures.seed) : delegate);
+		super(structures, delegate);
 		this.noiseGeneratorSettings = noiseGenSettings;
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
@@ -110,14 +110,9 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public ChunkGenerator withSeed(long newSeed) {
-		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.structureSets, this.noiseGeneratorSettings, this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel, this.darkForestCanopyHeight, false);
-	}
-
-	@Override
-	public int getBaseHeight(int x, int z, Heightmap.Types heightMap, LevelHeightAccessor level) {
+	public int getBaseHeight(int x, int z, Heightmap.Types heightMap, LevelHeightAccessor level, RandomState random) {
 		if (warper.isEmpty()) {
-			return super.getBaseHeight(x, z, heightMap, level);
+			return super.getBaseHeight(x, z, heightMap, level, random);
 		} else {
 			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 			int minY = Math.max(settings.minY(), level.getMinBuildHeight());
@@ -129,9 +124,9 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level) {
+	public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level, RandomState random) {
 		if (warper.isEmpty()) {
-			return super.getBaseColumn(x, z, level);
+			return super.getBaseColumn(x, z, level, random);
 		} else {
 			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 			int minY = Math.max(settings.minY(), level.getMinBuildHeight());
@@ -197,19 +192,19 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomes, Executor executor, Blender blender, StructureFeatureManager manager, ChunkAccess chunkAccess) {
+	public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomes, Executor executor, RandomState random, Blender blender, StructureManager manager, ChunkAccess chunkAccess) {
 		//Mimic behaviour of ChunkGenerator, NoiseBasedChunkGenerator does weird things
 		return CompletableFuture.supplyAsync(Util.wrapThreadWithTaskName("init_biomes", () -> {
-			chunkAccess.fillBiomesFromNoise(this.getBiomeSource(), this.climateSampler());
+			chunkAccess.fillBiomesFromNoise(this.getBiomeSource(), Climate.empty());
 			return chunkAccess;
 		}), Util.backgroundExecutor());
 	}
 
 	//VanillaCopy of NoiseBasedChunkGenerator#fillFromNoise, only so doFill can be ours
 	@Override
-	public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureManager, ChunkAccess chunkAccess) {
+	public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, RandomState random, StructureManager structureManager, ChunkAccess chunkAccess) {
 		if (warper.isEmpty()) {
-			return super.fillFromNoise(executor, blender, structureManager, chunkAccess);
+			return super.fillFromNoise(executor, blender, random, structureManager, chunkAccess);
 		} else {
 			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 			int cellHeight = settings.getCellHeight();
@@ -349,10 +344,10 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public void buildSurface(WorldGenRegion world, StructureFeatureManager manager, ChunkAccess chunk) {
+	public void buildSurface(WorldGenRegion world, StructureManager manager, RandomState random, ChunkAccess chunk) {
 		this.deformTerrainForFeature(world, chunk);
 
-		super.buildSurface(world, manager, chunk);
+		super.buildSurface(world, manager, random, chunk);
 
 		//noinspection OptionalIsPresent
 		if (this.darkForestCanopyHeight.isPresent())
@@ -396,7 +391,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public void addDebugScreenInfo(List<String> p_208054_, BlockPos p_208055_) {
+	public void addDebugScreenInfo(List<String> p_223175_, RandomState p_223176_, BlockPos p_223177_) {
 		//do we do anything with this? we need to implement it for some reason
 	}
 
@@ -728,7 +723,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
 						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2, null).value();
-						if (BiomeKeys.DARK_FOREST.location().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.location().equals(biome.getRegistryName())) {
+						if (BiomeKeys.DARK_FOREST.location().equals(ForgeRegistries.BIOMES.getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(ForgeRegistries.BIOMES.getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
 						}
@@ -815,7 +810,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureFeatureManager structureManager, MobCategory mobCategory, BlockPos pos) {
+	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory mobCategory, BlockPos pos) {
 		if (!this.monsterSpawnsBelowSeaLevel) return super.getMobsAt(biome, structureManager, mobCategory, pos);
 
 		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructureStart.gatherPotentialSpawns(structureManager, mobCategory, pos);

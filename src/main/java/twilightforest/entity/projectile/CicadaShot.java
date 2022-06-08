@@ -50,12 +50,6 @@ public class CicadaShot extends TFThrowable {
     }
 
 
-
-    @Override
-    public void tick() {
-        super.tick();
-    }
-
     @Override
     public float getBrightness() {
         return 1.0F;

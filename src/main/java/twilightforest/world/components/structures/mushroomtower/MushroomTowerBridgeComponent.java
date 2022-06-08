@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.mushroomtower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -18,11 +19,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 
-	int dSize;
+	final int dSize;
 	int dHeight;
 
 	public MushroomTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -52,7 +53,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -72,7 +73,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// make walls
 		for (int x = 0; x < dSize; x++) {

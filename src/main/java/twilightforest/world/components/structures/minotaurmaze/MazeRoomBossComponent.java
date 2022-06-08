@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.minotaurmaze;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -15,7 +16,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class MazeRoomBossComponent extends MazeRoomComponent {
 
@@ -23,12 +24,12 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 		super(MinotaurMazePieces.TFMMRB, nbt);
 	}
 
-	public MazeRoomBossComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
+	public MazeRoomBossComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
 		super(MinotaurMazePieces.TFMMRB, feature, i, rand, x, y, z);
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// doorways
 		if (this.getBlock(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
 			generateBox(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);

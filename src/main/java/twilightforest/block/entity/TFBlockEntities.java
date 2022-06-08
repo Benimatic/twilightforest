@@ -11,7 +11,6 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.entity.spawner.*;
-import twilightforest.client.renderer.tileentity.RedThreadRenderer;
 import twilightforest.client.renderer.tileentity.*;
 
 public class TFBlockEntities {

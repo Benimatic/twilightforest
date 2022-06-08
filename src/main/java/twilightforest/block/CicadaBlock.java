@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -19,18 +18,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.ModList;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.CicadaBlockEntity;
 import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.compat.TFCompat;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class CicadaBlock extends CritterBlock {
-	private static final MutableComponent TOOLTIP = new TranslatableComponent("block.twilightforest.cicada.desc").withStyle(TwilightForestMod.getRarity().color).withStyle(ChatFormatting.ITALIC);
+	private static final MutableComponent TOOLTIP = Component.translatable("block.twilightforest.cicada.desc").withStyle(TwilightForestMod.getRarity().color).withStyle(ChatFormatting.ITALIC);
 
 	protected CicadaBlock(Properties properties) {
 		super(properties);
@@ -64,8 +61,8 @@ public class CicadaBlock extends CritterBlock {
 	public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, getter, tooltip, flag);
 
-		if (ModList.get().isLoaded(TFCompat.IE_ID)) {
-			tooltip.add(TOOLTIP);
-		}
+//		if (ModList.get().isLoaded(TFCompat.IE_ID)) {
+//			tooltip.add(TOOLTIP);
+//		}
 	}
 }

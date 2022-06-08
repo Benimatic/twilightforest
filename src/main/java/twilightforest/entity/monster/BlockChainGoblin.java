@@ -1,6 +1,6 @@
 package twilightforest.entity.monster;
 
-import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -330,8 +330,8 @@ public class BlockChainGoblin extends Monster {
 	}
 
 	@Override
-	public void recreateFromPacket(ClientboundAddMobPacket p_147206_) {
-		super.recreateFromPacket(p_147206_);
+	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+		super.recreateFromPacket(packet);
 		TFPart.assignPartIDs(this);
 	}
 

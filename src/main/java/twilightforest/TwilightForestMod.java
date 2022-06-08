@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,10 +25,8 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.Bindings;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -48,10 +46,6 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.CuriosCompat;
-import twilightforest.compat.TConCompat;
-import twilightforest.compat.TFCompat;
-import twilightforest.compat.UndergardenCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
@@ -134,29 +128,29 @@ public class TwilightForestMod {
 		TwilightFeatures.TREE_DECORATORS.register(modbus);
 		TwilightFeatures.TRUNK_PLACERS.register(modbus);
 
-		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
-			UndergardenCompat.ENTITIES.register(modbus);
-		}
-
-		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
-			TConCompat.FLUIDS.register(modbus);
-			TConCompat.MODIFIERS.register(modbus);
-		}
+//		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
+//			UndergardenCompat.ENTITIES.register(modbus);
+//		}
+//
+//		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
+//			TConCompat.FLUIDS.register(modbus);
+//			TConCompat.MODIFIERS.register(modbus);
+//		}
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
 		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
-		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
-		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
-		}
+		modbus.addGenericListener(Structure.class, TFStructures::register);
+//		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+//			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+//		}
 
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.preInitCompat();
+				//TFCompat.preInitCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading preInit compatibility!");
@@ -177,7 +171,7 @@ public class TwilightForestMod {
 				if (metadataSection != null) {
 					event.addRepositorySource((packConsumer, packConstructor) ->
 							packConsumer.accept(packConstructor.create(
-									"builtin/twilight_forest_legacy_resources", new TextComponent("Twilight Classic"), false,
+									"builtin/twilight_forest_legacy_resources", Component.literal("Twilight Classic"), false,
 									() -> pack, metadataSection, Pack.Position.TOP, PackSource.BUILT_IN, false)));
 				}
 			}
@@ -207,7 +201,7 @@ public class TwilightForestMod {
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
-		TFCompat.sendIMCs();
+		//TFCompat.sendIMCs();
 	}
 
 	@SubscribeEvent
@@ -218,7 +212,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.initCompat(evt);
+				//TFCompat.initCompat(evt);
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");
@@ -228,7 +222,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.postInitCompat();
+				//TFCompat.postInitCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading postInit compatibility!");

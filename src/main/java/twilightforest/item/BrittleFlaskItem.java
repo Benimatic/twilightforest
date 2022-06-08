@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -193,9 +192,9 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
-		tooltip.add(new TranslatableComponent("item.twilightforest.flask_doses", stack.getOrCreateTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("item.twilightforest.flask_doses", stack.getOrCreateTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
 		if (!stack.getOrCreateTag().getBoolean("Refillable"))
-			tooltip.add(new TranslatableComponent("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
+			tooltip.add(Component.translatable("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
 	}
 
 	//copied from Item.getBarWidth, but reversed the "durability" check so it increments up, not down
@@ -206,7 +205,7 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack stack = new ItemStack(this);
 			stack.getOrCreateTag().putInt("Uses", 0);
 			stack.getOrCreateTag().putInt("Breakage", 0);

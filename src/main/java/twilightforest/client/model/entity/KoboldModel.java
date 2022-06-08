@@ -16,7 +16,7 @@ import twilightforest.entity.monster.Kobold;
 @OnlyIn(Dist.CLIENT)
 public class KoboldModel extends HumanoidModel<Kobold> {
 
-    public ModelPart mouth;
+    public final ModelPart mouth;
 
     boolean isJumping;
 

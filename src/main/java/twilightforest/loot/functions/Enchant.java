@@ -15,12 +15,12 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IRegistryDelegate;
 import twilightforest.loot.TFTreasure;
 
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO this may no longer be needed, take a look at SetEnchantmentsFunction
 // Similar to EnchantRandomly but applies everything and with exact levels
 public class Enchant extends LootItemConditionalFunction {
 

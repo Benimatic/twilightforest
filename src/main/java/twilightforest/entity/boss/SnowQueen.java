@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -496,8 +496,8 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 	}
 
 	@Override
-	public void recreateFromPacket(ClientboundAddMobPacket p_147206_) {
-		super.recreateFromPacket(p_147206_);
+	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+		super.recreateFromPacket(packet);
 		TFPart.assignPartIDs(this);
 	}
 

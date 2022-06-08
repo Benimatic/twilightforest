@@ -9,7 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class IceBeamParticle extends TextureSheetParticle {
 
-	float initialParticleScale;
+	final float initialParticleScale;
 
 	IceBeamParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);

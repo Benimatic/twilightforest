@@ -2,10 +2,11 @@ package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -18,7 +19,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class YetiCaveComponent extends HollowHillComponent {
 	private static final SpikeConfig BLUE_ICE_SPIKE = new SpikeConfig(BlockStateProvider.simple(Blocks.BLUE_ICE.defaultBlockState()), UniformInt.of(8, 8), ConstantInt.of(4), true);
@@ -29,7 +30,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 		super(TFFeature.TFYeti, nbt);
 	}
 
-	public YetiCaveComponent(TFFeature feature, Random rand, int i, int x, int y, int z) {
+	public YetiCaveComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z) {
 		super(TFFeature.TFYeti, feature, i, 2, x, y, z);
 	}
 
@@ -37,7 +38,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int sn = 64;
 
 		// fill in features
@@ -86,7 +87,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 	}
 
 	@Override
-	BlockPos.MutableBlockPos randomCeilingCoordinates(Random rand, float maximumRadius) {
+	BlockPos.MutableBlockPos randomCeilingCoordinates(RandomSource rand, float maximumRadius) {
 		int rad = (int) maximumRadius;
 		int x = rand.nextInt(rad * 2) - rad;
 		int z = rand.nextInt(rad * 2) - rad;

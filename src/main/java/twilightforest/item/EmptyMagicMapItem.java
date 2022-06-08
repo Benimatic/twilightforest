@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -26,7 +26,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 		if (worldIn.isClientSide)
 			return InteractionResultHolder.pass(emptyMapStack);
 		if(worldIn instanceof ServerLevel level && !TFGenerationSettings.usesTwilightChunkGenerator(level)) {
-			playerIn.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".ui.magicmap.fail"), true);
+			playerIn.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".ui.magicmap.fail"), true);
 			return InteractionResultHolder.fail(emptyMapStack);
 		}
 		// TF - scale at 4

@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -61,7 +61,7 @@ public class UncraftingTableBlock extends Block {
 	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level world, BlockPos pos) {
 		return new SimpleMenuProvider((id, inv, player) -> new UncraftingContainer(id, inv, player.level, ContainerLevelAccess.create(world, pos)),
-						new TranslatableComponent(getDescriptionId()));
+						Component.translatable(getDescriptionId()));
 	}
 
 	@Override

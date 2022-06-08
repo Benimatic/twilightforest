@@ -4,9 +4,9 @@ import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.event.RegistryEvent;
 import twilightforest.entity.TFEntities;
 
+//FIXME switch to DR
 public final class TFSounds {
 
 	public static final SoundEvent ACID_RAIN_BURNS = createEvent("entity.twilightforest.acid_rain");

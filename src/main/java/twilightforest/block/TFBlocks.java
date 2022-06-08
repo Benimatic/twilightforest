@@ -1,20 +1,16 @@
 package twilightforest.block;
 
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.compat.TFCompat;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.enums.TowerDeviceVariant;
@@ -29,7 +25,7 @@ import javax.annotation.Nonnull;
 public class TFBlocks {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TwilightForestMod.ID);
 
-	public static final RegistryObject<TFPortalBlock> TWILIGHT_PORTAL = BLOCKS.register("twilight_portal", () -> new TFPortalBlock(BlockBehaviour.Properties.of(Material.PORTAL).strength(-1.0F).sound(SoundType.GLASS).lightLevel((state) -> 11).noCollission().noOcclusion().noDrops()));
+	public static final RegistryObject<TFPortalBlock> TWILIGHT_PORTAL = BLOCKS.register("twilight_portal", () -> new TFPortalBlock(BlockBehaviour.Properties.of(Material.PORTAL).strength(-1.0F).sound(SoundType.GLASS).lightLevel((state) -> 11).noCollission().noOcclusion().noLootTable()));
 
 	//misc.
 	public static final RegistryObject<Block> HEDGE = BLOCKS.register("hedge", () -> new HedgeBlock(BlockBehaviour.Properties.of(Material.CACTUS).strength(2.0F, 6.0F).sound(SoundType.GRASS)));
@@ -110,7 +106,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> RED_THREAD = BLOCKS.register("red_thread", () -> new RedThreadBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noCollission()));
 
 	//stronghold
-	public static final RegistryObject<Block> STRONGHOLD_SHIELD = BLOCKS.register("stronghold_shield", () -> new StrongholdShieldBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops()));
+	public static final RegistryObject<Block> STRONGHOLD_SHIELD = BLOCKS.register("stronghold_shield", () -> new StrongholdShieldBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(-1.0F, 6000000.0F).sound(SoundType.METAL).noLootTable()));
 	public static final RegistryObject<Block> TROPHY_PEDESTAL = BLOCKS.register("trophy_pedestal", () -> new TrophyPedestalBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(2.0F, 2000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> UNDERBRICK = BLOCKS.register("underbrick", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.WOOD).requiresCorrectToolForDrops().strength(1.5F, 6.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> MOSSY_UNDERBRICK = BLOCKS.register("mossy_underbrick", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.WOOD).requiresCorrectToolForDrops().strength(1.5F, 6.0F).sound(SoundType.STONE)));
@@ -128,14 +124,14 @@ public class TFBlocks {
 	public static final RegistryObject<Block> VANISHING_BLOCK = BLOCKS.register("vanishing_block", () -> new VanishingBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).strength(-1.0F, 35.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(VanishingBlock.ACTIVE) ? 4 : 0)));
 	public static final RegistryObject<Block> LOCKED_VANISHING_BLOCK = BLOCKS.register("locked_vanishing_block", () -> new LockedVanishingBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).strength(-1.0F, 2000.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> CARMINITE_BUILDER = BLOCKS.register("carminite_builder", () -> new BuilderBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).requiresCorrectToolForDrops().strength(10.0F, 6.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(BuilderBlock.STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? 4 : 0)));
-	public static final RegistryObject<Block> BUILT_BLOCK = BLOCKS.register("built_block", () -> new TranslucentBuiltBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(50.0F, 2000.0F).sound(SoundType.METAL).noOcclusion().noDrops()));
+	public static final RegistryObject<Block> BUILT_BLOCK = BLOCKS.register("built_block", () -> new TranslucentBuiltBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(50.0F, 2000.0F).sound(SoundType.METAL).noOcclusion().noLootTable()));
 	public static final RegistryObject<Block> ANTIBUILDER = BLOCKS.register("antibuilder", () -> new AntibuilderBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).requiresCorrectToolForDrops().strength(10.0F, 6.0F).sound(SoundType.WOOD).lightLevel((state) -> 10)));
-	public static final RegistryObject<Block> ANTIBUILT_BLOCK = BLOCKS.register("antibuilt_block", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 2000.0F).sound(SoundType.METAL).noDrops().noOcclusion()));
+	public static final RegistryObject<Block> ANTIBUILT_BLOCK = BLOCKS.register("antibuilt_block", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 2000.0F).sound(SoundType.METAL).noLootTable().noOcclusion()));
 	public static final RegistryObject<GhastTrapBlock> GHAST_TRAP = BLOCKS.register("ghast_trap", () -> new GhastTrapBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).requiresCorrectToolForDrops().strength(10.0F, 6.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(GhastTrapBlock.ACTIVE) ? 15 : 0)));
 	public static final RegistryObject<Block> CARMINITE_REACTOR = BLOCKS.register("carminite_reactor", () -> new CarminiteReactorBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).requiresCorrectToolForDrops().strength(10.0F, 6.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(CarminiteReactorBlock.ACTIVE) ? 15 : 0)));
-	public static final RegistryObject<Block> REACTOR_DEBRIS = BLOCKS.register("reactor_debris", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 2000.0F).sound(SoundType.METAL).noDrops().noOcclusion()));
-	public static final RegistryObject<Block> FAKE_GOLD = BLOCKS.register("fake_gold", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS).strength(50.0F, 2000.0F).sound(SoundType.METAL).noDrops()));
-	public static final RegistryObject<Block> FAKE_DIAMOND = BLOCKS.register("fake_diamond", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS).strength(50.0F, 2000.0F).sound(SoundType.METAL).noDrops()));
+	public static final RegistryObject<Block> REACTOR_DEBRIS = BLOCKS.register("reactor_debris", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 2000.0F).sound(SoundType.METAL).noLootTable().noOcclusion()));
+	public static final RegistryObject<Block> FAKE_GOLD = BLOCKS.register("fake_gold", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS).strength(50.0F, 2000.0F).sound(SoundType.METAL).noLootTable()));
+	public static final RegistryObject<Block> FAKE_DIAMOND = BLOCKS.register("fake_diamond", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS).strength(50.0F, 2000.0F).sound(SoundType.METAL).noLootTable()));
 	public static final RegistryObject<Block> EXPERIMENT_115 = BLOCKS.register("experiment_115", Experiment115Block::new);
 
 	//aurora palace
@@ -145,9 +141,9 @@ public class TFBlocks {
 	public static final RegistryObject<Block> AURORALIZED_GLASS = BLOCKS.register("auroralized_glass", () -> new AuroralizedGlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion()));
 
 	//highlands/thornlands
-	public static final RegistryObject<Block> BROWN_THORNS = BLOCKS.register("brown_thorns", () -> new ThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(50.0F, 2000.0F).sound(SoundType.WOOD).noDrops()));
-	public static final RegistryObject<Block> GREEN_THORNS = BLOCKS.register("green_thorns", () -> new ThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PLANT).strength(50.0F, 2000.0F).sound(SoundType.WOOD).noDrops()));
-	public static final RegistryObject<Block> BURNT_THORNS = BLOCKS.register("burnt_thorns", () -> new BurntThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.STONE).strength(0.01F, 0.0F).sound(SoundType.SAND).noDrops()));
+	public static final RegistryObject<Block> BROWN_THORNS = BLOCKS.register("brown_thorns", () -> new ThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(50.0F, 2000.0F).sound(SoundType.WOOD).noLootTable()));
+	public static final RegistryObject<Block> GREEN_THORNS = BLOCKS.register("green_thorns", () -> new ThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PLANT).strength(50.0F, 2000.0F).sound(SoundType.WOOD).noLootTable()));
+	public static final RegistryObject<Block> BURNT_THORNS = BLOCKS.register("burnt_thorns", () -> new BurntThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.STONE).strength(0.01F, 0.0F).sound(SoundType.SAND).noLootTable()));
 	public static final RegistryObject<Block> THORN_ROSE = BLOCKS.register("thorn_rose", () -> new ThornRoseBlock(BlockBehaviour.Properties.of(Material.PLANT).strength(10.0F, 0.0F).sound(SoundType.GRASS).noCollission()));
 	public static final RegistryObject<Block> THORN_LEAVES = BLOCKS.register("thorn_leaves", () -> new TFLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
 	public static final RegistryObject<Block> BEANSTALK_LEAVES = BLOCKS.register("beanstalk_leaves", () -> new TFLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
@@ -190,11 +186,11 @@ public class TFBlocks {
 	public static final RegistryObject<Block> BLUE_CASTLE_RUNE_BRICK = BLOCKS.register("blue_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(100.0F, 50.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> YELLOW_CASTLE_RUNE_BRICK = BLOCKS.register("yellow_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(100.0F, 50.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> VIOLET_CASTLE_RUNE_BRICK = BLOCKS.register("violet_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(100.0F, 50.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> VIOLET_FORCE_FIELD = BLOCKS.register("violet_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noDrops().noOcclusion()));
-	public static final RegistryObject<Block> PINK_FORCE_FIELD = BLOCKS.register("pink_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noDrops().noOcclusion()));
-	public static final RegistryObject<Block> ORANGE_FORCE_FIELD = BLOCKS.register("orange_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noDrops().noOcclusion()));
-	public static final RegistryObject<Block> GREEN_FORCE_FIELD = BLOCKS.register("green_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noDrops().noOcclusion()));
-	public static final RegistryObject<Block> BLUE_FORCE_FIELD = BLOCKS.register("blue_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noDrops().noOcclusion()));
+	public static final RegistryObject<Block> VIOLET_FORCE_FIELD = BLOCKS.register("violet_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noLootTable().noOcclusion()));
+	public static final RegistryObject<Block> PINK_FORCE_FIELD = BLOCKS.register("pink_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noLootTable().noOcclusion()));
+	public static final RegistryObject<Block> ORANGE_FORCE_FIELD = BLOCKS.register("orange_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noLootTable().noOcclusion()));
+	public static final RegistryObject<Block> GREEN_FORCE_FIELD = BLOCKS.register("green_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noLootTable().noOcclusion()));
+	public static final RegistryObject<Block> BLUE_FORCE_FIELD = BLOCKS.register("blue_force_field", () -> new ForceFieldBlock(BlockBehaviour.Properties.of(Material.BARRIER).strength(-1.0F, 3600000.8F).lightLevel((state) -> 2).noLootTable().noOcclusion()));
 	public static final RegistryObject<Block> CINDER_FURNACE = BLOCKS.register("cinder_furnace", CinderFurnaceBlock::new);
 	public static final RegistryObject<RotatedPillarBlock> CINDER_LOG = BLOCKS.register("cinder_log", () -> new TFLogBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_GRAY).strength(1.0F)));
 	public static final RegistryObject<Block> CINDER_WOOD = BLOCKS.register("cinder_wood", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_GRAY).strength(1.0F)));
@@ -227,15 +223,15 @@ public class TFBlocks {
 	public static final RegistryObject<Block> CARMINITE_BLOCK = BLOCKS.register("carminite_block", () -> new CarminiteBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_RED).instabreak().sound(SoundType.SLIME_BLOCK)));
 
 	//boss trophies and spawners
-	public static final RegistryObject<Block> NAGA_BOSS_SPAWNER = BLOCKS.register("naga_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.NAGA));
-	public static final RegistryObject<Block> LICH_BOSS_SPAWNER = BLOCKS.register("lich_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.LICH));
-	public static final RegistryObject<Block> HYDRA_BOSS_SPAWNER = BLOCKS.register("hydra_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.HYDRA));
-	public static final RegistryObject<Block> UR_GHAST_BOSS_SPAWNER = BLOCKS.register("ur_ghast_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.UR_GHAST));
-	public static final RegistryObject<Block> KNIGHT_PHANTOM_BOSS_SPAWNER = BLOCKS.register("knight_phantom_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.KNIGHT_PHANTOM));
-	public static final RegistryObject<Block> SNOW_QUEEN_BOSS_SPAWNER = BLOCKS.register("snow_queen_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.SNOW_QUEEN));
-	public static final RegistryObject<Block> MINOSHROOM_BOSS_SPAWNER = BLOCKS.register("minoshroom_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.MINOSHROOM));
-	public static final RegistryObject<Block> ALPHA_YETI_BOSS_SPAWNER = BLOCKS.register("alpha_yeti_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.ALPHA_YETI));
-	public static final RegistryObject<Block> FINAL_BOSS_BOSS_SPAWNER = BLOCKS.register("final_boss_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noDrops(), BossVariant.FINAL_BOSS));
+	public static final RegistryObject<Block> NAGA_BOSS_SPAWNER = BLOCKS.register("naga_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.NAGA));
+	public static final RegistryObject<Block> LICH_BOSS_SPAWNER = BLOCKS.register("lich_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.LICH));
+	public static final RegistryObject<Block> HYDRA_BOSS_SPAWNER = BLOCKS.register("hydra_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.HYDRA));
+	public static final RegistryObject<Block> UR_GHAST_BOSS_SPAWNER = BLOCKS.register("ur_ghast_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.UR_GHAST));
+	public static final RegistryObject<Block> KNIGHT_PHANTOM_BOSS_SPAWNER = BLOCKS.register("knight_phantom_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.KNIGHT_PHANTOM));
+	public static final RegistryObject<Block> SNOW_QUEEN_BOSS_SPAWNER = BLOCKS.register("snow_queen_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.SNOW_QUEEN));
+	public static final RegistryObject<Block> MINOSHROOM_BOSS_SPAWNER = BLOCKS.register("minoshroom_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.MINOSHROOM));
+	public static final RegistryObject<Block> ALPHA_YETI_BOSS_SPAWNER = BLOCKS.register("alpha_yeti_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.ALPHA_YETI));
+	public static final RegistryObject<Block> FINAL_BOSS_BOSS_SPAWNER = BLOCKS.register("final_boss_boss_spawner", () -> new BossSpawnerBlock(BlockBehaviour.Properties.of(Material.STONE).strength(-1.0F, 3600000.8F).noOcclusion().noLootTable(), BossVariant.FINAL_BOSS));
 	public static final RegistryObject<TrophyBlock> NAGA_TROPHY = BLOCKS.register("naga_trophy", () -> new TrophyBlock(BossVariant.NAGA, 5));
 	public static final RegistryObject<TrophyBlock> LICH_TROPHY = BLOCKS.register("lich_trophy", () -> new TrophyBlock(BossVariant.LICH, 6));
 	public static final RegistryObject<TrophyBlock> HYDRA_TROPHY = BLOCKS.register("hydra_trophy", () -> new TrophyBlock(BossVariant.HYDRA, 12));
@@ -548,11 +544,12 @@ public class TFBlocks {
 	public static final RegistryObject<FlowerPotBlock> POTTED_GREEN_THORN = BLOCKS.register("potted_green_thorn", () -> new SpecialFlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, GREEN_THORNS, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 	public static final RegistryObject<FlowerPotBlock> POTTED_DEAD_THORN = BLOCKS.register("potted_dead_thorn", () -> new SpecialFlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, BURNT_THORNS, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 
-	@SubscribeEvent
-	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
-		TFBlockItems.registerBlockItems(evt);
-		TFCompat.initCompatItems(evt);
-	}
+	//FIXME
+//	@SubscribeEvent
+//	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
+//		TFBlockItems.registerBlockItems(evt);
+//		TFCompat.initCompatItems(evt);
+//	}
 
 	private static BlockBehaviour.Properties logProperties(MaterialColor color) {
 		return BlockBehaviour.Properties.of(Material.WOOD, color);

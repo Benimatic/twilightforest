@@ -1,9 +1,11 @@
 package twilightforest.enums;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.TFBlocks;
@@ -14,7 +16,6 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.function.Supplier;
 
 public enum StructureWoodVariant implements StringRepresentable {
@@ -59,7 +60,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 	}
 
 	// Since this is worldgen code, this solution would take the least amount of hits on RNG
-	public static StructureWoodVariant getRandomWeighted(Random random) {
+	public static StructureWoodVariant getRandomWeighted(RandomSource random) {
 		int randomVal = random.nextInt() & Integer.MAX_VALUE;
 
 		if ((randomVal & 0b1) == 0) {
@@ -115,7 +116,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 		Block block = stateIn.getBlock();
 		WoodShapes shape = getWoodShapeFromBlock(block);
 
-		ResourceLocation blockRegName = block.getRegistryName();
+		ResourceLocation blockRegName = ForgeRegistries.BLOCKS.getKey(block);
 
 		if (blockRegName == null) return stateIn;
 

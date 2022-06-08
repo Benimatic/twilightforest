@@ -3,9 +3,11 @@ package twilightforest.world.components.structures.start;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
 import twilightforest.world.registration.TFFeature;
@@ -33,8 +35,8 @@ public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeature
 		int x = context.chunkPos().getMiddleBlockX();
 		int z = context.chunkPos().getMiddleBlockZ();
 		int y = 1;
-		Holder<Biome> holder = context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z));
-		return Objects.equals(holder.value().getRegistryName().getNamespace(), TwilightForestMod.ID);
+		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
+		return Objects.equals(ForgeRegistries.BIOMES.getKey(holder.value()).getNamespace(), TwilightForestMod.ID);
 	}
 
     @Override

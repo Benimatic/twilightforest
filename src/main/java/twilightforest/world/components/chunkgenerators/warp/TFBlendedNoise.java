@@ -1,8 +1,7 @@
 package twilightforest.world.components.chunkgenerators.warp;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
@@ -10,6 +9,7 @@ import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 /*
  * Honestly, this just makes absolutely certain that things go the way we want it. Might not even need this? Who knows.
  */
+//FIXME constructor takes the random source and 6 doubles now
 public class TFBlendedNoise extends BlendedNoise {
 
     public TFBlendedNoise(RandomSource random, NoiseSamplingSettings settings, int x, int z) {

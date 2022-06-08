@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.lichtower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -16,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class TowerOutbuildingComponent extends TowerWingComponent {
 
@@ -32,14 +33,14 @@ public class TowerOutbuildingComponent extends TowerWingComponent {
 	 * NO BEARDS!
 	 */
 	@Override
-	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
     }
 
 	/**
 	 * Outbuildings should not make new wings close to the ground.
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation direction) {
+	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation direction) {
 		if (y > 7) {
 			return super.makeTowerWing(list, rand, index, x, y, z, wingSize, wingHeight, direction);
 		} else {
@@ -48,7 +49,7 @@ public class TowerOutbuildingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		final BlockState cobblestone = Blocks.COBBLESTONE.defaultBlockState();
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {

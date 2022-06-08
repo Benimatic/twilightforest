@@ -11,7 +11,7 @@ import twilightforest.TFSounds;
 import twilightforest.entity.monster.BlockChainGoblin;
 
 public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
-	private Entity goblin;
+	private final Entity goblin;
 
 	private boolean isCollideBlock;
 

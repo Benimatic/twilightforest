@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -12,7 +13,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTower13Component {
 
@@ -20,13 +21,13 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 		super(FinalCastlePieces.TFFCEnBoTo, nbt);
 	}
 
-	public FinalCastleEntranceBottomTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
+	public FinalCastleEntranceBottomTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
 		super(FinalCastlePieces.TFFCEnBoTo, feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 
     }
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -41,7 +42,7 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 	/**
 	 * Add some stairs leading to this tower
 	 */
-	private boolean addStairs(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean addStairs(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
 		// add door
 		this.addOpening(x, y, z, rotation);
 

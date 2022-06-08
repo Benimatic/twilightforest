@@ -8,10 +8,11 @@ import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -198,7 +199,7 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 				.save(consumer, "twilightforest:alt/entities/wolves");
 
 		//landmarks
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_DARK_TOWER.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_DARK_TOWER, consumer, root);
 		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_FINAL_CASTLE.unwrapKey().orElseThrow(), consumer, root);
 		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HEDGE_MAZE.unwrapKey().orElseThrow(), consumer, root);
 		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HYDRA_LAIR.unwrapKey().orElseThrow(), consumer, root);
@@ -681,7 +682,7 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 
 	private void makeBiomeAdvancement(String name, ResourceKey<Biome> key, Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(key)))
+				.addCriterion("in_biome", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(key)))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/" + name);
 	}
@@ -695,30 +696,30 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 				.addCriterion("summon", SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(entity)))
 				.addCriterion("tame", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(entity).build()))
 				.requirements(RequirementsStrategy.OR)
-				.save(consumer, "twilightforest:alt/entities/" + entity.getRegistryName().getPath());
+				.save(consumer, "twilightforest:alt/entities/" + ForgeRegistries.ENTITIES.getKey(entity).getPath());
 	}
 
-	private void landmarkAdvancement(ResourceKey<ConfiguredStructureFeature<?, ?>> structure, Consumer<Advancement> consumer, Advancement root) {
+	private void landmarkAdvancement(ResourceKey<Structure> structure, Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(structure)))
+				.addCriterion("found_structure", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(structure)))
 				.save(consumer, "twilightforest:alt/major_landmarks/" + structure.location().getPath());
 	}
 
 	private void minorKeyBiomes(Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.DARK_FOREST)))
+				.addCriterion("in_biome", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.DARK_FOREST)))
 				.addCriterion("has_other", this.advancementTrigger("alt/biomes/dark_forest_center"))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/dark_forest");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SWAMP)))
+				.addCriterion("in_biome", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SWAMP)))
 				.addCriterion("has_other", this.advancementTrigger("alt/biomes/fire_swamp"))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/swamp");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SNOWY_FOREST)))
+				.addCriterion("in_biome", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SNOWY_FOREST)))
 				.addCriterion("has_other", this.advancementTrigger("alt/biomes/twilight_glacier"))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/snowy_forest");

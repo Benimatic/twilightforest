@@ -41,7 +41,7 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	public abstract void registerTransforms();
 
 	@Override
-	public void run(HashCache cache) throws IOException {
+	public void run(HashCache cache) {
 		this.builders.clear();
 		this.registerTransforms();
 		this.builders.forEach((name, transform) -> {

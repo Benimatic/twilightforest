@@ -9,7 +9,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -175,7 +175,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		}
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
-			super(Type.TARGET_X, xIn, yIn, rotationIn, new TranslatableComponent("map.magic.text")); //TODO: Shush for now
+			super(Type.TARGET_X, xIn, yIn, rotationIn, Component.translatable("map.magic.text")); //TODO: Shush for now
 			this.featureId = featureId;
 		}
 

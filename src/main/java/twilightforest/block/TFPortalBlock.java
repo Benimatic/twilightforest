@@ -6,12 +6,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -114,7 +115,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFTeleporter.isSafeAround(world, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
-							player.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
+							player.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
 						}
 						return false;
 					}
@@ -212,7 +213,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		}
 	}
 
-	private static final TranslatableComponent PORTAL_UNWORTHY = new TranslatableComponent(TwilightForestMod.ID + ".ui.portal.unworthy");
+	private static final Component PORTAL_UNWORTHY = Component.translatable(TwilightForestMod.ID + ".ui.portal.unworthy");
 	@Override
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
 		if (state == this.defaultBlockState()) {
@@ -225,7 +226,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.getDisplay();
-						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? new MissingAdvancementToastPacket(new TranslatableComponent(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? new MissingAdvancementToastPacket(Component.translatable(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
@@ -289,7 +290,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	// TODO Eeeh... Let's look at changing this too alongside a new model.
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		int random = rand.nextInt(100);
 		if (stateIn.getValue(DISALLOW_RETURN) && random < 80) return;
 

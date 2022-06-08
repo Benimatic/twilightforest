@@ -6,9 +6,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -34,7 +35,7 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import java.util.Objects;
-import java.util.Random;
+import java.util.RandomSource;
 import java.util.function.Predicate;
 
 public class TrollCaveMainComponent extends TFStructureComponentOld {
@@ -76,7 +77,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// make 4 caves
 		for (final Rotation caveRotation : RotationUtil.ROTATIONS) {
 			BlockPos dest = getValidOpening(rand, caveRotation);
@@ -94,7 +95,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		vault.addChildren(this, list, rand);
 	}
 
-	protected boolean makeSmallerCave(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeSmallerCave(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
@@ -111,8 +112,8 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		RandomSource decoRNG = new RandomSource(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
@@ -135,11 +136,11 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		}
 	}
 
-	protected BlockPos.MutableBlockPos getCoordsInCave(Random rand) {
+	protected BlockPos.MutableBlockPos getCoordsInCave(RandomSource rand) {
 		return new BlockPos.MutableBlockPos(rand.nextInt(this.size - 1), rand.nextInt(this.height - 1), rand.nextInt(this.size - 1));
 	}
 
-	protected void hollowCaveMiddle(WorldGenLevel world, BoundingBox boundingBox, Random rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	protected void hollowCaveMiddle(WorldGenLevel world, BoundingBox boundingBox, RandomSource rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		int threshold = this.size / 5;
 
 		for (int y = minY; y <= maxY; ++y) {
@@ -165,7 +166,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
-	public BlockPos getValidOpening(Random rand, Rotation direction) {
+	public BlockPos getValidOpening(RandomSource rand, Rotation direction) {
 		// variables!
 		int offset = this.size / 4; // wall thickness
 		int wLength = size - (offset * 2); // wall length
@@ -231,7 +232,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		if (sbb.isInside(pos)) {
 			// generate an RNG for this stalactite
 			//TODO: MOAR RANDOM!
-			Random stalRNG = new Random(world.getSeed() + (long) dx * dz);
+			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite
 			BlockSpikeFeature.startSpike(world, pos, config, stalRNG);
@@ -241,7 +242,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	/**
 	 * Use the generator at the surface above specified coords
 	 */
-	protected <FC extends FeatureConfiguration> void generateAtSurface(WorldGenLevel world, ChunkGenerator generator, Holder<ConfiguredFeature<FC, ?>> feature, Random rand, int x, int z, BoundingBox sbb) {
+	protected <FC extends FeatureConfiguration> void generateAtSurface(WorldGenLevel world, ChunkGenerator generator, Holder<ConfiguredFeature<FC, ?>> feature, RandomSource rand, int x, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getWorldX(x, z);
 		int dz = getWorldZ(x, z);

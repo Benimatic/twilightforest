@@ -26,12 +26,6 @@ public class KingSpider extends Spider {
 		super(type, world);
 	}
 
-	@Override
-	protected void registerGoals() {
-		super.registerGoals();
-		//this.goalSelector.addGoal(1, new EntityAITFChargeAttack(this, 0.4F));
-	}
-
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Spider.createAttributes()
 				.add(Attributes.MAX_HEALTH, 30.0D)

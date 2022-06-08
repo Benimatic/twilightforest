@@ -36,7 +36,7 @@ import twilightforest.client.model.TFModelLayers;
 //Most of the other stuff is derived from ChestTileEntityRenderer
 @OnlyIn(Dist.CLIENT)
 public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
-    public ModelPart base;
+    public final ModelPart base;
     public ModelPart lid;
 
     public CasketTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {

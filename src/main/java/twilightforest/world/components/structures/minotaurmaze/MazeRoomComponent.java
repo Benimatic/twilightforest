@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -18,7 +19,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class MazeRoomComponent extends TFStructureComponentOld {
 
@@ -30,7 +31,7 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
-	public MazeRoomComponent(StructurePieceType type, TFFeature feature, int i, Random rand, int x, int y, int z) {
+	public MazeRoomComponent(StructurePieceType type, TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
@@ -41,12 +42,12 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, RandomSource random) {
 		// NO-OP
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// floor border
 		generateBox(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.MAZESTONE_BORDER.get().defaultBlockState(), AIR, true);
 		generateBox(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), AIR, true);

@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -13,7 +14,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.RandomSource;
 
 public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerComponent {
 
@@ -21,12 +22,12 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 		super(FinalCastlePieces.TFFCWrT, nbt);
 	}
 
-	public FinalCastleWreckedTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
+	public FinalCastleWreckedTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
 		super(FinalCastlePieces.TFFCWrT, feature, rand, i, x, y, z, direction);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -73,7 +74,7 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 	}
 
 	@Override
-	protected ArrayList<DestroyArea> makeInitialDestroyList(Random rand) {
+	protected ArrayList<DestroyArea> makeInitialDestroyList(RandomSource rand) {
 		ArrayList<DestroyArea> areas = new ArrayList<DestroyArea>(2);
 
 		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY() - 1, areas));

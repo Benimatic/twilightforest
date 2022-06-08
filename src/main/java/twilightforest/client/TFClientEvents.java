@@ -14,10 +14,9 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,7 +25,6 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IWeatherRenderHandler;
@@ -49,11 +47,9 @@ import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.compat.CuriosCompat;
-import twilightforest.compat.IECompat;
-import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.*;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Objects;
 import java.util.function.UnaryOperator;
@@ -92,9 +88,9 @@ public class TFClientEvents {
 				tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 			}
 
-			if(ModList.get().isLoaded(TFCompat.IE_ID)) {
-				IECompat.registerShaderModels(event);
-			}
+//			if(ModList.get().isLoaded(TFCompat.IE_ID)) {
+//				IECompat.registerShaderModels(event);
+//			}
 		}
 
 		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
@@ -150,14 +146,6 @@ public class TFClientEvents {
 						.flatMap(e -> e.values().stream())
 						.map(Material::texture)
 						.forEach(evt::addSprite);
-
-			if (Sheets.BANNER_SHEET.equals(map.location()) || Sheets.SHIELD_SHEET.equals(map.location())) {
-				for (BannerPattern pattern : BannerPattern.values()) {
-					if (pattern.getFilename().startsWith(TwilightForestMod.ID)) {
-						evt.addSprite(pattern.location(Sheets.BANNER_SHEET.equals(map.location())));
-					}
-				}
-			}
 
 			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
 
@@ -272,7 +260,7 @@ public class TFClientEvents {
 			Minecraft minecraft = Minecraft.getInstance();
 
 			// only fire if we're in the twilight forest
-			if (minecraft.level != null && "twilightforest".equals(minecraft.level.dimension().location().getNamespace())) {
+			if (minecraft.level != null && TFGenerationSettings.DIMENSION_KEY.equals(minecraft.level.dimension())) {
 				// vignette
 				if (minecraft.gui != null) {
 					minecraft.gui.vignetteBrightness = 0.0F;
@@ -281,7 +269,7 @@ public class TFClientEvents {
 
 			if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
 				if (minecraft.gui != null) {
-					minecraft.gui.setOverlayMessage(TextComponent.EMPTY, false);
+					minecraft.gui.setOverlayMessage(Component.empty(), false);
 				}
 			}
 		}
@@ -312,9 +300,9 @@ public class TFClientEvents {
 		}
 	}
 
-	private static final MutableComponent WIP_TEXT_0 = new TranslatableComponent("twilightforest.misc.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	private static final MutableComponent WIP_TEXT_1 = new TranslatableComponent("twilightforest.misc.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	private static final MutableComponent NYI_TEXT = new TranslatableComponent("twilightforest.misc.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent WIP_TEXT_0 = Component.translatable("twilightforest.misc.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent WIP_TEXT_1 = Component.translatable("twilightforest.misc.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent NYI_TEXT = Component.translatable("twilightforest.misc.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 
 	@SubscribeEvent
 	public static void tooltipEvent(ItemTooltipEvent event) {
@@ -364,7 +352,7 @@ public class TFClientEvents {
 		if (event.getCamera().getEntity() instanceof LivingEntity living && living.isUsingItem()) {
 			Item useItem = living.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
-				float f = (living.getTicksUsingItem() + (float)event.getPartialTicks()) / 20F;
+				float f = (living.getTicksUsingItem() + (float)event.getPartialTick()) / 20F;
 				f = f > 1.0F ? 1.0F : f * f;
 				event.setFOV(event.getFOV() * (1.0F - f * 0.15F));
 			}
@@ -389,9 +377,9 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
-		}
+//		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+//			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
+//		}
 		return false;
 	}
 }

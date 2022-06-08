@@ -98,11 +98,7 @@ public class TFItemStackUtils {
 		if (item instanceof SwordItem sword && tier.equals(sword.getTier())) {
 			return true;
 		}
-		if (item instanceof HoeItem hoe && tier.equals(hoe.getTier())) {
-			return true;
-		}
-
-		return false;
+		return item instanceof HoeItem hoe && tier.equals(hoe.getTier());
 	}
 
 	public static void clearInfoTag(ItemStack stack, String key) {

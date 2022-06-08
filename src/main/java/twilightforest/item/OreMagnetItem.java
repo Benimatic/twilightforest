@@ -246,7 +246,7 @@ public class OreMagnetItem extends Item {
 	// Instead let's opt for only clearing that particular cache on reload, and lazy-init the map when the magnet is used
 
 	// Switch over to ConcurrentHashMap if we run into any concurrency problems
-	private static boolean cacheNeedsBuild = true;
+	private static final boolean cacheNeedsBuild = true;
 	private static final HashMap<Block, Block> ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
 
 	private static void initOre2BlockMap() {

@@ -9,8 +9,8 @@ import java.util.EnumSet;
 
 public class ThrowSpikeBlockGoal extends Goal {
 
-	protected BlockChainGoblin attacker;
-	protected SpikeBlock spikeBlock;
+	protected final BlockChainGoblin attacker;
+	protected final SpikeBlock spikeBlock;
 	private int cooldown;
 
 	public ThrowSpikeBlockGoal(BlockChainGoblin entityTFBlockGoblin, SpikeBlock entitySpikeBlock) {

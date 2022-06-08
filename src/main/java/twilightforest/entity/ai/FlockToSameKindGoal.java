@@ -18,7 +18,7 @@ public class FlockToSameKindGoal extends Goal {
 	 */
 	private final Mob flockCreature;
 	private Vec3 flockPosition;
-	double speed;
+	final double speed;
 	private int moveTimer;
 
 	public FlockToSameKindGoal(Mob living, double speed) {

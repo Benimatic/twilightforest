@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +21,7 @@ import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
 
@@ -109,7 +110,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		tagCompound.putIntArray("roomCoords", this.rcoords);
 	}
 
-	protected MazeRoomComponent makeRoom(Random random, int i, int dx, int dz) {
+	protected MazeRoomComponent makeRoom(RandomSource random, int i, int dx, int dz) {
 		MazeRoomComponent room;
 
 		int worldX = boundingBox.minX() + dx * 5 - 4;
@@ -157,7 +158,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	 * @param random
 	 * @param list
 	 */
-	protected void decorateDeadEndsCorridors(Random random, StructurePieceAccessor list) {
+	protected void decorateDeadEndsCorridors(RandomSource random, StructurePieceAccessor list) {
 		for (int x = 0; x < maze.width; x++) {
 			for (int z = 0; z < maze.depth; z++) {
 				TFStructureComponentOld component = null;
@@ -197,7 +198,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Add a dead end structure at the specified coords
 	 */
-	protected MazeDeadEndComponent makeDeadEnd(Random random, int dx, int dz, Direction rotation) {
+	protected MazeDeadEndComponent makeDeadEnd(RandomSource random, int dx, int dz, Direction rotation) {
 		int worldX = boundingBox.minX() + dx * 5 + 1;
 		int worldY = boundingBox.minY();
 		int worldZ = boundingBox.minZ() + dz * 5 + 1;
@@ -219,7 +220,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		};
 	}
 
-	protected MazeCorridorComponent makeCorridor(Random random, int dx, int dz, Direction rotation) {
+	protected MazeCorridorComponent makeCorridor(RandomSource random, int dx, int dz, Direction rotation) {
 		int worldX = boundingBox.minX() + dx * 5 + 1;
 		int worldY = boundingBox.minY();
 		int worldZ = boundingBox.minZ() + dz * 5 + 1;
@@ -239,7 +240,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(structurecomponent, list, random);
 
 		// add a second story
@@ -268,7 +269,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		BlockState bedrock = Blocks.BEDROCK.defaultBlockState();
 		BlockState stone = Blocks.STONE.defaultBlockState();
@@ -333,10 +334,5 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BURY;
 	}
 }

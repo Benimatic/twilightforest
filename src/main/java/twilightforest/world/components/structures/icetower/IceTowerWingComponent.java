@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.icetower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -25,7 +26,6 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
 
 public class IceTowerWingComponent extends TowerWingComponent {
 
@@ -62,7 +62,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -112,7 +112,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	protected boolean shouldHaveBase(Random rand) {
+	protected boolean shouldHaveBase(RandomSource rand) {
 		return this.getGenDepth() == 0 || rand.nextBoolean();
 	}
 
@@ -132,7 +132,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
@@ -159,7 +159,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Make a new wing
 	 */
-	public boolean makeBossTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeBossTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
@@ -184,7 +184,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * Also works for Z coordinates.
 	 */
 	@Override
-	protected int getYByStairs(int rx, Random rand, Rotation direction) {
+	protected int getYByStairs(int rx, RandomSource rand, Rotation direction) {
 
 		int floors = this.height / 10;
 
@@ -192,8 +192,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// make walls
 		//fillWithMetadataBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockID, deco.blockMeta, AIR, false);
@@ -225,7 +225,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * Nullify all the sky light in this component bounding box
 	 */
 
-	protected void makeFloorsForTower(WorldGenLevel world, Random decoRNG, BoundingBox sbb) {
+	protected void makeFloorsForTower(WorldGenLevel world, RandomSource decoRNG, BoundingBox sbb) {
 		int floors = this.height / 10;
 
 		Rotation ladderDir = Rotation.COUNTERCLOCKWISE_90;
@@ -248,7 +248,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Put down planks or whatevs for a floor
 	 */
-	protected void placeFloor(WorldGenLevel world, Random rand, BoundingBox sbb, int floorHeight, int floor) {
+	protected void placeFloor(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int floorHeight, int floor) {
 		for (int x = 1; x < size - 1; x++) {
 			for (int z = 1; z < size - 1; z++) {
 				placeBlock(world, deco.floorState, x, (floor * floorHeight) + floorHeight, z, sbb);
@@ -279,7 +279,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 */
 	@Override
 	@SuppressWarnings("fallthrough")
-	protected void decorateFloor(WorldGenLevel world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		boolean hasTreasure = (this.treasureFloor == floor);
 
 		switch (rand.nextInt(8)) {
@@ -336,7 +336,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		return isClear;
 	}
 
-	protected void decorateTopFloor(WorldGenLevel world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateTopFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		if (rand.nextBoolean()) {
 			decoratePillarsCorners(world, rand, bottom, top, ladderDownDir, sbb);
 		} else {
@@ -362,7 +362,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		this.fillBlocksRotated(world, sbb, 7, bottom + 1, 7, 7, top - 1, 7, deco.pillarState, rotation);
 	}
 
-	private void decoratePillarsGrid(WorldGenLevel world, Random rand, int bottom, int top, Rotation rotation, BoundingBox sbb) {
+	private void decoratePillarsGrid(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation rotation, BoundingBox sbb) {
 		final BlockState pillarEW = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
@@ -374,7 +374,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		this.decoratePillars(world, bottom, top, rotation, sbb);
 	}
 
-	private void decoratePillarsCorners(WorldGenLevel world, Random rand, int bottom, int top, Rotation rotation, BoundingBox sbb) {
+	private void decoratePillarsCorners(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation rotation, BoundingBox sbb) {
 		final BlockState pillarEW = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
@@ -485,7 +485,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private void decoratePlatform(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
+	private void decoratePlatform(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
 		BlockState topPlatform = deco.platformState.setValue(SlabBlock.TYPE, SlabType.TOP);
 		BlockState bottomPlatform = deco.platformState.setValue(SlabBlock.TYPE, SlabType.BOTTOM);
 
@@ -528,7 +528,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private void decorateQuadPillarStairs(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
+	private void decorateQuadPillarStairs(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
 		this.decoratePillars(world, bottom, top, ladderDownDir, sbb);
 
 		BlockState topPlatform = deco.platformState.setValue(SlabBlock.TYPE, SlabType.TOP);
@@ -621,7 +621,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 
-	private void decoratePillarParkour(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
+	private void decoratePillarParkour(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
 		Rotation rotation = ladderDownDir;
 
 		final BlockState pillarEW = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
@@ -683,7 +683,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * This function keeps trying roofs starting with the largest and fanciest, and then keeps trying smaller and plainer ones
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		int index = this.getGenDepth();
 		tryToFitRoof(list, rand, new IceTowerRoofComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 	}
@@ -692,7 +692,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
 	@Override
-	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		int index = this.getGenDepth();
 		IceTowerBeardComponent beard;
 		beard = new IceTowerBeardComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());

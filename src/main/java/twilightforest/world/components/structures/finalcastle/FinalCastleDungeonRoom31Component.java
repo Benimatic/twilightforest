@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Rotation;
@@ -25,7 +26,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 import java.util.function.Predicate;
 
 public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
@@ -51,7 +52,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -93,7 +94,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		}
 	}
 
-	protected boolean addDungeonRoom(StructurePiece parent, StructurePieceAccessor list, Random rand, Rotation rotation, int level) {
+	protected boolean addDungeonRoom(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, Rotation rotation, int level) {
 		rotation = rotation.getRotated(this.rotation);
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
@@ -120,7 +121,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	//TODO: Parameter "parent" is unused. Remove?
-	protected boolean addDungeonExit(StructurePiece parent, StructurePieceAccessor list, Random rand, Rotation rotation) {
+	protected boolean addDungeonExit(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
 
@@ -138,7 +139,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		return false;
 	}
 
-	private BlockPos getNewRoomCoords(Random rand, Rotation rotation) {
+	private BlockPos getNewRoomCoords(RandomSource rand, Rotation rotation) {
 		// make the rooms connect around the corners, not the centers
 		int offset = rand.nextInt(15) - 9;
 		if (rand.nextBoolean()) {
@@ -154,12 +155,12 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes)) {
 			return;
 		}
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = new RandomSource(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.STONE);
 
@@ -200,7 +201,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		return forceFieldColor == TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState() ? TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 
-	protected BlockState getForceFieldColor(Random decoRNG) {
+	protected BlockState getForceFieldColor(RandomSource decoRNG) {
 		int i = decoRNG.nextInt(2) + 3;
 
 		if (i == 3)

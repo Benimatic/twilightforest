@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.icetower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -12,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 
-import java.util.Random;
+import java.util.RandomSource;
 
 public class IceTowerMainComponent extends IceTowerWingComponent {
 	public boolean hasBossWing = false;
@@ -22,11 +23,11 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
 
-	public IceTowerMainComponent(TFFeature feature, Random rand, int index, int x, int y, int z) {
+	public IceTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z) {
 		this(feature, rand, index, x + SIZE, y + 40, z + SIZE, Direction.NORTH);
 	}
 
-	public IceTowerMainComponent(TFFeature feature, Random rand, int index, int x, int y, int z, Direction rotation) {
+	public IceTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
 		super(IceTowerPieces.TFITMai, feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator
@@ -42,7 +43,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		super.addChildren(parent, list, rand);
 
 		// add entrance tower
@@ -78,7 +79,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		makeEntranceTower(list, rand, this.getGenDepth() + 1, entranceDoor.getX(), entranceDoor.getY(), entranceDoor.getZ(), SIZE, 11, this.rotation);
 	}
 
-	private void makeEntranceBridge(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int length, Rotation rotation) {
+	private void makeEntranceBridge(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int length, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
@@ -90,7 +91,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		}
 	}
 
-	public boolean makeEntranceTower(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeEntranceTower(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
