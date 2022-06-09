@@ -84,22 +84,25 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
 			this.defaultBlock = noiseGen.defaultBlock;
 			this.defaultFluid = noiseGenSettings.value().defaultFluid();
-			this.surfaceNoiseGetter = Optional.of(noiseGen.sampler);
+			this.surfaceNoiseGetter = Optional.empty();//Optional.of(noiseGen.sampler);
 		} else {
 			this.defaultBlock = Blocks.STONE.defaultBlockState();
 			this.defaultFluid = Blocks.WATER.defaultBlockState();
 			this.surfaceNoiseGetter = Optional.empty();
 		}
 
-		NoiseSettings settings = noiseGenSettings.value().noiseSettings();
-		if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
-			WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(delegate.ringPlacementSeed));
-			TFBlendedNoise blendedNoise = new TFBlendedNoise(random, settings.noiseSamplingSettings(), settings.getCellWidth(), settings.getCellHeight());
-			NoiseModifier modifier = NoiseModifier.PASS;
-			this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.getCellCountY(), source, settings, blendedNoise, modifier));
-		} else {
-			this.warper = Optional.empty();
-		}
+		this.warper = Optional.empty();
+
+//FIXME
+//		NoiseSettings settings = noiseGenSettings.value().noiseSettings();
+//		if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
+//			WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(delegate.ringPlacementSeed));
+//			TFBlendedNoise blendedNoise = new TFBlendedNoise(random, settings.noiseSamplingSettings(), settings.getCellWidth(), settings.getCellHeight());
+//			NoiseModifier modifier = NoiseModifier.PASS;
+//			this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.getCellCountY(), source, settings, blendedNoise, modifier));
+//		} else {
+//			this.warper = Optional.empty();
+//		}
 	}
 
 	@Override

@@ -124,6 +124,8 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		//even though we won't spawn vanilla frogs, we'll still add support for the variants
 		tag(BiomeTags.SPAWNS_COLD_VARIANT_FROGS).add(BiomeKeys.SNOWY_FOREST, BiomeKeys.GLACIER);
 		tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(BiomeKeys.OAK_SAVANNAH, BiomeKeys.FIRE_SWAMP);
+
+		tag(BiomeTags.HAS_CLOSER_WATER_FOG).add(BiomeKeys.SPOOKY_FOREST, BiomeKeys.SWAMP, BiomeKeys.FIRE_SWAMP);
 	}
 
 	@Override

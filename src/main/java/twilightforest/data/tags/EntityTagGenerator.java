@@ -30,6 +30,7 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
         tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID.get());
         tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW.get(), TFEntities.SEEKER_ARROW.get());
         tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());
+        tag(EntityTypeTags.FROG_FOOD).add(TFEntities.MAZE_SLIME.get());
 
         tag(BOSSES).add(
                 TFEntities.NAGA.get(),
