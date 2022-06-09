@@ -51,7 +51,6 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.CLEARING,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), clearingGen())
-						.biomeCategory(Biome.BiomeCategory.PLAINS)
 						.temperature(0.8F)
 						.downfall(0.4F)
 						//.depth(0.005f)
@@ -61,7 +60,6 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.OAK_SAVANNAH,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), oakSavannaGen())
-						.biomeCategory(Biome.BiomeCategory.SAVANNA)
 						.temperature(0.9F)
 						.downfall(0)
 						//.depth(0.05f)
@@ -105,7 +103,6 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.STREAM,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), streamsAndLakes(false))
-						.biomeCategory(Biome.BiomeCategory.RIVER)
 						.temperature(0.5F)
 						.downfall(0.1F)
 						//.depth(-0.8f)
@@ -115,7 +112,6 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.LAKE,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), streamsAndLakes(true))
-						.biomeCategory(Biome.BiomeCategory.OCEAN)
 						.temperature(0.66F)
 						.downfall(1)
 						//.depth(-0.9f)
@@ -127,7 +123,6 @@ public final class BiomeMaker extends BiomeHelper {
 	private static void swampBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SWAMP,
 				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeGrassColors.SWAMP), swampSpawning(), swampGen())
-						.biomeCategory(Biome.BiomeCategory.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
 						//.depth(-0.125f)
@@ -137,7 +132,6 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.FIRE_SWAMP,
 				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().grassColorOverride(0x572E23).foliageColorOverride(0x64260F).waterColor(0x6C2C2C)), new MobSpawnSettings.Builder(), fireSwampGen())
-						.biomeCategory(Biome.BiomeCategory.SWAMP)
 						.precipitation(Biome.Precipitation.NONE)
 						.temperature(1)
 						.downfall(0.4F)
@@ -178,7 +172,6 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.GLACIER,
 				biomeWithDefaults(defaultAmbientBuilder(), penguinSpawning(), glacierGen())
-						.biomeCategory(Biome.BiomeCategory.ICY)
 						.temperature(0.8F)
 						.downfall(0.1F)
 						.precipitation(Biome.Precipitation.SNOW)
@@ -189,7 +182,6 @@ public final class BiomeMaker extends BiomeHelper {
 	private static void highlandsBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.HIGHLANDS,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen())
-						.biomeCategory(Biome.BiomeCategory.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)
 						//.depth(1.75f)
@@ -199,7 +191,6 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.THORNLANDS,
 				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnSettings.Builder(), thornlandsGen())
-						.biomeCategory(Biome.BiomeCategory.NONE)
 						.temperature(0.3F)
 						.downfall(0.2F)
 						//.depth(3.0f)
@@ -209,7 +200,6 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.FINAL_PLATEAU,
 				biomeWithDefaults(defaultAmbientBuilder(), ravenSpawning(), plateauGen())
-						.biomeCategory(Biome.BiomeCategory.MESA)
 						.temperature(1.0F)
 						.downfall(0.2F)
 						//.depth(5.25f)

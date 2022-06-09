@@ -59,7 +59,7 @@ public class LichAbsorbMinionsGoal extends Goal {
 			this.lich.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 			minion.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 			// make trail so it's clear that we did it
-			this.lich.makeMagicTrail(minion.eyeBlockPosition(), this.lich.eyeBlockPosition(), 0.5F, 0.0F, 1.0F);
+			this.lich.makeMagicTrail(minion.getEyePosition(), this.lich.getEyePosition(), 0.5F, 0.0F, 1.0F);
 			//heal some health
 			this.lich.heal(minion.getHealth());
 			this.lich.swing(InteractionHand.MAIN_HAND);

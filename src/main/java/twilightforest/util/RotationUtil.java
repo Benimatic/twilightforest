@@ -77,7 +77,7 @@ public final class RotationUtil {
 		};
 	}
 
-	public static Direction getRandomFacing(Random random) {
+	public static Direction getRandomFacing(RandomSource random) {
 		return CARDINALS[random.nextInt(CARDINALS.length)];
 	}
 }

@@ -65,7 +65,7 @@ public class LichPopMobsGoal extends Goal {
 					this.lich.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 					mob.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 					// make trail so it's clear that we did it
-					this.lich.makeMagicTrail(mob.eyeBlockPosition(), this.lich.eyeBlockPosition(), 1.0F, 0.5F, 0.5F);
+					this.lich.makeMagicTrail(mob.getEyePosition(), this.lich.getEyePosition(), 1.0F, 0.5F, 0.5F);
 					//heal a little health
 					this.lich.heal(2.0F);
 					this.lich.swing(InteractionHand.MAIN_HAND);

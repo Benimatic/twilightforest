@@ -97,7 +97,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
 	//inverse of above
 	public static CandleColors candleToCandleColor(Item candle) {
 		if(!(candle == Blocks.CANDLE.asItem())) {
-			return CandleColors.valueOf(candle.getRegistryName().getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
+			return CandleColors.valueOf(ForgeRegistries.ITEMS.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
 		}
 		return CandleColors.PLAIN;
 	}

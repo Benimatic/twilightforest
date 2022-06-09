@@ -13,6 +13,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.util.GsonHelper;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.loot.TFTreasure;
 
 // Loot condition for checking that if a mod exists, then swap original item with its deserialized item.
@@ -73,10 +74,10 @@ public class ModItemSwap extends LootItemConditionalFunction {
 		@Override
 		public void serialize(JsonObject object, ModItemSwap function, JsonSerializationContext serializationContext) {
 			if (function.success)
-				object.addProperty("item", function.item.getRegistryName().toString());
+				object.addProperty("item", ForgeRegistries.ITEMS.getKey(function.item).toString());
 			else
-				object.addProperty("default", function.item.getRegistryName().toString());
-			object.addProperty("default", function.oldItem.getRegistryName().toString());
+				object.addProperty("default", ForgeRegistries.ITEMS.getKey(function.item).toString());
+			object.addProperty("default", ForgeRegistries.ITEMS.getKey(function.oldItem).toString());
 		}
 
 		@Override

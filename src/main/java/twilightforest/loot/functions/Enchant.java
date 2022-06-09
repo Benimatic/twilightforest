@@ -24,9 +24,9 @@ import java.util.Map;
 // Similar to EnchantRandomly but applies everything and with exact levels
 public class Enchant extends LootItemConditionalFunction {
 
-	private final Map<IRegistryDelegate<Enchantment>, Short> enchantments;
+	private final Map<Enchantment, Short> enchantments;
 
-	protected Enchant(LootItemCondition[] conditions, Map<IRegistryDelegate<Enchantment>, Short> enchantments) {
+	protected Enchant(LootItemCondition[] conditions, Map<Enchantment, Short> enchantments) {
 		super(conditions);
 		this.enchantments = enchantments;
 	}
@@ -38,11 +38,11 @@ public class Enchant extends LootItemConditionalFunction {
 
 	@Override
 	public ItemStack run(ItemStack stack, LootContext context) {
-		for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : enchantments.entrySet()) {
+		for (Map.Entry<Enchantment, Short> e : enchantments.entrySet()) {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
-				EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(e.getKey().get(), e.getValue()));
+				EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(e.getKey(), e.getValue()));
 			} else {
-				stack.enchant(e.getKey().get(), e.getValue());
+				stack.enchant(e.getKey(), e.getValue());
 			}
 		}
 		return stack;
@@ -53,14 +53,14 @@ public class Enchant extends LootItemConditionalFunction {
 	}
 
 	public static class Builder extends LootItemConditionalFunction.Builder<Enchant.Builder> {
-		private final Map<IRegistryDelegate<Enchantment>, Short> enchants = Maps.newHashMap();
+		private final Map<Enchantment, Short> enchants = Maps.newHashMap();
 
 		protected Enchant.Builder getThis() {
 			return this;
 		}
 
 		public Enchant.Builder apply(Enchantment p_216077_1_, Integer p_216077_2_) {
-			this.enchants.put(p_216077_1_.delegate, p_216077_2_.shortValue());
+			this.enchants.put(p_216077_1_, p_216077_2_.shortValue());
 			return this;
 		}
 
@@ -76,8 +76,8 @@ public class Enchant extends LootItemConditionalFunction {
 			if (!function.enchantments.isEmpty()) {
 				JsonObject obj = new JsonObject();
 
-				for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : function.enchantments.entrySet()) {
-					obj.addProperty(e.getKey().get().getRegistryName().toString(), e.getValue());
+				for (Map.Entry<Enchantment, Short> e : function.enchantments.entrySet()) {
+					obj.addProperty(ForgeRegistries.ENCHANTMENTS.getKey(e.getKey()).toString(), e.getValue());
 				}
 
 				object.add("enchantments", obj);
@@ -86,7 +86,7 @@ public class Enchant extends LootItemConditionalFunction {
 
 		@Override
 		public Enchant deserialize(JsonObject object, JsonDeserializationContext ctx, LootItemCondition[] conditions) {
-			Map<IRegistryDelegate<Enchantment>, Short> enchantments = new HashMap<>();
+			Map<Enchantment, Short> enchantments = new HashMap<>();
 
 			if (object.has("enchantments")) {
 				JsonObject enchantObj = GsonHelper.getAsJsonObject(object, "enchantments");
@@ -100,13 +100,13 @@ public class Enchant extends LootItemConditionalFunction {
 					Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(id);
 					short lvl = e.getValue().getAsShort();
 
-					for (IRegistryDelegate<Enchantment> other : enchantments.keySet()) {
-						if (!ench.isCompatibleWith(other.get())) {
-							throw new JsonParseException(String.format("Enchantments %s and %s conflict", ench.getRegistryName(), other.get().getRegistryName()));
+					for (Enchantment other : enchantments.keySet()) {
+						if (!ench.isCompatibleWith(other)) {
+							throw new JsonParseException(String.format("Enchantments %s and %s conflict", ForgeRegistries.ENCHANTMENTS.getKey(ench), ForgeRegistries.ENCHANTMENTS.getKey(other)));
 						}
 					}
 
-					enchantments.put(ench.delegate, lvl);
+					enchantments.put(ench, lvl);
 				}
 			}
 

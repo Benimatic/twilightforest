@@ -6,7 +6,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.NoiseSlider;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 

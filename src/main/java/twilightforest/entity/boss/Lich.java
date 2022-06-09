@@ -493,18 +493,18 @@ public class Lich extends Monster {
 		}
 	}
 
-	public void makeMagicTrail(BlockPos source, BlockPos target, float red, float green, float blue) {
+	public void makeMagicTrail(Vec3 source, Vec3 target, float red, float green, float blue) {
 		int particles = 60;
 		if (!this.getLevel().isClientSide()) {
 			for (ServerPlayer serverplayer : ((ServerLevel) this.getLevel()).players()) {
-				if (serverplayer.distanceToSqr(Vec3.atCenterOf(source)) < 4096.0D) {
+				if (serverplayer.distanceToSqr(source) < 4096.0D) {
 					ParticlePacket packet = new ParticlePacket();
 
 					for (int i = 0; i < particles; i++) {
 						double trailFactor = i / (particles - 1.0D);
-						double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
-						double ty = source.getY() + 0.2D + (target.getY() - source.getY()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
-						double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						double tx = source.x() + (target.x() - source.x()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						double ty = source.y() + 0.2D + (target.y() - source.y()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						double tz = source.z() + (target.z() - source.z()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						packet.queueParticle(ParticleTypes.ENTITY_EFFECT, false, tx, ty, tz, red, green, blue);
 					}
 

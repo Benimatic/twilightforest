@@ -38,9 +38,4 @@ public class LegacyStructureFeature extends StructureFeature<NoneFeatureConfigur
 		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
 		return Objects.equals(ForgeRegistries.BIOMES.getKey(holder.value()).getNamespace(), TwilightForestMod.ID);
 	}
-
-    @Override
-    public GenerationStep.Decoration step() {
-        return feature.getDecorationStage();
-    }
 }

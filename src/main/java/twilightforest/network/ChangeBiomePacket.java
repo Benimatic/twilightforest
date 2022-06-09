@@ -58,7 +58,7 @@ public class ChangeBiomePacket {
 					for (LevelChunkSection section : chunkAt.getSections()) {
 						for (int dy = minY; dy < maxY; dy++) { // TODO: This probably isn't correct and isn't good for performance.
 							int y = Mth.clamp(QuartPos.fromBlock(dy), minY, maxY);
-							section.getBiomes().set(x & 3, y & 3, z & 3, biome);
+							//section.getBiomes().set(x & 3, y & 3, z & 3, biome); FIXME
 						}
 					}
 					world.onChunkLoaded(new ChunkPos(message.pos));

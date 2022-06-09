@@ -107,7 +107,7 @@ public abstract class CrumbleHornProvider implements DataProvider {
 	private JsonObject serializeToJson(BlockState transformFrom, BlockState transformTo) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", TFRecipes.CRUMBLE_SERIALIZER.get().getRegistryName().toString());
+		jsonobject.addProperty("type", ForgeRegistries.RECIPE_SERIALIZERS.getKey(TFRecipes.CRUMBLE_SERIALIZER.get()).toString());
 		jsonobject.addProperty("from", ForgeRegistries.BLOCKS.getKey(transformFrom.getBlock()).toString());
 		jsonobject.addProperty("to", ForgeRegistries.BLOCKS.getKey(transformTo.getBlock()).toString());
 		return jsonobject;
@@ -120,10 +120,10 @@ public abstract class CrumbleHornProvider implements DataProvider {
 
 	//helper methods
 	public void addTransform(Block from, Block to) {
-		builders.put(from.getRegistryName().getPath() + "_to_" + to.getRegistryName().getPath(), new Pair<>(from.defaultBlockState(), to.defaultBlockState()));
+		builders.put(ForgeRegistries.BLOCKS.getKey(from).getPath() + "_to_" + ForgeRegistries.BLOCKS.getKey(to).getPath(), new Pair<>(from.defaultBlockState(), to.defaultBlockState()));
 	}
 
 	public void addDissolve(Block dissolveBlock) {
-		builders.put("dissolve_" + dissolveBlock.getRegistryName().getPath(), new Pair<>(dissolveBlock.defaultBlockState(), Blocks.AIR.defaultBlockState()));
+		builders.put("dissolve_" + ForgeRegistries.BLOCKS.getKey(dissolveBlock).getPath(), new Pair<>(dissolveBlock.defaultBlockState(), Blocks.AIR.defaultBlockState()));
 	}
 }

@@ -517,7 +517,6 @@ public abstract class BiomeHelper {
 	public static Biome.BiomeBuilder biomeWithDefaults(BiomeSpecialEffects.Builder biomeAmbience, MobSpawnSettings.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-                .biomeCategory(Biome.BiomeCategory.FOREST)
                 //.depth(0.025f)
                 //.scale(0.05f)
                 .temperature(0.5F)
