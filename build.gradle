@@ -103,14 +103,6 @@ compileJava {
     options.encoding = 'UTF-8'
 }
 
-processResources {
-    filesMatching("META-INF/mods.toml") {
-        expand([
-                'version': "${project.version}"
-        ])
-    }
-}
-
 jar {
     classifier = 'universal'
     manifest {
