@@ -6,7 +6,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import java.util.List;
 
 // FIXME Using IDs to enumerate lists of mob spawn tables is a bad idea...
-public interface StructureSpecialSpawns {
+public interface ControlledSpawns {
     List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList();
 
     List<MobSpawnSettings.SpawnerData> getCombinedCreatureSpawnableList();

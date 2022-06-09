@@ -29,7 +29,7 @@ import java.util.Set;
 @Deprecated
 // We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the
 //  StructurePiece classes we actually use. This class will take quite a while to dismantle
-public abstract class TFStructureComponent extends StructurePiece implements TwilightFeature {
+public abstract class TFStructureComponent extends StructurePiece implements LegacyLandmarkGetter {
 
 	public TFStructureDecorator deco = null;
 	public int spawnListIndex = 0;

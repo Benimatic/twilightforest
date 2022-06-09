@@ -45,6 +45,7 @@ import twilightforest.world.components.structures.stronghold.StrongholdEntranceC
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 import twilightforest.world.components.structures.util.StructureHints;
+import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -54,7 +55,7 @@ import java.util.*;
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
 @Deprecated
-public class TFLandmark implements LandmarkStructure {
+public class TFLandmark implements LandmarkStructure, ControlledSpawns {
 	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature"       , false){ { this.enableDecorations().disableStructure(); } };
 	public static final TFLandmark SMALL_HILL = new TFLandmark( 1, "small_hollow_hill", true, true ) {
 		{

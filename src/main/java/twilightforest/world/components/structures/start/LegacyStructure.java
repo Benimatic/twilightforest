@@ -31,7 +31,7 @@ public class LegacyStructure extends Structure implements LegacyStructureAdapter
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.LEGACY_TYPE.get();
+		return TFStructureTypes.LEGACY_LANDMARK.get();
 	}
 
 	@Override

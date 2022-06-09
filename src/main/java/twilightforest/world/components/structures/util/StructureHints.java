@@ -1,17 +1,26 @@
 package twilightforest.world.components.structures.util;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
-import twilightforest.entity.monster.Kobold;
+import twilightforest.init.TFLandmark;
+
+import javax.annotation.Nullable;
 
 // TODO Data-driven Book-setting. Or we could use a loot table instead to create a book?
 public interface StructureHints {
@@ -63,7 +72,7 @@ public interface StructureHints {
         int dz = world.random.nextInt(16) - world.random.nextInt(16);
 
         // make our hint monster
-        Kobold hinty = TFEntities.KOBOLD.get().create(world);
+        Mob hinty = this.createHintMonster(world);
         hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
         // check if the bounding box is clear
@@ -81,5 +90,42 @@ public interface StructureHints {
         }
 
         return false;
+    }
+
+    @Nullable
+    default Mob createHintMonster(Level world) {
+        return TFEntities.KOBOLD.get().create(world);
+    }
+
+    record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
+        public static MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
+                Registry.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
+        ).apply(instance, HintConfig::new));
+
+        public static Codec<HintConfig> CODEC = FLAT_CODEC.codec();
+
+        private static DataResult<EntityType<? extends Mob>> checkMob(EntityType<?> entityType) {
+            if (!Mob.class.isAssignableFrom(entityType.getBaseClass()))
+                return DataResult.error("Configured Hint Entity " + entityType.toShortString() + " cannot be assigned as a Mob!");
+            //noinspection unchecked
+            return DataResult.success((EntityType<? extends Mob>) entityType);
+        }
+
+        /*TODO Spawning List for Hint monsters
+        public static Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
+                WeightedRandomList.codec(MobSpawnSettings.SpawnerData.CODEC).fieldOf("hint_monsters").forGetter(HintConfig::hintMonsters)
+        ).apply(instance, HintConfig::new));
+
+        public static MapCodec<HintConfig> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
+                WeightedRandomList.codec(MobSpawnSettings.SpawnerData.CODEC).fieldOf("hint_monsters").forGetter(HintConfig::hintMonsters)
+        ).apply(instance, HintConfig::new));
+
+        public EntityType<?> pickHintMonster(RandomSource random) {
+            Optional<EntityType<?>> possibleMonster = this.hintMonsters.getRandom(random).map(data -> data.type);
+            return possibleMonster.orElseGet(TFEntities.KOBOLD);
+        }*/
     }
 }

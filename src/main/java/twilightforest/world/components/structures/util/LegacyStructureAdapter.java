@@ -8,13 +8,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import twilightforest.world.components.structures.TwilightFeature;
+import twilightforest.world.components.structures.LegacyLandmarkGetter;
 
 import java.util.List;
 
-public interface LegacyStructureAdapter extends LandmarkStructure, TwilightFeature {
-    // TODO Convert into a config class
-
+public interface LegacyStructureAdapter extends LandmarkStructure, ControlledSpawns, LegacyLandmarkGetter {
     @Override
     default ItemStack createHintBook() {
         return this.getFeatureType().createHintBook();

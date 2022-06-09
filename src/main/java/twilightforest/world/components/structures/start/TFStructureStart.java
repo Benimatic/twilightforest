@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.start;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -14,10 +13,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponent;
-import twilightforest.world.components.structures.util.LegacyStructureAdapter;
-import twilightforest.world.components.structures.util.StructureSpecialSpawns;
 
 import java.util.List;
 
