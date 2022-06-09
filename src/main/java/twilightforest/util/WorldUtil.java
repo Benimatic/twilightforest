@@ -8,6 +8,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -62,11 +63,11 @@ public final class WorldUtil {
 		} else return TFGenerationSettings.SEALEVEL;
 	}
 
-	public static int getBaseHeight(LevelAccessor level, int x, int z, Heightmap.Types type) {
-		if (level.getChunkSource() instanceof ServerChunkCache chunkSource) {
-			return chunkSource.chunkMap.generator().getBaseHeight(x, z, type, level);
-		} else {
-			return level.getHeight(type, x, z);
-		}
-	}
+//	public static int getBaseHeight(LevelAccessor level, int x, int z, Heightmap.Types type, RandomState randomState) {
+//		if (level.getChunkSource() instanceof ServerChunkCache chunkSource) {
+//			return chunkSource.chunkMap.generator().getBaseHeight(x, z, type, level, randomState);
+//		} else {
+//			return level.getHeight(type, x, z);
+//		}
+//	}
 }
