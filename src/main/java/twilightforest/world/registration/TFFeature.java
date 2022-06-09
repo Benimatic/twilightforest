@@ -953,6 +953,7 @@ public class TFFeature {
 		}
 	}
 
+	@Deprecated(forRemoval = true) // FIXME Deferred
 	public static StructurePieceType registerPiece(String name, StructurePieceType piece) {
 		return Registry.register(Registry.STRUCTURE_PIECE, TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)), piece);
 	}
