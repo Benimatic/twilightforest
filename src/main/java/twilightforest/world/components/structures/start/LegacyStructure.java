@@ -4,13 +4,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import twilightforest.world.components.structures.util.LegacyStructureAdapter;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.features.TFStructureTypes;
 
 import java.util.Optional;
 
 @Deprecated
-public class LegacyStructure extends Structure {
+public class LegacyStructure extends Structure implements LegacyStructureAdapter {
     public final TFFeature feature;
 
 	public static final Codec<LegacyStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -31,5 +32,10 @@ public class LegacyStructure extends Structure {
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.LEGACY_TYPE.get();
+	}
+
+	@Override
+	public TFFeature getFeatureType() {
+		return this.feature;
 	}
 }

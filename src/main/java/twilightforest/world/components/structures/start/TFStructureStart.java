@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.util.LegacyStructureAdapter;
 import twilightforest.world.components.structures.util.StructureSpecialSpawns;
 
 import java.util.List;
@@ -63,26 +64,20 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 
 	// TODO Move to ChunkGeneratorTwilight as that's the only class it matters to. The command impl can follow with the refactor
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (Structure structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
-				.filter(structure -> {
-					ResourceLocation location = structure.getRegistryName();
-					return location != null && TwilightForestMod.ID.equals(location.getNamespace());
-				}).toList()) {
+		for (LegacyStructure structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
+				.filter(LegacyStructure.class::isInstance).map(LegacyStructure.class::cast).toList()) {
 			StructureStart start = structureManager.getStructureAt(pos, structure);
 			if (!start.isValid())
 				continue;
 
-			//if (!(structure instanceof LegacyStructureFeature legacyData)) continue;
-			if (!(structure instanceof StructureSpecialSpawns legacyData)) continue;
-
 			if (classification != MobCategory.MONSTER)
-				return legacyData.getSpawnableList(classification);
+				return structure.getSpawnableList(classification);
 			if ((start instanceof TFStructureStart<?> s && s.conquered) /*|| legacyData.isConquered()*/)
 				return null;
 			final int index = getSpawnListIndexAt(start, pos);
 			if (index < 0)
 				return null;
-			return legacyData.getSpawnableMonsterList(index);
+			return structure.getSpawnableMonsterList(index);
 		}
 		return null;
 	}
