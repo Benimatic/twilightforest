@@ -51,7 +51,6 @@ public interface StructureHints {
      */
     void trySpawnHintMonster(Level world, Player player, BlockPos pos);
 
-
     /**
      * Try once to spawn a hint monster near the player.  Return true if we did.
      * <p>

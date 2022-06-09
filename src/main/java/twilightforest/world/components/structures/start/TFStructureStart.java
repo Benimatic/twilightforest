@@ -61,6 +61,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 		return highestFoundIndex;
 	}
 
+	// TODO Move to ChunkGeneratorTwilight as that's the only class it matters to. The command impl can follow with the refactor
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
 		for (Structure structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
 				.filter(feature -> {

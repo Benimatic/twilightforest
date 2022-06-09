@@ -2,6 +2,9 @@ package twilightforest.world.registration;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import net.minecraft.Util;
 import net.minecraft.core.*;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -23,8 +26,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -882,7 +885,17 @@ public class TFFeature implements LandmarkStructure {
 		return null;
 	}
 
-	public Optional<StructurePiece> generatePieces(PieceGeneratorSupplier.Context<?> context) {
+	private static boolean isValidBiome(Structure.GenerationContext context) {
+		int x = context.chunkPos().getMiddleBlockX();
+		int z = context.chunkPos().getMiddleBlockZ();
+		int y = 1;
+		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
+		return Objects.equals(ForgeRegistries.BIOMES.getKey(holder.value()).getNamespace(), TwilightForestMod.ID);
+	}
+
+	public Optional<Structure.GenerationStub> generateStub(Structure.GenerationContext context) {
+		if (!isValidBiome(context)) return Optional.empty();
+
 		ChunkPos chunkPos = context.chunkPos();
 		if (!TFFeature.isInFeatureChunk(chunkPos.x << 4, chunkPos.z << 4))
 			return Optional.empty();
@@ -893,7 +906,15 @@ public class TFFeature implements LandmarkStructure {
 		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
 		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed()))
 			return Optional.empty();
-		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z));
+		// FIXME Yikes... Future Code Cleanup if it'll get reused
+		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z)).map(piece -> new Structure.GenerationStub(new BlockPos(x, y, z), structurePiecesBuilder -> {
+			structurePiecesBuilder.addPiece(piece);
+			piece.addChildren(piece, structurePiecesBuilder, context.random());
+			structurePiecesBuilder.pieces.stream()
+					.filter(TFStructureComponentTemplate.class::isInstance)
+					.map(TFStructureComponentTemplate.class::cast)
+					.forEach(t -> t.LAZY_TEMPLATE_LOADER.run());
+		}));
 	}
 
 	public GenerationStep.Decoration getDecorationStage() {
@@ -929,4 +950,28 @@ public class TFFeature implements LandmarkStructure {
 				return true;
 		return false;
 	}
+
+	private static final ImmutableMap<String, TFFeature> NAME_2_TYPE = Util.make(() -> ImmutableMap.<String, TFFeature>builder()
+			.put("small_hollow_hill", TFFeature.SMALL_HILL)
+			.put("medium_hollow_hill", TFFeature.MEDIUM_HILL)
+			.put("large_hollow_hill", TFFeature.LARGE_HILL)
+			.put("hedge_maze", TFFeature.HEDGE_MAZE)
+			.put("quest_grove", TFFeature.QUEST_GROVE)
+			.put("naga_courtyard", TFFeature.NAGA_COURTYARD)
+			.put("lich_tower", TFFeature.LICH_TOWER)
+			.put("hydra_lair", TFFeature.HYDRA_LAIR)
+			.put("labyrinth", TFFeature.LABYRINTH)
+			.put("dark_tower", TFFeature.DARK_TOWER)
+			.put("knight_stronghold", TFFeature.KNIGHT_STRONGHOLD)
+			.put("yeti_lairs", TFFeature.YETI_CAVE)
+			.put("ice_tower", TFFeature.ICE_TOWER)
+			.put("troll_lairs", TFFeature.TROLL_CAVE)
+			.put("final_castle", TFFeature.FINAL_CASTLE)
+			.put("mushroom_tower", TFFeature.MUSHROOM_TOWER)
+			.build());
+
+	public static final Codec<TFFeature> CODEC = Codec.STRING.comapFlatMap(
+			name -> TFFeature.NAME_2_TYPE.containsKey(name) ? DataResult.success(TFFeature.NAME_2_TYPE.get(name)) : DataResult.error("Landmark " + name + " not recognized!"),
+			tfFeature -> tfFeature.name
+	);
 }

@@ -30,7 +30,7 @@ import twilightforest.potions.TFMobEffects;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.components.structures.start.LegacyStructureFeature;
+import twilightforest.world.components.structures.start.LegacyStructure;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
@@ -205,7 +205,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
 		for (ConfiguredStructureFeature<?, ?> structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).stream().toList()) {
-			if (!(structureFeature.feature instanceof LegacyStructureFeature legacyData))
+			if (!(structureFeature.feature instanceof LegacyStructure legacyData))
 				continue;
 			TFFeature feature = legacyData.feature;
 			if (feature != featureCheck)
