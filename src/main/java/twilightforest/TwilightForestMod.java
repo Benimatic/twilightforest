@@ -115,7 +115,6 @@ public class TwilightForestMod {
 		BiomeKeys.BIOMES.register(modbus);
 		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
 		TFBlocks.BLOCKS.register(modbus);
-		ConfiguredWorldCarvers.CARVERS.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);

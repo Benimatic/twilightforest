@@ -91,9 +91,9 @@ public final class TFSounds {
 	public static final RegistryObject<SoundEvent> GHAST_TRAP_SPINDOWN = createEvent("block.twilightforest.ghast_trap.spindown");
 	public static final RegistryObject<SoundEvent> GHAST_TRAP_WARMUP = createEvent("block.twilightforest.ghast_trap.warmup");
 	public static final RegistryObject<SoundEvent> GLASS_SWORD_BREAK = createEvent("item.twilightforest.glasssword.break");
-	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_AMBIENT = createEvent("entity.twilightforest.goblinKnight.ambient");
-	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_DEATH = createEvent("entity.twilightforest.goblinKnight.death");
-	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_HURT = createEvent("entity.twilightforest.goblinKnight.hurt");
+	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_AMBIENT = createEvent("entity.twilightforest.goblinknight.ambient");
+	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_DEATH = createEvent("entity.twilightforest.goblinknight.death");
+	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_HURT = createEvent("entity.twilightforest.goblinknight.hurt");
 	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_MUFFLED_AMBIENT = createEvent("entity.twilightforest.goblinknight.muffled.ambient");
 	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_MUFFLED_DEATH = createEvent("entity.twilightforest.goblinknight.muffled.death");
 	public static final RegistryObject<SoundEvent> GOBLIN_KNIGHT_MUFFLED_HURT = createEvent("entity.twilightforest.goblinknight.muffled.hurt");

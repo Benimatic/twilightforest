@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###",
-    " X ",
-    " X "
-  ],
   "key": {
     "#": {
       "tag": "forge:ingots/fiery"
@@ -13,6 +8,11 @@
       "tag": "forge:rods/blaze"
     }
   },
+  "pattern": [
+    "###",
+    " X ",
+    " X "
+  ],
   "result": {
     "item": "twilightforest:fiery_pickaxe"
   }
