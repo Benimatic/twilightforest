@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.util.StructureSpecialSpawns;
 
 import java.util.List;
 
@@ -70,16 +71,17 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 			if (!start.isValid())
 				continue;
 
-			if (!(structure instanceof LegacyStructureFeature legacyData)) continue;
+			//if (!(structure instanceof LegacyStructureFeature legacyData)) continue;
+			if (!(structure instanceof StructureSpecialSpawns legacyData)) continue;
 
 			if (classification != MobCategory.MONSTER)
-				return legacyData.feature.getSpawnableList(classification);
-			if (start instanceof TFStructureStart<?> s && s.conquered)
+				return legacyData.getSpawnableList(classification);
+			if ((start instanceof TFStructureStart<?> s && s.conquered) || legacyData.isConquered())
 				return null;
 			final int index = getSpawnListIndexAt(start, pos);
 			if (index < 0)
 				return null;
-			return legacyData.feature.getSpawnableMonsterList(index);
+			return legacyData.getSpawnableMonsterList(index);
 		}
 		return null;
 	}

@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class PlayerHelper {
 	/**
@@ -89,6 +90,10 @@ public class PlayerHelper {
 	}
 
 	public static boolean doesPlayerHaveRequiredAdvancements(Player player, ResourceLocation... requiredAdvancements) {
+		return PlayerHelper.playerHasRequiredAdvancements(player, List.of(requiredAdvancements));
+	}
+
+	public static boolean playerHasRequiredAdvancements(Player player, Iterable<ResourceLocation> requiredAdvancements) {
 		for (ResourceLocation advancementLocation : requiredAdvancements) {
 			if (player.level.isClientSide()) {
 				if (player instanceof LocalPlayer) {

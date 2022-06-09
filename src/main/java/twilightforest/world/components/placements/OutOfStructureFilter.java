@@ -56,7 +56,7 @@ public class OutOfStructureFilter extends PlacementModifier {
 
 		final TFFeature feature = tfChunkGen.getFeatureCached(new ChunkPos(featurePos), worldDecoratingHelper.getLevel());
 
-		if ((!occupiesSurface || feature.surfaceDecorationsAllowed) && (!occupiesUnderground || feature.undergroundDecoAllowed))
+		if ((!occupiesSurface || feature.isSurfaceDecorationsAllowed()) && (!occupiesUnderground || feature.isUndergroundDecoAllowed()))
 			return Stream.of(blockPos);
 
 		// Turn Feature Center into Feature Offset

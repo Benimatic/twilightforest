@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Deprecated
-public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeatureConfiguration> {
+public class LegacyStructureFeature extends StructureFeature<NoneFeatureConfiguration> {
     public final TFFeature feature;
 
     public LegacyStructureFeature(@Deprecated TFFeature feature) {

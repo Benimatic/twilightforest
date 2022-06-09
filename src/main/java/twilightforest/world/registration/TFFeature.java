@@ -1,20 +1,18 @@
 package twilightforest.world.registration;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.*;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
@@ -32,9 +30,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.monster.Kobold;
 import twilightforest.util.IntPair;
-import twilightforest.util.PlayerHelper;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
@@ -46,6 +42,8 @@ import twilightforest.world.components.structures.mushroomtower.MushroomTowerMai
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
 import twilightforest.world.components.structures.trollcave.TrollCavePieces;
+import twilightforest.world.components.structures.util.LandmarkStructure;
+import twilightforest.world.components.structures.util.StructureHints;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import javax.annotation.Nullable;
@@ -54,7 +52,7 @@ import java.util.*;
 /**
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
-public class TFFeature {
+public class TFFeature implements LandmarkStructure {
 	public static final TFFeature NOTHING = new TFFeature( 0, "no_feature"       , false){ { this.enableDecorations().disableStructure(); } };
 	public static final TFFeature SMALL_HILL = new TFFeature( 1, "small_hollow_hill", true, true ) {
 		{
@@ -166,9 +164,9 @@ public class TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListTag bookPages) {
+		public void addBookInformation(ItemStack book, ListTag bookPages) {
 
-			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.lichtower", 4);
+			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.lichtower", 4);
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
@@ -187,9 +185,9 @@ public class TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListTag bookPages) {
+		public void addBookInformation(ItemStack book, ListTag bookPages) {
 
-			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.hydralair", 4);
+			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.hydralair", 4);
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
@@ -217,9 +215,9 @@ public class TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListTag bookPages) {
+		public void addBookInformation(ItemStack book, ListTag bookPages) {
 
-			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.labyrinth", 5);
+			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.labyrinth", 5);
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
@@ -255,9 +253,9 @@ public class TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListTag bookPages) {
+		public void addBookInformation(ItemStack book, ListTag bookPages) {
 
-			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.darktower", 3);
+			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.darktower", 3);
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
@@ -285,9 +283,9 @@ public class TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListTag bookPages) {
+		public void addBookInformation(ItemStack book, ListTag bookPages) {
 
-			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.tfstronghold", 5);
+			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.tfstronghold", 5);
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
@@ -313,9 +311,9 @@ public class TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListTag bookPages) {
+		public void addBookInformation(ItemStack book, ListTag bookPages) {
 
-			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.yeticave", 3);
+			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.yeticave", 3);
 
 			book.addTagElement("pages" , bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
@@ -335,9 +333,9 @@ public class TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListTag bookPages) {
+		public void addBookInformation(ItemStack book, ListTag bookPages) {
 
-			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.icetower", 3);
+			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.icetower", 3);
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
@@ -364,9 +362,9 @@ public class TFFeature {
 		}
 
 		@Override
-		protected void addBookInformation(ItemStack book, ListTag bookPages) {
+		public void addBookInformation(ItemStack book, ListTag bookPages) {
 
-			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.trollcave", 3);
+			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.trollcave", 3);
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
@@ -448,11 +446,11 @@ public class TFFeature {
 	public final int size;
 	public final String name;
 	public final boolean centerBounds;
-	public boolean surfaceDecorationsAllowed = false;
-	public boolean undergroundDecoAllowed = true;
+	protected boolean surfaceDecorationsAllowed = false;
+	protected boolean undergroundDecoAllowed = true;
 	public boolean isStructureEnabled = true;
 	public boolean requiresTerraforming = false; // TODO Terraforming Type? Envelopment vs Flattening maybe?
-	private final ResourceLocation[] requiredAdvancements;
+	private final ImmutableList<ResourceLocation> requiredAdvancements;
 	public boolean hasProtectionAura = true;
 	protected boolean adjustToTerrainHeight = false;
 
@@ -464,8 +462,6 @@ public class TFFeature {
 
 	private long lastSpawnedHintMonsterTime;
 
-	private static final String BOOK_AUTHOR = "A Forgotten Explorer";
-
 	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
 		this(size, name, featureGenerator, false, requiredAdvancements);
 	}
@@ -474,7 +470,7 @@ public class TFFeature {
 		this.size = size;
 		this.name = name;
 
-		this.requiredAdvancements = requiredAdvancements;
+		this.requiredAdvancements = ImmutableList.copyOf(requiredAdvancements);
 
 		this.centerBounds = centerBounds;
 
@@ -487,14 +483,20 @@ public class TFFeature {
 		return maxPossibleSize;
 	}
 
+	@Override
+	public boolean isSurfaceDecorationsAllowed() {
+		return this.surfaceDecorationsAllowed;
+	}
+
+	@Override
+	public boolean isUndergroundDecoAllowed() {
+		return this.undergroundDecoAllowed;
+	}
+
+	@Override
 	public boolean shouldAdjustToTerrain() {
 		return this.adjustToTerrainHeight;
 	}
-
-	//	@Nullable
-//	public MapGenTFMajorFeature createFeatureGenerator() {
-//		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
-//	}
 
 	public static TFFeature getFeatureAt(int regionX, int regionZ, WorldGenLevel world) {
 		return generateFeature(regionX >> 4, regionZ >> 4, world);
@@ -804,6 +806,7 @@ public class TFFeature {
 		return new BlockPos(ccx, TFGenerationSettings.SEALEVEL, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ; FIXME (set sea level hard)
 	}
 
+	@Override
 	public List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList() {
 		List<MobSpawnSettings.SpawnerData> list = new ArrayList<>();
 		spawnableMonsterLists.forEach(l -> {
@@ -813,6 +816,7 @@ public class TFFeature {
 		return list;
 	}
 
+	@Override
 	public List<MobSpawnSettings.SpawnerData> getCombinedCreatureSpawnableList() {
 		List<MobSpawnSettings.SpawnerData> list = new ArrayList<>();
 		list.addAll(ambientCreatureList);
@@ -823,6 +827,7 @@ public class TFFeature {
 	/**
 	 * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
 	 */
+	@Override
 	public List<MobSpawnSettings.SpawnerData> getSpawnableList(MobCategory creatureType) {
 		return switch (creatureType) {
 			case MONSTER -> this.getSpawnableMonsterList(0);
@@ -835,6 +840,7 @@ public class TFFeature {
 	/**
 	 * Returns a list of hostile monsters in the specified indexed category
 	 */
+	@Override
 	public List<MobSpawnSettings.SpawnerData> getSpawnableMonsterList(int index) {
 		if (index >= 0 && index < this.spawnableMonsterLists.size()) {
 			return this.spawnableMonsterLists.get(index);
@@ -842,20 +848,15 @@ public class TFFeature {
 		return new ArrayList<>();
 	}
 
-	public boolean doesPlayerHaveRequiredAdvancements(Player player) {
-		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
-	}
-
-	/**
-	 * Try to spawn a hint monster near the specified player
-	 */
-	public void trySpawnHintMonster(Level world, Player player) {
-		this.trySpawnHintMonster(world, player, player.blockPosition());
+	@Override
+	public List<ResourceLocation> getRequiredAdvancements() {
+		return this.requiredAdvancements;
 	}
 
 	/**
 	 * Try several times to spawn a hint monster
 	 */
+	@Override
 	public void trySpawnHintMonster(Level world, Player player, BlockPos pos) {
 		// check if the timer is valid
 		long currentTime = world.getGameTime();
@@ -874,56 +875,6 @@ public class TFFeature {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Try once to spawn a hint monster near the player.  Return true if we did.
-	 * <p>
-	 * We could change up the monster depending on what feature this is, but we currently are not doing that
-	 */
-	private boolean didSpawnHintMonster(Level world, Player player, BlockPos pos) {
-		// find a target point
-		int dx = world.random.nextInt(16) - world.random.nextInt(16);
-		int dy = world.random.nextInt( 4) - world.random.nextInt( 4);
-		int dz = world.random.nextInt(16) - world.random.nextInt(16);
-
-		// make our hint monster
-		Kobold hinty = TFEntities.KOBOLD.get().create(world);
-		hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
-
-		// check if the bounding box is clear
-		if (hinty.checkSpawnObstruction(world) && hinty.getSensing().hasLineOfSight(player)) {
-
-			// add items and hint book
-			ItemStack book = this.createHintBook();
-
-			hinty.setItemSlot(EquipmentSlot.MAINHAND, book);
-			hinty.setDropChance(EquipmentSlot.MAINHAND, 1.0F);
-			//hinty.setDropItemsWhenDead(true);
-
-			world.addFreshEntity(hinty);
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Create a hint book for the specified feature.  Only features with block protection will need this.
-	 */
-	public ItemStack createHintBook() {
-		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-		this.addBookInformation(book, new ListTag());
-		return book;
-	}
-
-	protected void addBookInformation(ItemStack book, ListTag bookPages) {
-
-		addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.unknown", 2);
-
-		book.addTagElement("pages", bookPages);
-		book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-		book.addTagElement("title", StringTag.valueOf("Notes on the Unexplained"));
 	}
 
 	@Nullable
@@ -947,12 +898,6 @@ public class TFFeature {
 
 	public GenerationStep.Decoration getDecorationStage() {
 		return GenerationStep.Decoration.SURFACE_STRUCTURES;
-	}
-
-	private static void addTranslatedPages(ListTag bookPages, String translationKey, int pageCount) {
-		for (int i = 1; i <= pageCount; i++) {
-			bookPages.add(StringTag.valueOf(Component.Serializer.toJson(Component.translatable(translationKey + "." + i))));
-		}
 	}
 
 	@Deprecated(forRemoval = true) // FIXME Deferred
