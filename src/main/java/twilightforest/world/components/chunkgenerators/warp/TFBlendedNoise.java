@@ -9,11 +9,11 @@ import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 /*
  * Honestly, this just makes absolutely certain that things go the way we want it. Might not even need this? Who knows.
  */
-//FIXME constructor takes the random source and 6 doubles now
+//FIXME Come back here if anything awkward happens. The ctor is using primarily dummy values
 public class TFBlendedNoise extends BlendedNoise {
 
-    public TFBlendedNoise(RandomSource random, NoiseSamplingSettings settings, int x, int z) {
-        super(random, settings, x, z);
+    public TFBlendedNoise(RandomSource random) {
+        super(random, 0.9999999814507745, 0.9999999814507745, 80.0, 160.0, 0.0D);
     }
 
     public double sampleAndClampNoise(int x, int y, int z, double scaleXZ, double scaleY, double factorXZ, double factorY) {

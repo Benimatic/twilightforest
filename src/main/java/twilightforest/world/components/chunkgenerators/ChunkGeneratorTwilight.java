@@ -32,10 +32,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.warp.NoiseModifier;
-import twilightforest.world.components.chunkgenerators.warp.TFBlendedNoise;
-import twilightforest.world.components.chunkgenerators.warp.TFNoiseInterpolator;
-import twilightforest.world.components.chunkgenerators.warp.TFTerrainWarp;
+import twilightforest.world.components.chunkgenerators.warp.*;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -91,18 +88,16 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			this.surfaceNoiseGetter = Optional.empty();
 		}
 
-		this.warper = Optional.empty();
-
-//FIXME
-//		NoiseSettings settings = noiseGenSettings.value().noiseSettings();
-//		if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
-//			WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(delegate.ringPlacementSeed));
-//			TFBlendedNoise blendedNoise = new TFBlendedNoise(random, settings.noiseSamplingSettings(), settings.getCellWidth(), settings.getCellHeight());
-//			NoiseModifier modifier = NoiseModifier.PASS;
-//			this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.getCellCountY(), source, settings, blendedNoise, modifier));
-//		} else {
-//			this.warper = Optional.empty();
-//		}
+//FIXME Watch this space, make sure it worked
+		NoiseSettings settings = noiseGenSettings.value().noiseSettings();
+		if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
+			WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
+			TFBlendedNoise blendedNoise = new TFBlendedNoise(random);
+			NoiseModifier modifier = NoiseModifier.PASS;
+			this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.height() / settings.getCellHeight(), source, new NoiseSlider(-10.0D, 3, 0), new NoiseSlider(15.0D, 3, 0), settings, blendedNoise, modifier));
+		} else {
+			this.warper = Optional.empty();
+		}
 	}
 
 	@Override
@@ -120,7 +115,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			int maxY = Math.min(settings.minY() + settings.height(), level.getMaxBuildHeight());
 			int minCell = Mth.intFloorDiv(minY, settings.getCellHeight());
 			int maxCell = Mth.intFloorDiv(maxY - minY, settings.getCellHeight());
-			return maxCell <= 0 ? level.getMinBuildHeight() : this.iterateNoiseColumn(x, z, null, heightMap.isOpaque(), minCell, maxCell).orElse(level.getMinBuildHeight());
+			return maxCell <= 0 ? level.getMinBuildHeight() : this.iterateNoiseColumn(random, x, z, null, heightMap.isOpaque(), minCell, maxCell).orElse(level.getMinBuildHeight());
 		}
 	}
 
@@ -138,14 +133,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				return new NoiseColumn(minY, EMPTY_COLUMN);
 			} else {
 				BlockState[] ablockstate = new BlockState[maxCell * settings.getCellHeight()];
-				this.iterateNoiseColumn(x, z, ablockstate, null, minCell, maxCell);
+				this.iterateNoiseColumn(random, x, z, ablockstate, null, minCell, maxCell);
 				return new NoiseColumn(minY, ablockstate);
 			}
 		}
 	}
 
 	//This logic only seems to concern very specific features, but it does need the Warp
-	protected OptionalInt iterateNoiseColumn(int x, int z, BlockState[] states, Predicate<BlockState> predicate, int min, int max) {
+	protected OptionalInt iterateNoiseColumn(RandomState random, int x, int z, BlockState[] states, Predicate<BlockState> predicate, int min, int max) {
 		NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 		int cellWidth = settings.getCellWidth();
 		int cellHeight = settings.getCellHeight();
@@ -156,10 +151,10 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		int xMin = xMod / cellWidth;
 		int zMin = zMod / cellWidth;
 		double[][] columns = new double[][] {
-				this.makeAndFillNoiseColumn(xDiv, zDiv, min, max),
-				this.makeAndFillNoiseColumn(xDiv, zDiv + 1, min, max),
-				this.makeAndFillNoiseColumn(xDiv + 1, zDiv, min, max),
-				this.makeAndFillNoiseColumn(xDiv + 1, zDiv + 1, min, max)
+				this.makeAndFillNoiseColumn(random, xDiv, zDiv, min, max),
+				this.makeAndFillNoiseColumn(random, xDiv, zDiv + 1, min, max),
+				this.makeAndFillNoiseColumn(random, xDiv + 1, zDiv, min, max),
+				this.makeAndFillNoiseColumn(random, xDiv + 1, zDiv + 1, min, max)
 		};
 
 		for (int cell = max - 1; cell >= 0; cell--) {
@@ -227,7 +222,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					sections.add(section);
 				}
 
-				return CompletableFuture.supplyAsync(() -> this.doFill(chunkAccess, mincell, maxcell), Util.backgroundExecutor()).whenCompleteAsync((chunk, throwable) -> {
+				return CompletableFuture.supplyAsync(() -> this.doFill(random, chunkAccess, mincell, maxcell), Util.backgroundExecutor()).whenCompleteAsync((chunk, throwable) -> {
 					for (LevelChunkSection section : sections) {
 						section.release();
 					}
@@ -236,7 +231,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		}
 	}
 
-	private ChunkAccess doFill(ChunkAccess access, int min, int max) {
+	private ChunkAccess doFill(RandomState random, ChunkAccess access, int min, int max) {
 		NoiseSettings settings = noiseGeneratorSettings.value().noiseSettings();
 		int cellWidth = settings.getCellWidth();
 		int cellHeight = settings.getCellHeight();
@@ -249,12 +244,12 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		int minZ = chunkpos.getMinBlockZ();
 		TFNoiseInterpolator interpolator = new TFNoiseInterpolator(cellCountX, max, cellCountZ, chunkpos, min, this::fillNoiseColumn);
 		List<TFNoiseInterpolator> list = Lists.newArrayList(interpolator);
-		list.forEach(TFNoiseInterpolator::initialiseFirstX);
+		list.forEach(noiseint -> noiseint.initialiseFirstX(random));
 		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
 		for (int cellX = 0; cellX < cellCountX; cellX++) {
 			int advX = cellX;
-			list.forEach((noiseint) -> noiseint.advanceX(advX));
+			list.forEach((noiseint) -> noiseint.advanceX(random, advX));
 
 			for (int cellZ = 0; cellZ < cellCountZ; cellZ++) {
 				LevelChunkSection section = access.getSection(access.getSectionsCount() - 1);
@@ -318,15 +313,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return access;
 	}
 
-	private double[] makeAndFillNoiseColumn(int x, int z, int min, int max) {
+	private double[] makeAndFillNoiseColumn(RandomState state, int x, int z, int min, int max) {
 		double[] columns = new double[max + 1];
-		this.fillNoiseColumn(columns, x, z, min, max);
+		this.fillNoiseColumn(state, columns, x, z, min, max);
 		return columns;
 	}
 
-	private void fillNoiseColumn(double[] columns, int x, int z, int min, int max) {
-		NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
-		this.warper.get().fillNoiseColumn(this, columns, x, z, settings, this.getSeaLevel(), min, max);
+	private void fillNoiseColumn(RandomState state, double[] columns, int x, int z, int min, int max) {
+		this.warper.get().fillNoiseColumn(state, columns, x, z, this.getSeaLevel(), min, max);
 	}
 
 	//Logic based on 1.16. Will only ever get the default Block, Fluid, or Air
