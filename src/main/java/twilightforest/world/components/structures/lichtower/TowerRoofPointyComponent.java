@@ -13,13 +13,13 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerRoofPointyComponent extends TowerRoofComponent {
 
 	public TowerRoofPointyComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRP, nbt);
+		super(TFStructurePieceTypes.TFLTRP.get(), nbt);
 	}
 
 	public TowerRoofPointyComponent(StructurePieceType piece, CompoundTag nbt) {

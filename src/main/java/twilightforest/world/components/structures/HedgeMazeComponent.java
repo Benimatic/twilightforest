@@ -19,7 +19,7 @@ import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class HedgeMazeComponent extends TFStructureComponentOld {
@@ -30,13 +30,13 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	private static final int FLOOR_LEVEL = 0;
 
 	public HedgeMazeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFFeature.TFHedge, nbt);
+		super(TFStructurePieceTypes.TFHedge.get(), nbt);
 
 		this.boundingBox = BoundingBoxUtils.NBTToBoundingBox(nbt);
 	}
 
 	public HedgeMazeComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(TFFeature.TFHedge, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFHedge.get(), feature, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 

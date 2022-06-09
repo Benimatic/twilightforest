@@ -12,17 +12,17 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeRoomExitComponent extends MazeRoomComponent {
 
 	public MazeRoomExitComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRE, nbt);
+		super(TFStructurePieceTypes.TFMMRE.get(), nbt);
 	}
 
 	public MazeRoomExitComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRE, feature, i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRE.get(), feature, i, rand, x, y, z);
 	}
 
 	@Override

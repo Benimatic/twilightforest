@@ -22,7 +22,7 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class HollowHillComponent extends TFStructureComponentOld {
@@ -38,7 +38,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	final int hdiam;
 
 	public HollowHillComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFFeature.TFHill, nbt);
+		this(TFStructurePieceTypes.TFHill.get(), nbt);
 	}
 
 	public HollowHillComponent(StructurePieceType piece, CompoundTag nbt) {

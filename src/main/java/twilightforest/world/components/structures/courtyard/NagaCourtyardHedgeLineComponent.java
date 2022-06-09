@@ -7,13 +7,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class NagaCourtyardHedgeLineComponent extends NagaCourtyardHedgeAbstractComponent {
     public NagaCourtyardHedgeLineComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        super(ctx, NagaCourtyardPieces.TFNCLn, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line_big"));
+        super(ctx, TFStructurePieceTypes.TFNCLn.get(), nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line_big"));
     }
 
     public NagaCourtyardHedgeLineComponent(StructureTemplateManager manager, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(manager, NagaCourtyardPieces.TFNCLn, feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line_big"));
+        super(manager, TFStructurePieceTypes.TFNCLn.get(), feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line_big"));
     }
 }

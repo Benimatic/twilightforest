@@ -16,17 +16,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent {
 
 	public StrongholdBossRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSBR, nbt);
+		super(TFStructurePieceTypes.TFSBR.get(), nbt);
 	}
 
 	public StrongholdBossRoomComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSBR, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSBR.get(), feature, i, facing, x, y, z);
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 

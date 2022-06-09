@@ -12,17 +12,17 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeRoomCollapseComponent extends MazeRoomComponent {
 
 	public MazeRoomCollapseComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRC, nbt);
+		super(TFStructurePieceTypes.TFMMRC.get(), nbt);
 	}
 
 	public MazeRoomCollapseComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRC, feature, i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRC.get(), feature, i, rand, x, y, z);
 	}
 
 	@Override

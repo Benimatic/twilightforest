@@ -21,6 +21,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,11 +30,11 @@ import java.util.List;
 public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 	public FinalCastleMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCMain, nbt);
+		super(TFStructurePieceTypes.TFFCMain.get(), nbt);
 	}
 
 	public FinalCastleMainComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCMain, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCMain.get(), feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
@@ -142,7 +143,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 				// build
 				BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(FinalCastlePieces.TFFCSiTo, getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
 				// add bridge
 				BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);

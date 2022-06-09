@@ -12,17 +12,17 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeDeadEndFountainLavaComponent extends MazeDeadEndFountainComponent {
 
 	public MazeDeadEndFountainLavaComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMDEFL, nbt);
+		super(TFStructurePieceTypes.TFMMDEFL.get(), nbt);
 	}
 
 	public MazeDeadEndFountainLavaComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(MinotaurMazePieces.TFMMDEFL, feature, i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDEFL.get(), feature, i, x, y, z, rotation);
 	}
 
 	@Override

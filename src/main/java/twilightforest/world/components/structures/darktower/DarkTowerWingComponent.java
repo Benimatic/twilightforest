@@ -27,6 +27,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.lichtower.*;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<>();
 
 	public DarkTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(DarkTowerPieces.TFDTWin, nbt);
+		this(TFStructurePieceTypes.TFDTWin.get(), nbt);
 	}
 
 	public DarkTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -199,7 +200,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 			return false;
 		}
 
-		DarkTowerBridgeComponent bridge = new DarkTowerBridgeComponent(DarkTowerPieces.TFDTBri, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		DarkTowerBridgeComponent bridge = new DarkTowerBridgeComponent(TFStructurePieceTypes.TFDTBri.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(bridge.getBoundingBox());
 		if (intersect == null || intersect == this) {

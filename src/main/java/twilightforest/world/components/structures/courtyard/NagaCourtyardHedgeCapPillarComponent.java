@@ -7,13 +7,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class NagaCourtyardHedgeCapPillarComponent extends NagaCourtyardHedgeAbstractComponent {
     public NagaCourtyardHedgeCapPillarComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        super(ctx, NagaCourtyardPieces.TFNCCpP, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar_big"));
+        super(ctx, TFStructurePieceTypes.TFNCCpP.get(), nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar_big"));
     }
 
     public NagaCourtyardHedgeCapPillarComponent(StructureTemplateManager manager, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(manager, NagaCourtyardPieces.TFNCCpP, feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar_big"));
+        super(manager, TFStructurePieceTypes.TFNCCpP.get(), feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_pillar_big"));
     }
 }

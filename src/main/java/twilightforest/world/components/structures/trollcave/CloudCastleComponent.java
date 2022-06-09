@@ -19,7 +19,7 @@ import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class CloudCastleComponent extends TFStructureComponentOld {
@@ -28,13 +28,13 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	private boolean warriorPlaced = false;
 
 	public CloudCastleComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TrollCavePieces.TFClCa, nbt);
+		super(TFStructurePieceTypes.TFClCa.get(), nbt);
 		this.minerPlaced = nbt.getBoolean("minerPlaced");
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
 	public CloudCastleComponent(TFFeature feature, int index, int x, int y, int z) {
-		super(TrollCavePieces.TFClCa, feature, index, x, y, z);
+		super(TFStructurePieceTypes.TFClCa.get(), feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// round to nearest mult of 4

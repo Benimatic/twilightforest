@@ -14,17 +14,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeRoomVaultComponent extends MazeRoomComponent {
 
 	public MazeRoomVaultComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRV, nbt);
+		super(TFStructurePieceTypes.TFMMRV.get(), nbt);
 	}
 
 	public MazeRoomVaultComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRV, feature, i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRV.get(), feature, i, rand, x, y, z);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;

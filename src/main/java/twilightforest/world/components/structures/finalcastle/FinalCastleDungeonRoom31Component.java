@@ -24,6 +24,7 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 import java.util.function.Predicate;
@@ -33,7 +34,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
 	public FinalCastleDungeonRoom31Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(FinalCastlePieces.TFFCDunR31, nbt);
+		this(TFStructurePieceTypes.TFFCDunR31.get(), nbt);
 	}
 
 	public FinalCastleDungeonRoom31Component(StructurePieceType piece, CompoundTag nbt) {
@@ -98,7 +99,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
-		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(FinalCastlePieces.TFFCDunR31, getFeatureType(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
+		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(TFStructurePieceTypes.TFFCDunR31.get(), getFeatureType(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
 		BoundingBox largerBB = BoundingBoxUtils.clone(dRoom.getBoundingBox());
 

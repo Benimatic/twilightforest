@@ -15,18 +15,18 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof13PeakedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCRo13Pk, nbt);
+		super(TFStructurePieceTypes.TFFCRo13Pk.get(), nbt);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleRoof13PeakedComponent(TFFeature feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCRo13Pk, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCRo13Pk.get(), feature, i, x, y, z);
 
 		int height = 18;
 

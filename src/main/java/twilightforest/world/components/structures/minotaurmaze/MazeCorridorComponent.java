@@ -14,13 +14,13 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeCorridorComponent extends TFStructureComponentOld {
 
 	public MazeCorridorComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(MinotaurMazePieces.TFMMC, nbt);
+		this(TFStructurePieceTypes.TFMMC.get(), nbt);
 	}
 
 	public MazeCorridorComponent(StructurePieceType piece, CompoundTag nbt) {

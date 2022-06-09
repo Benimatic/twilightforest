@@ -15,17 +15,17 @@ import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TrollVaultComponent extends TFStructureComponentOld {
 
 	public TrollVaultComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TrollCavePieces.TFTCVa, nbt);
+		super(TFStructurePieceTypes.TFTCVa.get(), nbt);
 	}
 
 	public TrollVaultComponent(TFFeature feature, int index, int x, int y, int z) {
-		super(TrollCavePieces.TFTCVa, feature, index, x, y, z);
+		super(TFStructurePieceTypes.TFTCVa.get(), feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// adjust x, y, z

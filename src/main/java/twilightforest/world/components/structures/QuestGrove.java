@@ -22,19 +22,18 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.processors.TargetedRotProcessor;
-import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class QuestGrove extends TwilightTemplateStructurePiece {
 	private static final TargetedRotProcessor MOSSY_BRICK_DECAY = new TargetedRotProcessor(ImmutableSet.of(Blocks.MOSSY_STONE_BRICKS.defaultBlockState()), 0.5f);
 
 	public QuestGrove(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFFeature.TFQuestGrove, compoundTag, ctx, readSettings(compoundTag).addProcessor(StoneBricksVariants.INSTANCE));
+		super(TFStructurePieceTypes.TFQuestGrove.get(), compoundTag, ctx, readSettings(compoundTag).addProcessor(StoneBricksVariants.INSTANCE));
 	}
 
 	public QuestGrove(StructureTemplateManager structureManager, BlockPos templatePosition) {
-		super(TFFeature.TFQuestGrove, 0, structureManager, TwilightForestMod.prefix("quest_grove"), makeSettings(Rotation.NONE).addProcessor(MOSSY_BRICK_DECAY).addProcessor(StoneBricksVariants.INSTANCE), templatePosition);
+		super(TFStructurePieceTypes.TFQuestGrove.get(), 0, structureManager, TwilightForestMod.prefix("quest_grove"), makeSettings(Rotation.NONE).addProcessor(MOSSY_BRICK_DECAY).addProcessor(StoneBricksVariants.INSTANCE), templatePosition);
 	}
 
 	@Override

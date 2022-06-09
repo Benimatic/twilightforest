@@ -17,11 +17,12 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class MazeRoomComponent extends TFStructureComponentOld {
 
 	public MazeRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(MinotaurMazePieces.TFMMR, nbt);
+		this(TFStructurePieceTypes.TFMMR.get(), nbt);
 	}
 
 	public MazeRoomComponent(StructurePieceType piece, CompoundTag nbt) {

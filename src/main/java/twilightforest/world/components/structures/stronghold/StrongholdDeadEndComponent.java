@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
@@ -25,12 +25,12 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 	private boolean chestTrapped;
 
 	public StrongholdDeadEndComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSDE, nbt);
+		super(TFStructurePieceTypes.TFSDE.get(), nbt);
 		this.chestTrapped = nbt.getBoolean("chestTrapped");
 	}
 
 	public StrongholdDeadEndComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSDE, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSDE.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

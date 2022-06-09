@@ -13,17 +13,17 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeCorridorRootsComponent extends MazeCorridorComponent {
 
 	public MazeCorridorRootsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMCR, nbt);
+		super(TFStructurePieceTypes.TFMMCR.get(), nbt);
 	}
 
 	public MazeCorridorRootsComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(MinotaurMazePieces.TFMMCR, feature, i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMCR.get(), feature, i, x, y, z, rotation);
 	}
 
 	@Override

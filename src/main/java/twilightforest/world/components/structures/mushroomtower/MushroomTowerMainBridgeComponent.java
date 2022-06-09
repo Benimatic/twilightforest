@@ -8,18 +8,18 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeComponent {
 
 	public MushroomTowerMainBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MushroomTowerPieces.TFMTMB, nbt);
+		super(TFStructurePieceTypes.TFMTMB.get(), nbt);
 	}
 
 	protected MushroomTowerMainBridgeComponent(TFFeature feature, int i, int x, int y, int z, int pHeight, Direction direction) {
 		// bridge only 11 long
-		super(MushroomTowerPieces.TFMTMB, feature, i, x, y, z, 11, pHeight, direction);
+		super(TFStructurePieceTypes.TFMTMB.get(), feature, i, x, y, z, 11, pHeight, direction);
 	}
 
 	@Override

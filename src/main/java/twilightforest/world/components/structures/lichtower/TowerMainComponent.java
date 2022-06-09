@@ -26,16 +26,17 @@ import twilightforest.entity.TFEntities;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class TowerMainComponent extends TowerWingComponent {
 
 	public TowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTMai, nbt);
+		super(TFStructurePieceTypes.TFLTMai.get(), nbt);
 	}
 
 	public TowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
-		super(LichTowerPieces.TFLTMai, feature, index, x, y + 5, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
+		super(TFStructurePieceTypes.TFLTMai.get(), feature, index, x, y + 5, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}
 
 	@Override

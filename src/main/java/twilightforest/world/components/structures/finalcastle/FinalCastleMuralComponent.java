@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleMuralComponent extends TFStructureComponentOld {
@@ -26,11 +26,11 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	private byte[][] mural;
 
 	public FinalCastleMuralComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCMur, nbt);
+		super(TFStructurePieceTypes.TFFCMur.get(), nbt);
 	}
 
 	public FinalCastleMuralComponent(TFFeature feature, int i, int x, int y, int z, int width, int height, Direction direction) {
-		super(FinalCastlePieces.TFFCMur, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCMur.get(), feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 	}

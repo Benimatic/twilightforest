@@ -15,13 +15,13 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeDeadEndChestComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndChestComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(MinotaurMazePieces.TFMMDEC, nbt);
+		this(TFStructurePieceTypes.TFMMDEC.get(), nbt);
 	}
 
 	public MazeDeadEndChestComponent(StructurePieceType piece, CompoundTag nbt) {

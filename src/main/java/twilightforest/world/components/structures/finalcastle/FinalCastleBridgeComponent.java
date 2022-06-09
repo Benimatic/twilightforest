@@ -18,17 +18,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 
 	public FinalCastleBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCBri, nbt);
+		super(TFStructurePieceTypes.TFFCBri.get(), nbt);
 	}
 
 	public FinalCastleBridgeComponent(TFFeature feature, int i, int x, int y, int z, int length, Direction direction) {
-		super(FinalCastlePieces.TFFCBri, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCBri.get(), feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -3, length - 1, 5, 6, direction);
 	}

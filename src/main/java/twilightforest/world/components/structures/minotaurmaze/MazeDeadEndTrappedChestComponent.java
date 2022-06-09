@@ -15,17 +15,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndTrappedChestComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMDETrC, nbt);
+		super(TFStructurePieceTypes.TFMMDETrC.get(), nbt);
 	}
 
 	public MazeDeadEndTrappedChestComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(MinotaurMazePieces.TFMMDETrC, feature, i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDETrC.get(), feature, i, x, y, z, rotation);
 		this.setOrientation(rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns

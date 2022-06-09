@@ -14,17 +14,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class HydraLairComponent extends HollowHillComponent {
 
 	public HydraLairComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFFeature.TFHydra, nbt);
+		super(TFStructurePieceTypes.TFHydra.get(), nbt);
 	}
 
 	public HydraLairComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z) {
-		super(TFFeature.TFHydra, feature, i, 2, x, y + 2, z);
+		super(TFStructurePieceTypes.TFHydra.get(), feature, i, 2, x, y + 2, z);
 	}
 
 	@Override

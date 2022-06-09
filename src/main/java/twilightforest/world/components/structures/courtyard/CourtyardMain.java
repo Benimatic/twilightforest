@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProce
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class CourtyardMain extends StructureMazeGenerator {
 	static final int ROW_OF_CELLS = 8;
@@ -29,11 +30,11 @@ public class CourtyardMain extends StructureMazeGenerator {
 	static final BlockRotProcessor WALL_DECAY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_DECAY);
 
 	public CourtyardMain(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx.structureTemplateManager(), NagaCourtyardPieces.TFNCMn, nbt);
+		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
 	}
 
 	public CourtyardMain(TFFeature feature, RandomSource rand, int i, int x, int y, int z, StructureTemplateManager structureManager) {
-		super(NagaCourtyardPieces.TFNCMn, feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
+		super(TFStructurePieceTypes.TFNCMn.get(), feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
 
 		this.setOrientation(Direction.NORTH);
 

@@ -14,17 +14,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdSmallHallwayComponent extends StructureTFStrongholdComponent {
 
 	public StrongholdSmallHallwayComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSSH, nbt);
+		super(TFStructurePieceTypes.TFSSH.get(), nbt);
 	}
 
 	public StrongholdSmallHallwayComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSSH, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSSH.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

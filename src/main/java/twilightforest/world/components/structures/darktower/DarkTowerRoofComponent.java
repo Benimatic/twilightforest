@@ -16,11 +16,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class DarkTowerRoofComponent extends TowerRoofComponent {
 
 	public DarkTowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(DarkTowerPieces.TFDTRooS, nbt);
+		this(TFStructurePieceTypes.TFDTRooS.get(), nbt);
 	}
 
 	public DarkTowerRoofComponent(StructurePieceType piece, CompoundTag nbt) {

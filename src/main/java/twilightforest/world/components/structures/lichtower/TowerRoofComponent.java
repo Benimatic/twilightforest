@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class TowerRoofComponent extends TFStructureComponentOld {
 
@@ -20,7 +21,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	protected int height;
 
 	public TowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(LichTowerPieces.TFLTRoo, nbt);
+		this(TFStructurePieceTypes.TFLTRoo.get(), nbt);
 	}
 
 	public TowerRoofComponent(StructurePieceType piece, CompoundTag nbt) {

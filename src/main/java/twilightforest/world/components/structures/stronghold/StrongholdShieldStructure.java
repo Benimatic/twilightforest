@@ -13,13 +13,13 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdShieldStructure extends StructureTFStrongholdComponent {
 
 	public StrongholdShieldStructure(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSShield, nbt);
+		super(TFStructurePieceTypes.TFSShield.get(), nbt);
 		this.spawnListIndex = -1;
 	}
 

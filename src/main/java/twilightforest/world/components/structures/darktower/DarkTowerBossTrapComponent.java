@@ -18,15 +18,16 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 
 	public DarkTowerBossTrapComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(DarkTowerPieces.TFDTBT, nbt);
+		super(TFStructurePieceTypes.TFDTBT.get(), nbt);
 	}
 
 	protected DarkTowerBossTrapComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(DarkTowerPieces.TFDTBT, feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFStructurePieceTypes.TFDTBT.get(), feature, i, x, y, z, pSize, pHeight, direction);
 
 		// no spawns
 		this.spawnListIndex = -1;

@@ -15,18 +15,18 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 
 	public FinalCastleFoundation48Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCToF48, nbt);
+		super(TFStructurePieceTypes.TFFCToF48.get(), nbt);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleFoundation48Component(TFFeature feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCToF48, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCToF48.get(), feature, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX(), sideTower.getBoundingBox().minY(), sideTower.getBoundingBox().minZ(), sideTower.getBoundingBox().maxX(), sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().maxZ());

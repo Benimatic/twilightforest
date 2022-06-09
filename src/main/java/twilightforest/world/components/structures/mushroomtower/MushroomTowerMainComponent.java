@@ -14,13 +14,13 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.util.RotationUtil;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
 	public MushroomTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MushroomTowerPieces.TFMTMai, nbt);
+		super(TFStructurePieceTypes.TFMTMai.get(), nbt);
 	}
 
 	public MushroomTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z) {
@@ -28,7 +28,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	}
 
 	public MushroomTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
-		super(MushroomTowerPieces.TFMTMai, feature, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
+		super(TFStructurePieceTypes.TFMTMai.get(), feature, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
 
 //		// check to make sure we can build the whole tower
 //		if (this.boundingBox.maxY > 245)
@@ -48,7 +48,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	}
 
 	protected MushroomTowerMainComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(MushroomTowerPieces.TFMTMai, feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFStructurePieceTypes.TFMTMai.get(), feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

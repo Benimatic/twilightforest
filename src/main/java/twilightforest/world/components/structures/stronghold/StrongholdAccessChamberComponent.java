@@ -17,17 +17,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdAccessChamberComponent extends StructureTFStrongholdComponent {
 
 	public StrongholdAccessChamberComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSAC, nbt);
+		super(TFStructurePieceTypes.TFSAC.get(), nbt);
 	}
 
 	public StrongholdAccessChamberComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSAC, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSAC.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

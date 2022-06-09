@@ -18,7 +18,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Component {
@@ -26,11 +26,11 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 	private static final int FLOORS = 8;
 
 	public FinalCastleBellTower21Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCBelTo, nbt);
+		super(TFStructurePieceTypes.TFFCBelTo.get(), nbt);
 	}
 
 	public FinalCastleBellTower21Component(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCBelTo, feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+		super(TFStructurePieceTypes.TFFCBelTo.get(), feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;

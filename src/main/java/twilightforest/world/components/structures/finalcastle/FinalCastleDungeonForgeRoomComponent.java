@@ -12,17 +12,17 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOld {
 
 	public FinalCastleDungeonForgeRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCDunBoR, nbt);
+		super(TFStructurePieceTypes.TFFCDunBoR.get(), nbt);
 	}
 
 	public FinalCastleDungeonForgeRoomComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCDunBoR, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCDunBoR.get(), feature, i, x, y, z);
 		this.spawnListIndex = 3; // forge monsters
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, -15, 0, -15, 50, 30, 50, direction);

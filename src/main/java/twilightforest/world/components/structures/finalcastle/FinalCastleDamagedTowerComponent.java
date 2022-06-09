@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Component {
 
 	public FinalCastleDamagedTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(FinalCastlePieces.TFFCDamT, nbt);
+		this(TFStructurePieceTypes.TFFCDamT.get(), nbt);
 	}
 
 	public FinalCastleDamagedTowerComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -41,7 +42,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(FinalCastlePieces.TFFCToF13, getFeatureType(), rand, 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), rand, 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 

@@ -15,18 +15,18 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleRoof13CrenellatedComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof13CrenellatedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCRo13Cr, nbt);
+		super(TFStructurePieceTypes.TFFCRo13Cr.get(), nbt);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleRoof13CrenellatedComponent(TFFeature feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCRo13Cr, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCRo13Cr.get(), feature, i, x, y, z);
 
 		int height = 5;
 

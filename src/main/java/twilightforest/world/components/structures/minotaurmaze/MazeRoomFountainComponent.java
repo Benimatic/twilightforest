@@ -12,17 +12,17 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeRoomFountainComponent extends MazeRoomComponent {
 
 	public MazeRoomFountainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRF, nbt);
+		super(TFStructurePieceTypes.TFMMRF.get(), nbt);
 	}
 
 	public MazeRoomFountainComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRF, feature, i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRF.get(), feature, i, rand, x, y, z);
 	}
 
 	@Override

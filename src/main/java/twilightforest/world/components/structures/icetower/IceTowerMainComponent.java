@@ -12,14 +12,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class IceTowerMainComponent extends IceTowerWingComponent {
 	public boolean hasBossWing = false;
 
 	public IceTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(IceTowerPieces.TFITMai, nbt);
+		super(TFStructurePieceTypes.TFITMai.get(), nbt);
 		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
 
@@ -28,7 +28,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 	}
 
 	public IceTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
-		super(IceTowerPieces.TFITMai, feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
+		super(TFStructurePieceTypes.TFITMai.get(), feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator
 		if (this.deco == null) {

@@ -17,17 +17,17 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
 	public FinalCastleLargeTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCLaTo, nbt);
+		super(TFStructurePieceTypes.TFFCLaTo.get(), nbt);
 	}
 
 	public FinalCastleLargeTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction rotation) {
-		super(FinalCastlePieces.TFFCLaTo, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCLaTo.get(), feature, i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 13;
 		this.height = 61;

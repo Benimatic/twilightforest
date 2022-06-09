@@ -19,7 +19,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
@@ -29,7 +29,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	private final int level;
 
 	public MinotaurMazeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMaze, nbt);
+		super(TFStructurePieceTypes.TFMMaze.get(), nbt);
 
 		this.level = nbt.getInt("mazeLevel");
 		this.rcoords = nbt.getIntArray("roomCoords");
@@ -52,7 +52,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	}
 
 	public MinotaurMazeComponent(TFFeature feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
-		super(MinotaurMazePieces.TFMMaze, feature, index, x, y, z);
+		super(TFStructurePieceTypes.TFMMaze.get(), feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.level = level;
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2 + 2, 5, getRadius() * 2 + 2, Direction.SOUTH);
@@ -118,7 +118,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 		if (i == 0) {
 			// default room
-			room = new MazeRoomComponent(MinotaurMazePieces.TFMMR, getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
+			room = new MazeRoomComponent(TFStructurePieceTypes.TFMMR.get(), getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 		} else if (i == 1) {
 			if (this.level == 1) {
 				// exit room
@@ -207,15 +207,15 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		//decorationType = decorationType >= 3 ? 0 : decorationType;
 
 		return switch (decorationType) {
-			case 1 -> new MazeDeadEndChestComponent(MinotaurMazePieces.TFMMDEC, getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+			case 1 -> new MazeDeadEndChestComponent(TFStructurePieceTypes.TFMMDEC.get(), getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 2 -> random.nextBoolean() ? new MazeDeadEndTripwireChestComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new MazeDeadEndTrappedChestComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 3 -> new MazeDeadEndTorchesComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
-			case 4 -> new MazeDeadEndFountainComponent(MinotaurMazePieces.TFMMDEF, getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+			case 4 -> new MazeDeadEndFountainComponent(TFStructurePieceTypes.TFMMDEF.get(), getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 5 -> new MazeDeadEndFountainLavaComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 6 -> new MazeDeadEndPaintingComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
-			case 7 -> this.level == 1 ? new MazeDeadEndRootsComponent(MinotaurMazePieces.TFMMDER, getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new MazeDeadEndShroomsComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+			case 7 -> this.level == 1 ? new MazeDeadEndRootsComponent(TFStructurePieceTypes.TFMMDER.get(), getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new MazeDeadEndShroomsComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			default -> // blank with fence doorway
-					new MazeDeadEndComponent(MinotaurMazePieces.TFMMDE, getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+					new MazeDeadEndComponent(TFStructurePieceTypes.TFMMDE.get(), getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 		};
 	}
 
@@ -227,7 +227,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		int decorationType = random.nextInt(5);
 
 		return switch (decorationType) {
-			case 1 -> new MazeCorridorComponent(MinotaurMazePieces.TFMMC, getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+			case 1 -> new MazeCorridorComponent(TFStructurePieceTypes.TFMMC.get(), getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 2 -> new MazeCorridorIronFenceComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 3 -> null; // painting
 			case 4 -> this.level == 1 ? new MazeCorridorRootsComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new MazeCorridorShroomsComponent(getFeatureType(), 4, worldX, worldY, worldZ, rotation);

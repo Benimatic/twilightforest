@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 
@@ -29,12 +30,12 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 	private boolean enterBottom;
 
 	public StrongholdAtriumComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSAt, nbt);
+		super(TFStructurePieceTypes.TFSAt.get(), nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
 	public StrongholdAtriumComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSAt, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSAt.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

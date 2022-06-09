@@ -13,17 +13,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class CloudTreeComponent extends TFStructureComponentOld {
 
 	public CloudTreeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TrollCavePieces.TFClTr, nbt);
+		super(TFStructurePieceTypes.TFClTr.get(), nbt);
 	}
 
 	public CloudTreeComponent(TFFeature feature, int index, int x, int y, int z) {
-		super(TrollCavePieces.TFClTr, feature, index, x, y, z);
+		super(TFStructurePieceTypes.TFClTr.get(), feature, index, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 

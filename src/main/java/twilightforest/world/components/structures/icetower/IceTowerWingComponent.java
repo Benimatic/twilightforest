@@ -25,6 +25,7 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class IceTowerWingComponent extends TowerWingComponent {
@@ -36,7 +37,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	protected int treasureFloor = -1;
 
 	public IceTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(IceTowerPieces.TFITWin, nbt);
+		this(TFStructurePieceTypes.TFITWin.get(), nbt);
 	}
 
 	public IceTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -141,7 +142,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			return false;
 		}
 
-		IceTowerWingComponent wing = new IceTowerWingComponent(IceTowerPieces.TFITWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		IceTowerWingComponent wing = new IceTowerWingComponent(TFStructurePieceTypes.TFITWin.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {

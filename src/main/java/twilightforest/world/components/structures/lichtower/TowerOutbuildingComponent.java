@@ -16,17 +16,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerOutbuildingComponent extends TowerWingComponent {
 
 	public TowerOutbuildingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTOut, nbt);
+		super(TFStructurePieceTypes.TFLTOut.get(), nbt);
 	}
 
 	protected TowerOutbuildingComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(LichTowerPieces.TFLTOut, feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFStructurePieceTypes.TFLTOut.get(), feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**

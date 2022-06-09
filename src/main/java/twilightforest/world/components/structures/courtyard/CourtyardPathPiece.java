@@ -15,14 +15,15 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class CourtyardPathPiece extends TwilightTemplateStructurePiece {
     public CourtyardPathPiece(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        super(NagaCourtyardPieces.TFNCPa, nbt, ctx, readSettings(nbt));
+        super(TFStructurePieceTypes.TFNCPa.get(), nbt, ctx, readSettings(nbt));
     }
 
     public CourtyardPathPiece(int i, int x, int y, int z, StructureTemplateManager structureManager) {
-        super(NagaCourtyardPieces.TFNCPa, i, structureManager, TwilightForestMod.prefix("courtyard/pathway"), makeSettings(Rotation.NONE).addProcessor(NagastoneVariants.INSTANCE), new BlockPos(x, y + 1, z));
+        super(TFStructurePieceTypes.TFNCPa.get(), i, structureManager, TwilightForestMod.prefix("courtyard/pathway"), makeSettings(Rotation.NONE).addProcessor(NagastoneVariants.INSTANCE), new BlockPos(x, y + 1, z));
     }
 
     @Override

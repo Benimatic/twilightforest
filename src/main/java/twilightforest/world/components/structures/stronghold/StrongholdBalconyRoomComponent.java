@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdBalconyRoomComponent extends StructureTFStrongholdComponent {
@@ -23,12 +23,12 @@ public class StrongholdBalconyRoomComponent extends StructureTFStrongholdCompone
 	boolean enterBottom;
 
 	public StrongholdBalconyRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSBalR, nbt);
+		super(TFStructurePieceTypes.TFSBalR.get(), nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
 	public StrongholdBalconyRoomComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSBalR, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSBalR.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

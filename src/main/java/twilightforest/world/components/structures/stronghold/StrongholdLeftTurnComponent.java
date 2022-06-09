@@ -14,17 +14,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdLeftTurnComponent extends StructureTFStrongholdComponent {
 
 	public StrongholdLeftTurnComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSLT, nbt);
+		super(TFStructurePieceTypes.TFSLT.get(), nbt);
 	}
 
 	public StrongholdLeftTurnComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSLT, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSLT.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

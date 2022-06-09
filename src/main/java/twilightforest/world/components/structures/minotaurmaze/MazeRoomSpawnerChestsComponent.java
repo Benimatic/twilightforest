@@ -16,17 +16,17 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 
 	public MazeRoomSpawnerChestsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRSC, nbt);
+		super(TFStructurePieceTypes.TFMMRSC.get(), nbt);
 	}
 
 	public MazeRoomSpawnerChestsComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRSC, feature, i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRSC.get(), feature, i, rand, x, y, z);
 	}
 
 	@Override

@@ -15,17 +15,17 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeMushRoomComponent extends MazeRoomComponent {
 
 	public MazeMushRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMMR, nbt);
+		super(TFStructurePieceTypes.TFMMMR.get(), nbt);
 	}
 
 	public MazeMushRoomComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMMR, feature, i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMMR.get(), feature, i, rand, x, y, z);
 
 		this.setOrientation(Direction.SOUTH); // let's just make this easy on us?
 	}

@@ -38,6 +38,7 @@ import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandle;
@@ -65,7 +66,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 	public TowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(LichTowerPieces.TFLTWin, nbt);
+		this(TFStructurePieceTypes.TFLTWin.get(), nbt);
 	}
 
 	public TowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -192,7 +193,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// I think there are very few circumstances where we can make a wing and not a bridge
 		}
 
-		TowerWingComponent wing = new TowerWingComponent(LichTowerPieces.TFLTWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		TowerWingComponent wing = new TowerWingComponent(TFStructurePieceTypes.TFLTWin.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.boundingBox);
 		if (intersect == null || intersect == this) {
@@ -268,7 +269,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (attached) {
 			beard = new TowerBeardAttachedComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		} else {
-			beard = new TowerBeardComponent(LichTowerPieces.TFLTBea, getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			beard = new TowerBeardComponent(TFStructurePieceTypes.TFLTBea.get(), getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		}
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
@@ -360,7 +361,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		if (roofType == null && rand.nextInt(53) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofSlabComponent(LichTowerPieces.TFLTRS, getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofSlabComponent(TFStructurePieceTypes.TFLTRS.get(), getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 

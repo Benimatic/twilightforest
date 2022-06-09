@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerBridgeComponent extends TowerWingComponent {
@@ -24,11 +24,11 @@ public class TowerBridgeComponent extends TowerWingComponent {
 	int dHeight;
 
 	public TowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTBri, nbt);
+		super(TFStructurePieceTypes.TFLTBri.get(), nbt);
 	}
 
 	protected TowerBridgeComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(LichTowerPieces.TFLTBri, feature, i, x, y, z, 3, 3, direction);
+		super(TFStructurePieceTypes.TFLTBri.get(), feature, i, x, y, z, 3, 3, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;

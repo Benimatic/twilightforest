@@ -16,13 +16,13 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeMoundComponent extends TFStructureComponentOld {
 
 	public MazeMoundComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMMound, nbt);
+		super(TFStructurePieceTypes.TFMMMound.get(), nbt);
 	}
 
 	public static final int DIAMETER = 35;
@@ -31,7 +31,7 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 	private MazeUpperEntranceComponent mazeAbove;
 
 	public MazeMoundComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMMound, feature, i, new BoundingBox(x, y, z, x + DIAMETER, y + 12, z + DIAMETER));
+		super(TFStructurePieceTypes.TFMMMound.get(), feature, i, new BoundingBox(x, y, z, x + DIAMETER, y + 12, z + DIAMETER));
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 	}
 

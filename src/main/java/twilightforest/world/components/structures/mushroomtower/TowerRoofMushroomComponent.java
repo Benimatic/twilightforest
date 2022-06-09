@@ -17,17 +17,17 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
 	public TowerRoofMushroomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MushroomTowerPieces.TFMTRoofMush, nbt);
+		super(TFStructurePieceTypes.TFMTRoofMush.get(), nbt);
 	}
 
 	public TowerRoofMushroomComponent(TFFeature feature, int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
-		super(MushroomTowerPieces.TFMTRoofMush, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFMTRoofMush.get(), feature, i, x, y, z);
 		this.height = wing.size;
 		int overhang = (int) (height * pHang);
 		this.size = height + (overhang * 2);

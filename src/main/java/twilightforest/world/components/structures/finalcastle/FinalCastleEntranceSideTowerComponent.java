@@ -10,17 +10,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleEntranceSideTowerComponent extends FinalCastleMazeTower13Component {
 
 	public FinalCastleEntranceSideTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCEnSiTo, nbt);
+		super(TFStructurePieceTypes.TFFCEnSiTo.get(), nbt);
 	}
 
 	public FinalCastleEntranceSideTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(FinalCastlePieces.TFFCEnSiTo, feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+		super(TFStructurePieceTypes.TFFCEnSiTo.get(), feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 	}
@@ -32,7 +32,7 @@ public class FinalCastleEntranceSideTowerComponent extends FinalCastleMazeTower1
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(FinalCastlePieces.TFFCToF13, getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 

@@ -17,17 +17,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 
 	public FinalCastleDungeonStepsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCDunSt, nbt);
+		super(TFStructurePieceTypes.TFFCDunSt.get(), nbt);
 	}
 
 	public FinalCastleDungeonStepsComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction rotation) {
-		super(FinalCastlePieces.TFFCDunSt, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCDunSt.get(), feature, i, x, y, z);
 		this.spawnListIndex = 2; // dungeon monsters
 
 		this.setOrientation(rotation);

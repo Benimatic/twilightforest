@@ -12,17 +12,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTower13Component {
 
 	public FinalCastleEntranceBottomTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCEnBoTo, nbt);
+		super(TFStructurePieceTypes.TFFCEnBoTo.get(), nbt);
 	}
 
 	public FinalCastleEntranceBottomTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(FinalCastlePieces.TFFCEnBoTo, feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+		super(TFStructurePieceTypes.TFFCEnBoTo.get(), feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 
     }
 

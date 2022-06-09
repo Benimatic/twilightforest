@@ -14,17 +14,17 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 
 	public TowerRoofGableForwardsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRGF, nbt);
+		super(TFStructurePieceTypes.TFLTRGF.get(), nbt);
 	}
 
 	public TowerRoofGableForwardsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(LichTowerPieces.TFLTRGF, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFLTRGF.get(), feature, i, x, y, z);
 
 		// same facing
 		this.setOrientation(wing.getOrientation());

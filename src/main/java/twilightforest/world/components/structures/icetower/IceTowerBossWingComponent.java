@@ -11,19 +11,19 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class IceTowerBossWingComponent extends IceTowerWingComponent {
 
 	public IceTowerBossWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(IceTowerPieces.TFITBoss, nbt);
+		super(TFStructurePieceTypes.TFITBoss.get(), nbt);
 		// no spawns
 		this.spawnListIndex = -1;
 	}
 
 	public IceTowerBossWingComponent(TFFeature feature, int index, int x, int y, int z, int wingSize, int wingHeight, Direction direction) {
-		super(IceTowerPieces.TFITBoss, feature, index, x, y, z, wingSize, wingHeight, direction);
+		super(TFStructurePieceTypes.TFITBoss.get(), feature, index, x, y, z, wingSize, wingHeight, direction);
 		// no spawns
 		this.spawnListIndex = -1;
 	}

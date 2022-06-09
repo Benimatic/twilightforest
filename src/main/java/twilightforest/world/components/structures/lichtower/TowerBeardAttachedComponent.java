@@ -11,17 +11,17 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerBeardAttachedComponent extends TowerBeardComponent {
 
 	public TowerBeardAttachedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTBA, nbt);
+		super(TFStructurePieceTypes.TFLTBA.get(), nbt);
 	}
 
 	public TowerBeardAttachedComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(LichTowerPieces.TFLTBA, feature, i, wing, x, y, z);
+		super(TFStructurePieceTypes.TFLTBA.get(), feature, i, wing, x, y, z);
 
 		// just hang out at the very bottom of the tower
 		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().minY() - this.height - 1, wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY() - 1, wing.getBoundingBox().maxZ());

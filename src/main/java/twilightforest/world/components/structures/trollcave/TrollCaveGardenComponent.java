@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 
@@ -25,11 +26,11 @@ import twilightforest.world.registration.features.TFConfiguredFeatures;
 public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	public TrollCaveGardenComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TrollCavePieces.TFTCGard, nbt);
+		super(TFStructurePieceTypes.TFTCGard.get(), nbt);
 	}
 
 	public TrollCaveGardenComponent(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TrollCavePieces.TFTCGard, feature, index, x, y, z);
+		super(TFStructurePieceTypes.TFTCGard.get(), feature, index, x, y, z);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);

@@ -17,17 +17,17 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof48CrenellatedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCRo48Cr, nbt);
+		super(TFStructurePieceTypes.TFFCRo48Cr.get(), nbt);
 	}
 
 	public FinalCastleRoof48CrenellatedComponent(TFFeature feature, int i, TFStructureComponentOld keep, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCRo48Cr,feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCRo48Cr.get(),feature, i, x, y, z);
 
 		int height = 5;
 

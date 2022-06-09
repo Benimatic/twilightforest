@@ -24,7 +24,7 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
@@ -34,7 +34,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	protected final boolean[] openingTowards = {false, false, true, false};
 
 	public TrollCaveConnectComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TrollCavePieces.TFTCCon, nbt);
+		super(TFStructurePieceTypes.TFTCCon.get(), nbt);
 		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
 		this.openingTowards[1] = nbt.getBoolean("openingTowards1");
 		this.openingTowards[2] = nbt.getBoolean("openingTowards2");
@@ -42,7 +42,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	public TrollCaveConnectComponent(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TrollCavePieces.TFTCCon, feature, index, x, y, z);
+		super(TFStructurePieceTypes.TFTCCon.get(), feature, index, x, y, z);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);

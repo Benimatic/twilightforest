@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdTreasureRoomComponent extends StructureTFStrongholdComponent {
@@ -25,12 +25,12 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 	private boolean enterBottom;
 
 	public StrongholdTreasureRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFTreaR, nbt);
+		super(TFStructurePieceTypes.TFTreaR.get(), nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
 	public StrongholdTreasureRoomComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFTreaR, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFTreaR.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

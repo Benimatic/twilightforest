@@ -13,13 +13,13 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerRoofSlabComponent extends TowerRoofComponent {
 
 	public TowerRoofSlabComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRS, nbt);
+		super(TFStructurePieceTypes.TFLTRS.get(), nbt);
 	}
 
 	public TowerRoofSlabComponent(StructurePieceType piece, CompoundTag nbt) {

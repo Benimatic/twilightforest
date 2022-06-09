@@ -14,17 +14,17 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerRoofStairsComponent extends TowerRoofComponent {
 
 	public TowerRoofStairsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRSt, nbt);
+		super(TFStructurePieceTypes.TFLTRSt.get(), nbt);
 	}
 
 	public TowerRoofStairsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(LichTowerPieces.TFLTRSt, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFLTRSt.get(), feature, i, x, y, z);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setOrientation(Direction.SOUTH);

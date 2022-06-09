@@ -11,15 +11,16 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class DarkTowerRoofRingsComponent extends DarkTowerRoofComponent {
 
 	public DarkTowerRoofRingsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(DarkTowerPieces.TFDTRR, nbt);
+		super(TFStructurePieceTypes.TFDTRR.get(), nbt);
 	}
 
 	public DarkTowerRoofRingsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(DarkTowerPieces.TFDTRR, feature, i, wing, x, y, z);
+		super(TFStructurePieceTypes.TFDTRR.get(), feature, i, wing, x, y, z);
 	}
 
 	@Override

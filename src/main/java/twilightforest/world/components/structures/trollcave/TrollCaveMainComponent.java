@@ -31,6 +31,7 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import java.util.Objects;
@@ -45,7 +46,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	protected int height;
 
 	public TrollCaveMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TrollCavePieces.TFTCMai, nbt);
+		this(TFStructurePieceTypes.TFTCMai.get(), nbt);
 	}
 
 	public TrollCaveMainComponent(StructurePieceType piece, CompoundTag nbt) {

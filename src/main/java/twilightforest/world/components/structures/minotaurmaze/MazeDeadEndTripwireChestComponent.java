@@ -14,17 +14,17 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeDeadEndTripwireChestComponent extends MazeDeadEndChestComponent {
 
 	public MazeDeadEndTripwireChestComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMDETC, nbt);
+		super(TFStructurePieceTypes.TFMMDETC.get(), nbt);
 	}
 
 	public MazeDeadEndTripwireChestComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(MinotaurMazePieces.TFMMDETC, feature, i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDETC.get(), feature, i, x, y, z, rotation);
 	}
 
 	@Override

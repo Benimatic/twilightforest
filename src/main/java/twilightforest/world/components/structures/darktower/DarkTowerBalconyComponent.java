@@ -16,15 +16,16 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class DarkTowerBalconyComponent extends TowerWingComponent {
 
 	public DarkTowerBalconyComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(DarkTowerPieces.TFDTBal, nbt);
+		super(TFStructurePieceTypes.TFDTBal.get(), nbt);
 	}
 
 	protected DarkTowerBalconyComponent(TFFeature feature, int i, int x, int y, int z, Direction direction) {
-		super(DarkTowerPieces.TFDTBal, feature, i, x, y, z, 5, 5, direction);
+		super(TFStructurePieceTypes.TFDTBal.get(), feature, i, x, y, z, 5, 5, direction);
 	}
 
 	@Override

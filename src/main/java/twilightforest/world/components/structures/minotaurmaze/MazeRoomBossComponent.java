@@ -15,17 +15,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeRoomBossComponent extends MazeRoomComponent {
 
 	public MazeRoomBossComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRB, nbt);
+		super(TFStructurePieceTypes.TFMMRB.get(), nbt);
 	}
 
 	public MazeRoomBossComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRB, feature, i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRB.get(), feature, i, rand, x, y, z);
 	}
 
 	@Override

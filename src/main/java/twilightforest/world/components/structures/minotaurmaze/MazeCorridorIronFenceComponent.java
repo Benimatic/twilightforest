@@ -13,17 +13,17 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class MazeCorridorIronFenceComponent extends MazeCorridorComponent {
 
 	public MazeCorridorIronFenceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMCIF, nbt);
+		super(TFStructurePieceTypes.TFMMCIF.get(), nbt);
 	}
 
 	public MazeCorridorIronFenceComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(MinotaurMazePieces.TFMMCIF, feature, i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMCIF.get(), feature, i, x, y, z, rotation);
 	}
 
 	@Override

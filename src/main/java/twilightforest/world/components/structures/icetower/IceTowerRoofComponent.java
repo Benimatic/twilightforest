@@ -13,17 +13,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class IceTowerRoofComponent extends TowerRoofComponent {
 
 	public IceTowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(IceTowerPieces.TFITRoof, nbt);
+		super(TFStructurePieceTypes.TFITRoof.get(), nbt);
 	}
 
 	public IceTowerRoofComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(IceTowerPieces.TFITRoof, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFITRoof.get(), feature, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

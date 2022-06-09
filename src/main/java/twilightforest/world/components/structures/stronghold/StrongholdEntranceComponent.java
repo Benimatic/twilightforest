@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	public final StrongholdPieces lowerPieces;
 
 	public StrongholdEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSEnter, nbt);
+		super(TFStructurePieceTypes.TFSEnter.get(), nbt);
 
 		this.deco = new StrongholdDecorator();
 
@@ -34,7 +35,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	}
 
 	public StrongholdEntranceComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(StrongholdPieces.TFSEnter, feature, i, Direction.SOUTH, x, y - 10, z);
+		super(TFStructurePieceTypes.TFSEnter.get(), feature, i, Direction.SOUTH, x, y - 10, z);
 
 		this.deco = new StrongholdDecorator();
 

@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdUpperAscenderComponent extends StructureTFStrongholdComponent {
@@ -25,12 +25,12 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	boolean exitTop;
 
 	public StrongholdUpperAscenderComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSUA, nbt);
+		super(TFStructurePieceTypes.TFSUA.get(), nbt);
 		this.exitTop = nbt.getBoolean("exitTop");
 	}
 
 	public StrongholdUpperAscenderComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSUA, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSUA.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

@@ -16,15 +16,16 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 
 	public MazeUpperEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMUE, nbt);
+		super(TFStructurePieceTypes.TFMMUE.get(), nbt);
 	}
 
 	public MazeUpperEntranceComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMUE, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFMMUE.get(), feature, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
 		this.boundingBox = new BoundingBox(x, y, z, x + 15, y + 4, z + 15);

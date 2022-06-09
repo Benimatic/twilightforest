@@ -16,17 +16,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdComponent {
 
 	public StrongholdTreasureCorridorComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSTC, nbt);
+		super(TFStructurePieceTypes.TFSTC.get(), nbt);
 	}
 
 	public StrongholdTreasureCorridorComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSTC, feature, i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSTC.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override

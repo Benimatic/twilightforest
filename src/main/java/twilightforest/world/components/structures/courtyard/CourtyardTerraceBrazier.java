@@ -16,14 +16,15 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class CourtyardTerraceBrazier extends TwilightTemplateStructurePiece {
     public CourtyardTerraceBrazier(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        super(NagaCourtyardPieces.TFNCTr, nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
+        super(TFStructurePieceTypes.TFNCTr.get(), nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
     }
 
     public CourtyardTerraceBrazier(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
-        super(NagaCourtyardPieces.TFNCTr, i, structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
+        super(TFStructurePieceTypes.TFNCTr.get(), i, structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
     }
 
     @Override

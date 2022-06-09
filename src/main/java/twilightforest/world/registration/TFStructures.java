@@ -7,22 +7,11 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
-import net.minecraft.world.level.levelgen.structure.structures.JungleTempleStructure;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.world.components.structures.courtyard.NagaCourtyardPieces;
-import twilightforest.world.components.structures.darktower.DarkTowerPieces;
-import twilightforest.world.components.structures.finalcastle.FinalCastlePieces;
-import twilightforest.world.components.structures.icetower.IceTowerPieces;
-import twilightforest.world.components.structures.lichtower.LichTowerPieces;
-import twilightforest.world.components.structures.lichtowerrevamp.LichTowerRevampPieces;
-import twilightforest.world.components.structures.minotaurmaze.MinotaurMazePieces;
-import twilightforest.world.components.structures.mushroomtower.MushroomTowerPieces;
 import twilightforest.world.components.structures.start.LegacyStructure;
-import twilightforest.world.components.structures.stronghold.StrongholdPieces;
-import twilightforest.world.components.structures.trollcave.TrollCavePieces;
 
 import java.util.Map;
 
@@ -48,20 +37,5 @@ public class TFStructures {
 
 	private static Structure.StructureSettings makeSettings(TagKey<Biome> biomeTag, GenerationStep.Decoration generationStep, TerrainAdjustment terrainModification) {
 		return new Structure.StructureSettings(BuiltinRegistries.BIOME.getOrCreateTag(biomeTag), Map.of(), generationStep, terrainModification);
-	}
-
-	public static void init() { // TODO Call from main class FIXME relocate/dissolve into new deferred registry
-		TFFeature.init();
-
-		new MushroomTowerPieces();
-		new NagaCourtyardPieces();
-		new LichTowerPieces();
-		new LichTowerRevampPieces();
-		new MinotaurMazePieces();
-		new StrongholdPieces();
-		new DarkTowerPieces();
-		new IceTowerPieces();
-		new TrollCavePieces();
-		new FinalCastlePieces();
 	}
 }

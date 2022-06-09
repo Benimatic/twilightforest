@@ -19,6 +19,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -28,11 +29,11 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	@SuppressWarnings("unused")
 	public FinalCastleBossGazeboComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCBoGaz, nbt);
+		super(TFStructurePieceTypes.TFFCBoGaz.get(), nbt);
 	}
 
 	public FinalCastleBossGazeboComponent(TFFeature feature, RandomSource rand, int i, TFStructureComponentOld keep, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCBoGaz, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFFCBoGaz.get(), feature, i, x, y, z);
 		this.spawnListIndex = -1; // no monsters
 
 		this.setOrientation(keep.getOrientation());

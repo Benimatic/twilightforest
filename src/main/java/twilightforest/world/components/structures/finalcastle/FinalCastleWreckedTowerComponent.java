@@ -12,6 +12,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,11 @@ import java.util.ArrayList;
 public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerComponent {
 
 	public FinalCastleWreckedTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCWrT, nbt);
+		super(TFStructurePieceTypes.TFFCWrT.get(), nbt);
 	}
 
 	public FinalCastleWreckedTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCWrT, feature, rand, i, x, y, z, direction);
+		super(TFStructurePieceTypes.TFFCWrT.get(), feature, rand, i, x, y, z, direction);
 	}
 
 	@Override

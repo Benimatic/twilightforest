@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 /**
  * A larger foundation that comes all the way from the top of a tower
@@ -22,11 +23,11 @@ import twilightforest.world.registration.TFFeature;
 public class FinalCastleBellFoundation21Component extends FinalCastleFoundation13Component {
 
 	public FinalCastleBellFoundation21Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCBeF21, nbt);
+		super(TFStructurePieceTypes.TFFCBeF21.get(), nbt);
 	}
 
 	public FinalCastleBellFoundation21Component(TFFeature feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCBeF21, feature, rand, i, sideTower, x, y, z);
+		super(TFStructurePieceTypes.TFFCBeF21.get(), feature, rand, i, sideTower, x, y, z);
 
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().minX() + 2, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 2);
 	}

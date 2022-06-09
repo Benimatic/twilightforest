@@ -19,17 +19,17 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Component {
 
 	public FinalCastleDungeonExitComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCDunEx, nbt);
+		super(TFStructurePieceTypes.TFFCDunEx.get(), nbt);
 	}
 
 	public FinalCastleDungeonExitComponent(TFFeature feature, int i, int x, int y, int z, Direction direction, int level) {
-		super(FinalCastlePieces.TFFCDunEx, feature, i, x, y, z, direction, level);
+		super(TFStructurePieceTypes.TFFCDunEx.get(), feature, i, x, y, z, direction, level);
 	}
 
 	@Override

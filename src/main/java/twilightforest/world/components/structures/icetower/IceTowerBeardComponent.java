@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class IceTowerBeardComponent extends TFStructureComponentOld {
@@ -22,13 +22,13 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 	protected int height;
 
 	public IceTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(IceTowerPieces.TFITBea, nbt);
+		super(TFStructurePieceTypes.TFITBea.get(), nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
 	}
 
 	public IceTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(IceTowerPieces.TFITBea, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFITBea.get(), feature, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class YetiCaveComponent extends HollowHillComponent {
@@ -27,11 +27,11 @@ public class YetiCaveComponent extends HollowHillComponent {
 	private static final SpikeConfig ICE_SPIKE = new SpikeConfig(BlockStateProvider.simple(Blocks.ICE.defaultBlockState()), UniformInt.of(6, 10), ConstantInt.of(4), true);
 
 	public YetiCaveComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFFeature.TFYeti, nbt);
+		super(TFStructurePieceTypes.TFYeti.get(), nbt);
 	}
 
 	public YetiCaveComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z) {
-		super(TFFeature.TFYeti, feature, i, 2, x, y, z);
+		super(TFStructurePieceTypes.TFYeti.get(), feature, i, 2, x, y, z);
 	}
 
 	/**

@@ -14,6 +14,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 public class DarkTowerBeardComponent extends TFStructureComponentOld {
 
@@ -21,13 +22,13 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	protected int height;
 
 	public DarkTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(DarkTowerPieces.TFDTBea, nbt);
+		super(TFStructurePieceTypes.TFDTBea.get(), nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
 	}
 
 	public DarkTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(DarkTowerPieces.TFDTBea, feature, i, x, y, z);
+		super(TFStructurePieceTypes.TFDTBea.get(), feature, i, x, y, z);
 
 		this.setOrientation(wing.getOrientation());
 		this.size = wing.size;

@@ -28,9 +28,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.IntPair;
@@ -44,7 +44,6 @@ import twilightforest.world.components.structures.minotaurmaze.MazeRuinsComponen
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerMainComponent;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
-import twilightforest.world.components.structures.trollcave.TrollCavePieces;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 import twilightforest.world.components.structures.util.StructureHints;
 import twilightforest.world.registration.biomes.BiomeKeys;
@@ -71,7 +70,7 @@ public class TFFeature implements LandmarkStructure {
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 3, y - 2, z - 3);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 3, y - 2, z - 3);
 		}
 	};
 	public static final TFFeature MEDIUM_HILL = new TFFeature( 2, "medium_hollow_hill", true, true ) {
@@ -93,7 +92,7 @@ public class TFFeature implements LandmarkStructure {
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 7, y - 5, z - 7);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 7, y - 5, z - 7);
 		}
 	};
 	public static final TFFeature LARGE_HILL = new TFFeature( 3, "large_hollow_hill", true, true ) {
@@ -116,7 +115,7 @@ public class TFFeature implements LandmarkStructure {
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 11, y - 5, z - 11);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 11, y - 5, z - 11);
 		}
 	};
 	public static final TFFeature HEDGE_MAZE = new TFFeature( 2, "hedge_maze", true ) {
@@ -381,7 +380,7 @@ public class TFFeature implements LandmarkStructure {
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new TrollCaveMainComponent(TrollCavePieces.TFTCMai, this, 0, x, y, z);
+			return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), this, 0, x, y, z);
 		}
 	};
 	public static final TFFeature FINAL_CASTLE = new TFFeature( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
@@ -439,13 +438,6 @@ public class TFFeature implements LandmarkStructure {
 		.put(BiomeKeys.LAKE.location(), QUEST_ISLAND)
 		.build();
 
-	//IStructurePieceTypes that can be referred to
-	public static final StructurePieceType TFHill = registerPiece("TFHill", HollowHillComponent::new);
-	public static final StructurePieceType TFHedge = registerPiece("TFHedge", HedgeMazeComponent::new);
-	public static final StructurePieceType TFQuestGrove = registerPiece("TFQuest1", QuestGrove::new);
-	public static final StructurePieceType TFHydra = registerPiece("TFHydra", HydraLairComponent::new);
-	public static final StructurePieceType TFYeti = registerPiece("TFYeti", YetiCaveComponent::new);
-
 	public final int size;
 	public final String name;
 	public final boolean centerBounds;
@@ -479,8 +471,6 @@ public class TFFeature implements LandmarkStructure {
 
 		maxPossibleSize = Math.max(this.size, maxPossibleSize);
 	}
-
-	static void init() {}
 
 	public static int getMaxSize() {
 		return maxPossibleSize;
@@ -906,24 +896,24 @@ public class TFFeature implements LandmarkStructure {
 		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
 		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed()))
 			return Optional.empty();
-		// FIXME Yikes... Future Code Cleanup if it'll get reused
-		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z)).map(piece -> new Structure.GenerationStub(new BlockPos(x, y, z), structurePiecesBuilder -> {
-			structurePiecesBuilder.addPiece(piece);
-			piece.addChildren(piece, structurePiecesBuilder, context.random());
+		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z)).map(piece -> this.getStructurePieceGenerationStubFunction(piece, context, x, y, z));
+	}
+
+	@NotNull
+	private Structure.GenerationStub getStructurePieceGenerationStubFunction(StructurePiece startingPiece, Structure.GenerationContext context, int x, int y, int z) {
+		return new Structure.GenerationStub(new BlockPos(x, y, z), structurePiecesBuilder -> {
+			structurePiecesBuilder.addPiece(startingPiece);
+			startingPiece.addChildren(startingPiece, structurePiecesBuilder, context.random());
+
 			structurePiecesBuilder.pieces.stream()
 					.filter(TFStructureComponentTemplate.class::isInstance)
 					.map(TFStructureComponentTemplate.class::cast)
 					.forEach(t -> t.LAZY_TEMPLATE_LOADER.run());
-		}));
+		});
 	}
 
 	public GenerationStep.Decoration getDecorationStage() {
 		return GenerationStep.Decoration.SURFACE_STRUCTURES;
-	}
-
-	@Deprecated(forRemoval = true) // FIXME Deferred
-	public static StructurePieceType registerPiece(String name, StructurePieceType piece) {
-		return Registry.register(Registry.STRUCTURE_PIECE, TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)), piece);
 	}
 
 	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir) {

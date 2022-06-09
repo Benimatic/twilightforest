@@ -11,17 +11,17 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class TowerRoofAttachedSlabComponent extends TowerRoofSlabComponent {
 
 	public TowerRoofAttachedSlabComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRAS, nbt);
+		super(TFStructurePieceTypes.TFLTRAS.get(), nbt);
 	}
 
 	public TowerRoofAttachedSlabComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(LichTowerPieces.TFLTRAS, feature, i, wing, x, y, z);
+		super(TFStructurePieceTypes.TFLTRAS.get(), feature, i, wing, x, y, z);
 	}
 
 	/**

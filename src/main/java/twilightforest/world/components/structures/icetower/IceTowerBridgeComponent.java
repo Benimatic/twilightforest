@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-
+import twilightforest.world.registration.TFStructurePieceTypes;
 
 
 public class IceTowerBridgeComponent extends TFStructureComponentOld {
@@ -23,12 +23,12 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 	private final int length;
 
 	public IceTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(IceTowerPieces.TFITBri, nbt);
+		super(TFStructurePieceTypes.TFITBri.get(), nbt);
 		this.length = nbt.getInt("bridgeLength");
 	}
 
 	public IceTowerBridgeComponent(TFFeature feature, int index, int x, int y, int z, int length, Direction direction) {
-		super(IceTowerPieces.TFITBri, feature, index, x, y, z);
+		super(TFStructurePieceTypes.TFITBri.get(), feature, index, x, y, z);
 		this.length = length;
 		this.setOrientation(direction);
 
