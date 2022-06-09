@@ -9,7 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import twilightforest.block.entity.FireflyBlockEntity;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFBlockEntities;
 
 import javax.annotation.Nullable;
 

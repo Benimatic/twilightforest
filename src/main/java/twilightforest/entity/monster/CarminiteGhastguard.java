@@ -27,12 +27,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.boss.UrGhast;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class CarminiteGhastguard extends Ghast {
 	// 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
@@ -346,13 +345,13 @@ public class CarminiteGhastguard extends Ghast {
 			int chunkX = Mth.floor(this.getX()) >> 4;
 			int chunkZ = Mth.floor(this.getZ()) >> 4;
 
-			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, (ServerLevel) this.level);
+			TFLandmark nearFeature = TFLandmark.getFeatureForRegion(chunkX, chunkZ, (ServerLevel) this.level);
 
-			if (nearFeature != TFFeature.DARK_TOWER) {
+			if (nearFeature != TFLandmark.DARK_TOWER) {
 				this.hasRestriction();
 				this.noActionTime += 5;
 			} else {
-				BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ);
+				BlockPos cc = TFLandmark.getNearestCenterXYZ(chunkX, chunkZ);
 				this.restrictTo(cc.above(128), 64);
 			}
 		}

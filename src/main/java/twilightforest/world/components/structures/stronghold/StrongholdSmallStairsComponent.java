@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdSmallStairsComponent extends StructureTFStrongholdComponent {
@@ -33,7 +33,7 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 		this.chestTrapped = nbt.getBoolean("chestTrapped");
 	}
 
-	public StrongholdSmallStairsComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdSmallStairsComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSSS.get(), feature, i, facing, x, y, z);
 	}
 

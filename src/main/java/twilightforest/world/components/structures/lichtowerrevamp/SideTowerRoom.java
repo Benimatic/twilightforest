@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import twilightforest.TwilightForestMod;
 import twilightforest.util.ArrayUtil;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.EnumMap;
 import java.util.List;

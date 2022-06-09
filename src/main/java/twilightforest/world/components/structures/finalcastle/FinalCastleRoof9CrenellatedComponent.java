@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOld {
@@ -24,7 +24,7 @@ public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOl
 		super(TFStructurePieceTypes.TFFCRo9Cr.get(), nbt);
 	}
 
-	public FinalCastleRoof9CrenellatedComponent(TFFeature feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleRoof9CrenellatedComponent(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo9Cr.get(), feature, i, x, y, z);
 
 		int height = 5;

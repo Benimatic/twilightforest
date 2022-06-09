@@ -15,9 +15,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdUpperAscenderComponent extends StructureTFStrongholdComponent {
@@ -29,7 +29,7 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 		this.exitTop = nbt.getBoolean("exitTop");
 	}
 
-	public StrongholdUpperAscenderComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdUpperAscenderComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSUA.get(), feature, i, facing, x, y, z);
 	}
 

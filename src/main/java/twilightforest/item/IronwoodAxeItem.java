@@ -9,7 +9,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 public class IronwoodAxeItem extends AxeItem {
 
-	protected IronwoodAxeItem(Tier material, Properties props) {
+	public IronwoodAxeItem(Tier material, Properties props) {
 		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, props);
 	}
 

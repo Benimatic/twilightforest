@@ -8,10 +8,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.registration.TFBiomeFeatures;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 public class BiomeTagGenerator extends BiomeTagsProvider {
 

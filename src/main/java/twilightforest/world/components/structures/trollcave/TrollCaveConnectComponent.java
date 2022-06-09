@@ -20,11 +20,11 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
@@ -41,7 +41,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
 	}
 
-	public TrollCaveConnectComponent(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
+	public TrollCaveConnectComponent(TFLandmark feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
 		super(TFStructurePieceTypes.TFTCCon.get(), feature, index, x, y, z);
 		this.size = caveSize;
 		this.height = caveHeight;

@@ -1,4 +1,4 @@
-package twilightforest.client.particle;
+package twilightforest.init;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.client.Minecraft;
@@ -15,6 +15,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.*;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.client.particle.data.PinnedFireflyData;
 

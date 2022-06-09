@@ -27,15 +27,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.TFSounds;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFParticleType;
 import twilightforest.enums.BossVariant;
-import twilightforest.item.TFItems;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.block.entity.TrophyBlockEntity;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
 public abstract class AbstractTrophyBlock extends BaseEntityBlock {

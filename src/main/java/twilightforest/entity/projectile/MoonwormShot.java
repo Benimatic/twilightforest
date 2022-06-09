@@ -22,8 +22,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 
 public class MoonwormShot extends TFThrowable {
 

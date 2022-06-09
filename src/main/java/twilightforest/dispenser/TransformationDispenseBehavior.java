@@ -11,11 +11,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.AABB;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFRecipes;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior {

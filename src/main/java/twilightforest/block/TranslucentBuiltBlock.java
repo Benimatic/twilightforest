@@ -10,11 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.material.PushReaction;
-import twilightforest.TFSounds;
-
-import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import twilightforest.init.TFSounds;
 
 public class TranslucentBuiltBlock extends Block {
 

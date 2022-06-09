@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.block.entity.TwilightChestEntity;
 
 public class TwilightChest extends ChestBlock {

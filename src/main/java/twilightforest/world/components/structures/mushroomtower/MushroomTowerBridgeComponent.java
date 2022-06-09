@@ -17,8 +17,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
@@ -36,7 +36,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 		this.dHeight = nbt.getInt("destHeight");
 	}
 
-	protected MushroomTowerBridgeComponent(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected MushroomTowerBridgeComponent(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);

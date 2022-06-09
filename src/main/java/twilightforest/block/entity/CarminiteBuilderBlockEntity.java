@@ -8,10 +8,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import twilightforest.TFSounds;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFSounds;
 import twilightforest.block.BuilderBlock;
 import twilightforest.block.TranslucentBuiltBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.enums.TowerDeviceVariant;
 
 public class CarminiteBuilderBlockEntity extends BlockEntity {

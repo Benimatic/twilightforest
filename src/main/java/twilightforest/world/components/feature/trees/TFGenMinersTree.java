@@ -8,12 +8,11 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {

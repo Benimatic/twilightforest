@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 public record MissingAdvancementToast(Component title, ItemStack icon) implements Toast {
     public static final MissingAdvancementToast FALLBACK = new MissingAdvancementToast(Component.translatable(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()));

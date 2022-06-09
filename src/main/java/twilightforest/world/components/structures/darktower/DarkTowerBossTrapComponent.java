@@ -14,11 +14,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 
@@ -26,7 +26,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 		super(TFStructurePieceTypes.TFDTBT.get(), nbt);
 	}
 
-	protected DarkTowerBossTrapComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected DarkTowerBossTrapComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(TFStructurePieceTypes.TFDTBT.get(), feature, i, x, y, z, pSize, pHeight, direction);
 
 		// no spawns

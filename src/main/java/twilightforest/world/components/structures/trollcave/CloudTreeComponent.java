@@ -10,10 +10,10 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class CloudTreeComponent extends TFStructureComponentOld {
@@ -22,7 +22,7 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFClTr.get(), nbt);
 	}
 
-	public CloudTreeComponent(TFFeature feature, int index, int x, int y, int z) {
+	public CloudTreeComponent(TFLandmark feature, int index, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFClTr.get(), feature, index, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);

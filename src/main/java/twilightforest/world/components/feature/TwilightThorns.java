@@ -13,11 +13,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.util.WorldUtil;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.feature.config.ThornsConfig;
-
-import java.util.Random;
 
 public class TwilightThorns extends Feature<ThornsConfig> {
 	public TwilightThorns(Codec<ThornsConfig> config) {

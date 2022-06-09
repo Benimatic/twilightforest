@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 public class MistWolf extends HostileWolf {
 

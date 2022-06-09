@@ -19,7 +19,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 
 import javax.annotation.Nullable;

@@ -16,9 +16,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
-import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 

@@ -13,8 +13,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFEntities;
 
 import javax.annotation.Nullable;
 

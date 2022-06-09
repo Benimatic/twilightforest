@@ -9,7 +9,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 public class IronwoodPickItem extends PickaxeItem {
 
-	protected IronwoodPickItem(Tier material, Properties props) {
+	public IronwoodPickItem(Tier material, Properties props) {
 		super(material, 1, -2.8F, props);
 	}
 

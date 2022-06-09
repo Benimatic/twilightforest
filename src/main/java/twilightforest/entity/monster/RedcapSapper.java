@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.Level;
 import twilightforest.entity.ai.RedcapPlantTNTGoal;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 public class RedcapSapper extends Redcap {
 

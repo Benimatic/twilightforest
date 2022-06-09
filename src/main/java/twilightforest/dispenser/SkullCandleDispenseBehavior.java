@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.init.TFBlocks;
 
 public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 

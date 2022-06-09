@@ -19,8 +19,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.LoyalZombie;
 
 import javax.annotation.Nullable;

@@ -15,11 +15,11 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TFConfig;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
@@ -51,7 +51,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.generateRecursiveBacktracker(0, 0);
 	}
 
-	public MinotaurMazeComponent(TFFeature feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
+	public MinotaurMazeComponent(TFLandmark feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
 		super(TFStructurePieceTypes.TFMMaze.get(), feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.level = level;
@@ -98,7 +98,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.setSeed(this.boundingBox.minX() * 90342903L + this.boundingBox.minY() * 90342903L ^ this.boundingBox.minZ());
 	}
 
-	public MinotaurMazeComponent(TFFeature feature, int index, int x, int y, int z, int level) {
+	public MinotaurMazeComponent(TFLandmark feature, int index, int x, int y, int z, int level) {
 		this(feature, index, x, y, z, 11, 11, level);
 	}
 

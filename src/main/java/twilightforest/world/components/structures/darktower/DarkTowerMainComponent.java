@@ -28,18 +28,18 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.entity.TFEntities;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.init.TFConfiguredFeatures;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +51,11 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		super(TFStructurePieceTypes.TFDTMai.get(), nbt);
 	}
 
-	public DarkTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z) {
+	public DarkTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
 		this(feature, rand, index, x + 10, y + 4, z + 10, Direction.NORTH);
 	}
 
-	public DarkTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
+	public DarkTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFDTMai.get(), feature, index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
 
 		// check to make sure we can build the whole tower

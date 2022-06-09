@@ -15,8 +15,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdComponent {
@@ -25,7 +25,7 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 		super(TFStructurePieceTypes.TFSTC.get(), nbt);
 	}
 
-	public StrongholdTreasureCorridorComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdTreasureCorridorComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSTC.get(), feature, i, facing, x, y, z);
 	}
 

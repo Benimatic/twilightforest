@@ -13,11 +13,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
@@ -26,7 +26,7 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFFCLaTo.get(), nbt);
 	}
 
-	public FinalCastleLargeTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction rotation) {
+	public FinalCastleLargeTowerComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFFCLaTo.get(), feature, i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 13;

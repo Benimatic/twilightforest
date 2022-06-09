@@ -12,10 +12,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-import twilightforest.item.TFItems;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFItems;
 
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;

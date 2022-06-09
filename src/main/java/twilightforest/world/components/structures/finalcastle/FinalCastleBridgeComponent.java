@@ -15,10 +15,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleBridgeComponent extends TFStructureComponentOld {
@@ -27,7 +27,7 @@ public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCBri.get(), nbt);
 	}
 
-	public FinalCastleBridgeComponent(TFFeature feature, int i, int x, int y, int z, int length, Direction direction) {
+	public FinalCastleBridgeComponent(TFLandmark feature, int i, int x, int y, int z, int length, Direction direction) {
 		super(TFStructurePieceTypes.TFFCBri.get(), feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -3, length - 1, 5, 6, direction);

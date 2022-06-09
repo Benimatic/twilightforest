@@ -15,8 +15,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdTrainingRoomComponent extends StructureTFStrongholdComponent {
@@ -25,7 +25,7 @@ public class StrongholdTrainingRoomComponent extends StructureTFStrongholdCompon
 		super(TFStructurePieceTypes.TFSTR.get(), nbt);
 	}
 
-	public StrongholdTrainingRoomComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdTrainingRoomComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSTR.get(), feature, i, facing, x, y, z);
 	}
 

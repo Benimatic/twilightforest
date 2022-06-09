@@ -7,7 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.network.NetworkEvent;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
 import twilightforest.entity.ProtectionBox;
 
 import java.util.ArrayList;

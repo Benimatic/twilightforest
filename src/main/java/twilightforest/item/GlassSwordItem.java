@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 public class GlassSwordItem extends SwordItem {
 

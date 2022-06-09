@@ -12,9 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
-import twilightforest.potions.TFMobEffects;
-
-import java.util.Random;
+import twilightforest.init.TFEnchantments;
+import twilightforest.init.TFMobEffects;
 
 public class ChillAuraEnchantment extends LootOnlyEnchantment {
 

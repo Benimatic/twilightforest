@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
@@ -26,7 +26,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCDunSt.get(), nbt);
 	}
 
-	public FinalCastleDungeonStepsComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction rotation) {
+	public FinalCastleDungeonStepsComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFFCDunSt.get(), feature, i, x, y, z);
 		this.spawnListIndex = 2; // dungeon monsters
 

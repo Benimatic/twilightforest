@@ -1,4 +1,4 @@
-package twilightforest.world.registration;
+package twilightforest.init;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
@@ -17,7 +17,7 @@ import twilightforest.world.components.placements.OutOfStructureFilter;
 
 import java.util.function.Supplier;
 
-public final class TwilightFeatures {
+public final class TFSubFeatures {
 
 	public static long seed;
 

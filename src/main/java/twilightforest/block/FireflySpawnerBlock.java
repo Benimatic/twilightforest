@@ -25,7 +25,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFBlocks;
 
 public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements SimpleWaterloggedBlock {
 

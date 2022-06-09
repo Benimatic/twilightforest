@@ -15,9 +15,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdAccessChamberComponent extends StructureTFStrongholdComponent {
@@ -26,7 +26,7 @@ public class StrongholdAccessChamberComponent extends StructureTFStrongholdCompo
 		super(TFStructurePieceTypes.TFSAC.get(), nbt);
 	}
 
-	public StrongholdAccessChamberComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdAccessChamberComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSAC.get(), feature, i, facing, x, y, z);
 	}
 

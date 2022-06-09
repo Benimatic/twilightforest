@@ -22,8 +22,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nullable;
 import java.util.UUID;

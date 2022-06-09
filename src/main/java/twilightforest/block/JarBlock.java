@@ -32,10 +32,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
-import twilightforest.TFSounds;
-import twilightforest.client.particle.TFParticleType;
-
-import java.util.Random;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFParticleType;
 
 public class JarBlock extends Block implements SimpleWaterloggedBlock {
 

@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 
 

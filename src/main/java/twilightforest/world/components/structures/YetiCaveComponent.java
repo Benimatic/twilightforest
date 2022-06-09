@@ -15,10 +15,10 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class YetiCaveComponent extends HollowHillComponent {
@@ -30,7 +30,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 		super(TFStructurePieceTypes.TFYeti.get(), nbt);
 	}
 
-	public YetiCaveComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z) {
+	public YetiCaveComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFYeti.get(), feature, i, 2, x, y, z);
 	}
 

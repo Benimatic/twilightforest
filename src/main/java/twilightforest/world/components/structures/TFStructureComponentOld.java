@@ -27,7 +27,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -46,12 +46,12 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	@Deprecated // Use Below
-	public TFStructureComponentOld(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+	public TFStructureComponentOld(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
 		super(type, i, new BoundingBox(x, y, z, x, y, z));
 		setFeature(feature);
 	}
 
-	public TFStructureComponentOld(StructurePieceType type, TFFeature feature, int i, BoundingBox box) {
+	public TFStructureComponentOld(StructurePieceType type, TFLandmark feature, int i, BoundingBox box) {
 		super(type, i, box);
 		setFeature(feature);
 	}

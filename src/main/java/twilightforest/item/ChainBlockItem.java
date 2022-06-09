@@ -16,9 +16,9 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.ChainBlock;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.util.TwilightItemTier;
 
 import javax.annotation.Nullable;
@@ -28,7 +28,7 @@ public class ChainBlockItem extends DiggerItem {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
-	protected ChainBlockItem(Properties props) {
+	public ChainBlockItem(Properties props) {
 		super(6, -3.0F, TwilightItemTier.KNIGHTMETAL, BlockTags.BASE_STONE_OVERWORLD, props);
 	}
 
@@ -61,7 +61,7 @@ public class ChainBlockItem extends DiggerItem {
 	}
 
 	@Nullable
-	protected static UUID getThrownUuid(ItemStack stack) {
+	public static UUID getThrownUuid(ItemStack stack) {
 		if (stack.hasTag() && stack.getTag().hasUUID(THROWN_UUID_KEY)) {
 			return stack.getTag().getUUID(THROWN_UUID_KEY);
 		}

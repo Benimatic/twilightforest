@@ -17,12 +17,12 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class HollowHillComponent extends TFStructureComponentOld {
@@ -48,7 +48,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.hdiam = (hillSize * 2 + 1) * 16;
 	}
 
-	public HollowHillComponent(StructurePieceType piece, TFFeature feature, int i, int size, int x, int y, int z) {
+	public HollowHillComponent(StructurePieceType piece, TFLandmark feature, int i, int size, int x, int y, int z) {
 		super(piece, feature, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);

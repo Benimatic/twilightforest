@@ -12,7 +12,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.projectile.TwilightWandBolt;
 
 import javax.annotation.Nullable;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class TwilightWandItem extends Item {
 
-	protected TwilightWandItem(Properties props) {
+	public TwilightWandItem(Properties props) {
 		super(props);
 	}
 

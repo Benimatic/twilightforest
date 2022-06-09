@@ -2,7 +2,7 @@ package twilightforest.world.components.feature.trees.growers;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.init.TFConfiguredFeatures;
 
 public class TimeTree extends TFTree {
 

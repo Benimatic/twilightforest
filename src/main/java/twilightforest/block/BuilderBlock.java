@@ -19,9 +19,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFSounds;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 import twilightforest.block.entity.CarminiteBuilderBlockEntity;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.enums.TowerDeviceVariant;
 
 import javax.annotation.Nullable;

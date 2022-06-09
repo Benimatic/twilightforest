@@ -14,11 +14,11 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraftforge.network.PacketDistributor;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.network.ChangeBiomePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 public class TransLogCoreBlock extends SpecialMagicLogBlock {
 

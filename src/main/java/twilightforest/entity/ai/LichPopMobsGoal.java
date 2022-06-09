@@ -5,7 +5,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.boss.Lich;
 import twilightforest.item.LifedrainScepterItem;

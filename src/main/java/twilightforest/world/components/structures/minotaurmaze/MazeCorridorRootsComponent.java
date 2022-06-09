@@ -11,9 +11,9 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MazeCorridorRootsComponent extends MazeCorridorComponent {
@@ -22,7 +22,7 @@ public class MazeCorridorRootsComponent extends MazeCorridorComponent {
 		super(TFStructurePieceTypes.TFMMCR.get(), nbt);
 	}
 
-	public MazeCorridorRootsComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+	public MazeCorridorRootsComponent(TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFMMCR.get(), feature, i, x, y, z, rotation);
 	}
 

@@ -16,7 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardTerraceDuct extends TwilightTemplateStructurePiece {
     public CourtyardTerraceDuct(StructurePieceSerializationContext ctx, CompoundTag nbt) {

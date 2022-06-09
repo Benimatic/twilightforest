@@ -13,7 +13,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
 import twilightforest.entity.boss.AlphaYeti;
 
 import java.util.List;

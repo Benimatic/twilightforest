@@ -12,7 +12,7 @@ import twilightforest.block.MazestoneBlock;
 import javax.annotation.Nonnull;
 
 public class MazebreakerPickItem extends PickaxeItem {
-	protected MazebreakerPickItem(Tier material, Properties props) {
+	public MazebreakerPickItem(Tier material, Properties props) {
 		super(material, 1, -2.8F, props);
 	}
 

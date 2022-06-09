@@ -22,7 +22,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.ai.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.RedcapLightTNTGoal;
 import twilightforest.entity.ai.RedcapShyGoal;

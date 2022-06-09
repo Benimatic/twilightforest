@@ -21,7 +21,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.util.TFDamageSources;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)

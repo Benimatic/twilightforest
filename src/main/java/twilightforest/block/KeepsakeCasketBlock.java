@@ -37,11 +37,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 import javax.annotation.Nullable;
 import java.util.Optional;

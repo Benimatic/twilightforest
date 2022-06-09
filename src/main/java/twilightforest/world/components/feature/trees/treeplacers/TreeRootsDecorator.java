@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorTy
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.VoxelBresenhamIterator;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFSubFeatures;
 
 import java.util.Optional;
 
@@ -70,7 +70,7 @@ public class TreeRootsDecorator extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<TreeRootsDecorator> type() {
-		return TwilightFeatures.TREE_ROOTS.get();
+		return TFSubFeatures.TREE_ROOTS.get();
 	}
 
 	@Override

@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MazeDeadEndTorchesComponent extends MazeDeadEndComponent {
@@ -22,7 +22,7 @@ public class MazeDeadEndTorchesComponent extends MazeDeadEndComponent {
 		super(TFStructurePieceTypes.TFMMDET.get(), nbt);
 	}
 
-	public MazeDeadEndTorchesComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+	public MazeDeadEndTorchesComponent(TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFMMDET.get(), feature, i, x, y, z, rotation);
 	}
 

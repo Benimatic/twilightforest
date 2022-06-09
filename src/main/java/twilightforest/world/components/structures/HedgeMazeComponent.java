@@ -14,12 +14,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class HedgeMazeComponent extends TFStructureComponentOld {
@@ -35,7 +35,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		this.boundingBox = BoundingBoxUtils.NBTToBoundingBox(nbt);
 	}
 
-	public HedgeMazeComponent(TFFeature feature, int i, int x, int y, int z) {
+	public HedgeMazeComponent(TFLandmark feature, int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFHedge.get(), feature, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);

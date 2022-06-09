@@ -28,14 +28,14 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.entity.TFPart;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -712,7 +712,7 @@ public class Hydra extends Mob implements Enemy {
 		super.die(cause);
 		// mark the lair as defeated
 		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.HYDRA_LAIR);
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFLandmark.HYDRA_LAIR);
 			for (ServerPlayer player :hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

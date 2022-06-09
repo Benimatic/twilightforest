@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import twilightforest.entity.CubeOfAnnihilation;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -22,7 +22,7 @@ public class CubeOfAnnihilationItem extends Item {
 
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 
-	protected CubeOfAnnihilationItem(Properties props) {
+	public CubeOfAnnihilationItem(Properties props) {
 		super(props);
 	}
 
@@ -51,7 +51,7 @@ public class CubeOfAnnihilationItem extends Item {
 	}
 
 	@Nullable
-	protected static UUID getThrownUuid(ItemStack stack) {
+	public static UUID getThrownUuid(ItemStack stack) {
 		if (stack.hasTag() && stack.getTag().hasUUID(THROWN_UUID_KEY)) {
 			return stack.getTag().getUUID(THROWN_UUID_KEY);
 		}

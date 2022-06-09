@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFRecipes;
 
 public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 

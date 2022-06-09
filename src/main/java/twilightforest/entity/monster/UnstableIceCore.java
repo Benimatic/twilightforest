@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
 
 public class UnstableIceCore extends BaseIceMob {

@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerBridgeComponent extends TowerWingComponent {
 
@@ -32,7 +32,7 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	private int dSize;
 	private int dHeight;
 
-	protected DarkTowerBridgeComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected DarkTowerBridgeComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(type, feature, i, x, y, z, 5, 5, direction);
 
 		this.dSize = pSize;

@@ -13,13 +13,12 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import twilightforest.block.HollowLogHorizontal;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.HollowLogConfig;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class TFGenFallenSmallLog extends Feature<HollowLogConfig> {
 

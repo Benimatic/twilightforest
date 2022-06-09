@@ -35,10 +35,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.HoverBeamGoal;
@@ -49,7 +49,7 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -257,7 +257,7 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 		super.die(cause);
 		// mark the tower as defeated
 		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, this.blockPosition(), TFFeature.ICE_TOWER);
+			TFGenerationSettings.markStructureConquered(level, this.blockPosition(), TFLandmark.ICE_TOWER);
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

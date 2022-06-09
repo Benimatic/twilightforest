@@ -4,11 +4,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.Mth;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.entity.projectile.ThrownWep;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 import java.util.EnumSet;
 

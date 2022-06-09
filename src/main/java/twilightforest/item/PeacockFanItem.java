@@ -19,7 +19,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
@@ -28,7 +28,7 @@ public class PeacockFanItem extends Item {
 
 	boolean launched = false;
 
-	PeacockFanItem(Properties props) {
+	public PeacockFanItem(Properties props) {
 		super(props);
 	}
 

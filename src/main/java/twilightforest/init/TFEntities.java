@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.init;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SilverfishModel;
@@ -35,7 +35,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.entity.*;
+import twilightforest.init.TFBlocks;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
@@ -45,7 +46,7 @@ import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
 import twilightforest.entity.projectile.*;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 import java.util.HashMap;
 import java.util.Map;

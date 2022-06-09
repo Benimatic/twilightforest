@@ -14,6 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.*;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdShieldStructure extends StructureTFStrongholdComponent {

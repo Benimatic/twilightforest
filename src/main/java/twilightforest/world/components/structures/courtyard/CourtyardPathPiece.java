@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardPathPiece extends TwilightTemplateStructurePiece {
     public CourtyardPathPiece(StructurePieceSerializationContext ctx, CompoundTag nbt) {

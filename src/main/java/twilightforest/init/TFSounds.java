@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.init;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -6,7 +6,7 @@ import net.minecraft.world.entity.animal.Parrot;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import twilightforest.entity.TFEntities;
+import twilightforest.TwilightForestMod;
 
 public final class TFSounds {
 	

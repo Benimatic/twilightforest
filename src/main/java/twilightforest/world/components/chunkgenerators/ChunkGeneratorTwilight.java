@@ -29,14 +29,14 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +68,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private final Optional<Climate.Sampler> surfaceNoiseGetter;
 	private final Optional<TFTerrainWarp> warper;
 
-	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
+	public final ConcurrentHashMap<ChunkPos, TFLandmark> featureCache = new ConcurrentHashMap<>();
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
 	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight) {
@@ -393,7 +393,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
 	protected final void deformTerrainForFeature(WorldGenRegion primer, ChunkAccess chunk) {
 		IntPair featureRelativePos = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
+		TFLandmark nearFeature = TFLandmark.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
 
 		//Optional<StructureStart<?>> structureStart = TFGenerationSettings.locateTFStructureInRange(primer.getLevel(), nearFeature, chunk.getPos().getWorldPosition(), nearFeature.size + 1);
 
@@ -404,7 +404,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		final int relativeFeatureX = featureRelativePos.x;
 		final int relativeFeatureZ = featureRelativePos.z;
 
-		if (TFFeature.isTheseFeatures(nearFeature, TFFeature.SMALL_HILL, TFFeature.MEDIUM_HILL, TFFeature.LARGE_HILL, TFFeature.HYDRA_LAIR)) {
+		if (TFLandmark.isTheseFeatures(nearFeature, TFLandmark.SMALL_HILL, TFLandmark.MEDIUM_HILL, TFLandmark.LARGE_HILL, TFLandmark.HYDRA_LAIR)) {
 			int hdiam = (nearFeature.size * 2 + 1) * 16;
 
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
@@ -417,7 +417,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					this.raiseHills(primer, chunk, nearFeature, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
 				}
 			}
-		} else if (nearFeature == TFFeature.HEDGE_MAZE || nearFeature == TFFeature.NAGA_COURTYARD || nearFeature == TFFeature.QUEST_GROVE) {
+		} else if (nearFeature == TFLandmark.HEDGE_MAZE || nearFeature == TFLandmark.NAGA_COURTYARD || nearFeature == TFLandmark.QUEST_GROVE) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
 				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
 					int featureDX = xInChunk - relativeFeatureX;
@@ -425,7 +425,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					flattenTerrainForFeature(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
 				}
 			}
-		} else if (nearFeature == TFFeature.YETI_CAVE) {
+		} else if (nearFeature == TFLandmark.YETI_CAVE) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
 				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
 					int featureDX = xInChunk - relativeFeatureX;
@@ -434,7 +434,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					this.deformTerrainForYetiLair(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
 				}
 			}
-		} else if (nearFeature == TFFeature.TROLL_CAVE) {
+		} else if (nearFeature == TFLandmark.TROLL_CAVE) {
 			// troll cloud, more like
 			this.deformTerrainForTrollCloud2(primer, chunk, nearFeature, relativeFeatureX, relativeFeatureZ);
 		}
@@ -442,7 +442,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		// done!
 	}
 
-	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
+	private void flattenTerrainForFeature(WorldGenRegion primer, TFLandmark nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
 		int mazeHeight = TFGenerationSettings.SEALEVEL + 2;
@@ -498,7 +498,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	//TODO: Parameter "nearFeature" is unused. Remove?
-	private void deformTerrainForTrollCloud2(WorldGenRegion primer, ChunkAccess chunkAccess, TFFeature nearFeature, int hx, int hz) {
+	private void deformTerrainForTrollCloud2(WorldGenRegion primer, ChunkAccess chunkAccess, TFLandmark nearFeature, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
 			for (int bz = 0; bz < 4; bz++) {
 				int dx = bx * 4 - hx - 2;
@@ -587,7 +587,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	 * Raises up and hollows out the hollow hills.
 	 */ // TODO Add some surface noise
 	// FIXME Make this method process whole chunks instead of columns only
-	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, TFFeature nearFeature, int hdiam, int xInChunk, int zInChunk, int featureDX, int featureDZ, float hillHeight) {
+	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, TFLandmark nearFeature, int hdiam, int xInChunk, int zInChunk, int featureDX, int featureDZ, float hillHeight) {
 		BlockPos.MutableBlockPos movingPos = world.getCenter().getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
 
 		// raise the hill
@@ -612,7 +612,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		int hollow = Math.min((int) hillHeight - 4 - nearFeature.size, totalHeight - 3);
 
 		// hydra lair has a piece missing
-		if (nearFeature == TFFeature.HYDRA_LAIR) {
+		if (nearFeature == TFLandmark.HYDRA_LAIR) {
 			int mx = featureDX + 16;
 			int mz = featureDZ + 16;
 			int mdist = (int) Mth.sqrt(mx * mx + mz * mz);
@@ -622,14 +622,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		}
 
 		// hollow out the hollow parts
-		int hollowFloor = nearFeature == TFFeature.HYDRA_LAIR ? this.getSeaLevel() : this.getSeaLevel() - 5 - (hollow >> 3);
+		int hollowFloor = nearFeature == TFLandmark.HYDRA_LAIR ? this.getSeaLevel() : this.getSeaLevel() - 5 - (hollow >> 3);
 
 		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
 			world.setBlock(movingPos.setY(y), Blocks.AIR.defaultBlockState(), 3);
 		}
 	}
 
-	private void deformTerrainForYetiLair(WorldGenRegion primer, TFFeature nearFeature, int xInChunk, int zInChunk, int featureDX, int featureDZ) {
+	private void deformTerrainForYetiLair(WorldGenRegion primer, TFLandmark nearFeature, int xInChunk, int zInChunk, int featureDX, int featureDZ) {
 		float squishFactor = 0f;
 		int topHeight = this.getSeaLevel() + 24;
 		int outerBoundary = (nearFeature.size * 2 + 1) * 8 - 8;
@@ -730,7 +730,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		if (!biomeFound) return;
 
 		IntPair nearCenter = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
+		TFLandmark nearFeature = TFLandmark.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
 
 		double d = 0.03125D;
 		//depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
@@ -750,7 +750,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 						- 4;
 
 				// make sure we're not too close to the tower
-				if (nearFeature == TFFeature.DARK_TOWER) {
+				if (nearFeature == TFLandmark.DARK_TOWER) {
 					int hx = nearCenter.x;
 					int hz = nearCenter.z;
 
@@ -818,7 +818,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return mobCategory == MobCategory.MONSTER && pos.getY() >= this.getSeaLevel() ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, mobCategory, pos);
 	}
 
-	public TFFeature getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
-		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFFeature.generateFeature(chunkPos.x, chunkPos.z, world));
+	public TFLandmark getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
+		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFLandmark.generateFeature(chunkPos.x, chunkPos.z, world));
 	}
 }

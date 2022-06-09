@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nonnull;
 import java.util.IdentityHashMap;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class OreMeterItem extends Item {
 
-	protected OreMeterItem(Properties props) {
+	public OreMeterItem(Properties props) {
 		super(props);
 	}
 

@@ -18,7 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.BrittleFlaskItem;
@@ -30,7 +30,7 @@ import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
@@ -107,7 +107,7 @@ public class TFTickHandler {
 			BoundingBox fullSBB = structure.getBoundingBox();
 			Vec3i center = BoundingBoxUtils.getCenter(fullSBB);
 
-			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerLevel) world);
+			TFLandmark nearFeature = TFLandmark.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerLevel) world);
 
 			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
 				sendAllClearPacket(world, player);

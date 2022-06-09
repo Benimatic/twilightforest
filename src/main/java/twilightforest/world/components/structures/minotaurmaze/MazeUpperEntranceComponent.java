@@ -13,10 +13,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 
@@ -24,7 +24,7 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFMMUE.get(), nbt);
 	}
 
-	public MazeUpperEntranceComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
+	public MazeUpperEntranceComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMUE.get(), feature, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 

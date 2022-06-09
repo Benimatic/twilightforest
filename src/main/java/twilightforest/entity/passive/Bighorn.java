@@ -17,13 +17,12 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class Bighorn extends Sheep {
 

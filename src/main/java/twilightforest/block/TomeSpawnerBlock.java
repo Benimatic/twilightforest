@@ -23,8 +23,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import twilightforest.TFSounds;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.block.entity.TomeSpawnerBlockEntity;
 
 import javax.annotation.Nullable;

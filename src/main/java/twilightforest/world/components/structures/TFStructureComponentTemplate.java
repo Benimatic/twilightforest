@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnorePr
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 /**
  * Copied a few things from {@link net.minecraft.world.level.levelgen.structure.TemplateStructurePiece}
@@ -34,7 +34,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 		LAZY_TEMPLATE_LOADER = () -> setup(ctx.structureTemplateManager());
     }
 
-    public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, BoundingBox boundingBox) {
+    public TFStructureComponentTemplate(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, BoundingBox boundingBox) {
         super(type, i, boundingBox);
         setFeature(feature);
         this.mirror = Mirror.NONE;
@@ -42,7 +42,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     }
 
     @Deprecated
-    public TFStructureComponentTemplate(StructureTemplateManager manager, StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public TFStructureComponentTemplate(StructureTemplateManager manager, StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Rotation rotation) {
         super(type, i, new BoundingBox(x, y, z, x, y, z));
         setFeature(feature);
         this.rotation = rotation;
@@ -54,7 +54,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 
     //TODO: Unused. Remove?
     @Deprecated
-    public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
+    public TFStructureComponentTemplate(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
         super(type, i, new BoundingBox(x, y, z, x, y, z));
         setFeature(feature);
         this.rotation = rotation;

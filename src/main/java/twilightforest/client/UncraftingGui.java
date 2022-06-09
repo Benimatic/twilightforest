@@ -15,7 +15,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.network.TFPacketHandler;

@@ -12,10 +12,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MazeEntranceShaftComponent extends TFStructureComponentOld {
@@ -26,7 +26,7 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 
 	private final int averageGroundLevel = Integer.MIN_VALUE;
 
-	public MazeEntranceShaftComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
+	public MazeEntranceShaftComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMES.get(), feature, i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1).encapsulate(new BlockPos(x, 0, z))); // FIXME Swap 0 for Worldgen Sea Level
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 	}

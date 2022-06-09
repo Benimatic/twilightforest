@@ -24,21 +24,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.GhastTrapBlock;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFParticleType;
 import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.TFDamageSources;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -601,7 +601,7 @@ public class UrGhast extends CarminiteGhastguard {
 		super.die(cause);
 		// mark the tower as defeated
 		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, findChestCoords(), TFFeature.DARK_TOWER);
+			TFGenerationSettings.markStructureConquered(level, findChestCoords(), TFLandmark.DARK_TOWER);
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

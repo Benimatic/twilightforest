@@ -12,7 +12,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;

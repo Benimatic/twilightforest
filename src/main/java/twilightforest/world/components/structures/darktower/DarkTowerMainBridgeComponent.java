@@ -6,8 +6,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerMainBridgeComponent extends DarkTowerBridgeComponent {
 
@@ -15,7 +15,7 @@ public class DarkTowerMainBridgeComponent extends DarkTowerBridgeComponent {
 		super(TFStructurePieceTypes.TFDTMB.get(), nbt);
 	}
 
-	protected DarkTowerMainBridgeComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected DarkTowerMainBridgeComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(TFStructurePieceTypes.TFDTMB.get(), feature, i, x, y, z, 15, pHeight, direction);
 	}
 

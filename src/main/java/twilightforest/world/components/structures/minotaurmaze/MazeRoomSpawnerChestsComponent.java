@@ -12,11 +12,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
@@ -25,7 +25,7 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMRSC.get(), nbt);
 	}
 
-	public MazeRoomSpawnerChestsComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
+	public MazeRoomSpawnerChestsComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMRSC.get(), feature, i, rand, x, y, z);
 	}
 

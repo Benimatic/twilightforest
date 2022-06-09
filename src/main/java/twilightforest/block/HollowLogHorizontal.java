@@ -31,6 +31,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ToolActions;
 import twilightforest.enums.HollowLogVariants;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.AxisUtil;
 
 import javax.annotation.Nullable;

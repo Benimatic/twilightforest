@@ -30,15 +30,14 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.ThrowRiderGoal;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 public class Yeti extends Monster implements IHostileMount {
 

@@ -13,8 +13,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdUpperTIntersectionComponent extends StructureTFStrongholdComponent {
@@ -23,7 +23,7 @@ public class StrongholdUpperTIntersectionComponent extends StructureTFStronghold
 		super(TFStructurePieceTypes.TFSUTI.get(), nbt);
 	}
 
-	public StrongholdUpperTIntersectionComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdUpperTIntersectionComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSUTI.get(), feature, i, facing, x, y, z);
 	}
 

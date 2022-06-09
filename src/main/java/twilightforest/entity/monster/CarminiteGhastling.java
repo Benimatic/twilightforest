@@ -16,9 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
-
-import java.util.Random;
+import twilightforest.init.TFSounds;
 
 public class CarminiteGhastling extends CarminiteGhastguard {
 

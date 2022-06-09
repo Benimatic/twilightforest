@@ -1,4 +1,4 @@
-package twilightforest.inventory;
+package twilightforest.init;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.MenuType;
@@ -9,6 +9,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingGui;
+import twilightforest.inventory.UncraftingContainer;
 
 public class TFContainers {
 

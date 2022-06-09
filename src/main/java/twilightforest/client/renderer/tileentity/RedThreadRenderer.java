@@ -18,10 +18,9 @@ import net.minecraftforge.client.model.data.EmptyModelData;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.RedThreadBlockEntity;
 import twilightforest.client.TFShaders;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 import java.util.Objects;
-import java.util.Random;
 
 public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockEntityRenderer<T> {
 

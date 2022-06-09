@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 public class EmptyMazeMapItem extends ComplexItem {
 	final boolean mapOres;
 
-	protected EmptyMazeMapItem(boolean mapOres, Properties props) {
+	public EmptyMazeMapItem(boolean mapOres, Properties props) {
 		super(props);
 		this.mapOres = mapOres;
 	}

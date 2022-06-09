@@ -20,7 +20,7 @@ import java.util.List;
 
 public class FortificationWandItem extends Item {
 
-	protected FortificationWandItem(Properties props) {
+	public FortificationWandItem(Properties props) {
 		super(props);
 	}
 

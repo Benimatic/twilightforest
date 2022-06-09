@@ -18,10 +18,8 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.TFSounds;
-
-import java.util.Random;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFSounds;
 
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.
@@ -60,7 +58,7 @@ public class HedgeSpider extends Spider {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, (ServerLevel) world) == TFFeature.HEDGE_MAZE
+		return TFLandmark.getNearestFeature(chunkX, chunkZ, (ServerLevel) world) == TFLandmark.HEDGE_MAZE
 				|| Monster.isDarkEnoughToSpawn(world, pos, random);
 	}
 

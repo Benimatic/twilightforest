@@ -16,11 +16,11 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
-import twilightforest.item.TFItems;
-import twilightforest.world.registration.TFStructures;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFStructures;
+import twilightforest.init.BiomeKeys;
 
 import java.util.function.Consumer;
 

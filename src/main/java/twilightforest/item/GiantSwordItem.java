@@ -4,7 +4,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 
-import net.minecraft.world.item.Item.Properties;
+import twilightforest.init.TFItems;
 
 public class GiantSwordItem extends SwordItem {
 

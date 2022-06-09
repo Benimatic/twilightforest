@@ -13,13 +13,13 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class CloudCastleComponent extends TFStructureComponentOld {
@@ -33,7 +33,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
-	public CloudCastleComponent(TFFeature feature, int index, int x, int y, int z) {
+	public CloudCastleComponent(TFLandmark feature, int index, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFClCa.get(), feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 

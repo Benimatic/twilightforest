@@ -6,15 +6,15 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class NagaCourtyardHedgeTJunctionComponent extends NagaCourtyardHedgeAbstractComponent {
     public NagaCourtyardHedgeTJunctionComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
         super(ctx, TFStructurePieceTypes.TFNCT.get(), nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_t"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_t_big"));
     }
 
-    public NagaCourtyardHedgeTJunctionComponent(StructureTemplateManager manager, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public NagaCourtyardHedgeTJunctionComponent(StructureTemplateManager manager, TFLandmark feature, int i, int x, int y, int z, Rotation rotation) {
         super(manager, TFStructurePieceTypes.TFNCT.get(), feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_t"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_t_big"));
     }
 }

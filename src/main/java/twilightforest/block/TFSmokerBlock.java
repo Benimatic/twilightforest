@@ -12,7 +12,7 @@ import twilightforest.block.entity.TFSmokerBlockEntity;
 
 import javax.annotation.Nullable;
 
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFBlockEntities;
 
 public class TFSmokerBlock extends BaseEntityBlock {
 

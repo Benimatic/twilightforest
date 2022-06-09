@@ -1,4 +1,4 @@
-package twilightforest.block;
+package twilightforest.init;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.*;
@@ -13,10 +13,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.*;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.item.TFItems;
 import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;

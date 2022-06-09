@@ -5,8 +5,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.EncasedSmokerBlock;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFParticleType;
 
 public class TFSmokerBlockEntity extends BlockEntity {
 

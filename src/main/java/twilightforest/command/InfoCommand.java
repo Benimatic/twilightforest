@@ -14,7 +14,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
@@ -34,8 +34,8 @@ public class InfoCommand {
 		BlockPos pos = new BlockPos(source.getPosition());
 
 		// nearest feature
-		BlockPos cc = TFFeature.getNearestCenterXYZ(pos.getX() >> 4, pos.getZ() >> 4);
-		TFFeature closestFeature = TFFeature.getFeatureAt(cc.getX(), cc.getZ(), source.getLevel());
+		BlockPos cc = TFLandmark.getNearestCenterXYZ(pos.getX() >> 4, pos.getZ() >> 4);
+		TFLandmark closestFeature = TFLandmark.getFeatureAt(cc.getX(), cc.getZ(), source.getLevel());
 		source.sendSuccess(Component.translatable("This command is still WIP, some things may still be broken.").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
 		String structurename = Component.translatable("structure." + closestFeature.name).getString();
 		source.sendSuccess(Component.translatable("commands.tffeature.nearest", structurename), false);

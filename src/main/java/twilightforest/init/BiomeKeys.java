@@ -1,4 +1,4 @@
-package twilightforest.world.registration.biomes;
+package twilightforest.init;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;

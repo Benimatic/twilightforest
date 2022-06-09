@@ -38,6 +38,7 @@ import twilightforest.client.model.tileentity.GenericTrophyModel;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
 import twilightforest.enums.BossVariant;
+import twilightforest.init.TFBlocks;
 
 import java.util.HashMap;
 import java.util.Map;

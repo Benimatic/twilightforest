@@ -9,7 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
 
 public abstract class BaseIceMob extends Monster {
 	public BaseIceMob(EntityType<? extends BaseIceMob> type, Level worldIn) {

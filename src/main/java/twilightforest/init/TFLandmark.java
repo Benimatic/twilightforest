@@ -1,4 +1,4 @@
-package twilightforest.world.registration;
+package twilightforest.init;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -32,7 +32,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.TFEntities;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
@@ -46,7 +45,7 @@ import twilightforest.world.components.structures.stronghold.StrongholdEntranceC
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 import twilightforest.world.components.structures.util.StructureHints;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -54,9 +53,10 @@ import java.util.*;
 /**
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
-public class TFFeature implements LandmarkStructure {
-	public static final TFFeature NOTHING = new TFFeature( 0, "no_feature"       , false){ { this.enableDecorations().disableStructure(); } };
-	public static final TFFeature SMALL_HILL = new TFFeature( 1, "small_hollow_hill", true, true ) {
+@Deprecated
+public class TFLandmark implements LandmarkStructure {
+	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature"       , false){ { this.enableDecorations().disableStructure(); } };
+	public static final TFLandmark SMALL_HILL = new TFLandmark( 1, "small_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -73,7 +73,7 @@ public class TFFeature implements LandmarkStructure {
 			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 3, y - 2, z - 3);
 		}
 	};
-	public static final TFFeature MEDIUM_HILL = new TFFeature( 2, "medium_hollow_hill", true, true ) {
+	public static final TFLandmark MEDIUM_HILL = new TFLandmark( 2, "medium_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -95,7 +95,7 @@ public class TFFeature implements LandmarkStructure {
 			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 7, y - 5, z - 7);
 		}
 	};
-	public static final TFFeature LARGE_HILL = new TFFeature( 3, "large_hollow_hill", true, true ) {
+	public static final TFLandmark LARGE_HILL = new TFLandmark( 3, "large_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -118,7 +118,7 @@ public class TFFeature implements LandmarkStructure {
 			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 11, y - 5, z - 11);
 		}
 	};
-	public static final TFFeature HEDGE_MAZE = new TFFeature( 2, "hedge_maze", true ) {
+	public static final TFLandmark HEDGE_MAZE = new TFLandmark( 2, "hedge_maze", true ) {
 		{
 			this.enableTerrainAlterations();
 
@@ -129,7 +129,7 @@ public class TFFeature implements LandmarkStructure {
 			return new HedgeMazeComponent(this, 0, x + 1, y + 4, z + 1);
 		}
 	};
-	public static final TFFeature QUEST_GROVE = new TFFeature( 1, "quest_grove" , true ) {
+	public static final TFLandmark QUEST_GROVE = new TFLandmark( 1, "quest_grove" , true ) {
 		{
 			this.enableTerrainAlterations();
 
@@ -141,7 +141,7 @@ public class TFFeature implements LandmarkStructure {
 			return new QuestGrove(structureManager, new BlockPos(x - 12, y, z - 12));
 		}
 	};
-	public static final TFFeature NAGA_COURTYARD = new TFFeature( 3, "naga_courtyard", true ) {
+	public static final TFLandmark NAGA_COURTYARD = new TFLandmark( 3, "naga_courtyard", true ) {
 		{
 			this.enableTerrainAlterations();
 
@@ -153,7 +153,7 @@ public class TFFeature implements LandmarkStructure {
 			return new CourtyardMain(this, rand, 0, x + 1, y + 1, z + 1, structureManager);
 		}
 	};
-	public static final TFFeature LICH_TOWER = new TFFeature( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
+	public static final TFLandmark LICH_TOWER = new TFLandmark( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
 		{
 			this.addMonster(EntityType.ZOMBIE, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -180,7 +180,7 @@ public class TFFeature implements LandmarkStructure {
 			return new TowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
-	public static final TFFeature HYDRA_LAIR = new TFFeature( 2, "hydra_lair"    , true, true, TwilightForestMod.prefix("progress_labyrinth") ) {
+	public static final TFLandmark HYDRA_LAIR = new TFLandmark( 2, "hydra_lair"    , true, true, TwilightForestMod.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -201,7 +201,7 @@ public class TFFeature implements LandmarkStructure {
 			return new HydraLairComponent(this, rand, 0, x - 7, y, z - 7);
 		}
 	};
-	public static final TFFeature LABYRINTH = new TFFeature( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {
+	public static final TFLandmark LABYRINTH = new TFLandmark( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations();
 			this.undergroundDecoAllowed = false;
@@ -236,7 +236,7 @@ public class TFFeature implements LandmarkStructure {
 			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	};
-	public static final TFFeature DARK_TOWER = new TFFeature( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
+	public static final TFLandmark DARK_TOWER = new TFLandmark( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
 			this.addMonster(TFEntities.CARMINITE_GOLEM.get(), 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -269,7 +269,7 @@ public class TFFeature implements LandmarkStructure {
 			return new DarkTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
-	public static final TFFeature KNIGHT_STRONGHOLD = new TFFeature( 3, "knight_stronghold", true, TwilightForestMod.prefix("progress_trophy_pedestal") ) {
+	public static final TFLandmark KNIGHT_STRONGHOLD = new TFLandmark( 3, "knight_stronghold", true, TwilightForestMod.prefix("progress_trophy_pedestal") ) {
 		{
 			this.enableDecorations().disableProtectionAura();
 			this.undergroundDecoAllowed = false;
@@ -304,7 +304,7 @@ public class TFFeature implements LandmarkStructure {
 			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	};
-	public static final TFFeature YETI_CAVE = new TFFeature( 2, "yeti_lairs", true, true, TwilightForestMod.prefix("progress_lich") ) {
+	public static final TFLandmark YETI_CAVE = new TFLandmark( 2, "yeti_lairs", true, true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -327,7 +327,7 @@ public class TFFeature implements LandmarkStructure {
 			return new YetiCaveComponent(this, rand, 0, x, y, z);
 		}
 	};
-	public static final TFFeature ICE_TOWER = new TFFeature( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
+	public static final TFLandmark ICE_TOWER = new TFLandmark( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
 			this.addMonster(TFEntities.SNOW_GUARDIAN.get(), 10, 4, 4)
 					.addMonster(TFEntities.STABLE_ICE_CORE.get(), 10, 4, 4)
@@ -350,7 +350,7 @@ public class TFFeature implements LandmarkStructure {
 		}
 	};
 	// TODO split cloud giants from this
-	public static final TFFeature TROLL_CAVE = new TFFeature( 4, "troll_lairs", true, TwilightForestMod.prefix("progress_merge") ) {
+	public static final TFLandmark TROLL_CAVE = new TFLandmark( 4, "troll_lairs", true, TwilightForestMod.prefix("progress_merge") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
@@ -383,7 +383,7 @@ public class TFFeature implements LandmarkStructure {
 			return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), this, 0, x, y, z);
 		}
 	};
-	public static final TFFeature FINAL_CASTLE = new TFFeature( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
+	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
 			// plain parts of the castle, like the tower maze
 			this.addMonster(TFEntities.KOBOLD.get(), 10, 4, 4)
@@ -406,7 +406,7 @@ public class TFFeature implements LandmarkStructure {
 			return new FinalCastleMainComponent(this, rand, 0, x, y, z);
 		}
 	};
-	public static final TFFeature MUSHROOM_TOWER = new TFFeature( 2, "mushroom_tower", true ) {
+	public static final TFLandmark MUSHROOM_TOWER = new TFLandmark( 2, "mushroom_tower", true ) {
 		{
 			// FIXME Incomplete
 			this.disableStructure();
@@ -419,12 +419,12 @@ public class TFFeature implements LandmarkStructure {
 			return new MushroomTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
-	public static final TFFeature QUEST_ISLAND = new TFFeature( 1, "quest_island", false ) { { this.disableStructure(); } };
+	public static final TFLandmark QUEST_ISLAND = new TFLandmark( 1, "quest_island", false ) { { this.disableStructure(); } };
 	//public static final TFFeature DRUID_GROVE    = new TFFeature( 1, "druid_grove"   , false ) { { this.disableStructure(); } };
 	//public static final TFFeature FLOATING_RUINS = new TFFeature( 3, "floating_ruins", false ) { { this.disableStructure(); } };
 	//public static final TFFeature WORLD_TREE = new TFFeature( 3, "world_tree", false ) { { this.disableStructure(); } };
 
-	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFFeature>()
+	private static final Map<ResourceLocation, TFLandmark> BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFLandmark>()
 		.put(BiomeKeys.DARK_FOREST.location(), KNIGHT_STRONGHOLD)
 		.put(BiomeKeys.DARK_FOREST_CENTER.location(), DARK_TOWER)
 		//.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
@@ -457,11 +457,11 @@ public class TFFeature implements LandmarkStructure {
 
 	private long lastSpawnedHintMonsterTime;
 
-	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
+	TFLandmark(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
 		this(size, name, featureGenerator, false, requiredAdvancements);
 	}
 
-	TFFeature(int size, String name, boolean featureGenerator, boolean centerBounds, ResourceLocation... requiredAdvancements) {
+	TFLandmark(int size, String name, boolean featureGenerator, boolean centerBounds, ResourceLocation... requiredAdvancements) {
 		this.size = size;
 		this.name = name;
 
@@ -491,7 +491,7 @@ public class TFFeature implements LandmarkStructure {
 		return this.adjustToTerrainHeight;
 	}
 
-	public static TFFeature getFeatureAt(int regionX, int regionZ, WorldGenLevel world) {
+	public static TFLandmark getFeatureAt(int regionX, int regionZ, WorldGenLevel world) {
 		return generateFeature(regionX >> 4, regionZ >> 4, world);
 	}
 
@@ -506,7 +506,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * Turns on biome-specific decorations like grass and trees near this feature.
 	 */
-	public TFFeature enableDecorations() {
+	public TFLandmark enableDecorations() {
 		this.surfaceDecorationsAllowed = true;
 		return this;
 	}
@@ -514,7 +514,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * Tell the chunkgenerator that we don't have an associated structure.
 	 */
-	public TFFeature disableStructure() {
+	public TFLandmark disableStructure() {
 		this.enableDecorations();
 		this.isStructureEnabled = false;
 		return this;
@@ -523,12 +523,12 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * Tell the chunkgenerator that we want the terrain changed nearby.
 	 */
-	public TFFeature enableTerrainAlterations() {
+	public TFLandmark enableTerrainAlterations() {
 		this.requiresTerraforming = true;
 		return this;
 	}
 
-	public TFFeature disableProtectionAura() {
+	public TFLandmark disableProtectionAura() {
 		this.hasProtectionAura = false;
 		return this;
 	}
@@ -536,7 +536,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * Add a monster to spawn list 0
 	 */
-	public TFFeature addMonster(EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
+	public TFLandmark addMonster(EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
 		this.addMonster(0, monsterClass, weight, minGroup, maxGroup);
 		return this;
 	}
@@ -544,7 +544,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * Add a monster to a specific spawn list
 	 */
-	public TFFeature addMonster(int listIndex, EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
+	public TFLandmark addMonster(int listIndex, EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
 		List<MobSpawnSettings.SpawnerData> monsterList;
 		if (this.spawnableMonsterLists.size() > listIndex) {
 			monsterList = this.spawnableMonsterLists.get(listIndex);
@@ -560,7 +560,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * Add a water creature
 	 */
-	public TFFeature addWaterCreature(EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
+	public TFLandmark addWaterCreature(EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
 		this.waterCreatureList.add(new MobSpawnSettings.SpawnerData(monsterClass, weight, minGroup, maxGroup));
 		return this;
 	}
@@ -568,7 +568,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * @return The type of feature directly at the specified Chunk coordinates
 	 */
-	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, WorldGenLevel world) {
+	public static TFLandmark getFeatureDirectlyAt(int chunkX, int chunkZ, WorldGenLevel world) {
 		if (isInFeatureChunk(chunkX << 4, chunkZ << 4)) {
 			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 		}
@@ -579,7 +579,7 @@ public class TFFeature implements LandmarkStructure {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
-	public static TFFeature generateFeature(int chunkX, int chunkZ, WorldGenLevel world) {
+	public static TFLandmark generateFeature(int chunkX, int chunkZ, WorldGenLevel world) {
 		// set the chunkX and chunkZ to the center of the biome
 		chunkX = Math.round(chunkX / 16F) * 16;
 		chunkZ = Math.round(chunkZ / 16F) * 16;
@@ -589,7 +589,7 @@ public class TFFeature implements LandmarkStructure {
 		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed());
 	}
 
-	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
+	public static TFLandmark generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
 		// Remove block comment start-marker to enable debug
 		/*if (true) {
 			return LICH_TOWER;
@@ -600,7 +600,7 @@ public class TFFeature implements LandmarkStructure {
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
-		TFFeature biomeFeature = BIOME_FEATURES.get(ForgeRegistries.BIOMES.getKey(biome));
+		TFLandmark biomeFeature = BIOME_FEATURES.get(ForgeRegistries.BIOMES.getKey(biome));
 
 		if(biomeFeature != null)
 			return biomeFeature;
@@ -633,7 +633,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * Returns the feature nearest to the specified chunk coordinates.
 	 */
-	public static TFFeature getNearestFeature(int cx, int cz, WorldGenLevel world) {
+	public static TFLandmark getNearestFeature(int cx, int cz, WorldGenLevel world) {
 		return getNearestFeature(cx, cz, world, null);
 	}
 
@@ -644,18 +644,18 @@ public class TFFeature implements LandmarkStructure {
 	 * it will be set to relative block coordinates indicating the center of
 	 * that feature relative to the current chunk block coordinate system.
 	 */
-	public static TFFeature getNearestFeature(int cx, int cz, WorldGenLevel world, @Nullable IntPair center) {
+	public static TFLandmark getNearestFeature(int cx, int cz, WorldGenLevel world, @Nullable IntPair center) {
 
 		int maxSize = getMaxSize();
 		int diam = maxSize * 2 + 1;
-		TFFeature[] features = new TFFeature[diam * diam];
+		TFLandmark[] features = new TFLandmark[diam * diam];
 
 		for (int rad = 1; rad <= maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 
 					int idx = (x + maxSize) * diam + (z + maxSize);
-					TFFeature directlyAt = features[idx];
+					TFLandmark directlyAt = features[idx];
 					if (directlyAt == null) {
 						features[idx] = directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
 					}
@@ -677,7 +677,7 @@ public class TFFeature implements LandmarkStructure {
 	// [Vanilla Copy] from MapGenStructure#findNearestStructurePosBySpacing; changed 2nd param to be TFFeature instead of MapGenStructure
 	//TODO: Second parameter doesn't exist in Structure.findNearest
 	@Nullable
-	public static BlockPos findNearestFeaturePosBySpacing(WorldGenLevel worldIn, TFFeature feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
+	public static BlockPos findNearestFeaturePosBySpacing(WorldGenLevel worldIn, TFLandmark feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
 		int i = blockPos.getX() >> 4;
 		int j = blockPos.getZ() >> 4;
 		int k = 0;
@@ -742,7 +742,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * @return The feature in the chunk "region"
 	 */
-	public static TFFeature getFeatureForRegion(int chunkX, int chunkZ, WorldGenLevel world) {
+	public static TFLandmark getFeatureForRegion(int chunkX, int chunkZ, WorldGenLevel world) {
 		//just round to the nearest multiple of 16 chunks?
 		int featureX = Math.round(chunkX / 16F) * 16;
 		int featureZ = Math.round(chunkZ / 16F) * 16;
@@ -753,7 +753,7 @@ public class TFFeature implements LandmarkStructure {
 	/**
 	 * @return The feature in the chunk "region"
 	 */
-	public static TFFeature getFeatureForRegionPos(int posX, int posZ, WorldGenLevel world) {
+	public static TFLandmark getFeatureForRegionPos(int posX, int posZ, WorldGenLevel world) {
 		return getFeatureForRegion(posX >> 4, posZ >> 4, world);
 	}
 
@@ -887,9 +887,9 @@ public class TFFeature implements LandmarkStructure {
 		if (!isValidBiome(context)) return Optional.empty();
 
 		ChunkPos chunkPos = context.chunkPos();
-		if (!TFFeature.isInFeatureChunk(chunkPos.x << 4, chunkPos.z << 4))
+		if (!TFLandmark.isInFeatureChunk(chunkPos.x << 4, chunkPos.z << 4))
 			return Optional.empty();
-		boolean dontCenter = this == TFFeature.LICH_TOWER || this == TFFeature.TROLL_CAVE || this == TFFeature.YETI_CAVE;
+		boolean dontCenter = this == TFLandmark.LICH_TOWER || this == TFLandmark.TROLL_CAVE || this == TFLandmark.YETI_CAVE;
 		int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
 		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
@@ -934,34 +934,34 @@ public class TFFeature implements LandmarkStructure {
 		};
 	}
 
-	public static boolean isTheseFeatures(TFFeature feature, TFFeature... predicates) {
-		for (TFFeature predicate : predicates)
+	public static boolean isTheseFeatures(TFLandmark feature, TFLandmark... predicates) {
+		for (TFLandmark predicate : predicates)
 			if (feature == predicate)
 				return true;
 		return false;
 	}
 
-	private static final ImmutableMap<String, TFFeature> NAME_2_TYPE = Util.make(() -> ImmutableMap.<String, TFFeature>builder()
-			.put("small_hollow_hill", TFFeature.SMALL_HILL)
-			.put("medium_hollow_hill", TFFeature.MEDIUM_HILL)
-			.put("large_hollow_hill", TFFeature.LARGE_HILL)
-			.put("hedge_maze", TFFeature.HEDGE_MAZE)
-			.put("quest_grove", TFFeature.QUEST_GROVE)
-			.put("naga_courtyard", TFFeature.NAGA_COURTYARD)
-			.put("lich_tower", TFFeature.LICH_TOWER)
-			.put("hydra_lair", TFFeature.HYDRA_LAIR)
-			.put("labyrinth", TFFeature.LABYRINTH)
-			.put("dark_tower", TFFeature.DARK_TOWER)
-			.put("knight_stronghold", TFFeature.KNIGHT_STRONGHOLD)
-			.put("yeti_lairs", TFFeature.YETI_CAVE)
-			.put("ice_tower", TFFeature.ICE_TOWER)
-			.put("troll_lairs", TFFeature.TROLL_CAVE)
-			.put("final_castle", TFFeature.FINAL_CASTLE)
-			.put("mushroom_tower", TFFeature.MUSHROOM_TOWER)
+	private static final ImmutableMap<String, TFLandmark> NAME_2_TYPE = Util.make(() -> ImmutableMap.<String, TFLandmark>builder()
+			.put("small_hollow_hill", TFLandmark.SMALL_HILL)
+			.put("medium_hollow_hill", TFLandmark.MEDIUM_HILL)
+			.put("large_hollow_hill", TFLandmark.LARGE_HILL)
+			.put("hedge_maze", TFLandmark.HEDGE_MAZE)
+			.put("quest_grove", TFLandmark.QUEST_GROVE)
+			.put("naga_courtyard", TFLandmark.NAGA_COURTYARD)
+			.put("lich_tower", TFLandmark.LICH_TOWER)
+			.put("hydra_lair", TFLandmark.HYDRA_LAIR)
+			.put("labyrinth", TFLandmark.LABYRINTH)
+			.put("dark_tower", TFLandmark.DARK_TOWER)
+			.put("knight_stronghold", TFLandmark.KNIGHT_STRONGHOLD)
+			.put("yeti_lairs", TFLandmark.YETI_CAVE)
+			.put("ice_tower", TFLandmark.ICE_TOWER)
+			.put("troll_lairs", TFLandmark.TROLL_CAVE)
+			.put("final_castle", TFLandmark.FINAL_CASTLE)
+			.put("mushroom_tower", TFLandmark.MUSHROOM_TOWER)
 			.build());
 
-	public static final Codec<TFFeature> CODEC = Codec.STRING.comapFlatMap(
-			name -> TFFeature.NAME_2_TYPE.containsKey(name) ? DataResult.success(TFFeature.NAME_2_TYPE.get(name)) : DataResult.error("Landmark " + name + " not recognized!"),
+	public static final Codec<TFLandmark> CODEC = Codec.STRING.comapFlatMap(
+			name -> TFLandmark.NAME_2_TYPE.containsKey(name) ? DataResult.success(TFLandmark.NAME_2_TYPE.get(name)) : DataResult.error("Landmark " + name + " not recognized!"),
 			tfFeature -> tfFeature.name
 	);
 }

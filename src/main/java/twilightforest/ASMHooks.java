@@ -32,14 +32,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.network.PacketDistributor;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.TFPart;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFSubFeatures;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -53,7 +53,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
-		TwilightFeatures.seed = seed;
+		TFSubFeatures.seed = seed;
 		return seed;
 	}
 
@@ -63,7 +63,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE]
 	 */
 	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
-		TwilightFeatures.seed = ((CompoundTag) seed.getValue()).getLong("seed");
+		TFSubFeatures.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 

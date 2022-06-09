@@ -3,6 +3,7 @@ package twilightforest.enchantment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import twilightforest.init.TFEnchantments;
 import twilightforest.item.ChainBlockItem;
 
 public class PreservationEnchantment extends LootOnlyEnchantment {

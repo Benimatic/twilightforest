@@ -10,7 +10,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public class CenterCommand {
@@ -27,11 +27,11 @@ public class CenterCommand {
 
         int dx = Mth.floor(source.getPosition().x());
         int dz = Mth.floor(source.getPosition().z());
-        BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4);
-        TFFeature closestFeature = TFFeature.getFeatureAt(cc.getX(), cc.getZ(), source.getLevel());
-        boolean fc = TFFeature.isInFeatureChunk(dx, dz);
+        BlockPos cc = TFLandmark.getNearestCenterXYZ(dx >> 4, dz >> 4);
+        TFLandmark closestFeature = TFLandmark.getFeatureAt(cc.getX(), cc.getZ(), source.getLevel());
+        boolean fc = TFLandmark.isInFeatureChunk(dx, dz);
 
-        if(closestFeature == TFFeature.NOTHING) {
+        if(closestFeature == TFLandmark.NOTHING) {
             source.sendSuccess(Component.translatable("commands.tffeature.none_nearby").withStyle(ChatFormatting.RED), false);
         } else {
             String structurename = Component.translatable("structure." + closestFeature.name).withStyle(ChatFormatting.DARK_GREEN).getString();

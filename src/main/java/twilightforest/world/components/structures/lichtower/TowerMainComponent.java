@@ -21,12 +21,12 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class TowerMainComponent extends TowerWingComponent {
 
@@ -34,7 +34,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFLTMai.get(), nbt);
 	}
 
-	public TowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z) {
+	public TowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
 		super(TFStructurePieceTypes.TFLTMai.get(), feature, index, x, y + 5, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class KnightmetalAxeItem extends AxeItem {
 
-	protected KnightmetalAxeItem(Tier material, Properties props) {
+	public KnightmetalAxeItem(Tier material, Properties props) {
 		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, props);
 	}
 

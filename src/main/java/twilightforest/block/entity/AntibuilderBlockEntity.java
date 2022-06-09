@@ -6,7 +6,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.BlockTagGenerator;
 
 import java.util.Random;

@@ -15,11 +15,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Component {
@@ -28,7 +28,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		super(TFStructurePieceTypes.TFFCDunEx.get(), nbt);
 	}
 
-	public FinalCastleDungeonExitComponent(TFFeature feature, int i, int x, int y, int z, Direction direction, int level) {
+	public FinalCastleDungeonExitComponent(TFLandmark feature, int i, int x, int y, int z, Direction direction, int level) {
 		super(TFStructurePieceTypes.TFFCDunEx.get(), feature, i, x, y, z, direction, level);
 	}
 

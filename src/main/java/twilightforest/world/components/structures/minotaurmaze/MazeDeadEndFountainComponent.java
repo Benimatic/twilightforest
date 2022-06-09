@@ -12,9 +12,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MazeDeadEndFountainComponent extends MazeDeadEndComponent {
@@ -27,7 +27,7 @@ public class MazeDeadEndFountainComponent extends MazeDeadEndComponent {
 		super(piece, nbt);
 	}
 
-	public MazeDeadEndFountainComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+	public MazeDeadEndFountainComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
 		super(type, feature, i, x, y, z, rotation);
 	}
 

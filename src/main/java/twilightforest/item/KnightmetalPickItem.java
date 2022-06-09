@@ -15,7 +15,7 @@ import java.util.List;
 
 public class KnightmetalPickItem extends PickaxeItem {
 
-	protected KnightmetalPickItem(Tier material, Properties props) {
+	public KnightmetalPickItem(Tier material, Properties props) {
 		super(material, 1, -2.8F, props);
 	}
 

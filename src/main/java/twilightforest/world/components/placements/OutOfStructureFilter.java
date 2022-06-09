@@ -10,10 +10,9 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFSubFeatures;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 public class OutOfStructureFilter extends PlacementModifier {
@@ -52,9 +51,9 @@ public class OutOfStructureFilter extends PlacementModifier {
 			return Stream.of(blockPos);
 
 		// Feature Center
-		BlockPos.MutableBlockPos featurePos = TFFeature.getNearestCenterXYZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
+		BlockPos.MutableBlockPos featurePos = TFLandmark.getNearestCenterXYZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
 
-		final TFFeature feature = tfChunkGen.getFeatureCached(new ChunkPos(featurePos), worldDecoratingHelper.getLevel());
+		final TFLandmark feature = tfChunkGen.getFeatureCached(new ChunkPos(featurePos), worldDecoratingHelper.getLevel());
 
 		if ((!occupiesSurface || feature.isSurfaceDecorationsAllowed()) && (!occupiesUnderground || feature.isUndergroundDecoAllowed()))
 			return Stream.of(blockPos);
@@ -68,7 +67,7 @@ public class OutOfStructureFilter extends PlacementModifier {
 
 	@Override
 	public PlacementModifierType<?> type() {
-		return TwilightFeatures.NO_STRUCTURE.get();
+		return TFSubFeatures.NO_STRUCTURE.get();
 	}
 
 	private static DataResult<OutOfStructureFilter> validate(OutOfStructureFilter config) {

@@ -15,8 +15,8 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -77,7 +77,7 @@ public class PlateauBoss extends Monster {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.FINAL_CASTLE);
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFLandmark.FINAL_CASTLE);
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

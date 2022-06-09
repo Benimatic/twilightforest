@@ -21,12 +21,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.block.Experiment115Block;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.util.TFStats;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.TFStructures;
+import twilightforest.init.TFStructures;
 
 import java.util.function.Consumer;
 

@@ -1,14 +1,14 @@
 package twilightforest.world.components.structures;
 
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 @Deprecated
 public interface TwilightFeature {
     @Deprecated // For Legacy usage
-    default void setFeature(TFFeature type) {
+    default void setFeature(TFLandmark type) {
         // Legacy hook, expect no-op
     }
 
     @Deprecated // Remove this whole class - These TFFeature labels inside StructComps serve no purpose
-    TFFeature getFeatureType();
+    TFLandmark getFeatureType();
 }

@@ -1,4 +1,4 @@
-package twilightforest.block.entity;
+package twilightforest.init;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -9,7 +9,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.block.entity.*;
+import twilightforest.init.TFBlocks;
 import twilightforest.block.entity.spawner.*;
 import twilightforest.client.renderer.tileentity.*;
 

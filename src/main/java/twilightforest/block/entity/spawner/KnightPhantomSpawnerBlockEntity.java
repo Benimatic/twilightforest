@@ -9,11 +9,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.boss.KnightPhantom;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<KnightPhantom> {
 

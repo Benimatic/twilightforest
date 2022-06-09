@@ -15,8 +15,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerRoofComponent extends TowerRoofComponent {
 
@@ -28,7 +28,7 @@ public class DarkTowerRoofComponent extends TowerRoofComponent {
 		super(piece, nbt);
 	}
 
-	public DarkTowerRoofComponent(StructurePieceType piece, TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+	public DarkTowerRoofComponent(StructurePieceType piece, TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
 		super(piece, feature, i, x, y, z);
 
 		// same alignment

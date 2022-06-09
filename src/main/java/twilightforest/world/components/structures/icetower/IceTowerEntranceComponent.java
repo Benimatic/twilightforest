@@ -13,8 +13,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class IceTowerEntranceComponent extends IceTowerWingComponent {
@@ -23,7 +23,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 		super(TFStructurePieceTypes.TFITEnt.get(), nbt);
 	}
 
-	public IceTowerEntranceComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	public IceTowerEntranceComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(TFStructurePieceTypes.TFITEnt.get(), feature, i, x, y, z, pSize, pHeight, direction);
 	}
 

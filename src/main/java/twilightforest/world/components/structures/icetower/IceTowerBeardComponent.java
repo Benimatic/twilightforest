@@ -12,8 +12,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class IceTowerBeardComponent extends TFStructureComponentOld {
@@ -27,7 +27,7 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("beardHeight");
 	}
 
-	public IceTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+	public IceTowerBeardComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFITBea.get(), feature, i, x, y, z);
 
 		// same alignment

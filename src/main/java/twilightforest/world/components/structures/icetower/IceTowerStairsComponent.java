@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class IceTowerStairsComponent extends TowerWingComponent {
@@ -24,7 +24,7 @@ public class IceTowerStairsComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFITSt.get(), nbt);
 	}
 
-	public IceTowerStairsComponent(TFFeature feature, int index, int x, int y, int z, int size, int height, Direction direction) {
+	public IceTowerStairsComponent(TFLandmark feature, int index, int x, int y, int z, int size, int height, Direction direction) {
 		super(TFStructurePieceTypes.TFITSt.get(), feature, index, x, y, z, size, height, direction);
 	}
 

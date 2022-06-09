@@ -11,11 +11,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class TrollVaultComponent extends TFStructureComponentOld {
@@ -24,7 +24,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFTCVa.get(), nbt);
 	}
 
-	public TrollVaultComponent(TFFeature feature, int index, int x, int y, int z) {
+	public TrollVaultComponent(TFLandmark feature, int index, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFTCVa.get(), feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 

@@ -14,10 +14,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdTreasureRoomComponent extends StructureTFStrongholdComponent {
@@ -29,7 +29,7 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
-	public StrongholdTreasureRoomComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdTreasureRoomComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFTreaR.get(), feature, i, facing, x, y, z);
 	}
 

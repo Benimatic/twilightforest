@@ -4,7 +4,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.block.AuroraBrickBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 public class IceTowerProcessor extends StructurePiece.BlockSelector {
 

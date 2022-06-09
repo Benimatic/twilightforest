@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import twilightforest.init.BiomeKeys;
 import twilightforest.world.components.BiomeGrassColors;
 
 import java.util.Map;

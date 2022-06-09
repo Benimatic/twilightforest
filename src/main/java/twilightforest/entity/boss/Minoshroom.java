@@ -28,15 +28,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.entity.ai.GroundAttackGoal;
 import twilightforest.entity.monster.Minotaur;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -194,7 +194,7 @@ public class Minoshroom extends Minotaur {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.LABYRINTH);
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFLandmark.LABYRINTH);
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

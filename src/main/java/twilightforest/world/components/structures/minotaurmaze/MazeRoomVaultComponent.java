@@ -11,10 +11,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MazeRoomVaultComponent extends MazeRoomComponent {
@@ -23,7 +23,7 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMRV.get(), nbt);
 	}
 
-	public MazeRoomVaultComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
+	public MazeRoomVaultComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMRV.get(), feature, i, rand, x, y, z);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns

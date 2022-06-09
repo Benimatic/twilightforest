@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nonnull;

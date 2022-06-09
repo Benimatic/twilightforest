@@ -18,13 +18,13 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.material.Material;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 import java.util.function.Predicate;
@@ -41,7 +41,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		super(piece, nbt);
 	}
 
-	public FinalCastleDungeonRoom31Component(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, Direction direction, int level) {
+	public FinalCastleDungeonRoom31Component(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, Direction direction, int level) {
 		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.spawnListIndex = 2; // dungeon monsters

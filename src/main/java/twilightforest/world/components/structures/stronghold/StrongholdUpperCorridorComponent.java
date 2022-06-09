@@ -13,8 +13,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class StrongholdUpperCorridorComponent extends StructureTFStrongholdComponent {
@@ -23,7 +23,7 @@ public class StrongholdUpperCorridorComponent extends StructureTFStrongholdCompo
 		super(TFStructurePieceTypes.TFSUCo.get(), nbt);
 	}
 
-	public StrongholdUpperCorridorComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdUpperCorridorComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSUCo.get(), feature, i, facing, x, y, z);
 	}
 

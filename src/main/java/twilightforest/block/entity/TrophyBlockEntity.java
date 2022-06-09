@@ -6,7 +6,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
 
 public class TrophyBlockEntity extends BlockEntity {
 

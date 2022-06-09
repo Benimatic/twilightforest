@@ -1,4 +1,4 @@
-package twilightforest.item;
+package twilightforest.init;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -13,17 +13,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.enums.TwilightArmorMaterial;
+import twilightforest.item.*;
 import twilightforest.util.TwilightItemTier;
 
 import javax.annotation.Nullable;

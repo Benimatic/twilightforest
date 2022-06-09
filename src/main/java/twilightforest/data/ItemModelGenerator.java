@@ -14,9 +14,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.HollowLogHorizontal;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.item.Experiment115Item;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 import static twilightforest.TwilightForestMod.prefix;
 

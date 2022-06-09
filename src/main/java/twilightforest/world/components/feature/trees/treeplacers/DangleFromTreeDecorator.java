@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFSubFeatures;
 
 public class DangleFromTreeDecorator extends TreeDecorator {
 	public static final Codec<DangleFromTreeDecorator> CODEC = RecordCodecBuilder.create(
@@ -42,7 +42,7 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<DangleFromTreeDecorator> type() {
-		return TwilightFeatures.DANGLING_DECORATOR.get();
+		return TFSubFeatures.DANGLING_DECORATOR.get();
 	}
 
 	@Override

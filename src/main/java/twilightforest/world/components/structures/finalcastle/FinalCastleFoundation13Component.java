@@ -14,11 +14,11 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.function.Predicate;
 
@@ -34,7 +34,7 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
-	public FinalCastleFoundation13Component(StructurePieceType type, TFFeature feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleFoundation13Component(StructurePieceType type, TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());

@@ -14,11 +14,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Component {
@@ -29,7 +29,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		super(TFStructurePieceTypes.TFFCBelTo.get(), nbt);
 	}
 
-	public FinalCastleBellTower21Component(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
+	public FinalCastleBellTower21Component(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
 		super(TFStructurePieceTypes.TFFCBelTo.get(), feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 		this.size = 21;
 		int floors = FLOORS;

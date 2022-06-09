@@ -16,10 +16,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 import java.util.List;
-import java.util.Random;
 
 public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
     boolean fired = false;

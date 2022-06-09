@@ -41,20 +41,20 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.ai.*;
 import twilightforest.entity.monster.LichMinion;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -328,7 +328,7 @@ public class Lich extends Monster {
 		super.die(cause);
 		// mark the tower as defeated
 		if (!this.getLevel().isClientSide() && !this.isShadowClone()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFFeature.LICH_TOWER);
+			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFLandmark.LICH_TOWER);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

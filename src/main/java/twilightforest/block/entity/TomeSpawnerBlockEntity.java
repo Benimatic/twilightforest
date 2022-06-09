@@ -10,9 +10,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
 import twilightforest.block.TomeSpawnerBlock;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 
 import java.util.Optional;
 

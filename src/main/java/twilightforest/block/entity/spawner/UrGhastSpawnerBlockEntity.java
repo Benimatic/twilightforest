@@ -5,8 +5,8 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastSpawnerBlockEntity extends BossSpawnerBlockEntity<UrGhast> {

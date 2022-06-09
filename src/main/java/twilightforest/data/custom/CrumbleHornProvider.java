@@ -1,7 +1,6 @@
 package twilightforest.data.custom;
 
 import com.google.common.collect.Maps;
-import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -16,11 +15,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import oshi.util.tuples.Pair;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFRecipes;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;

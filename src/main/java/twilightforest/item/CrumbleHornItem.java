@@ -24,9 +24,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFRecipes;
 import twilightforest.util.TFStats;
 import twilightforest.util.WorldUtil;
 

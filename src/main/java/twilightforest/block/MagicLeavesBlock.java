@@ -7,7 +7,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFBlocks;
 
 public class MagicLeavesBlock extends LeavesBlock {
 

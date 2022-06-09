@@ -29,7 +29,7 @@ import java.util.List;
 
 public class FieryPickItem extends PickaxeItem {
 
-	protected FieryPickItem(Tier toolMaterial, Properties props) {
+	public FieryPickItem(Tier toolMaterial, Properties props) {
 		super(toolMaterial, 1, -2.8F, props);
 	}
 

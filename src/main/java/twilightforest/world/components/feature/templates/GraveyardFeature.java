@@ -29,14 +29,13 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");

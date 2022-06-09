@@ -10,11 +10,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFEntities;
 import twilightforest.world.registration.ConfiguredWorldCarvers;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
-import twilightforest.world.registration.features.TFPlacedFeatures;
+import twilightforest.init.TFConfiguredFeatures;
+import twilightforest.init.TFPlacedFeatures;
 
 public abstract class BiomeHelper {
 

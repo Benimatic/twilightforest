@@ -7,10 +7,10 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleEntranceSideTowerComponent extends FinalCastleMazeTower13Component {
@@ -19,7 +19,7 @@ public class FinalCastleEntranceSideTowerComponent extends FinalCastleMazeTower1
 		super(TFStructurePieceTypes.TFFCEnSiTo.get(), nbt);
 	}
 
-	public FinalCastleEntranceSideTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
+	public FinalCastleEntranceSideTowerComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
 		super(TFStructurePieceTypes.TFFCEnSiTo.get(), feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);

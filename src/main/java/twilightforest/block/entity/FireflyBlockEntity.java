@@ -4,7 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFParticleType;
 
 import java.util.Random;
 

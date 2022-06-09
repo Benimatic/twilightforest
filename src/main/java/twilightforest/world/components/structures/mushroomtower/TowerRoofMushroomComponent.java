@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
@@ -26,7 +26,7 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFMTRoofMush.get(), nbt);
 	}
 
-	public TowerRoofMushroomComponent(TFFeature feature, int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
+	public TowerRoofMushroomComponent(TFLandmark feature, int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMTRoofMush.get(), feature, i, x, y, z);
 		this.height = wing.size;
 		int overhang = (int) (height * pHang);

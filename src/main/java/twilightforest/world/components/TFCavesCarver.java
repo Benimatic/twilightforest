@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 import java.util.Random;
 import java.util.function.Function;

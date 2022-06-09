@@ -21,11 +21,10 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
-import java.util.Random;
 
 //all the common lighting/extinguishing methods for the candelabra and skull candles are here to reduce clutter
 //it may also be handy if we decide to add more candle-based blocks in the future

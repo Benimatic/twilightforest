@@ -14,7 +14,7 @@ import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.processors.SmoothStoneVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightDoubleTemplateStructurePiece;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardWallPadder extends TwilightDoubleTemplateStructurePiece {
     public CourtyardWallPadder(StructurePieceSerializationContext ctx, CompoundTag nbt) {

@@ -13,8 +13,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 
@@ -22,7 +22,7 @@ public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 		super(TFStructurePieceTypes.TFDTEnt.get(), nbt);
 	}
 
-	protected DarkTowerEntranceComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected DarkTowerEntranceComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(TFStructurePieceTypes.TFDTEnt.get(), feature, i, x, y, z, pSize, pHeight, direction);
 	}
 

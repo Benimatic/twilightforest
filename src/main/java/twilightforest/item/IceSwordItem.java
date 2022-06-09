@@ -6,8 +6,8 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.effect.MobEffectInstance;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.potions.TFMobEffects;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFMobEffects;
 
 public class IceSwordItem extends SwordItem {
 

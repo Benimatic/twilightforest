@@ -20,9 +20,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.FluidState;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 import java.util.Set;
 
@@ -34,7 +34,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	public TFStructureDecorator deco = null;
 	public int spawnListIndex = 0;
 	@Deprecated // Serves no purpose
-	private TFFeature feature = TFFeature.NOTHING;
+	private TFLandmark feature = TFLandmark.NOTHING;
 	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
 			.add(Blocks.NETHER_BRICK_FENCE)
 			.add(Blocks.TORCH)
@@ -87,19 +87,19 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	}
 
 	@Deprecated // FIXME Boundingbox
-	public TFStructureComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+	public TFStructureComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
 		this(type, i, new BoundingBox(x, y, z, x, y, z));
 		this.feature = feature;
 	}
 
 	@Deprecated
 	@Override
-	public TFFeature getFeatureType() {
+	public TFLandmark getFeatureType() {
 		return feature;
 	}
 
 	@Override // Don't expect this to stay around
-	public void setFeature(TFFeature type) {
+	public void setFeature(TFLandmark type) {
 		this.feature = type;
 	}
 

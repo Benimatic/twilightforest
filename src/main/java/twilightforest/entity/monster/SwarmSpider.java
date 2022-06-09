@@ -20,12 +20,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.entity.TFEntities;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.TFSounds;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class SwarmSpider extends Spider {
 
@@ -141,7 +140,7 @@ public class SwarmSpider extends Spider {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, (ServerLevel) world) == TFFeature.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(world, pos, random);
+		return TFLandmark.getNearestFeature(chunkX, chunkZ, (ServerLevel) world) == TFLandmark.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(world, pos, random);
 	}
 
 	public boolean shouldSpawnMore() {

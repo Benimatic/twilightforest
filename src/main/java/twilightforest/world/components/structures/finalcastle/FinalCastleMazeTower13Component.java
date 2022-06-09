@@ -19,13 +19,13 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleMazeTower13Component extends TowerWingComponent {
@@ -44,7 +44,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		this(TFStructurePieceTypes.TFFCSiTo.get(), nbt);
 	}
 
-	public FinalCastleMazeTower13Component(StructurePieceType piece, TFFeature feature, RandomSource rand, int i, int x, int y, int z, BlockState color, Direction direction) {
+	public FinalCastleMazeTower13Component(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, BlockState color, Direction direction) {
 		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.color = color;
@@ -81,7 +81,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleMazeTower13Component(StructurePieceType piece, TFFeature feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
+	public FinalCastleMazeTower13Component(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
 		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.color = color;

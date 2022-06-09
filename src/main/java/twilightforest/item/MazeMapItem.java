@@ -24,6 +24,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.network.NetworkDirection;
 import twilightforest.TFMazeMapData;
+import twilightforest.init.TFItems;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.network.TFPacketHandler;
 
@@ -38,7 +39,7 @@ public class MazeMapItem extends MapItem {
 
 	protected final boolean mapOres;
 
-	protected MazeMapItem(boolean mapOres, Properties props) {
+	public MazeMapItem(boolean mapOres, Properties props) {
 		super(props);
 		this.mapOres = mapOres;
 	}

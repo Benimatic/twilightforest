@@ -25,15 +25,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.BreathAttackGoal;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 public class WinterWolf extends HostileWolf implements IBreathAttacker {
 

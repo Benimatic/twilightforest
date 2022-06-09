@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.ai.goal.Goal;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.boss.AlphaYeti;
 
 import java.util.EnumSet;

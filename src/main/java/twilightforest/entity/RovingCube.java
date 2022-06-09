@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
 import twilightforest.entity.ai.CubeCenterOnSymbolGoal;
 import twilightforest.entity.ai.CubeMoveToRedstoneSymbolsGoal;
 

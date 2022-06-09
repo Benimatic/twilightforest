@@ -11,10 +11,10 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.item.TFItems;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 
 import java.util.function.Consumer;

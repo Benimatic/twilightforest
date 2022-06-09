@@ -9,7 +9,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.PlantType;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFConfiguredFeatures;
 
 public class MushgloomBlock extends MushroomBlock {
 

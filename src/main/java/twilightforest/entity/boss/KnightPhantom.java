@@ -34,18 +34,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.ai.PhantomAttackStartGoal;
 import twilightforest.entity.ai.PhantomThrowWeaponGoal;
 import twilightforest.entity.ai.PhantomUpdateFormationAndMoveGoal;
 import twilightforest.entity.ai.PhantomWatchAndAttackGoal;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.TFDamageSources;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -191,7 +191,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 			}
 
 			// mark the stronghold as defeated
-			TFGenerationSettings.markStructureConquered(level, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
+			TFGenerationSettings.markStructureConquered(level, treasurePos, TFLandmark.KNIGHT_STRONGHOLD);
 
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);

@@ -10,8 +10,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerRoofFourPostComponent extends DarkTowerRoofComponent {
 
@@ -19,7 +19,7 @@ public class DarkTowerRoofFourPostComponent extends DarkTowerRoofComponent {
 		super(TFStructurePieceTypes.TFDTRFP.get(), nbt);
 	}
 
-	public DarkTowerRoofFourPostComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+	public DarkTowerRoofFourPostComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFDTRFP.get(), feature, i, wing, x, y, z);
 	}
 

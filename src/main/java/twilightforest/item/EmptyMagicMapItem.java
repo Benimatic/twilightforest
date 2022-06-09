@@ -15,7 +15,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public class EmptyMagicMapItem extends ComplexItem {
-	protected EmptyMagicMapItem(Properties props) {
+	public EmptyMagicMapItem(Properties props) {
 		super(props);
 	}
 

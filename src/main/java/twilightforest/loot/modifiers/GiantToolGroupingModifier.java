@@ -21,8 +21,8 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
-import twilightforest.block.TFBlocks;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 
 //FIXME I simply migrated this out of TFEventListener, it somehow needs to be redone in a more sane way.
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)

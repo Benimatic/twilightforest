@@ -2,7 +2,7 @@ package twilightforest.client;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 public class RenderLayerRegistration {
 	public static void init() {

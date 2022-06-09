@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.projectile.MoonwormShot;
 
 import javax.annotation.Nonnull;
@@ -36,9 +36,9 @@ import java.util.Objects;
 
 public class MoonwormQueenItem extends Item {
 
-	protected static final int FIRING_TIME = 12;
+	public static final int FIRING_TIME = 12;
 
-	protected MoonwormQueenItem(Properties props) {
+	public MoonwormQueenItem(Properties props) {
 		super(props);
 	}
 

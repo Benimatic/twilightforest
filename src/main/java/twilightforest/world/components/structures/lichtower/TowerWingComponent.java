@@ -32,13 +32,13 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleBlock;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandle;
@@ -93,12 +93,12 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected int highestOpening;
 	protected boolean[] openingTowards = new boolean[]{false, false, true, false};
 
-	protected TowerWingComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+	protected TowerWingComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 		this.highestOpening = 0;
 	}
 
-	protected TowerWingComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected TowerWingComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(type, feature, i, x, y, z);
 
 		this.size = pSize;

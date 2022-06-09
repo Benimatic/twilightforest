@@ -12,10 +12,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MazeRoomBossComponent extends MazeRoomComponent {
@@ -24,7 +24,7 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMRB.get(), nbt);
 	}
 
-	public MazeRoomBossComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
+	public MazeRoomBossComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMRB.get(), feature, i, rand, x, y, z);
 	}
 

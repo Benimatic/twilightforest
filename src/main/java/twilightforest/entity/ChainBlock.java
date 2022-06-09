@@ -27,11 +27,11 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.block.MazestoneBlock;
-import twilightforest.enchantment.TFEnchantments;
+import twilightforest.init.TFEnchantments;
 import twilightforest.entity.monster.BlockChainGoblin;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 

@@ -19,9 +19,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.init.TFConfiguredFeatures;
 
 
 
@@ -34,7 +34,7 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
-	public StrongholdAtriumComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StrongholdAtriumComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSAt.get(), feature, i, facing, x, y, z);
 	}
 

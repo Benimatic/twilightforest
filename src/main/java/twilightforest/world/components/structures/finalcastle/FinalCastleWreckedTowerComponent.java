@@ -9,10 +9,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 		super(TFStructurePieceTypes.TFFCWrT.get(), nbt);
 	}
 
-	public FinalCastleWreckedTowerComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
+	public FinalCastleWreckedTowerComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
 		super(TFStructurePieceTypes.TFFCWrT.get(), feature, rand, i, x, y, z, direction);
 	}
 

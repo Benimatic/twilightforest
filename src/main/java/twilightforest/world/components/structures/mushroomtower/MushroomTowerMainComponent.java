@@ -9,12 +9,12 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
@@ -23,11 +23,11 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 		super(TFStructurePieceTypes.TFMTMai.get(), nbt);
 	}
 
-	public MushroomTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z) {
+	public MushroomTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
 		this(feature, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, Direction.NORTH);
 	}
 
-	public MushroomTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
+	public MushroomTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFMTMai.get(), feature, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
 
 //		// check to make sure we can build the whole tower
@@ -47,7 +47,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 		}
 	}
 
-	protected MushroomTowerMainComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected MushroomTowerMainComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(TFStructurePieceTypes.TFMTMai.get(), feature, i, x, y, z, pSize, pHeight, direction);
 	}
 

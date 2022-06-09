@@ -22,11 +22,12 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFMagicMapData;
+import twilightforest.init.TFItems;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class MagicMapItem extends MapItem {
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
-	protected MagicMapItem(Properties props) {
+	public MagicMapItem(Properties props) {
 		super(props);
 	}
 
@@ -158,10 +159,10 @@ public class MagicMapItem extends MapItem {
 							// look for TF features
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
-							if (TFFeature.isInFeatureChunk(worldX, worldZ)) {
+							if (TFLandmark.isInFeatureChunk(worldX, worldZ)) {
 								byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
 								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
-								TFFeature feature = TFFeature.getFeatureAt(worldX, worldZ, (ServerLevel) world);
+								TFLandmark feature = TFLandmark.getFeatureAt(worldX, worldZ, (ServerLevel) world);
 								TFMagicMapData tfData = (TFMagicMapData) data;
 								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature, mapX, mapZ, (byte) 8));
 								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);

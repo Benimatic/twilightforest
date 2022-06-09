@@ -9,7 +9,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 public class SteeleafAxeItem extends AxeItem {
 
-	protected SteeleafAxeItem(Tier material, Properties props) {
+	public SteeleafAxeItem(Tier material, Properties props) {
 		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, props);
 	}
 

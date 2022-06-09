@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import net.minecraft.world.level.material.Material;
 import twilightforest.TFConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
 	}
 
-	public StructureTFStrongholdComponent(StructurePieceType type, TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent(StructurePieceType type, TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setOrientation(facing);
@@ -503,6 +503,6 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 
 	public interface Factory<T extends StructureTFStrongholdComponent> {
 
-		T newInstance(TFFeature feature, int i, Direction facing, int x, int y, int z);
+		T newInstance(TFLandmark feature, int i, Direction facing, int x, int y, int z);
 	}
 }

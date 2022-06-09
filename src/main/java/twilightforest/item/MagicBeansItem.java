@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nonnull;
 
@@ -29,7 +29,7 @@ public class MagicBeansItem extends Item {
 
 	private int blocksSkipped;
 
-	protected MagicBeansItem(Properties props) {
+	public MagicBeansItem(Properties props) {
 		super(props);
 	}
 

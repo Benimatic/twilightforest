@@ -24,11 +24,11 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;

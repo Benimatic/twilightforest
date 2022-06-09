@@ -4,6 +4,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import twilightforest.init.TFBlocks;
 
 public class UnripeTorchClusterBlock extends TrollRootBlock {
 	private static final int RIPEN_THRESHOLD = 6;

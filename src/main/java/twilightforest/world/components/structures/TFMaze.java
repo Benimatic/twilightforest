@@ -10,8 +10,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFConfiguredFeatures;
 
 /**
  * This is a maze of cells and walls.

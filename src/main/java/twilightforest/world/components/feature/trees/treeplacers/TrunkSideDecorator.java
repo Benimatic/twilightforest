@@ -5,12 +5,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFSubFeatures;
 
 public class TrunkSideDecorator extends TreeDecorator {
 	public static final Codec<TrunkSideDecorator> CODEC = RecordCodecBuilder.create(
@@ -33,7 +32,7 @@ public class TrunkSideDecorator extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<TrunkSideDecorator> type() {
-		return TwilightFeatures.TRUNKSIDE_DECORATOR.get();
+		return TFSubFeatures.TRUNKSIDE_DECORATOR.get();
 	}
 
 	@Override

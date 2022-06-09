@@ -8,11 +8,12 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.TFSounds;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFSounds;
 import twilightforest.block.FireJetBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
 import twilightforest.util.TFDamageSources;
 
 import java.util.List;

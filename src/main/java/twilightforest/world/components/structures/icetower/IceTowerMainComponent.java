@@ -11,8 +11,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class IceTowerMainComponent extends IceTowerWingComponent {
@@ -23,11 +23,11 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
 
-	public IceTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z) {
+	public IceTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
 		this(feature, rand, index, x + SIZE, y + 40, z + SIZE, Direction.NORTH);
 	}
 
-	public IceTowerMainComponent(TFFeature feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
+	public IceTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFITMai.get(), feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator

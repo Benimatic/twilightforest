@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.enums.Diagonals;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponent;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 public abstract class StructureMazeGenerator extends TFStructureComponent {
     protected int[][] maze;
@@ -47,7 +47,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
         this.structureManager = structureManager;
     }
 
-    StructureMazeGenerator(StructurePieceType type, TFFeature feature, RandomSource rand, int i, int widthInCellCount, int heightInCellCount, int x, int y, int z, StructureTemplateManager structureManager) {
+    StructureMazeGenerator(StructurePieceType type, TFLandmark feature, RandomSource rand, int i, int widthInCellCount, int heightInCellCount, int x, int y, int z, StructureTemplateManager structureManager) {
         super(type, feature, i, x, y, z);
         this.widthInCellCount = widthInCellCount;
         this.heightInCellCount = heightInCellCount;

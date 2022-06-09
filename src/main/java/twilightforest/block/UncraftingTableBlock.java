@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.util.TFStats;
 

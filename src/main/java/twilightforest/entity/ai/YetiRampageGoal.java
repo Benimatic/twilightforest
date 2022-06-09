@@ -2,8 +2,8 @@ package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.projectile.IceBomb;
 import twilightforest.entity.boss.AlphaYeti;
 

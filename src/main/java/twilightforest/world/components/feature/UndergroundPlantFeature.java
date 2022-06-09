@@ -7,11 +7,9 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.block.TFPlantBlock;
 import twilightforest.block.TrollRootBlock;
-
-import java.util.Random;
 
 public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 

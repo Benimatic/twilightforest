@@ -13,12 +13,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlocks;
 import twilightforest.entity.projectile.IceBomb;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 public class TFDispenserBehaviors {
 

@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.server.level.ServerLevel;
 import twilightforest.entity.monster.TowerwoodBorer;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 
 public class InfestedTowerwoodBlock extends FlammableBlock {
 

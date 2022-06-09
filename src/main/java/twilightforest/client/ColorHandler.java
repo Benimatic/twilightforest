@@ -16,10 +16,10 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.HollowLogClimbable;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.item.ArcticArmorItem;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 import java.awt.*;
 

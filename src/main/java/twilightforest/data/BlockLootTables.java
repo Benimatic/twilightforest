@@ -31,7 +31,8 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.common.Tags;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 
 import java.util.HashSet;
 import java.util.Set;

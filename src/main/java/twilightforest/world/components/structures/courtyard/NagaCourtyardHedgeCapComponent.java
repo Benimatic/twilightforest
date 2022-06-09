@@ -6,8 +6,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class NagaCourtyardHedgeCapComponent extends NagaCourtyardHedgeAbstractComponent {
 
@@ -16,7 +16,7 @@ public class NagaCourtyardHedgeCapComponent extends NagaCourtyardHedgeAbstractCo
     }
 
     @SuppressWarnings("WeakerAccess")
-    public NagaCourtyardHedgeCapComponent(StructureTemplateManager manager, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public NagaCourtyardHedgeCapComponent(StructureTemplateManager manager, TFLandmark feature, int i, int x, int y, int z, Rotation rotation) {
         super(manager, TFStructurePieceTypes.TFNCCp.get(), feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_big"));
     }
 }

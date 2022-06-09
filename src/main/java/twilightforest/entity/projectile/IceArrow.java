@@ -11,8 +11,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import twilightforest.entity.TFEntities;
-import twilightforest.potions.TFMobEffects;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFMobEffects;
 
 public class IceArrow extends TFArrow {
 

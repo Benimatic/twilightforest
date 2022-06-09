@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.projectile.LichBolt;
 import twilightforest.entity.projectile.LichBomb;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 
 import java.util.EnumSet;
 

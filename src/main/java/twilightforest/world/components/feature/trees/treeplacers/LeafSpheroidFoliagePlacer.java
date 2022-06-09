@@ -14,9 +14,8 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.util.FeaturePlacers;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFSubFeatures;
 
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
@@ -55,7 +54,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<LeafSpheroidFoliagePlacer> type() {
-        return TwilightFeatures.FOLIAGE_SPHEROID.get();
+        return TFSubFeatures.FOLIAGE_SPHEROID.get();
     }
 
     @Override

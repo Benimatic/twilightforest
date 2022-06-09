@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class IceTowerBridgeComponent extends TFStructureComponentOld {
@@ -27,7 +27,7 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 		this.length = nbt.getInt("bridgeLength");
 	}
 
-	public IceTowerBridgeComponent(TFFeature feature, int index, int x, int y, int z, int length, Direction direction) {
+	public IceTowerBridgeComponent(TFLandmark feature, int index, int x, int y, int z, int length, Direction direction) {
 		super(TFStructurePieceTypes.TFITBri.get(), feature, index, x, y, z);
 		this.length = length;
 		this.setOrientation(direction);

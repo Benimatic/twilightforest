@@ -13,9 +13,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFRecipes;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TransformPowderItem extends Item {
 
-	protected TransformPowderItem(Properties props) {
+	public TransformPowderItem(Properties props) {
 		super(props);
 	}
 

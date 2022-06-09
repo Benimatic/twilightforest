@@ -12,9 +12,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardMain extends StructureMazeGenerator {
 	static final int ROW_OF_CELLS = 8;
@@ -33,7 +33,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
 	}
 
-	public CourtyardMain(TFFeature feature, RandomSource rand, int i, int x, int y, int z, StructureTemplateManager structureManager) {
+	public CourtyardMain(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, StructureTemplateManager structureManager) {
 		super(TFStructurePieceTypes.TFNCMn.get(), feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
 
 		this.setOrientation(Direction.NORTH);

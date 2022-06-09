@@ -11,8 +11,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOld {
@@ -21,7 +21,7 @@ public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOl
 		super(TFStructurePieceTypes.TFFCDunBoR.get(), nbt);
 	}
 
-	public FinalCastleDungeonForgeRoomComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
+	public FinalCastleDungeonForgeRoomComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
 		super(TFStructurePieceTypes.TFFCDunBoR.get(), feature, i, x, y, z);
 		this.spawnListIndex = 3; // forge monsters
 		this.setOrientation(direction);

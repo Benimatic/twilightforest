@@ -10,10 +10,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFSubFeatures;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class TrunkRiser extends TrunkPlacer {
@@ -36,7 +35,7 @@ public class TrunkRiser extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<TrunkRiser> type() {
-        return TwilightFeatures.TRUNK_RISER.get();
+        return TFSubFeatures.TRUNK_RISER.get();
     }
 
     @Override

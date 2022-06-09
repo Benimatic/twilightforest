@@ -17,11 +17,11 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMain.get(), nbt);
 	}
 
-	public FinalCastleMainComponent(TFFeature feature, RandomSource rand, int i, int x, int y, int z) {
+	public FinalCastleMainComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCMain.get(), feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
@@ -43,7 +43,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
 
-		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
+		BlockPos cc = TFLandmark.getNearestCenterXYZ(x >> 4, z >> 4);
 
 		int cx = (x >> 8) << 8;
 		int cz = (z >> 8) << 8;

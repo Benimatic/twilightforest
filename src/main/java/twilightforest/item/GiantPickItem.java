@@ -11,14 +11,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.GiantBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class GiantPickItem extends PickaxeItem {
 
-	protected GiantPickItem(Tier material, Properties props) {
+	public GiantPickItem(Tier material, Properties props) {
 		super(material, 8, -3.5F, props);
 	}
 

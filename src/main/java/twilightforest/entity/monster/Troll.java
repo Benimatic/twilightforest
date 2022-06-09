@@ -31,15 +31,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.projectile.ThrownBlock;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
-import java.util.Random;
 
 public class Troll extends Monster implements RangedAttackMob {
 

@@ -23,16 +23,16 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.init.TFConfiguredFeatures;
 
 import java.util.Objects;
 
@@ -55,7 +55,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("height");
 	}
 
-	public TrollCaveMainComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+	public TrollCaveMainComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH); // DEPTH_AVERAGE
 

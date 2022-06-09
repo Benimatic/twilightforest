@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.entity.RedThreadBlockEntity;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nullable;
 

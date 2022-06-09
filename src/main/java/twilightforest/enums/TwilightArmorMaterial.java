@@ -7,8 +7,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFSounds;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFItems;
 
 import java.util.function.Supplier;
 

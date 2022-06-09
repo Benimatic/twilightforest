@@ -27,11 +27,10 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import twilightforest.entity.SlideBlock;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class SliderBlock extends RotatedPillarBlock implements SimpleWaterloggedBlock {
 

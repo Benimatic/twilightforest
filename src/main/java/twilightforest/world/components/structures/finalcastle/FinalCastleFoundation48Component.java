@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleFoundation48Component extends TFStructureComponentOld {
@@ -25,7 +25,7 @@ public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleFoundation48Component(TFFeature feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleFoundation48Component(TFLandmark feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCToF48.get(), feature, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());

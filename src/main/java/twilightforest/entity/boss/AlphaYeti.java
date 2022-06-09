@@ -33,12 +33,12 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFParticleType;
 import twilightforest.entity.IHostileMount;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.ai.ThrowRiderGoal;
 import twilightforest.entity.ai.YetiRampageGoal;
 import twilightforest.entity.ai.YetiTiredGoal;
@@ -47,7 +47,7 @@ import twilightforest.entity.projectile.IceBomb;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -387,7 +387,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		super.die(cause);
 		// mark the lair as defeated
 		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.YETI_CAVE);
+			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFLandmark.YETI_CAVE);
 			for(ServerPlayer player : hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

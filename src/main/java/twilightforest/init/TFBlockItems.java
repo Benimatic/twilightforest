@@ -1,4 +1,4 @@
-package twilightforest.block;
+package twilightforest.init;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +14,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.block.HollowLogClimbable;
+import twilightforest.block.HollowLogHorizontal;
+import twilightforest.block.HollowLogVertical;
 import twilightforest.client.ISTER;
 import twilightforest.item.*;
 

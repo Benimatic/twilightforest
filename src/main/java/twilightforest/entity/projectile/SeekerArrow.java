@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.List;

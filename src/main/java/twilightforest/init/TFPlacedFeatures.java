@@ -1,4 +1,4 @@
-package twilightforest.world.registration.features;
+package twilightforest.init;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Holder;
@@ -14,13 +14,13 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
 import twilightforest.world.components.placements.ChunkCenterModifier;
 import twilightforest.world.components.placements.OutOfStructureFilter;
 
 import java.util.List;
 
+// TODO Convert to Deferred?
 public class TFPlacedFeatures {
 
 	public static final Holder<PlacedFeature> PLACED_LAKE_LAVA = register("lava_lake", TFConfiguredFeatures.LAKE_LAVA, tfFeatureCheckArea(OutOfStructureFilter.checkBoth(), 10).build());

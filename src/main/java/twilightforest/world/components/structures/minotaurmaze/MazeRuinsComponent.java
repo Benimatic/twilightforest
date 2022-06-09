@@ -13,8 +13,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 /**
@@ -28,7 +28,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFMMRuins.get(), nbt);
 	}
 
-	public MazeRuinsComponent(TFFeature feature, int i, int x, int y, int z) {
+	public MazeRuinsComponent(TFLandmark feature, int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMRuins.get(), feature, i, feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH));
 		this.setOrientation(Direction.SOUTH);
 	}

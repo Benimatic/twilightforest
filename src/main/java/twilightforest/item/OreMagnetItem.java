@@ -26,7 +26,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.util.VoxelBresenhamIterator;
@@ -40,7 +40,7 @@ public class OreMagnetItem extends Item {
 
 	private static final float WIGGLE = 10F;
 
-	protected OreMagnetItem(Properties props) {
+	public OreMagnetItem(Properties props) {
 		super(props);
 	}
 

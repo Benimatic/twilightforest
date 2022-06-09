@@ -16,13 +16,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import twilightforest.block.TFBlocks;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class GiantMiner extends Monster {
 

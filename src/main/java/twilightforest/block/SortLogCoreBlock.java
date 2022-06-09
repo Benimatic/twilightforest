@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;

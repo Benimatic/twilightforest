@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 public class CuriosCharmItem extends Item {
 
-	CuriosCharmItem(Properties props) {
+	public CuriosCharmItem(Properties props) {
 		super(props);
 	}
 

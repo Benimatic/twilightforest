@@ -9,9 +9,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import twilightforest.block.TFBlocks;
-
-import java.util.Random;
+import twilightforest.init.TFBlocks;
 
 /**
  * Generate huge lily pads

@@ -13,10 +13,10 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.ArrayList;
 
@@ -31,7 +31,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 		super(piece, nbt);
 	}
 
-	public FinalCastleDamagedTowerComponent(StructurePieceType piece, TFFeature feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
+	public FinalCastleDamagedTowerComponent(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
 		super(piece, feature, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);  //TODO: change rune color
 	}
 

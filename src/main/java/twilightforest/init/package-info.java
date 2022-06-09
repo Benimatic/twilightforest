@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package twilightforest.world.registration.features;
+package twilightforest.init;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

@@ -6,8 +6,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.BiomeKeys;
 
 public class TFSurfaceRules {
 

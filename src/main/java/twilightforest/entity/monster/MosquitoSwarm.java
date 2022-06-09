@@ -18,9 +18,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import twilightforest.TFSounds;
-
-import java.util.Random;
+import twilightforest.init.TFSounds;
 
 public class MosquitoSwarm extends Monster {
 

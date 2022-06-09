@@ -19,15 +19,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nonnull;
 
 public class LampOfCindersItem extends Item {
 	private static final int FIRING_TIME = 12;
 
-	LampOfCindersItem(Properties props) {
+	public LampOfCindersItem(Properties props) {
 		super(props);
 	}
 

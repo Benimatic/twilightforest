@@ -22,11 +22,10 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class MazeSlime extends Slime {
 

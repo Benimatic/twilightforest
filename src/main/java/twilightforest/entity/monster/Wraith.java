@@ -21,12 +21,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.util.TFDamageSources;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class Wraith extends FlyingMob implements Enemy {
 

@@ -9,7 +9,7 @@ import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.block.entity.TwilightChestEntity;
 
 import java.util.EnumMap;

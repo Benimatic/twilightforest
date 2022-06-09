@@ -17,13 +17,11 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
-import twilightforest.TFSounds;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFParticleType;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 import twilightforest.util.WorldUtil;
-
-import java.util.Random;
 
 public class CubeOfAnnihilation extends ThrowableProjectile {
 

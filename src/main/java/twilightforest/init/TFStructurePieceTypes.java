@@ -1,4 +1,4 @@
-package twilightforest.world.registration;
+package twilightforest.init;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;

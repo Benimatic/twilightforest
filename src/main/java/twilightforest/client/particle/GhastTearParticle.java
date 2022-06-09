@@ -13,7 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 @OnlyIn(Dist.CLIENT)
 public class GhastTearParticle extends TextureSheetParticle {

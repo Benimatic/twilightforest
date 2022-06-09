@@ -11,7 +11,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import twilightforest.TwilightForestMod;
 
 public class NagaArmorItem extends ArmorItem {
-	protected NagaArmorItem(ArmorMaterial materialIn, EquipmentSlot equipmentSlotIn, Properties props) {
+	public NagaArmorItem(ArmorMaterial materialIn, EquipmentSlot equipmentSlotIn, Properties props) {
 		super(materialIn, equipmentSlotIn, props);
 	}
 

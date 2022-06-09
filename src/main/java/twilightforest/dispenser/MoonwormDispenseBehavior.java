@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 //[VanillaCopy] of ProjectileDispenseBehavior, but it damages the moonworm queen instead of using it up every shot
 public abstract class MoonwormDispenseBehavior extends DefaultDispenseItemBehavior {

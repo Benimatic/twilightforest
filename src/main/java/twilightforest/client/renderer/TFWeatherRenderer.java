@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import java.util.Random;
 

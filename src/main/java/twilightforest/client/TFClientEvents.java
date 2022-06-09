@@ -41,13 +41,14 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.world.registration.TFGenerationSettings;
 

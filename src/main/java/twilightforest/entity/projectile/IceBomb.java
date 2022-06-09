@@ -17,9 +17,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.Yeti;
-import twilightforest.potions.TFMobEffects;
+import twilightforest.init.TFMobEffects;
 import twilightforest.util.TFDamageSources;
 
 import java.util.List;

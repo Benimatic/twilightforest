@@ -10,9 +10,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import twilightforest.block.TFBlocks;
-
-import java.util.Random;
+import twilightforest.init.TFBlocks;
 
 public class TFGenLampposts extends Feature<BlockStateConfiguration> {
 

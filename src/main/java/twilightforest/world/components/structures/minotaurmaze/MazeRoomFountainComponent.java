@@ -10,9 +10,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.TFStructurePieceTypes;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MazeRoomFountainComponent extends MazeRoomComponent {
@@ -21,7 +21,7 @@ public class MazeRoomFountainComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMRF.get(), nbt);
 	}
 
-	public MazeRoomFountainComponent(TFFeature feature, int i, RandomSource rand, int x, int y, int z) {
+	public MazeRoomFountainComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMRF.get(), feature, i, rand, x, y, z);
 	}
 

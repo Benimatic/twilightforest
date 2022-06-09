@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
 import twilightforest.block.CinderFurnaceBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nullable;
 

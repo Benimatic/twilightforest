@@ -18,9 +18,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import twilightforest.entity.TFEntities;
-
-import java.util.Random;
+import twilightforest.init.TFEntities;
 
 public class Penguin extends Bird {
 	public Penguin(EntityType<? extends Penguin> type, Level world) {
