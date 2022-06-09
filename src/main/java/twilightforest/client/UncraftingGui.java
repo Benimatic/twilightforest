@@ -226,7 +226,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 		private final boolean up;
 
 		CycleButton(int x, int y, boolean up, OnPress onClick) {
-			super(x, y, 14, 9, TextComponent.EMPTY, onClick);
+			super(x, y, 14, 9, Component.empty(), onClick);
 			this.up = up;
 		}
 
@@ -275,7 +275,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 		private final boolean up;
 
 		CycleButtonMini(int x, int y, boolean up, OnPress onClick) {
-			super(x, y, 8, 6, TextComponent.EMPTY, onClick);
+			super(x, y, 8, 6, Component.empty(), onClick);
 			this.up = up;
 		}
 

@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -61,7 +62,7 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 					for (RenderType type : RenderType.chunkBufferLayers()) {
 						if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
 							ForgeHooksClient.setRenderType(type);
-							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
+							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, RandomSource.create(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
 						}
 					}
 					ForgeHooksClient.setRenderType(null);

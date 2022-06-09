@@ -54,7 +54,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 					int y = Mth.clamp(QuartPos.fromBlock(dy), minY, maxY);
 					if (section.getBiomes().get(x & 3, y & 3, z & 3).is(target))
 						continue;
-					section.getBiomes().set(x & 3, y & 3, z & 3, biome);
+					//section.getBiomes().set(x & 3, y & 3, z & 3, biome); FIXME
 				}
 			}
 

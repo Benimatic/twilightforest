@@ -189,11 +189,6 @@ public class TFBiomeProvider extends BiomeSource {
 		return TF_CODEC;
 	}
 
-	@Override
-	public BiomeSource withSeed(long l) {
-		return new TFBiomeProvider(l, registry, biomeList, baseOffset, baseFactor);
-	}
-
 	public float getBaseOffset() {
 		return this.baseOffset;
 	}

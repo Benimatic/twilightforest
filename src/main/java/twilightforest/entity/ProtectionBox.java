@@ -63,11 +63,6 @@ public class ProtectionBox extends Entity {
 	}
 
 	@Override
-	public float getBrightness() {
-		return 1.0F;
-	}
-
-	@Override
 	protected void defineSynchedData() {}
 
 	@Override
