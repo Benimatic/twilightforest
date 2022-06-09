@@ -143,7 +143,6 @@ public class TwilightForestMod {
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
-		modbus.addGenericListener(Structure.class, TFStructures::register);
 //		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
 //			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 //		}
@@ -215,7 +214,6 @@ public class TwilightForestMod {
 	public static void init(FMLCommonSetupEvent evt) {
 		TFPacketHandler.init();
 		TFAdvancements.init();
-		BiomeKeys.addBiomeTypes();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
