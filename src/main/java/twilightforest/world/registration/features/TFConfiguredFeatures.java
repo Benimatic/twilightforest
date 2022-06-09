@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -60,7 +61,7 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> FIREFLY_LAMPPOST = register("firefly_lamppost", TFBiomeFeatures.LAMPPOSTS.get(), new BlockStateConfiguration(TFBlocks.FIREFLY_JAR.get().defaultBlockState()));
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> MONOLITH = register("monolith", TFBiomeFeatures.MONOLITH.get(), FeatureConfiguration.NONE);
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> MUSHGLOOM_CLUSTER = register("mushgloom_cluster", Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.MUSHGLOOM.get()))));
-	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> MYCELIUM_BLOB = register("mycelium_blob", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(Blocks.MYCELIUM.defaultBlockState(), UniformInt.of(4, 6), 3, ImmutableList.of(Blocks.GRASS_BLOCK.defaultBlockState())));
+	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> MYCELIUM_BLOB = register("mycelium_blob", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.MYCELIUM), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK), UniformInt.of(4, 6), 3));
 	public static final Holder<ConfiguredFeature<SpikeConfig, ?>> OUTSIDE_STALAGMITE = register("outside_stalagmite", TFBiomeFeatures.CAVE_STALACTITE.get(), new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(5, 10), ConstantInt.of(0), false));
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> PLANT_ROOTS = register("plant_roots", TFBiomeFeatures.UNDERGROUND_PLANTS.get(), new BlockStateConfiguration(TFBlocks.ROOT_STRAND.get().defaultBlockState()));
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> PUMPKIN_LAMPPOST = register("pumpkin_lamppost", TFBiomeFeatures.LAMPPOSTS.get(), new BlockStateConfiguration(Blocks.JACK_O_LANTERN.defaultBlockState()));
@@ -105,10 +106,10 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> DARK_DEAD_BUSHES = register("dark_dead_bushes", TFBiomeFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.DEAD_BUSH)), List.of(Blocks.GRASS_BLOCK), 50));
 
 	//troll caves special stuff
-	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> UBEROUS_SOIL_PATCH_BIG = register("uberous_soil_patch_big", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(TFBlocks.UBEROUS_SOIL.get().defaultBlockState(), UniformInt.of(4, 8), 1, ImmutableList.of(Blocks.PODZOL.defaultBlockState(), Blocks.COARSE_DIRT.defaultBlockState(), Blocks.DIRT.defaultBlockState())));
-	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> TROLL_CAVE_MYCELIUM =  register("troll_cave_mycelium", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(Blocks.MYCELIUM.defaultBlockState(), UniformInt.of(3, 5), 0, ImmutableList.of(Blocks.STONE.defaultBlockState(), TFBlocks.DEADROCK.get().defaultBlockState())));
-	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> TROLL_CAVE_DIRT = register("troll_cave_dirt", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(Blocks.DIRT.defaultBlockState(), UniformInt.of(2, 5), 0, ImmutableList.of(Blocks.STONE.defaultBlockState(), TFBlocks.DEADROCK.get().defaultBlockState())));
-	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> UBEROUS_SOIL_PATCH_SMALL = register("uberous_soil_patch_small", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(TFBlocks.UBEROUS_SOIL.get().defaultBlockState(), UniformInt.of(2, 3), 0, ImmutableList.of(Blocks.PODZOL.defaultBlockState(), Blocks.COARSE_DIRT.defaultBlockState(), Blocks.DIRT.defaultBlockState())));
+	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> UBEROUS_SOIL_PATCH_BIG = register("uberous_soil_patch_big", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(TFBlocks.UBEROUS_SOIL.get()), BlockPredicate.matchesBlocks(Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.DIRT), UniformInt.of(4, 8), 1));
+	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> TROLL_CAVE_MYCELIUM =  register("troll_cave_mycelium", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.MYCELIUM), BlockPredicate.matchesBlocks(Blocks.STONE, TFBlocks.DEADROCK.get()), UniformInt.of(3, 5), 0));
+	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> TROLL_CAVE_DIRT = register("troll_cave_dirt", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.DIRT), BlockPredicate.matchesBlocks(Blocks.STONE, TFBlocks.DEADROCK.get()), UniformInt.of(2, 5), 0));
+	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> UBEROUS_SOIL_PATCH_SMALL = register("uberous_soil_patch_small", TFBiomeFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(TFBlocks.UBEROUS_SOIL.get()), BlockPredicate.matchesBlocks(Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.DIRT), UniformInt.of(2, 3), 0));
 
 	//Trees!
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> TWILIGHT_OAK_TREE = register("tree/twilight_oak_tree", Feature.TREE, TreeConfigurations.TWILIGHT_OAK);
@@ -184,7 +185,7 @@ public final class TFConfiguredFeatures {
 							Blocks.ALLIUM.defaultBlockState(),
 							Blocks.AZURE_BLUET.defaultBlockState(),
 							Blocks.OXEYE_DAISY.defaultBlockState())
-					)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlock(Blocks.GRASS_BLOCK, new BlockPos(0, -1, 0))))));
+					)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK)))));
 
 	public static final RandomPatchConfiguration FOREST_GRASS = (new RandomPatchConfiguration(64, 7, 7,
             PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
@@ -194,7 +195,7 @@ public final class TFConfiguredFeatures {
 							Blocks.TALL_GRASS.defaultBlockState(),
 							Blocks.FERN.defaultBlockState(),
 							Blocks.LARGE_FERN.defaultBlockState())
-			)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlock(Blocks.GRASS_BLOCK, new BlockPos(0, -1, 0))))));
+			)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK)))));
 
 	public static final RandomPatchConfiguration OTHER_GRASS = (new RandomPatchConfiguration(64, 7, 7,
 			PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
@@ -203,7 +204,7 @@ public final class TFConfiguredFeatures {
 							Blocks.TALL_GRASS.defaultBlockState(),
 							Blocks.FERN.defaultBlockState(),
 							Blocks.LARGE_FERN.defaultBlockState())
-			)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlock(Blocks.GRASS_BLOCK, new BlockPos(0, -1, 0))))));
+			)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK)))));
 
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> GRASS_PLACER = register("grass_placer", Feature.RANDOM_PATCH, OTHER_GRASS);
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FOREST_GRASS_PLACER = register("forest_grass_placer", Feature.RANDOM_PATCH, FOREST_GRASS);

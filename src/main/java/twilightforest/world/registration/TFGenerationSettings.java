@@ -20,10 +20,11 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFMobEffects;
@@ -135,7 +136,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		Biome currentBiome = world.getBiome(player.blockPosition()).value();
 		if (isBiomeSafeFor(currentBiome, player))
 			return;
-		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(currentBiome.getRegistryName());
+		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(ForgeRegistries.BIOMES.getKey(currentBiome));
 		if (exec != null)
 			exec.accept(player, world);
 	}
@@ -176,7 +177,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.isClientSide() ? entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome) : biome.getRegistryName());
+		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.isClientSide() ? entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome) : ForgeRegistries.BIOMES.getKey(biome));
 		if (advancements != null && entity instanceof Player)
 			return PlayerHelper.doesPlayerHaveRequiredAdvancements((Player) entity, advancements);
 		return true;
@@ -204,8 +205,8 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (ConfiguredStructureFeature<?, ?> structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).stream().toList()) {
-			if (!(structureFeature.feature instanceof LegacyStructure legacyData))
+		for (Structure structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream().toList()) {
+			if (!(structureFeature instanceof LegacyStructure legacyData))
 				continue;
 			TFFeature feature = legacyData.feature;
 			if (feature != featureCheck)
@@ -213,10 +214,10 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 			for (int x = cx1; x <= cx2; ++x) {
 				for (int z = cz1; z <= cz2; ++z) {
-					Optional<StructureStart> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).getReferencesForFeature(structureFeature).stream().
+					Optional<StructureStart> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).getReferencesForStructure(structureFeature).stream().
 							map((longVal) -> SectionPos.of(new ChunkPos(longVal), 0)).map((sectionPos) -> world.
 									hasChunk(sectionPos.x(), sectionPos.z()) ? world.
-									getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS).getStartForFeature(structureFeature) : null).
+									getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS).getStartForStructure(structureFeature) : null).
 							filter((structureStart) -> structureStart != null && structureStart.isValid()).
 							findFirst();
 					if (structure.isPresent())

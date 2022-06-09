@@ -64,8 +64,8 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 	// TODO Move to ChunkGeneratorTwilight as that's the only class it matters to. The command impl can follow with the refactor
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
 		for (Structure structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
-				.filter(feature -> {
-					ResourceLocation location = feature.feature.getRegistryName();
+				.filter(structure -> {
+					ResourceLocation location = structure.getRegistryName();
 					return location != null && TwilightForestMod.ID.equals(location.getNamespace());
 				}).toList()) {
 			StructureStart start = structureManager.getStructureAt(pos, structure);
@@ -77,7 +77,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 
 			if (classification != MobCategory.MONSTER)
 				return legacyData.getSpawnableList(classification);
-			if ((start instanceof TFStructureStart<?> s && s.conquered) || legacyData.isConquered())
+			if ((start instanceof TFStructureStart<?> s && s.conquered) /*|| legacyData.isConquered()*/)
 				return null;
 			final int index = getSpawnListIndexAt(start, pos);
 			if (index < 0)
