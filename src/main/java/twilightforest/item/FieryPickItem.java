@@ -54,40 +54,4 @@ public class FieryPickItem extends PickaxeItem {
 		super.appendHoverText(stack, world, tooltip, flags);
 		tooltip.add(Component.translatable(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
-
-	private static class SmeltModifier extends LootModifier {
-
-		protected final LootItemCondition[] conditions;
-
-		public SmeltModifier(LootItemCondition[] conditionsIn) {
-			super(conditionsIn);
-			this.conditions = conditionsIn;
-		}
-
-		@Override
-		protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-			ObjectArrayList<ItemStack> newLoot = new ObjectArrayList<>();
-			generatedLoot.forEach((stack) -> newLoot.add(
-					context.getLevel().getRecipeManager()
-							.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
-							.map(SmeltingRecipe::getResultItem)
-							.filter(itemStack -> !itemStack.isEmpty())
-							.map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
-							.orElse(stack)));
-			return newLoot;
-		}
-	}
-
-	public static class Serializer extends GlobalLootModifierSerializer<SmeltModifier> {
-
-		@Override
-		public SmeltModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
-			return new SmeltModifier(conditionsIn);
-		}
-
-		@Override
-		public JsonObject write(SmeltModifier instance) {
-			return null;
-		}
-	}
 }

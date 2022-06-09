@@ -117,10 +117,6 @@ public class TFEventListener {
 			"inWall", "cramming", "drown", "starve", "fall", "flyIntoWall", "outOfWorld", "fallingBlock"
 	);
 
-	private static boolean isBreakingWithGiantPick = false;
-	private static boolean shouldMakeGiantCobble = false;
-	private static int amountOfCobbleToReplace = 0;
-
 	@SubscribeEvent
 	public static void addReach(ItemAttributeModifierEvent event) {
 		Item item = event.getItemStack().getItem();
@@ -163,50 +159,6 @@ public class TFEventListener {
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
-		}
-	}
-
-	/**
-	 * Also check if we need to transform 64 cobbles into a giant cobble
-	 */
-	public static class ManipulateDrops extends LootModifier {
-
-		protected ManipulateDrops(LootItemCondition[] conditionsIn) {
-			super(conditionsIn);
-		}
-
-		@Override
-		protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-			ObjectArrayList<ItemStack> newLoot = new ObjectArrayList<>();
-			boolean flag = false;
-			if (shouldMakeGiantCobble && generatedLoot.size() > 0) {
-				// turn the next 64 cobblestone drops into one giant cobble
-				if (generatedLoot.get(0).getItem() == Item.byBlock(Blocks.COBBLESTONE)) {
-					generatedLoot.remove(0);
-					if (amountOfCobbleToReplace == 64) {
-						newLoot.add(new ItemStack(TFBlocks.GIANT_COBBLESTONE.get()));
-						flag = true;
-					}
-					amountOfCobbleToReplace--;
-					if (amountOfCobbleToReplace <= 0) {
-						shouldMakeGiantCobble = false;
-					}
-				}
-			}
-			return flag ? newLoot : generatedLoot;
-		}
-	}
-
-	public static class Serializer extends GlobalLootModifierSerializer<ManipulateDrops> {
-
-		@Override
-		public ManipulateDrops read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
-			return new ManipulateDrops(conditionsIn);
-		}
-
-		@Override
-		public JsonObject write(ManipulateDrops instance) {
-			return null;
 		}
 	}
 
@@ -657,54 +609,12 @@ public class TFEventListener {
 	public static void breakBlock(BreakEvent event) {
 		Player player = event.getPlayer();
 		BlockPos pos = event.getPos();
-		BlockState state = event.getState();
 
-		if (!(event.getWorld() instanceof Level world) || ((Level) event.getWorld()).isClientSide) return;
+		if (!(event.getWorld() instanceof Level level) || level.isClientSide()) return;
 
-		if (isBlockProtectedFromBreaking(world, pos) && isAreaProtected(world, player, pos)) {
+		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
 			event.setCanceled(true);
 
-		} else if (!isBreakingWithGiantPick && canHarvestWithGiantPick(player, state)) {
-
-			isBreakingWithGiantPick = true;
-
-			// check nearby blocks for same block or same drop
-
-			// pre-check for cobble!
-			Item cobbleItem = Blocks.COBBLESTONE.asItem();
-			boolean allCobble = state.getBlock().asItem() == cobbleItem;
-
-			if (allCobble) {
-				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
-					if (dPos.equals(pos))
-						continue;
-					BlockState stateThere = world.getBlockState(dPos);
-					if (stateThere.getBlock().asItem() != cobbleItem) {
-						allCobble = false;
-						break;
-					}
-				}
-			}
-
-			if (allCobble && !player.getAbilities().instabuild) {
-				shouldMakeGiantCobble = true;
-				amountOfCobbleToReplace = 64;
-			} else {
-				shouldMakeGiantCobble = false;
-				amountOfCobbleToReplace = 0;
-			}
-
-			// break all nearby blocks
-			if (player instanceof ServerPlayer playerMP) {
-				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
-					if (!dPos.equals(pos) && state.getBlock() == world.getBlockState(dPos).getBlock()) {
-						// try to break that block too!
-						playerMP.gameMode.destroyBlock(dPos);
-					}
-				}
-			}
-
-			isBreakingWithGiantPick = false;
 		}
 	}
 
@@ -879,77 +789,7 @@ public class TFEventListener {
 	}
 
 	// Parrying
-
 	private static final boolean globalParry = !ModList.get().isLoaded("parry");
-
-	/*@SubscribeEvent
-	public static void arrowParry(ProjectileImpactEvent<AbstractArrow> event) {
-		final AbstractArrow projectile = event.getProjectile();
-
-		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
-				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
-						|| projectile instanceof ITFProjectile)) {
-
-			if (event.getRayTraceResult() instanceof EntityHitResult) {
-				Entity entity = ((EntityHitResult) event.getRayTraceResult()).getEntity();
-
-				if (event.getEntity() != null && entity instanceof LivingEntity) {
-					LivingEntity entityBlocking = (LivingEntity) entity;
-
-					if (entityBlocking.isDamageSourceBlocked(new DamageSource("parry_this") {
-						@Override
-						public Vec3 getSourcePosition() {
-							return projectile.position();
-						}
-					}) && (entityBlocking.getUseItem().getItem().getUseDuration(entityBlocking.getUseItem()) - entityBlocking.getUseItemRemainingTicks()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksArrow.get()) {
-						Vec3 playerVec3 = entityBlocking.getLookAngle();
-
-						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
-
-						projectile.setOwner(entityBlocking); //TODO: Verify
-
-						event.setCanceled(true);
-					}
-				}
-			}
-		}
-	}*/
-
-	/*@SubscribeEvent
-	public static void fireballParry(ProjectileImpactEvent<Fireball> event) {
-		final AbstractHurtingProjectile projectile = event.getProjectile();
-
-		if (!projectile.getCommandSenderWorld().isClientSide && globalParry &&
-				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
-						|| projectile instanceof ITFProjectile)) {
-
-			if (event.getRayTraceResult() instanceof EntityHitResult) {
-				Entity entity = ((EntityHitResult) event.getRayTraceResult()).getEntity();
-
-				if (event.getEntity() != null && entity instanceof LivingEntity) {
-					LivingEntity entityBlocking = (LivingEntity) entity;
-
-					if (entityBlocking.isDamageSourceBlocked(new DamageSource("parry_this") {
-						@Override
-						public Vec3 getSourcePosition() {
-							return projectile.position();
-						}
-					}) && (entityBlocking.getUseItem().getItem().getUseDuration(entityBlocking.getUseItem()) - entityBlocking.getUseItemRemainingTicks()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksFireball.get()) {
-						Vec3 playerVec3 = entityBlocking.getLookAngle();
-
-						projectile.setDeltaMovement(new Vec3(playerVec3.x, playerVec3.y, playerVec3.z));
-						projectile.xPower = projectile.getDeltaMovement().x() * 0.1D;
-						projectile.yPower = projectile.getDeltaMovement().y() * 0.1D;
-						projectile.zPower = projectile.getDeltaMovement().z() * 0.1D;
-
-						projectile.setOwner(entityBlocking); //TODO: Verify
-
-						event.setCanceled(true);
-					}
-				}
-			}
-		}
-	}*/
 
 	@SubscribeEvent
 	public static void throwableParry(ProjectileImpactEvent event) {

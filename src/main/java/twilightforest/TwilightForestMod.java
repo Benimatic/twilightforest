@@ -56,6 +56,7 @@ import twilightforest.item.FieryPickItem;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.TFRecipes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
+import twilightforest.loot.TFLootModifiers;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFMobEffects;
@@ -114,12 +115,14 @@ public class TwilightForestMod {
 		BiomeKeys.BIOMES.register(modbus);
 		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
 		TFBlocks.BLOCKS.register(modbus);
+		ConfiguredWorldCarvers.CARVERS.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TwilightFeatures.FOLIAGE_PLACERS.register(modbus);
 		TFItems.ITEMS.register(modbus);
+		TFLootModifiers.LOOT_MODIFIERS.register(modbus);
 		TFMobEffects.MOB_EFFECTS.register(modbus);
 		TFNoiseGenerationSettings.NOISE_GENERATORS.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
@@ -200,14 +203,6 @@ public class TwilightForestMod {
 		}
 	}
 
-	@SubscribeEvent
-	public static void registerLootModifiers(RegisterEvent evt) {
-		if(Objects.equals(evt.getForgeRegistry(), ForgeRegistries.LOOT_MODIFIER_SERIALIZERS.get())) {
-			evt.getForgeRegistry().register(prefix("fiery_pick_smelting"), new FieryPickItem.Serializer());
-			evt.getForgeRegistry().register(prefix("giant_block_grouping"), new TFEventListener.Serializer());
-		}
-	}
-
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		//TFCompat.sendIMCs();
 	}
@@ -244,6 +239,7 @@ public class TwilightForestMod {
 			TFBlocks.tfCompostables();
 			TFBlocks.tfBurnables();
 			TFBlocks.tfPots();
+			TFEntities.registerSpawnPlacements();
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
 
