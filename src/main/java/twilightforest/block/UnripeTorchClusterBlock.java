@@ -9,7 +9,7 @@ import twilightforest.init.TFBlocks;
 public class UnripeTorchClusterBlock extends TrollRootBlock {
 	private static final int RIPEN_THRESHOLD = 6;
 
-	protected UnripeTorchClusterBlock(Properties props) {
+	public UnripeTorchClusterBlock(Properties props) {
 		super(props);
 	}
 

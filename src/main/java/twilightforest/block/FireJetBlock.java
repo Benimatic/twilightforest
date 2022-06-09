@@ -29,7 +29,7 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
-	protected FireJetBlock(Properties props) {
+	public FireJetBlock(Properties props) {
 		super(props);
 		registerDefaultState(defaultBlockState().setValue(STATE, FireJetVariant.IDLE));
 	}

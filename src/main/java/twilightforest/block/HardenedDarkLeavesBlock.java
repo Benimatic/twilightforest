@@ -12,7 +12,7 @@ import twilightforest.init.TFBlocks;
 
 public class HardenedDarkLeavesBlock extends Block {
 
-	protected HardenedDarkLeavesBlock(Properties props) {
+	public HardenedDarkLeavesBlock(Properties props) {
 		super(props);
 	}
 

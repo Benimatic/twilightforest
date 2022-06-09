@@ -11,7 +11,7 @@ public class HugeWaterLilyBlock extends WaterlilyBlock {
 
 	private static final VoxelShape AABB = box(1.6, 1.6, 1.6, 14.4, 14.4, 14.4);
 
-	protected HugeWaterLilyBlock(Properties props) {
+	public HugeWaterLilyBlock(Properties props) {
 		super(props);
 	}
 

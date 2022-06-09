@@ -16,7 +16,7 @@ import twilightforest.init.TFBlockEntities;
 
 public class TFSmokerBlock extends BaseEntityBlock {
 
-	protected TFSmokerBlock(Properties props) {
+	public TFSmokerBlock(Properties props) {
 		super(props);
 	}
 

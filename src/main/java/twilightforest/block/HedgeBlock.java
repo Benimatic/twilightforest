@@ -35,7 +35,7 @@ public class HedgeBlock extends Block {
 
 	private static final int DAMAGE = 3;
 
-	protected HedgeBlock(BlockBehaviour.Properties props) {
+	public HedgeBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 

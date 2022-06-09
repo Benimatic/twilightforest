@@ -13,7 +13,7 @@ public class EncasedFireJetBlock extends FireJetBlock {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
-	protected EncasedFireJetBlock(Properties props) {
+	public EncasedFireJetBlock(Properties props) {
 		super(props);
 	}
 

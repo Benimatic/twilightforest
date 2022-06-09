@@ -13,7 +13,7 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	protected EncasedSmokerBlock(Properties props) {
+	public EncasedSmokerBlock(Properties props) {
 		super(props);
 		this.registerDefaultState(stateDefinition.any().setValue(ACTIVE, false));
 	}

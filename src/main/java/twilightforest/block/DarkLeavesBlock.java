@@ -9,7 +9,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DarkLeavesBlock extends TFLeavesBlock {
 
-	protected DarkLeavesBlock(Properties props) {
+	public DarkLeavesBlock(Properties props) {
 		super(props);
 	}
 

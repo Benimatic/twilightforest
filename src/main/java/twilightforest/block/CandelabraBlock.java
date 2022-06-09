@@ -49,7 +49,7 @@ public class CandelabraBlock extends AbstractLightableBlock implements SimpleWat
     public static final List<Vec3> X_OFFSETS = List.of(new Vec3(0.5D, 0.875D, 0.1875D), new Vec3(0.5D, 0.875D, 0.5D), new Vec3(0.5D, 0.875D, 0.8125D));
     public static final List<Vec3> Z_OFFSETS = List.of(new Vec3(0.1875D, 0.875D, 0.5D), new Vec3(0.5D, 0.875D, 0.5D), new Vec3(0.8125D, 0.875D, 0.5D));
 
-    protected CandelabraBlock(Properties properties) {
+    public CandelabraBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIGHTING, Lighting.NONE).setValue(WATERLOGGED, false));
     }

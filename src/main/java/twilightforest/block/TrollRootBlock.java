@@ -31,7 +31,7 @@ public class TrollRootBlock extends Block {
 
 	protected static final VoxelShape AABB = Shapes.create(new AABB(0.1, 0.0, 0.1, 0.9, 1.0, 0.9));
 
-	protected TrollRootBlock(Properties props) {
+	public TrollRootBlock(Properties props) {
 		super(props);
 	}
 

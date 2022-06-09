@@ -29,7 +29,7 @@ import java.util.List;
 public class CicadaBlock extends CritterBlock {
 	private static final MutableComponent TOOLTIP = Component.translatable("block.twilightforest.cicada.desc").withStyle(TwilightForestMod.getRarity().color).withStyle(ChatFormatting.ITALIC);
 
-	protected CicadaBlock(Properties properties) {
+	public CicadaBlock(Properties properties) {
 		super(properties);
 	}
 

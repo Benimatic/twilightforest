@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import javax.annotation.Nullable;
 
 public class EtchedNagastoneBlock extends DirectionalBlock {
-    protected EtchedNagastoneBlock(Properties props) {
+    public EtchedNagastoneBlock(Properties props) {
         super(props);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN));
     }

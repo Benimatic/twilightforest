@@ -29,7 +29,7 @@ public class UncraftingTableBlock extends Block {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	protected UncraftingTableBlock() {
+	public UncraftingTableBlock() {
 		super(Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD));
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false));
 	}

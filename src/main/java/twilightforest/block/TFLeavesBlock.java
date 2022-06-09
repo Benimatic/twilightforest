@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TFLeavesBlock extends LeavesBlock {
-	protected TFLeavesBlock(BlockBehaviour.Properties props) {
+	public TFLeavesBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 

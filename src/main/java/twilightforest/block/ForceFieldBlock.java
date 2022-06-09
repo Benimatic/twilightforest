@@ -62,7 +62,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	protected static final VoxelShape SOUTH_WEST_SHAPE = Block.box(0.0D, 7.0D, 9.0D, 7.0D, 9.0D, 16.0D);
 	protected static final VoxelShape SOUTH_EAST_SHAPE = Block.box(9.0D, 7.0D, 9.0D, 16.0D, 9.0D, 16.0D);
 
-	ForceFieldBlock(BlockBehaviour.Properties props) {
+	public ForceFieldBlock(BlockBehaviour.Properties props) {
 		super(props);
 		this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
 				.setValue(DOWN, false).setValue(UP, false)

@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TFLogBlock extends RotatedPillarBlock {
 
-	protected TFLogBlock(BlockBehaviour.Properties props) {
+	public TFLogBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 

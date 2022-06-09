@@ -27,7 +27,7 @@ public class MangroveSaplingBlock extends SaplingBlock implements SimpleWaterlog
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	protected MangroveSaplingBlock(AbstractTreeGrower tree, BlockBehaviour.Properties properties) {
+	public MangroveSaplingBlock(AbstractTreeGrower tree, BlockBehaviour.Properties properties) {
 		super(tree, properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
 	}

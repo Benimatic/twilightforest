@@ -31,7 +31,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	private static final float THORN_DAMAGE = 4.0F;
 
-	ThornsBlock(Properties props) {
+	public ThornsBlock(Properties props) {
 		super(props, 10);
 		this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}

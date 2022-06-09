@@ -26,7 +26,7 @@ public class HugeLilyPadBlock extends WaterlilyBlock {
 
 	private boolean isSelfDestructing = false;
 
-	protected HugeLilyPadBlock(Properties props) {
+	public HugeLilyPadBlock(Properties props) {
 		super(props);
 		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PIECE, HugeLilypadPiece.NW));
 	}

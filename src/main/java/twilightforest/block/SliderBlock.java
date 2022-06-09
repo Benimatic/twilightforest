@@ -45,7 +45,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	private static final VoxelShape Z_BB = Shapes.create(new AABB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
 	private static final VoxelShape X_BB = Shapes.create(new AABB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
-	protected SliderBlock() {
+	public SliderBlock() {
 		super(Properties.of(Material.METAL, MaterialColor.DIRT).strength(2.0F, 10.0F).randomTicks().noOcclusion());
 		this.registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.Y).setValue(DELAY, 0).setValue(WATERLOGGED, false));
 	}

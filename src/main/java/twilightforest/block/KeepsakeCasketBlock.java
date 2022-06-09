@@ -64,7 +64,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	private static final VoxelShape SOLID_X = Shapes.or(SOLID, TOPPER_X);
 	private static final VoxelShape SOLID_Z = Shapes.or(SOLID, TOPPER_Z);
 
-	protected KeepsakeCasketBlock() {
+	public KeepsakeCasketBlock() {
 		super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).noOcclusion().requiresCorrectToolForDrops().strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK).lightLevel(state -> state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA ? 15 : 0));
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));
 	}

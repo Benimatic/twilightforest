@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class FireflyBlock extends CritterBlock {
 
-	protected FireflyBlock(BlockBehaviour.Properties props) {
+	public FireflyBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 

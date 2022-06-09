@@ -12,7 +12,7 @@ import twilightforest.init.TFBlocks;
 
 public class MagicLeavesBlock extends LeavesBlock {
 
-	protected MagicLeavesBlock(BlockBehaviour.Properties props) {
+	public MagicLeavesBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 

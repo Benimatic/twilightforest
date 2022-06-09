@@ -15,7 +15,7 @@ public class IronLadderBlock extends LadderBlock {
     public static final BooleanProperty LEFT = BooleanProperty.create("left");
 	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
 
-    IronLadderBlock(Properties props) {
+    public IronLadderBlock(Properties props) {
         super(props);
         this.registerDefaultState(this.defaultBlockState().setValue(LEFT, false).setValue(RIGHT, false));
     }

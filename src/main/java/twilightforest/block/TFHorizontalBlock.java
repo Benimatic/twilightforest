@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TFHorizontalBlock extends HorizontalDirectionalBlock {
 
-    protected TFHorizontalBlock(Properties props) {
+    public TFHorizontalBlock(Properties props) {
         super(props);
     }
 

@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
  */
 public class NagastonePillarBlock extends DirectionalRotatedPillarBlock {
 
-    protected NagastonePillarBlock() {
+    public NagastonePillarBlock() {
         super(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE));
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y).setValue(REVERSED, false));
     }

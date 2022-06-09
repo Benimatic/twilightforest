@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 
 public class BurntThornsBlock extends ThornsBlock {
 
-	protected BurntThornsBlock(Properties props) {
+	public BurntThornsBlock(Properties props) {
 		super(props);
 	}
 

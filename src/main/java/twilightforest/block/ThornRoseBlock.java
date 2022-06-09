@@ -16,7 +16,7 @@ public class ThornRoseBlock extends Block {
 	private static final float RADIUS = 0.4F;
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.5F -RADIUS, 0.5F -RADIUS, 0.5F -RADIUS, 0.5F +RADIUS, .5F +RADIUS, 0.5F +RADIUS));
 
-	protected ThornRoseBlock(Properties props) {
+	public ThornRoseBlock(Properties props) {
 		super(props);
 	}
 
