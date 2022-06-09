@@ -59,38 +59,12 @@ public abstract class CrumbleHornProvider implements DataProvider {
 			if (!list.isEmpty()) {
 				throw new IllegalArgumentException(String.format("Duplicate Crumble Horn Transformations: %s", list.stream().map(Objects::toString).collect(Collectors.joining(", "))));
 			} else {
-
 				JsonObject obj = serializeToJson(transform.getA(), transform.getB());
 				Path path = createPath(new ResourceLocation(modId, name));
 				try {
-					String s = GSON.toJson(obj);
-					String s1 = Hashing.sha1().hashUnencodedChars(s).toString();
-					if (!Objects.equals(cache.getHash(path), s1) || !Files.exists(path)) {
-						Files.createDirectories(path.getParent());
-						BufferedWriter bufferedwriter = Files.newBufferedWriter(path);
-
-						try {
-							bufferedwriter.write(s);
-						} catch (Throwable throwable1) {
-							if (bufferedwriter != null) {
-								try {
-									bufferedwriter.close();
-								} catch (Throwable throwable) {
-									throwable1.addSuppressed(throwable);
-								}
-							}
-
-							throw throwable1;
-						}
-
-						if (bufferedwriter != null) {
-							bufferedwriter.close();
-						}
-					}
-
-					cache.putNew(path, s1);
-				} catch (IOException ioexception) {
-					TwilightForestMod.LOGGER.error("Couldn't save Crumble Transformation to {}", path, ioexception);
+					DataProvider.saveStable(cache, obj, path);
+				} catch (IOException e) {
+					TwilightForestMod.LOGGER.error("Couldn't save Crumble Transformation to {}", path, e);
 				}
 			}
 		});
