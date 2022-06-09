@@ -9,6 +9,7 @@ import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -338,17 +339,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(Blocks.COBBLESTONE, 64)
 				.requires(TFBlocks.GIANT_COBBLESTONE.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + Blocks.COBBLESTONE.asItem().getRegistryName().getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + ForgeRegistries.ITEMS.getKey(Items.COBBLESTONE).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(Blocks.OAK_PLANKS, 64)
 				.requires(TFBlocks.GIANT_LOG.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_LOG.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + Blocks.OAK_PLANKS.asItem().getRegistryName().getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + ForgeRegistries.ITEMS.getKey(Items.OAK_PLANKS).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(Blocks.OAK_LEAVES, 64)
 				.requires(TFBlocks.GIANT_LEAVES.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + Blocks.OAK_LEAVES.asItem().getRegistryName().getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + ForgeRegistries.ITEMS.getKey(Items.OAK_LEAVES).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.BLOCK_AND_CHAIN.get())
 				.requires(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL)
@@ -723,14 +724,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 2)
 				.requires(Ingredient.of(Tags.Items.RODS_BLAZE))
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + Items.IRON_SWORD.getRegistryName().getPath()));
+				.save(consumer, locEquip("fiery_" + ForgeRegistries.ITEMS.getKey(Items.IRON_SWORD).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.FIERY_PICKAXE.get())
 				.requires(Items.IRON_PICKAXE)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 3)
 				.requires(Ingredient.of(Tags.Items.RODS_BLAZE), 2)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + Items.IRON_PICKAXE.getRegistryName().getPath()));
+				.save(consumer, locEquip("fiery_" + ForgeRegistries.ITEMS.getKey(Items.IRON_PICKAXE).getPath()));
 	}
 
 	private void cookingRecipes(Consumer<FinishedRecipe> consumer, String processName, SimpleCookingSerializer<?> process, int smeltingTime) {

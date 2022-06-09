@@ -4,131 +4,128 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.LevelWriter;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
-import net.minecraft.core.Vec3i;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelWriter;
-import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 
-import java.util.*;
+import java.util.List;
+import java.util.OptionalInt;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 //[VanillaCopy] of TreeFeature but allows trees on snow
 public class SnowTreePlacer extends Feature<TreeConfiguration> {
-    public SnowTreePlacer(Codec<TreeConfiguration> p_67201_) {
-        super(p_67201_);
+	public SnowTreePlacer(Codec<TreeConfiguration> codec) {
+		super(codec);
+	}
+
+    private static boolean isVine(LevelSimulatedReader reader, BlockPos pos) {
+        return reader.isStateAtPosition(pos, (state) -> state.is(Blocks.VINE));
     }
 
-    public static boolean isFree(LevelSimulatedReader p_67263_, BlockPos p_67264_) {
-        return validTreePos(p_67263_, p_67264_) || p_67263_.isStateAtPosition(p_67264_, (p_67281_) -> p_67281_.is(BlockTags.LOGS));
+    public static boolean isBlockWater(LevelSimulatedReader reader, BlockPos pos) {
+        return reader.isStateAtPosition(pos, (p_225297_) -> p_225297_.is(Blocks.WATER));
     }
 
-    private static boolean isVine(LevelSimulatedReader p_67278_, BlockPos p_67279_) {
-        return p_67278_.isStateAtPosition(p_67279_, (p_67276_) -> p_67276_.is(Blocks.VINE));
+    public static boolean isAirOrLeaves(LevelSimulatedReader reader, BlockPos pos) {
+        return reader.isStateAtPosition(pos, (p_225295_) -> p_225295_.isAir() || p_225295_.is(BlockTags.LEAVES));
     }
 
-    private static boolean isBlockWater(LevelSimulatedReader p_67283_, BlockPos p_67284_) {
-        return p_67283_.isStateAtPosition(p_67284_, (p_67271_) -> p_67271_.is(Blocks.WATER));
-    }
-
-    public static boolean isAirOrLeaves(LevelSimulatedReader p_67268_, BlockPos p_67269_) {
-        return p_67268_.isStateAtPosition(p_67269_, (p_67266_) -> p_67266_.isAir() || p_67266_.is(BlockTags.LEAVES));
-    }
-
-    private static boolean isReplaceablePlant(LevelSimulatedReader p_67289_, BlockPos p_67290_) {
-        return p_67289_.isStateAtPosition(p_67290_, (p_160551_) -> {
-            Material material = p_160551_.getMaterial();
-            return material == Material.REPLACEABLE_PLANT;
+    private static boolean isReplaceablePlant(LevelSimulatedReader reader, BlockPos pos) {
+        return reader.isStateAtPosition(pos, (p_225293_) -> {
+            Material material = p_225293_.getMaterial();
+            return material == Material.REPLACEABLE_PLANT || material == Material.REPLACEABLE_WATER_PLANT || material == Material.REPLACEABLE_FIREPROOF_PLANT;
         });
-    }
-
-    public static boolean isBlockUnderValid(LevelSimulatedReader reader, BlockPos pos) {
-        return reader.isStateAtPosition(pos, state -> state.is(BlockTags.SNOW)) || reader.isStateAtPosition(pos, state -> state.is(BlockTags.DIRT));
     }
 
     private static void setBlockKnownShape(LevelWriter p_67257_, BlockPos p_67258_, BlockState p_67259_) {
         p_67257_.setBlock(p_67258_, p_67259_, 19);
     }
 
-    public static boolean validTreePos(LevelSimulatedReader p_67273_, BlockPos p_67274_) {
-        return isAirOrLeaves(p_67273_, p_67274_) || isReplaceablePlant(p_67273_, p_67274_) || isBlockWater(p_67273_, p_67274_);
+    public static boolean validTreePos(LevelSimulatedReader reader, BlockPos pos) {
+        return reader.isStateAtPosition(pos, state -> state.is(Blocks.SNOW_BLOCK)) || isAirOrLeaves(reader, pos) || isReplaceablePlant(reader, pos) || isBlockWater(reader, pos);
     }
 
-    private boolean doPlace(WorldGenLevel p_160511_, RandomSource p_160512_, BlockPos p_160513_, BiConsumer<BlockPos, BlockState> p_160514_, BiConsumer<BlockPos, BlockState> p_160515_, TreeConfiguration p_160516_) {
-        int i = p_160516_.trunkPlacer.getTreeHeight(p_160512_);
-        int j = p_160516_.foliagePlacer.foliageHeight(p_160512_, i, p_160516_);
+    private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
+        int i = config.trunkPlacer.getTreeHeight(random);
+        int j = config.foliagePlacer.foliageHeight(random, i, config);
         int k = i - j;
-        int l = p_160516_.foliagePlacer.foliageRadius(p_160512_, k);
-        if (p_160513_.getY() >= p_160511_.getMinBuildHeight() + 1 && p_160513_.getY() + i + 1 <= p_160511_.getMaxBuildHeight()) {
-            if (!isBlockUnderValid(p_160511_, p_160513_.below())) {
-                return false;
-            } else {
-                OptionalInt optionalint = p_160516_.minimumSize.minClippedHeight();
-                int i1 = this.getMaxFreeTreeHeight(p_160511_, i, p_160513_, p_160516_);
-                if (i1 >= i || optionalint.isPresent() && i1 >= optionalint.getAsInt()) {
-                    List<FoliagePlacer.FoliageAttachment> list = p_160516_.trunkPlacer.placeTrunk(p_160511_, p_160514_, p_160512_, i1, p_160513_, p_160516_);
-                    list.forEach((p_160539_) -> {
-                        p_160516_.foliagePlacer.createFoliage(p_160511_, p_160515_, p_160512_, p_160516_, i1, p_160539_, j, l);
+        int l = config.foliagePlacer.foliageRadius(random, k);
+        BlockPos blockpos = config.rootPlacer.map((p_225286_) -> p_225286_.getTrunkOrigin(pos, random)).orElse(pos);
+        int i1 = Math.min(pos.getY(), blockpos.getY());
+        int j1 = Math.max(pos.getY(), blockpos.getY()) + i + 1;
+        if (i1 >= level.getMinBuildHeight() + 1 && j1 <= level.getMaxBuildHeight()) {
+            OptionalInt optionalint = config.minimumSize.minClippedHeight();
+            int k1 = this.getMaxFreeTreeHeight(level, i, blockpos, config);
+            if (k1 >= i || !optionalint.isEmpty() && k1 >= optionalint.getAsInt()) {
+                if (config.rootPlacer.isPresent() && !config.rootPlacer.get().placeRoots(level, consumer, random, pos, blockpos, config)) {
+                    return false;
+                } else {
+                    List<FoliagePlacer.FoliageAttachment> list = config.trunkPlacer.placeTrunk(level, consumer1, random, k1, blockpos, config);
+                    list.forEach((p_225279_) -> {
+                        config.foliagePlacer.createFoliage(level, consumer2, random, config, k1, p_225279_, j, l);
                     });
                     return true;
-                } else {
-                    return false;
                 }
+            } else {
+                return false;
             }
         } else {
             return false;
         }
     }
 
-    private int getMaxFreeTreeHeight(LevelSimulatedReader p_67216_, int p_67217_, BlockPos p_67218_, TreeConfiguration p_67219_) {
+    private int getMaxFreeTreeHeight(LevelSimulatedReader reader, int height, BlockPos pos, TreeConfiguration config) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-        for(int i = 0; i <= p_67217_ + 1; ++i) {
-            int j = p_67219_.minimumSize.getSizeAtHeight(p_67217_, i);
+        for(int i = 0; i <= height + 1; ++i) {
+            int j = config.minimumSize.getSizeAtHeight(height, i);
 
             for(int k = -j; k <= j; ++k) {
                 for(int l = -j; l <= j; ++l) {
-                    blockpos$mutableblockpos.setWithOffset(p_67218_, k, i, l);
-                    if (!isFree(p_67216_, blockpos$mutableblockpos) || !p_67219_.ignoreVines && isVine(p_67216_, blockpos$mutableblockpos)) {
+                    blockpos$mutableblockpos.setWithOffset(pos, k, i, l);
+                    if (!config.trunkPlacer.isFree(reader, blockpos$mutableblockpos) || !config.ignoreVines && isVine(reader, blockpos$mutableblockpos)) {
                         return i - 2;
                     }
                 }
             }
         }
 
-        return p_67217_;
+        return height;
     }
 
-    @Override
-    protected void setBlock(LevelWriter p_67221_, BlockPos p_67222_, BlockState p_67223_) {
-        setBlockKnownShape(p_67221_, p_67222_, p_67223_);
+    protected void setBlock(LevelWriter writer, BlockPos pos, BlockState state) {
+        setBlockKnownShape(writer, pos, state);
     }
 
-    @Override
-    public final boolean place(FeaturePlaceContext<TreeConfiguration> p_160530_) {
-        WorldGenLevel worldgenlevel = p_160530_.level();
-        RandomSource random = p_160530_.random();
-        BlockPos blockpos = p_160530_.origin();
-        TreeConfiguration treeconfiguration = p_160530_.config();
+    public final boolean place(FeaturePlaceContext<TreeConfiguration> context) {
+        WorldGenLevel worldgenlevel = context.level();
+        RandomSource randomsource = context.random();
+        BlockPos blockpos = context.origin();
+        TreeConfiguration treeconfiguration = context.config();
         Set<BlockPos> set = Sets.newHashSet();
         Set<BlockPos> set1 = Sets.newHashSet();
         Set<BlockPos> set2 = Sets.newHashSet();
+        Set<BlockPos> set3 = Sets.newHashSet();
         BiConsumer<BlockPos, BlockState> biconsumer = (p_160555_, p_160556_) -> {
             set.add(p_160555_.immutable());
             worldgenlevel.setBlock(p_160555_, p_160556_, 19);
@@ -141,21 +138,22 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
             set2.add(p_160543_.immutable());
             worldgenlevel.setBlock(p_160543_, p_160544_, 19);
         };
-        boolean flag = this.doPlace(worldgenlevel, random, blockpos, biconsumer, biconsumer1, treeconfiguration);
-        if (flag && (!set.isEmpty() || !set1.isEmpty())) {
+        BiConsumer<BlockPos, BlockState> biconsumer3 = (p_225290_, p_225291_) -> {
+            set3.add(p_225290_.immutable());
+            worldgenlevel.setBlock(p_225290_, p_225291_, 19);
+        };
+        boolean flag = this.doPlace(worldgenlevel, randomsource, blockpos, biconsumer, biconsumer1, biconsumer2, treeconfiguration);
+        if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
             if (!treeconfiguration.decorators.isEmpty()) {
-                List<BlockPos> list = Lists.newArrayList(set);
-                List<BlockPos> list1 = Lists.newArrayList(set1);
-                list.sort(Comparator.comparingInt(Vec3i::getY));
-                list1.sort(Comparator.comparingInt(Vec3i::getY));
-                treeconfiguration.decorators.forEach((p_160528_) -> {
-                    p_160528_.place(worldgenlevel, biconsumer2, random, list, list1);
+                TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(worldgenlevel, biconsumer3, randomsource, set1, set2, set);
+                treeconfiguration.decorators.forEach((p_225282_) -> {
+                    p_225282_.place(treedecorator$context);
                 });
             }
 
-            return BoundingBox.encapsulatingPositions(Iterables.concat(set, set1, set2)).map((p_160521_) -> {
-                DiscreteVoxelShape discretevoxelshape = updateLeaves(worldgenlevel, p_160521_, set, set2);
-                StructureTemplate.updateShapeAtEdge(worldgenlevel, 3, discretevoxelshape, p_160521_.minX(), p_160521_.minY(), p_160521_.minZ());
+            return BoundingBox.encapsulatingPositions(Iterables.concat(set, set1, set2, set3)).map((p_225270_) -> {
+                DiscreteVoxelShape discretevoxelshape = updateLeaves(worldgenlevel, p_225270_, set1, set3, set);
+                StructureTemplate.updateShapeAtEdge(worldgenlevel, 3, discretevoxelshape, p_225270_.minX(), p_225270_.minY(), p_225270_.minZ());
                 return true;
             }).orElse(false);
         } else {
@@ -163,9 +161,9 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
         }
     }
 
-    private static DiscreteVoxelShape updateLeaves(LevelAccessor p_67203_, BoundingBox p_67204_, Set<BlockPos> p_67205_, Set<BlockPos> p_67206_) {
+    public static DiscreteVoxelShape updateLeaves(LevelAccessor accessor, BoundingBox box, Set<BlockPos> posSet, Set<BlockPos> posSet1, Set<BlockPos> posSet2) {
         List<Set<BlockPos>> list = Lists.newArrayList();
-        DiscreteVoxelShape discretevoxelshape = new BitSetDiscreteVoxelShape(p_67204_.getXSpan(), p_67204_.getYSpan(), p_67204_.getZSpan());
+        DiscreteVoxelShape discretevoxelshape = new BitSetDiscreteVoxelShape(box.getXSpan(), box.getYSpan(), box.getZSpan());
         int i = 6;
 
         for(int j = 0; j < 6; ++j) {
@@ -174,26 +172,26 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
 
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-        for(BlockPos blockpos : Lists.newArrayList(p_67206_)) {
-            if (p_67204_.isInside(blockpos)) {
-                discretevoxelshape.fill(blockpos.getX() - p_67204_.minX(), blockpos.getY() - p_67204_.minY(), blockpos.getZ() - p_67204_.minZ());
+        for(BlockPos blockpos : Lists.newArrayList(Sets.union(posSet1, posSet2))) {
+            if (box.isInside(blockpos)) {
+                discretevoxelshape.fill(blockpos.getX() - box.minX(), blockpos.getY() - box.minY(), blockpos.getZ() - box.minZ());
             }
         }
 
-        for(BlockPos blockpos1 : Lists.newArrayList(p_67205_)) {
-            if (p_67204_.isInside(blockpos1)) {
-                discretevoxelshape.fill(blockpos1.getX() - p_67204_.minX(), blockpos1.getY() - p_67204_.minY(), blockpos1.getZ() - p_67204_.minZ());
+        for(BlockPos blockpos1 : Lists.newArrayList(posSet)) {
+            if (box.isInside(blockpos1)) {
+                discretevoxelshape.fill(blockpos1.getX() - box.minX(), blockpos1.getY() - box.minY(), blockpos1.getZ() - box.minZ());
             }
 
             for(Direction direction : Direction.values()) {
                 blockpos$mutableblockpos.setWithOffset(blockpos1, direction);
-                if (!p_67205_.contains(blockpos$mutableblockpos)) {
-                    BlockState blockstate = p_67203_.getBlockState(blockpos$mutableblockpos);
+                if (!posSet.contains(blockpos$mutableblockpos)) {
+                    BlockState blockstate = accessor.getBlockState(blockpos$mutableblockpos);
                     if (blockstate.hasProperty(BlockStateProperties.DISTANCE)) {
                         list.get(0).add(blockpos$mutableblockpos.immutable());
-                        setBlockKnownShape(p_67203_, blockpos$mutableblockpos, blockstate.setValue(BlockStateProperties.DISTANCE, Integer.valueOf(1)));
-                        if (p_67204_.isInside(blockpos$mutableblockpos)) {
-                            discretevoxelshape.fill(blockpos$mutableblockpos.getX() - p_67204_.minX(), blockpos$mutableblockpos.getY() - p_67204_.minY(), blockpos$mutableblockpos.getZ() - p_67204_.minZ());
+                        setBlockKnownShape(accessor, blockpos$mutableblockpos, blockstate.setValue(BlockStateProperties.DISTANCE, 1));
+                        if (box.isInside(blockpos$mutableblockpos)) {
+                            discretevoxelshape.fill(blockpos$mutableblockpos.getX() - box.minX(), blockpos$mutableblockpos.getY() - box.minY(), blockpos$mutableblockpos.getZ() - box.minZ());
                         }
                     }
                 }
@@ -205,21 +203,21 @@ public class SnowTreePlacer extends Feature<TreeConfiguration> {
             Set<BlockPos> set1 = list.get(l);
 
             for(BlockPos blockpos2 : set) {
-                if (p_67204_.isInside(blockpos2)) {
-                    discretevoxelshape.fill(blockpos2.getX() - p_67204_.minX(), blockpos2.getY() - p_67204_.minY(), blockpos2.getZ() - p_67204_.minZ());
+                if (box.isInside(blockpos2)) {
+                    discretevoxelshape.fill(blockpos2.getX() - box.minX(), blockpos2.getY() - box.minY(), blockpos2.getZ() - box.minZ());
                 }
 
                 for(Direction direction1 : Direction.values()) {
                     blockpos$mutableblockpos.setWithOffset(blockpos2, direction1);
                     if (!set.contains(blockpos$mutableblockpos) && !set1.contains(blockpos$mutableblockpos)) {
-                        BlockState blockstate1 = p_67203_.getBlockState(blockpos$mutableblockpos);
+                        BlockState blockstate1 = accessor.getBlockState(blockpos$mutableblockpos);
                         if (blockstate1.hasProperty(BlockStateProperties.DISTANCE)) {
                             int k = blockstate1.getValue(BlockStateProperties.DISTANCE);
                             if (k > l + 1) {
-                                BlockState blockstate2 = blockstate1.setValue(BlockStateProperties.DISTANCE, Integer.valueOf(l + 1));
-                                setBlockKnownShape(p_67203_, blockpos$mutableblockpos, blockstate2);
-                                if (p_67204_.isInside(blockpos$mutableblockpos)) {
-                                    discretevoxelshape.fill(blockpos$mutableblockpos.getX() - p_67204_.minX(), blockpos$mutableblockpos.getY() - p_67204_.minY(), blockpos$mutableblockpos.getZ() - p_67204_.minZ());
+                                BlockState blockstate2 = blockstate1.setValue(BlockStateProperties.DISTANCE, l + 1);
+                                setBlockKnownShape(accessor, blockpos$mutableblockpos, blockstate2);
+                                if (box.isInside(blockpos$mutableblockpos)) {
+                                    discretevoxelshape.fill(blockpos$mutableblockpos.getX() - box.minX(), blockpos$mutableblockpos.getY() - box.minY(), blockpos$mutableblockpos.getZ() - box.minZ());
                                 }
 
                                 set1.add(blockpos$mutableblockpos.immutable());

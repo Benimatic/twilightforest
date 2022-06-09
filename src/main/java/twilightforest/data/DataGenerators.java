@@ -23,6 +23,7 @@ public class DataGenerators {
 		generator.addProvider(true, new BlockstateGenerator(generator, helper));
 		generator.addProvider(true, new ItemModelGenerator(generator, helper));
 		generator.addProvider(true, new BiomeTagGenerator(generator, helper));
+		generator.addProvider(true, new CustomTagGenerator.BannerPatternTagGenerator(generator, helper));
 		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
 		generator.addProvider(true, blocktags);
 		generator.addProvider(true, new FluidTagGenerator(generator, helper));

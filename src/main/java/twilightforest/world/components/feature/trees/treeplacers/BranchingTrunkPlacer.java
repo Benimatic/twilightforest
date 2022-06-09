@@ -66,7 +66,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
         return leafAttachments;
     }
 
-    private static void buildBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, RandomSource treeRNG, TreeConfiguration treeConfig, boolean perpendicularBranches) {
+    private void buildBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, RandomSource treeRNG, TreeConfiguration treeConfig, boolean perpendicularBranches) {
         BlockPos src = pos.above(height);
         BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
@@ -94,7 +94,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
      * Draws a line from {x1, y1, z1} to {x2, y2, z2}
      * This takes all variables for setting Branch
      */
-    private static void drawBresenhamBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockPos from, BlockPos to, TreeConfiguration config) {
+    private void drawBresenhamBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockPos from, BlockPos to, TreeConfiguration config) {
         for (BlockPos pixel : new VoxelBresenhamIterator(from, to)) {
             placeLog(worldReader, worldPlacer, random, pixel, config);
         }

@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.core.Direction;
@@ -81,32 +82,34 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 		}
 
 		//Taken from TreeFeature.generate, adjusting our BoundingBox to fit where the dirt is
+		TreeConfiguration treeconfiguration = ctx.config();
+		Set<BlockPos> set = Sets.newHashSet();
 		Set<BlockPos> set1 = Sets.newHashSet();
 		Set<BlockPos> set2 = Sets.newHashSet();
 		Set<BlockPos> set3 = Sets.newHashSet();
-		BoundingBox mutableboundingbox = BoundingBox.infinite();
-		BiConsumer<BlockPos, BlockState> biConsumer = (p_160555_, p_160556_) -> {
-			set1.add(p_160555_.immutable());
+		BiConsumer<BlockPos, BlockState> biconsumer = (p_160555_, p_160556_) -> {
+			set.add(p_160555_.immutable());
 			reader.setBlock(p_160555_, p_160556_, 19);
 		};
-		BiConsumer<BlockPos, BlockState> biConsumer1 = (p_160548_, p_160549_) -> {
-			set2.add(p_160548_.immutable());
+		BiConsumer<BlockPos, BlockState> biconsumer1 = (p_160548_, p_160549_) -> {
+			set1.add(p_160548_.immutable());
 			reader.setBlock(p_160548_, p_160549_, 19);
 		};
-		BiConsumer<BlockPos, BlockState> biConsumer2 = (p_160543_, p_160544_) -> {
-			set3.add(p_160543_.immutable());
+		BiConsumer<BlockPos, BlockState> biconsumer2 = (p_160543_, p_160544_) -> {
+			set2.add(p_160543_.immutable());
 			reader.setBlock(p_160543_, p_160544_, 19);
 		};
-		boolean flag = this.doPlace(reader, rand, pos, biConsumer, biConsumer1, config);
-		difference = mutableboundingbox.minY() - pos.getY();
-		mutableboundingbox.move(0, pos.getY(), 0);
+		BiConsumer<BlockPos, BlockState> biconsumer3 = (p_225290_, p_225291_) -> {
+			set3.add(p_225290_.immutable());
+			reader.setBlock(p_225290_, p_225291_, 19);
+		};
+		boolean flag = this.doPlace(reader, rand, pos, biconsumer, biconsumer1, biconsumer2, treeconfiguration);
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
-			if (!config.decorators.isEmpty()) {
-				List<BlockPos> list1 = Lists.newArrayList(set1);
-				List<BlockPos> list2 = Lists.newArrayList(set2);
-				list1.sort(Comparator.comparingInt(Vec3i::getY));
-				list2.sort(Comparator.comparingInt(Vec3i::getY));
-				config.decorators.forEach((p_160528_) -> p_160528_.place(reader, biConsumer2, rand, list1, list2));
+			if (!treeconfiguration.decorators.isEmpty()) {
+				TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(reader, biconsumer3, rand, set1, set2, set);
+				treeconfiguration.decorators.forEach((p_225282_) -> {
+					p_225282_.place(treedecorator$context);
+				});
 			}
 
 			return BoundingBox.encapsulatingPositions(Iterables.concat(set1, set2, set3)).map((p_160521_) -> {
@@ -120,28 +123,32 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 	}
 
 	//Mostly [VanillaCopy] of TreeFeature.doPlace, edits noted
-	private boolean doPlace(WorldGenLevel level, RandomSource  p_160512_, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
-		int i = config.trunkPlacer.getTreeHeight(p_160512_);
-		int j = config.foliagePlacer.foliageHeight(p_160512_, i, config);
-		int k = i - j;
-		int l = config.foliagePlacer.foliageRadius(p_160512_, k);
+	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
 		//set our blockpos to the valid dirt pos, not highest ground
 		pos = new BlockPos(pos.getX(), validPos.getY(), pos.getZ());
-		if (pos.getY() >= level.getMinBuildHeight() + 1 && pos.getY() + i + 1 <= level.getMaxBuildHeight()) {
-			if (!TFBlocks.DARKWOOD_SAPLING.get().canSurvive(level.getBlockState(pos), level, pos)) {
-				return false;
-			} else {
-				OptionalInt optionalint = config.minimumSize.minClippedHeight();
-				int i1 = this.getMaxFreeTreeHeight(level, i, pos, config);
-				if (i1 >= i || optionalint.isPresent() && i1 >= optionalint.getAsInt()) {
-					List<FoliagePlacer.FoliageAttachment> list = config.trunkPlacer.placeTrunk(level, consumer1, p_160512_, i1, pos, config);
-					list.forEach((p_160539_) -> {
-						config.foliagePlacer.createFoliage(level, consumer2, p_160512_, config, i1, p_160539_, j, l);
+		int i = config.trunkPlacer.getTreeHeight(random);
+		int j = config.foliagePlacer.foliageHeight(random, i, config);
+		int k = i - j;
+		int l = config.foliagePlacer.foliageRadius(random, k);
+		BlockPos finalPos = pos;
+		BlockPos blockpos = config.rootPlacer.map((placer) -> placer.getTrunkOrigin(finalPos, random)).orElse(pos);
+		int i1 = Math.min(pos.getY(), blockpos.getY());
+		int j1 = Math.max(pos.getY(), blockpos.getY()) + i + 1;
+		if (i1 >= level.getMinBuildHeight() + 1 && j1 <= level.getMaxBuildHeight()) {
+			OptionalInt optionalint = config.minimumSize.minClippedHeight();
+			int k1 = this.getMaxFreeTreeHeight(level, i, blockpos, config);
+			if (k1 >= i || !optionalint.isEmpty() && k1 >= optionalint.getAsInt()) {
+				if (config.rootPlacer.isPresent() && !config.rootPlacer.get().placeRoots(level, consumer, random, pos, blockpos, config)) {
+					return false;
+				} else {
+					List<FoliagePlacer.FoliageAttachment> list = config.trunkPlacer.placeTrunk(level, consumer1, random, k1, blockpos, config);
+					list.forEach((attachment) -> {
+						config.foliagePlacer.createFoliage(level, consumer2, random, config, k1, attachment, j, l);
 					});
 					return true;
-				} else {
-					return false;
 				}
+			} else {
+				return false;
 			}
 		} else {
 			return false;

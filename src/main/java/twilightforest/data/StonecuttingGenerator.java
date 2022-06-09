@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
@@ -129,7 +130,7 @@ public class StonecuttingGenerator extends RecipeProvider {
 	}
 
 	private static ResourceLocation getIdFor(Item input, Item output) {
-		String path = String.format("stonecutting/%s/%s", input.getRegistryName().getPath(), output.getRegistryName().getPath());
+		String path = String.format("stonecutting/%s/%s", ForgeRegistries.ITEMS.getKey(input).getPath(), ForgeRegistries.ITEMS.getKey(output).getPath());
 		return prefix(path);
 	}
 

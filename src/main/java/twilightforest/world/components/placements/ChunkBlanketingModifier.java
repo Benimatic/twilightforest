@@ -9,6 +9,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TwilightFeatures;
 
@@ -56,7 +57,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
                 BlockPos pos = new BlockPos(chunkOriginX + xInChunk, context.getHeight(heightmap, chunkOriginX + xInChunk, chunkOriginZ + zInChunk), chunkOriginZ + zInChunk);
 
                 if (biomeRLOptional.isPresent()) {
-                    if (biomeRLOptional.get().equals(context.getLevel().getBiome(pos).value().getRegistryName())) {
+                    if (biomeRLOptional.get().equals(ForgeRegistries.BIOMES.getKey(context.getLevel().getBiome(pos).value()))) {
                         coordinates.add(pos);
                     }
                 } else {

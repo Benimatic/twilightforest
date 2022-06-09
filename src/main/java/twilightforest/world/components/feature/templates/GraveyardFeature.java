@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -109,11 +110,11 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 
 		int flags = 16 | 2 | 1;
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
-		Random random = world.getRandom();
+		RandomSource random = world.getRandom();
 
 		StructureTemplateManager templatemanager = world.getLevel().getServer().getStructureManager();
 		StructureTemplate base = templatemanager.getOrCreate(GRAVEYARD);

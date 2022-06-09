@@ -13,12 +13,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.common.crafting.NBTIngredient;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -92,7 +94,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.pattern("##")
 				.define('#', Ingredient.of(ingredients))
 				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.get()))
-				.save(consumer, locCastle(result.get().getRegistryName().getPath()));
+				.save(consumer, locCastle(ForgeRegistries.BLOCKS.getKey(result.get()).getPath()));
 	}
 
 	protected final void stairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
@@ -339,7 +341,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.requires(armor)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), vials)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + armor.getRegistryName().getPath()));
+				.save(consumer, locEquip("fiery_" + ForgeRegistries.ITEMS.getKey(result.get()).getPath()));
 	}
 
 	protected final ResourceLocation locCastle(String name) {

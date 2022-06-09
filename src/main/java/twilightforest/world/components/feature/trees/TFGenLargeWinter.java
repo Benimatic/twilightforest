@@ -38,7 +38,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		// check if we're on a valid block
-		if (!SnowTreePlacer.isBlockUnderValid(world, pos.below())) {
+		if (!SnowTreePlacer.validTreePos(world, pos.below())) {
 			return false;
 		}
 

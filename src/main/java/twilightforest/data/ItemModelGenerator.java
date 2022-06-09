@@ -10,6 +10,7 @@ import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.HollowLogHorizontal;
@@ -27,8 +28,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 		for (Item i : Registry.ITEM) {
-			if (i instanceof SpawnEggItem && i.getRegistryName().getNamespace().equals(TwilightForestMod.ID)) {
-				getBuilder(i.getRegistryName().getPath())
+			if (i instanceof SpawnEggItem && ForgeRegistries.ITEMS.getKey(i).getNamespace().equals(TwilightForestMod.ID)) {
+				getBuilder(ForgeRegistries.ITEMS.getKey(i).getPath())
 								.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
 			}
 		}
@@ -726,23 +727,23 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void woodenButton(Block button, String variant) {
-		getBuilder(button.getRegistryName().getPath())
+		getBuilder(ForgeRegistries.BLOCKS.getKey(button).getPath())
 						.parent(getExistingFile(mcLoc("block/button_inventory")))
 						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void woodenFence(Block fence, String variant) {
-		getBuilder(fence.getRegistryName().getPath())
+		getBuilder(ForgeRegistries.BLOCKS.getKey(fence).getPath())
 						.parent(getExistingFile(mcLoc("block/fence_inventory")))
 						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void hollowLog(RegistryObject<HollowLogHorizontal> hollowLog) {
-		getBuilder(hollowLog.get().asItem().getRegistryName().getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
+		getBuilder(ForgeRegistries.BLOCKS.getKey(hollowLog.get()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
 	}
 
 	private void toBlock(Block b) {
-		toBlockModel(b, b.getRegistryName().getPath());
+		toBlockModel(b, ForgeRegistries.BLOCKS.getKey(b).getPath());
 	}
 
 	private void toBlockModel(Block b, String model) {
@@ -750,7 +751,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void toBlockModel(Block b, ResourceLocation model) {
-		withExistingParent(b.getRegistryName().getPath(), model);
+		withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath(), model);
 	}
 
 	@Override

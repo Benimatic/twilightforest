@@ -7,6 +7,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -68,7 +69,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 3, y - 2, z - 3);
 		}
 	};
@@ -90,7 +91,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 7, y - 5, z - 7);
 		}
 	};
@@ -113,7 +114,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 11, y - 5, z - 11);
 		}
 	};
@@ -124,7 +125,7 @@ public class TFFeature {
 			this.adjustToTerrainHeight = true;
 		}
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HedgeMazeComponent(this, 0, x + 1, y + 4, z + 1);
 		}
 	};
@@ -136,7 +137,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new QuestGrove(structureManager, new BlockPos(x - 12, y, z - 12));
 		}
 	};
@@ -146,8 +147,9 @@ public class TFFeature {
 
 			this.adjustToTerrainHeight = true;
 		}
+
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new CourtyardMain(this, rand, 0, x + 1, y + 1, z + 1, structureManager);
 		}
 	};
@@ -174,7 +176,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new TowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
@@ -195,7 +197,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HydraLairComponent(this, rand, 0, x - 7, y, z - 7);
 		}
 	};
@@ -225,7 +227,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new MazeRuinsComponent(this, 0, x, y, z);
 		}
 
@@ -263,7 +265,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new DarkTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
@@ -293,7 +295,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new StrongholdEntranceComponent(this, 0, x, y + 5, z);
 		}
 
@@ -321,7 +323,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new YetiCaveComponent(this, rand, 0, x, y, z);
 		}
 	};
@@ -343,7 +345,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new IceTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
@@ -377,7 +379,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new TrollCaveMainComponent(TrollCavePieces.TFTCMai, this, 0, x, y, z);
 		}
 	};
@@ -400,7 +402,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new FinalCastleMainComponent(this, rand, 0, x, y, z);
 		}
 	};
@@ -413,7 +415,7 @@ public class TFFeature {
 		}
 
 		@Override
-		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new MushroomTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
@@ -925,7 +927,7 @@ public class TFFeature {
 	}
 
 	@Nullable
-	public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
+	public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 		return null;
 	}
 
@@ -940,7 +942,7 @@ public class TFFeature {
 		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
 		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed()))
 			return Optional.empty();
-		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), new Random(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z));
+		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z));
 	}
 
 	public GenerationStep.Decoration getDecorationStage() {

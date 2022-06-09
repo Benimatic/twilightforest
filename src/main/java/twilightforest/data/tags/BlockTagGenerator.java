@@ -6,6 +6,7 @@ import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
@@ -616,7 +617,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
 		return ForgeRegistries.BLOCKS.getValues().stream()
-				.filter(b -> b.getRegistryName() != null && (b.getRegistryName().getNamespace().equals(TwilightForestMod.ID) || b.getRegistryName().getNamespace().equals("minecraft")) && predicate.test(b))
+				.filter(b -> ForgeRegistries.BLOCKS.getKey(b) != null && (ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals(TwilightForestMod.ID) || ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals("minecraft")) && predicate.test(b))
 				.toArray(Block[]::new);
 	}
 

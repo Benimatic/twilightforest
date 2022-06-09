@@ -59,6 +59,7 @@ import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFMobEffects;
+import twilightforest.util.TFBannerPatterns;
 import twilightforest.util.TFStats;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
@@ -109,6 +110,7 @@ public class TwilightForestMod {
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 
+		TFBannerPatterns.BANNER_PATTERNS.register(modbus);
 		BiomeKeys.BIOMES.register(modbus);
 		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
 		TFBlocks.BLOCKS.register(modbus);
@@ -125,8 +127,8 @@ public class TwilightForestMod {
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFRecipes.RECIPE_TYPES.register(modbus);
 		//TFPotions.POTIONS.register(modbus);
-		TFEntities.SPAWN_EGGS.register(modbus);
 		TFSounds.SOUNDS.register(modbus);
+		TFEntities.SPAWN_EGGS.register(modbus);
 		TFStats.STATS.register(modbus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
 		TwilightFeatures.TREE_DECORATORS.register(modbus);

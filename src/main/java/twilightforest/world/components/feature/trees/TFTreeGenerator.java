@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
@@ -31,39 +33,42 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	// [VanillaCopy] TreeFeature.place, swapped TreeConfiguration for generic <T extends TFTreeFeatureConfig>. Omitted code are commented out instead of deleted
 	@Override
 	public final boolean place(FeaturePlaceContext<T> context) {
-		WorldGenLevel contextWorldGenLevel = context.level();
-		RandomSource contextRandom = context.random();
-		BlockPos contextBlockPos = context.origin();
-		T contextConfig = context.config();
-		Set<BlockPos> trunkSet = Sets.newHashSet();
-		Set<BlockPos> leavesSet = Sets.newHashSet();
-		Set<BlockPos> decorationSet = Sets.newHashSet();
-		BiConsumer<BlockPos, BlockState> trunkPlacer = (pos, state) -> {
-			trunkSet.add(pos.immutable());
-			contextWorldGenLevel.setBlock(pos, state, 19);
+		WorldGenLevel worldgenlevel = context.level();
+		RandomSource randomsource = context.random();
+		BlockPos blockpos = context.origin();
+		T treeconfiguration = context.config();
+		Set<BlockPos> set = Sets.newHashSet();
+		Set<BlockPos> set1 = Sets.newHashSet();
+		Set<BlockPos> set2 = Sets.newHashSet();
+		Set<BlockPos> set3 = Sets.newHashSet();
+		BiConsumer<BlockPos, BlockState> biconsumer = (pos, state) -> {
+			set.add(pos.immutable());
+			worldgenlevel.setBlock(pos, state, 19);
 		};
-		BiConsumer<BlockPos, BlockState> leavesPlacer = (pos, state) -> {
-			leavesSet.add(pos.immutable());
-			contextWorldGenLevel.setBlock(pos, state, 19);
+		BiConsumer<BlockPos, BlockState> biconsumer1 = (pos, state) -> {
+			set1.add(pos.immutable());
+			worldgenlevel.setBlock(pos, state, 19);
 		};
-		BiConsumer<BlockPos, BlockState> decorationPlacer = (pos, state) -> {
-			decorationSet.add(pos.immutable());
-			contextWorldGenLevel.setBlock(pos, state, 19);
+		BiConsumer<BlockPos, BlockState> biconsumer2 = (pos, state) -> {
+			set2.add(pos.immutable());
+			worldgenlevel.setBlock(pos, state, 19);
 		};
-
-		if (this.generate(contextWorldGenLevel, contextRandom, contextBlockPos, trunkPlacer, leavesPlacer, decorationPlacer, contextConfig) && (!trunkSet.isEmpty() || !leavesSet.isEmpty())) {
-			// TODO Could be fun if we added Decorators
-			if (!contextConfig.decorators.isEmpty()) {
-				List<BlockPos> trunkList = Lists.newArrayList(trunkSet);
-				List<BlockPos> leavesList = Lists.newArrayList(leavesSet);
-				trunkList.sort(Comparator.comparingInt(Vec3i::getY));
-				leavesList.sort(Comparator.comparingInt(Vec3i::getY));
-				contextConfig.decorators.forEach(treeDecorator -> treeDecorator.place(contextWorldGenLevel, decorationPlacer, contextRandom, trunkList, leavesList));
+		BiConsumer<BlockPos, BlockState> biconsumer3 = (pos, state) -> {
+			set3.add(pos.immutable());
+			worldgenlevel.setBlock(pos, state, 19);
+		};
+		boolean flag = this.generate(worldgenlevel, randomsource, blockpos, biconsumer, biconsumer1, biconsumer2, treeconfiguration);
+		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
+			if (!treeconfiguration.decorators.isEmpty()) {
+				TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(worldgenlevel, biconsumer3, randomsource, set1, set2, set);
+				treeconfiguration.decorators.forEach((p_225282_) -> {
+					p_225282_.place(treedecorator$context);
+				});
 			}
 
-			return BoundingBox.encapsulatingPositions(Iterables.concat(trunkSet, leavesSet, decorationSet)).map(boundingBox -> {
-				DiscreteVoxelShape voxelShape = TreeFeature.updateLeaves(contextWorldGenLevel, boundingBox, trunkSet, decorationSet);
-				StructureTemplate.updateShapeAtEdge(contextWorldGenLevel, 3, voxelShape, boundingBox.minX(), boundingBox.minY(), boundingBox.minZ());
+			return BoundingBox.encapsulatingPositions(Iterables.concat(set, set1, set2, set3)).map((boundingBox) -> {
+				DiscreteVoxelShape discretevoxelshape = TreeFeature.updateLeaves(worldgenlevel, boundingBox, set1, set3, set);
+				StructureTemplate.updateShapeAtEdge(worldgenlevel, 3, discretevoxelshape, boundingBox.minX(), boundingBox.minY(), boundingBox.minZ());
 				return true;
 			}).orElse(false);
 		} else {
