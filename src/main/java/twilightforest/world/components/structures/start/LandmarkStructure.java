@@ -1,25 +1,24 @@
 package twilightforest.world.components.structures.start;
 
-import com.mojang.serialization.Codec;
+import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureType;
-import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
 import java.util.List;
-import java.util.Optional;
 
 // Landmark structure without progression lock; Hollow Hills/Hedge Maze/Naga Courtyard/Quest Grove
-public class LandmarkStructure extends Structure implements DecorationClearance, ControlledSpawns {
-    public static final Codec<LandmarkStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ControlledSpawningConfig.FLAT_CODEC.forGetter(s -> s.controlledSpawningConfig),
-            DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
-            Structure.settingsCodec(instance)
-    ).apply(instance, LandmarkStructure::new));
+public abstract class LandmarkStructure extends Structure implements DecorationClearance, ControlledSpawns {
+    protected static <S extends LandmarkStructure> Products.P3<RecordCodecBuilder.Mu<S>, ControlledSpawningConfig, DecorationConfig, StructureSettings> landmarkCodec(RecordCodecBuilder.Instance<S> instance) {
+        return instance.group(
+                ControlledSpawningConfig.FLAT_CODEC.forGetter(s -> s.controlledSpawningConfig),
+                DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
+                Structure.settingsCodec(instance)
+        );
+    }
 
     final ControlledSpawningConfig controlledSpawningConfig;
     final DecorationConfig decorationConfig;
@@ -28,16 +27,6 @@ public class LandmarkStructure extends Structure implements DecorationClearance,
         super(structureSettings);
         this.controlledSpawningConfig = controlledSpawningConfig;
         this.decorationConfig = decorationConfig;
-    }
-
-    @Override
-    public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        return Optional.empty();
-    }
-
-    @Override
-    public StructureType<?> type() {
-        return TFStructureTypes.CONFIGURABLE_LANDMARK.get();
     }
 
     @Override

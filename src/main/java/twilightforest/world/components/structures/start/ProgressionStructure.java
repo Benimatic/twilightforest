@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.start;
 
-import com.mojang.serialization.Codec;
+import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -8,9 +8,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureType;
-import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 import twilightforest.world.components.structures.util.StructureHints;
 
@@ -18,28 +15,22 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 // Landmark structure with a progression lock; Lich Tower/Labyrinth/Hydra Lair/Final Castle/etc
-public class ProgressionStructure extends LandmarkStructure implements AdvancementLockedStructure, StructureHints {
-    public static final Codec<ProgressionStructure> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),
-            ControlledSpawningConfig.FLAT_CODEC.forGetter(s -> s.controlledSpawningConfig),
-            HintConfig.FLAT_CODEC.forGetter(s -> s.hintConfig),
-            DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
-            Structure.settingsCodec(instance)
-    ).apply(instance, ProgressionStructure::new));
+public abstract class ProgressionStructure extends LandmarkStructure implements AdvancementLockedStructure, StructureHints {
+    protected static <S extends ProgressionStructure> Products.P5<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, HintConfig, ControlledSpawningConfig, DecorationConfig, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
+        return instance.group(
+                AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),
+                HintConfig.FLAT_CODEC.forGetter(s -> s.hintConfig)
+        ).and(landmarkCodec(instance));
+    }
 
     final AdvancementLockConfig advancementLockConfig;
     final HintConfig hintConfig;
 
-    public ProgressionStructure(AdvancementLockConfig advancementLockConfig, ControlledSpawningConfig controlledSpawningConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+    public ProgressionStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, ControlledSpawningConfig controlledSpawningConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
         super(controlledSpawningConfig, decorationConfig, structureSettings);
 
         this.advancementLockConfig = advancementLockConfig;
         this.hintConfig = hintConfig;
-    }
-
-    @Override
-    public StructureType<?> type() {
-        return TFStructureTypes.PROGRESSION_LANDMARK.get();
     }
 
     @Override
