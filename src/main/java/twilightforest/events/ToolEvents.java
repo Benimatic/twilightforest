@@ -13,12 +13,15 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 import twilightforest.item.EnderBowItem;
 import twilightforest.item.MinotaurAxeItem;
 
 import javax.annotation.Nullable;
 
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ToolEvents {
 
 	private static final int KNIGHTMETAL_BONUS_DAMAGE = 2;
