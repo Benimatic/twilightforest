@@ -374,7 +374,7 @@ public class TFClientEvents {
 	}
 
 	private static boolean partShown(Entity entity) {
-		return entity instanceof AbstractClientPlayer player && player.isModelPartShown(PlayerModelPart.HAT);
+		return !(entity instanceof AbstractClientPlayer player) || player.isModelPartShown(PlayerModelPart.HAT);
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
