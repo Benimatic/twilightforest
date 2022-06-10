@@ -28,7 +28,8 @@ public class TFStructures {
 	public static final RegistryObject<LegacyLandmark> TROLL_CAVE = STRUCTURES.register("troll_cave", () -> LegacyLandmark.extractLandmark(TFLandmark.TROLL_CAVE));
 	public static final RegistryObject<LegacyLandmark> FINAL_CASTLE = STRUCTURES.register("final_castle", () -> LegacyLandmark.extractLandmark(TFLandmark.FINAL_CASTLE));
 
-	public static <T> ResourceKey<T> cleanKey(RegistryObject<? extends T> keyProvider) {
-		return (ResourceKey<T>) keyProvider.getKey();
+	@SuppressWarnings("unchecked")
+	public static ResourceKey<Structure> cleanKey(RegistryObject<? extends Structure> keyProvider) {
+		return (ResourceKey<Structure>) keyProvider.getKey();
 	}
 }

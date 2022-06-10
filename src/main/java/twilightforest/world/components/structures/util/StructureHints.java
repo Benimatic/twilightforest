@@ -103,6 +103,7 @@ public interface StructureHints {
 
         public static Codec<HintConfig> CODEC = FLAT_CODEC.codec();
 
+        @SuppressWarnings("unchecked")
         private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {
             if (!Mob.class.isAssignableFrom(entityType.getBaseClass()))
                 return DataResult.error("Configured Hint Entity " + entityType.toShortString() + " cannot be assigned as a Mob!");
