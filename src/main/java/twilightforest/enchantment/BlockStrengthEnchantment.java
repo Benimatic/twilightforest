@@ -13,13 +13,13 @@ public class BlockStrengthEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public int getMinCost(int pEnchantmentLevel) {
-		return 5 + (pEnchantmentLevel - 1) * 9;
+	public int getMinCost(int level) {
+		return 5 + (level - 1) * 9;
 	}
 
 	@Override
-	public int getMaxCost(int pEnchantmentLevel) {
-		return this.getMinCost(pEnchantmentLevel) + 15;
+	public int getMaxCost(int level) {
+		return this.getMinCost(level) + 15;
 	}
 
 	@Override
@@ -28,8 +28,8 @@ public class BlockStrengthEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public boolean canEnchant(ItemStack pStack) {
-		return pStack.getItem() instanceof ChainBlockItem;
+	public boolean canEnchant(ItemStack stack) {
+		return stack.getItem() instanceof ChainBlockItem;
 	}
 
 	@Override

@@ -27,7 +27,6 @@ public class ToolEvents {
 	private static final int KNIGHTMETAL_BONUS_DAMAGE = 2;
 	private static final int MINOTAUR_AXE_BONUS_DAMAGE = 7;
 
-
 	@SubscribeEvent
 	public static void onEnderBowHit(ProjectileImpactEvent evt) {
 		Projectile arrow = evt.getProjectile();
@@ -66,7 +65,7 @@ public class ToolEvents {
 
 	@SubscribeEvent
 	public static void fieryToolSetFire(LivingAttackEvent event) {
-		if(event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.get())) && !event.getEntityLiving().fireImmune()) {
+		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.get())) && !event.getEntityLiving().fireImmune()) {
 			event.getEntityLiving().setSecondsOnFire(1);
 		}
 	}
@@ -80,7 +79,7 @@ public class ToolEvents {
 
 			if (!weapon.isEmpty()) {
 				if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.get()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.get()))) {
-					if(target.getArmorCoverPercentage() > 0) {
+					if (target.getArmorCoverPercentage() > 0) {
 						int moreBonus = (int) (KNIGHTMETAL_BONUS_DAMAGE * target.getArmorCoverPercentage());
 						event.setAmount(event.getAmount() + moreBonus);
 					} else {
@@ -88,7 +87,7 @@ public class ToolEvents {
 					}
 					// enchantment attack sparkles
 					((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-				} else if(target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
+				} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
 					event.setAmount(event.getAmount() + KNIGHTMETAL_BONUS_DAMAGE);
 					// enchantment attack sparkles
 					((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
@@ -101,12 +100,12 @@ public class ToolEvents {
 	public static void onMinotaurAxeCharge(LivingHurtEvent event) {
 		LivingEntity target = event.getEntityLiving();
 		Entity source = event.getSource().getDirectEntity();
-		if (!target.level.isClientSide && source instanceof LivingEntity living && source.isSprinting() && (event.getSource().getMsgId().equals("player") || event.getSource().getMsgId().equals("mob"))) {
+		if (!target.getLevel().isClientSide() && source instanceof LivingEntity living && source.isSprinting() && (event.getSource().getMsgId().equals("player") || event.getSource().getMsgId().equals("mob"))) {
 			ItemStack weapon = living.getMainHandItem();
 			if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
 				event.setAmount(event.getAmount() + MINOTAUR_AXE_BONUS_DAMAGE);
 				// enchantment attack sparkles
-				((ServerLevel) target.level).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+				((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 			}
 		}
 	}

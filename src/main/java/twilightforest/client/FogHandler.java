@@ -55,9 +55,6 @@ public class FogHandler {
 				spoopFog += shift;
 			spoopFog = Mth.clamp(spoopFog, 0F, 1F);
 
-			//FIXME: These two are commented out as they do not exist in the main game. While this might mean they aren't needed, look at this if there is a problem
-//			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
-
 			//FIXME getMode now requires a FogType when it used to want a FogMode. Does this work ok?
 			//if (event.getMode() == FogRenderer.FogMode.FOG_SKY) {
 			if (event.getMode() == FogType.NONE) {
@@ -67,8 +64,6 @@ public class FogHandler {
 				RenderSystem.setShaderFogStart(f * 0.75F);
 				RenderSystem.setShaderFogEnd(f);
 			}
-
-//			RenderSystem.setupNvFogDistance();
 		}
 	}
 

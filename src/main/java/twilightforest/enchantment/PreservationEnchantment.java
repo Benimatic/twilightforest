@@ -13,13 +13,13 @@ public class PreservationEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public int getMinCost(int pEnchantmentLevel) {
-		return pEnchantmentLevel * 10;
+	public int getMinCost(int level) {
+		return level * 10;
 	}
 
 	@Override
-	public int getMaxCost(int pEnchantmentLevel) {
-		return this.getMinCost(pEnchantmentLevel) + 15;
+	public int getMaxCost(int level) {
+		return this.getMinCost(level) + 15;
 	}
 
 	@Override
@@ -28,8 +28,8 @@ public class PreservationEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public boolean canEnchant(ItemStack pStack) {
-		return pStack.getItem() instanceof ChainBlockItem;
+	public boolean canEnchant(ItemStack stack) {
+		return stack.getItem() instanceof ChainBlockItem;
 	}
 
 	@Override

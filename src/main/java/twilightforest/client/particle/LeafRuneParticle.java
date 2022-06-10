@@ -8,8 +8,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class LeafRuneParticle extends TextureSheetParticle {
 
-	LeafRuneParticle(ClientLevel world, double x, double y, double z, double velX, double velY, double velZ) {
-		super(world, x, y, z, velX, velY, velZ);
+	LeafRuneParticle(ClientLevel level, double x, double y, double z, double velX, double velY, double velZ) {
+		super(level, x, y, z, velX, velY, velZ);
 		// super applies jittering, reset it
 		this.xd = velX;
 		this.yd = velY;
@@ -26,17 +26,12 @@ public class LeafRuneParticle extends TextureSheetParticle {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Factory(SpriteSet sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			LeafRuneParticle particle = new LeafRuneParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.pickSprite(this.spriteSet);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			LeafRuneParticle particle = new LeafRuneParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.pickSprite(this.sprite);
 			return particle;
 		}
 	}

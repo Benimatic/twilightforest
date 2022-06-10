@@ -21,26 +21,27 @@ import twilightforest.entity.passive.TinyBird;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class MiscEvents {
+
 	@SubscribeEvent
 	public static void addPrey(EntityJoinWorldEvent event) {
 		Entity entity = event.getEntity();
 		EntityType<?> type = entity.getType();
-		if(entity instanceof Mob mob) {
+		if (entity instanceof Mob mob) {
 			if (type == EntityType.CAT) {
-				mob.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>((TamableAnimal)entity, DwarfRabbit.class, false, null));
-				mob.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>((TamableAnimal)entity, Squirrel.class, false, null));
-				mob.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>((TamableAnimal)entity, TinyBird.class, false, null));
-			} else if(type == EntityType.OCELOT) {
+				mob.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>((TamableAnimal) entity, DwarfRabbit.class, false, null));
+				mob.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>((TamableAnimal) entity, Squirrel.class, false, null));
+				mob.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>((TamableAnimal) entity, TinyBird.class, false, null));
+			} else if (type == EntityType.OCELOT) {
 				mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, DwarfRabbit.class, false));
 				mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Squirrel.class, false));
 				mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, TinyBird.class, false));
 			} else if (type == EntityType.FOX) {
 				mob.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(mob, DwarfRabbit.class, false));
 				mob.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(mob, Squirrel.class, false));
-			} else if(type == EntityType.WOLF) {
-				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal)entity, DwarfRabbit.class, false, null));
-				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal)entity, Squirrel.class, false, null));
-				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal)entity, Bighorn.class, false, null));
+			} else if (type == EntityType.WOLF) {
+				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal) entity, DwarfRabbit.class, false, null));
+				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal) entity, Squirrel.class, false, null));
+				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal) entity, Bighorn.class, false, null));
 			}
 		}
 	}
@@ -48,7 +49,7 @@ public class MiscEvents {
 	@SubscribeEvent
 	public static void armorChanged(LivingEquipmentChangeEvent event) {
 		LivingEntity living = event.getEntityLiving();
-		if (!living.level.isClientSide && living instanceof ServerPlayer) {
+		if (!living.getLevel().isClientSide() && living instanceof ServerPlayer) {
 			TFAdvancements.ARMOR_CHANGED.trigger((ServerPlayer) living, event.getFrom(), event.getTo());
 		}
 	}

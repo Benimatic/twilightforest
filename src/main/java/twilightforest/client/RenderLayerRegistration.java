@@ -53,6 +53,7 @@ public class RenderLayerRegistration {
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.TIME_TRAPDOOR.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.SORTING_TRAPDOOR.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.TWILIGHT_PORTAL.get(), translucent);

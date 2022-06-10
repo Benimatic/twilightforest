@@ -2,6 +2,7 @@ package twilightforest.events;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -71,7 +72,8 @@ public class CharmEvents {
 		if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
 		if (!event.isEndConquered()) {
 			if (casketExpiration) {
-				serverPlayer.sendSystemMessage(Component.translatable("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED));
+				serverPlayer.sendSystemMessage(Component.translatable("block.twilightforest.casket.broken").withStyle(ChatFormatting.RED));
+				casketExpiration = false;
 			}
 			returnStoredItems(serverPlayer);
 		}
@@ -96,10 +98,10 @@ public class CharmEvents {
 			}
 
 			// spawn effect thingers
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level, player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
 			player.getLevel().addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level, player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
 			effect2.offset = (float) Math.PI;
 			player.getLevel().addFreshEntity(effect2);
 
@@ -183,7 +185,7 @@ public class CharmEvents {
 		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET.get().asItem());
 
 		if (casketConsumed) {
-			Level world = player.getCommandSenderWorld();
+			Level level = player.getCommandSenderWorld();
 			BlockPos.MutableBlockPos pos = player.blockPosition().mutable();
 
 			if (pos.getY() < 2) {
@@ -198,13 +200,12 @@ public class CharmEvents {
 
 			// TODO determine if block was air or better yet make a tag list of blocks that are OK to place the casket in
 			BlockPos immutablePos = pos.immutable();
-			FluidState fluidState = world.getFluidState(immutablePos);
+			FluidState fluidState = level.getFluidState(immutablePos);
 
-			if (world.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
-				BlockEntity te = world.getBlockEntity(immutablePos);
+			if (level.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage).setValue(KeepsakeCasketBlock.FACING, Direction.from2DDataValue(level.getRandom().nextInt(3))))) {
+				BlockEntity te = level.getBlockEntity(immutablePos);
 
 				if (te instanceof KeepsakeCasketBlockEntity casket) {
-
 					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
 						//make it so only the player who died can open the chest if our config allows us
 						casket.playeruuid = player.getGameProfile().getId();
@@ -219,17 +220,17 @@ public class CharmEvents {
 					else modifiedName = player.getName().getString();
 					casket.name = player.getName().getString();
 					casket.casketname = modifiedName;
-					casket.setCustomName(Component.literal(modifiedName + "'s " + (world.random.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
-					int damage = world.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
-					if (world.random.nextFloat() <= 0.15F) {
+					casket.setCustomName(Component.literal(modifiedName + "'s " + (level.getRandom().nextInt(1000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
+					int damage = level.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
+					if (level.random.nextFloat() <= 0.15F) {
 						if (damage >= 2) {
 							player.getInventory().dropAll();
-							world.setBlockAndUpdate(immutablePos, Blocks.AIR.defaultBlockState());
+							level.setBlockAndUpdate(immutablePos, Blocks.AIR.defaultBlockState());
 							casketExpiration = true;
 							TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and dropping extra items", player.getName().getString());
 						} else {
 							damage = damage + 1;
-							world.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage));
+							level.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage));
 							TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
 						}
 					}
@@ -263,7 +264,7 @@ public class CharmEvents {
 
 		//check if our tag is in the persistent player data. If so, copy that inventory over to our own. Cloud storage at its finest!
 		CompoundTag playerData = getPlayerData(player);
-		if (!player.level.isClientSide && playerData.contains(CHARM_INV_TAG)) {
+		if (!player.getLevel().isClientSide() && playerData.contains(CHARM_INV_TAG)) {
 			ListTag tagList = playerData.getList(CHARM_INV_TAG, 10);
 			player.getInventory().load(tagList);
 			getPlayerData(player).getList(CHARM_INV_TAG, 10).clear();
@@ -272,14 +273,14 @@ public class CharmEvents {
 
 		// spawn effect thingers
 		if (charmUsed != null) {
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level, player, charmUsed.getItem());
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charmUsed.getItem());
 			player.level.addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level, player, charmUsed.getItem());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charmUsed.getItem());
 			effect2.offset = (float) Math.PI;
-			player.level.addFreshEntity(effect2);
+			player.getLevel().addFreshEntity(effect2);
 
-			player.level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP.get(), player.getSoundSource(), 1.5F, 1.0F);
+			player.getLevel().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP.get(), player.getSoundSource(), 1.5F, 1.0F);
 			if (player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.get());
 			charmUsed = null;
 		}

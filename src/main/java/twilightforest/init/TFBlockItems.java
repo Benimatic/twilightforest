@@ -92,7 +92,7 @@ public class TFBlockItems {
 					consumer.accept(new IItemRenderProperties() {
 						@Override
 						public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-							return new ISTER(TFBlockEntities.KEEPSAKE_CASKET.getId());
+							return new ISTER();
 						}
 					});
 				}
@@ -404,14 +404,14 @@ public class TFBlockItems {
 			register(event, signBlock(TFBlocks.SORTING_SIGN, TFBlocks.SORTING_WALL_SIGN));
 			register(event, burningItem(TFBlocks.SORTING_BANISTER, 300));
 
-			makeBEWLRItem(event, TFBlocks.TWILIGHT_OAK_CHEST, TFBlockEntities.TF_CHEST.getId());
-			makeBEWLRItem(event, TFBlocks.CANOPY_CHEST, TFBlockEntities.TF_CHEST.getId());
-			makeBEWLRItem(event, TFBlocks.MANGROVE_CHEST, TFBlockEntities.TF_CHEST.getId());
-			makeBEWLRItem(event, TFBlocks.DARKWOOD_CHEST, TFBlockEntities.TF_CHEST.getId());
-			makeBEWLRItem(event, TFBlocks.TIME_CHEST, TFBlockEntities.TF_CHEST.getId());
-			makeBEWLRItem(event, TFBlocks.TRANSFORMATION_CHEST, TFBlockEntities.TF_CHEST.getId());
-			makeBEWLRItem(event, TFBlocks.MINING_CHEST, TFBlockEntities.TF_CHEST.getId());
-			makeBEWLRItem(event, TFBlocks.SORTING_CHEST, TFBlockEntities.TF_CHEST.getId());
+			makeBEWLRItem(event, TFBlocks.TWILIGHT_OAK_CHEST);
+			makeBEWLRItem(event, TFBlocks.CANOPY_CHEST);
+			makeBEWLRItem(event, TFBlocks.MANGROVE_CHEST);
+			makeBEWLRItem(event, TFBlocks.DARKWOOD_CHEST);
+			makeBEWLRItem(event, TFBlocks.TIME_CHEST);
+			makeBEWLRItem(event, TFBlocks.TRANSFORMATION_CHEST);
+			makeBEWLRItem(event, TFBlocks.MINING_CHEST);
+			makeBEWLRItem(event, TFBlocks.SORTING_CHEST);
 		}
 	}
 
@@ -434,7 +434,7 @@ public class TFBlockItems {
 				consumer.accept(new IItemRenderProperties() {
 					@Override
 					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER(TFBlockEntities.SKULL_CANDLE.getId());
+						return new ISTER();
 					}
 				});
 			}
@@ -452,7 +452,7 @@ public class TFBlockItems {
 				consumer.accept(new IItemRenderProperties() {
 					@Override
 					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER(TFBlockEntities.TROPHY.getId());
+						return new ISTER();
 					}
 				});
 			}
@@ -466,7 +466,7 @@ public class TFBlockItems {
 				consumer.accept(new IItemRenderProperties() {
 					@Override
 					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER(tileentity.getId());
+						return new ISTER();
 					}
 				});
 			}
@@ -481,14 +481,14 @@ public class TFBlockItems {
 		return new SignItem(TFItems.defaultBuilder().stacksTo(16), block.get(), wallblock.get());
 	}
 
-	private static void makeBEWLRItem(RegisterEvent event, RegistryObject<? extends Block> block, ResourceLocation rl) {
+	private static void makeBEWLRItem(RegisterEvent event, RegistryObject<? extends Block> block) {
 		register(event, new BlockItem(block.get(), TFItems.defaultBuilder()) {
 			@Override
 			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 				consumer.accept(new IItemRenderProperties() {
 					@Override
 					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER(rl);
+						return new ISTER();
 					}
 				});
 			}

@@ -62,41 +62,41 @@ public class ProgressionEvents {
 	public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
 
 		Player player = event.getPlayer();
-		Level world = player.level;
+		Level level = player.getLevel();
 
-		if (!world.isClientSide && isBlockProtectedFromInteraction(world, event.getPos()) && isAreaProtected(world, player, event.getPos())) {
+		if (!level.isClientSide() && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(level, player, event.getPos())) {
 			event.setUseBlock(Event.Result.DENY);
 		}
 	}
 
-	private static boolean isBlockProtectedFromInteraction(Level world, BlockPos pos) {
-		return world.getBlockState(pos).is(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
+	private static boolean isBlockProtectedFromInteraction(Level level, BlockPos pos) {
+		return level.getBlockState(pos).is(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
 	}
 
-	private static boolean isBlockProtectedFromBreaking(Level world, BlockPos pos) {
-		return !world.getBlockState(pos).is(BlockTagGenerator.PROGRESSION_ALLOW_BREAKING);
+	private static boolean isBlockProtectedFromBreaking(Level level, BlockPos pos) {
+		return !level.getBlockState(pos).is(BlockTagGenerator.PROGRESSION_ALLOW_BREAKING);
 	}
 
 	/**
 	 * Return if the area at the coordinates is considered protected for that player.
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
-	private static boolean isAreaProtected(Level world, Player player, BlockPos pos) {
+	private static boolean isAreaProtected(Level level, Player player, BlockPos pos) {
 
 		if (player.getAbilities().instabuild || player.isSpectator() ||
-				!TFGenerationSettings.isProgressionEnforced(world) || player instanceof FakePlayer) {
+				!TFGenerationSettings.isProgressionEnforced(level) || player instanceof FakePlayer) {
 			return false;
 		}
 
-		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(world);
+		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(level);
 
 		if (chunkGenerator != null) {
-			Optional<StructureStart> struct = TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0);
+			Optional<StructureStart> struct = TFGenerationSettings.locateTFStructureInRange((ServerLevel) level, pos, 0);
 			if (struct.isPresent()) {
 				StructureStart structure = struct.get();
 				if (structure.getBoundingBox().isInside(pos)) {
 					// what feature is nearby?  is it one the player has not unlocked?
-					TFLandmark nearbyFeature = TFLandmark.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world);
+					TFLandmark nearbyFeature = TFLandmark.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) level);
 
 					if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
 
@@ -111,10 +111,10 @@ public class ProgressionEvents {
 								boxes.add(piece.getBoundingBox());
 						});
 
-						sendAreaProtectionPacket(world, pos, boxes);
+						sendAreaProtectionPacket(level, pos, boxes);
 
 						// send a hint monster?
-						nearbyFeature.trySpawnHintMonster(world, player, pos);
+						nearbyFeature.trySpawnHintMonster(level, player, pos);
 
 						return true;
 					}
@@ -124,8 +124,8 @@ public class ProgressionEvents {
 		return false;
 	}
 
-	private static void sendAreaProtectionPacket(Level world, BlockPos pos, List<BoundingBox> sbb) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.dimension());
+	private static void sendAreaProtectionPacket(Level level, BlockPos pos, List<BoundingBox> sbb) {
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, level.dimension());
 		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));
 	}
 
@@ -133,8 +133,8 @@ public class ProgressionEvents {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntityLiving();
 		// cancel attacks in protected areas
-		if (!living.level.isClientSide && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
-				&& isAreaProtected(living.level, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
+		if (!living.getLevel().isClientSide() && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
+				&& isAreaProtected(living.getLevel(), (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);
 		}
@@ -142,7 +142,7 @@ public class ProgressionEvents {
 
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().level.isClientSide && event.getPlayer() instanceof ServerPlayer player) {
+		if (!event.getPlayer().getLevel().isClientSide() && event.getPlayer() instanceof ServerPlayer player) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(player.getLevel())) {
 				sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(player.getLevel()));
 			}
@@ -151,8 +151,8 @@ public class ProgressionEvents {
 
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getPlayer().level.isClientSide && event.getPlayer() instanceof ServerPlayer) {
-			sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().level));
+		if (!event.getPlayer().getLevel().isClientSide() && event.getPlayer() instanceof ServerPlayer) {
+			sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().getLevel()));
 		}
 	}
 

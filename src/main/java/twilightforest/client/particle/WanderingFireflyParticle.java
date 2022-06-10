@@ -11,8 +11,6 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.Random;
-
 //same glowy logic as FireflyParticle, but we movin'
 public class WanderingFireflyParticle extends TextureSheetParticle {
 
@@ -42,7 +40,6 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 
 	@Override
 	public void tick() {
-
 		if(!fromJar && this.level.getBrightness(LightLayer.SKY, new BlockPos(this.x, this.y, this.z)) < 1) {
 			this.remove();
 		}
@@ -56,7 +53,7 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 
 	@Override
 	public void render(VertexConsumer buffer, Camera entity, float partialTicks) {
-		this.alpha = getGlowBrightness();
+		this.alpha = this.getGlowBrightness();
 		super.render(buffer, entity, partialTicks);
 	}
 
@@ -75,38 +72,28 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Factory(SpriteSet sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			RandomSource rand = world.random;
-			double speedX = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
-			double speedY = (double)rand.nextFloat() * -0.25D * (double)rand.nextFloat() * 0.1D;
-			double speedZ = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
-			return new WanderingFireflyParticle(world, x, y, z, 0.1F, 0.1F, 0.1F, speedX, speedY, speedZ, this.spriteSet, false);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			RandomSource rand = level.getRandom();
+			double speedX = (double) rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double) rand.nextFloat() * 0.1D;
+			double speedY = (double) rand.nextFloat() * -0.25D * (double) rand.nextFloat() * 0.1D;
+			double speedZ = (double) rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double) rand.nextFloat() * 0.1D;
+			return new WanderingFireflyParticle(level, x, y, z, 0.1F, 0.1F, 0.1F, speedX, speedY, speedZ, this.sprite, false);
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static class FromJarFactory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public FromJarFactory(SpriteSet sprite) {
-			this.spriteSet = sprite;
-		}
+	public record FromJarFactory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			RandomSource rand = world.random;
-			double speedX = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
-			double speedY = (double)rand.nextFloat() * -0.25D * (double)rand.nextFloat() * 0.1D;
-			double speedZ = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
-			return new WanderingFireflyParticle(world, x, y, z, 0.1F, 0.1F, 0.1F, speedX, speedY, speedZ, this.spriteSet, true);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			RandomSource rand = level.getRandom();
+			double speedX = (double) rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double) rand.nextFloat() * 0.1D;
+			double speedY = (double) rand.nextFloat() * -0.25D * (double) rand.nextFloat() * 0.1D;
+			double speedZ = (double) rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double) rand.nextFloat() * 0.1D;
+			return new WanderingFireflyParticle(level, x, y, z, 0.1F, 0.1F, 0.1F, speedX, speedY, speedZ, this.sprite, true);
 		}
 	}
 }
