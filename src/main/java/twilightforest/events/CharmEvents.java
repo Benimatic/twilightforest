@@ -182,14 +182,16 @@ public class CharmEvents {
 	}
 
 	private static void keepsakeCasket(Player player) {
+		//reset this just in case. I was having fresh caskets place as the max damaged ones
+		TFItemStackUtils.damage = 0;
 		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET.get().asItem());
 
 		if (casketConsumed) {
 			Level level = player.getCommandSenderWorld();
 			BlockPos.MutableBlockPos pos = player.blockPosition().mutable();
 
-			if (pos.getY() < 2) {
-				pos.setY(2);
+			if (pos.getY() < level.dimensionType().minY() + 2) {
+				pos.setY(level.dimensionType().minY() + 2);
 			} else {
 				int logicalHeight = player.getCommandSenderWorld().dimensionType().logicalHeight();
 
@@ -198,7 +200,12 @@ public class CharmEvents {
 				}
 			}
 
-			// TODO determine if block was air or better yet make a tag list of blocks that are OK to place the casket in
+			pos.move(0, -1, 0);
+
+			do {
+				pos.move(0, 1, 0);
+			} while (!level.getBlockState(pos).getMaterial().isReplaceable());
+
 			BlockPos immutablePos = pos.immutable();
 			FluidState fluidState = level.getFluidState(immutablePos);
 
