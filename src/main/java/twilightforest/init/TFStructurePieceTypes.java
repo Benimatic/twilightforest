@@ -20,7 +20,7 @@ import twilightforest.world.components.structures.trollcave.*;
 import java.util.Locale;
 
 public class TFStructurePieceTypes {
-    private static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, TwilightForestMod.ID);
+    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, TwilightForestMod.ID);
 
     // Single-Piece Structures
     //IStructurePieceTypes that can be referred to
@@ -207,6 +207,6 @@ public class TFStructurePieceTypes {
     public static final RegistryObject<StructurePieceType> TFFCWrT = registerPieceType("TFFCWrT", FinalCastleWreckedTowerComponent::new);
 
     private static RegistryObject<StructurePieceType> registerPieceType(String name, StructurePieceType structurePieceType) {
-        return STRUCTURE_PIECE_TYPES.register(name.toLowerCase(Locale.ROOT), () -> structurePieceType);
+        return TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(name.toLowerCase(Locale.ROOT), () -> structurePieceType);
     }
 }

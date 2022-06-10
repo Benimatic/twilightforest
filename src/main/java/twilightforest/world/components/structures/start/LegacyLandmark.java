@@ -20,7 +20,7 @@ public class LegacyLandmark extends ProgressionStructure implements LegacyLandma
     public final TFLandmark feature;
 
     public static final Codec<LegacyLandmark> CODEC = RecordCodecBuilder.create(instance -> instance
-            .group(TFLandmark.CODEC.fieldOf("legacy_landmark_start").forGetter(o -> o.feature))
+            .group(TFLandmark.CODEC.fieldOf("legacy_landmark_start").forGetter(LegacyLandmark::getFeatureType))
             .and(progressionCodec(instance))
             .apply(instance, LegacyLandmark::new)
     );
@@ -41,9 +41,9 @@ public class LegacyLandmark extends ProgressionStructure implements LegacyLandma
         );
     }
 
-    public LegacyLandmark(TFLandmark feature, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, ControlledSpawningConfig controlledSpawningConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+    public LegacyLandmark(TFLandmark landmark, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, ControlledSpawningConfig controlledSpawningConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
         super(advancementLockConfig, hintConfig, controlledSpawningConfig, decorationConfig, structureSettings);
-        this.feature = feature;
+        this.feature = landmark;
     }
 
     @Override
