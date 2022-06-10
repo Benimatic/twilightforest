@@ -128,6 +128,11 @@ public class TwilightForestMod {
 		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
 
+		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modbus);
+		TFStructureTypes.STRUCTURE_TYPES.register(modbus);
+		TFStructures.STRUCTURES.register(modbus);
+		TFStructureSets.STRUCTURE_SETS.register(modbus);
+
 //		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
 //			UndergardenCompat.ENTITIES.register(modbus);
 //		}
