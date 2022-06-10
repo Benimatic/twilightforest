@@ -39,8 +39,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TFConfig;
-import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
+import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
@@ -222,7 +222,7 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void preOverlay(RenderGameOverlayEvent.PreLayer event) {
 		if (event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT) {
-			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
+			if (HostileMountEvents.isRidingUnfriendly(Minecraft.getInstance().player)) {
 				event.setCanceled(true);
 			}
 		}
@@ -268,7 +268,7 @@ public class TFClientEvents {
 				}
 			}//*/
 
-			if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
+			if (minecraft.player != null && HostileMountEvents.isRidingUnfriendly(minecraft.player)) {
 				if (minecraft.gui != null) {
 					minecraft.gui.setOverlayMessage(Component.empty(), false);
 				}

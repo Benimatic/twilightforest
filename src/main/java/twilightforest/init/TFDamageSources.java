@@ -9,7 +9,7 @@ import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import javax.annotation.Nullable;
 
 public class TFDamageSources {
-    public static final DamageSource GHAST_TEAR = new DamageSource(tfSource("ghastTear")); //ur-ghast
+    public static final DamageSource GHAST_TEAR = new DamageSource(tfSource("ghastTear")).bypassArmor(); //ur-ghast
     public static final DamageSource HYDRA_BITE = new DamageSource(tfSource("hydraBite")); //hydra
     public static final DamageSource HYDRA_FIRE = new DamageSource(tfSource("hydraFire")); //hydra
     public static final DamageSource LICH_BOLT = new DamageSource(tfSource("lichBolt")).setProjectile().bypassArmor().setMagic(); //lich

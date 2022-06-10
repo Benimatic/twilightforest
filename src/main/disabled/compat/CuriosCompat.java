@@ -18,7 +18,6 @@ import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.event.DropRulesEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.common.capability.CurioItemCapability;
-import twilightforest.TFEventListener;
 import twilightforest.block.TFBlocks;
 import twilightforest.compat.curios.CharmOfKeepingRenderer;
 import twilightforest.compat.curios.CharmOfLife1NecklaceRenderer;

@@ -8,8 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
-import twilightforest.TFEventListener;
 import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.events.HostileMountEvents;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
 
@@ -73,9 +73,9 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public void stop() {
 		if (!mob.getPassengers().isEmpty()) {
 			Entity rider = mob.getPassengers().get(0);
-			TFEventListener.allowDismount = true;
+			HostileMountEvents.allowDismount = true;
 			rider.stopRiding();
-			TFEventListener.allowDismount = false;
+			HostileMountEvents.allowDismount = false;
 
 			Vec3 throwVec = mob.getLookAngle().scale(2);
 			throwVec = new Vec3(throwVec.x, 0.9, throwVec.z);

@@ -58,14 +58,6 @@ public class FierySwordItem extends SwordItem {
 		return result;
 	}
 
-	//we have to set the entity on fire early in order to actually cook the food
-	@SubscribeEvent
-	public static void setFireBeforeDeath(LivingAttackEvent event) {
-		if(event.getSource().getEntity() instanceof LivingEntity living && living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) && !event.getEntityLiving().fireImmune()) {
-			event.getEntityLiving().setSecondsOnFire(1);
-		}
-	}
-
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
