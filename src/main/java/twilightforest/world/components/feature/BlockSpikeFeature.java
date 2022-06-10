@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.FeatureLogic;
@@ -200,6 +199,5 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
             return;
         }
         addDefaultStalactites();
-        IMCHandler.getStalactites().forEach(BlockSpikeFeature::registerStalactite);
     }
 }

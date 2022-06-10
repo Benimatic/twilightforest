@@ -22,7 +22,7 @@ import twilightforest.init.TFParticleType;
 import twilightforest.init.TFEntities;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;

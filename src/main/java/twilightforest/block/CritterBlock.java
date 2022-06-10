@@ -42,7 +42,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.EntityTagGenerator;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 
 import javax.annotation.Nullable;
 import java.util.List;

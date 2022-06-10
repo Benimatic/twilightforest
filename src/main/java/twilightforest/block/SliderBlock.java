@@ -28,7 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import twilightforest.entity.SlideBlock;
 import twilightforest.init.TFEntities;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import javax.annotation.Nullable;
 

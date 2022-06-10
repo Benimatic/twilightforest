@@ -13,7 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.trees.treeplacers.*;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
 import twilightforest.world.components.placements.ChunkCenterModifier;
-import twilightforest.world.components.placements.OutOfStructureFilter;
+import twilightforest.world.components.placements.OutOfStructureModifier;
 
 import java.util.function.Supplier;
 
@@ -36,7 +36,7 @@ public final class TFFeatureModifiers {
 	public static final RegistryObject<TreeDecoratorType<TreeRootsDecorator>> TREE_ROOTS = TREE_DECORATORS.register("tree_roots", () -> new TreeDecoratorType<>(TreeRootsDecorator.CODEC));
 	public static final RegistryObject<TreeDecoratorType<DangleFromTreeDecorator>> DANGLING_DECORATOR = TREE_DECORATORS.register("dangle_from_tree_decorator", () -> new TreeDecoratorType<>(DangleFromTreeDecorator.CODEC));
 
-	public static final RegistryObject<PlacementModifierType<OutOfStructureFilter>> NO_STRUCTURE = registerPlacer("no_structure", () -> () -> OutOfStructureFilter.CODEC);
+	public static final RegistryObject<PlacementModifierType<OutOfStructureModifier>> NO_STRUCTURE = registerPlacer("no_structure", () -> () -> OutOfStructureModifier.CODEC);
 	public static final RegistryObject<PlacementModifierType<ChunkCenterModifier>> CHUNK_CENTERER = registerPlacer("chunk_centerer", () -> () -> ChunkCenterModifier.CODEC);
 	public static final RegistryObject<PlacementModifierType<ChunkBlanketingModifier>> CHUNK_BLANKETING = registerPlacer("chunk_blanketing", () -> () -> ChunkBlanketingModifier.CODEC);
 

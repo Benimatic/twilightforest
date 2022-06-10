@@ -27,7 +27,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;

@@ -37,7 +37,7 @@ import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 

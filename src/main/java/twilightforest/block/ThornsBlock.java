@@ -21,7 +21,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import javax.annotation.Nullable;
 

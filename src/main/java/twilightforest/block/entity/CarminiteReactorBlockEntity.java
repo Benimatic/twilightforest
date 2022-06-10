@@ -18,7 +18,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.CarminiteGhastling;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import java.util.Random;
 

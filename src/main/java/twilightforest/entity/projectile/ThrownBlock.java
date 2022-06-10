@@ -17,7 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.Troll;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import javax.annotation.Nullable;
 

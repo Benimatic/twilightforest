@@ -14,7 +14,7 @@ import twilightforest.block.FireJetBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFParticleType;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import java.util.List;
 

@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fml.ModList;
 import twilightforest.init.TFItems;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 public class FieryBlock extends Block {
 	public FieryBlock(Properties properties) {

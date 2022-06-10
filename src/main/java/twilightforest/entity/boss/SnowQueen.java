@@ -47,7 +47,7 @@ import twilightforest.entity.ai.HoverThenDropGoal;
 import twilightforest.entity.monster.IceCrystal;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.EntityUtil;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 import twilightforest.util.WorldUtil;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;

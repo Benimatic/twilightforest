@@ -243,7 +243,7 @@ public class TFClientEvents {
 		if (entity instanceof LivingEntity) {
 			EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
 			if (renderer instanceof LivingEntityRenderer<?,?>) {
-				for (RenderEffect effect : RenderEffect.VALUES) {
+				for (EffectRenders effect : EffectRenders.VALUES) {
 					if (effect.shouldRender((LivingEntity) entity, true)) {
 						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
 					}

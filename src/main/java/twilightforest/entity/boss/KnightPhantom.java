@@ -44,7 +44,7 @@ import twilightforest.entity.ai.PhantomUpdateFormationAndMoveGoal;
 import twilightforest.entity.ai.PhantomWatchAndAttackGoal;
 import twilightforest.init.TFItems;
 import twilightforest.loot.TFTreasure;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 

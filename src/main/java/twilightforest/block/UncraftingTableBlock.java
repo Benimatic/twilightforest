@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import twilightforest.init.TFSounds;
-import twilightforest.inventory.UncraftingContainer;
-import twilightforest.util.TFStats;
+import twilightforest.inventory.UncraftingMenu;
+import twilightforest.init.TFStats;
 
 import javax.annotation.Nullable;
 
@@ -60,7 +60,7 @@ public class UncraftingTableBlock extends Block {
 	@Nullable
 	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level world, BlockPos pos) {
-		return new SimpleMenuProvider((id, inv, player) -> new UncraftingContainer(id, inv, player.level, ContainerLevelAccess.create(world, pos)),
+		return new SimpleMenuProvider((id, inv, player) -> new UncraftingMenu(id, inv, player.level, ContainerLevelAccess.create(world, pos)),
 						Component.translatable(getDescriptionId()));
 	}
 

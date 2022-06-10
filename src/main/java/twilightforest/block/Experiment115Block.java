@@ -38,7 +38,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 
 public class Experiment115Block extends Block {
 

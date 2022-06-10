@@ -18,7 +18,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import javax.annotation.Nullable;
 import java.util.List;

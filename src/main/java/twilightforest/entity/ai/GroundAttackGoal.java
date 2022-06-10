@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFSounds;
 import twilightforest.entity.boss.Minoshroom;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import java.util.EnumSet;
 import java.util.List;

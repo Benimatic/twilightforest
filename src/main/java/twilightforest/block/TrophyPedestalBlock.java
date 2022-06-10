@@ -29,7 +29,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.util.PlayerHelper;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;

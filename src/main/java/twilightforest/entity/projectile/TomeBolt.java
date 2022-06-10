@@ -16,7 +16,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class TomeBolt extends TFThrowable implements ItemSupplier {

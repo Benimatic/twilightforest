@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFSounds;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.util.EntityUtil;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import javax.annotation.Nullable;
 import java.util.List;

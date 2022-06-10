@@ -11,7 +11,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 
 import static twilightforest.TwilightForestMod.prefix;
 

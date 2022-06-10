@@ -29,7 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 public class LoyalZombie extends TamableAnimal {
 

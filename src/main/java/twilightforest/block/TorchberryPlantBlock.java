@@ -23,7 +23,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFItems;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 
 public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBlock {
 

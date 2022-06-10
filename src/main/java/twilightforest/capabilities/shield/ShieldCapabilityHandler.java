@@ -9,7 +9,7 @@ import net.minecraftforge.network.PacketDistributor;
 import twilightforest.init.TFSounds;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 
 public class ShieldCapabilityHandler implements IShieldCapability {
 	private int temporaryShields;

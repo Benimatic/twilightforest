@@ -23,7 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import twilightforest.init.TFSounds;
 import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import java.util.EnumSet;
 

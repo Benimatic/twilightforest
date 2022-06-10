@@ -24,7 +24,7 @@ import twilightforest.block.Experiment115Block;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.init.TFStructures;
 

@@ -20,7 +20,7 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.Yeti;
 import twilightforest.init.TFMobEffects;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import java.util.List;
 

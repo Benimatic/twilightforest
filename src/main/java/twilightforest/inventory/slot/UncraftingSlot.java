@@ -7,17 +7,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
+import twilightforest.inventory.UncraftingMenu;
 import twilightforest.inventory.UncraftingContainer;
-import twilightforest.inventory.UncraftingInventory;
 
 public class UncraftingSlot extends Slot {
 
 	protected final Player player;
 	protected final Container inputSlot;
-	protected final UncraftingInventory uncraftingMatrix;
+	protected final UncraftingContainer uncraftingMatrix;
 	protected final Container assemblyMatrix;
 
-	public UncraftingSlot(Player player, Container inputSlot, UncraftingInventory uncraftingMatrix, Container assemblyMatrix, int slotNum, int x, int y) {
+	public UncraftingSlot(Player player, Container inputSlot, UncraftingContainer uncraftingMatrix, Container assemblyMatrix, int slotNum, int x, int y) {
 		super(uncraftingMatrix, slotNum, x, y);
 		this.player = player;
 		this.inputSlot = inputSlot;
@@ -45,7 +45,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// can't take a marked stack
-		if (UncraftingContainer.isMarked(this.getItem())) {
+		if (UncraftingMenu.isMarked(this.getItem())) {
 			return false;
 		}
 
@@ -72,7 +72,7 @@ public class UncraftingSlot extends Slot {
 		// the assembly grid should be empty for this to even happen, so just plop the items right in
 		for (int i = 0; i < 9; i++) {
 			ItemStack transferStack = this.uncraftingMatrix.getItem(i);
-			if (!transferStack.isEmpty() && !UncraftingContainer.isMarked(transferStack)) {
+			if (!transferStack.isEmpty() && !UncraftingMenu.isMarked(transferStack)) {
 				this.assemblyMatrix.setItem(i, transferStack.copy());
 			}
 		}

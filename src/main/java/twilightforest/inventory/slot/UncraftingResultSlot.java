@@ -7,20 +7,20 @@ import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import twilightforest.inventory.UncraftingInventory;
+import twilightforest.inventory.UncraftingContainer;
 
 public class UncraftingResultSlot extends ResultSlot {
 
 	private final Player player;
 	private final Container inputSlot;
-	private final UncraftingInventory uncraftingMatrix;
+	private final UncraftingContainer uncraftingMatrix;
 	private final CraftingContainer assemblyMatrix;
 
 	public UncraftingResultSlot(Player player, Container input, Container uncraftingMatrix, Container assemblyMatrix, Container result, int slotIndex, int x, int y) {
 		super(player, (CraftingContainer) assemblyMatrix, result, slotIndex, x, y);
 		this.player = player;
 		this.inputSlot = input;
-		this.uncraftingMatrix = (UncraftingInventory) uncraftingMatrix;
+		this.uncraftingMatrix = (UncraftingContainer) uncraftingMatrix;
 		this.assemblyMatrix = (CraftingContainer) assemblyMatrix;
 	}
 

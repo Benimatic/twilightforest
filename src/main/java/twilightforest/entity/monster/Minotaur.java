@@ -29,7 +29,7 @@ import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
 import twilightforest.init.TFItems;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import javax.annotation.Nullable;
 

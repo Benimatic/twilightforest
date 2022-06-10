@@ -32,7 +32,7 @@ import twilightforest.block.MazestoneBlock;
 import twilightforest.init.TFEnchantments;
 import twilightforest.entity.monster.BlockChainGoblin;
 import twilightforest.init.TFItems;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 import twilightforest.util.WorldUtil;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityAdditionalSpawnData {

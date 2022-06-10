@@ -24,7 +24,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.init.TFContainers;
+import twilightforest.init.TFMenuTypes;
 import twilightforest.init.TFItems;
 
 import java.lang.reflect.Field;
@@ -68,7 +68,7 @@ public class TFClientSetup {
 
         RenderLayerRegistration.init();
         TFBlockEntities.registerTileEntityRenders();
-        TFContainers.renderScreens();
+        TFMenuTypes.renderScreens();
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
         DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);

@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFEntities;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class IceSnowball extends TFThrowable implements ItemSupplier {

@@ -26,7 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.BreathAttackGoal;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 public class FireBeetle extends Monster implements IBreathAttacker {
 

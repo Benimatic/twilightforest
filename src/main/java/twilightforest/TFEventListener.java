@@ -86,7 +86,7 @@ import twilightforest.network.EnforceProgressionStatusPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
 import twilightforest.util.TFItemStackUtils;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;

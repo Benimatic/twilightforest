@@ -4,7 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.network.NetworkEvent;
-import twilightforest.inventory.UncraftingContainer;
+import twilightforest.inventory.UncraftingMenu;
 
 import java.util.function.Supplier;
 
@@ -34,8 +34,8 @@ public class UncraftingGuiPacket {
                 public void run() {
                     AbstractContainerMenu container = player.containerMenu;
 
-                    if (container instanceof UncraftingContainer) {
-                        UncraftingContainer uncrafting = (UncraftingContainer) container;
+                    if (container instanceof UncraftingMenu) {
+                        UncraftingMenu uncrafting = (UncraftingMenu) container;
 
                         switch (message.type) {
                             case 0 -> uncrafting.unrecipeInCycle++;
