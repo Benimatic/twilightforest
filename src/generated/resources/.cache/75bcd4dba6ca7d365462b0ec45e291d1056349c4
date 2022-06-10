@@ -1,4 +1,4 @@
-// 1.19	2022-06-09T20:54:55.9184342	Tags for minecraft:block
+// 1.19	2022-06-09T22:09:01.9441813	Tags for minecraft:block
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -56,9 +56,9 @@ a7801e58506fe6f6666fc0aeabd7fa6dd7ccf6b5 data/twilightforest/tags/blocks/dark_to
 211134157771c86a72a0c5a1985c2b05da55729b data/twilightforest/tags/blocks/fence_gates.json
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/blocks/fire_jet_fuel.json
 e222b54e9f838dbf2e905bf0b137ed8b0c60b328 data/twilightforest/tags/blocks/hollow_logs.json
-2374a904c448d09db59b4e34288a29a5df850b68 data/twilightforest/tags/blocks/hollow_logs_climbable.json
-a890e98deed57b662b568b91d3df86ad0ead5a33 data/twilightforest/tags/blocks/hollow_logs_horizontal.json
-2fc552f5826142fa82377235669afbc0ba7e5a9e data/twilightforest/tags/blocks/hollow_logs_vertical.json
+7a1d959542375b7817357292b7a7f8dc238c109b data/twilightforest/tags/blocks/hollow_logs_climbable.json
+83ddb0814968e64db4d54827610be02084d45254 data/twilightforest/tags/blocks/hollow_logs_horizontal.json
+446a27521a52d926ace15efa14ae73ff4f39d931 data/twilightforest/tags/blocks/hollow_logs_vertical.json
 c8fafdcc498cb38e705f74c899c6adee8c1c137e data/twilightforest/tags/blocks/ice_bomb_replaceables.json
 33bdeefc5a85e9afb7b260809bec0d2a615d1f0f data/twilightforest/tags/blocks/logs.json
 089e4347e6320066de4cd4d08b3e04a9442f4090 data/twilightforest/tags/blocks/mangrove_logs.json

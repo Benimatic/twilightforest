@@ -28,6 +28,7 @@ public class RenderLayerRegistration {
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), cutout);

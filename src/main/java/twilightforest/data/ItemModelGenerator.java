@@ -204,6 +204,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFBlocks.DARK_OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/dark_oak_planks");
 		withExistingParent(TFBlocks.CRIMSON_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/crimson_planks");
 		withExistingParent(TFBlocks.WARPED_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/warped_planks");
+		withExistingParent(TFBlocks.VANGROVE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/mangrove_planks");
 
 		toBlock(TFBlocks.TWILIGHT_OAK_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
@@ -387,7 +388,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL);
 		hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL);
 		hollowLog(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL);
-
+		hollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL);
 		hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL);
 		hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL);
 		hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL);
@@ -739,7 +740,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void hollowLog(RegistryObject<HollowLogHorizontal> hollowLog) {
-		getBuilder(ForgeRegistries.BLOCKS.getKey(hollowLog.get()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
+		getBuilder(ForgeRegistries.ITEMS.getKey(hollowLog.get().asItem()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
 	}
 
 	private void toBlock(Block b) {

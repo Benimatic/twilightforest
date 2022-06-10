@@ -264,6 +264,7 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> DARK_OAK_BANISTER = BLOCKS.register("dark_oak_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.DARK_OAK_PLANKS)));
 	public static final RegistryObject<BanisterBlock> CRIMSON_BANISTER = BLOCKS.register("crimson_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_PLANKS)));
 	public static final RegistryObject<BanisterBlock> WARPED_BANISTER = BLOCKS.register("warped_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_PLANKS)));
+	public static final RegistryObject<BanisterBlock> VANGROVE_BANISTER = BLOCKS.register("vangrove_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.MANGROVE_PLANKS)));
 
 	public static final WoodType TWILIGHT_OAK = WoodType.create(TwilightForestMod.prefix("twilight_oak").toString());
 	public static final WoodType CANOPY = WoodType.create(TwilightForestMod.prefix("canopy").toString());
@@ -345,6 +346,7 @@ public class TFBlocks {
 	public static final RegistryObject<HollowLogHorizontal> HOLLOW_DARK_OAK_LOG_HORIZONTAL = BLOCKS.register("hollow_dark_oak_log_horizontal", () -> new HollowLogHorizontal(BlockBehaviour.Properties.copy(Blocks.DARK_OAK_WOOD)));
 	public static final RegistryObject<HollowLogHorizontal> HOLLOW_CRIMSON_STEM_HORIZONTAL = BLOCKS.register("hollow_crimson_stem_horizontal", () -> new HollowLogHorizontal(BlockBehaviour.Properties.copy(Blocks.CRIMSON_HYPHAE)));
 	public static final RegistryObject<HollowLogHorizontal> HOLLOW_WARPED_STEM_HORIZONTAL = BLOCKS.register("hollow_warped_stem_horizontal", () -> new HollowLogHorizontal(BlockBehaviour.Properties.copy(Blocks.WARPED_HYPHAE)));
+	public static final RegistryObject<HollowLogHorizontal> HOLLOW_VANGROVE_LOG_HORIZONTAL = BLOCKS.register("hollow_vangrove_log_horizontal", () -> new HollowLogHorizontal(BlockBehaviour.Properties.copy(Blocks.MANGROVE_WOOD)));
 
 	public static final RegistryObject<HollowLogVertical> HOLLOW_OAK_LOG_VERTICAL = BLOCKS.register("hollow_oak_log_vertical", () -> new HollowLogVertical(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD), TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE));
 	public static final RegistryObject<HollowLogVertical> HOLLOW_SPRUCE_LOG_VERTICAL = BLOCKS.register("hollow_spruce_log_vertical", () -> new HollowLogVertical(BlockBehaviour.Properties.copy(Blocks.STRIPPED_SPRUCE_WOOD), TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE));
@@ -354,6 +356,9 @@ public class TFBlocks {
 	public static final RegistryObject<HollowLogVertical> HOLLOW_DARK_OAK_LOG_VERTICAL = BLOCKS.register("hollow_dark_oak_log_vertical", () -> new HollowLogVertical(BlockBehaviour.Properties.copy(Blocks.STRIPPED_DARK_OAK_WOOD), TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE));
 	public static final RegistryObject<HollowLogVertical> HOLLOW_CRIMSON_STEM_VERTICAL = BLOCKS.register("hollow_crimson_stem_vertical", () -> new HollowLogVertical(BlockBehaviour.Properties.copy(Blocks.STRIPPED_CRIMSON_HYPHAE), TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE));
 	public static final RegistryObject<HollowLogVertical> HOLLOW_WARPED_STEM_VERTICAL = BLOCKS.register("hollow_warped_stem_vertical", () -> new HollowLogVertical(BlockBehaviour.Properties.copy(Blocks.STRIPPED_WARPED_HYPHAE), TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE));
+	// wanna see a funny crash? Use BlockBehaviour.Properties.copy(Blocks.STRIPPED_MANGROVE_WOOD) instead of the BlockBehaviour.Properties.of(...)
+	// I still legit have no idea why it happens but it does
+	public static final RegistryObject<HollowLogVertical> HOLLOW_VANGROVE_LOG_VERTICAL = BLOCKS.register("hollow_vangrove_log_vertical", () -> new HollowLogVertical(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).strength(2.0F).sound(SoundType.WOOD), TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE));
 
 	public static final RegistryObject<HollowLogClimbable> HOLLOW_OAK_LOG_CLIMBABLE = BLOCKS.register("hollow_oak_log_climbable", () -> new HollowLogClimbable(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD), TFBlocks.HOLLOW_OAK_LOG_VERTICAL));
 	public static final RegistryObject<HollowLogClimbable> HOLLOW_SPRUCE_LOG_CLIMBABLE = BLOCKS.register("hollow_spruce_log_climbable", () -> new HollowLogClimbable(BlockBehaviour.Properties.copy(Blocks.STRIPPED_SPRUCE_WOOD), TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL));
@@ -363,6 +368,7 @@ public class TFBlocks {
 	public static final RegistryObject<HollowLogClimbable> HOLLOW_DARK_OAK_LOG_CLIMBABLE = BLOCKS.register("hollow_dark_oak_log_climbable", () -> new HollowLogClimbable(BlockBehaviour.Properties.copy(Blocks.STRIPPED_DARK_OAK_WOOD), TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL));
 	public static final RegistryObject<HollowLogClimbable> HOLLOW_CRIMSON_STEM_CLIMBABLE = BLOCKS.register("hollow_crimson_stem_climbable", () -> new HollowLogClimbable(BlockBehaviour.Properties.copy(Blocks.STRIPPED_CRIMSON_HYPHAE), TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL));
 	public static final RegistryObject<HollowLogClimbable> HOLLOW_WARPED_STEM_CLIMBABLE = BLOCKS.register("hollow_warped_stem_climbable", () -> new HollowLogClimbable(BlockBehaviour.Properties.copy(Blocks.STRIPPED_WARPED_HYPHAE), TFBlocks.HOLLOW_WARPED_STEM_VERTICAL));
+	public static final RegistryObject<HollowLogClimbable> HOLLOW_VANGROVE_LOG_CLIMBABLE = BLOCKS.register("hollow_vangrove_log_climbable", () -> new HollowLogClimbable(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).strength(2.0F).sound(SoundType.WOOD), TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL));
 
 	public static final RegistryObject<RotatedPillarBlock> STRIPPED_TWILIGHT_OAK_LOG = BLOCKS.register("stripped_twilight_oak_log", () -> new TFLogBlock(TWILIGHT_OAK_STRIPPED_PROPS));
 	public static final RegistryObject<RotatedPillarBlock> STRIPPED_CANOPY_LOG = BLOCKS.register("stripped_canopy_log", () -> new TFLogBlock(CANOPY_STRIPPED_PROPS));

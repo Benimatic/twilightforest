@@ -209,6 +209,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(),
+				TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(),
@@ -228,7 +229,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL.get(),
 				TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL.get(),
 				TFBlocks.HOLLOW_WARPED_STEM_VERTICAL.get(),
-
+				TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(),
 				TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(),
 				TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(),
@@ -248,7 +249,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(),
-
+				TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(),
