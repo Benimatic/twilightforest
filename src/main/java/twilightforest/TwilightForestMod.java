@@ -111,13 +111,13 @@ public class TwilightForestMod {
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
 		TFFeatures.FEATURES.register(modbus);
-		TFSubFeatures.FOLIAGE_PLACERS.register(modbus);
+		TFFeatureModifiers.FOLIAGE_PLACERS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFLootModifiers.LOOT_MODIFIERS.register(modbus);
 		TFMobEffects.MOB_EFFECTS.register(modbus);
 		TFNoiseGenerationSettings.NOISE_GENERATORS.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
-		TFSubFeatures.PLACEMENT_MODIFIERS.register(modbus);
+		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(modbus);
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFRecipes.RECIPE_TYPES.register(modbus);
 		//TFPotions.POTIONS.register(modbus);
@@ -125,8 +125,8 @@ public class TwilightForestMod {
 		TFEntities.SPAWN_EGGS.register(modbus);
 		TFStats.STATS.register(modbus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
-		TFSubFeatures.TREE_DECORATORS.register(modbus);
-		TFSubFeatures.TRUNK_PLACERS.register(modbus);
+		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
+		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
 
 //		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
 //			UndergardenCompat.ENTITIES.register(modbus);

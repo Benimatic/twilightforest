@@ -17,10 +17,6 @@ public interface AdvancementLockedStructure {
     List<ResourceLocation> getRequiredAdvancements();
 
     record AdvancementLockConfig(List<ResourceLocation> requiredAdvancements) {
-        public static MapCodec<AdvancementLockConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ResourceLocation.CODEC.listOf().fieldOf("required_advancements").forGetter(AdvancementLockConfig::requiredAdvancements)
-        ).apply(instance, AdvancementLockConfig::new));
-
-        public static Codec<AdvancementLockConfig> CODEC = FLAT_CODEC.codec();
+        public static Codec<AdvancementLockConfig> CODEC = ResourceLocation.CODEC.listOf().xmap(AdvancementLockConfig::new, AdvancementLockConfig::requiredAdvancements);
     }
 }

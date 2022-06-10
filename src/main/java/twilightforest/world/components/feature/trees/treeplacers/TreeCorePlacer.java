@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
-import twilightforest.init.TFSubFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 public class TreeCorePlacer extends TreeDecorator {
 
@@ -26,7 +26,7 @@ public class TreeCorePlacer extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<TreeCorePlacer> type() {
-		return TFSubFeatures.CORE_PLACER.get();
+		return TFFeatureModifiers.CORE_PLACER.get();
 	}
 
 	@Override

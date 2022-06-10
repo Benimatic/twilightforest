@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.VoxelBresenhamIterator;
-import twilightforest.init.TFSubFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -40,7 +40,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<BranchingTrunkPlacer> type() {
-        return TFSubFeatures.TRUNK_BRANCHING.get();
+        return TFFeatureModifiers.TRUNK_BRANCHING.get();
     }
 
     @Override

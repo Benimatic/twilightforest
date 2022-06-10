@@ -39,7 +39,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.init.TFSubFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -53,7 +53,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
-		TFSubFeatures.seed = seed;
+		TFFeatureModifiers.seed = seed;
 		return seed;
 	}
 
@@ -63,7 +63,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE]
 	 */
 	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
-		TFSubFeatures.seed = ((CompoundTag) seed.getValue()).getLong("seed");
+		TFFeatureModifiers.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 

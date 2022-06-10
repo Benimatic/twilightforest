@@ -11,10 +11,11 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.init.TFLandmark;
-import twilightforest.init.TFSubFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 import java.util.stream.Stream;
 
+// TODO Rename to AvoidLandmarkFilter to read Structure for DecorationClearance data
 public class OutOfStructureFilter extends PlacementModifier {
 
 	public static final Codec<OutOfStructureFilter> CODEC = RecordCodecBuilder.<OutOfStructureFilter>create(instance -> instance.group(
@@ -53,21 +54,21 @@ public class OutOfStructureFilter extends PlacementModifier {
 		// Feature Center
 		BlockPos.MutableBlockPos featurePos = TFLandmark.getNearestCenterXYZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
 
-		final TFLandmark feature = tfChunkGen.getFeatureCached(new ChunkPos(featurePos), worldDecoratingHelper.getLevel());
+		final TFLandmark landmark = tfChunkGen.getFeatureCached(new ChunkPos(featurePos), worldDecoratingHelper.getLevel());
 
-		if ((!occupiesSurface || feature.isSurfaceDecorationsAllowed()) && (!occupiesUnderground || feature.isUndergroundDecoAllowed()))
+		if ((!occupiesSurface || landmark.isSurfaceDecorationsAllowed()) && (!occupiesUnderground || landmark.isUndergroundDecoAllowed()))
 			return Stream.of(blockPos);
 
 		// Turn Feature Center into Feature Offset
 		featurePos.set(Math.abs(featurePos.getX() - blockPos.getX()), 0, Math.abs(featurePos.getZ() - blockPos.getZ()));
-		int size = feature.size * 16 + additionalClearance;
+		int size = landmark.size * 16 + additionalClearance;
 
 		return featurePos.getX() < size && featurePos.getZ() < size ? Stream.empty() : Stream.of(blockPos);
 	}
 
 	@Override
 	public PlacementModifierType<?> type() {
-		return TFSubFeatures.NO_STRUCTURE.get();
+		return TFFeatureModifiers.NO_STRUCTURE.get();
 	}
 
 	private static DataResult<OutOfStructureFilter> validate(OutOfStructureFilter config) {

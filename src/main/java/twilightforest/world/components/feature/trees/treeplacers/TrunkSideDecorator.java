@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFSubFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 public class TrunkSideDecorator extends TreeDecorator {
 	public static final Codec<TrunkSideDecorator> CODEC = RecordCodecBuilder.create(
@@ -32,7 +32,7 @@ public class TrunkSideDecorator extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<TrunkSideDecorator> type() {
-		return TFSubFeatures.TRUNKSIDE_DECORATOR.get();
+		return TFFeatureModifiers.TRUNKSIDE_DECORATOR.get();
 	}
 
 	@Override

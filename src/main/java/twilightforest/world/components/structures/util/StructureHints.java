@@ -18,11 +18,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 
 import javax.annotation.Nullable;
 
-// TODO Data-driven Book-setting. Or we could use a loot table instead to create a book?
 public interface StructureHints {
     String BOOK_AUTHOR = "A Forgotten Explorer";
 
@@ -100,32 +98,16 @@ public interface StructureHints {
     record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
         public static MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
-                Registry.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
+                Registry.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
         ).apply(instance, HintConfig::new));
 
         public static Codec<HintConfig> CODEC = FLAT_CODEC.codec();
 
-        private static DataResult<EntityType<? extends Mob>> checkMob(EntityType<?> entityType) {
+        private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {
             if (!Mob.class.isAssignableFrom(entityType.getBaseClass()))
                 return DataResult.error("Configured Hint Entity " + entityType.toShortString() + " cannot be assigned as a Mob!");
             //noinspection unchecked
             return DataResult.success((EntityType<? extends Mob>) entityType);
         }
-
-        /*TODO Spawning List for Hint monsters
-        public static Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
-                WeightedRandomList.codec(MobSpawnSettings.SpawnerData.CODEC).fieldOf("hint_monsters").forGetter(HintConfig::hintMonsters)
-        ).apply(instance, HintConfig::new));
-
-        public static MapCodec<HintConfig> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
-                WeightedRandomList.codec(MobSpawnSettings.SpawnerData.CODEC).fieldOf("hint_monsters").forGetter(HintConfig::hintMonsters)
-        ).apply(instance, HintConfig::new));
-
-        public EntityType<?> pickHintMonster(RandomSource random) {
-            Optional<EntityType<?>> possibleMonster = this.hintMonsters.getRandom(random).map(data -> data.type);
-            return possibleMonster.orElseGet(TFEntities.KOBOLD);
-        }*/
     }
 }

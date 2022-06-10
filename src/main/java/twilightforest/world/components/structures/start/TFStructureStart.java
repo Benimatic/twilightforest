@@ -60,8 +60,8 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 
 	// TODO Move to ChunkGeneratorTwilight as that's the only class it matters to. The command impl can follow with the refactor
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (LegacyStructure structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
-				.filter(LegacyStructure.class::isInstance).map(LegacyStructure.class::cast).toList()) {
+		for (LegacyLandmark structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
+				.filter(LegacyLandmark.class::isInstance).map(LegacyLandmark.class::cast).toList()) {
 			StructureStart start = structureManager.getStructureAt(pos, structure);
 			if (!start.isValid())
 				continue;

@@ -6,7 +6,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-import twilightforest.init.TFSubFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 import java.util.stream.Stream;
 
@@ -24,6 +24,6 @@ public class ChunkCenterModifier extends PlacementModifier {
 
 	@Override
 	public PlacementModifierType<?> type() {
-		return TFSubFeatures.CHUNK_CENTERER.get();
+		return TFFeatureModifiers.CHUNK_CENTERER.get();
 	}
 }

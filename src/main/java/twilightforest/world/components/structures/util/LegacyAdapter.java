@@ -12,7 +12,7 @@ import twilightforest.world.components.structures.LegacyLandmarkGetter;
 
 import java.util.List;
 
-public interface LegacyStructureAdapter extends LandmarkStructure, ControlledSpawns, LegacyLandmarkGetter {
+public interface LegacyAdapter extends AdvancementLockedStructure, StructureHints, DecorationClearance, ControlledSpawns, LegacyLandmarkGetter {
     @Override
     default ItemStack createHintBook() {
         return this.getFeatureType().createHintBook();

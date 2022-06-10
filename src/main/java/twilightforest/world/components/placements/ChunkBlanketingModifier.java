@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFSubFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -70,6 +70,6 @@ public class ChunkBlanketingModifier extends PlacementModifier {
 
     @Override
     public PlacementModifierType<?> type() {
-        return TFSubFeatures.CHUNK_BLANKETING.get();
+        return TFFeatureModifiers.CHUNK_BLANKETING.get();
     }
 }

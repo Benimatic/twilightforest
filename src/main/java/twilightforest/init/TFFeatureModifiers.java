@@ -17,9 +17,9 @@ import twilightforest.world.components.placements.OutOfStructureFilter;
 
 import java.util.function.Supplier;
 
-public final class TFSubFeatures {
+public final class TFFeatureModifiers {
 
-	public static long seed;
+	public static long seed; // What's this doing here? TODO Find location where this makes sense
 
 	public static final DeferredRegister<FoliagePlacerType<?>> FOLIAGE_PLACERS = DeferredRegister.create(ForgeRegistries.FOLIAGE_PLACER_TYPES, TwilightForestMod.ID);
 	public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATORS = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, TwilightForestMod.ID);

@@ -43,9 +43,7 @@ import twilightforest.world.components.structures.minotaurmaze.MazeRuinsComponen
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerMainComponent;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
-import twilightforest.world.components.structures.util.LandmarkStructure;
-import twilightforest.world.components.structures.util.StructureHints;
-import twilightforest.world.components.structures.util.ControlledSpawns;
+import twilightforest.world.components.structures.util.*;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -55,7 +53,7 @@ import java.util.*;
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
  */
 @Deprecated
-public class TFLandmark implements LandmarkStructure, ControlledSpawns {
+public class TFLandmark implements StructureHints, AdvancementLockedStructure, DecorationClearance, ControlledSpawns {
 	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature"       , false){ { this.enableDecorations().disableStructure(); } };
 	public static final TFLandmark SMALL_HILL = new TFLandmark( 1, "small_hollow_hill", true, true ) {
 		{
@@ -827,7 +825,7 @@ public class TFLandmark implements LandmarkStructure, ControlledSpawns {
 			case MONSTER -> this.getSpawnableMonsterList(0);
 			case AMBIENT -> this.ambientCreatureList;
 			case WATER_CREATURE -> this.waterCreatureList;
-			default -> new ArrayList<>();
+			default -> List.of();
 		};
 	}
 
@@ -840,6 +838,18 @@ public class TFLandmark implements LandmarkStructure, ControlledSpawns {
 			return this.spawnableMonsterLists.get(index);
 		}
 		return new ArrayList<>();
+	}
+
+	public List<List<MobSpawnSettings.SpawnerData>> getSpawnableMonsterLists() {
+		return this.spawnableMonsterLists;
+	}
+
+	public List<MobSpawnSettings.SpawnerData> getAmbientCreatureList() {
+		return this.ambientCreatureList;
+	}
+
+	public List<MobSpawnSettings.SpawnerData> getWaterCreatureList() {
+		return this.waterCreatureList;
 	}
 
 	@Override

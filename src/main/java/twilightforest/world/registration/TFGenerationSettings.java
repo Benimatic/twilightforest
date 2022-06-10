@@ -32,7 +32,7 @@ import twilightforest.init.TFMobEffects;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.components.structures.start.LegacyStructure;
+import twilightforest.world.components.structures.start.LegacyLandmark;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.init.BiomeKeys;
 
@@ -207,7 +207,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
 		for (Structure structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream().toList()) {
-			if (!(structureFeature instanceof LegacyStructure legacyData))
+			if (!(structureFeature instanceof LegacyLandmark legacyData))
 				continue;
 			TFLandmark feature = legacyData.feature;
 			if (feature != featureCheck)

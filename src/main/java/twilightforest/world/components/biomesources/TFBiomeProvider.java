@@ -21,7 +21,7 @@ import twilightforest.world.components.layer.vanillalegacy.area.AreaFactory;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
-import twilightforest.init.TFSubFeatures;
+import twilightforest.init.TFFeatureModifiers;
 import twilightforest.init.BiomeKeys;
 
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.function.LongFunction;
 @Deprecated // TODO move to TwilightBiomeSource
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFSubFeatures.seed).forGetter((obj) -> obj.seed),
+			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFFeatureModifiers.seed).forGetter((obj) -> obj.seed),
 			RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry),
 			RecordCodecBuilder.<Pair<TerrainPoint, Holder<Biome>>>create((pair) -> pair.group(
 					TerrainPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst),
