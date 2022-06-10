@@ -14,33 +14,34 @@ import twilightforest.util.WorldUtil;
 
 public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
-	public TimeLogCoreBlock(Properties props) {
-		super(props);
+	public TimeLogCoreBlock(Properties properties) {
+		super(properties);
 	}
 
 	/**
 	 * The tree of time adds extra ticks to blocks, so that they have twice the normal chance to get a random tick
 	 */
 	@Override
-	@SuppressWarnings("unchecked") // Vanilla also makes this dirty cast on block entity tickers, poor mojank design.
-	void performTreeEffect(Level world, BlockPos pos, RandomSource rand) {
+	@SuppressWarnings("unchecked")
+	// Vanilla also makes this dirty cast on block entity tickers, poor mojank design.
+	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
 		int numticks = 8 * 3 * this.tickRate();
 
 		for (int i = 0; i < numticks; i++) {
 
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, 16);
 
-			BlockState state = world.getBlockState(dPos);
+			BlockState state = level.getBlockState(dPos);
 
 			if (state.isRandomlyTicking()) {
-				state.randomTick((ServerLevel) world, dPos, rand);
+				state.randomTick((ServerLevel) level, dPos, rand);
 			}
 
-			BlockEntity entity = world.getBlockEntity(dPos);
+			BlockEntity entity = level.getBlockEntity(dPos);
 			if (entity != null) {
-				BlockEntityTicker<BlockEntity> ticker = state.getTicker(world, (BlockEntityType<BlockEntity>) entity.getType());
+				BlockEntityTicker<BlockEntity> ticker = state.getTicker(level, (BlockEntityType<BlockEntity>) entity.getType());
 				if (ticker != null)
-					ticker.tick(world, dPos, state, entity);
+					ticker.tick(level, dPos, state, entity);
 			}
 		}
 	}

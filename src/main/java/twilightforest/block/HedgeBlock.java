@@ -35,41 +35,41 @@ public class HedgeBlock extends Block {
 
 	private static final int DAMAGE = 3;
 
-	public HedgeBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public HedgeBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return HEDGE_BB;
 	}
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
-		return entity != null && shouldDamage(entity) ? BlockPathTypes.DANGER_CACTUS : null;
+	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+		return mob != null && this.shouldDamage(mob) ? BlockPathTypes.DANGER_CACTUS : null;
 	}
 
 	@Override
 	@Deprecated
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
-		if (shouldDamage(entity)) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (this.shouldDamage(entity)) {
 			entity.hurt(DamageSource.CACTUS, DAMAGE);
 		}
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-		if (shouldDamage(entity)) {
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+		if (this.shouldDamage(entity)) {
 			entity.hurt(DamageSource.CACTUS, DAMAGE);
 		}
 	}
 
 	@Override
-	public void attack(BlockState state, Level world, BlockPos pos, Player player) {
-		if (!world.isClientSide) {
-			world.scheduleTick(pos, this, 10);
+	public void attack(BlockState state, Level level, BlockPos pos, Player player) {
+		if (!level.isClientSide) {
+			level.scheduleTick(pos, this, 10);
 		}
 	}
 
@@ -81,9 +81,9 @@ public class HedgeBlock extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		// find players within range
-		List<Player> nearbyPlayers = world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(8.0));
+		List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(8.0));
 
 		for (Player player : nearbyPlayers) {
 			// are they swinging?
@@ -95,7 +95,7 @@ public class HedgeBlock extends Block {
 					player.hurt(DamageSource.CACTUS, DAMAGE);
 
 					// trigger this again!
-					world.scheduleTick(pos, this, 10);
+					level.scheduleTick(pos, this, 10);
 				}
 			}
 		}
@@ -106,12 +106,12 @@ public class HedgeBlock extends Block {
 	}
 
 	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 0;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 0;
 	}
 }

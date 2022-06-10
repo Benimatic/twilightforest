@@ -13,8 +13,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
-import twilightforest.init.TFParticleType;
 import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
@@ -25,8 +25,8 @@ import java.util.Map;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
-	public SortLogCoreBlock(Properties props) {
-		super(props);
+	public SortLogCoreBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
@@ -48,15 +48,16 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 			}
 		}
 
-		level.getEntities((Entity)null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity ->
+		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity ->
 				entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(iItemHandler ->
 						inputHandlers.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D))));
 
 		if (inputHandlers.isEmpty()) return;
 
-		level.getEntities((Entity)null, new AABB(pos).inflate(16), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity ->
+		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity ->
 				entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(iItemHandler -> {
-					if (!inputHandlers.containsKey(iItemHandler)) outputHandlers.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+					if (!inputHandlers.containsKey(iItemHandler))
+						outputHandlers.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 				}));
 
 		if (outputHandlers.isEmpty()) return;
@@ -102,7 +103,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 								Vec3 xyz = outputHandlers.get(outputIItemHandler);
 								Vec3 diff = inputHandlers.get(inputIItemHandler).subtract(xyz);
 
-								for (ServerPlayer serverplayer : ((ServerLevel)level).players()) {//This is just particle math, we send a particle packet to every player in range
+								for (ServerPlayer serverplayer : ((ServerLevel) level).players()) {//This is just particle math, we send a particle packet to every player in range
 									if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
 										ParticlePacket particlePacket = new ParticlePacket();
 										double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;

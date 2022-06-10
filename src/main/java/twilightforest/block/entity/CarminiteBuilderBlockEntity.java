@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.block.BuilderBlock;
@@ -52,7 +53,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteBuilderBlockEntity te) {
-		if (!level.isClientSide && te.makingBlocks) {
+		if (!level.isClientSide() && te.makingBlocks) {
 			// if we are not tracking the nearest player, start tracking them
 			if (te.trackedPlayer == null) {
 				te.trackedPlayer = te.findClosestValidPlayer();
@@ -88,7 +89,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 				te.trackedPlayer = null;
 				te.ticksStopped = 0;
 			}
-		} else if (!level.isClientSide && !te.makingBlocks) {
+		} else if (!level.isClientSide() && !te.makingBlocks) {
 			te.trackedPlayer = null;
 			if (++te.ticksStopped == 60) {
 				// force the builder back into an inactive state
@@ -98,6 +99,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 		}
 	}
 
+	@Nullable
 	private Direction findNextFacing() {
 		if (this.trackedPlayer != null) {
 			// check up and down
@@ -118,7 +120,8 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 	/**
 	 * Who is the closest player?  Used to find which player we should track when building
 	 */
+	@Nullable
 	private Player findClosestValidPlayer() {
-		return level.getNearestPlayer(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, 16, false);
+		return this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5, this.getBlockPos().getY() + 0.5, this.getBlockPos().getZ() + 0.5, 16, false);
 	}
 }

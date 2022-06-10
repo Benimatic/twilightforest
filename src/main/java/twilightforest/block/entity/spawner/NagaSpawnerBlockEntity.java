@@ -4,9 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
-import twilightforest.entity.boss.Naga;
 
 public class NagaSpawnerBlockEntity extends BossSpawnerBlockEntity<Naga> {
 

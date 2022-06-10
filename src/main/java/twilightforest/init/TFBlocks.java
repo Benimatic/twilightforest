@@ -202,21 +202,21 @@ public class TFBlocks {
 	public static final RegistryObject<Block> BLUE_CASTLE_DOOR = BLOCKS.register("blue_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of(Material.STONE, (state) -> state.getValue(CastleDoorBlock.VANISHED) ? MaterialColor.NONE : MaterialColor.COLOR_CYAN).requiresCorrectToolForDrops().strength(100.0F, 100.0F)));
 
 	//mini structures
-	public static final RegistryObject<Block> TWILIGHT_PORTAL_MINIATURE_STRUCTURE = BLOCKS.register("twilight_portal_miniature_structure", MiniatureStructureBlock::new);
-//	public static final RegistryObject<Block> HEDGE_MAZE_MINIATURE_STRUCTURE = BLOCKS.register("hedge_maze_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> HOLLOW_HILL_MINIATURE_STRUCTURE = BLOCKS.register("hollow_hill_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> QUEST_GROVE_MINIATURE_STRUCTURE = BLOCKS.register("quest_grove_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> MUSHROOM_TOWER_MINIATURE_STRUCTURE = BLOCKS.register("mushroom_tower_miniature_structure", () -> new BlockTFMiniatureStructure());
-	public static final RegistryObject<Block> NAGA_COURTYARD_MINIATURE_STRUCTURE = BLOCKS.register("naga_courtyard_miniature_structure", MiniatureStructureBlock::new);
-	public static final RegistryObject<Block> LICH_TOWER_MINIATURE_STRUCTURE = BLOCKS.register("lich_tower_miniature_structure", MiniatureStructureBlock::new);
-//	public static final RegistryObject<Block> MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE = BLOCKS.register("minotaur_labyrinth_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> HYDRA_LAIR_MINIATURE_STRUCTURE = BLOCKS.register("hydra_lair_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE = BLOCKS.register("goblin_stronghold_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> DARK_TOWER_MINIATURE_STRUCTURE = BLOCKS.register("dark_tower_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> YETI_CAVE_MINIATURE_STRUCTURE = BLOCKS.register("yeti_cave_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> AURORA_PALACE_MINIATURE_STRUCTURE = BLOCKS.register("aurora_palace_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE = BLOCKS.register("troll_cave_cottage_miniature_structure", () -> new BlockTFMiniatureStructure());
-//	public static final RegistryObject<Block> FINAL_CASTLE_MINIATURE_STRUCTURE = BLOCKS.register("final_castle_miniature_structure", () -> new BlockTFMiniatureStructure());
+	public static final RegistryObject<Block> TWILIGHT_PORTAL_MINIATURE_STRUCTURE = BLOCKS.register("twilight_portal_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> HEDGE_MAZE_MINIATURE_STRUCTURE = BLOCKS.register("hedge_maze_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> HOLLOW_HILL_MINIATURE_STRUCTURE = BLOCKS.register("hollow_hill_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> QUEST_GROVE_MINIATURE_STRUCTURE = BLOCKS.register("quest_grove_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> MUSHROOM_TOWER_MINIATURE_STRUCTURE = BLOCKS.register("mushroom_tower_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+	public static final RegistryObject<Block> NAGA_COURTYARD_MINIATURE_STRUCTURE = BLOCKS.register("naga_courtyard_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+	public static final RegistryObject<Block> LICH_TOWER_MINIATURE_STRUCTURE = BLOCKS.register("lich_tower_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE = BLOCKS.register("minotaur_labyrinth_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> HYDRA_LAIR_MINIATURE_STRUCTURE = BLOCKS.register("hydra_lair_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE = BLOCKS.register("goblin_stronghold_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> DARK_TOWER_MINIATURE_STRUCTURE = BLOCKS.register("dark_tower_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> YETI_CAVE_MINIATURE_STRUCTURE = BLOCKS.register("yeti_cave_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> AURORA_PALACE_MINIATURE_STRUCTURE = BLOCKS.register("aurora_palace_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE = BLOCKS.register("troll_cave_cottage_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
+//	public static final RegistryObject<Block> FINAL_CASTLE_MINIATURE_STRUCTURE = BLOCKS.register("final_castle_miniature_structure", () -> new Block(BlockBehaviour.Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion()));
 	public static final RegistryObject<Block> KNIGHTMETAL_BLOCK = BLOCKS.register("knightmetal_block", () -> new KnightmetalBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(5.0F, 40.0F).sound(SoundType.NETHERITE_BLOCK)));
 	public static final RegistryObject<Block> IRONWOOD_BLOCK = BLOCKS.register("ironwood_block", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(5.0F, 6.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> FIERY_BLOCK = BLOCKS.register("fiery_block", () -> new FieryBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.TERRACOTTA_BLACK).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL).noOcclusion().emissiveRendering((state, world, pos) -> true)));
@@ -525,14 +525,14 @@ public class TFBlocks {
 	public static final RegistryObject<WallSignBlock> SORTING_WALL_SIGN = BLOCKS.register("sorting_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(SORTING_PLANKS.get()).strength(1.0F).noOcclusion().noCollission(), SORTING));
 	public static final RegistryObject<BanisterBlock> SORTING_BANISTER = BLOCKS.register("sorting_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(SORTING_PLANKS.get())));
 
-	public static final RegistryObject<TwilightChest> TWILIGHT_OAK_CHEST = BLOCKS.register("twilight_oak_chest", () -> new TwilightChest(BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get()).strength(2.5F)));
-	public static final RegistryObject<TwilightChest> CANOPY_CHEST = BLOCKS.register("canopy_chest", () -> new TwilightChest(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).strength(2.5F)));
-	public static final RegistryObject<TwilightChest> MANGROVE_CHEST = BLOCKS.register("mangrove_chest", () -> new TwilightChest(BlockBehaviour.Properties.copy(MANGROVE_PLANKS.get()).strength(2.5F)));
-	public static final RegistryObject<TwilightChest> DARKWOOD_CHEST = BLOCKS.register("darkwood_chest", () -> new TwilightChest(BlockBehaviour.Properties.copy(DARK_PLANKS.get()).strength(2.5F)));
-	public static final RegistryObject<TwilightChest> TIME_CHEST = BLOCKS.register("time_chest", () -> new TwilightChest(BlockBehaviour.Properties.copy(TIME_PLANKS.get()).strength(2.5F)));
-	public static final RegistryObject<TwilightChest> TRANSFORMATION_CHEST = BLOCKS.register("transformation_chest", () -> new TwilightChest(BlockBehaviour.Properties.copy(TRANSFORMATION_PLANKS.get()).strength(2.5F)));
-	public static final RegistryObject<TwilightChest> MINING_CHEST = BLOCKS.register("mining_chest", () -> new TwilightChest(BlockBehaviour.Properties.copy(MINING_PLANKS.get()).strength(2.5F)));
-	public static final RegistryObject<TwilightChest> SORTING_CHEST = BLOCKS.register("sorting_chest", () -> new TwilightChest(BlockBehaviour.Properties.copy(SORTING_PLANKS.get()).strength(2.5F)));
+	public static final RegistryObject<TFChestBlock> TWILIGHT_OAK_CHEST = BLOCKS.register("twilight_oak_chest", () -> new TFChestBlock(BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get()).strength(2.5F)));
+	public static final RegistryObject<TFChestBlock> CANOPY_CHEST = BLOCKS.register("canopy_chest", () -> new TFChestBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).strength(2.5F)));
+	public static final RegistryObject<TFChestBlock> MANGROVE_CHEST = BLOCKS.register("mangrove_chest", () -> new TFChestBlock(BlockBehaviour.Properties.copy(MANGROVE_PLANKS.get()).strength(2.5F)));
+	public static final RegistryObject<TFChestBlock> DARKWOOD_CHEST = BLOCKS.register("darkwood_chest", () -> new TFChestBlock(BlockBehaviour.Properties.copy(DARK_PLANKS.get()).strength(2.5F)));
+	public static final RegistryObject<TFChestBlock> TIME_CHEST = BLOCKS.register("time_chest", () -> new TFChestBlock(BlockBehaviour.Properties.copy(TIME_PLANKS.get()).strength(2.5F)));
+	public static final RegistryObject<TFChestBlock> TRANSFORMATION_CHEST = BLOCKS.register("transformation_chest", () -> new TFChestBlock(BlockBehaviour.Properties.copy(TRANSFORMATION_PLANKS.get()).strength(2.5F)));
+	public static final RegistryObject<TFChestBlock> MINING_CHEST = BLOCKS.register("mining_chest", () -> new TFChestBlock(BlockBehaviour.Properties.copy(MINING_PLANKS.get()).strength(2.5F)));
+	public static final RegistryObject<TFChestBlock> SORTING_CHEST = BLOCKS.register("sorting_chest", () -> new TFChestBlock(BlockBehaviour.Properties.copy(SORTING_PLANKS.get()).strength(2.5F)));
 
 	//Flower Pots
 	public static final RegistryObject<FlowerPotBlock> POTTED_TWILIGHT_OAK_SAPLING = BLOCKS.register("potted_twilight_oak_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, TWILIGHT_OAK_SAPLING, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));

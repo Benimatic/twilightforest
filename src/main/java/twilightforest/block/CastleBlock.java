@@ -28,12 +28,12 @@ public class CastleBlock extends Block {
 	}
 
 	@Override
-	public void playerDestroy(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
+	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
 		ItemStack cei = player.getMainHandItem();
 		if (cei.getItem() instanceof DiggerItem && !(cei.getItem() instanceof MazebreakerPickItem)) {
 			cei.hurtAndBreak(16, player, (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 		}
 
-		super.playerDestroy(world, player, pos, state, te, stack);
+		super.playerDestroy(level, player, pos, state, te, stack);
 	}
 }

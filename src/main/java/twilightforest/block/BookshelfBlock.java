@@ -14,17 +14,17 @@ public class BookshelfBlock extends Block {
 	}
 
 	@Override
-	public float getEnchantPowerBonus(BlockState state, LevelReader world, BlockPos pos) {
+	public float getEnchantPowerBonus(BlockState state, LevelReader reader, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 20;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 30;
 	}
 }

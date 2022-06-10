@@ -9,27 +9,27 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DarkLeavesBlock extends TFLeavesBlock {
 
-	public DarkLeavesBlock(Properties props) {
-		super(props);
+	public DarkLeavesBlock(Properties properties) {
+		super(properties);
 	}
 
-    @Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	@Override
+	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 1;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 0;
 	}
 
 	@Override
-	public VoxelShape getBlockSupportShape(BlockState pState, BlockGetter pReader, BlockPos pPos) {
+	public VoxelShape getBlockSupportShape(BlockState state, BlockGetter getter, BlockPos pos) {
 		return Shapes.block();
 	}
-	
+
 	@Override
-	public int getLightBlock(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+	public int getLightBlock(BlockState state, BlockGetter getter, BlockPos pos) {
 		return 15;
 	}
 }

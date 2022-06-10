@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 
 public class MoonwormBlock extends CritterBlock {
 
-	public MoonwormBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public MoonwormBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 	}
 
 	@Nullable

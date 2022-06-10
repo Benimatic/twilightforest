@@ -8,17 +8,17 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TFLeavesBlock extends LeavesBlock {
-	public TFLeavesBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public TFLeavesBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 60;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 30;
 	}
 }

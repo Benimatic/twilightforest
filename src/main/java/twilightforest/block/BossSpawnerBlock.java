@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.enums.BossVariant;
 import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
+import twilightforest.enums.BossVariant;
 
 import javax.annotation.Nullable;
 
@@ -25,11 +25,11 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 
 	public BossSpawnerBlock(BlockBehaviour.Properties props, BossVariant variant) {
 		super(props);
-		boss = variant;
+		this.boss = variant;
 	}
 
 	@Override
-	public RenderShape getRenderShape(BlockState p_49232_) {
+	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
 
@@ -40,18 +40,18 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return CHUNGUS;
 	}
 
 	@Nullable
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> type) {
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, boss.getType(), BossSpawnerBlockEntity::tick);
 	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
-		return state.getDestroySpeed(world, pos) >= 0f;
+	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
+		return state.getDestroySpeed(getter, pos) >= 0f;
 	}
 }

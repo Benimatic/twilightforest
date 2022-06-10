@@ -34,28 +34,28 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 
 	public AbstractLightableBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(getStateDefinition().any().setValue(LIGHTING, Lighting.NONE));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE));
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (player.getAbilities().mayBuild && player.getItemInHand(hand).isEmpty() && state.getValue(LIGHTING) != Lighting.NONE) {
 			extinguish(player, state, level, pos);
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(level.isClientSide());
 
 		} else if (this.canBeLit(state)) {
-			if(player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)) {
+			if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)) {
 				setLit(level, state, pos, true);
 				level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if(!player.getAbilities().instabuild) player.getItemInHand(hand).hurtAndBreak(1, player, (res) -> {
+				if (!player.getAbilities().instabuild) player.getItemInHand(hand).hurtAndBreak(1, player, (res) -> {
 					res.broadcastBreakEvent(hand);
 				});
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.sidedSuccess(level.isClientSide());
 			} else if (player.getItemInHand(hand).is(Items.FIRE_CHARGE)) {
 				setLit(level, state, pos, true);
 				level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if(!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
+				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
 		return InteractionResult.PASS;
@@ -63,7 +63,7 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 
 	@Override
 	public void onProjectileHit(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
-		if (!level.isClientSide && projectile.isOnFire() && this.canBeLit(state)) {
+		if (!level.isClientSide() && projectile.isOnFire() && this.canBeLit(state)) {
 			setLit(level, state, result.getBlockPos(), true);
 		}
 	}
@@ -82,7 +82,7 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 	protected static void addParticlesAndSound(Level level, double x, double y, double z, RandomSource rand, boolean ominous) {
 		float var3 = rand.nextFloat();
 		if (var3 < 0.3F) {
-			if(!ominous) level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
+			if (!ominous) level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
 			if (var3 < 0.17F) {
 				level.playLocalSound(x + 0.5D, y + 0.5D, z + 0.5D, SoundEvents.CANDLE_AMBIENT, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
 			}
@@ -95,9 +95,9 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 	protected static void addParticlesAndSound(Level level, Vec3 vec, RandomSource rand, boolean ominous) {
 		float var3 = rand.nextFloat();
 		if (var3 < 0.3F) {
-			if(!ominous) level.addParticle(ParticleTypes.SMOKE, vec.x, vec.y, vec.z, 0.0D, 0.0D, 0.0D);
+			if (!ominous) level.addParticle(ParticleTypes.SMOKE, vec.x(), vec.y(), vec.z(), 0.0D, 0.0D, 0.0D);
 			if (var3 < 0.17F) {
-				level.playLocalSound(vec.x + 0.5D, vec.y + 0.5D, vec.z + 0.5D, SoundEvents.CANDLE_AMBIENT, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+				level.playLocalSound(vec.x() + 0.5D, vec.y() + 0.5D, vec.z() + 0.5D, SoundEvents.CANDLE_AMBIENT, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
 			}
 		}
 
@@ -107,9 +107,9 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 	public static void extinguish(@Nullable Player player, BlockState state, LevelAccessor accessor, BlockPos pos) {
 		setLit(accessor, state, pos, false);
 
-		if(state.getBlock() instanceof AbstractLightableBlock abstractLightableBlock) {
+		if (state.getBlock() instanceof AbstractLightableBlock abstractLightableBlock) {
 			abstractLightableBlock.getParticleOffsets(state, accessor, pos).forEach((vec3) ->
-					accessor.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + vec3.x, (double)pos.getY() + vec3.y, (double)pos.getZ() + vec3.z, 0.0D, 0.025D, 0.0D));
+					accessor.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + vec3.x, (double) pos.getY() + vec3.y, (double) pos.getZ() + vec3.z, 0.0D, 0.025D, 0.0D));
 		}
 
 		accessor.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);

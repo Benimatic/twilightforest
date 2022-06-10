@@ -12,22 +12,22 @@ import twilightforest.init.TFBlocks;
 
 public class HardenedDarkLeavesBlock extends Block {
 
-	public HardenedDarkLeavesBlock(Properties props) {
-		super(props);
+	public HardenedDarkLeavesBlock(Properties properties) {
+		super(properties);
 	}
 
-    @Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	@Override
+	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 1;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 0;
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter getter, BlockPos pos, Player player) {
 		return new ItemStack(TFBlocks.DARK_LEAVES.get());
 	}
 }

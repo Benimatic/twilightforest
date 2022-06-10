@@ -23,7 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
-import twilightforest.block.TwilightChest;
+import twilightforest.block.TFChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 
 import java.lang.reflect.Constructor;
@@ -324,7 +324,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locWood(name + "_banister"));
 	}
 
-	protected final void chestBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends TwilightChest> result, Supplier<? extends Block> material) {
+	protected final void chestBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends TFChestBlock> result, Supplier<? extends Block> material) {
 		ShapedRecipeBuilder.shaped(result.get(), 2)
 				.pattern("###")
 				.pattern("#C#")

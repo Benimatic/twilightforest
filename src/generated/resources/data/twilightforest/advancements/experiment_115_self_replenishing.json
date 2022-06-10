@@ -14,8 +14,7 @@
               "twilightforest:experiment_115"
             ],
             "state": {
-              "omnomnom": "0",
-              "regenerate": "false"
+              "regenerate": "true"
             }
           }
         }

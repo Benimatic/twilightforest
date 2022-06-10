@@ -29,17 +29,17 @@ public class FireJetBlockEntity extends BlockEntity {
 	public static void tick(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
 		if (state.getBlock() == TFBlocks.FIRE_JET.get() || state.getBlock() == TFBlocks.ENCASED_FIRE_JET.get()) {
 			switch (state.getValue(FireJetBlock.STATE)) {
-				case POPPING -> tickPopping(level, pos, state, te);
-				case FLAME -> tickFlame(level, pos, state, te);
+				case POPPING -> te.tickPopping(level, pos, state, te);
+				case FLAME -> te.tickFlame(level, pos, state, te);
 			}
 		}
 	}
 
-	private static void tickPopping(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
+	private void tickPopping(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
 		if (++te.counter >= 80) {
 			te.counter = 0;
 			// turn to flame
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				if (state.getBlock() == TFBlocks.FIRE_JET.get() || state.getBlock() == TFBlocks.ENCASED_FIRE_JET.get()) {
 					level.setBlockAndUpdate(pos, state.setValue(FireJetBlock.STATE, FireJetVariant.FLAME));
 				} else {
@@ -57,7 +57,7 @@ public class FireJetBlockEntity extends BlockEntity {
 		}
 	}
 
-	private static void tickFlame(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
+	private void tickFlame(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
 		double x = pos.getX();
 		double y = pos.above().getY();
 		double z = pos.getZ();
@@ -65,7 +65,7 @@ public class FireJetBlockEntity extends BlockEntity {
 		if (++te.counter > 60) {
 			te.counter = 0;
 			// idle again
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				if (state.getBlock() == TFBlocks.FIRE_JET.get() || state.getBlock() == TFBlocks.ENCASED_FIRE_JET.get()) {
 					level.setBlockAndUpdate(pos, state.setValue(FireJetBlock.STATE, state.getBlock() == TFBlocks.FIRE_JET.get() ? FireJetVariant.IDLE : FireJetVariant.TIMEOUT));
 				} else {
@@ -74,7 +74,7 @@ public class FireJetBlockEntity extends BlockEntity {
 			}
 		}
 
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			if (te.counter % 2 == 0) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
 				level.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
@@ -94,7 +94,7 @@ public class FireJetBlockEntity extends BlockEntity {
 		}
 
 		// actual fire effects
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			if (te.counter % 5 == 0) {
 				// find entities in the area of effect
 				List<Entity> entitiesInRange = level.getEntitiesOfClass(Entity.class,

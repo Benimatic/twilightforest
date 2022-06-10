@@ -27,18 +27,17 @@ public class FallenLeavesBlock extends TFPlantBlock {
 
 	private static final VoxelShape FALLEN_LEAVES_SHAPE = box(0, 0, 0, 16, 1, 16);
 
-	public FallenLeavesBlock(Properties props) {
-		super(props);
+	public FallenLeavesBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		return world.getBlockState(pos.below()).isFaceSturdy(world, pos, Direction.UP);
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+		return reader.getBlockState(pos.below()).isFaceSturdy(reader, pos, Direction.UP);
 	}
 
 	@Override
-	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter access, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return FALLEN_LEAVES_SHAPE;
 	}
 
@@ -67,26 +66,25 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	}
 
 	@Override
-	@Deprecated
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn) {
-		super.entityInside(state, level, pos, entityIn);
-		if (entityIn instanceof LivingEntity && (entityIn.getDeltaMovement().x() != 0 || entityIn.getDeltaMovement().z() != 0) && level.random.nextBoolean()) {
-			if(level.isClientSide) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		super.entityInside(state, level, pos, entity);
+		if (entity instanceof LivingEntity && (entity.getDeltaMovement().x() != 0 || entity.getDeltaMovement().z() != 0) && level.getRandom().nextBoolean()) {
+			if(level.isClientSide()) {
 				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
-				int r = Mth.clamp(((color >> 16) & 0xFF) + level.random.nextInt(0x22) - 0x11, 0x00, 0xFF);
-				int g = Mth.clamp(((color >> 8) & 0xFF) + level.random.nextInt(0x22) - 0x11, 0x00, 0xFF);
-				int b = Mth.clamp((color & 0xFF) + level.random.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int r = Mth.clamp(((color >> 16) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int g = Mth.clamp(((color >> 8) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int b = Mth.clamp((color & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
 				level.addParticle(new LeafParticleData(r, g, b),
-						pos.getX() + level.random.nextFloat(),
+						pos.getX() + level.getRandom().nextFloat(),
 						pos.getY(),
-						pos.getZ() + level.random.nextFloat(),
+						pos.getZ() + level.getRandom().nextFloat(),
 
-						(level.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().x(),
-						level.random.nextFloat() * 0.5F + 0.25F,
-						(level.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().z()
+						(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().x(),
+						level.getRandom().nextFloat() * 0.5F + 0.25F,
+						(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
 				);
 			} else if (level instanceof ServerLevel)
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
 		}
 	}
 }

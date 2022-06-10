@@ -33,7 +33,6 @@ import twilightforest.world.registration.TreeDecorators;
 
 import java.util.List;
 
-// TODO Convert to Deferred?
 public final class TFConfiguredFeatures {
 
 	//vanilla features with custom placement code

@@ -36,7 +36,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 
 	public TomeSpawnerBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(getStateDefinition().any().setValue(BOOK_STAGES, 10).setValue(SPAWNER, true));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(BOOK_STAGES, 10).setValue(SPAWNER, true));
 	}
 
 	@Override
@@ -45,14 +45,14 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void onCaughtFire(BlockState state, Level world, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
-		if(world.getDifficulty() != Difficulty.PEACEFUL && world.getBlockState(pos).getValue(SPAWNER) && world.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && world instanceof ServerLevel level) {
+	public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
+		if(level.getDifficulty() != Difficulty.PEACEFUL && level.getBlockState(pos).getValue(SPAWNER) && level.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && level instanceof ServerLevel serverLevel) {
 			for(int i = 0; i < state.getValue(BOOK_STAGES); i++) {
-				ts.attemptSpawnTome(level, pos, true);
+				ts.attemptSpawnTome(serverLevel, pos, true);
 			}
-			world.destroyBlock(pos, false);
+			level.destroyBlock(pos, false);
 		}
-		super.onCaughtFire(state, world, pos, face, igniter);
+		super.onCaughtFire(state, level, pos, face, igniter);
 	}
 
 	@Override
@@ -85,14 +85,14 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public float getEnchantPowerBonus(BlockState state, LevelReader world, BlockPos pos) {
+	public float getEnchantPowerBonus(BlockState state, LevelReader reader, BlockPos pos) {
 		return state.getValue(BOOK_STAGES) * 0.1F;
 	}
 
 	@Nullable
 	@Override
-	public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return blockState.getValue(SPAWNER) ? new TomeSpawnerBlockEntity(blockPos, blockState) : null;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return state.getValue(SPAWNER) ? new TomeSpawnerBlockEntity(pos, state) : null;
 	}
 
 	@Nullable
@@ -102,12 +102,12 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 20;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 30;
 	}
 }

@@ -11,8 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.Random;
-
 public class RootStrandBlock extends TFPlantBlock {
 
 	private static final VoxelShape ROOT_SHAPE = box(2, 0, 2, 14, 16, 14);
@@ -22,33 +20,33 @@ public class RootStrandBlock extends TFPlantBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		return TFPlantBlock.canPlaceRootAt(world, pos);
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+		return TFPlantBlock.canPlaceRootAt(reader, pos);
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter access, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return ROOT_SHAPE;
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
-		return isBottomOpen(level, pos);
+	public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClient) {
+		return this.isBottomOpen(getter, pos);
 	}
 
 	@Override
 	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
-		return isBottomOpen(level, pos);
+		return this.isBottomOpen(level, pos);
 	}
 
-	private boolean isBottomOpen(BlockGetter level, BlockPos pos) {
+	private boolean isBottomOpen(BlockGetter getter, BlockPos pos) {
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		do {
 			mutable.move(Direction.DOWN);
-		} while(level.getBlockState(mutable).is(this));
+		} while (getter.getBlockState(mutable).is(this));
 
-		return level.getBlockState(mutable).isAir() || level.getBlockState(mutable).getMaterial().isReplaceable();
+		return getter.getBlockState(mutable).isAir() || getter.getBlockState(mutable).getMaterial().isReplaceable();
 	}
 
 	@Override

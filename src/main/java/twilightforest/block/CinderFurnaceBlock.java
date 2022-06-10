@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -39,16 +38,16 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 
 	public CinderFurnaceBlock() {
 		super(Properties.of(Material.WOOD).requiresCorrectToolForDrops().strength(7.0F).lightLevel((state) -> 15));
-		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
 	}
 
 	@Override
-	public RenderShape getRenderShape(BlockState p_49232_) {
+	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
 
 	@Override
-	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+	public int getLightEmission(BlockState state, BlockGetter getter, BlockPos pos) {
 		return state.getValue(LIT) ? 15 : 0;
 	}
 
@@ -72,48 +71,48 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 
 	@Override
 	@Deprecated
-	public boolean triggerEvent(BlockState state, Level worldIn, BlockPos pos, int id, int param) {
-		super.triggerEvent(state, worldIn, pos, id, param);
-		BlockEntity tileentity = worldIn.getBlockEntity(pos);
+	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
+		super.triggerEvent(state, level, pos, id, param);
+		BlockEntity tileentity = level.getBlockEntity(pos);
 		return tileentity != null && tileentity.triggerEvent(id, param);
 	}
 
 	@Override
 	@Deprecated
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		if (!world.isClientSide && world.getBlockEntity(pos) instanceof CinderFurnaceBlockEntity) {
-			player.openMenu((CinderFurnaceBlockEntity) world.getBlockEntity(pos));
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof CinderFurnaceBlockEntity cinder) {
+			player.openMenu(cinder);
 		}
 
 		return InteractionResult.PASS;
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		if (stack.hasCustomHoverName()) {
-			((FurnaceBlockEntity) world.getBlockEntity(pos)).setCustomName(stack.getHoverName());
+			((CinderFurnaceBlockEntity) level.getBlockEntity(pos)).setCustomName(stack.getHoverName());
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (state.getValue(LIT)) {
-			Blocks.FURNACE.animateTick(state, world, pos, random);
+			Blocks.FURNACE.animateTick(state, level, pos, random);
 		}
 	}
 
 	@Override
 	@Deprecated
-	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity tileentity = worldIn.getBlockEntity(pos);
+			BlockEntity tileentity = level.getBlockEntity(pos);
 			if (tileentity instanceof CinderFurnaceBlockEntity) {
-				Containers.dropContents(worldIn, pos, (CinderFurnaceBlockEntity)tileentity);
-				worldIn.updateNeighbourForOutputSignal(pos, this);
+				Containers.dropContents(level, pos, (CinderFurnaceBlockEntity) tileentity);
+				level.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			super.onRemove(state, worldIn, pos, newState, isMoving);
+			super.onRemove(state, level, pos, newState, isMoving);
 		}
 	}
 }

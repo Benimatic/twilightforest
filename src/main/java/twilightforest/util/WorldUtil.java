@@ -19,10 +19,6 @@ import java.util.Random;
 public final class WorldUtil {
 	private WorldUtil() {}
 
-	public static Biome voidFallback() {
-		return OverworldBiomes.theVoid();
-	}
-
 	/**
 	 * Inclusive of edges
 	 */

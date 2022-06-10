@@ -28,20 +28,20 @@ import twilightforest.init.TFStats;
 public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBlock {
 
 	public static final BooleanProperty HAS_BERRIES = BooleanProperty.create("has_torchberries");
-	private static final VoxelShape TORCHBERRY_SHAPE = box(1, 2, 1, 15, 16, 15);
+	private static final VoxelShape TORCHBERRY_SHAPE = Block.box(1, 2, 1, 15, 16, 15);
 
-	public TorchberryPlantBlock(Properties props) {
-		super(props);
-		registerDefaultState(getStateDefinition().any().setValue(HAS_BERRIES, false));
+	public TorchberryPlantBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(HAS_BERRIES, false));
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		return TFPlantBlock.canPlaceRootAt(world, pos);
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+		return TFPlantBlock.canPlaceRootAt(reader, pos);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter access, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return TORCHBERRY_SHAPE;
 	}
 
@@ -59,7 +59,7 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClient) {
 		return !state.getValue(HAS_BERRIES);
 	}
 

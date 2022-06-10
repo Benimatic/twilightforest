@@ -16,18 +16,18 @@ import java.util.function.Supplier;
 
 public class SpecialFlowerPotBlock extends FlowerPotBlock {
 
-	public SpecialFlowerPotBlock(@Nullable Supplier<FlowerPotBlock> emptyPot, Supplier<? extends Block> p_53528_, Properties properties) {
-		super(emptyPot, p_53528_, properties);
+	public SpecialFlowerPotBlock(@Nullable Supplier<FlowerPotBlock> emptyPot, Supplier<? extends Block> flower, Properties properties) {
+		super(emptyPot, flower, properties);
 	}
 
 	@Override
-	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if(!this.isEmpty()) {
-			pLevel.setBlock(pPos, getEmptyPot().defaultBlockState(), 3);
-			pLevel.gameEvent(pPlayer, GameEvent.BLOCK_CHANGE, pPos);
-			return InteractionResult.sidedSuccess(pLevel.isClientSide);
+			level.setBlock(pos, getEmptyPot().defaultBlockState(), 3);
+			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+			return InteractionResult.sidedSuccess(level.isClientSide());
 		} else {
-			return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+			return super.use(state, level, pos, player, hand, result);
 		}
 	}
 }

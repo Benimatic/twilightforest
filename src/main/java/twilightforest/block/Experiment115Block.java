@@ -1,11 +1,8 @@
 package twilightforest.block;
 
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.PlayerAdvancements;
-import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -36,7 +33,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFStats;
 
@@ -77,23 +73,15 @@ public class Experiment115Block extends Block {
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayer)
 					CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.sidedSuccess(level.isClientSide());
 			} else if (((!state.getValue(REGENERATE)) && stack.getItem() == Items.REDSTONE)) {
 				level.setBlockAndUpdate(pos, state.setValue(REGENERATE, true));
 				level.playSound(null, pos, state.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayer) {
 					player.awardStat(Stats.ITEM_USED.get(Items.REDSTONE));
-
-					//fallback if the advancement criteria doesnt work since its inconsistent
-					PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
-					ServerAdvancementManager manager = ((ServerLevel) player.getCommandSenderWorld()).getServer().getAdvancements();
-					Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("experiment_115_self_replenishing"));
-					if (advancement != null) {
-						advancements.award(advancement, "place_complete_e115");
-					}
 				}
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
 		} else {
 			if (!state.getValue(REGENERATE) && player.getUseItem().isEmpty()) {
@@ -105,7 +93,7 @@ public class Experiment115Block extends Block {
 				player.playSound(SoundEvents.ITEM_PICKUP, 0.5F, 1.0F);
 				if (!player.isCreative())
 					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
 		return this.eatCake(level, pos, state, player);
@@ -130,7 +118,7 @@ public class Experiment115Block extends Block {
 				player.awardStat(Stats.ITEM_USED.get(TFItems.EXPERIMENT_115.get()));
 			}
 
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
 	}
 
@@ -142,8 +130,8 @@ public class Experiment115Block extends Block {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		return level.getBlockState(pos.below()).getMaterial().isSolid();
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+		return reader.getBlockState(pos.below()).getMaterial().isSolid();
 	}
 
 	@Override

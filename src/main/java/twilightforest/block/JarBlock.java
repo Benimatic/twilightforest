@@ -33,8 +33,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFSounds;
 import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 
 public class JarBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -55,7 +55,7 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemEntity jarStuff = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), this == TFBlocks.FIREFLY_JAR.get() ? TFBlocks.FIREFLY.get().asItem().getDefaultInstance() : TFBlocks.CICADA.get().asItem().getDefaultInstance());
 		if (player.isShiftKeyDown()) {
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -72,9 +72,9 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-		super.destroy(level, pos, state);
-		if (level.isClientSide())
+	public void destroy(LevelAccessor accessor, BlockPos pos, BlockState state) {
+		super.destroy(accessor, pos, state);
+		if (accessor.isClientSide())
 			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.BLOCKS);
 	}
 

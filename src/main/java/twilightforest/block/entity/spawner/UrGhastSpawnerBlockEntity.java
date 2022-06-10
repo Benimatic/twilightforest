@@ -17,8 +17,8 @@ public class UrGhastSpawnerBlockEntity extends BossSpawnerBlockEntity<UrGhast> {
 
 	@Override
 	public boolean anyPlayerInRange() {
-		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.getY() > worldPosition.getY() - 4;
+		Player closestPlayer = this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, getRange(), false);
+		return closestPlayer != null && closestPlayer.getY() > this.getBlockPos().getY() - 4;
 	}
 
 	@Override

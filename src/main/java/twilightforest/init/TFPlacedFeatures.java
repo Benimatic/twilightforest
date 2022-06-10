@@ -20,7 +20,6 @@ import twilightforest.world.components.placements.OutOfStructureModifier;
 
 import java.util.List;
 
-// TODO Convert to Deferred?
 public class TFPlacedFeatures {
 
 	public static final Holder<PlacedFeature> PLACED_LAKE_LAVA = register("lava_lake", TFConfiguredFeatures.LAKE_LAVA, tfFeatureCheckArea(OutOfStructureModifier.checkBoth(), 10).build());

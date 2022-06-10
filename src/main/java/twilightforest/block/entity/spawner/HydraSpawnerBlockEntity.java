@@ -4,9 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.entity.boss.Hydra;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
-import twilightforest.entity.boss.Hydra;
 
 public class HydraSpawnerBlockEntity extends BossSpawnerBlockEntity<Hydra> {
 

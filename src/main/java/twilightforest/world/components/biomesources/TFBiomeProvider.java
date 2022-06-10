@@ -83,12 +83,6 @@ public class TFBiomeProvider extends BiomeSource {
 		this.seed = seed;
 		this.baseOffset = offset;
 		this.baseFactor = factor;
-		//getBiomesToSpawnIn().clear();
-		//getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());
-		//getBiomesToSpawnIn().add(TFBiomes.denseTwilightForest.get());
-		//getBiomesToSpawnIn().add(TFBiomes.clearing.get());
-		//getBiomesToSpawnIn().add(TFBiomes.tfSwamp.get());
-		//getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
 
 		registry = registryIn;
 		biomeList = list;

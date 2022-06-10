@@ -29,7 +29,7 @@ public class MangroveSaplingBlock extends SaplingBlock implements SimpleWaterlog
 
 	public MangroveSaplingBlock(AbstractTreeGrower tree, BlockBehaviour.Properties properties) {
 		super(tree, properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -40,19 +40,19 @@ public class MangroveSaplingBlock extends SaplingBlock implements SimpleWaterlog
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
-		if (!isInWater(state, worldIn, pos)) {
-			worldIn.setBlock(pos, this.defaultBlockState().setValue(WATERLOGGED, false), 2);
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
+		if (!isInWater(state, level, pos)) {
+			level.setBlock(pos, this.defaultBlockState().setValue(WATERLOGGED, false), 2);
 		}
 	}
 
 	//VanillaCopy of AbstractCoralPlantBlock.isInWater
-	protected static boolean isInWater(BlockState state, BlockGetter worldIn, BlockPos pos) {
+	protected static boolean isInWater(BlockState state, BlockGetter getter, BlockPos pos) {
 		if (state.getValue(WATERLOGGED)) {
 			return true;
 		} else {
-			for(Direction direction : Direction.values()) {
-				if (worldIn.getFluidState(pos.relative(direction)).is(FluidTags.WATER)) {
+			for (Direction direction : Direction.values()) {
+				if (getter.getFluidState(pos.relative(direction)).is(FluidTags.WATER)) {
 					return true;
 				}
 			}
@@ -69,12 +69,12 @@ public class MangroveSaplingBlock extends SaplingBlock implements SimpleWaterlog
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		}
 
-		return facing == Direction.DOWN && !this.canSurvive(stateIn, worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return facing == Direction.DOWN && !this.canSurvive(stateIn, accessor, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, accessor, currentPos, facingPos);
 	}
 
 	@Override

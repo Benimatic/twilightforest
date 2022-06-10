@@ -3,6 +3,7 @@ package twilightforest.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Ghast;
@@ -27,13 +28,13 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 	private int counter = 0;
 	private final List<CarminiteGhastling> dyingGhasts = new ArrayList<>();
-	private final Random rand = new Random();
+	private final RandomSource rand = RandomSource.create();
 
 	public GhastTrapBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.GHAST_TRAP.get(), pos, state);
 	}
 
-	private static void tickInactive(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
+	private void tickInactive(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
 		// check to see if there are any dying mini ghasts within our scan range
 		AABB aabb = new AABB(pos).inflate(10D, 16D, 10D);
 
@@ -54,7 +55,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 		te.counter++;
 
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			// occasionally make a redstone line to a mini ghast
 			if (te.counter % 20 == 0 && nearbyGhasts.size() > 0) {
 				CarminiteGhastling highlight = nearbyGhasts.get(te.rand.nextInt(nearbyGhasts.size()));
@@ -83,49 +84,49 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 	private void makeParticlesTo(Entity highlight) {
 
-		double sx = worldPosition.getX() + 0.5D;
-		double sy = worldPosition.getY() + 1.0D;
-		double sz = worldPosition.getZ() + 0.5D;
+		double sx = this.getBlockPos().getX() + 0.5D;
+		double sy = this.getBlockPos().getY() + 1.0D;
+		double sz = this.getBlockPos().getZ() + 0.5D;
 
 		double dx = sx - highlight.getX();
 		double dy = sy - highlight.getY() - highlight.getEyeHeight();
 		double dz = sz - highlight.getZ();
 
 		for (int i = 0; i < 5; i++) {
-			level.addParticle(TFParticleType.GHAST_TRAP.get(), sx, sy, sz, -dx, -dy, -dz);
+			this.getLevel().addParticle(TFParticleType.GHAST_TRAP.get(), sx, sy, sz, -dx, -dy, -dz);
 		}
 	}
 
 	public boolean isCharged() {
-		return dyingGhasts.size() >= 3;
+		return this.dyingGhasts.size() >= 3;
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
 		if (state.getValue(GhastTrapBlock.ACTIVE)) {
-			tickActive(level, pos, state, te);
+			te.tickActive(level, pos, state, te);
 		} else {
-			tickInactive(level, pos, state, te);
+			te.tickInactive(level, pos, state, te);
 		}
 	}
 
 	@Override
 	public boolean triggerEvent(int event, int payload) {
 		if (event == GhastTrapBlock.ACTIVATE_EVENT) {
-			counter = 0;
-			dyingGhasts.clear();
+			this.counter = 0;
+			this.dyingGhasts.clear();
 			return true;
 		}
 		if (event == GhastTrapBlock.DEACTIVATE_EVENT) {
-			counter = 0;
+			this.counter = 0;
 			return true;
 		}
 		return false;
 	}
 
-	private static void tickActive(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
+	private void tickActive(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
 		++te.counter;
 
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			// smoke when done
 			if (te.counter > 100 && te.counter % 4 == 0) {
 				level.addParticle(TFParticleType.HUGE_SMOKE.get(), pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5, Math.cos(te.counter / 10.0) * 0.05, 0.25D, Math.sin(te.counter / 10.0) * 0.05);

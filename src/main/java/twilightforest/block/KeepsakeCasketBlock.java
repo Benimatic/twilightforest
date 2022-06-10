@@ -37,11 +37,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.init.TFSounds;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.init.TFBlockEntities;
 import twilightforest.enums.BlockLoggingEnum;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -78,7 +78,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-		if(state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() != Blocks.AIR && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
+		if (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() != Blocks.AIR && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
 			return direction.getAxis() == Direction.Axis.X ? SOLID_X : SOLID_Z;
 		} else {
 			return direction.getAxis() == Direction.Axis.X ? CASKET_X : CASKET_Z;
@@ -111,15 +111,15 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
+	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
 		return Float.MAX_VALUE;
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		boolean flag = false;
-		if(state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
-			ItemStack stack = player.getItemInHand(handIn);
+		if (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
+			ItemStack stack = player.getItemInHand(hand);
 			if (!(stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get())) {
 				if (level.isClientSide()) {
 					return InteractionResult.SUCCESS;
@@ -140,7 +140,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				}
 			}
 		}
-		return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+		return flag ? InteractionResult.sidedSuccess(level.isClientSide()) : InteractionResult.PASS;
 	}
 
 	@Override
@@ -203,7 +203,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		if (state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA) {
 			boolean flag = level.getBlockState(pos.below()).is(Blocks.SOUL_SOIL);
 
-			for(Direction direction : Direction.values()) {
+			for (Direction direction : Direction.values()) {
 				if (direction != Direction.DOWN) {
 					BlockPos blockpos = pos.relative(direction);
 					if (level.getFluidState(blockpos).is(FluidTags.WATER)) {
@@ -218,7 +218,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				}
 			}
 		} else if (state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.WATER) {
-			for(Direction direction : Direction.values()) {
+			for (Direction direction : Direction.values()) {
 				if (direction != Direction.DOWN) {
 					BlockPos blockpos = pos.relative(direction);
 					if (level.getFluidState(blockpos).is(FluidTags.LAVA)) {

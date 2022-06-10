@@ -110,7 +110,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				}
 			} else if (block instanceof KeepsakeCasketBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.keepsakeCasketBlockEntity, ms, buffers, light, overlay);
-			} else if (block instanceof TwilightChest) {
+			} else if (block instanceof TFChestBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
 			} else if (block instanceof AbstractSkullCandleBlock) {
 				GameProfile gameprofile = null;

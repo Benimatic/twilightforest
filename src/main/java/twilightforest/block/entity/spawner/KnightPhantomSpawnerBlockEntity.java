@@ -27,37 +27,37 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 
 	@Override
 	public boolean anyPlayerInRange() {
-		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.getY() > worldPosition.getY() - 2;
+		Player closestPlayer = this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange(), false);
+		return closestPlayer != null && closestPlayer.getY() > this.getBlockPos().getY() - 2;
 	}
 
 	@Override
-	protected boolean spawnMyBoss(ServerLevelAccessor world) {
+	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
 		for (int i = spawned; i < COUNT; i++) {
 			// create creature
-			KnightPhantom myCreature = makeMyCreature();
+			KnightPhantom myCreature = this.makeMyCreature();
 
 			float angle = (360F / COUNT) * i;
 			final float distance = 4F;
 
-			double rx = worldPosition.getX() + 0.5D + Math.cos(angle * Math.PI / 180.0D) * distance;
-			double ry = worldPosition.getY();
-			double rz = worldPosition.getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
+			double rx = this.getBlockPos().getX() + 0.5D + Math.cos(angle * Math.PI / 180.0D) * distance;
+			double ry = this.getBlockPos().getY();
+			double rz = this.getBlockPos().getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
 
-			myCreature.moveTo(rx, ry, rz, world.getLevel().random.nextFloat() * 360F, 0.0F);
-			myCreature.finalizeSpawn(world, world.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), MobSpawnType.SPAWNER, null, null);
+			myCreature.moveTo(rx, ry, rz, accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
+			myCreature.finalizeSpawn(accessor, accessor.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), MobSpawnType.SPAWNER, null, null);
 
-			if(i == 5 && world.getDifficulty() == Difficulty.HARD){
+			if(i == 5 && accessor.getDifficulty() == Difficulty.HARD){
 				myCreature.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(TFItems.KNIGHTMETAL_SHIELD.get()));
 			}
 
 			// set creature's home to this
-			initializeCreature(myCreature);
+			this.initializeCreature(myCreature);
 
 			myCreature.setNumber(i);
 
 			// spawn it
-			if (world.addFreshEntity(myCreature)) {
+			if (accessor.addFreshEntity(myCreature)) {
 				spawned++;
 			}
 		}

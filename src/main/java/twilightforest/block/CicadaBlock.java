@@ -18,10 +18,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.CicadaBlockEntity;
 import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -51,14 +51,15 @@ public class CicadaBlock extends CritterBlock {
 	}
 
 	@Override
-	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-		super.destroy(level, pos, state);
-		if(level.isClientSide()) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
+	public void destroy(LevelAccessor accessor, BlockPos pos, BlockState state) {
+		super.destroy(accessor, pos, state);
+		if (accessor.isClientSide())
+			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, getter, tooltip, flag);
 
 //		if (ModList.get().isLoaded(TFCompat.IE_ID)) {

@@ -473,7 +473,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 						Component.translatable("advancement.twilightforest.experiment_115_2"),
 						Component.translatable("advancement.twilightforest.experiment_115_2.desc"),
 						null, FrameType.CHALLENGE, true, true, true)
-				.addCriterion("place_complete_e115", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.EXPERIMENT_115.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(Experiment115Block.BITES_TAKEN, 0).hasProperty(Experiment115Block.REGENERATE, false).build()).build()), ItemPredicate.Builder.item().of(Items.REDSTONE)))
+				.addCriterion("place_complete_e115", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.EXPERIMENT_115.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(Experiment115Block.REGENERATE, true).build()).build()), ItemPredicate.Builder.item().of(Items.REDSTONE)))
 				.save(consumer, "twilightforest:experiment_115_self_replenishing");
 
 		Advancement.Builder.advancement().parent(yeti).display(

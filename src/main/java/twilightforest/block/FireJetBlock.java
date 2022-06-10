@@ -18,10 +18,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import twilightforest.block.entity.FireJetBlockEntity;
-import twilightforest.init.TFBlockEntities;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
+import twilightforest.init.TFBlockEntities;
 
 import javax.annotation.Nullable;
 
@@ -29,13 +29,13 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
-	public FireJetBlock(Properties props) {
-		super(props);
-		registerDefaultState(defaultBlockState().setValue(STATE, FireJetVariant.IDLE));
+	public FireJetBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, FireJetVariant.IDLE));
 	}
 
 	@Override
-	public RenderShape getRenderShape(BlockState p_49232_) {
+	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
 
@@ -47,19 +47,19 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return state.getValue(STATE) == FireJetVariant.IDLE ? null : BlockPathTypes.DAMAGE_FIRE;
 	}
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-		if (!world.isClientSide && state.getValue(STATE) == FireJetVariant.IDLE) {
-			BlockPos lavaPos = findLavaAround(world, pos.below());
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		if (!level.isClientSide() && state.getValue(STATE) == FireJetVariant.IDLE) {
+			BlockPos lavaPos = findLavaAround(level, pos.below());
 
-			if (isLava(world, lavaPos)) {
-				world.setBlockAndUpdate(lavaPos, Blocks.AIR.defaultBlockState());
-				world.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.POPPING));
+			if (this.isLava(level, lavaPos)) {
+				level.setBlockAndUpdate(lavaPos, Blocks.AIR.defaultBlockState());
+				level.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.POPPING));
 			}
 		}
 	}
@@ -67,14 +67,14 @@ public class FireJetBlock extends BaseEntityBlock {
 	/**
 	 * Find a full block of lava near the designated block.  This is intentionally not really that reliable.
 	 */
-	private BlockPos findLavaAround(Level world, BlockPos pos) {
-		if (isLava(world, pos)) {
+	private BlockPos findLavaAround(Level level, BlockPos pos) {
+		if (this.isLava(level, pos)) {
 			return pos;
 		}
 
 		for (int i = 0; i < 3; i++) {
-			BlockPos randPos = pos.offset(world.random.nextInt(3) - 1, 0, world.random.nextInt(3) - 1);
-			if (isLava(world, randPos)) {
+			BlockPos randPos = pos.offset(level.getRandom().nextInt(3) - 1, 0, level.getRandom().nextInt(3) - 1);
+			if (this.isLava(level, randPos)) {
 				return randPos;
 			}
 		}
@@ -82,8 +82,8 @@ public class FireJetBlock extends BaseEntityBlock {
 		return pos;
 	}
 
-	private boolean isLava(Level world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	private boolean isLava(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 		return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getBlock().getFluidState(state).is(FluidTagGenerator.FIRE_JET_FUEL);
 	}
 

@@ -52,12 +52,12 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	public SkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(type, properties);
-		registerDefaultState(getStateDefinition().any().setValue(ROTATION, 0));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(ROTATION, 0));
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext ctx) {
-		if(getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+		if (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			return switch (sc.candleAmount) {
 				default -> SKULL_WITH_ONE;
 				case 2 -> SKULL_WITH_TWO;
@@ -65,7 +65,7 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 				case 4 -> SKULL_WITH_FOUR;
 			};
 		}
-		return switch (getCandleCount()) {
+		return switch (this.getCandleCount()) {
 			default -> SKULL_WITH_ONE;
 			case 2 -> SKULL_WITH_TWO;
 			case 3 -> SKULL_WITH_THREE;
@@ -74,16 +74,16 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
-	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor level, BlockPos pos) {
-		if(level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
+		if (accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			return PARTICLE_OFFSETS.get(sc.candleAmount);
 		}
-		return PARTICLE_OFFSETS.get(getCandleCount());
+		return PARTICLE_OFFSETS.get(this.getCandleCount());
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return this.defaultBlockState().setValue(ROTATION, Mth.floor((double)(ctx.getRotation() * 16.0F / 360.0F) + 0.5D) & 15).setValue(LIGHTING, Lighting.NONE);
+		return this.defaultBlockState().setValue(ROTATION, Mth.floor((double) (ctx.getRotation() * 16.0F / 360.0F) + 0.5D) & 15).setValue(LIGHTING, Lighting.NONE);
 	}
 
 	@Override

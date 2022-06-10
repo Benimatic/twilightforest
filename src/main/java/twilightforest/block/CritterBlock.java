@@ -38,10 +38,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 
 import javax.annotation.Nullable;
@@ -102,48 +102,48 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	@Deprecated
-	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
 		if (state.getValue(WATERLOGGED)) {
-			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		}
-		if (state.getValue(FACING).getOpposite() == direction && !state.canSurvive(level, pos)) {
+		if (state.getValue(FACING).getOpposite() == direction && !state.canSurvive(accessor, pos)) {
 			return Blocks.AIR.defaultBlockState();
 		} else {
-			return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+			return super.updateShape(state, direction, neighborState, accessor, pos, neighborPos);
 		}
 	}
 
 	@Override
 	@Deprecated
-	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		Direction facing = state.getValue(DirectionalBlock.FACING);
 		BlockPos restingPos = pos.relative(facing.getOpposite());
-		return canSupportCenter(level, restingPos, facing);
+		return canSupportCenter(reader, restingPos, facing);
 	}
 
 	public abstract ItemStack getSquishResult(); // oh no! TODO Return Loot Table instead?
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.getItem() == Items.GLASS_BOTTLE) {
 			if (this == TFBlocks.FIREFLY.get()) {
 				if (!player.isCreative()) stack.shrink(1);
 				player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.get()));
 				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
-				return InteractionResult.SUCCESS;
+				return InteractionResult.sidedSuccess(level.isClientSide());
 			} else if (this == TFBlocks.CICADA.get()) {
 				if (!player.isCreative()) stack.shrink(1);
 				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
 				if (level.isClientSide())
 					Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
 				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
-				return InteractionResult.SUCCESS;
+				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
 		return InteractionResult.PASS;
