@@ -29,7 +29,7 @@ public class GiantSwordItem extends SwordItem {
 		attributeBuilder.putAll(super.getDefaultAttributeModifiers(slot));
 		attributeBuilder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(GIANT_REACH_MODIFIER, "Reach modifier", 2.5, AttributeModifier.Operation.ADDITION));
 		attributeBuilder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(GIANT_RANGE_MODIFIER, "Range modifier", 2.5, AttributeModifier.Operation.ADDITION));
-		return attributeBuilder.build();
+		return slot == EquipmentSlot.MAINHAND ? attributeBuilder.build() : super.getDefaultAttributeModifiers(slot);
 	}
 
 	@Override
