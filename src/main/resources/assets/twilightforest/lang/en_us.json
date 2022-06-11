@@ -758,6 +758,17 @@
   "item.twilightforest.cube_of_annihilation": "Cube of Annihilation",
   "item.twilightforest.moon_dial": "Moon Dial",
 
+  "item.twilightforest.moon_dial.phase_0": "Full Moon",
+  "item.twilightforest.moon_dial.phase_1": "Waning Gibbous",
+  "item.twilightforest.moon_dial.phase_2": "Third Quarter",
+  "item.twilightforest.moon_dial.phase_3": "Waning Crescent",
+  "item.twilightforest.moon_dial.phase_4": "New Moon",
+  "item.twilightforest.moon_dial.phase_5": "Waxing Crescent",
+  "item.twilightforest.moon_dial.phase_6": "First Quarter",
+  "item.twilightforest.moon_dial.phase_7": "Waxing Gibbous",
+  "item.twilightforest.moon_dial.phase_unknown": "Moon phase indeterminate",
+  "item.twilightforest.moon_dial.phase_unknown_fools": "404 moon not found",
+
   "item.twilightforest.music_disc_radiance": "Music Disc",
   "item.twilightforest.music_disc_radiance.desc": "Rotch Gwylt - Radiance",
   "item.twilightforest.music_disc_steps": "Music Disc",
