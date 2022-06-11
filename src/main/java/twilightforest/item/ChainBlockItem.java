@@ -9,13 +9,12 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
+import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFSounds;
 import twilightforest.entity.ChainBlock;
 import twilightforest.init.TFEntities;
@@ -110,16 +109,18 @@ public class ChainBlockItem extends DiggerItem {
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
 		if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
 				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
-			return TierSortingRegistry.isCorrectTierForDrops(Tiers.IRON, state);
+			return TierSortingRegistry.isCorrectTierForDrops(this.getHarvestLevel(stack), state);
 		return super.isCorrectToolForDrops(stack, state);
 	}
 
-	/*@Override
-	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable Player player, @Nullable BlockState blockState) {
-		if (tool == ToolType.PICKAXE) {
-			return 2;
+	public Tier getHarvestLevel(ItemStack stack) {
+		int enchantLevel = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack);
+		if (enchantLevel == 2) {
+			return Tiers.STONE;
+		} else if (enchantLevel == 3) {
+			return Tiers.IRON;
 		} else {
-			return -1;
+			return Tiers.WOOD;
 		}
-	}*/
+	}
 }

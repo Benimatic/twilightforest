@@ -1,4 +1,4 @@
-// 1.19	2022-06-10T17:46:03.8969292	TwilightForest loot tables
+// 1.19	2022-06-10T23:15:05.6836636	TwilightForest loot tables
 9992978a24c986ab8bbacfd4cb5c88b4b3d653a2 data/twilightforest/loot_tables/blocks/acacia_banister.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -488,8 +488,8 @@ b590de2b1c1a96dafc1b28227c70a8e8573f58f2 data/twilightforest/loot_tables/structu
 54b04cfc125f5e677717dd24f6ae10abfbaf4ba7 data/twilightforest/loot_tables/structures/labyrinth_vault.json
 c1c96959a38e6f1d40825057a663310b1e122ba2 data/twilightforest/loot_tables/structures/quest_grove_dropper.json
 44af3329f36ed084c4e3c8c40661a5f53bc85a4c data/twilightforest/loot_tables/structures/stronghold_boss.json
-f9365613edf5bf18b9dd9cf6e25c149e8d723163 data/twilightforest/loot_tables/structures/stronghold_cache.json
-77b96c85dc93268670910d4652c8d22fa8f24a1b data/twilightforest/loot_tables/structures/stronghold_room.json
+ad2627ce5fd660754416f8a313de8b36bbc287b7 data/twilightforest/loot_tables/structures/stronghold_cache.json
+cb693e0cfb32ad67188eee0dbe316dafa8bf7308 data/twilightforest/loot_tables/structures/stronghold_room.json
 16f978335329ef1b1ca9bb4eab35b8dd175cf805 data/twilightforest/loot_tables/structures/tower_library.json
 6c1fa3f44b09e942fc4a74631594d8600a706236 data/twilightforest/loot_tables/structures/tower_room.json
 1f494e4d7c92f059e4a30a6bbd35795aba66bf38 data/twilightforest/loot_tables/structures/tree_cache.json

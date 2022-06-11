@@ -213,31 +213,7 @@
           "functions": [
             {
               "enchantments": [
-                "twilightforest:preservation"
-              ],
-              "function": "minecraft:enchant_randomly"
-            }
-          ],
-          "name": "minecraft:book"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": [
                 "twilightforest:destruction"
-              ],
-              "function": "minecraft:enchant_randomly"
-            }
-          ],
-          "name": "minecraft:book"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": [
-                "twilightforest:block_strength"
               ],
               "function": "minecraft:enchant_randomly"
             }

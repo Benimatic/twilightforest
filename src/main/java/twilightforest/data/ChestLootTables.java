@@ -615,9 +615,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.UNBREAKING, 2)).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.ALL_DAMAGE_PROTECTION, 3)).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.PROJECTILE_PROTECTION, 3)).setWeight(25))
-								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.PRESERVATION.get())).setWeight(25))
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())).setWeight(25))
-								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.BLOCK_STRENGTH.get())).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.FALL_PROTECTION, 3)).setWeight(25))));
 
         register.accept(TFTreasure.STRONGHOLD_ROOM.lootTable,
@@ -652,9 +650,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(Items.DIAMOND_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(15))))
-								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.PRESERVATION.get())))
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())))
-								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.BLOCK_STRENGTH.get())))
                                 .add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS.get()))));
 
         register.accept(TFTreasure.STRONGHOLD_BOSS.lootTable,

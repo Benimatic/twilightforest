@@ -1,9 +1,10 @@
-// 1.19	2022-06-10T17:46:03.8919427	Tags for minecraft:block
+// 1.19	2022-06-10T23:15:05.6826665	Tags for minecraft:block
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
 211134157771c86a72a0c5a1985c2b05da55729b data/forge/tags/blocks/fence_gates.json
 211134157771c86a72a0c5a1985c2b05da55729b data/forge/tags/blocks/fence_gates/wooden.json
+9f7a15a8b7d1cd07e3898e7065ca511dafefba46 data/forge/tags/blocks/needs_wood_tool.json
 69df1d33ccbb5ab10af053af0b3f28694eab1bc2 data/forge/tags/blocks/ores.json
 078ffd510c10188061614a42c5165e8a6b146fd7 data/forge/tags/blocks/ores_in_ground/root.json
 092125a387f652f754cbd3e2eef2d3fe0a67bd55 data/forge/tags/blocks/ore_bearing_ground/root.json
@@ -24,6 +25,9 @@ e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/blocks/flower_pots.
 26b50408aa86f5495db200a2da049a7efde021c1 data/minecraft/tags/blocks/mineable/pickaxe.json
 944d5178d1a94490d123e31a73bc58d4eea852ab data/minecraft/tags/blocks/mineable/shovel.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/blocks/mushroom_grow_block.json
+8e5f8010258f82c7282ceebd861c14aded7afeae data/minecraft/tags/blocks/needs_diamond_tool.json
+d1f677ac5e8be6bff6bd3a82b3586cd745434ef9 data/minecraft/tags/blocks/needs_iron_tool.json
+dfe388780d9d636ad393c72d71b3ff7e0d725c09 data/minecraft/tags/blocks/needs_stone_tool.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/minecraft/tags/blocks/occludes_vibration_signals.json
 9358df5f5420b32a08f45ed7924867342cd14b47 data/minecraft/tags/blocks/planks.json
 65049c26c09e844c582a701fe66bd426a58aec5d data/minecraft/tags/blocks/portals.json

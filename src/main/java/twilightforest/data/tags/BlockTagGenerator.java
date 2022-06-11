@@ -614,6 +614,82 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.UBEROUS_SOIL.get()
 		);
 
+		tag(Tags.Blocks.NEEDS_WOOD_TOOL).add(
+				TFBlocks.NAGASTONE.get(),
+				TFBlocks.NAGASTONE_HEAD.get(),
+				TFBlocks.ETCHED_NAGASTONE.get(),
+				TFBlocks.CRACKED_ETCHED_NAGASTONE.get(),
+				TFBlocks.MOSSY_ETCHED_NAGASTONE.get(),
+				TFBlocks.NAGASTONE_PILLAR.get(),
+				TFBlocks.CRACKED_NAGASTONE_PILLAR.get(),
+				TFBlocks.MOSSY_NAGASTONE_PILLAR.get(),
+				TFBlocks.NAGASTONE_STAIRS_LEFT.get(),
+				TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(),
+				TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(),
+				TFBlocks.NAGASTONE_STAIRS_RIGHT.get(),
+				TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(),
+				TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(),
+				TFBlocks.SPIRAL_BRICKS.get(),
+				TFBlocks.TWISTED_STONE.get(),
+				TFBlocks.TWISTED_STONE_PILLAR.get(),
+				TFBlocks.BOLD_STONE_PILLAR.get(),
+				TFBlocks.AURORA_PILLAR.get(),
+				TFBlocks.AURORA_SLAB.get(),
+				TFBlocks.TROLLSTEINN.get()
+		);
+
+		tag(BlockTags.NEEDS_STONE_TOOL).add(
+				TFBlocks.UNDERBRICK.get(),
+				TFBlocks.CRACKED_UNDERBRICK.get(),
+				TFBlocks.MOSSY_UNDERBRICK.get(),
+				TFBlocks.UNDERBRICK_FLOOR.get(),
+				TFBlocks.IRON_LADDER.get()
+		);
+
+		tag(BlockTags.NEEDS_IRON_TOOL).add(
+				TFBlocks.FIERY_BLOCK.get(),
+				TFBlocks.KNIGHTMETAL_BLOCK.get()
+		);
+
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
+				TFBlocks.MAZESTONE.get(),
+				TFBlocks.MAZESTONE_BRICK.get(),
+				TFBlocks.CRACKED_MAZESTONE.get(),
+				TFBlocks.MOSSY_MAZESTONE.get(),
+				TFBlocks.DECORATIVE_MAZESTONE.get(),
+				TFBlocks.CUT_MAZESTONE.get(),
+				TFBlocks.MAZESTONE_BORDER.get(),
+				TFBlocks.MAZESTONE_MOSAIC.get(),
+				TFBlocks.AURORA_BLOCK.get(),
+				TFBlocks.DEADROCK.get(),
+				TFBlocks.CRACKED_DEADROCK.get(),
+				TFBlocks.WEATHERED_DEADROCK.get(),
+				TFBlocks.CASTLE_BRICK.get(),
+				TFBlocks.WORN_CASTLE_BRICK.get(),
+				TFBlocks.CRACKED_CASTLE_BRICK.get(),
+				TFBlocks.MOSSY_CASTLE_BRICK.get(),
+				TFBlocks.THICK_CASTLE_BRICK.get(),
+				TFBlocks.CASTLE_ROOF_TILE.get(),
+				TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(),
+				TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(),
+				TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(),
+				TFBlocks.BOLD_CASTLE_BRICK_TILE.get(),
+				TFBlocks.CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.PINK_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.PINK_CASTLE_DOOR.get(),
+				TFBlocks.YELLOW_CASTLE_DOOR.get(),
+				TFBlocks.BLUE_CASTLE_DOOR.get(),
+				TFBlocks.VIOLET_CASTLE_DOOR.get()
+		);
+
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
 	}
 

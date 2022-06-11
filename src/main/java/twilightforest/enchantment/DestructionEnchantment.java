@@ -25,17 +25,12 @@ public class DestructionEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	public int getMaxLevel() {
-		return 2;
+		return 3;
 	}
 
 	@Override
 	public boolean canEnchant(ItemStack stack) {
 		return stack.getItem() instanceof ChainBlockItem;
-	}
-
-	@Override
-	protected boolean checkCompatibility(Enchantment other) {
-		return super.checkCompatibility(other) && other != TFEnchantments.BLOCK_STRENGTH.get() && other != TFEnchantments.PRESERVATION.get();
 	}
 
 	@Override
