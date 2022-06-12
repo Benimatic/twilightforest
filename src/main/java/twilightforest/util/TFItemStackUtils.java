@@ -10,7 +10,9 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.items.CapabilityItemHandler;
 import twilightforest.TwilightForestMod;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class TFItemStackUtils {
@@ -118,22 +120,38 @@ public class TFItemStackUtils {
 	}
 
 	//[VanillaCopy] of Inventory.load, but removed clearing all slots
+	//also add a handler to move items to the next available slot if the slot they want to go to isnt available
 	public static void loadNoClear(ListTag tag, Inventory inventory) {
 
-		for(int i = 0; i < tag.size(); ++i) {
+		List<ItemStack> blockedItems = new ArrayList<>();
+
+		for (int i = 0; i < tag.size(); ++i) {
 			CompoundTag compoundtag = tag.getCompound(i);
 			int j = compoundtag.getByte("Slot") & 255;
 			ItemStack itemstack = ItemStack.of(compoundtag);
 			if (!itemstack.isEmpty()) {
 				if (j < inventory.items.size()) {
-					inventory.items.set(j, itemstack);
+					if (inventory.items.get(j).isEmpty()) {
+						inventory.items.set(j, itemstack);
+					} else {
+						blockedItems.add(itemstack);
+					}
 				} else if (j >= 100 && j < inventory.armor.size() + 100) {
-					inventory.armor.set(j - 100, itemstack);
+					if (inventory.armor.get(j - 100).isEmpty()) {
+						inventory.armor.set(j - 100, itemstack);
+					} else {
+						blockedItems.add(itemstack);
+					}
 				} else if (j >= 150 && j < inventory.offhand.size() + 150) {
-					inventory.offhand.set(j - 150, itemstack);
+					if (inventory.offhand.get(j - 150).isEmpty()) {
+						inventory.offhand.set(j - 150, itemstack);
+					} else {
+						blockedItems.add(itemstack);
+					}
 				}
 			}
 		}
 
+		if(!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
 	}
 }
