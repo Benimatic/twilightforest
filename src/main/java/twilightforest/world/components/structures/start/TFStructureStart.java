@@ -1,21 +1,12 @@
 package twilightforest.world.components.structures.start;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.TFStructureComponent;
-
-import java.util.List;
 
 public class TFStructureStart<C extends FeatureConfiguration> extends StructureStart {
 	private boolean conquered = false;
@@ -42,39 +33,5 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 
 	public final boolean isConquered() {
 		return this.conquered;
-	}
-
-	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
-		int highestFoundIndex = -1;
-		for (StructurePiece component : start.getPieces()) {
-			if (component.getBoundingBox().isInside(pos)) {
-				if (component instanceof TFStructureComponent tfComponent) {
-					if (tfComponent.spawnListIndex > highestFoundIndex)
-						highestFoundIndex = tfComponent.spawnListIndex;
-				} else
-					return 0;
-			}
-		}
-		return highestFoundIndex;
-	}
-
-	// TODO Move to ChunkGeneratorTwilight as that's the only class it matters to. The command impl can follow with the refactor
-	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (LegacyLandmark structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
-				.filter(LegacyLandmark.class::isInstance).map(LegacyLandmark.class::cast).toList()) {
-			StructureStart start = structureManager.getStructureAt(pos, structure);
-			if (!start.isValid())
-				continue;
-
-			if (classification != MobCategory.MONSTER)
-				return structure.getSpawnableList(classification);
-			if ((start instanceof TFStructureStart<?> s && s.conquered) /*|| legacyData.isConquered()*/)
-				return null;
-			final int index = getSpawnListIndexAt(start, pos);
-			if (index < 0)
-				return null;
-			return structure.getSpawnableMonsterList(index);
-		}
-		return null;
 	}
 }

@@ -27,12 +27,16 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
+import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.start.LegacyLandmark;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -804,11 +808,44 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		chunk.getOrCreateHeightmapUnprimed(type).setHeight(pos.getX() & 15, pos.getZ() & 15, dY + 1);
 	}
 
+	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
+		int highestFoundIndex = -1;
+		for (StructurePiece component : start.getPieces()) {
+			if (component.getBoundingBox().isInside(pos)) {
+				if (component instanceof TFStructureComponent tfComponent) {
+					if (tfComponent.spawnListIndex > highestFoundIndex)
+						highestFoundIndex = tfComponent.spawnListIndex;
+				} else
+					return 0;
+			}
+		}
+		return highestFoundIndex;
+	}
+
+	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
+		for (LegacyLandmark structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
+				.filter(LegacyLandmark.class::isInstance).map(LegacyLandmark.class::cast).toList()) {
+			StructureStart start = structureManager.getStructureAt(pos, structure);
+			if (!start.isValid())
+				continue;
+
+			if (classification != MobCategory.MONSTER)
+				return structure.getSpawnableList(classification);
+			if ((start instanceof TFStructureStart<?> s && s.isConquered()) /*|| legacyData.isConquered()*/)
+				return null;
+			final int index = getSpawnListIndexAt(start, pos);
+			if (index < 0)
+				return null;
+			return structure.getSpawnableMonsterList(index);
+		}
+		return null;
+	}
+
 	@Override
 	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory mobCategory, BlockPos pos) {
 		if (!this.monsterSpawnsBelowSeaLevel) return super.getMobsAt(biome, structureManager, mobCategory, pos);
 
-		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructureStart.gatherPotentialSpawns(structureManager, mobCategory, pos);
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(structureManager, mobCategory, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
 		//FIXME forge has StructureSpawnManager commented out, find out if theyre redoing this class or removing it entirely

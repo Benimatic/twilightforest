@@ -49,7 +49,7 @@ public class InfoCommand {
 						withStyle(ChatFormatting.BOLD, structure.isConquered() ? ChatFormatting.GREEN : ChatFormatting.RED), false);
 
 				// what is the spawn list
-				List<MobSpawnSettings.SpawnerData> spawnList = TFStructureStart.gatherPotentialSpawns(source.getLevel().structureManager(), MobCategory.MONSTER, pos);
+				List<MobSpawnSettings.SpawnerData> spawnList = ChunkGeneratorTwilight.gatherPotentialSpawns(source.getLevel().structureManager(), MobCategory.MONSTER, pos);
 				source.sendSuccess(Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
 				if (spawnList != null)
 					for (MobSpawnSettings.SpawnerData entry : spawnList)
