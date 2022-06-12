@@ -572,8 +572,10 @@ public class TFEventListener {
 
 		//take our fake inventory and save it to the persistent player data.
 		//by saving it there we can guarantee we will always get all of our items back, even if the player logs out and back in.
-		keepInventory.save(tagList);
-		getPlayerData(player).put(CHARM_INV_TAG, tagList);
+		if (!keepInventory.isEmpty()) {
+			keepInventory.save(tagList);
+			getPlayerData(player).put(CHARM_INV_TAG, tagList);
+		}
 	}
 
 	//transfers a list of items to another
@@ -616,7 +618,7 @@ public class TFEventListener {
 		CompoundTag playerData = getPlayerData(player);
 		if (!player.level.isClientSide && playerData.contains(CHARM_INV_TAG)) {
 			ListTag tagList = playerData.getList(CHARM_INV_TAG, 10);
-			player.getInventory().load(tagList);
+			TFItemStackUtils.loadNoClear(tagList, player.getInventory());
 			getPlayerData(player).getList(CHARM_INV_TAG, 10).clear();
 			getPlayerData(player).remove(CHARM_INV_TAG);
 		}

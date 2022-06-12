@@ -2,7 +2,9 @@ package twilightforest.util;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -113,5 +115,25 @@ public class TFItemStackUtils {
 				stack.setTag(null);
 			}
 		}
+	}
+
+	//[VanillaCopy] of Inventory.load, but removed clearing all slots
+	public static void loadNoClear(ListTag tag, Inventory inventory) {
+
+		for(int i = 0; i < tag.size(); ++i) {
+			CompoundTag compoundtag = tag.getCompound(i);
+			int j = compoundtag.getByte("Slot") & 255;
+			ItemStack itemstack = ItemStack.of(compoundtag);
+			if (!itemstack.isEmpty()) {
+				if (j < inventory.items.size()) {
+					inventory.items.set(j, itemstack);
+				} else if (j >= 100 && j < inventory.armor.size() + 100) {
+					inventory.armor.set(j - 100, itemstack);
+				} else if (j >= 150 && j < inventory.offhand.size() + 150) {
+					inventory.offhand.set(j - 150, itemstack);
+				}
+			}
+		}
+
 	}
 }
