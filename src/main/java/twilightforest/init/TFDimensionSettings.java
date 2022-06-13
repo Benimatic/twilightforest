@@ -1,9 +1,10 @@
-package twilightforest.world.registration;
+package twilightforest.init;
 
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.util.CubicSpline;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -11,13 +12,40 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
+import java.util.OptionalLong;
 
-public class TFNoiseGenerationSettings {
+//does this need a better name? Does it need to be split up, or can we possibly add more dimension related registries here?
+public class TFDimensionSettings {
 
 	public static final DeferredRegister<NoiseGeneratorSettings> NOISE_GENERATORS = DeferredRegister.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.ID);
+	public static final DeferredRegister<DimensionType> DIMENSION_TYPES = DeferredRegister.create(Registry.DIMENSION_TYPE_REGISTRY, TwilightForestMod.ID);
 
-	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFNoiseGenerationSettings::tfDefault);
-	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFNoiseGenerationSettings::skylight);
+	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFDimensionSettings::tfDefault);
+	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFDimensionSettings::skylight);
+
+	public static final RegistryObject<DimensionType> TWILIGHT_DIM_TYPE = DIMENSION_TYPES.register("twilight_forest_type", TFDimensionSettings::twilightDimType);
+
+
+	private static DimensionType twilightDimType() {
+		return new DimensionType(
+				OptionalLong.of(13000L), //fixed time TODO Kill the celestial bodies
+				true, //skylight
+				false, //ceiling
+				false, //ultrawarm
+				true, //natural
+				0.125D, //coordinate scale
+				true, //bed works
+				true, //respawn anchor works
+				-32, // Minimum Y Level
+				32 + 256, // Height + Min Y = Max Y
+				32 + 256, // Logical Height
+				BlockTags.INFINIBURN_OVERWORLD, //infiburn
+				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
+				0f, // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0
+				new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 7)
+		);
+	}
+
 
 	public static NoiseGeneratorSettings tfDefault() {
 		NoiseSettings tfNoise = NoiseSettings.create(

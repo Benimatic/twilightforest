@@ -22,14 +22,13 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.chunkgenerators.warp.TerrainPoint;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.TFNoiseGenerationSettings;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.BiomeKeys;
 import twilightforest.world.registration.biomes.BiomeMaker;
 
@@ -79,7 +78,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 	private Registry<LevelStem> registerTFSettings(RegistryAccess access) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
 		Registry<Biome> biomeRegistry = access.registryOrThrow(Registry.BIOME_REGISTRY);
-		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFNoiseGenerationSettings.TWILIGHT_NOISE_GEN.getKey());
+		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN.getKey());
 
 		NoiseBasedChunkGenerator forestChunkGen =
 				new NoiseBasedChunkGenerator(
@@ -89,14 +88,14 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12))), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12))), Lifecycle.experimental());
 		return writableregistry;
 	}
 
 	private Registry<LevelStem> registerSkylightSettings(RegistryAccess access) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
 		Registry<Biome> biomeRegistry = new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null);
-		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFNoiseGenerationSettings.SKYLIGHT_NOISE_GEN.getKey());
+		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFDimensionSettings.SKYLIGHT_NOISE_GEN.getKey());
 
 		NoiseBasedChunkGenerator forestChunkGen =
 				new NoiseBasedChunkGenerator(
@@ -106,7 +105,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12))), Lifecycle.stable());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12))), Lifecycle.stable());
 		return writableregistry;
 	}
 
@@ -156,26 +155,6 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	public String getName() {
 		return "Worldgen";
-	}
-
-	private DimensionType twilightDimType() {
-		return new DimensionType(
-				OptionalLong.of(13000L), //fixed time TODO Kill the celestial bodies
-				true, //skylight
-				false, //ceiling
-				false, //ultrawarm
-				true, //natural
-				0.125D, //coordinate scale
-				true, //bed works
-				true, //respawn anchor works
-				-32, // Minimum Y Level
-				32 + 256, // Height + Min Y = Max Y
-				32 + 256, // Logical Height
-				BlockTags.INFINIBURN_OVERWORLD, //infiburn
-				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
-				0f, // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0
-				new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 7)
-		);
 	}
 
 	private Map<ResourceLocation, Biome> getBiomes() {

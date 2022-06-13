@@ -108,6 +108,7 @@ public class TwilightForestMod {
 		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
 		TFBlocks.BLOCKS.register(modbus);
 		TFMenuTypes.CONTAINERS.register(modbus);
+		TFDimensionSettings.DIMENSION_TYPES.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
 		TFFeatures.FEATURES.register(modbus);
