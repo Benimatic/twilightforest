@@ -183,7 +183,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				.BIOMES
 				.entrySet()
 				.stream()
-				.peek(registryKeyBiomeEntry -> ForgeRegistries.BIOMES.register(registryKeyBiomeEntry.getKey().location(), registryKeyBiomeEntry.getValue()))
+				//.peek(registryKeyBiomeEntry -> ForgeRegistries.BIOMES.register(registryKeyBiomeEntry.getKey().location(), registryKeyBiomeEntry.getValue()))
 				.collect(Collectors.toMap(entry -> entry.getKey().location(), Map.Entry::getValue));
 	}
 
