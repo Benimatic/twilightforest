@@ -116,7 +116,7 @@ public class TwilightForestMod {
 		TFItems.ITEMS.register(modbus);
 		TFLootModifiers.LOOT_MODIFIERS.register(modbus);
 		TFMobEffects.MOB_EFFECTS.register(modbus);
-		TFNoiseGenerationSettings.NOISE_GENERATORS.register(modbus);
+		TFDimensionSettings.NOISE_GENERATORS.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(modbus);
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
