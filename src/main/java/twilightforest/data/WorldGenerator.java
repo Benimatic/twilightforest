@@ -44,7 +44,6 @@ import java.util.stream.StreamSupport;
 public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	public void run(CachedOutput cache) {
 		Path path = this.generator.getOutputFolder();
