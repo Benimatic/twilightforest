@@ -1,13 +1,10 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 
 public abstract class HoverBaseGoal<T extends Mob> extends Goal {
@@ -32,7 +29,7 @@ public abstract class HoverBaseGoal<T extends Mob> extends Goal {
 		LivingEntity target = this.attacker.getTarget();
 		if (target != null) {
 			// find a spot above the player
-			makeNewHoverSpot(target);
+			this.makeNewHoverSpot(target);
 		}
 	}
 
@@ -45,11 +42,11 @@ public abstract class HoverBaseGoal<T extends Mob> extends Goal {
 		boolean found = false;
 
 		for (int i = 0; i < 100; i++) {
-			hx = target.getX() + (this.attacker.getRandom().nextFloat() - this.attacker.getRandom().nextFloat()) * hoverRadius;
-			hy = target.getY() + hoverHeight;
-			hz = target.getZ() + (this.attacker.getRandom().nextFloat() - this.attacker.getRandom().nextFloat()) * hoverRadius;
+			hx = target.getX() + (this.attacker.getRandom().nextFloat() - this.attacker.getRandom().nextFloat()) * this.hoverRadius;
+			hy = target.getY() + this.hoverHeight;
+			hz = target.getZ() + (this.attacker.getRandom().nextFloat() - this.attacker.getRandom().nextFloat()) * this.hoverRadius;
 
-			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
+			if (!this.isPositionOccupied(hx, hy, hz) && this.attacker.hasLineOfSight(target)) {
 				found = true;
 				break;
 			}
@@ -67,13 +64,6 @@ public abstract class HoverBaseGoal<T extends Mob> extends Goal {
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
 		float radius = this.attacker.getBbWidth() / 2F;
 		AABB aabb = new AABB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getBbHeight(), hz + radius);
-		return !this.attacker.level.isUnobstructed(attacker, Shapes.create(aabb)) || !this.attacker.level.noCollision(attacker, aabb);
-	}
-
-	/**
-	 * Can the specified entity see the specified location?
-	 */
-	protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-		return entity.level.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), new Vec3(dx, dy, dz), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)) == null;
+		return !this.attacker.getLevel().isUnobstructed(attacker, Shapes.create(aabb)) || !this.attacker.getLevel().noCollision(attacker, aabb);
 	}
 }

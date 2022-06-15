@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.KnightPhantom;
@@ -27,31 +27,31 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 
 	@Override
 	public void tick() {
-		boss.noPhysics = boss.getTicksProgress() % 20 != 0;
-		boss.setTicksProgress(boss.getTicksProgress() + 1);
-		if (boss.getTicksProgress() >= boss.getMaxTicksForFormation())
+		this.boss.noPhysics = this.boss.getTicksProgress() % 20 != 0;
+		this.boss.setTicksProgress(this.boss.getTicksProgress() + 1);
+		if (this.boss.getTicksProgress() >= this.boss.getMaxTicksForFormation())
 			switchToNextFormation();
 		Vec3 dest = getDestination();
-		boss.getMoveControl().setWantedPosition(dest.x, dest.y, dest.z, boss.isChargingAtPlayer() ? 2 : 1);
+		this.boss.getMoveControl().setWantedPosition(dest.x(), dest.y(), dest.z(), this.boss.isChargingAtPlayer() ? 2 : 1);
 	}
 
 	public Vec3 getDestination() {
 
-		if (!boss.hasHome())
-			boss.restrictTo(boss.blockPosition(), 20);
+		if (!this.boss.hasHome())
+			this.boss.restrictTo(this.boss.blockPosition(), 20);
 
-		return switch (boss.getCurrentFormation()) {
-			case LARGE_CLOCKWISE -> getCirclePosition(CIRCLE_LARGE_RADIUS, true);
-			case SMALL_CLOCKWISE -> getCirclePosition(CIRCLE_SMALL_RADIUS, true);
-			case LARGE_ANTICLOCKWISE -> getCirclePosition(CIRCLE_LARGE_RADIUS, false);
-			case SMALL_ANTICLOCKWISE -> getCirclePosition(CIRCLE_SMALL_RADIUS, false);
-			case CHARGE_PLUSX -> getMoveAcrossPosition(true, true);
-			case CHARGE_MINUSX -> getMoveAcrossPosition(false, true);
-			case CHARGE_PLUSZ -> getMoveAcrossPosition(true, false);
-			case ATTACK_PLAYER_START, HOVER -> getHoverPosition(CIRCLE_LARGE_RADIUS);
-			case CHARGE_MINUSZ -> getMoveAcrossPosition(false, false);
-			default -> getLoiterPosition();
-			case ATTACK_PLAYER_ATTACK -> getAttackPlayerPosition();
+		return switch (this.boss.getCurrentFormation()) {
+			case LARGE_CLOCKWISE -> this.getCirclePosition(CIRCLE_LARGE_RADIUS, true);
+			case SMALL_CLOCKWISE -> this.getCirclePosition(CIRCLE_SMALL_RADIUS, true);
+			case LARGE_ANTICLOCKWISE -> this.getCirclePosition(CIRCLE_LARGE_RADIUS, false);
+			case SMALL_ANTICLOCKWISE -> this.getCirclePosition(CIRCLE_SMALL_RADIUS, false);
+			case CHARGE_PLUSX -> this.getMoveAcrossPosition(true, true);
+			case CHARGE_MINUSX -> this.getMoveAcrossPosition(false, true);
+			case CHARGE_PLUSZ -> this.getMoveAcrossPosition(true, false);
+			case ATTACK_PLAYER_START, HOVER -> this.getHoverPosition(CIRCLE_LARGE_RADIUS);
+			case CHARGE_MINUSZ -> this.getMoveAcrossPosition(false, false);
+			default -> this.getLoiterPosition();
+			case ATTACK_PLAYER_ATTACK -> this.getAttackPlayerPosition();
 		};
 	}
 
@@ -61,43 +61,43 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	 * If the current knight is the leader knight, it will pick and broadcast a new formation.
 	 */
 	private void switchToNextFormation() {
-		List<KnightPhantom> nearbyKnights = boss.getNearbyKnights();
+		List<KnightPhantom> nearbyKnights = this.boss.getNearbyKnights();
 
-		if (boss.getCurrentFormation() == KnightPhantom.Formation.ATTACK_PLAYER_START) {
-			boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_ATTACK);
-		} else if (boss.getCurrentFormation() == KnightPhantom.Formation.ATTACK_PLAYER_ATTACK) {
+		if (this.boss.getCurrentFormation() == KnightPhantom.Formation.ATTACK_PLAYER_START) {
+			this.boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_ATTACK);
+		} else if (this.boss.getCurrentFormation() == KnightPhantom.Formation.ATTACK_PLAYER_ATTACK) {
 			if (nearbyKnights.size() > 1) {
-				boss.switchToFormation(KnightPhantom.Formation.WAITING_FOR_LEADER);
+				this.boss.switchToFormation(KnightPhantom.Formation.WAITING_FOR_LEADER);
 			} else {
 				// random weapon switch!
-				switch (boss.getRandom().nextInt(3)) {
-					case 0 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
-					case 1 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
-					case 2 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
+				switch (this.boss.getRandom().nextInt(3)) {
+					case 0 -> this.boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+					case 1 -> this.boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
+					case 2 -> this.boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 				}
 
-				boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);
+				this.boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);
 			}
-		} else if (boss.getCurrentFormation() == KnightPhantom.Formation.WAITING_FOR_LEADER) {
+		} else if (this.boss.getCurrentFormation() == KnightPhantom.Formation.WAITING_FOR_LEADER) {
 			// try to find a nearby knight and do what they're doing
 			if (nearbyKnights.size() > 1) {
-				boss.switchToFormation(nearbyKnights.get(1).getCurrentFormation());
-				boss.setTicksProgress(nearbyKnights.get(1).getTicksProgress());
+				this.boss.switchToFormation(nearbyKnights.get(1).getCurrentFormation());
+				this.boss.setTicksProgress(nearbyKnights.get(1).getTicksProgress());
 			} else {
-				boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);
+				this.boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);
 			}
 		} else {
 
-			if (isThisTheLeader(nearbyKnights)) {
+			if (this.isThisTheLeader(nearbyKnights)) {
 				// pick a random formation
-				pickRandomFormation();
+				this.pickRandomFormation();
 
 				// broadcast it
-				broadcastMyFormation(nearbyKnights);
+				this.broadcastMyFormation(nearbyKnights);
 
 				// if no one is charging
-				if (isNobodyCharging(nearbyKnights)) {
-					makeARandomKnightCharge(nearbyKnights);
+				if (this.isNobodyCharging(nearbyKnights)) {
+					this.makeARandomKnightCharge(nearbyKnights);
 				}
 			}
 		}
@@ -111,7 +111,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 
 		// find more knights
 		for (KnightPhantom knight : nearbyKnights) {
-			if (knight.getNumber() < boss.getNumber()) {
+			if (knight.getNumber() < this.boss.getNumber()) {
 				iAmTheLowest = false;
 				break; // don't bother checking more
 			}
@@ -124,27 +124,13 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	 * Pick a random formation.  Called by the leader when his current formation duration ends
 	 */
 	private void pickRandomFormation() {
-		switch (boss.getRandom().nextInt(8)) {
-			case 0:
-			case 7:
-				boss.switchToFormation(KnightPhantom.Formation.SMALL_CLOCKWISE);
-				break;
-			case 1:
-			case 2:
-				//boss.switchToFormation(EntityTFKnightPhantom.Formation.SMALL_ANTICLOCKWISE);
-				break;
-			case 3:
-				boss.switchToFormation(KnightPhantom.Formation.CHARGE_PLUSX);
-				break;
-			case 4:
-				boss.switchToFormation(KnightPhantom.Formation.CHARGE_MINUSX);
-				break;
-			case 5:
-				boss.switchToFormation(KnightPhantom.Formation.CHARGE_PLUSZ);
-				break;
-			case 6:
-				boss.switchToFormation(KnightPhantom.Formation.CHARGE_MINUSZ);
-				break;
+		switch (this.boss.getRandom().nextInt(8)) {
+			case 0, 7 -> this.boss.switchToFormation(KnightPhantom.Formation.SMALL_CLOCKWISE);
+			case 1, 2 -> this.boss.switchToFormation(KnightPhantom.Formation.SMALL_ANTICLOCKWISE);
+			case 3 -> this.boss.switchToFormation(KnightPhantom.Formation.CHARGE_PLUSX);
+			case 4 -> this.boss.switchToFormation(KnightPhantom.Formation.CHARGE_MINUSX);
+			case 5 -> this.boss.switchToFormation(KnightPhantom.Formation.CHARGE_PLUSZ);
+			case 6 -> boss.switchToFormation(KnightPhantom.Formation.CHARGE_MINUSZ);
 		}
 	}
 
@@ -152,7 +138,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	 * Tell a random knight from the list to charge
 	 */
 	private void makeARandomKnightCharge(List<KnightPhantom> nearbyKnights) {
-		int randomNum = boss.getRandom().nextInt(nearbyKnights.size());
+		int randomNum = this.boss.getRandom().nextInt(nearbyKnights.size());
 		nearbyKnights.get(randomNum).switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);
 	}
 
@@ -160,7 +146,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 		// find more knights
 		for (KnightPhantom knight : nearbyKnights) {
 			if (!knight.isChargingAtPlayer()) {
-				knight.switchToFormation(boss.getCurrentFormation());
+				knight.switchToFormation(this.boss.getCurrentFormation());
 			}
 		}
 	}
@@ -178,72 +164,72 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	}
 
 	private Vec3 getMoveAcrossPosition(boolean plus, boolean alongX) {
-		float offset0 = (boss.getNumber() * 3F) - 7.5F;
+		float offset0 = (this.boss.getNumber() * 3F) - 7.5F;
 		float offset1;
 
-		if (boss.getTicksProgress() < 60) {
+		if (this.boss.getTicksProgress() < 60) {
 			offset1 = -7F;
 		} else {
-			offset1 = -7F + (((boss.getTicksProgress() - 60) / 120F) * 14F);
+			offset1 = -7F + (((this.boss.getTicksProgress() - 60) / 120F) * 14F);
 		}
 
 		if (!plus) {
 			offset1 *= -1;
 		}
 
-		double dx = boss.getRestrictCenter().getX() + (alongX ? offset0 : offset1);
-		double dy = boss.getRestrictCenter().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
-		double dz = boss.getRestrictCenter().getZ() + (alongX ? offset1 : offset0);
+		double dx = this.boss.getRestrictCenter().getX() + (alongX ? offset0 : offset1);
+		double dy = this.boss.getRestrictCenter().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
+		double dz = this.boss.getRestrictCenter().getZ() + (alongX ? offset1 : offset0);
 		return new Vec3(dx, dy, dz);
 	}
 
 	private Vec3 getCirclePosition(float distance, boolean clockwise) {
-		float angle = (boss.getTicksProgress() * 2.0F);
+		float angle = (this.boss.getTicksProgress() * 2.0F);
 
 		if (!clockwise) {
 			angle *= -1;
 		}
 
-		angle += (60F * boss.getNumber());
+		angle += (60F * this.boss.getNumber());
 
-		double dx = boss.getRestrictCenter().getX() + Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double dy = boss.getRestrictCenter().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
-		double dz = boss.getRestrictCenter().getZ() + Math.sin((angle) * Math.PI / 180.0D) * distance;
+		double dx = this.boss.getRestrictCenter().getX() + Math.cos((angle) * Math.PI / 180.0D) * distance;
+		double dy = this.boss.getRestrictCenter().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
+		double dz = this.boss.getRestrictCenter().getZ() + Math.sin((angle) * Math.PI / 180.0D) * distance;
 		return new Vec3(dx, dy, dz);
 	}
 
 	private Vec3 getHoverPosition(float distance) {
 		// bound this by distance so we don't hover in walls if we get knocked into them
 
-		double dx = boss.xOld;
-		double dy = boss.getRestrictCenter().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
-		double dz = boss.zOld;
+		double dx = this.boss.xOld;
+		double dy = this.boss.getRestrictCenter().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
+		double dz = this.boss.zOld;
 
 		// let's just bound this by 2D distance
-		double ox = (boss.getRestrictCenter().getX() - dx);
-		double oz = (boss.getRestrictCenter().getZ() - dz);
+		double ox = (this.boss.getRestrictCenter().getX() - dx);
+		double oz = (this.boss.getRestrictCenter().getZ() - dz);
 		double dDist = Math.sqrt(ox * ox + oz * oz);
 
 		if (dDist > distance) {
 			// normalize back to boundaries
 
-			dx = boss.getRestrictCenter().getX() + (ox / dDist * distance);
-			dz = boss.getRestrictCenter().getZ() + (oz / dDist * distance);
+			dx = this.boss.getRestrictCenter().getX() + (ox / dDist * distance);
+			dz = this.boss.getRestrictCenter().getZ() + (oz / dDist * distance);
 		}
 
 		return new Vec3(dx, dy, dz);
 	}
 
 	private Vec3 getLoiterPosition() {
-		double dx = boss.getRestrictCenter().getX();
-		double dy = boss.getRestrictCenter().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
-		double dz = boss.getRestrictCenter().getZ();
+		double dx = this.boss.getRestrictCenter().getX();
+		double dy = this.boss.getRestrictCenter().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
+		double dz = this.boss.getRestrictCenter().getZ();
 		return new Vec3(dx, dy, dz);
 	}
 
 	private Vec3 getAttackPlayerPosition() {
-		if (boss.isSwordKnight()) {
-			return Vec3.atLowerCornerOf(boss.getChargePos());
+		if (this.boss.isSwordKnight()) {
+			return Vec3.atLowerCornerOf(this.boss.getChargePos());
 		} else {
 			return getHoverPosition(CIRCLE_LARGE_RADIUS);
 		}

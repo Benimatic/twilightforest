@@ -1,31 +1,24 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 
 	private final T entityHost;
 	private LivingEntity attackTarget;
 
-	private double breathX;
-	private double breathY;
-	private double breathZ;
+	private Vec3 breathPos;
 
 	private final int maxDuration;
 	private final float attackChance;
@@ -48,9 +41,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		if (this.attackTarget == null || this.entityHost.distanceTo(attackTarget) > this.breathRange || !this.entityHost.getSensing().hasLineOfSight(attackTarget) || !EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget)) {
 			return false;
 		} else {
-			breathX = attackTarget.getX();
-			breathY = attackTarget.getY() + attackTarget.getEyeHeight();
-			breathZ = attackTarget.getZ();
+			this.breathPos = this.attackTarget.getEyePosition();
 
 			return this.entityHost.getRandom().nextFloat() < this.attackChance;
 		}
@@ -72,8 +63,8 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 	@Override
 	public boolean canContinueToUse() {
 		return this.durationLeft > 0 && this.entityHost.isAlive() && this.attackTarget.isAlive()
-				&& this.entityHost.distanceTo(attackTarget) <= this.breathRange
-				&& this.entityHost.getSensing().hasLineOfSight(attackTarget)
+				&& this.entityHost.distanceTo(this.attackTarget) <= this.breathRange
+				&& this.entityHost.getSensing().hasLineOfSight(this.attackTarget)
 				&& EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget);
 	}
 
@@ -85,12 +76,12 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		this.durationLeft--;
 
 		// why do we need both of these?
-		this.entityHost.getLookControl().setLookAt(breathX, breathY, breathZ, 100.0F, 100.0F);
-		faceVec(breathX, breathY, breathZ, 100.0F, 100.0F);
+		this.entityHost.getLookControl().setLookAt(this.breathPos);
+		this.faceVec(this.breathPos, 100.0F, 100.0F);
 
 		if ((this.maxDuration - this.durationLeft) > 5) {
 			// anyhoo, deal damage
-			Entity target = getHeadLookTarget();
+			Entity target = this.getHeadLookTarget();
 			if (target != null) {
 				this.entityHost.doBreathAttack(target);
 			}
@@ -108,19 +99,20 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 	/**
 	 * What, if anything, is the head currently looking at?
 	 */
+	@Nullable
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
 		double offset = 3.0D;
 		Vec3 srcVec = new Vec3(this.entityHost.getX(), this.entityHost.getY() + 0.25, this.entityHost.getZ());
 		Vec3 lookVec = this.entityHost.getViewVector(1.0F);
-		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
 		float var9 = 0.5F;
-		List<Entity> possibleList = this.entityHost.level.getEntities(this.entityHost, this.entityHost.getBoundingBox().move(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).inflate(var9, var9, var9));
+		List<Entity> possibleList = this.entityHost.getLevel().getEntities(this.entityHost, this.entityHost.getBoundingBox().move(lookVec.x() * offset, lookVec.y() * offset, lookVec.z() * offset).inflate(var9, var9, var9));
 		double hitDist = 0;
 
-		if(entityHost.isMultipartEntity())
-		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(entityHost.getParts())));
+		if (this.entityHost.isMultipartEntity())
+			possibleList.removeAll(Arrays.asList(Objects.requireNonNull(this.entityHost.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(possibleEntity)) {
@@ -149,16 +141,16 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 	/**
 	 * Face the head towards a specific Vector
 	 */
-	public void faceVec(double x, double y, double z, float yawConstraint, float pitchConstraint) {
-		double xOffset = x - entityHost.getX();
-		double zOffset = z - entityHost.getZ();
-		double yOffset = (entityHost.getY() + 0.25) - y;
+	public void faceVec(Vec3 pos, float yawConstraint, float pitchConstraint) {
+		double xOffset = pos.x() - this.entityHost.getX();
+		double zOffset = pos.z() - this.entityHost.getZ();
+		double yOffset = (this.entityHost.getY() + 0.25) - pos.y();
 
 		double distance = Mth.sqrt((float) (xOffset * xOffset + zOffset * zOffset));
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
-		entityHost.setXRot(-updateRotation(entityHost.getXRot(), zdAngle, pitchConstraint));
-		entityHost.setYRot(updateRotation(entityHost.getYRot(), xyAngle, yawConstraint));
+		this.entityHost.setXRot(-updateRotation(this.entityHost.getXRot(), zdAngle, pitchConstraint));
+		this.entityHost.setYRot(updateRotation(this.entityHost.getYRot(), xyAngle, yawConstraint));
 
 	}
 

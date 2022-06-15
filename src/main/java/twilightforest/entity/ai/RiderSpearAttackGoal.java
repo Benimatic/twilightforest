@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.ai.goal.Goal;
 import twilightforest.entity.monster.LowerGoblinKnight;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
@@ -18,7 +18,7 @@ public class RiderSpearAttackGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof UpperGoblinKnight && entity.getTarget() != null && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(entity.getTarget())) {
+		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof UpperGoblinKnight && this.entity.getTarget() != null && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(this.entity.getTarget())) {
 			int timer = ((UpperGoblinKnight) this.entity.getPassengers().get(0)).heavySpearTimer;
 			return timer > 0 && timer < UpperGoblinKnight.HEAVY_SPEAR_TIMER_START;
 		} else {

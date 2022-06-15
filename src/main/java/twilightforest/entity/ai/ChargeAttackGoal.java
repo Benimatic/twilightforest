@@ -54,8 +54,8 @@ public class ChargeAttackGoal extends Goal {
 			} else if (!this.charger.isOnGround()) {
 				return false;
 			} else {
-				Vec3 chargePos = findChargePoint(charger, chargeTarget);
-				boolean canSeeTargetFromDest = charger.getSensing().hasLineOfSight(chargeTarget);
+				Vec3 chargePos = findChargePoint(this.charger, this.chargeTarget);
+				boolean canSeeTargetFromDest = this.charger.getSensing().hasLineOfSight(this.chargeTarget);
 				if (!canSeeTargetFromDest) {
 					return false;
 				} else {

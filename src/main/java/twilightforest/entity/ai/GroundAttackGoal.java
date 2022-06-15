@@ -7,9 +7,9 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
-import twilightforest.init.TFSounds;
 import twilightforest.entity.boss.Minoshroom;
 import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -73,7 +73,7 @@ public class GroundAttackGoal extends Goal {
 	@Override
 	public void tick() {
 		// look where we're going
-		this.attacker.getLookControl().setLookAt(attackTarget, 30.0F, 30.0F);
+		this.attacker.getLookControl().setLookAt(this.attackTarget, 30.0F, 30.0F);
 		this.attacker.getMoveControl().operation = MoveControl.Operation.WAIT;
 
 		if (this.attackTick-- <= 0) {

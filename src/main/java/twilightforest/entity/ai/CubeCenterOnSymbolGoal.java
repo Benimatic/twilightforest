@@ -20,8 +20,8 @@ public class CubeCenterOnSymbolGoal extends Goal {
 	private double yPosition;
 	private double zPosition;
 
-	public CubeCenterOnSymbolGoal(RovingCube entityTFRovingCube, double d) {
-		this.myCube = entityTFRovingCube;
+	public CubeCenterOnSymbolGoal(RovingCube cube, double d) {
+		this.myCube = cube;
 		this.xPosition = this.myCube.symbolX;
 		this.yPosition = this.myCube.symbolY;
 		this.zPosition = this.myCube.symbolZ;
@@ -39,7 +39,7 @@ public class CubeCenterOnSymbolGoal extends Goal {
 		if (!this.myCube.getNavigation().isDone()) {
 			return false;
 		} else {
-			return isCloseToSymbol();
+			return this.isCloseToSymbol();
 		}
 	}
 

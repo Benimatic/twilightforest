@@ -136,7 +136,7 @@ public class Minoshroom extends Minotaur {
 
 						this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), cx, cy, cz, 0.0D, 0.0D, 0.0D);
 					}
-					groundSmashState = false;
+					this.groundSmashState = false;
 				}
 			}
 		}
@@ -184,8 +184,8 @@ public class Minoshroom extends Minotaur {
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
-			hurtBy.add(player);
+		if(source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
 	}
@@ -194,8 +194,8 @@ public class Minoshroom extends Minotaur {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFLandmark.LABYRINTH);
-			for(ServerPlayer player : hurtBy) {
+			TFGenerationSettings.markStructureConquered(this.getLevel(), new BlockPos(this.blockPosition()), TFLandmark.LABYRINTH);
+			for(ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 

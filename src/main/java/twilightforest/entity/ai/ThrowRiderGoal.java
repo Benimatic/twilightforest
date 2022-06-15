@@ -1,11 +1,11 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.data.tags.EntityTagGenerator;
@@ -33,16 +33,16 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 	@Override
 	public void start() {
-		this.throwTimer = 10 + mob.getRandom().nextInt(30); // Wait 0.5 to 2 seconds before we throw the target
-		timeout = 80 + mob.getRandom().nextInt(40); // Lets only try to chase for around 4-6 seconds
+		this.throwTimer = 10 + this.mob.getRandom().nextInt(30); // Wait 0.5 to 2 seconds before we throw the target
+		this.timeout = 80 + this.mob.getRandom().nextInt(40); // Lets only try to chase for around 4-6 seconds
 		super.start();
 	}
 
 	@Override
 	public void tick() {
-		timeout--;
-		if (!mob.getPassengers().isEmpty())
-			throwTimer--;
+		this.timeout--;
+		if (!this.mob.getPassengers().isEmpty())
+			this.throwTimer--;
 		else
 			super.tick();
 	}
@@ -52,18 +52,18 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
 		double d0 = this.getAttackReachSqr(victim);
 
-		if (p_190102_2_ <= d0 && this.getTicksUntilNextAttack() <= 0 && mob.getPassengers().isEmpty() && cooldown-- == 0) {
-			cooldown = 3; // Gives the thrower a pause so it doesn't pick the target back up immediately after throwing; for whatever reason the attack cooldown isn't enough...
+		if (p_190102_2_ <= d0 && this.getTicksUntilNextAttack() <= 0 && this.mob.getPassengers().isEmpty() && this.cooldown-- == 0) {
+			this.cooldown = 3; // Gives the thrower a pause so it doesn't pick the target back up immediately after throwing; for whatever reason the attack cooldown isn't enough...
 			this.resetAttackCooldown();
 			this.mob.swing(InteractionHand.MAIN_HAND);
-			if (mob.getPassengers().isEmpty()) {
+			if (this.mob.getPassengers().isEmpty()) {
 				var v = victim.getVehicle();
 
 				if (v == null || !v.getType().is(EntityTagGenerator.RIDES_OBSTRUCT_SNATCHING)) {
 					// Pluck them from the boat, minecart, donkey, or whatever
 					victim.stopRiding();
 
-					victim.startRiding(mob, true);
+					victim.startRiding(this.mob, true);
 				}
 			}
 		}
@@ -71,20 +71,20 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 	@Override
 	public void stop() {
-		if (!mob.getPassengers().isEmpty()) {
-			Entity rider = mob.getPassengers().get(0);
+		if (!this.mob.getPassengers().isEmpty()) {
+			Entity rider = this.mob.getPassengers().get(0);
 			HostileMountEvents.allowDismount = true;
 			rider.stopRiding();
 			HostileMountEvents.allowDismount = false;
 
-			Vec3 throwVec = mob.getLookAngle().scale(2);
-			throwVec = new Vec3(throwVec.x, 0.9, throwVec.z);
+			Vec3 throwVec = this.mob.getLookAngle().scale(2);
+			throwVec = new Vec3(throwVec.x(), 0.9, throwVec.z);
 
-			rider.push(throwVec.x, throwVec.y, throwVec.z);
+			rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 
 			if (rider instanceof ServerPlayer player) {
 
-				ThrowPlayerPacket message = new ThrowPlayerPacket((float) throwVec.x, (float) throwVec.y, (float) throwVec.z);
+				ThrowPlayerPacket message = new ThrowPlayerPacket((float) throwVec.x(), (float) throwVec.y(), (float) throwVec.z());
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
 			}
 		}
@@ -93,7 +93,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 	@Override
 	public boolean canContinueToUse() {
-		return (throwTimer > 0 && !mob.getPassengers().isEmpty()) || (timeout > 0 && super.canContinueToUse() && mob.getPassengers().isEmpty());
+		return (this.throwTimer > 0 && !this.mob.getPassengers().isEmpty()) || (this.timeout > 0 && super.canContinueToUse() && this.mob.getPassengers().isEmpty());
 	}
 
 }

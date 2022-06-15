@@ -1,18 +1,14 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.SnowQueen;
 import twilightforest.entity.boss.SnowQueen.Phase;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 
@@ -47,8 +43,8 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 			return false;
 		} else //attacker.canEntityBeSeen(target);
 			if (!target.isAlive()) {
-			return false;
-		} else return this.attacker.getCurrentPhase() == Phase.BEAM;
+				return false;
+			} else return this.attacker.getCurrentPhase() == Phase.BEAM;
 	}
 
 	@Override
@@ -78,7 +74,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 	public void tick() {
 
 		// check if we're in position
-		if (this.attacker.distanceToSqr(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
+		if (this.attacker.distanceToSqr(this.hoverPosX, this.hoverPosY, this.hoverPosZ) <= 1.0F) {
 			this.isInPosition = true;
 		}
 
@@ -95,7 +91,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 			this.attacker.setBreathing(true);
 
 			// anyhoo, deal damage
-			doRayAttack();
+			this.doRayAttack();
 
 			// descend
 			this.hoverPosY -= 0.05F;
@@ -143,12 +139,12 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 		double offset = 10.0D;
 		Vec3 srcVec = new Vec3(this.attacker.getX(), this.attacker.getY() + 0.25, this.attacker.getZ());
 		Vec3 lookVec = this.attacker.getViewVector(1.0F);
-		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
-		List<Entity> possibleList = this.attacker.level.getEntities(this.attacker, this.attacker.getBoundingBox().move(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).inflate(range, range, range));
+		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
+		List<Entity> possibleList = this.attacker.getLevel().getEntities(this.attacker, this.attacker.getBoundingBox().move(lookVec.x() * offset, lookVec.y() * offset, lookVec.z() * offset).inflate(range, range, range));
 		double hitDist = 0;
 
-		if(attacker.isMultipartEntity())
-			possibleList.removeAll(Arrays.asList(Objects.requireNonNull(attacker.getParts())));
+		if (this.attacker.isMultipartEntity())
+			possibleList.removeAll(Arrays.asList(Objects.requireNonNull(this.attacker.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.isPickable() && possibleEntity != this.attacker) {
@@ -158,14 +154,14 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
-						attacker.doBreathAttack(possibleEntity);
+						this.attacker.doBreathAttack(possibleEntity);
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos.isPresent()) {
 					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
-						attacker.doBreathAttack(possibleEntity);
+						this.attacker.doBreathAttack(possibleEntity);
 						hitDist = possibleDist;
 					}
 				}

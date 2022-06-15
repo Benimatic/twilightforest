@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import twilightforest.entity.boss.SnowQueen;
 import twilightforest.entity.boss.SnowQueen.Phase;
 
@@ -36,10 +36,11 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 
 		if (target == null) {
 			return false;
-		} else //attacker.canEntityBeSeen(target);
-			if (!target.isAlive()) {
+		} else if (!target.isAlive()) {
 			return false;
-		} else return this.attacker.getCurrentPhase() == Phase.DROP;
+		} else {
+			return this.attacker.getCurrentPhase() == Phase.DROP;
+		}
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 			return false;
 		} else if (this.seekTimer > this.maxSeekTime) {
 			return false;
-		} else if (this.attacker.distanceToSqr(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
+		} else if (this.attacker.distanceToSqr(this.hoverPosX, this.hoverPosY, this.hoverPosZ) <= 1.0F) {
 			// are we there yet?
 			this.hoverTimer++;
 			return true;

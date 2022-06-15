@@ -1,11 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.block.Blocks;
 import twilightforest.entity.RovingCube;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class CubeMoveToRedstoneSymbolsGoal extends Goal {
@@ -14,9 +15,9 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 	private final double speed;
 	private BlockPos targetPos;
 
-	public CubeMoveToRedstoneSymbolsGoal(RovingCube entityTFRovingCube, double d) {
-		this.myCube = entityTFRovingCube;
-		this.speed = d;
+	public CubeMoveToRedstoneSymbolsGoal(RovingCube cube, double speed) {
+		this.myCube = cube;
+		this.speed = speed;
 		this.setFlags(EnumSet.of(Flag.MOVE));
 	}
 
@@ -25,7 +26,7 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 		if (this.myCube.getRandom().nextInt(20) != 0) {
 			return false;
 		} else {
-			BlockPos pos = this.searchForRedstoneSymbol(this.myCube, 16, 5);
+			BlockPos pos = this.searchForRedstoneSymbol(this.myCube);
 
 			if (pos == null) {
 				return false;
@@ -43,18 +44,19 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 
 	@Override
 	public void start() {
-		this.myCube.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), this.speed);
+		this.myCube.getNavigation().moveTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), this.speed);
 	}
 
 	/**
 	 * Search the area for a redstone circle (8 redstone dust around a blank square)
 	 */
-	private BlockPos searchForRedstoneSymbol(RovingCube myCube2, int xzRange, int yRange) {
-		BlockPos curPos = new BlockPos(myCube2.blockPosition());
+	@Nullable
+	private BlockPos searchForRedstoneSymbol(RovingCube cube) {
+		BlockPos curPos = new BlockPos(cube.blockPosition());
 
-		for (int x = -xzRange; x < xzRange; x++) {
-			for (int z = -xzRange; z < xzRange; z++) {
-				for (int y = -yRange; y < yRange; y++) {
+		for (int x = -16; x < 16; x++) {
+			for (int z = -16; z < 16; z++) {
+				for (int y = -5; y < 5; y++) {
 					if (this.isRedstoneSymbol(curPos.offset(x, y, z))) {
 						this.myCube.hasFoundSymbol = true;
 						this.myCube.symbolX = curPos.getX() + x;
@@ -71,12 +73,12 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 	}
 
 	private boolean isRedstoneSymbol(BlockPos pos) {
-		if (!this.myCube.level.hasChunkAt(pos) || !this.myCube.level.isEmptyBlock(pos)) {
+		if (!this.myCube.getLevel().hasChunkAt(pos) || !this.myCube.getLevel().isEmptyBlock(pos)) {
 			return false;
 		} else {
 			// we found an air block, is it surrounded by redstone?
 			for (Direction e : Direction.values()) {
-				if (this.myCube.level.getBlockState(pos.relative(e)).getBlock() != Blocks.REDSTONE_WIRE) {
+				if (this.myCube.getLevel().getBlockState(pos.relative(e)).getBlock() != Blocks.REDSTONE_WIRE) {
 					return false;
 				}
 			}

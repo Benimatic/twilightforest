@@ -1,12 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -26,7 +26,9 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 	protected final float avoidDistance;
 	protected Path path;
 	protected final PathNavigation navigation;
-	/** Class of entity this behavior seeks to avoid */
+	/**
+	 * Class of entity this behavior seeks to avoid
+	 */
 	protected final Class<T> classToAvoid;
 	protected final Predicate<Entity> avoidTargetSelector;
 
@@ -35,10 +37,12 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 	}
 
 	public AvoidAnyEntityGoal(PathfinderMob entityIn, Class<T> avoidClass, Predicate<Entity> targetPredicate, float distance, double nearSpeedIn, double farSpeedIn) {
-		this.builtTargetSelector = new Predicate<Entity>() {
+		this.builtTargetSelector = new Predicate<>() {
 			@Override
 			public boolean test(@Nullable Entity input) {
-				return input.isAlive() && AvoidAnyEntityGoal.this.entity.getSensing().hasLineOfSight(input) && !AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
+				return input != null && input.isAlive() &&
+						AvoidAnyEntityGoal.this.entity.getSensing().hasLineOfSight(input) &&
+						!AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
 			}
 		};
 
@@ -54,7 +58,7 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 
 	@Override
 	public boolean canUse() {
-		List<T> list = this.entity.level.getEntitiesOfClass(this.classToAvoid, this.entity.getBoundingBox().inflate(this.avoidDistance, 3.0D, this.avoidDistance), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(this.builtTargetSelector).and(avoidTargetSelector));
+		List<T> list = this.entity.getLevel().getEntitiesOfClass(this.classToAvoid, this.entity.getBoundingBox().inflate(this.avoidDistance, 3.0D, this.avoidDistance), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(this.builtTargetSelector).and(this.avoidTargetSelector));
 
 		if (!list.isEmpty()) {
 			this.avoidTarget = list.get(0);
@@ -62,10 +66,10 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 
 			if (vec3d == null) {
 				return false;
-			} else if (this.avoidTarget.distanceToSqr(vec3d.x, vec3d.y, vec3d.z) < this.avoidTarget.distanceToSqr(this.entity)) {
+			} else if (this.avoidTarget.distanceToSqr(vec3d.x(), vec3d.y(), vec3d.z()) < this.avoidTarget.distanceToSqr(this.entity)) {
 				return false;
 			} else {
-				this.path = this.navigation.createPath(vec3d.x, vec3d.y, vec3d.z, 0);
+				this.path = this.navigation.createPath(vec3d.x(), vec3d.y(), vec3d.z(), 0);
 				return this.path != null;
 			}
 		}

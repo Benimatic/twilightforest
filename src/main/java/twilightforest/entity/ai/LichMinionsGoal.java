@@ -1,20 +1,20 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.ServerLevelAccessor;
-import twilightforest.init.TFSounds;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBolt;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
 
@@ -86,13 +86,13 @@ public class LichMinionsGoal extends Goal {
 
 	private void spawnMinionAt() {
 		// find a good spot
-		LivingEntity targetedEntity = lich.getTarget();
-		Vec3 minionSpot = lich.findVecInLOSOf(targetedEntity);
+		LivingEntity targetedEntity = this.lich.getTarget();
+		Vec3 minionSpot = this.lich.findVecInLOSOf(targetedEntity);
 
 		if (minionSpot != null && this.lich.getLevel() instanceof ServerLevelAccessor accessor) {
 			// put a clone there
 			LichMinion minion = new LichMinion(this.lich.getLevel(), this.lich);
-			minion.setPos(minionSpot.x, minionSpot.y, minionSpot.z);
+			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
 			minion.finalizeSpawn(accessor, this.lich.getLevel().getCurrentDifficultyAt(new BlockPos(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
 			this.lich.getLevel().addFreshEntity(minion);
 

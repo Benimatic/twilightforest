@@ -2,9 +2,9 @@ package twilightforest.entity.ai;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.Lich;
@@ -97,14 +97,14 @@ public class LichShadowsGoal extends Goal {
 		if (cloneSpot != null) {
 			// put a clone there
 			Lich newClone = new Lich(this.lich.getLevel(), this.lich);
-			newClone.setPos(cloneSpot.x, cloneSpot.y, cloneSpot.z);
+			newClone.setPos(cloneSpot.x(), cloneSpot.y(), cloneSpot.z());
 			this.lich.getLevel().addFreshEntity(newClone);
 
 			newClone.setTarget(targetedEntity);
 			newClone.setAttackCooldown(60 + this.lich.getRandom().nextInt(3) - this.lich.getRandom().nextInt(3));
 
 			// make sparkles leading to it
-			this.lich.makeTeleportTrail(this.lich.getX(), this.lich.getY(), this.lich.getZ(), cloneSpot.x, cloneSpot.y, cloneSpot.z);
+			this.lich.makeTeleportTrail(this.lich.getX(), this.lich.getY(), this.lich.getZ(), cloneSpot.x(), cloneSpot.y(), cloneSpot.z());
 		}
 	}
 

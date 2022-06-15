@@ -24,7 +24,7 @@ public class AlwaysWatchTargetGoal extends Goal {
 	@Override
 	public void tick() {
 		super.tick();
-		if(this.mob.getTarget() != null) {
+		if (this.mob.getTarget() != null) {
 			this.mob.getLookControl().setLookAt(this.mob.getTarget(), 100.0F, 100.0F);
 		}
 	}

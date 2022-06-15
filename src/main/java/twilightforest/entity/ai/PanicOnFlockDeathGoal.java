@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.monster.Kobold;
 
@@ -47,9 +47,9 @@ public class PanicOnFlockDeathGoal extends Goal {
 			if (target == null) {
 				return false;
 			} else {
-				this.fleeX = target.x;
-				this.fleeY = target.y;
-				this.fleeZ = target.z;
+				this.fleeX = target.x();
+				this.fleeY = target.y();
+				this.fleeZ = target.z();
 				return true;
 			}
 		}
@@ -64,8 +64,8 @@ public class PanicOnFlockDeathGoal extends Goal {
 		this.flockCreature.getNavigation().moveTo(this.fleeX, this.fleeY, this.fleeZ, this.speed);
 
 		// panic flag for kobold animations
-		if (flockCreature instanceof Kobold) {
-			((Kobold) flockCreature).setPanicked(true);
+		if (flockCreature instanceof Kobold kobold) {
+			kobold.setPanicked(true);
 		}
 	}
 
@@ -93,8 +93,8 @@ public class PanicOnFlockDeathGoal extends Goal {
 		fleeTimer -= 20;
 
 		// panic flag for kobold animations
-		if (flockCreature instanceof Kobold) {
-			((Kobold) flockCreature).setPanicked(false);
+		if (flockCreature instanceof Kobold kobold) {
+			kobold.setPanicked(false);
 		}
 	}
 }

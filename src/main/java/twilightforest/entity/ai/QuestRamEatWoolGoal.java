@@ -43,8 +43,8 @@ public class QuestRamEatWoolGoal extends Goal {
 
 	protected boolean isTempting(ItemStack stack) {
 		if (stack.is(ItemTags.WOOL)) {
-			DyeColor color = ram.guessColor(stack);
-			return color != null && !ram.isColorPresent(color);
+			DyeColor color = this.ram.guessColor(stack);
+			return color != null && !this.ram.isColorPresent(color);
 		}
 		return false;
 	}

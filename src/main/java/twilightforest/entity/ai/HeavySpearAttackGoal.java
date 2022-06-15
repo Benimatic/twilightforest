@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.ai.goal.Goal;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
 import java.util.EnumSet;
@@ -17,13 +17,13 @@ public class HeavySpearAttackGoal extends Goal {
 
 	@Override
 	public void tick() {
-		if (entity.heavySpearTimer == 25) {
-			entity.landHeavySpearAttack();
+		if (this.entity.heavySpearTimer == 25) {
+			this.entity.landHeavySpearAttack();
 		}
 	}
 
 	@Override
 	public boolean canUse() {
-		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < UpperGoblinKnight.HEAVY_SPEAR_TIMER_START && entity.getTarget() != null && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(entity.getTarget());
+		return this.entity.heavySpearTimer > 0 && this.entity.heavySpearTimer < UpperGoblinKnight.HEAVY_SPEAR_TIMER_START && this.entity.getTarget() != null && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(this.entity.getTarget());
 	}
 }

@@ -85,12 +85,12 @@ public class YetiRampageGoal extends Goal {
 			this.yeti.makeNearbyBlockFall();
 		}
 
-		if (currentDuration % 10 == 0) {
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), yeti.level, yeti);
-			Vec3 vec = new Vec3(0.5F + yeti.getRandom().nextFloat() * 0.5F, 0.5F + yeti.getRandom().nextFloat() * 0.3F, 0).yRot(yeti.getRandom().nextFloat() * 360F);
-			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
-			yeti.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (yeti.getRandom().nextFloat() * 0.4F + 0.8F));
-			yeti.level.addFreshEntity(ice);
+		if (this.currentDuration % 10 == 0) {
+			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.yeti.getLevel(), this.yeti);
+			Vec3 vec = new Vec3(0.5F + this.yeti.getRandom().nextFloat() * 0.5F, 0.5F + this.yeti.getRandom().nextFloat() * 0.3F, 0).yRot(this.yeti.getRandom().nextFloat() * 360F);
+			ice.shoot(vec.x(), vec.y(), vec.z(), 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
+			this.yeti.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.yeti.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.yeti.getLevel().addFreshEntity(ice);
 		}
 	}
 

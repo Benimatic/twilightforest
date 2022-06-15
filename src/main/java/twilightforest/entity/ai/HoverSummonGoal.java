@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import twilightforest.entity.boss.SnowQueen;
 import twilightforest.entity.boss.SnowQueen.Phase;
 
@@ -33,7 +33,7 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueen> {
 		} else if (this.attacker.getCurrentPhase() != Phase.SUMMON) {
 			return false;
 		} else {
-			return attacker.getSensing().hasLineOfSight(target);
+			return this.attacker.getSensing().hasLineOfSight(target);
 		}
 	}
 
@@ -48,7 +48,7 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueen> {
 		} else if (this.seekTimer > this.maxSeekTime) {
 			return false;
 		} else {
-			return this.canEntitySee(this.attacker, hoverPosX, hoverPosY, hoverPosZ);
+			return this.attacker.hasLineOfSight(target);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueen> {
 		LivingEntity target = this.attacker.getTarget();
 
 		// are we there yet?
-		if (this.attacker.distanceToSqr(hoverPosX, hoverPosY, hoverPosZ) <= 3.0F) {
+		if (target != null && this.attacker.distanceToSqr(this.hoverPosX, this.hoverPosY, this.hoverPosZ) <= 3.0F) {
 			this.checkAndSummon();
 
 			this.makeNewHoverSpot(target);

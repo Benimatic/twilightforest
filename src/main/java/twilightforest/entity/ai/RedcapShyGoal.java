@@ -1,8 +1,8 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.monster.Redcap;
 
@@ -32,17 +32,17 @@ public class RedcapShyGoal extends RedcapBaseGoal {
 
 		if (attackTarget == null
 				|| !this.redcap.isShy()
-				|| attackTarget.distanceTo(redcap) > maxDistance
-				|| attackTarget.distanceTo(redcap) < minDistance
+				|| attackTarget.distanceTo(this.redcap) > maxDistance
+				|| attackTarget.distanceTo(this.redcap) < minDistance
 				|| !isTargetLookingAtMe(attackTarget)) {
 			return false;
 		} else {
 			this.entityTarget = attackTarget;
-			Vec3 avoidPos = findCirclePoint(redcap, entityTarget, 5, lefty ? 1 : -1);
+			Vec3 avoidPos = findCirclePoint(this.redcap, this.entityTarget, 5, this.lefty ? 1 : -1);
 
-			this.targetX = avoidPos.x;
-			this.targetY = avoidPos.y;
-			this.targetZ = avoidPos.z;
+			this.targetX = avoidPos.x();
+			this.targetY = avoidPos.y();
+			this.targetZ = avoidPos.z();
 			return true;
 		}
 
@@ -68,7 +68,7 @@ public class RedcapShyGoal extends RedcapBaseGoal {
 			return false;
 		}
 
-		return redcap.isShy() && attackTarget.distanceTo(redcap) < maxDistance && attackTarget.distanceTo(redcap) > minDistance && isTargetLookingAtMe(attackTarget);
+		return this.redcap.isShy() && attackTarget.distanceTo(this.redcap) < maxDistance && attackTarget.distanceTo(this.redcap) > minDistance && isTargetLookingAtMe(attackTarget);
 	}
 
 	@Override

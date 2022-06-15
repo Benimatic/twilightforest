@@ -32,7 +32,7 @@ public class FlockToSameKindGoal extends Goal {
 	@Override
 	public boolean canUse() {
 
-		if(flockCreature instanceof Kobold kobold && kobold.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
+		if (this.flockCreature instanceof Kobold kobold && kobold.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
 			return false;
 		}
 
@@ -40,9 +40,9 @@ public class FlockToSameKindGoal extends Goal {
 			return false;
 		}
 
-		List<? extends Mob> flockList = this.flockCreature.level.getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(16.0D, 4.0D, 16.0D));
+		List<? extends Mob> flockList = this.flockCreature.getLevel().getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(16.0D, 4.0D, 16.0D));
 
-		if(flockList.size() > 5) {
+		if (flockList.size() > 5) {
 			return false;
 		}
 
@@ -63,7 +63,7 @@ public class FlockToSameKindGoal extends Goal {
 		flockZ /= flocknum;
 
 
-		if (flockCreature.distanceToSqr(flockX, flockY, flockZ) < MIN_DIST) {
+		if (this.flockCreature.distanceToSqr(flockX, flockY, flockZ) < MIN_DIST) {
 			return false;
 		} else {
 			this.flockPosition = new Vec3(flockX, flockY, flockZ);
@@ -76,10 +76,10 @@ public class FlockToSameKindGoal extends Goal {
 	 */
 	@Override
 	public boolean canContinueToUse() {
-		if (flockPosition == null) {
+		if (this.flockPosition == null) {
 			return false;
 		} else {
-			double distance = this.flockCreature.distanceToSqr(flockPosition.x, flockPosition.y, flockPosition.z);
+			double distance = this.flockCreature.distanceToSqr(this.flockPosition.x(), this.flockPosition.y(), this.flockPosition.z());
 			return distance >= MIN_DIST && distance <= MAX_DIST;
 		}
 	}
@@ -107,7 +107,7 @@ public class FlockToSameKindGoal extends Goal {
 	public void tick() {
 		if (--this.moveTimer <= 0) {
 			this.moveTimer = 10;
-			this.flockCreature.getNavigation().moveTo(flockPosition.x, flockPosition.y, flockPosition.z, this.speed);
+			this.flockCreature.getNavigation().moveTo(this.flockPosition.x(), this.flockPosition.y(), this.flockPosition.z(), this.speed);
 		}
 	}
 }

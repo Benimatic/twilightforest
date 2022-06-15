@@ -1,10 +1,10 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.monster.Redcap;
@@ -25,7 +25,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!ForgeEventFactory.getMobGriefingEvent(redcap.level, redcap)) {
+		if (!ForgeEventFactory.getMobGriefingEvent(this.redcap.getLevel(), this.redcap)) {
 			return false;
 		}
 
@@ -45,35 +45,35 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canContinueToUse() {
-		return redcap.level.getBlockState(tntPos).getBlock() == Blocks.TNT;
+		return this.redcap.getLevel().getBlockState(this.tntPos).is(Blocks.TNT);
 	}
 
 	@Override
 	public void start() {
-		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, redcap.heldFlint);
+		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, this.redcap.heldFlint);
 	}
 
 	@Override
 	public void stop() {
 		this.redcap.getNavigation().stop();
-		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, redcap.heldPick);
+		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, this.redcap.heldPick);
 		this.delay = 20;
 		this.tntPos = null;
 	}
 
 	@Override
 	public void tick() {
-		this.redcap.getLookControl().setLookAt(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.redcap.getMaxHeadXRot());
+		this.redcap.getLookControl().setLookAt(this.tntPos.getX(), this.tntPos.getY(), this.tntPos.getZ(), 30.0F, this.redcap.getMaxHeadXRot());
 
-		if (this.redcap.distanceToSqr(Vec3.atLowerCornerOf(tntPos)) < 2.4D * 2.4D) {
+		if (this.redcap.distanceToSqr(Vec3.atLowerCornerOf(this.tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
-			Blocks.TNT.onCaughtFire(Blocks.TNT.defaultBlockState(), redcap.level, tntPos, Direction.UP, redcap);
-			redcap.swing(InteractionHand.MAIN_HAND);
-			redcap.level.setBlock(tntPos, Blocks.AIR.defaultBlockState(), 2);
+			Blocks.TNT.onCaughtFire(Blocks.TNT.defaultBlockState(), this.redcap.getLevel(), this.tntPos, Direction.UP, this.redcap);
+			this.redcap.swing(InteractionHand.MAIN_HAND);
+			this.redcap.getLevel().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
 			this.redcap.getNavigation().stop();
 		} else {
-			this.redcap.getNavigation().moveTo(tntPos.getX(), tntPos.getY(), tntPos.getZ(), this.pursueSpeed);
+			this.redcap.getNavigation().moveTo(this.tntPos.getX(), this.tntPos.getY(), this.tntPos.getZ(), this.pursueSpeed);
 		}
 	}
 }

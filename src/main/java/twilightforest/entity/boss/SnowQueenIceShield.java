@@ -16,7 +16,7 @@ public class SnowQueenIceShield extends TFPart<SnowQueen> {
 
     public SnowQueenIceShield(SnowQueen parent) {
         super(parent);
-        dimensions = EntityDimensions.scalable(0.75F, 0.75F);
+		this.dimensions = EntityDimensions.scalable(0.75F, 0.75F);
     }
 
 	@OnlyIn(Dist.CLIENT)
@@ -26,7 +26,7 @@ public class SnowQueenIceShield extends TFPart<SnowQueen> {
 
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-        playSound(TFSounds.SNOW_QUEEN_BREAK.get(), 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+		this.playSound(TFSounds.SNOW_QUEEN_BREAK.get(), 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
         return false;
     }
 
