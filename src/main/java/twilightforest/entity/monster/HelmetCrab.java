@@ -59,13 +59,13 @@ public class HelmetCrab extends Monster {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 		this.playSound(TFSounds.HELMET_CRAB_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 8;
+		return 4;
 	}
 
 	@Override

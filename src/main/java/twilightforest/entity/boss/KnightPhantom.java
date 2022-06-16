@@ -37,7 +37,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.init.TFBlocks;
-import twilightforest.entity.NoClipMoveHelper;
+import twilightforest.entity.NoClipMoveControl;
 import twilightforest.entity.ai.PhantomAttackStartGoal;
 import twilightforest.entity.ai.PhantomThrowWeaponGoal;
 import twilightforest.entity.ai.PhantomUpdateFormationAndMoveGoal;
@@ -69,7 +69,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 		this.noPhysics = true;
 		this.currentFormation = Formation.HOVER;
 		this.xpReward = 93;
-		this.moveControl = new NoClipMoveHelper(this);
+		this.moveControl = new NoClipMoveControl(this);
 	}
 
 	@Nullable

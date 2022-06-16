@@ -22,10 +22,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.init.TFSounds;
 import twilightforest.entity.ai.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.RedcapLightTNTGoal;
 import twilightforest.entity.ai.RedcapShyGoal;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nullable;
 
@@ -94,19 +94,19 @@ public class Redcap extends Monster {
 
 	@Override
 	protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance difficulty) {
-		this.setItemSlot(EquipmentSlot.MAINHAND, heldPick);
+		this.setItemSlot(EquipmentSlot.MAINHAND, this.heldPick);
 		this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putInt("TNTLeft", heldTNT.getCount());
+		compound.putInt("TNTLeft", this.heldTNT.getCount());
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		heldTNT.setCount(compound.getInt("TNTLeft"));
+		this.heldTNT.setCount(compound.getInt("TNTLeft"));
 	}
 }

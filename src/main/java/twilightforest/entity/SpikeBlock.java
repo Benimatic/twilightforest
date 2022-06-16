@@ -7,8 +7,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
-import twilightforest.init.TFSounds;
 import twilightforest.entity.monster.BlockChainGoblin;
+import twilightforest.init.TFSounds;
 
 public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 	private final Entity goblin;
@@ -23,7 +23,7 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 	public SpikeBlock(Entity goblin) {
 		super(goblin);
 		this.goblin = goblin;
-		realSize = EntityDimensions.scalable(0.75F, 0.75F);
+		this.realSize = EntityDimensions.scalable(0.75F, 0.75F);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 			this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.65F, 0.75F);
 			this.isCollideBlock = true;
 		} else {
-			this.setDeltaMovement(0.0F, this.getDeltaMovement().y - 0.04F, 0.0F);
+			this.setDeltaMovement(0.0F, this.getDeltaMovement().y() - 0.04F, 0.0F);
 			this.move(MoverType.SELF, this.getDeltaMovement());
 		}
 	}
@@ -61,7 +61,7 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 
 	@Override
 	public boolean is(Entity entity) {
-		return this == entity || getParent() == entity;
+		return this == entity || this.getParent() == entity;
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 

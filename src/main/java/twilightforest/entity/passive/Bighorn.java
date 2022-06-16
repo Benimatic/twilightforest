@@ -1,25 +1,25 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.Level;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.init.TFSounds;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
@@ -68,27 +68,26 @@ public class Bighorn extends Sheep {
 	}
 
 	@Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
-        livingdata = super.finalizeSpawn(accessor, difficulty, reason, livingdata, dataTag);
-        this.setColor(getRandomFleeceColor(accessor.getRandom()));
-        return livingdata;
-    }
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
+		livingdata = super.finalizeSpawn(accessor, difficulty, reason, livingdata, dataTag);
+		this.setColor(getRandomFleeceColor(accessor.getRandom()));
+		return livingdata;
+	}
 
-    @Override
+	@Override
 	public Sheep getBreedOffspring(ServerLevel world, AgeableMob ageable) {
-		if (!(ageable instanceof Bighorn)) {
+		if (!(ageable instanceof Bighorn otherParent)) {
 			TwilightForestMod.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
 			return null;
 		}
 
-		Bighorn otherParent = (Bighorn) ageable;
 		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.get().create(world);
 		babySheep.setColor(getOffspringColor(this, otherParent));
 		return babySheep;
 	}
-    
-    @Override
+
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.BIGHORN_AMBIENT.get();
 	}
@@ -104,7 +103,7 @@ public class Bighorn extends Sheep {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 		this.playSound(TFSounds.BIGHORN_STEP.get(), 0.15F, 1.0F);
 	}
 }

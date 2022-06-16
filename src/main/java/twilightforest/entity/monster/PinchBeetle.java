@@ -17,11 +17,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFSounds;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.ChargeAttackGoal;
 import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFSounds;
 
 public class PinchBeetle extends Monster implements IHostileMount {
 
@@ -60,7 +60,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 		playSound(TFSounds.PINCH_BEETLE_STEP.get(), 0.15F, 1.0F);
 	}
 
@@ -70,7 +70,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 		super.aiStep();
 
 		if (!this.getPassengers().isEmpty()) {
-			this.getLookControl().setLookAt(getPassengers().get(0), 100F, 100F);
+			this.getLookControl().setLookAt(this.getPassengers().get(0), 100.0F, 100.0F);
 		}
 	}
 
@@ -86,7 +86,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 				entity.startRiding(this, true);
 			}
 		}
-		entity.hurt(TFDamageSources.clamped(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageSources.clamped(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entity);
 	}
 
@@ -100,7 +100,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 		if (!this.getPassengers().isEmpty()) {
 			Vec3 riderPos = this.getRiderPosition();
 
-			this.getPassengers().get(0).setPos(riderPos.x, riderPos.y, riderPos.z);
+			this.getPassengers().get(0).setPos(riderPos.x(), riderPos.y(), riderPos.z());
 		}
 	}
 

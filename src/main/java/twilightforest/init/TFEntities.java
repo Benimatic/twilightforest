@@ -86,7 +86,6 @@ public class TFEntities {
 	public static final RegistryObject<EntityType<CarminiteGhastguard>> CARMINITE_GHASTGUARD = make(TFEntityNames.CARMINITE_GHASTGUARD, CarminiteGhastguard::new, MobCategory.MONSTER, 4.0F, 6.0F, 0xbcbcbc, 0xb77878);
 	public static final RegistryObject<EntityType<CarminiteGhastling>> CARMINITE_GHASTLING = make(TFEntityNames.CARMINITE_GHASTLING, CarminiteGhastling::new, MobCategory.MONSTER, 1.1F, 1.5F, 0xbcbcbc, 0xa74343);
 	public static final RegistryObject<EntityType<CarminiteGolem>> CARMINITE_GOLEM = make(TFEntityNames.CARMINITE_GOLEM, CarminiteGolem::new, MobCategory.MONSTER, 1.4F, 2.9F, 0x6b3d20, 0xe2ddda);
-	//public static final RegistryObject<EntityType<CastleGuardian>> CASTLE_GUARDIAN = make(TFEntityNames.CASTLE_GUARDIAN, CastleGuardian::new, MobCategory.MONSTER, 1.8F, 2.4F);
 	public static final RegistryObject<EntityType<ChainBlock>> CHAIN_BLOCK = build(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(ChainBlock.class, ChainBlock::new, 0.6F, 0.6F, 80, 1), true);
 	public static final RegistryObject<EntityType<CharmEffect>> CHARM_EFFECT = make(TFEntityNames.CHARM_EFFECT, CharmEffect::new, MobCategory.MISC, 0.25F, 0.25F, 0, 0);
 	public static final RegistryObject<EntityType<CicadaShot>> CICADA_SHOT = build(TFEntityNames.CICADA_SHOT, makeCastedBuilder(CicadaShot.class, CicadaShot::new, 0.25F, 0.25F, 150, 3), false);
@@ -251,8 +250,6 @@ public class TFEntities {
 		SpawnPlacements.register(ADHERENT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
 		SpawnPlacements.register(ROVING_CUBE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkAnyLightMonsterSpawnRules);
 		SpawnPlacements.register(RISING_ZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules);
-
-		//EntitySpawnPlacementRegistry.register(CASTLE_GUARDIAN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 	}
 
 	@SubscribeEvent
@@ -314,7 +311,6 @@ public class TFEntities {
 		event.put(HARBINGER_CUBE.get(), HarbingerCube.registerAttributes().build());
 		event.put(ADHERENT.get(), Adherent.registerAttributes().build());
 		event.put(ROVING_CUBE.get(), RovingCube.registerAttributes().build());
-		//event.put(CASTLE_GUARDIAN.get(), Mob.createMobAttributes().create());
 		event.put(PLATEAU_BOSS.get(), PlateauBoss.registerAttributes().build());
 
 		//event.put(BOGGARD.get(), Boggard.registerAttributes().create());
@@ -387,7 +383,6 @@ public class TFEntities {
 		event.registerEntityRenderer(ADHERENT.get(), AdherentRenderer::new);
 		event.registerEntityRenderer(ROVING_CUBE.get(), RovingCubeRenderer::new);
 		event.registerEntityRenderer(RISING_ZOMBIE.get(), m -> new TFBipedRenderer<>(m, new RisingZombieModel(m.bakeLayer(TFModelLayers.RISING_ZOMBIE)), new RisingZombieModel(m.bakeLayer(ModelLayers.ZOMBIE_INNER_ARMOR)), new RisingZombieModel(m.bakeLayer(ModelLayers.ZOMBIE_OUTER_ARMOR)), 0.5F, "textures/entity/zombie/zombie.png"));
-		//event.registerEntityRenderer(CASTLE_GUARDIAN.get(), m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
 		event.registerEntityRenderer(PLATEAU_BOSS.get(), NoopRenderer::new);
 
 		// projectiles

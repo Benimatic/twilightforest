@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFEntities;
 import twilightforest.entity.projectile.TomeBolt;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
@@ -83,7 +83,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 		for (int i = 0; i < 1; ++i) {
 			this.getLevel().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
-					0, 0.5, 0);
+					0.0D, 0.5D, 0.0D);
 		}
 	}
 
@@ -141,7 +141,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT.get(), this.level, this);
+		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT.get(), this.getLevel(), this);
 		double tx = target.getX() - this.getX();
 		double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
 		double tz = target.getZ() - this.getZ();

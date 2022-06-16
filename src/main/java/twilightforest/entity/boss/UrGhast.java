@@ -18,14 +18,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.GhastTrapBlock;
-import twilightforest.entity.NoClipMoveHelper;
+import twilightforest.entity.NoClipMoveControl;
+import twilightforest.entity.ai.GhastguardHomedFlightGoal;
 import twilightforest.entity.ai.UrGhastFlightGoal;
 import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
@@ -58,7 +57,7 @@ public class UrGhast extends CarminiteGhastguard {
 		this.noPhysics = true;
 		this.setInTantrum(false);
 		this.xpReward = 317;
-		this.moveControl = new NoClipMoveHelper(this);
+		this.moveControl = new NoClipMoveControl(this);
 	}
 
 	@Override
@@ -91,7 +90,7 @@ public class UrGhast extends CarminiteGhastguard {
 	protected void registerGoals() {
 		super.registerGoals();
 		this.trapLocations = new ArrayList<>();
-		this.goalSelector.availableGoals.removeIf(e -> e.getGoal() instanceof CarminiteGhastguard.AIHomedFly);
+		this.goalSelector.availableGoals.removeIf(e -> e.getGoal() instanceof GhastguardHomedFlightGoal);
 		this.goalSelector.addGoal(5, new UrGhastFlightGoal(this));
 	}
 
@@ -380,7 +379,7 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	@Override
-	protected void spitFireball() {
+	public void spitFireball() {
 		double offsetX = this.getTarget().getX() - this.getX();
 		double offsetY = this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F - (this.getY() + this.getBbHeight() / 2.0F);
 		double offsetZ = this.getTarget().getZ() - this.getZ();
@@ -551,7 +550,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 	// Don't attack (or even think about attacking) things while we're throwing a tantrum
 	@Override
-	protected boolean shouldAttack(LivingEntity living) {
+	public boolean shouldAttack(LivingEntity living) {
 		return !this.isInTantrum();
 	}
 

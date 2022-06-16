@@ -20,9 +20,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFParticleType;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nullable;
 
@@ -45,7 +45,7 @@ public class SnowGuardian extends BaseIceMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.add(Attributes.MOVEMENT_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 3.0D)
 				.add(Attributes.MAX_HEALTH, 10.0D);
 	}
@@ -67,7 +67,7 @@ public class SnowGuardian extends BaseIceMob {
 
 	@Override
 	public float getVoicePitch() {
-		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.8F;
+		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.8F;
 	}
 
 	@Override
@@ -125,19 +125,19 @@ public class SnowGuardian extends BaseIceMob {
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.level.isClientSide) {
+		if (this.getLevel().isClientSide()) {
 			for (int i = 0; i < 3; i++) {
-				float px = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
-				float py = this.getEyeHeight() + (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
-				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
+				float px = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
+				float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
+				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
 
-				level.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				this.getLevel().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 			}
 		}
 	}
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 8;
+		return 2;
 	}
 }

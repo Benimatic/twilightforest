@@ -16,9 +16,6 @@ public class Raven extends TinyBird {
 
 	public Raven(EntityType<? extends Raven> type, Level world) {
 		super(type, world);
-
-		// maybe this will help them move cuter?
-		this.maxUpStep = 1;
 	}
 
 	@Override
@@ -35,6 +32,11 @@ public class Raven extends TinyBird {
 		return TinyBird.registerAttributes()
 				.add(Attributes.MAX_HEALTH, 10.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.2);
+	}
+
+	@Override
+	public float getStepHeight() {
+		return 1.0F;
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class Raven extends TinyBird {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 

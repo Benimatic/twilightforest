@@ -13,9 +13,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.init.TFEntities;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEntities;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class LichBomb extends TFThrowable implements ItemSupplier {
@@ -40,9 +40,9 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 			double sy = 0.5 * (this.random.nextDouble() - this.random.nextDouble()) + this.getDeltaMovement().y();
 			double sz = 0.5 * (this.random.nextDouble() - this.random.nextDouble()) + this.getDeltaMovement().z();
 
-			double dx = getX() + sx;
-			double dy = getY() + sy;
-			double dz = getZ() + sz;
+			double dx = this.getX() + sx;
+			double dy = this.getY() + sy;
+			double dz = this.getZ() + sz;
 
 			this.getLevel().addParticle(ParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}

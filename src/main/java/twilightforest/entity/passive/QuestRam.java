@@ -35,9 +35,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
-import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.ai.QuestRamEatWoolGoal;
+import twilightforest.init.TFSounds;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
@@ -109,7 +109,7 @@ public class QuestRam extends Animal {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		if(type == MobSpawnType.STRUCTURE) this.restrictTo(this.blockPosition(), 13);
+		if (type == MobSpawnType.STRUCTURE) this.restrictTo(this.blockPosition(), 13);
 		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
 	}
 
@@ -154,10 +154,10 @@ public class QuestRam extends Animal {
 	@Nullable
 	public DyeColor guessColor(ItemStack stack) {
 		List<Item> wools = ImmutableList.of(
-						Blocks.WHITE_WOOL.asItem(), Blocks.ORANGE_WOOL.asItem(), Blocks.MAGENTA_WOOL.asItem(), Blocks.LIGHT_BLUE_WOOL.asItem(),
-						Blocks.YELLOW_WOOL.asItem(), Blocks.LIME_WOOL.asItem(), Blocks.PINK_WOOL.asItem(), Blocks.GRAY_WOOL.asItem(),
-						Blocks.LIGHT_GRAY_WOOL.asItem(), Blocks.CYAN_WOOL.asItem(), Blocks.PURPLE_WOOL.asItem(), Blocks.BLUE_WOOL.asItem(),
-						Blocks.BROWN_WOOL.asItem(), Blocks.GREEN_WOOL.asItem(), Blocks.RED_WOOL.asItem(), Blocks.BLACK_WOOL.asItem()
+				Blocks.WHITE_WOOL.asItem(), Blocks.ORANGE_WOOL.asItem(), Blocks.MAGENTA_WOOL.asItem(), Blocks.LIGHT_BLUE_WOOL.asItem(),
+				Blocks.YELLOW_WOOL.asItem(), Blocks.LIME_WOOL.asItem(), Blocks.PINK_WOOL.asItem(), Blocks.GRAY_WOOL.asItem(),
+				Blocks.LIGHT_GRAY_WOOL.asItem(), Blocks.CYAN_WOOL.asItem(), Blocks.PURPLE_WOOL.asItem(), Blocks.BLUE_WOOL.asItem(),
+				Blocks.BROWN_WOOL.asItem(), Blocks.GREEN_WOOL.asItem(), Blocks.RED_WOOL.asItem(), Blocks.BLACK_WOOL.asItem()
 		);
 		int i = wools.indexOf(stack.getItem());
 		if (i < 0) {
@@ -173,8 +173,10 @@ public class QuestRam extends Animal {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("ColorFlags", this.getColorFlags());
 		compound.putBoolean("Rewarded", this.getRewarded());
-		BlockPos home = this.getRestrictCenter();
-		compound.put("HomePos", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		if (this.getRestrictCenter() != BlockPos.ZERO) {
+			BlockPos home = this.getRestrictCenter();
+			compound.put("HomePos", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		}
 	}
 
 	@Override
@@ -270,7 +272,7 @@ public class QuestRam extends Animal {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 		this.playSound(TFSounds.QUEST_RAM_STEP.get(), 0.15F, 1.0F);
 	}
 }

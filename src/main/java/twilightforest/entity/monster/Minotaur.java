@@ -24,12 +24,12 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.init.TFSounds;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
-import twilightforest.init.TFItems;
 import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nullable;
 
@@ -104,11 +104,11 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	//[VanillaCopy] of Mob.doHurtTarget, edits noted
 	public boolean doHurtTarget(Entity entity) {
-		float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f1 = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 		if (entity instanceof LivingEntity living) {
 			f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), living.getMobType());
-			f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
+			f1 += (float) EnchantmentHelper.getKnockbackBonus(this);
 		}
 
 		int i = EnchantmentHelper.getFireAspect(this);
@@ -170,7 +170,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 		playSound(TFSounds.MINOTAUR_STEP.get(), 0.15F, 0.8F);
 	}
 

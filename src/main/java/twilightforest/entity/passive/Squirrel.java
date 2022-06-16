@@ -19,17 +19,12 @@ import net.minecraft.world.level.material.Material;
 
 import javax.annotation.Nullable;
 
-// TODO: See Bunny
-
 public class Squirrel extends Animal {
 
 	protected static final Ingredient SEEDS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public Squirrel(EntityType<? extends Squirrel> type, Level world) {
 		super(type, world);
-
-		// maybe this will help them move cuter?
-		this.maxUpStep = 1;
 	}
 
 	@Override
@@ -55,6 +50,11 @@ public class Squirrel extends Animal {
 	}
 
 	@Override
+	public float getStepHeight() {
+		return 1.0F;
+	}
+
+	@Override
 	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
 		return false;
 	}
@@ -67,7 +67,7 @@ public class Squirrel extends Animal {
 	@Override
 	public float getWalkTargetValue(BlockPos pos) {
 		// prefer standing on leaves
-		Material underMaterial = this.level.getBlockState(pos.below()).getMaterial();
+		Material underMaterial = this.getLevel().getBlockState(pos.below()).getMaterial();
 		if (underMaterial == Material.LEAVES) {
 			return 12.0F;
 		}
@@ -78,12 +78,12 @@ public class Squirrel extends Animal {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.level.getMaxLocalRawBrightness(pos) - 0.5F;
+		return this.getLevel().getMaxLocalRawBrightness(pos) - 0.5F;
 	}
 
 	@Nullable
 	@Override
-	public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableEntity) {
+	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
 		return null;
 	}
 }

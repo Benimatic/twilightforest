@@ -24,10 +24,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFSounds;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.ai.FlockToSameKindGoal;
 import twilightforest.entity.ai.PanicOnFlockDeathGoal;
+import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -118,7 +118,7 @@ public class Kobold extends Monster {
 			ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
 			if (this.canEat(itemstack)) {
 				if (this.eatingTime <= 0) {
-					ItemStack itemstack1 = itemstack.finishUsingItem(this.level, this);
+					ItemStack itemstack1 = itemstack.finishUsingItem(this.getLevel(), this);
 					if (!itemstack1.isEmpty()) {
 						this.setItemSlot(EquipmentSlot.MAINHAND, itemstack1);
 					}
@@ -242,7 +242,7 @@ public class Kobold extends Monster {
 		return 1;
 	}
 
-	//we dont want kobolds to attack if theyre pacified
+	//we dont want kobolds to attack if they're pacified
 	private static class KoboldAttackPlayerTarget extends NearestAttackableTargetGoal<Player> {
 
 		public KoboldAttackPlayerTarget(Kobold mob) {

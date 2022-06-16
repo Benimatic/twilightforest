@@ -22,18 +22,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
-import twilightforest.init.TFSounds;
-import twilightforest.block.MazestoneBlock;
-import twilightforest.init.TFEnchantments;
 import twilightforest.entity.monster.BlockChainGoblin;
-import twilightforest.init.TFItems;
 import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEnchantments;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityAdditionalSpawnData {
@@ -61,12 +59,12 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world) {
 		super(type, world);
 
-		chain1 = new Chain(this);
-		chain2 = new Chain(this);
-		chain3 = new Chain(this);
-		chain4 = new Chain(this);
-		chain5 = new Chain(this);
-		partsArray =  new BlockChainGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
+		this.chain1 = new Chain(this);
+		this.chain2 = new Chain(this);
+		this.chain3 = new Chain(this);
+		this.chain4 = new Chain(this);
+		this.chain5 = new Chain(this);
+		this.partsArray = new BlockChainGoblin.MultipartGenericsAreDumb[]{this.chain1, this.chain2, this.chain3, this.chain4, this.chain5};
 	}
 
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
@@ -75,13 +73,13 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		this.canSmashBlocks = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0;
 		this.stack = stack;
 		this.setHand(hand);
-		chain1 = new Chain(this);
-		chain2 = new Chain(this);
-		chain3 = new Chain(this);
-		chain4 = new Chain(this);
-		chain5 = new Chain(this);
-		partsArray =  new BlockChainGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
-		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1F);
+		this.chain1 = new Chain(this);
+		this.chain2 = new Chain(this);
+		this.chain3 = new Chain(this);
+		this.chain4 = new Chain(this);
+		this.chain5 = new Chain(this);
+		this.partsArray = new BlockChainGoblin.MultipartGenericsAreDumb[]{this.chain1, this.chain2, this.chain3, this.chain4, this.chain5};
+		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
 		this.entityData.set(IS_FOIL, stack.hasFoil());
 	}
 
@@ -136,7 +134,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		if (!this.getLevel().isClientSide() && !this.getLevel().isEmptyBlock(result.getBlockPos())) {
 
 			if (!this.isReturning) {
-				playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
+				this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
 			}
 
 			if (this.blocksSmashed < MAX_SMASH) {
@@ -183,7 +181,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 					}
 				}
 
-				if(this.canSmashBlocks) {
+				if (this.canSmashBlocks) {
 					// demolish some blocks
 					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.5D));
 				}
@@ -203,8 +201,8 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 			BlockState state = this.getLevel().getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (!state.isAir() && stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
-				if (getOwner() instanceof Player player) {
+			if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
+				if (this.getOwner() instanceof Player player) {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.getLevel(), pos, state, player))) {
 						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
 							block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
@@ -223,11 +221,11 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		super.tick();
 
 		if (this.getLevel().isClientSide()) {
-			chain1.tick();
-			chain2.tick();
-			chain3.tick();
-			chain4.tick();
-			chain5.tick();
+			this.chain1.tick();
+			this.chain2.tick();
+			this.chain3.tick();
+			this.chain4.tick();
+			this.chain5.tick();
 
 			// set chain positions
 			if (this.getOwner() != null) {
@@ -282,8 +280,8 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(HAND, true);
-		entityData.define(IS_FOIL, false);
+		this.entityData.define(HAND, true);
+		this.entityData.define(IS_FOIL, false);
 	}
 
 	@Override

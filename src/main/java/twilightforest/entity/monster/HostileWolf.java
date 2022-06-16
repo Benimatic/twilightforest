@@ -52,8 +52,8 @@ public class HostileWolf extends Monster {
 
 	@Override
 	public void setTarget(@Nullable LivingEntity entity) {
-		if (entity != null && entity != getTarget())
-			playSound(getTargetSound(), 4F, getVoicePitch());
+		if (entity != null && entity != this.getTarget())
+			this.playSound(this.getTargetSound(), 4F, this.getVoicePitch());
 		super.setTarget(entity);
 	}
 
@@ -67,17 +67,17 @@ public class HostileWolf extends Monster {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.HOSTILE_WOLF_HURT.get();
-	}
-	
-	@Override
-	protected SoundEvent getDeathSound() {
-	      return TFSounds.HOSTILE_WOLF_DEATH.get();
 	}
 
 	@Override
-	protected void playStepSound(BlockPos p_30415_, BlockState p_30416_) {
+	protected SoundEvent getDeathSound() {
+		return TFSounds.HOSTILE_WOLF_DEATH.get();
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState state) {
 		this.playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
 	}
 
@@ -95,11 +95,11 @@ public class HostileWolf extends Monster {
 		if (this.getTarget() != null) {
 			return 1.5393804F;
 		} else {
-			return ((float)Math.PI / 5F);
+			return ((float) Math.PI / 5F);
 		}
 	}
 
-	//add agressive flags so its face doesnt turn passive when it jumps
+	//add aggressive flags so its face doesnt turn passive when it jumps
 	public static class LeapGoal extends LeapAtTargetGoal {
 
 		private final Mob mob;

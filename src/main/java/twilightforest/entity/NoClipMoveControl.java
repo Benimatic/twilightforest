@@ -1,15 +1,15 @@
 package twilightforest.entity;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.util.Mth;
 
-public class NoClipMoveHelper extends MoveControl {
+public class NoClipMoveControl extends MoveControl {
 	private final LivingEntity parentEntity;
 	private int courseChangeCooldown;
 
-	public NoClipMoveHelper(Mob entity) {
+	public NoClipMoveControl(Mob entity) {
 		super(entity);
 		this.parentEntity = entity;
 	}
@@ -26,7 +26,7 @@ public class NoClipMoveHelper extends MoveControl {
 				this.courseChangeCooldown += this.parentEntity.getRandom().nextInt(5) + 2;
 				dist = Mth.sqrt((float) dist);
 
-				this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().add((dx / dist * 0.1D) * speedModifier, (dy / dist * 0.1D) * speedModifier, (dz / dist * 0.1D) * speedModifier));
+				this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().add((dx / dist * 0.1D) * this.speedModifier, (dy / dist * 0.1D) * this.speedModifier, (dz / dist * 0.1D) * speedModifier));
 			}
 		}
 	}

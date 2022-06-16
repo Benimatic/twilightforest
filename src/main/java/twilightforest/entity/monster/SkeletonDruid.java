@@ -1,10 +1,17 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -14,19 +21,13 @@ import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.*;
-import twilightforest.init.TFSounds;
-import twilightforest.entity.projectile.NatureBolt;
-
-import java.util.UUID;
-
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
+import twilightforest.entity.projectile.NatureBolt;
+import twilightforest.init.TFSounds;
+
+import java.util.UUID;
 
 public class SkeletonDruid extends AbstractSkeleton {
 	private RangedAttackGoal rangedAttackGoal;
@@ -52,28 +53,28 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-	      return TFSounds.SKELETON_DRUID_AMBIENT.get();
-	   }
+		return TFSounds.SKELETON_DRUID_AMBIENT.get();
+	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.SKELETON_DRUID_HURT.get();
-	   }
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.SKELETON_DRUID_HURT.get();
+	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.SKELETON_DRUID_DEATH.get();
-	   }
+		return TFSounds.SKELETON_DRUID_DEATH.get();
+	}
 
 	@Override
 	protected SoundEvent getStepSound() {
-	      return TFSounds.SKELETON_DRUID_STEP.get();
-	   }
+		return TFSounds.SKELETON_DRUID_STEP.get();
+	}
 
 
 	@Override
 	public void reassessWeaponGoal() {
-		if (this.level != null && !this.level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			this.goalSelector.removeGoal(this.rangedAttackGoal);
 
 			if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem) {
@@ -98,16 +99,16 @@ public class SkeletonDruid extends AbstractSkeleton {
 	@Override
 	public void performRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem) {
-			NatureBolt natureBolt = new NatureBolt(this.level, this);
-			playSound(TFSounds.SKELETON_DRUID_SHOOT.get(), 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
+			NatureBolt natureBolt = new NatureBolt(this.getLevel(), this);
+			playSound(TFSounds.SKELETON_DRUID_SHOOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 
 			double tx = attackTarget.getX() - this.getX();
-			double ty = attackTarget.getY() + attackTarget.getEyeHeight() - 2.699999988079071D - this.getY();
+			double ty = attackTarget.getY() + attackTarget.getEyeHeight() - 2.7D - this.getY();
 			double tz = attackTarget.getZ() - this.getZ();
 			float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.2F;
 			natureBolt.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-			this.level.addFreshEntity(natureBolt);
-		} else if (!Items.STICK.equals(this.getItemInHand(InteractionHand.MAIN_HAND).getItem())) {
+			this.getLevel().addFreshEntity(natureBolt);
+		} else if (!this.getItemInHand(InteractionHand.MAIN_HAND).is(Items.STICK)) {
 			super.performRangedAttack(attackTarget, extraDamage);
 		}
 	}
@@ -117,22 +118,11 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	// [VanillaCopy] of super. Edits noted.
-	public static boolean isValidLightLevel(LevelAccessor world, BlockPos pos, RandomSource random) {
-		if (world.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
+	public static boolean isValidLightLevel(LevelAccessor accessor, BlockPos pos, RandomSource random) {
+		if (accessor.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
-			int i = world.getMaxLocalRawBrightness(pos);
-
-			// TF - no thunder check
-			/*if (this.world.isThundering())
-            {
-                int j = this.world.getSkylightSubtracted();
-                this.world.setSkylightSubtracted(10);
-                i = this.world.getLightFromNeighbors(blockpos);
-                this.world.setSkylightSubtracted(j);
-            }*/
-
-			return i <= random.nextInt(12); // TF - rand(8) -> rand(12)
+			return accessor.getMaxLocalRawBrightness(pos) <= random.nextInt(12); // TF - rand(8) -> rand(12)
 		}
 	}
 
@@ -171,7 +161,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	@Override
 	public void setBaby(boolean shouldBaby) {
 		this.getEntityData().set(DATA_BABY_ID, shouldBaby);
-		if (this.level != null && !this.level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
 			attributeinstance.removeModifier(SPEED_MODIFIER_BABY);
 			if (shouldBaby) {

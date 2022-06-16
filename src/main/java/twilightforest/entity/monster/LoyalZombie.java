@@ -28,8 +28,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFSounds;
 import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFSounds;
 
 public class LoyalZombie extends TamableAnimal {
 
@@ -79,7 +79,7 @@ public class LoyalZombie extends TamableAnimal {
 		// once our damage boost effect wears out, start to decay
 		// the effect here is that we die shortly after our 60 second lifespan
 		if (!this.getLevel().isClientSide() && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
-			if(this.tickCount % 20 == 0) {
+			if (this.tickCount % 20 == 0) {
 				this.hurt(new DamageSource(TFDamageSources.tfSource("expired")).bypassArmor().bypassMagic().bypassInvul().setMagic(), 2);
 			}
 		}
@@ -90,12 +90,12 @@ public class LoyalZombie extends TamableAnimal {
 	@Override
 	public InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand hand) {
 		//feeding a loyal zombie rotten flesh will refresh its death timer, allowing your minions to stick around for longer
-		if(this.getOwner() != null && this.getOwner().is(player) && player.getItemInHand(hand).is(Items.ROTTEN_FLESH)) {
+		if (this.getOwner() != null && this.getOwner().is(player) && player.getItemInHand(hand).is(Items.ROTTEN_FLESH)) {
 			this.removeEffect(MobEffects.DAMAGE_BOOST);
 			this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1));
 			this.heal(1.0F);
 			this.playSound(SoundEvents.ZOMBIE_INFECT, this.getSoundVolume(), this.getVoicePitch());
-			if(!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
+			if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
 			return InteractionResult.sidedSuccess(this.getLevel().isClientSide());
 		}
 
@@ -104,7 +104,7 @@ public class LoyalZombie extends TamableAnimal {
 
 	/**
 	 * [VanillaCopy] {@link Wolf#wantsToAttack(LivingEntity, LivingEntity)} ()}, substituting with our class
- 	 */
+	 */
 	@Override
 	public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
 		if (!(target instanceof Creeper) && !(target instanceof Ghast)) {

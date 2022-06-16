@@ -1,12 +1,12 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.Level;
 import twilightforest.entity.ai.RedcapPlantTNTGoal;
 import twilightforest.init.TFItems;

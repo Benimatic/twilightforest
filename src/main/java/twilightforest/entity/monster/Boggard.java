@@ -11,8 +11,8 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFSounds;
 import twilightforest.entity.ai.ChargeAttackGoal;
+import twilightforest.init.TFSounds;
 
 public class Boggard extends Monster {
 

@@ -30,10 +30,10 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFSounds;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.ThrowRiderGoal;
 import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -84,7 +84,7 @@ public class Yeti extends Monster implements IHostileMount {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(ANGER_FLAG, false);
+		this.entityData.define(ANGER_FLAG, false);
 	}
 
 	@Override
@@ -92,9 +92,14 @@ public class Yeti extends Monster implements IHostileMount {
 
 		super.aiStep();
 
+		// if we no longer have a target, lets calm down
+		if (this.getTarget() == null && this.isAngry()) {
+			this.setAngry(false);
+		}
+
 		// look at things in our jaws
 		if (!this.getPassengers().isEmpty()) {
-			this.getLookControl().setLookAt(getPassengers().get(0), 100F, 100F);
+			this.getLookControl().setLookAt(this.getPassengers().get(0), 100F, 100F);
 		}
 	}
 
@@ -109,19 +114,19 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	public boolean isAngry() {
-		return entityData.get(ANGER_FLAG);
+		return this.entityData.get(ANGER_FLAG);
 	}
 
 	public void setAngry(boolean anger) {
-		entityData.set(ANGER_FLAG, anger);
+		this.entityData.set(ANGER_FLAG, anger);
 
-		if (!level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			if (anger) {
-				if (!getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
-					this.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(ANGRY_MODIFIER);
+				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ANGRY_MODIFIER)) {
+					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ANGRY_MODIFIER);
 				}
 			} else {
-				this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
+				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ANGRY_MODIFIER);
 			}
 		}
 	}
@@ -144,7 +149,7 @@ public class Yeti extends Monster implements IHostileMount {
 	@Override
 	public void positionRider(Entity passenger) {
 		Vec3 riderPos = this.getRiderPosition(passenger);
-		passenger.setPos(riderPos.x, riderPos.y, riderPos.z);
+		passenger.setPos(riderPos.x(), riderPos.y(), riderPos.z());
 	}
 
 	/**
@@ -176,26 +181,26 @@ public class Yeti extends Monster implements IHostileMount {
 		return true;
 	}
 
-	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		Optional<ResourceKey<Biome>> key = world.getBiome(pos).unwrapKey();
+	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+		Optional<ResourceKey<Biome>> key = accessor.getBiome(pos).unwrapKey();
 		if (Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST))) {
-			return checkMobSpawnRules(entityType, world, reason, pos, random);
+			return checkMobSpawnRules(entityType, accessor, reason, pos, random);
 		} else {
 			// normal EntityMob spawn check, checks light level
-			return normalYetiSpawnHandler(entityType, world, reason, pos, random);
+			return normalYetiSpawnHandler(entityType, accessor, reason, pos, random);
 		}
 	}
 
-	public static boolean normalYetiSpawnHandler(EntityType<? extends Monster> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
+	public static boolean normalYetiSpawnHandler(EntityType<? extends Monster> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+		return accessor.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(accessor, pos, random) && checkMobSpawnRules(entity, accessor, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos blockPos, RandomSource random) {
-		Optional<ResourceKey<Biome>> key = world.getBiome(blockPos).unwrapKey();
-		if (world.getBrightness(LightLayer.SKY, blockPos) > random.nextInt(32)) {
+	public static boolean isValidLightLevel(ServerLevelAccessor accessor, BlockPos blockPos, RandomSource random) {
+		Optional<ResourceKey<Biome>> key = accessor.getBiome(blockPos).unwrapKey();
+		if (accessor.getBrightness(LightLayer.SKY, blockPos) > random.nextInt(32)) {
 			return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
 		} else {
-			int i = world.getLevel().isThundering() ? world.getMaxLocalRawBrightness(blockPos, 10) : world.getMaxLocalRawBrightness(blockPos);
+			int i = accessor.getLevel().isThundering() ? accessor.getMaxLocalRawBrightness(blockPos, 10) : accessor.getMaxLocalRawBrightness(blockPos);
 			return i <= random.nextInt(8) || Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
 		}
 	}
@@ -212,7 +217,7 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.YETI_HURT.get();
 	}
 

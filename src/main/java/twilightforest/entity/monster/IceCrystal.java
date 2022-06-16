@@ -1,23 +1,18 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.Level;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFEntities;
-
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
 public class IceCrystal extends BaseIceMob {
 
@@ -52,7 +47,7 @@ public class IceCrystal extends BaseIceMob {
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 8;
+		return 4;
 	}
 
 	@Override
@@ -78,7 +73,7 @@ public class IceCrystal extends BaseIceMob {
 	public void aiStep() {
 		super.aiStep();
 
-		if (!level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			this.crystalAge++;
 			if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge) {
 				this.discard();

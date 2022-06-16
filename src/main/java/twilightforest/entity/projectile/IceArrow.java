@@ -27,22 +27,20 @@ public class IceArrow extends TFArrow {
 	@Override
 	public void tick() {
 		super.tick();
-		if (level.isClientSide && !inGround) {
+		if (this.getLevel().isClientSide() && !this.inGround) {
 			BlockState stateId = Blocks.SNOW.defaultBlockState();
 			for (int i = 0; i < 4; ++i) {
-				this.level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
+				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
 			}
 		}
 	}
 
 	@Override
-	protected void onHit(HitResult ray) {
-		super.onHit(ray);
-		if (ray instanceof EntityHitResult) {
-			if (!level.isClientSide && ((EntityHitResult)ray).getEntity() instanceof LivingEntity) {
-				int chillLevel = 2;
-				((LivingEntity) ((EntityHitResult)ray).getEntity()).addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 10, chillLevel));
-			}
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		if (!this.getLevel().isClientSide() && result.getEntity() instanceof LivingEntity living) {
+			int chillLevel = 2;
+			living.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 10, chillLevel));
 		}
 	}
 }

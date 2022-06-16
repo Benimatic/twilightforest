@@ -31,10 +31,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFSounds;
+import twilightforest.entity.projectile.ThrownBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.entity.projectile.ThrownBlock;
+import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nullable;
@@ -58,8 +58,8 @@ public class Troll extends Monster implements RangedAttackMob {
 
 	@Override
 	public void registerGoals() {
-		aiArrowAttack = new RangedAttackGoal(this, 1.0D, 20, 60, 15.0F);
-		aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false);
+		this.aiArrowAttack = new RangedAttackGoal(this, 1.0D, 20, 60, 15.0F);
+		this.aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false);
 
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new RestrictSunGoal(this));
@@ -70,7 +70,7 @@ public class Troll extends Monster implements RangedAttackMob {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Troll.class));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 
-		if (!level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			this.setCombatTask();
 		}
 	}
@@ -85,11 +85,11 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 
 			if (!this.hasRock() && this.getTarget() != null) {
 				if (this.rockCooldown > 0) {
-					rockCooldown--;
+					this.rockCooldown--;
 				} else {
 					//copied from EnderMan.EndermanTakeBlockGoal.tick()
 					RandomSource random = this.getRandom();
@@ -104,14 +104,14 @@ public class Troll extends Monster implements RangedAttackMob {
 					BlockHitResult blockhitresult = level.clip(new ClipContext(vec3, vec31, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
 					boolean flag = blockhitresult.getBlockPos().equals(blockpos);
 					if (blockstate.is(BlockTags.BASE_STONE_OVERWORLD) && flag) {
-						rock = level.getBlockState(blockpos);
+						this.rock = level.getBlockState(blockpos);
 						level.removeBlock(blockpos, false);
 						level.gameEvent(this, GameEvent.BLOCK_DESTROY, blockpos);
 					}
 
-					if (rock != null) {
+					if (this.rock != null) {
 						this.setHasRock(true);
-						ThrownBlock block = new ThrownBlock(level, this, rock);
+						ThrownBlock block = new ThrownBlock(level, this, this.rock);
 						block.startRiding(this);
 						level.addFreshEntity(block);
 					}
@@ -134,17 +134,17 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(ROCK_FLAG, false);
+		this.entityData.define(ROCK_FLAG, false);
 	}
 
 	public boolean hasRock() {
-		return entityData.get(ROCK_FLAG);
+		return this.entityData.get(ROCK_FLAG);
 	}
 
 	public void setHasRock(boolean rock) {
-		entityData.set(ROCK_FLAG, rock);
+		this.entityData.set(ROCK_FLAG, rock);
 
-		if (!level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			if (rock) {
 				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ROCK_MODIFIER)) {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ROCK_MODIFIER);
@@ -208,39 +208,39 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.level.getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER.get() && this.random.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.level.setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
-			level.levelEvent(2004, pos, 0);
+		if (this.getLevel().getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER.get() && this.getRandom().nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.getLevel().setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
+			getLevel().levelEvent(2004, pos, 0);
 		}
 	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.hasRock()) {
-			ThrownBlock blocc = new ThrownBlock(this.level, this, rock);
+			ThrownBlock blocc = new ThrownBlock(this.getLevel(), this, this.rock);
 
 			double d0 = target.getX() - this.getX();
 			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - blocc.getY();
 			double d2 = target.getZ() - this.getZ();
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-			blocc.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 4 - this.level.getDifficulty().getId());
+			blocc.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 4 - this.getLevel().getDifficulty().getId());
 
 			this.playSound(TFSounds.TROLL_THROWS_ROCK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			this.level.addFreshEntity(blocc);
+			this.getLevel().addFreshEntity(blocc);
 			this.setHasRock(false);
 			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {
 				this.getFirstPassenger().discard();
 			}
 			this.rockCooldown = 300;
-			rock = null;
+			this.rock = null;
 		}
 	}
 
 	@SuppressWarnings("unused")
-	public static boolean canSpawn(EntityType<? extends Troll> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
+	public static boolean canSpawn(EntityType<? extends Troll> type, LevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
 		BlockPos blockpos = pos.below();
-		return world.getDifficulty() != Difficulty.PEACEFUL &&
-				world.getBlockState(blockpos).getBlock() != TFBlocks.GIANT_OBSIDIAN.get() &&
-				!world.canSeeSky(pos);
+		return accessor.getDifficulty() != Difficulty.PEACEFUL &&
+				accessor.getBlockState(blockpos).getBlock() != TFBlocks.GIANT_OBSIDIAN.get() &&
+				!accessor.canSeeSky(pos);
 	}
 }

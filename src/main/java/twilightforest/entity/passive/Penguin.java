@@ -39,13 +39,13 @@ public class Penguin extends Bird {
 	}
 
 	@Override
-	public Animal getBreedOffspring(ServerLevel world, AgeableMob entityanimal) {
-		return TFEntities.PENGUIN.get().create(world);
+	public Animal getBreedOffspring(ServerLevel level, AgeableMob ageableMob) {
+		return TFEntities.PENGUIN.get().create(level);
 	}
 
 	@Override
 	public boolean isFood(ItemStack stack) {
-		return stack.getItem() == Items.COD;
+		return stack.is(Items.COD);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -54,8 +54,8 @@ public class Penguin extends Bird {
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 
-	public static boolean canSpawn(EntityType<? extends Penguin> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource rand) {
+	public static boolean canSpawn(EntityType<? extends Penguin> type, LevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
 		BlockPos blockpos = pos.below();
-		return Mob.checkMobSpawnRules(type, world, reason, pos, rand) || world.getBlockState(blockpos).is(BlockTags.ICE);
+		return Mob.checkMobSpawnRules(type, accessor, reason, pos, rand) || accessor.getBlockState(blockpos).is(BlockTags.ICE);
 	}
 }
