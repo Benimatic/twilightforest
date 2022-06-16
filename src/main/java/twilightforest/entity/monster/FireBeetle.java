@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.ai.BreathAttackGoal;
+import twilightforest.entity.ai.goal.BreathAttackGoal;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFSounds;
 

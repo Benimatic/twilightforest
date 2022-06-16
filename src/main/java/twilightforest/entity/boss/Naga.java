@@ -45,9 +45,10 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.TFPart;
-import twilightforest.entity.ai.NagaAttackGoal;
-import twilightforest.entity.ai.NagaMovementPattern;
-import twilightforest.entity.ai.NagaSmashGoal;
+import twilightforest.entity.ai.control.NagaMoveControl;
+import twilightforest.entity.ai.goal.NagaAttackGoal;
+import twilightforest.entity.ai.goal.NagaMovementPattern;
+import twilightforest.entity.ai.goal.NagaSmashGoal;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
@@ -128,6 +129,10 @@ public class Naga extends Monster {
 		this.entityData.set(DATA_CHARGE, charge);
 	}
 
+	public NagaMovementPattern getMovementAI() {
+		return this.movementAI;
+	}
+
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
@@ -156,7 +161,7 @@ public class Naga extends Monster {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
 
-		this.moveControl = new NagaMoveHelper(this);
+		this.moveControl = new NagaMoveControl(this);
 	}
 
 	@Override
@@ -289,28 +294,6 @@ public class Naga extends Monster {
 
 		// BOSS BAR!
 		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
-	}
-
-	static class NagaMoveHelper extends MoveControl {
-
-		public NagaMoveHelper(Naga naga) {
-			super(naga);
-		}
-
-		@Override
-		public void tick() {
-			// TF - slither!
-			NagaMovementPattern.MovementState currentState = ((Naga) this.mob).movementAI.getState();
-			if (currentState == NagaMovementPattern.MovementState.DAZE) {
-				this.mob.xxa = 0F;
-			} else if (currentState != NagaMovementPattern.MovementState.CHARGE && currentState != NagaMovementPattern.MovementState.INTIMIDATE) {
-				this.mob.xxa = Mth.cos(this.mob.tickCount * 0.3F) * 0.6F;
-			} else {
-				this.mob.xxa *= 0.8F;
-			}
-
-			super.tick();
-		}
 	}
 
 	@Override

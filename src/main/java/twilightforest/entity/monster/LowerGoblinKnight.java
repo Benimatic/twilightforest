@@ -25,7 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFEntities;
-import twilightforest.entity.ai.RiderSpearAttackGoal;
+import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

@@ -21,7 +21,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import twilightforest.entity.NoClipMoveControl;
+import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFSounds;
 

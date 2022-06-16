@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
-import twilightforest.entity.ai.ChargeAttackGoal;
+import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFSounds;
 

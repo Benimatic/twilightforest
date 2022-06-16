@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.entity.ai.RedcapPlantTNTGoal;
+import twilightforest.entity.ai.goal.RedcapPlantTNTGoal;
 import twilightforest.init.TFItems;
 
 public class RedcapSapper extends Redcap {

@@ -26,7 +26,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.ai.BreathAttackGoal;
+import twilightforest.entity.ai.goal.BreathAttackGoal;
 import twilightforest.init.BiomeKeys;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;

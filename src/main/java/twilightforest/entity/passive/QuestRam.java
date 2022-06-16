@@ -36,7 +36,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.entity.ai.QuestRamEatWoolGoal;
+import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.ParticlePacket;

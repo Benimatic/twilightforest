@@ -31,7 +31,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IHostileMount;
-import twilightforest.entity.ai.ThrowRiderGoal;
+import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.init.BiomeKeys;
 import twilightforest.init.TFSounds;
 

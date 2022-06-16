@@ -31,7 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.init.TFBlocks;
-import twilightforest.entity.ai.GroundAttackGoal;
+import twilightforest.entity.ai.goal.GroundAttackGoal;
 import twilightforest.entity.monster.Minotaur;
 import twilightforest.init.TFItems;
 import twilightforest.loot.TFTreasure;

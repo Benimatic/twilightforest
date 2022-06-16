@@ -25,8 +25,8 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.Chain;
 import twilightforest.entity.SpikeBlock;
 import twilightforest.entity.TFPart;
-import twilightforest.entity.ai.AvoidAnyEntityGoal;
-import twilightforest.entity.ai.ThrowSpikeBlockGoal;
+import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
+import twilightforest.entity.ai.goal.ThrowSpikeBlockGoal;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFSounds;
 

@@ -25,7 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.ITFCharger;
-import twilightforest.entity.ai.ChargeAttackGoal;
+import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFItems;
