@@ -28,7 +28,7 @@ import twilightforest.init.TFItems;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.network.TFPacketHandler;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 

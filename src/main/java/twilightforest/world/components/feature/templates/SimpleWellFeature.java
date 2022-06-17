@@ -18,7 +18,7 @@ import twilightforest.world.components.processors.CobblePlankSwizzler;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SimpleWellFeature extends TemplateFeature<NoneFeatureConfiguration> {
     private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/simple_well_top");

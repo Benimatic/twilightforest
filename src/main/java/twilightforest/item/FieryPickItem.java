@@ -24,7 +24,7 @@ import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class FieryPickItem extends PickaxeItem {

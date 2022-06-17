@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.capabilities.CapabilityList;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class FortificationWandItem extends Item {

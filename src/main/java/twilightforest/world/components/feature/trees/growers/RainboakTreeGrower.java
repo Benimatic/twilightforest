@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import twilightforest.init.TFConfiguredFeatures;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class RainboakTreeGrower extends AbstractTreeGrower {
 

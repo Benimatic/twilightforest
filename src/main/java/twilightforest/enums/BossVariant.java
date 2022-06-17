@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.function.Supplier;
 

@@ -34,7 +34,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
 public abstract class AbstractTrophyBlock extends BaseEntityBlock {

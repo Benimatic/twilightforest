@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.init.TFRecipes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result) implements Recipe<Container> {
 

@@ -26,7 +26,7 @@ import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.enums.BossVariant;
 import twilightforest.block.entity.TrophyBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 

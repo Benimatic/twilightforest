@@ -6,7 +6,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class TFDamageSources {
     public static final DamageSource GHAST_TEAR = new DamageSource(tfSource("ghastTear")).bypassArmor(); //ur-ghast

@@ -31,7 +31,7 @@ import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class Minotaur extends Monster implements ITFCharger {
 

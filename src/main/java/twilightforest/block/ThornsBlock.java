@@ -23,7 +23,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageSources;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 
@@ -47,7 +47,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return BlockPathTypes.DAMAGE_CACTUS;
 	}
 

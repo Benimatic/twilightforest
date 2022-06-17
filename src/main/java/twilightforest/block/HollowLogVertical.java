@@ -32,7 +32,7 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.DirectionUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;

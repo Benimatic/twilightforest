@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.entity.CubeOfAnnihilation;
 import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class CubeOfAnnihilationItem extends Item {

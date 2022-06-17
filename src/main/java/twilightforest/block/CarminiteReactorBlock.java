@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import twilightforest.block.entity.CarminiteReactorBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 
 public class CarminiteReactorBlock extends BaseEntityBlock {

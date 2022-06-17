@@ -24,7 +24,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SnowGuardian extends BaseIceMob {
 

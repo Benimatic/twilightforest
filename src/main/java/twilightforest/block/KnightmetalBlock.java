@@ -31,7 +31,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageSources;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
@@ -81,7 +81,7 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return BlockPathTypes.DAMAGE_CACTUS;
 	}
 

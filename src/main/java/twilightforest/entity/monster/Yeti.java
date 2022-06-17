@@ -35,7 +35,7 @@ import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.init.BiomeKeys;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 

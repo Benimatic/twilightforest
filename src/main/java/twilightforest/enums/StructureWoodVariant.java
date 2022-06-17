@@ -12,7 +12,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.util.ArrayUtil;
 import twilightforest.util.FeaturePlacers;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;

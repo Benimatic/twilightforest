@@ -17,7 +17,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.FireflyModel;
 import twilightforest.block.entity.FireflyBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlockEntity> {
 

@@ -23,7 +23,7 @@ import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFBlockEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class FireJetBlock extends BaseEntityBlock {
 
@@ -47,7 +47,7 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return state.getValue(STATE) == FireJetVariant.IDLE ? null : BlockPathTypes.DAMAGE_FIRE;
 	}
 

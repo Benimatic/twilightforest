@@ -23,7 +23,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.LoyalZombie;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ZombieWandItem extends Item {

@@ -12,7 +12,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.model.SimpleModelState;
 import twilightforest.block.PatchBlock;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

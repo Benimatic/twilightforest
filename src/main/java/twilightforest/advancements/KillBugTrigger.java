@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instance> {
 	public static final ResourceLocation ID = TwilightForestMod.prefix("kill_bug");

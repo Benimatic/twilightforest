@@ -20,7 +20,7 @@ import twilightforest.entity.ChainBlock;
 import twilightforest.init.TFEntities;
 import twilightforest.util.TwilightItemTier;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class ChainBlockItem extends DiggerItem {

@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFSounds;
 import twilightforest.entity.projectile.TwilightWandBolt;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TwilightWandItem extends Item {

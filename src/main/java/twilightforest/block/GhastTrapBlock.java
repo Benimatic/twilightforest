@@ -21,7 +21,7 @@ import twilightforest.block.entity.GhastTrapBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class GhastTrapBlock extends BaseEntityBlock {
 	public static final int ACTIVATE_EVENT = 0;

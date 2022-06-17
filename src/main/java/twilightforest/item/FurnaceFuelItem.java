@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.minecraft.world.item.Item.Properties;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class FurnaceFuelItem extends BlockItem {
     private final int burntime;

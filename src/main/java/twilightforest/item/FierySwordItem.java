@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)

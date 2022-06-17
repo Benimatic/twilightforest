@@ -34,7 +34,7 @@ import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.AxisUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 	public static final EnumProperty<Direction.Axis> HORIZONTAL_AXIS = BlockStateProperties.HORIZONTAL_AXIS;

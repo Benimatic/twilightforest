@@ -37,7 +37,7 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class Troll extends Monster implements RangedAttackMob {

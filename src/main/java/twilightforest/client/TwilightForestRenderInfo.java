@@ -12,7 +12,7 @@ import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
 import twilightforest.init.BiomeKeys;

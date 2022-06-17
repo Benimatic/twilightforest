@@ -18,7 +18,7 @@ import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.HollowLogConfig;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 

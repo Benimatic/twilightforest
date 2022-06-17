@@ -19,7 +19,7 @@ import twilightforest.init.TFItems;
 import twilightforest.item.EnderBowItem;
 import twilightforest.item.MinotaurAxeItem;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ToolEvents {

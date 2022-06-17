@@ -34,7 +34,7 @@ import twilightforest.compat.ie.TFShaderItem;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.projectile.CicadaShot;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 
 /**

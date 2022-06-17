@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.init.TFBlocks;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;

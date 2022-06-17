@@ -49,7 +49,7 @@ import twilightforest.world.components.structures.trollcave.TrollCaveMainCompone
 import twilightforest.world.components.structures.util.*;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**

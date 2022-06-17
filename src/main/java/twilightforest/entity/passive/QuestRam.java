@@ -42,7 +42,7 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class QuestRam extends Animal {

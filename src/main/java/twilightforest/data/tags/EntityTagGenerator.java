@@ -11,7 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));

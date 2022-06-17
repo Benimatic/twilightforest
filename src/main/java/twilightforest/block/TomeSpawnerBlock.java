@@ -27,7 +27,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.block.entity.TomeSpawnerBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class TomeSpawnerBlock extends BaseEntityBlock {
 

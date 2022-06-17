@@ -22,7 +22,7 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFTreasure;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class Bighorn extends Sheep {
 

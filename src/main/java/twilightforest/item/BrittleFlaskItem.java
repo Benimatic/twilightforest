@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BrittleFlaskItem extends Item {

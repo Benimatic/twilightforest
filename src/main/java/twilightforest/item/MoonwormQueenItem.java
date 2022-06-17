@@ -31,7 +31,7 @@ import twilightforest.init.TFEntities;
 import twilightforest.entity.projectile.MoonwormShot;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class MoonwormQueenItem extends Item {

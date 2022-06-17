@@ -27,7 +27,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 //railgun time
 //falling blocks dont work well with bugs, so I made this

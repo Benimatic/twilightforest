@@ -11,7 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 //a place to hold all custom tags, since I imagine we wont have a lot of them
 public class CustomTagGenerator {

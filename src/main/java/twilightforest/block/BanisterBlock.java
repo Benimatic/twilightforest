@@ -34,7 +34,7 @@ import net.minecraftforge.common.ToolActions;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
@@ -121,7 +121,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
 		return BlockPathTypes.BLOCKED;
 	}
 

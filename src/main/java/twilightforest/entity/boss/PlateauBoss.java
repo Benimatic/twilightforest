@@ -19,7 +19,7 @@ import twilightforest.init.TFLandmark;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 

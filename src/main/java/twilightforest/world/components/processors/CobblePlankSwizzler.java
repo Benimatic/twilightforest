@@ -15,7 +15,7 @@ import twilightforest.enums.StructureWoodVariant;
 import twilightforest.util.ArrayUtil;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public final class CobblePlankSwizzler extends StructureProcessor {
     private final StructureWoodVariant OAK_SWIZZLE;

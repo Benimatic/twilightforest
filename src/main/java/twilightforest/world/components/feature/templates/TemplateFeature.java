@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.material.Material;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class TemplateFeature<T extends FeatureConfiguration> extends Feature<T> {
 	public TemplateFeature(Codec<T> config) {

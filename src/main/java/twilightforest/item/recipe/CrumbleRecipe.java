@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.init.TFRecipes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) implements Recipe<Container> {
 

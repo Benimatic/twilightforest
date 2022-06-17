@@ -22,7 +22,7 @@ import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 import twilightforest.world.components.processors.StoneBricksVariants;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class FancyWellFeature extends TemplateFeature<NoneFeatureConfiguration> {
     private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");

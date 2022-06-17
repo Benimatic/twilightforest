@@ -6,7 +6,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.entity.RovingCube;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 public class CubeMoveToRedstoneSymbolsGoal extends Goal {

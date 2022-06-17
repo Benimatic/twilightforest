@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.entity.FireflyBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class FireflyBlock extends CritterBlock {
 

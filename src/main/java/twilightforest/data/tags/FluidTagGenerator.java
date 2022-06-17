@@ -8,7 +8,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class FluidTagGenerator extends FluidTagsProvider {
 

@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 import twilightforest.world.components.structures.util.StructureHints;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 // Landmark structure with a progression lock; Lich Tower/Labyrinth/Hydra Lair/Final Castle/etc

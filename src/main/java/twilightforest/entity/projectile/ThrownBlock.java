@@ -19,7 +19,7 @@ import twilightforest.entity.monster.Troll;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ThrownBlock extends TFThrowable {
 

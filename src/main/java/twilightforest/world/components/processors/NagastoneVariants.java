@@ -14,7 +14,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public final class NagastoneVariants extends StructureProcessor {
 	public static final NagastoneVariants INSTANCE = new NagastoneVariants();

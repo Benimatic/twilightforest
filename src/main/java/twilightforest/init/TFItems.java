@@ -24,7 +24,7 @@ import twilightforest.enums.TwilightArmorMaterial;
 import twilightforest.item.*;
 import twilightforest.util.TwilightItemTier;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class TFItems {

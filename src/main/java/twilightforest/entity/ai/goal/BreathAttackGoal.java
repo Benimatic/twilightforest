@@ -10,7 +10,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {

@@ -41,7 +41,7 @@ import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.init.TFFeatureModifiers;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})

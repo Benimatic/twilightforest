@@ -15,7 +15,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SmartGrassProcessor extends StructureProcessor {
     public static final SmartGrassProcessor INSTANCE = new SmartGrassProcessor();

@@ -29,7 +29,7 @@ import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.init.BiomeKeys;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

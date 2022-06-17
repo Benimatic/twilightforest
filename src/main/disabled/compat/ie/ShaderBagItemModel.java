@@ -27,7 +27,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.TFClientEvents;
 import twilightforest.client.shader.ShaderManager;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;

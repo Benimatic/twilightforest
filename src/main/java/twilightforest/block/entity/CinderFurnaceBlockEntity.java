@@ -23,7 +23,7 @@ import net.minecraftforge.common.Tags;
 import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.init.TFBlocks;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	private static final int SMELT_LOG_FACTOR = 10;

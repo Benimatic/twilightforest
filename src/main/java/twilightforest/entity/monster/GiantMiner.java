@@ -20,7 +20,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFItems;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class GiantMiner extends Monster {

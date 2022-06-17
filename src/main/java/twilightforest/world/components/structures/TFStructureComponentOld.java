@@ -29,7 +29,7 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.init.TFLandmark;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;

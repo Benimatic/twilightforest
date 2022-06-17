@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class KingSpider extends Spider {
 

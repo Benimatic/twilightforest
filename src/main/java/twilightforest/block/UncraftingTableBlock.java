@@ -23,7 +23,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.inventory.UncraftingMenu;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class UncraftingTableBlock extends Block {
 

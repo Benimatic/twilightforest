@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import twilightforest.block.entity.TFSignBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class TFSignBlock extends StandingSignBlock {
 	public TFSignBlock(Properties properties, WoodType type) {

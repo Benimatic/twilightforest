@@ -31,7 +31,7 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

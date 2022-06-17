@@ -29,7 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.entity.CinderFurnaceBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 

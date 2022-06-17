@@ -26,7 +26,7 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 //used a fair bit of chest logic in this for the lid

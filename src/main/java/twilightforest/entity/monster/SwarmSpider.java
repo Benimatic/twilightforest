@@ -24,7 +24,7 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SwarmSpider extends Spider {
 

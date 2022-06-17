@@ -32,7 +32,7 @@ import twilightforest.init.TFStats;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock {
 

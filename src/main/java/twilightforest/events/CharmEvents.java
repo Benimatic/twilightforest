@@ -25,11 +25,15 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.CharmEffect;
 import twilightforest.enums.BlockLoggingEnum;
@@ -38,6 +42,7 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CharmEvents {
@@ -231,7 +236,7 @@ public class CharmEvents {
 					casket.casketname = modifiedName;
 					casket.setCustomName(Component.literal(modifiedName + "'s " + (level.getRandom().nextInt(1000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
 					int damage = level.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
-					if (level.random.nextFloat() <= 0.15F) {
+					if (level.getRandom().nextFloat() <= 0.15F) {
 						if (damage >= 2) {
 							player.getInventory().dropAll();
 							level.setBlockAndUpdate(immutablePos, Blocks.AIR.defaultBlockState());
@@ -283,7 +288,7 @@ public class CharmEvents {
 		// spawn effect thingers
 		if (charmUsed != null) {
 			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charmUsed.getItem());
-			player.level.addFreshEntity(effect);
+			player.getLevel().addFreshEntity(effect);
 
 			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charmUsed.getItem());
 			effect2.offset = (float) Math.PI;
@@ -311,14 +316,14 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-//		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-//			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
-//
-//			if (slot.isPresent()) {
-//				slot.get().stack().shrink(1);
-//				return true;
-//			}
-//		}
+		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
+
+			if (slot.isPresent()) {
+				slot.get().stack().shrink(1);
+				return true;
+			}
+		}
 
 		return false;
 	}

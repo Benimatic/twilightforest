@@ -31,7 +31,7 @@ import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 //[VanillaCopy] of SkullBlockRenderer, but add le candel

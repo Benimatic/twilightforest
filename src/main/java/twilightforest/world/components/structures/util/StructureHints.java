@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface StructureHints {
     String BOOK_AUTHOR = "A Forgotten Explorer";

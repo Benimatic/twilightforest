@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.util.EntityUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class HedgeBlock extends Block {
@@ -47,7 +47,7 @@ public class HedgeBlock extends Block {
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
 		return mob != null && this.shouldDamage(mob) ? BlockPathTypes.DANGER_CACTUS : null;
 	}
 

@@ -28,7 +28,7 @@ import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.util.EntityUtil;
 import twilightforest.init.TFDamageSources;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 

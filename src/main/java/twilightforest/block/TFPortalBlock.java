@@ -54,7 +54,7 @@ import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

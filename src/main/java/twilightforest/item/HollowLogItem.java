@@ -10,7 +10,7 @@ import twilightforest.block.HollowLogClimbable;
 import twilightforest.block.HollowLogHorizontal;
 import twilightforest.block.HollowLogVertical;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public class HollowLogItem extends BlockItem {

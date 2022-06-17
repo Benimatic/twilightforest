@@ -23,7 +23,7 @@ import twilightforest.block.entity.CicadaBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class CicadaBlock extends CritterBlock {

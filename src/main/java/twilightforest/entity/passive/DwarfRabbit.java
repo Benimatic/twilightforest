@@ -26,7 +26,7 @@ import net.minecraft.world.level.material.Material;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class DwarfRabbit extends Animal {
 

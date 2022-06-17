@@ -34,7 +34,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;

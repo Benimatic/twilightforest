@@ -19,7 +19,7 @@ import net.minecraftforge.common.ForgeMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 

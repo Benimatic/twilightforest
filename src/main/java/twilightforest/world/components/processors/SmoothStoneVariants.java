@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.util.FeaturePlacers;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 
 public class SmoothStoneVariants extends StructureProcessor {

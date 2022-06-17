@@ -27,7 +27,7 @@ import twilightforest.entity.ai.goal.RedcapLightTNTGoal;
 import twilightforest.entity.ai.goal.RedcapShyGoal;
 import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class Redcap extends Monster {
 
