@@ -1,12 +1,13 @@
 package twilightforest.compat;
 
-import net.minecraft.world.item.Item;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import twilightforest.TwilightForestMod;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 //I was having an issue where the game refused to load with the enum method and I couldnt figure it out, so I moved to a new method of registering compat
 //It works the same as it used to, but all the content for each mod should be in its own class.
@@ -22,9 +23,9 @@ public abstract class TFCompat {
 
     static {
         classes.put(CURIOS_ID, CuriosCompat.class);
-        classes.put(IE_ID, IECompat.class);
-        classes.put(TCON_ID, TConCompat.class);
-        classes.put(UNDERGARDEN_ID, UndergardenCompat.class);
+        //classes.put(IE_ID, IECompat.class);
+        //classes.put(TCON_ID, TConCompat.class);
+        //classes.put(UNDERGARDEN_ID, UndergardenCompat.class);
     }
 
     protected TFCompat(String modName) {
@@ -68,20 +69,6 @@ public abstract class TFCompat {
         }
     }
 
-    public static void initCompatItems(RegistryEvent.Register<Item> evt) {
-        for (TFCompat compat : modules) {
-            if (compat.isActivated) {
-                try {
-                    compat.initItems(evt);
-                } catch (Exception e) {
-                    compat.isActivated = false;
-                    TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in initializing items!", e.getLocalizedMessage(), compat.modName);
-                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
-                }
-            }
-        }
-    }
-
 
     public static void postInitCompat() {
         for (TFCompat compat : modules) {
@@ -118,8 +105,6 @@ public abstract class TFCompat {
     protected abstract void postInit();
 
     protected abstract void handleIMCs();
-
-    protected abstract void initItems(RegistryEvent.Register<Item> evt);
 
     public final String modName;
 

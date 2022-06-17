@@ -1,11 +1,8 @@
 package twilightforest.compat;
 
-import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
-import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.api.runtime.IJeiRuntime;
@@ -15,16 +12,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.UncraftingGui;
-import twilightforest.compat.ie.IEShaderRegister;
+import twilightforest.client.UncraftingScreen;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.inventory.UncraftingContainer;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFMenuTypes;
+import twilightforest.init.TFRecipes;
+import twilightforest.inventory.UncraftingMenu;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,25 +34,25 @@ public class JEI implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(UncraftingContainer.class, RecipeTypes.CRAFTING, 11, 9, 20, 36);
+        registration.addRecipeTransferHandler(UncraftingMenu.class, TFMenuTypes.UNCRAFTING.get(), RecipeTypes.CRAFTING, 11, 9, 20, 36);
     }
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         IIngredientManager ingredientManager = jeiRuntime.getIngredientManager();
 
-        if(ModList.get().isLoaded(TFCompat.IE_ID)) {
-            ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
-                    ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
-                            ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
-                    )));
-
-            for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.getAllTwilightShaders()) {
-                ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
-                ItemNBTHelper.putString(stack, "shader_name", entry.getName().toString());
-                ingredientManager.addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(stack));
-            }
-        }
+//        if(ModList.get().isLoaded(TFCompat.IE_ID)) {
+//            ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
+//                    ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
+//                            ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
+//                    )));
+//
+//            for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.getAllTwilightShaders()) {
+//                ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
+//                ItemNBTHelper.putString(stack, "shader_name", entry.getName().toString());
+//                ingredientManager.addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(stack));
+//            }
+//        }
     }
 
     @Override
@@ -84,7 +79,7 @@ public class JEI implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(UncraftingGui.class, 34, 33, 27, 20, JEIUncraftingCategory.UNCRAFTING);
-        registration.addRecipeClickArea(UncraftingGui.class, 115, 33, 27, 20, RecipeTypes.CRAFTING);
+        registration.addRecipeClickArea(UncraftingScreen.class, 34, 33, 27, 20, JEIUncraftingCategory.UNCRAFTING);
+        registration.addRecipeClickArea(UncraftingScreen.class, 115, 33, 27, 20, RecipeTypes.CRAFTING);
     }
 }

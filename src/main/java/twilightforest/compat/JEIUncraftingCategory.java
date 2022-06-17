@@ -9,15 +9,14 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +28,7 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
     public static final int height = 54;
     private final IDrawable background;
     private final IDrawable icon;
-    private final TranslatableComponent localizedName;
+    private final Component localizedName;
 
     public JEIUncraftingCategory(IGuiHelper guiHelper) {
         ResourceLocation location = TwilightForestMod.getGuiTexture("uncrafting_jei.png");
@@ -41,19 +40,6 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
     @Override
     public RecipeType<CraftingRecipe> getRecipeType() {
         return UNCRAFTING;
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    public ResourceLocation getUid() {
-        return UNCRAFTING.getUid();
-    }
-
-
-    @SuppressWarnings("removal")
-    @Override
-    public Class<? extends CraftingRecipe> getRecipeClass() {
-        return CraftingRecipe.class;
     }
 
     @Override

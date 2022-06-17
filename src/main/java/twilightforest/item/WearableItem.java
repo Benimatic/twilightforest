@@ -7,8 +7,12 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.ModList;
+import twilightforest.block.CritterBlock;
+import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TFCompat;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class WearableItem extends BlockItem {
     public WearableItem(Block block, Properties props) {
@@ -29,9 +33,9 @@ public class WearableItem extends BlockItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-//        if(ModList.get().isLoaded(TFCompat.CURIOS_ID) && this.getBlock() instanceof CritterBlock) {
-//            CuriosCompat.setupCuriosCapability(stack);
-//        }
+        if(ModList.get().isLoaded(TFCompat.CURIOS_ID) && this.getBlock() instanceof CritterBlock) {
+            return CuriosCompat.setupCuriosCapability(stack);
+        }
         return super.initCapabilities(stack, nbt);
     }
 }

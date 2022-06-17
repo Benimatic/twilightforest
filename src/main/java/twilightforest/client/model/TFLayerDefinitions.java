@@ -7,14 +7,19 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
+import twilightforest.client.model.item.CharmOfKeepingModel;
+import twilightforest.client.model.item.CharmOfLife1NecklaceModel;
+import twilightforest.client.model.item.CharmOfLife2NecklaceModel;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
+import twilightforest.compat.TFCompat;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFLayerDefinitions {
@@ -155,10 +160,10 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, CasketTileEntityRenderer::create);
 		event.registerLayerDefinition(TFModelLayers.MOONWORM, MoonwormModel::create);
 
-//		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-//			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
-//			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
-//			event.registerLayerDefinition(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);
-//		}
+		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
+			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
+			event.registerLayerDefinition(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);
+		}
 	}
 }

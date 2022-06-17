@@ -125,14 +125,13 @@ public class TwilightForestMod {
 		TFSounds.SOUNDS.register(modbus);
 		TFEntities.SPAWN_EGGS.register(modbus);
 		TFStats.STATS.register(modbus);
-		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
-		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
-		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
-
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modbus);
+		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
+		TFStructureSets.STRUCTURE_SETS.register(modbus);
 		TFStructureTypes.STRUCTURE_TYPES.register(modbus);
 		TFStructures.STRUCTURES.register(modbus);
-		TFStructureSets.STRUCTURE_SETS.register(modbus);
+		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
+		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
 
 //		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
 //			UndergardenCompat.ENTITIES.register(modbus);
@@ -145,16 +144,17 @@ public class TwilightForestMod {
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
-//		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-//			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
-//		}
+
+		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+		}
 
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				//TFCompat.preInitCompat();
+				TFCompat.preInitCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading preInit compatibility!");
@@ -201,7 +201,7 @@ public class TwilightForestMod {
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
-		//TFCompat.sendIMCs();
+		TFCompat.sendIMCs();
 	}
 
 	@SubscribeEvent
@@ -211,7 +211,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				//TFCompat.initCompat(evt);
+				TFCompat.initCompat(evt);
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");
@@ -221,7 +221,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				//TFCompat.postInitCompat();
+				TFCompat.postInitCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading postInit compatibility!");

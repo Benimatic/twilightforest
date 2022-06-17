@@ -15,11 +15,14 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TFCompat;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.client.renderer.entity.IceLayer;
@@ -83,9 +86,9 @@ public class TFClientSetup {
             Sheets.addWoodType(TFBlocks.MINING);
             Sheets.addWoodType(TFBlocks.SORTING);
 
-//			if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-//				CuriosCompat.registerCurioRenderers();
-//			}
+			if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+				CuriosCompat.registerCurioRenderers();
+			}
         });
        
     }
