@@ -243,6 +243,7 @@ public class TwilightForestMod {
 			TFEntities.registerSpawnPlacements();
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
+			TFStats.init();
 
 			WoodType.register(TFBlocks.TWILIGHT_OAK);
 			WoodType.register(TFBlocks.CANOPY);

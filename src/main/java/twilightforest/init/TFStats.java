@@ -3,13 +3,19 @@ package twilightforest.init;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.StatFormatter;
+import net.minecraft.stats.Stats;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TFStats {
 
 	public static final DeferredRegister<ResourceLocation> STATS = DeferredRegister.create(Registry.CUSTOM_STAT_REGISTRY, TwilightForestMod.ID);
+	private static final List<Runnable> STAT_SETUP = new ArrayList<>();
 
 	public static final RegistryObject<ResourceLocation> BUGS_SQUISHED = makeTFStat("bugs_squished");
 	public static final RegistryObject<ResourceLocation> UNCRAFTING_TABLE_INTERACTIONS = makeTFStat("uncrafting_table_interactions");
@@ -24,7 +30,11 @@ public class TFStats {
 
 	private static RegistryObject<ResourceLocation> makeTFStat(String key) {
 		ResourceLocation resourcelocation = TwilightForestMod.prefix(key);
-		//Stats.CUSTOM.get(resourcelocation, StatFormatter.DEFAULT);
+		STAT_SETUP.add(() -> Stats.CUSTOM.get(resourcelocation, StatFormatter.DEFAULT));
 		return STATS.register(key, () -> resourcelocation);
+	}
+
+	public static void init() {
+		STAT_SETUP.forEach(Runnable::run);
 	}
 }
