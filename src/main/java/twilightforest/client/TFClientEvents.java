@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,14 +41,16 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
+import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.events.HostileMountEvents;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -82,7 +85,7 @@ public class TFClientEvents {
 
 			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
 
-			if(!ModList.get().isLoaded("ctm")) {
+			if (!ModList.get().isLoaded("ctm")) {
 				tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 				tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 				tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
@@ -182,7 +185,7 @@ public class TFClientEvents {
 
 
 		@SubscribeEvent
-		public static void registerModels (ModelRegistryEvent event){
+		public static void registerModels(ModelRegistryEvent event) {
 			ForgeModelBakery.addSpecialModel(ShieldLayer.LOC);
 			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
 			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
@@ -220,10 +223,10 @@ public class TFClientEvents {
 		Entity entity = Minecraft.getInstance().getCameraEntity();
 		if (entity instanceof LivingEntity) {
 			EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
-			if (renderer instanceof LivingEntityRenderer<?,?>) {
+			if (renderer instanceof LivingEntityRenderer<?, ?>) {
 				for (EffectRenders effect : EffectRenders.VALUES) {
 					if (effect.shouldRender((LivingEntity) entity, true)) {
-						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
+						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?, ?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
 					}
 				}
 			}
@@ -305,7 +308,7 @@ public class TFClientEvents {
 		//if (item.getDisplayName() instanceof MutableComponent displayName)
 		//	displayName/*.append(wip ? " [WIP]" : " [NYI]")*/.setStyle(displayName.getStyle().withColor(ChatFormatting.DARK_GRAY));
 
-		if(!item.is(ItemTagGenerator.WIP) && !item.is(ItemTagGenerator.NYI)) return;
+		if (!item.is(ItemTagGenerator.WIP) && !item.is(ItemTagGenerator.NYI)) return;
 
 		if (item.is(ItemTagGenerator.WIP)) {
 			event.getToolTip().add(WIP_TEXT_0);
@@ -327,13 +330,14 @@ public class TFClientEvents {
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
 	@SubscribeEvent
-	public static void FOVUpdate(EntityViewRenderEvent.FieldOfView event) {
-		if (event.getCamera().getEntity() instanceof LivingEntity living && living.isUsingItem()) {
-			Item useItem = living.getUseItem().getItem();
+	public static void FOVUpdate(FOVModifierEvent event) {
+		Player player = event.getPlayer();
+		if (player.isUsingItem()) {
+			Item useItem = player.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
-				float f = (living.getTicksUsingItem() + (float)event.getPartialTick()) / 20F;
+				float f = player.getTicksUsingItem() / 20.0F;
 				f = f > 1.0F ? 1.0F : f * f;
-				event.setFOV(event.getFOV() * (1.0F - f * 0.15F));
+				event.setNewFov(event.getFov() * (1.0F - f * 0.15F));
 			}
 		}
 	}
@@ -356,9 +360,9 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-//		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-//			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
-//		}
+		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
+		}
 		return false;
 	}
 }
