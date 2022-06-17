@@ -1,4 +1,4 @@
-// 1.19	2022-06-13T15:02:50.6214792	TwilightForest blockstates and block models
+// 1.19	2022-06-17T12:42:48.3927966	TwilightForest blockstates and block models
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -10,6 +10,7 @@ feda195e2826ec1334fe59dc0d98cb9519743ff4 assets/twilightforest/blockstates/auror
 3efb63228a1e1615c510925b08cd24409f96aa96 assets/twilightforest/blockstates/aurora_block.json
 06b8d2c19720a41c08406f14c410780ca4f2f3ac assets/twilightforest/blockstates/aurora_pillar.json
 87eabe763bbf2fb2afb0a556edea7e64da27211d assets/twilightforest/blockstates/aurora_slab.json
+62b18edaef9c27bb158830e8d1bb5e82cf3a73c2 assets/twilightforest/blockstates/beanstalk_grower.json
 ab47df46795bc4ee1d88b446b0305ee474c1ed9c assets/twilightforest/blockstates/beanstalk_leaves.json
 ce1effc5cd47e7bff66c74246f37fbdb32e3459d assets/twilightforest/blockstates/birch_banister.json
 a8f0f6214d3006e489fd4976c259e1d728e2c347 assets/twilightforest/blockstates/blue_castle_door.json
@@ -452,6 +453,7 @@ ea795dc51ee2bba7b513f4ed28434b8bd370d3bb assets/twilightforest/models/block/auro
 d00888b7ae6fc36a77e74ac9def4e301d89283ae assets/twilightforest/models/block/aurora_pillar.json
 079906d710a9bbd346e27a6238793e8ad599ec9d assets/twilightforest/models/block/aurora_slab.json
 fe9056ec5f3d5a84aa3a27ffda39bf1ce2005946 assets/twilightforest/models/block/aurora_slab_double.json
+9d7f647e9f1f988c576388a90d98569927846f24 assets/twilightforest/models/block/beanstalk_grower.json
 a80406b6f10ed730630cce44f1fff5f635420fc0 assets/twilightforest/models/block/birch_banister_connected.json
 ad1253493f05424be21c408de2ef1c49e4bb608a assets/twilightforest/models/block/birch_banister_connected_extended.json
 08fb51fe4662baa819f2b56be67824fcafb6bb66 assets/twilightforest/models/block/birch_banister_short.json

@@ -188,6 +188,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("top", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
 						.texture("dirt", blockTexture(TFBlocks.UBEROUS_SOIL.get())));
 		axisBlock(TFBlocks.HUGE_STALK.get(), prefix("block/huge_stalk"), prefix("block/huge_stalk_top"));
+		builtinEntity(TFBlocks.BEANSTALK_GROWER.get(), "twilightforest:block/stone_twist/twist_blank");
 		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
 		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_mushgloom_stem"));
 		simpleBlock(TFBlocks.TROLLVIDR.get(), models().cross(TFBlocks.TROLLVIDR.getId().getPath(), blockTexture(TFBlocks.TROLLVIDR.get())));

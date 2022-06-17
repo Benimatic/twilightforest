@@ -2,14 +2,12 @@ package twilightforest.item;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -17,17 +15,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
 
 public class MagicBeansItem extends Item {
-
-	private int blocksSkipped;
 
 	public MagicBeansItem(Properties properties) {
 		super(properties);
@@ -42,20 +36,20 @@ public class MagicBeansItem extends Item {
 		Block blockAt = level.getBlockState(pos).getBlock();
 		ItemStack stack = context.getItemInHand();
 
-		int minY = pos.getY() + 1;
 		int maxY = Math.max(pos.getY() + 100, 175);
 		if (pos.getY() < maxY && blockAt == TFBlocks.UBEROUS_SOIL.get()) {
 			if (!level.isClientSide()) {
 				stack.shrink(1);
-				this.makeHugeStalk(level, pos, minY, maxY);
+				level.setBlockAndUpdate(pos.above(), TFBlocks.BEANSTALK_GROWER.get().defaultBlockState());
+				level.playSound(null, pos, TFSounds.BEANSTALK_GROWTH.get(), SoundSource.BLOCKS, 4.0F, 1.0F);
 				if (player instanceof ServerPlayer) {
 					player.awardStat(Stats.ITEM_USED.get(this));
 
 					//fallback if the other part doesnt work since its inconsistent
 					PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
-					ServerAdvancementManager manager = ((ServerLevel)player.getCommandSenderWorld()).getServer().getAdvancements();
+					ServerAdvancementManager manager = ((ServerLevel) player.getCommandSenderWorld()).getServer().getAdvancements();
 					Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("beanstalk"));
-					if(advancement != null) {
+					if (advancement != null && !manager.getAllAdvancements().contains(advancement)) {
 						advancements.award(advancement, "use_beans");
 					}
 				}
@@ -64,120 +58,6 @@ public class MagicBeansItem extends Item {
 			return InteractionResult.SUCCESS;
 		} else {
 			return InteractionResult.PASS;
-		}
-	}
-
-	private void makeHugeStalk(Level world, BlockPos pos, int minY, int maxY) {
-		float x = pos.getX();
-		float z = pos.getZ();
-
-		int yOffset = world.getRandom().nextInt(100);
-
-		float cScale = world.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling
-		float rScale = world.getRandom().nextFloat() * 0.25F + 0.125F; // radius change scaling
-
-		// offset x and z to make stalk start at origin
-		float radius = 4F + Mth.sin((minY + yOffset) * rScale) * 3F; // make radius a little wavy
-		x -= Mth.sin((minY + yOffset) * cScale) * radius;
-		z -= Mth.cos((minY + yOffset) * cScale) * radius;
-
-		// leaves!
-		int nextLeafY = minY + 10 + world.getRandom().nextInt(20);
-
-		// make stalk
-		boolean isClear = true;
-		for (int dy = minY; dy < maxY && isClear; dy++) {
-			// make radius a little wavy
-			radius = 5F + Mth.sin((dy + yOffset) * rScale) * 2.5F;
-
-			// find center of stalk
-			float cx = x + Mth.sin((dy + yOffset) * cScale) * radius;
-			float cz = z + Mth.cos((dy + yOffset) * cScale) * radius;
-
-
-			float stalkThickness = 2.5F;
-
-			// reduce thickness near top
-			if (maxY - dy < 5) {
-				stalkThickness *= (maxY - dy) / 5F;
-			}
-
-			int minX = Mth.floor(x - radius - stalkThickness);
-			int maxX = Mth.ceil(x + radius + stalkThickness);
-			int minZ = Mth.floor(z - radius - stalkThickness);
-			int maxZ = Mth.ceil(z + radius + stalkThickness);
-
-			// generate stalk
-			for (int dx = minX; dx < maxX && isClear; dx++) {
-				for (int dz = minZ; dz < maxZ && isClear; dz++) {
-					if ((dx - cx) * (dx - cx) + (dz - cz) * (dz - cz) < stalkThickness * stalkThickness) {
-						isClear = this.tryToPlaceStalk(world, new BlockPos(dx, dy, dz));
-					}
-				}
-			}
-			//reset skipped blocks as we're moving on to a new layer
-			this.blocksSkipped = 0;
-
-			// leaves?
-			if (dy == nextLeafY) {
-				// make leaf blob
-
-				int lx = (int) (x + Mth.sin((dy + yOffset) * cScale) * (radius + stalkThickness));
-				int lz = (int) (z + Mth.cos((dy + yOffset) * cScale) * (radius + stalkThickness));
-
-				this.placeLeaves(world, new BlockPos(lx, dy, lz));
-
-				nextLeafY = dy + 5 + world.getRandom().nextInt(10);
-			}
-		}
-	}
-
-	private void placeLeaves(Level level, BlockPos pos) {
-		// stalk at center
-		level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
-
-		// small squares
-		for (int dx = -1; dx <= 1; dx++) {
-			for (int dz = -1; dz <= 1; dz++) {
-				this.tryToPlaceLeaves(level, pos.offset(dx, -1, dz));
-				this.tryToPlaceLeaves(level, pos.offset(dx, 1, dz));
-			}
-		}
-		// larger square
-		for (int dx = -2; dx <= 2; dx++) {
-			for (int dz = -2; dz <= 2; dz++) {
-				if (!((dx == 2 || dx == -2) && (dz == 2 || dz == -2))) {
-					this.tryToPlaceLeaves(level, pos.offset(dx, 0, dz));
-				}
-			}
-		}
-	}
-
-	/**
-	 * Place the stalk block only if the destination is clear.  Return false if a layer is blocked by 15 or more blocks.
-	 */
-	private boolean tryToPlaceStalk(Level level, BlockPos pos) {
-		BlockState state = level.getBlockState(pos);
-		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || state.is(TFBlocks.FLUFFY_CLOUD.get())) {
-			level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
-			if (pos.getY() > 150) {
-				for (int i = 0; i < 7; i++) {
-					if (level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.WISPY_CLOUD.get()) || level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.FLUFFY_CLOUD.get())) {
-						level.setBlockAndUpdate(pos.relative(Direction.UP, i), Blocks.AIR.defaultBlockState());
-					}
-				}
-			}
-			return true;
-		} else {
-			this.blocksSkipped++;
-			return this.blocksSkipped < 15;
-		}
-	}
-
-	private void tryToPlaceLeaves(Level level, BlockPos pos) {
-		BlockState state = level.getBlockState(pos);
-		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			level.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 2);
 		}
 	}
 }

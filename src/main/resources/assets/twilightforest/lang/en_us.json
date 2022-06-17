@@ -1283,7 +1283,7 @@
   "subtitles.twilightforest.entity.tome.death": "Death Tome falls apart",
   "subtitles.twilightforest.entity.tome.hurt": "Death Tome creases",
   "subtitles.twilightforest.entity.tome.ambient": "Death Tome flips pages",
-  "subtitles.twilightforest.entity.troll.throw_block": "Troll chucks block",
+  "subtitles.twilightforest.entity.troll.throw_rock": "Troll chucks block",
   "subtitles.twilightforest.entity.urghast.ambient": "Ur-Ghast cries",
   "subtitles.twilightforest.entity.urghast.death": "Ur-Ghast dies",
   "subtitles.twilightforest.entity.urghast.hurt": "Ur-Ghast screams",
@@ -1315,6 +1315,7 @@
   "subtitles.twilightforest.entity.tome.parrot": "Parrot makes book noises",
   "subtitles.twilightforest.entity.wraith.parrot": "Parrot gasps",
 
+  "subtitles.twilightforest.block.beanstalk.grow": "Ground rumbles",
   "subtitles.twilightforest.block.bug.squish": "Bug gets squished :(",
   "subtitles.twilightforest.block.builder.create": "Builder creates block",
   "subtitles.twilightforest.block.builder.off": "Builder deactivates",

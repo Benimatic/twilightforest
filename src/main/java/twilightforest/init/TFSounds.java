@@ -22,6 +22,7 @@ public final class TFSounds {
 	public static final RegistryObject<SoundEvent> ALPHAYETI_PANT = createEvent("entity.twilightforest.alphayeti.pant");
 	public static final RegistryObject<SoundEvent> ALPHAYETI_ROAR = createEvent("entity.twilightforest.alphayeti.roar");
 	public static final RegistryObject<SoundEvent> ALPHAYETI_THROW = createEvent("entity.twilightforest.alphayeti.throw");
+	public static final RegistryObject<SoundEvent> BEANSTALK_GROWTH = createEvent("block.twilightforest.beanstalk.grow");
 	public static final RegistryObject<SoundEvent> BIGHORN_AMBIENT = createEvent("entity.twilightforest.bighorn.ambient");
 	public static final RegistryObject<SoundEvent> BIGHORN_DEATH = createEvent("entity.twilightforest.bighorn.death");
 	public static final RegistryObject<SoundEvent> BIGHORN_HURT = createEvent("entity.twilightforest.bighorn.hurt");
