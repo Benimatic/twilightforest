@@ -17,13 +17,13 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.init.TFBlocks;
-import twilightforest.block.entity.SkullCandleBlockEntity;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class SkullCandleItem extends StandingAndWallBlockItem {
@@ -33,18 +33,18 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
-		if(stack.hasTag()) {
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTagElement("BlockEntityTag");
 			if (tag != null) {
 				if (tag.contains("CandleColor") && tag.contains("CandleAmount")) {
 					tooltip.add(
 							Component.translatable(tag.getInt("CandleAmount") > 1 ?
-									"item.twilightforest.skull_candle.desc.multiple" :
-									"item.twilightforest.skull_candle.desc",
-									String.valueOf(tag.getInt("CandleAmount")),
-									WordUtils.capitalize(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")).getSerializedName()
-											.replace("\"", "").replace("_", " ")))
+													"item.twilightforest.skull_candle.desc.multiple" :
+													"item.twilightforest.skull_candle.desc",
+											String.valueOf(tag.getInt("CandleAmount")),
+											WordUtils.capitalize(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")).getSerializedName()
+													.replace("\"", "").replace("_", " ")))
 									.withStyle(ChatFormatting.GRAY));
 				}
 			}
@@ -86,8 +86,8 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 	}
 
 	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
-		return armorType == EquipmentSlot.HEAD;
+	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
+		return slot == EquipmentSlot.HEAD;
 	}
 
 	@Override
@@ -98,22 +98,22 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
+		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
 			return CuriosCompat.setupCuriosCapability(stack);
 		}
-		return super.initCapabilities(stack, nbt);
+		return super.initCapabilities(stack, tag);
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
 		if (this.allowedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
+			ItemStack stack = new ItemStack(this);
 			CompoundTag tag = new CompoundTag();
 			tag.putInt("CandleAmount", 1);
 			tag.putInt("CandleColor", 0);
-			istack.addTagElement("BlockEntityTag", tag);
-			list.add(istack);
+			stack.addTagElement("BlockEntityTag", tag);
+			items.add(stack);
 		}
 	}
 }

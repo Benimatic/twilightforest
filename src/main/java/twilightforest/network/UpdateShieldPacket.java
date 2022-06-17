@@ -17,9 +17,9 @@ public class UpdateShieldPacket {
 	private final int permanentShields;
 
 	public UpdateShieldPacket(int id, IShieldCapability cap) {
-		entityID = id;
-		temporaryShields = cap.temporaryShieldsLeft();
-		permanentShields = cap.permanentShieldsLeft();
+		this.entityID = id;
+		this.temporaryShields = cap.temporaryShieldsLeft();
+		this.permanentShields = cap.permanentShieldsLeft();
 	}
 
 	public UpdateShieldPacket(Entity entity, IShieldCapability cap) {
@@ -27,30 +27,27 @@ public class UpdateShieldPacket {
 	}
 
 	public UpdateShieldPacket(FriendlyByteBuf buf) {
-		entityID = buf.readInt();
-		temporaryShields = buf.readInt();
-		permanentShields = buf.readInt();
+		this.entityID = buf.readInt();
+		this.temporaryShields = buf.readInt();
+		this.permanentShields = buf.readInt();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(entityID);
-		buf.writeInt(temporaryShields);
-		buf.writeInt(permanentShields);
+		buf.writeInt(this.entityID);
+		buf.writeInt(this.temporaryShields);
+		buf.writeInt(this.permanentShields);
 	}
 
 	public static class Handler {
 
 		public static boolean onMessage(UpdateShieldPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-					if (entity instanceof LivingEntity) {
-						entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
-							cap.setShields(message.temporaryShields, true);
-							cap.setShields(message.permanentShields, false);
-						});
-					}
+			ctx.get().enqueueWork(() -> {
+				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
+				if (entity instanceof LivingEntity) {
+					entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
+						cap.setShields(message.temporaryShields, true);
+						cap.setShields(message.permanentShields, false);
+					});
 				}
 			});
 

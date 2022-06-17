@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.processors.TargetedRotProcessor;
@@ -48,7 +48,7 @@ public class QuestGrove extends TwilightTemplateStructurePiece {
 		if ("quest_ram".equals(name)) {
 			FeaturePlacers.placeEntity(TFEntities.QUEST_RAM.get(), pos, levelAccessor);
 		} else if ("dispenser".equals(name)) {
-			TFTreasure.QUEST_GROVE.generateLootContainer(levelAccessor, pos, Blocks.DROPPER.defaultBlockState().setValue(DispenserBlock.FACING, this.placeSettings.getRotation().rotate(Direction.NORTH)), 16 | 4 | 2, random.nextLong());
+			TFLootTables.QUEST_GROVE.generateLootContainer(levelAccessor, pos, Blocks.DROPPER.defaultBlockState().setValue(DispenserBlock.FACING, this.placeSettings.getRotation().rotate(Direction.NORTH)), 16 | 4 | 2, random.nextLong());
 		}
 	}
 }

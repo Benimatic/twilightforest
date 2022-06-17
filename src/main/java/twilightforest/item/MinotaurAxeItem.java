@@ -12,11 +12,10 @@ import twilightforest.TwilightForestMod;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class MinotaurAxeItem extends AxeItem {
 
-	public MinotaurAxeItem(Tier material, Properties props) {
-		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, props);
+	public MinotaurAxeItem(Tier material, Properties properties) {
+		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, properties);
 	}
 
 	@Override
@@ -26,8 +25,8 @@ public class MinotaurAxeItem extends AxeItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, level, tooltip, flags);
 		tooltip.add(Component.translatable("item.twilightforest.minotaur_axe.tooltip").withStyle(ChatFormatting.GRAY));
 	}
 }

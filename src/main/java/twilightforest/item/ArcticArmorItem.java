@@ -17,19 +17,19 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
-		super(armorMaterial, armorType, props);
+	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties properties) {
+		super(armorMaterial, armorType, properties);
 	}
 
 	@Override
@@ -116,8 +116,8 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+		super.appendHoverText(stack, level, tooltip, flagIn);
 		tooltip.add(TOOLTIP);
 	}
 
@@ -130,9 +130,9 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		private static final ArmorRender INSTANCE = new ArmorRender();
 
 		@Override
-		public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+		public HumanoidModel<?> getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
-			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);
+			ModelPart root = models.bakeLayer(slot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);
 			return new TFArmorModel(root);
 		}
 	}

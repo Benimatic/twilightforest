@@ -29,12 +29,12 @@ import java.util.function.Consumer;
 public class YetiArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
-		super(material, slot, props);
+	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+		super(material, slot, properties);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.CHEST) {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
 		} else {
@@ -43,26 +43,26 @@ public class YetiArmorItem extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
 		if (this.allowedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			switch (this.slot) {
-				case HEAD, CHEST, LEGS -> istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
+			ItemStack stack = new ItemStack(this);
+			switch (this.getSlot()) {
+				case HEAD, CHEST, LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
 				case FEET -> {
-					istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
-					istack.enchant(Enchantments.FALL_PROTECTION, 4);
+					stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
+					stack.enchant(Enchantments.FALL_PROTECTION, 4);
 				}
 				default -> { }
 			}
-			list.add(istack);
+			items.add(stack);
 		}
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltips, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltips, flags);
-		tooltips.add(TOOLTIP);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
+		tooltip.add(TOOLTIP);
 	}
 
 	@Override
@@ -74,10 +74,10 @@ public class YetiArmorItem extends ArmorItem {
 		private static final ArmorRender INSTANCE = new ArmorRender();
 
 		@Override
-		public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+		public HumanoidModel<?> getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
-			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
-			return new YetiArmorModel(armorSlot, root);
+			ModelPart root = models.bakeLayer(slot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
+			return new YetiArmorModel(slot, root);
 		}
 	}
 }

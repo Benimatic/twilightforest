@@ -15,8 +15,8 @@ import java.util.List;
 
 public class MoonwormQueenRepairRecipe extends CustomRecipe {
 
-	public MoonwormQueenRepairRecipe(ResourceLocation pId) {
-		super(pId);
+	public MoonwormQueenRepairRecipe(ResourceLocation id) {
+		super(id);
 	}
 
 	@Override

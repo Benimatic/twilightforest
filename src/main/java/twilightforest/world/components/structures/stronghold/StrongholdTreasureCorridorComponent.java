@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
@@ -58,7 +58,7 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 		Rotation rotation = (this.boundingBox.minX() ^ this.boundingBox.minZ()) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_180;
 
 		// treasure!
-		this.placeTreasureRotated(world, 8, 2, 13, rotation == Rotation.NONE ? getOrientation().getClockWise() : getOrientation().getCounterClockWise(), rotation, TFTreasure.STRONGHOLD_CACHE, sbb);
+		this.placeTreasureRotated(world, 8, 2, 13, rotation == Rotation.NONE ? getOrientation().getClockWise() : getOrientation().getCounterClockWise(), rotation, TFLootTables.STRONGHOLD_CACHE, sbb);
 
 		// niche!
 

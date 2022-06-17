@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.processors.CobblePlankSwizzler;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.SmartGrassProcessor;
@@ -82,7 +82,7 @@ public class SimpleWellFeature extends TemplateFeature<NoneFeatureConfiguration>
             default  -> rotation.rotate(mirror.mirror(Direction.NORTH));
         };
 
-        TFTreasure.WELL.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
+        TFLootTables.WELL.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
 
         if (random.nextBoolean()) return;
 

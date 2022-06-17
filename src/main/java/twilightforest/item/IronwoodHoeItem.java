@@ -9,16 +9,16 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 public class IronwoodHoeItem extends HoeItem {
 
-	public IronwoodHoeItem(Tier material, Properties props) {
-		super(material, -2, -1.0F, props);
+	public IronwoodHoeItem(Tier material, Properties properties) {
+		super(material, -2, -1.0F, properties);
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
 		if (this.allowedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			istack.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
-			list.add(istack);
+			ItemStack stack = new ItemStack(this);
+			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
+			list.add(stack);
 		}
 	}
 }

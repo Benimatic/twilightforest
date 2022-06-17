@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.projectile.TomeBolt;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 
 import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
@@ -109,7 +109,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 				if (!this.getLevel().isClientSide()) {
 					LootContext ctx = createLootContext(true, src).create(LootContextParamSets.ENTITY);
 
-					Objects.requireNonNull(this.getLevel().getServer()).getLootTables().get(TFTreasure.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					Objects.requireNonNull(this.getLevel().getServer()).getLootTables().get(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 				}
 			}
 			return true;

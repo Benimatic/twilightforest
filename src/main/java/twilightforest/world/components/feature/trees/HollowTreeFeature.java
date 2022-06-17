@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
@@ -408,7 +408,7 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	private void makeLeafDungeonChest(WorldGenLevel world, RandomSource  random, BlockPos pos) {
 		Direction chestDir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
 		pos = pos.relative(chestDir, 2);
-		TFTreasure.TREE_CACHE.generateChest(world, pos.below(), chestDir.getOpposite(), false);
+		TFLootTables.TREE_CACHE.generateChest(world, pos.below(), chestDir.getOpposite(), false);
 	}
 
 	/**

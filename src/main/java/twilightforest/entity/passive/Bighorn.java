@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -41,22 +41,22 @@ public class Bighorn extends Sheep {
 			return this.getType().getDefaultLootTable();
 		} else {
 			return switch (this.getColor()) {
-				case ORANGE -> TFTreasure.BIGHORN_SHEEP_ORANGE;
-				case MAGENTA -> TFTreasure.BIGHORN_SHEEP_MAGENTA;
-				case LIGHT_BLUE -> TFTreasure.BIGHORN_SHEEP_LIGHT_BLUE;
-				case YELLOW -> TFTreasure.BIGHORN_SHEEP_YELLOW;
-				case LIME -> TFTreasure.BIGHORN_SHEEP_LIME;
-				case PINK -> TFTreasure.BIGHORN_SHEEP_PINK;
-				case GRAY -> TFTreasure.BIGHORN_SHEEP_GRAY;
-				case LIGHT_GRAY -> TFTreasure.BIGHORN_SHEEP_LIGHT_GRAY;
-				case CYAN -> TFTreasure.BIGHORN_SHEEP_CYAN;
-				case PURPLE -> TFTreasure.BIGHORN_SHEEP_PURPLE;
-				case BLUE -> TFTreasure.BIGHORN_SHEEP_BLUE;
-				case BROWN -> TFTreasure.BIGHORN_SHEEP_BROWN;
-				case GREEN -> TFTreasure.BIGHORN_SHEEP_GREEN;
-				case RED -> TFTreasure.BIGHORN_SHEEP_RED;
-				case BLACK -> TFTreasure.BIGHORN_SHEEP_BLACK;
-				default -> TFTreasure.BIGHORN_SHEEP_WHITE;
+				case ORANGE -> TFLootTables.BIGHORN_SHEEP_ORANGE;
+				case MAGENTA -> TFLootTables.BIGHORN_SHEEP_MAGENTA;
+				case LIGHT_BLUE -> TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE;
+				case YELLOW -> TFLootTables.BIGHORN_SHEEP_YELLOW;
+				case LIME -> TFLootTables.BIGHORN_SHEEP_LIME;
+				case PINK -> TFLootTables.BIGHORN_SHEEP_PINK;
+				case GRAY -> TFLootTables.BIGHORN_SHEEP_GRAY;
+				case LIGHT_GRAY -> TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY;
+				case CYAN -> TFLootTables.BIGHORN_SHEEP_CYAN;
+				case PURPLE -> TFLootTables.BIGHORN_SHEEP_PURPLE;
+				case BLUE -> TFLootTables.BIGHORN_SHEEP_BLUE;
+				case BROWN -> TFLootTables.BIGHORN_SHEEP_BROWN;
+				case GREEN -> TFLootTables.BIGHORN_SHEEP_GREEN;
+				case RED -> TFLootTables.BIGHORN_SHEEP_RED;
+				case BLACK -> TFLootTables.BIGHORN_SHEEP_BLACK;
+				default -> TFLootTables.BIGHORN_SHEEP_WHITE;
 			};
 		}
 	}

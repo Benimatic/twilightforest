@@ -33,7 +33,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleBlock;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -717,7 +717,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			surroundBlockCorners(world, stoneBrick, cx, top-1, cx, sbb);
 		}
 
-		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cx, TFTreasure.TOWER_ROOM, sbb);
+		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cx, TFLootTables.TOWER_ROOM, sbb);
 	}
 
 	/**
@@ -832,22 +832,22 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			case 0:
 			default:
 				if (!isLadderPos(2, 1, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, 2, top - 2, 1, TFTreasure.TOWER_LIBRARY, sbb);
+					placeTreasureAtCurrentPosition(world, 2, top - 2, 1, TFLootTables.TOWER_LIBRARY, sbb);
 					break;
 				}
 			case 1:
 				if (!isLadderPos(size - 2, 2, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, size - 2, top - 2, 2, TFTreasure.TOWER_LIBRARY, sbb);
+					placeTreasureAtCurrentPosition(world, size - 2, top - 2, 2, TFLootTables.TOWER_LIBRARY, sbb);
 					break;
 				}
 			case 2:
 				if (!isLadderPos(size - 3, size - 2, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, size - 3, top - 2, size - 2, TFTreasure.TOWER_LIBRARY, sbb);
+					placeTreasureAtCurrentPosition(world, size - 3, top - 2, size - 2, TFLootTables.TOWER_LIBRARY, sbb);
 					break;
 				}
 			case 3:
 				if (!isLadderPos(1, size - 3, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, 1, top - 2, size - 3, TFTreasure.TOWER_LIBRARY, sbb);
+					placeTreasureAtCurrentPosition(world, 1, top - 2, size - 3, TFLootTables.TOWER_LIBRARY, sbb);
 					break;
 				}
 		}

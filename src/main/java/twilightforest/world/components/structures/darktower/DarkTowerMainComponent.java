@@ -32,7 +32,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -628,22 +628,22 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			case 0 -> {
 				placeBlock(world, deco.accentState, x, y + 1, z + 1, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				this.setDoubleLootChest(world, x, y + 2, z + 1, x + 1, y + 2, z + 1, Direction.SOUTH, TFTreasure.DARKTOWER_CACHE, sbb, false);
+				this.setDoubleLootChest(world, x, y + 2, z + 1, x + 1, y + 2, z + 1, Direction.SOUTH, TFLootTables.DARKTOWER_CACHE, sbb, false);
 			}
 			case 1 -> {
 				placeBlock(world, deco.accentState, x, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x, y + 1, z + 1, sbb);
-				this.setDoubleLootChest(world, x, y + 2, z, x, y + 2, z + 1, Direction.WEST, TFTreasure.DARKTOWER_CACHE, sbb, false);
+				this.setDoubleLootChest(world, x, y + 2, z, x, y + 2, z + 1, Direction.WEST, TFLootTables.DARKTOWER_CACHE, sbb, false);
 			}
 			case 2 -> {
 				placeBlock(world, deco.accentState, x, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z, sbb);
-				this.setDoubleLootChest(world, x + 1, y + 2, z, x, y + 2, z, Direction.NORTH, TFTreasure.DARKTOWER_CACHE, sbb, false);
+				this.setDoubleLootChest(world, x + 1, y + 2, z, x, y + 2, z, Direction.NORTH, TFLootTables.DARKTOWER_CACHE, sbb, false);
 			}
 			case 3 -> {
 				placeBlock(world, deco.accentState, x + 1, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				this.setDoubleLootChest(world, x + 1, y + 2, z + 1, x + 1, y + 2, z, Direction.EAST, TFTreasure.DARKTOWER_CACHE, sbb, false);
+				this.setDoubleLootChest(world, x + 1, y + 2, z + 1, x + 1, y + 2, z, Direction.EAST, TFLootTables.DARKTOWER_CACHE, sbb, false);
 			}
 		}
 	}
@@ -1038,7 +1038,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, true), 14, y + 1, 4, rotation, sbb);
 
 		//setBlockStateRotated(world, Blocks.CHEST, 0, 13, y + 2, 4, rotation, sbb);
-		placeTreasureRotated(world, 13, y + 2, 4, getOrientation(), rotation, TFTreasure.DARKTOWER_CACHE, sbb);
+		placeTreasureRotated(world, 13, y + 2, 4, getOrientation(), rotation, TFLootTables.DARKTOWER_CACHE, sbb);
 		setBlockStateRotated(world, Blocks.CRAFTING_TABLE.defaultBlockState(), 14, y + 2, 4, rotation, sbb);
 
 		BlockState slab = Blocks.SPRUCE_SLAB.defaultBlockState()

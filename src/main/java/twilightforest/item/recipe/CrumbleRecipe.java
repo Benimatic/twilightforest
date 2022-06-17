@@ -21,11 +21,11 @@ import org.jetbrains.annotations.Nullable;
 public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) implements Recipe<Container> {
 
 	public BlockState getInput() {
-		return input;
+		return this.input;
 	}
 
 	public BlockState getResult() {
-		return result;
+		return this.result;
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockSt
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 

@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
@@ -101,7 +101,7 @@ public class StrongholdSmallStairsComponent extends StructureTFStrongholdCompone
 
 		// treasure
 		if (this.hasTreasure) {
-			this.placeTreasureRotated(world, 4, 1, 6, getOrientation().getOpposite(), rotation, TFTreasure.STRONGHOLD_CACHE, this.chestTrapped, sbb);
+			this.placeTreasureRotated(world, 4, 1, 6, getOrientation().getOpposite(), rotation, TFLootTables.STRONGHOLD_CACHE, this.chestTrapped, sbb);
 
 			if (this.chestTrapped) {
 				this.setBlockStateRotated(world, Blocks.TNT.defaultBlockState(), 4, 0, 6, rotation, sbb);

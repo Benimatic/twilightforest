@@ -20,18 +20,14 @@ public class EnforceProgressionStatusPacket {
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeBoolean(enforce);
+		buf.writeBoolean(this.enforce);
 	}
 
 	public static class Handler {
 
 		public static boolean onMessage(EnforceProgressionStatusPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null);
-				}
-			});
+			ctx.get().enqueueWork(() ->
+					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null));
 			return true;
 		}
 	}

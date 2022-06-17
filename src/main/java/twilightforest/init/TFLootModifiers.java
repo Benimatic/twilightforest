@@ -1,4 +1,4 @@
-package twilightforest.loot;
+package twilightforest.init;
 
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.registries.DeferredRegister;

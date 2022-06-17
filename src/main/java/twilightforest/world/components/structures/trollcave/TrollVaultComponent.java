@@ -12,7 +12,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
@@ -51,7 +51,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE.defaultBlockState(), Blocks.COBBLESTONE.defaultBlockState(), false);
 
 		// chests
-		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getOrientation().getClockWise(), TFTreasure.TROLL_VAULT, sbb, false);
-		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getOrientation().getClockWise(), TFTreasure.TROLL_GARDEN, sbb, false);
+		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getOrientation().getClockWise(), TFLootTables.TROLL_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getOrientation().getClockWise(), TFLootTables.TROLL_GARDEN, sbb, false);
 	}
 }

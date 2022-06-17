@@ -20,19 +20,19 @@ public class StructureProtectionPacket {
 	}
 
 	public StructureProtectionPacket(FriendlyByteBuf buf) {
-		sbb = new BoundingBox(
+		this.sbb = new BoundingBox(
 				buf.readInt(), buf.readInt(), buf.readInt(),
 				buf.readInt(), buf.readInt(), buf.readInt()
 		);
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(sbb.minX());
-		buf.writeInt(sbb.minY());
-		buf.writeInt(sbb.minZ());
-		buf.writeInt(sbb.maxX());
-		buf.writeInt(sbb.maxY());
-		buf.writeInt(sbb.maxZ());
+		buf.writeInt(this.sbb.minX());
+		buf.writeInt(this.sbb.minY());
+		buf.writeInt(this.sbb.minZ());
+		buf.writeInt(this.sbb.maxX());
+		buf.writeInt(this.sbb.maxY());
+		buf.writeInt(this.sbb.maxZ());
 	}
 
 	public static class Handler {
@@ -44,8 +44,8 @@ public class StructureProtectionPacket {
 				if (info instanceof TwilightForestRenderInfo) {
 					IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
 
-					if (weatherRenderer instanceof TFWeatherRenderer) {
-						((TFWeatherRenderer) weatherRenderer).setProtectedBox(message.sbb);
+					if (weatherRenderer instanceof TFWeatherRenderer renderer) {
+						renderer.setProtectedBox(message.sbb);
 					}
 				}
 			});

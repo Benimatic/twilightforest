@@ -21,21 +21,21 @@ import java.util.Map;
 
 public class OreMeterItem extends Item {
 
-	public OreMeterItem(Properties props) {
-		super(props);
+	public OreMeterItem(Properties properties) {
+		super(properties);
 	}
 
 	@Nonnull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		int useX = Mth.floor(player.getX());
 		int useZ = Mth.floor(player.getZ());
 
-		if (!world.isClientSide) {
-			countOreInArea(player, world, useX, useZ, 3);
+		if (!level.isClientSide()) {
+			this.countOreInArea(player, level, useX, useZ, 3);
 		}
 
-		return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), world.isClientSide);
+		return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
 	}
 
 	private void countOreInArea(Player player, Level world, int useX, int useZ, int radius) {
@@ -52,6 +52,7 @@ public class OreMeterItem extends Item {
 		int countDiamond = 0;
 		int countLapis = 0;
 		int countRedstone = 0;
+		int countCopper = 0;
 		int countExposedDiamond = 0;
 
 		int countRoots = 0;
@@ -74,6 +75,7 @@ public class OreMeterItem extends Item {
 				countDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.defaultBlockState(), dummy).count;
 				countLapis += results.getOrDefault(Blocks.LAPIS_ORE.defaultBlockState(), dummy).count;
 				countRedstone += results.getOrDefault(Blocks.REDSTONE_ORE.defaultBlockState(), dummy).count;
+				countRedstone += results.getOrDefault(Blocks.COPPER_ORE.defaultBlockState(), dummy).count;
 				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.defaultBlockState(), dummy).exposedCount;
 
 				countRoots += results.getOrDefault(TFBlocks.ROOT_BLOCK.get().defaultBlockState(), dummy).count;
@@ -81,9 +83,9 @@ public class OreMeterItem extends Item {
 			}
 		}
 
-		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countRoots + countOreRoots;
+		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countCopper + countRoots + countOreRoots;
 
-		player.sendSystemMessage(Component.translatable(getDescriptionId()).append("!"));
+		player.sendSystemMessage(Component.translatable(this.getDescriptionId()).append("!"));
 		player.sendSystemMessage(Component.translatable(TwilightForestMod.ID + ".ore_meter.range", radius, chunkX, chunkZ));
 		player.sendSystemMessage(Component.translatable(Blocks.COAL_ORE.getDescriptionId()).append(" - " + countCoal + " " + percent(countCoal, total)));
 		player.sendSystemMessage(Component.translatable(Blocks.IRON_ORE.getDescriptionId()).append(" - " + countIron + " " + percent(countIron, total)));
@@ -91,6 +93,7 @@ public class OreMeterItem extends Item {
 		player.sendSystemMessage(Component.translatable(Blocks.DIAMOND_ORE.getDescriptionId()).append(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").append(Component.translatable(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)));
 		player.sendSystemMessage(Component.translatable(Blocks.LAPIS_ORE.getDescriptionId()).append(" - " + countLapis + " " + percent(countLapis, total)));
 		player.sendSystemMessage(Component.translatable(Blocks.REDSTONE_ORE.getDescriptionId()).append(" - " + countRedstone + " " + percent(countRedstone, total)));
+		player.sendSystemMessage(Component.translatable(Blocks.COPPER_ORE.getDescriptionId()).append(" - " + countCopper + " " + percent(countCopper, total)));
 		player.sendSystemMessage(Component.translatable(TFBlocks.ROOT_BLOCK.get().getDescriptionId()).append(" - " + countRoots + " " + percent(countRoots, total)));
 		player.sendSystemMessage(Component.translatable(TFBlocks.LIVEROOT_BLOCK.get().getDescriptionId()).append(" - " + countOreRoots + " " + percent(countOreRoots, total)));
 	}
@@ -99,18 +102,18 @@ public class OreMeterItem extends Item {
 		return (float) count / (float) total * 100F + "%";
 	}
 
-	private Map<BlockState, ScanResult> countBlocksInChunk(Level world, int cx, int cz) {
+	private Map<BlockState, ScanResult> countBlocksInChunk(Level level, int cx, int cz) {
 		Map<BlockState, ScanResult> ret = new IdentityHashMap<>();
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		for (int x = cx << 4; x < (cx << 4) + 16; x++) {
 			for (int z = cz << 4; z < (cz << 4) + 16; z++) {
 				for (int y = 0; y < 256; y++) {
-					BlockState state = world.getBlockState(pos.set(x, y, z));
+					BlockState state = level.getBlockState(pos.set(x, y, z));
 					ScanResult res = ret.computeIfAbsent(state, s -> new ScanResult());
 					res.count++;
 
 					for (Direction e : Direction.values()) {
-						if (world.isEmptyBlock(pos.set(x, y, z).move(e))) {
+						if (level.isEmptyBlock(pos.set(x, y, z).move(e))) {
 							res.exposedCount++;
 							break;
 						}

@@ -19,12 +19,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.init.TFSounds;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
 
 public class LampOfCindersItem extends Item {
+
 	private static final int FIRING_TIME = 12;
 
 	public LampOfCindersItem(Properties props) {
@@ -48,7 +49,7 @@ public class LampOfCindersItem extends Item {
 
 	@Nonnull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		player.startUsingItem(hand);
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
@@ -60,7 +61,7 @@ public class LampOfCindersItem extends Item {
 		BlockPos pos = context.getClickedPos();
 		Player player = context.getPlayer();
 
-		if (burnBlock(world, pos)) {
+		if (this.burnBlock(world, pos)) {
 			if (player instanceof ServerPlayer)
 				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, player.getItemInHand(context.getHand()));
 
@@ -68,9 +69,9 @@ public class LampOfCindersItem extends Item {
 
 			// spawn flame particles
 			for (int i = 0; i < 10; i++) {
-				float dx = pos.getX() + 0.5F + (world.random.nextFloat() - world.random.nextFloat()) * 0.75F;
-				float dy = pos.getY() + 0.5F + (world.random.nextFloat() - world.random.nextFloat()) * 0.75F;
-				float dz = pos.getZ() + 0.5F + (world.random.nextFloat() - world.random.nextFloat()) * 0.75F;
+				float dx = pos.getX() + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.75F;
+				float dy = pos.getY() + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.75F;
+				float dz = pos.getZ() + 0.5F + (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.75F;
 				world.addParticle(ParticleTypes.SMOKE, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 				world.addParticle(ParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
@@ -81,10 +82,10 @@ public class LampOfCindersItem extends Item {
 		}
 	}
 
-	private boolean burnBlock(Level world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
-		if (state.getBlock() == TFBlocks.BROWN_THORNS.get() || state.getBlock() == TFBlocks.GREEN_THORNS.get()) {
-			world.setBlockAndUpdate(pos, TFBlocks.BURNT_THORNS.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)));
+	private boolean burnBlock(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+		if (state.is(TFBlocks.BROWN_THORNS.get()) || state.is(TFBlocks.GREEN_THORNS.get())) {
+			level.setBlockAndUpdate(pos, TFBlocks.BURNT_THORNS.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)));
 			return true;
 		} else {
 			return false;
@@ -92,15 +93,15 @@ public class LampOfCindersItem extends Item {
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int useRemaining) {
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
 		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(stack)) {
-			doBurnEffect(world, living);
+			this.doBurnEffect(level, living);
 		}
 	}
 
-	private void doBurnEffect(Level world, LivingEntity living) {
+	private void doBurnEffect(Level level, LivingEntity living) {
 		BlockPos pos = new BlockPos(
 				Mth.floor(living.xOld),
 				Mth.floor(living.yOld + living.getEyeHeight()),
@@ -109,14 +110,14 @@ public class LampOfCindersItem extends Item {
 
 		int range = 4;
 
-		if (!world.isClientSide) {
-			world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.LAMP_BURN.get(), living.getSoundSource(), 1.5F, 0.8F);
+		if (!level.isClientSide()) {
+			level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.LAMP_BURN.get(), living.getSoundSource(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <= range; dx++) {
 				for (int dy = -range; dy <= range; dy++) {
 					for (int dz = -range; dz <= range; dz++) {
-						this.burnBlock(world, pos.offset(dx, dy, dz));
+						this.burnBlock(level, pos.offset(dx, dy, dz));
 					}
 				}
 			}
@@ -125,17 +126,17 @@ public class LampOfCindersItem extends Item {
 		if (living instanceof Player) {
 			for (int i = 0; i < 6; i++) {
 				BlockPos rPos = pos.offset(
-						world.random.nextInt(range) - world.random.nextInt(range),
-						world.random.nextInt(2),
-						world.random.nextInt(range) - world.random.nextInt(range)
+						level.getRandom().nextInt(range) - level.getRandom().nextInt(range),
+						level.getRandom().nextInt(2),
+						level.getRandom().nextInt(range) - level.getRandom().nextInt(range)
 				);
 
-				world.levelEvent((Player) living, 2004, rPos, 0);
+				level.levelEvent((Player) living, 2004, rPos, 0);
 			}
 
 			//burn mobs!
-			for(LivingEntity targets : world.getEntitiesOfClass(LivingEntity.class, new AABB(new BlockPos(living.getX(), living.getEyeY(), living.getZ())).inflate(4.0D))) {
-				if(!(targets instanceof Player)) {
+			for (LivingEntity targets : level.getEntitiesOfClass(LivingEntity.class, new AABB(living.blockPosition()).inflate(4.0D))) {
+				if (!(targets instanceof Player)) {
 					targets.setSecondsOnFire(5);
 				}
 			}

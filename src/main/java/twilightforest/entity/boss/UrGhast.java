@@ -30,7 +30,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.init.*;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -516,7 +516,7 @@ public class UrGhast extends CarminiteGhastguard {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.DARKWOOD_CHEST.get().defaultBlockState(), this.findChestCoords());
+			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.DARKWOOD_CHEST.get().defaultBlockState(), this.findChestCoords());
 		}
 	}
 

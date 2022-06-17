@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.processors.CobblePlankSwizzler;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
@@ -101,7 +101,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
                 default -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
             };
 
-            TFTreasure.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
+            TFLootTables.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
         }
     }
 

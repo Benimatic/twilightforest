@@ -15,20 +15,16 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class KnightmetalArmorItem extends ArmorItem {
 
-	private static final Map<EquipmentSlot, HumanoidModel<?>> knightlyArmorModel = new EnumMap<>(EquipmentSlot.class);
-
-	public KnightmetalArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
-		super(material, slot, props);
+	public KnightmetalArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+		super(material, slot, properties);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "knightly_2.png";
 		} else {
@@ -45,9 +41,9 @@ public class KnightmetalArmorItem extends ArmorItem {
 		private static final ArmorRender INSTANCE = new ArmorRender();
 
 		@Override
-		public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+		public HumanoidModel<?> getArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
-			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.KNIGHTMETAL_ARMOR_INNER : TFModelLayers.KNIGHTMETAL_ARMOR_OUTER);
+			ModelPart root = models.bakeLayer(slot == EquipmentSlot.LEGS ? TFModelLayers.KNIGHTMETAL_ARMOR_INNER : TFModelLayers.KNIGHTMETAL_ARMOR_OUTER);
 			return new TFArmorModel(root);
 		}
 	}

@@ -12,11 +12,14 @@ import java.util.function.Supplier;
 
 public class StructureProtectionClearPacket {
 
-	public StructureProtectionClearPacket() {}
+	public StructureProtectionClearPacket() {
+	}
 
-	public StructureProtectionClearPacket(FriendlyByteBuf unused) {}
+	public StructureProtectionClearPacket(FriendlyByteBuf unused) {
+	}
 
-	public void encode(FriendlyByteBuf unused) {}
+	public void encode(FriendlyByteBuf unused) {
+	}
 
 	public static class Handler {
 		public static boolean onMessage(StructureProtectionClearPacket message, Supplier<NetworkEvent.Context> ctx) {
@@ -27,8 +30,8 @@ public class StructureProtectionClearPacket {
 				if (info instanceof TwilightForestRenderInfo) {
 					IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
 
-					if (weatherRenderer instanceof TFWeatherRenderer) {
-						((TFWeatherRenderer) weatherRenderer).setProtectedBox(null);
+					if (weatherRenderer instanceof TFWeatherRenderer renderer) {
+						renderer.setProtectedBox(null);
 					}
 				}
 			});

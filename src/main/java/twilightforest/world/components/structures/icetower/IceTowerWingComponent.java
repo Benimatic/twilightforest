@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
@@ -353,7 +353,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	private void decorateTopFloorTreasure(WorldGenLevel world, int bottom, Rotation rotation, BoundingBox sbb) {
 		this.fillBlocksRotated(world, sbb, 5, bottom + 1, 5, 5, bottom + 4, 5, deco.pillarState, rotation);
 
-		this.placeTreasureAtCurrentPosition(world, 5, bottom + 5, 5, TFTreasure.AURORA_ROOM, sbb);
+		this.placeTreasureAtCurrentPosition(world, 5, bottom + 5, 5, TFLootTables.AURORA_ROOM, sbb);
 	}
 
 	private void decoratePillars(WorldGenLevel world, int bottom, int top, Rotation rotation, BoundingBox sbb) {
@@ -420,7 +420,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 1, bottom + 8, 5, getOrientation().getOpposite(), ladderUpDir, TFTreasure.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 1, bottom + 8, 5, getOrientation().getOpposite(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 7, 5, ladderUpDir, sbb);
 		}
@@ -453,7 +453,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 1, bottom + 5, 5, getOrientation(), ladderUpDir, TFTreasure.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 1, bottom + 5, 5, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
 			final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 4, 5, ladderUpDir, sbb);
@@ -482,7 +482,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 7, bottom + 6, 1, getOrientation(), ladderUpDir, TFTreasure.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 7, bottom + 6, 1, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 		}
 	}
 
@@ -525,7 +525,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 6, 5, getOrientation(), ladderDownDir, TFTreasure.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 6, 5, getOrientation(), ladderDownDir, TFLootTables.AURORA_CACHE, false, sbb);
 		}
 	}
 
@@ -562,7 +562,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 7, 7, getOrientation(), ladderUpDir, TFTreasure.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 7, 7, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 		}
 	}
 
@@ -586,7 +586,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 5, 2, getOrientation(), ladderUpDir, TFTreasure.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 5, 2, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 		}
 	}
 
@@ -617,7 +617,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 5, 2, getOrientation(), ladderUpDir, TFTreasure.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 5, 2, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 		}
 	}
 
@@ -674,7 +674,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 8, bottom + 8, 7, getOrientation(), ladderUpDir, TFTreasure.AURORA_CACHE, false, sbb);
+			this.placeTreasureRotated(world, 8, bottom + 8, 7, getOrientation(), ladderUpDir, TFLootTables.AURORA_CACHE, false, sbb);
 		}
 	}
 

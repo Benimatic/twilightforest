@@ -23,12 +23,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.init.TFSounds;
-import twilightforest.data.tags.EntityTagGenerator;
-import twilightforest.util.EntityUtil;
-import twilightforest.init.TFDamageSources;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFSounds;
+import twilightforest.util.EntityUtil;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +73,7 @@ public class LifedrainScepterItem extends Item {
 		// 1 in 100 chance of a big pop, you're welcome KD
 		double explosionPower = level.getRandom().nextInt(100) == 0 ? 0.5D : 0.15D;
 
-		for (int i = 0; i < 50 + ((int)target.dimensions.width * 75); ++i) {
+		for (int i = 0; i < 50 + ((int) target.dimensions.width * 75); ++i) {
 			double gaussX = level.getRandom().nextGaussian() * 0.01D;
 			double gaussY = level.getRandom().nextGaussian() * 0.01D;
 			double gaussZ = level.getRandom().nextGaussian() * 0.01D;
@@ -141,14 +141,14 @@ public class LifedrainScepterItem extends Item {
 			Entity pointedEntity = getPlayerLookTarget(level, living);
 
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
-				if(level.isClientSide()) {
+				if (level.isClientSide()) {
 					this.makeRedMagicTrail(level, living, target.getEyePosition());
 				}
 
 				if (target.getHealth() <= 3 && target.hurt(TFDamageSources.lifedrain(living, living), 1)) {
 					// make it explode
 					if (!level.isClientSide()) {
-						if(!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH)) {
+						if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH)) {
 							target.spawnAtLocation(new ItemStack(Items.ROTTEN_FLESH, level.getRandom().nextInt(3)));
 							animateTargetShatter((ServerLevel) level, target);
 						}
@@ -231,8 +231,8 @@ public class LifedrainScepterItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, level, tooltip, flags);
 		tooltip.add(Component.translatable("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

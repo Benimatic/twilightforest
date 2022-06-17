@@ -19,10 +19,10 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFSounds;
-import twilightforest.advancements.TFAdvancements;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFSounds;
+
 import java.util.List;
 
 public class BrittleFlaskItem extends Item {
@@ -74,7 +74,7 @@ public class BrittleFlaskItem extends Item {
 						player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
 					}
 					flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-					player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.level.random.nextFloat() * 0.1F + 0.9F);
+					player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
 					return true;
 				} else if (!flaskTag.contains("Potion")) {
 					if (!player.getAbilities().instabuild) {
@@ -83,7 +83,7 @@ public class BrittleFlaskItem extends Item {
 					}
 					flaskTag.putString("Potion", potionTag.getString("Potion"));
 					flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-					player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.level.random.nextFloat() * 0.1F + 0.9F);
+					player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
 					return true;
 				}
 			}
@@ -119,7 +119,7 @@ public class BrittleFlaskItem extends Item {
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
 		CompoundTag tag = stack.getOrCreateTag();
 		if (entity instanceof Player player) {
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				if (!player.isCreative()) addTowardsAdvancement(Potion.byName(tag.getString("Potion")), player);
 				for (MobEffectInstance mobeffectinstance : PotionUtils.getMobEffects(stack)) {
 					if (mobeffectinstance.getEffect().isInstantenous()) {

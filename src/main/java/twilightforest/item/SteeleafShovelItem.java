@@ -14,11 +14,11 @@ public class SteeleafShovelItem extends ShovelItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
 		if (this.allowedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			istack.enchant(Enchantments.BLOCK_EFFICIENCY, 2);
-			list.add(istack);
+			ItemStack stack = new ItemStack(this);
+			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 2);
+			items.add(stack);
 		}
 	}
 }

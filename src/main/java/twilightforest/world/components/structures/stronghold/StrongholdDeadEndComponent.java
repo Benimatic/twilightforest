@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
@@ -67,7 +67,7 @@ public class StrongholdDeadEndComponent extends StructureTFStrongholdComponent {
 		placeDoors(world, sbb);
 
 		// treasure
-		this.manualTreaurePlacement(world, 4, 1, 3, Direction.SOUTH, TFTreasure.STRONGHOLD_CACHE, this.chestTrapped, sbb);
+		this.manualTreaurePlacement(world, 4, 1, 3, Direction.SOUTH, TFLootTables.STRONGHOLD_CACHE, this.chestTrapped, sbb);
 		if (this.chestTrapped) {
 			this.placeBlock(world, Blocks.TNT.defaultBlockState(), 4, 0, 3, sbb);
 		}

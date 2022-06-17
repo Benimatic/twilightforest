@@ -34,7 +34,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.entity.ai.goal.GroundAttackGoal;
 import twilightforest.entity.monster.Minotaur;
 import twilightforest.init.TFItems;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -199,7 +199,7 @@ public class Minoshroom extends Minotaur {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 

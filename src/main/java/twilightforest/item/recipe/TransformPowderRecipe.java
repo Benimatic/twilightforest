@@ -19,11 +19,11 @@ import org.jetbrains.annotations.Nullable;
 public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result) implements Recipe<Container> {
 
 	public EntityType<?> getInput() {
-		return input;
+		return this.input;
 	}
 
 	public EntityType<?> getResult() {
-		return result;
+		return this.result;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> inp
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 

@@ -24,9 +24,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
-import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
+import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
 
@@ -37,12 +37,12 @@ public class CrumbleHornItem extends Item {
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
-	public CrumbleHornItem(Properties props) {
-		super(props);
+	public CrumbleHornItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
 		player.playSound(TFSounds.QUEST_RAM_AMBIENT.get(), 1.0F, 0.8F);
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
@@ -116,14 +116,15 @@ public class CrumbleHornItem extends Item {
 
 		if (state.isAir()) return false;
 
-		if(living instanceof Player) {
-			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player)living))) return false;
+		if (living instanceof Player) {
+			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player) living)))
+				return false;
 		}
 
-		if(world instanceof ServerLevel level) {
+		if (world instanceof ServerLevel level) {
 			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipe -> {
-				if(flag.get()) return;
-				if(recipe.getResult().is(Blocks.AIR)) {
+				if (flag.get()) return;
+				if (recipe.getResult().is(Blocks.AIR)) {
 					if (recipe.getInput().is(block) && world.random.nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
 						if (living instanceof Player) {
 							if (block.canHarvestBlock(state, world, pos, (Player) living)) {

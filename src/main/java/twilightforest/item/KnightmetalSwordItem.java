@@ -9,17 +9,14 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod;
-import twilightforest.TwilightForestMod;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class KnightmetalSwordItem extends SwordItem {
 
-	public KnightmetalSwordItem(Tier material, Properties props) {
-		super(material, 3, -2.4F, props);
+	public KnightmetalSwordItem(Tier material, Properties properties) {
+		super(material, 3, -2.4F, properties);
 	}
 
 	@Override

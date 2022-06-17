@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
@@ -481,7 +481,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		setBlockStateRotated(world, myDeco.platformState, x, y + 1, z, rotation, sbb);
 
-		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFTreasure.DARKTOWER_KEY : TFTreasure.DARKTOWER_CACHE, sbb);
+		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFLootTables.DARKTOWER_KEY : TFLootTables.DARKTOWER_CACHE, sbb);
 	}
 
 	private void decorateSpawner(WorldGenLevel world, RandomSource rand, BoundingBox sbb, Rotation rotation, int y) {
@@ -643,7 +643,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		setBlockStateRotated(world, deco.accentState, x + 1, y + 3, z - 2, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), AttachFace.WALL, Direction.WEST, false), x + 2, y + 3, z - 2, rotation, sbb);
 
-		placeTreasureRotated(world, x + 1, y + 2, z + 1, getOrientation(), rotation, TFTreasure.DARKTOWER_CACHE, sbb);
+		placeTreasureRotated(world, x + 1, y + 2, z + 1, getOrientation(), rotation, TFLootTables.DARKTOWER_CACHE, sbb);
 	}
 
 	/**

@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.init.TFBlocks;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
@@ -263,6 +263,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		int mid = this.size / 2;
 		this.generateBox(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.defaultBlockState(), Blocks.OBSIDIAN.defaultBlockState(), false);
 		this.generateAirBox(world, sbb, mid - 1, 1, mid - 1, mid, 2, mid);
-		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFTreasure.TROLL_GARDEN, false, sbb);
+		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFLootTables.TROLL_GARDEN, false, sbb);
 	}
 }

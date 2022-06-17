@@ -12,12 +12,12 @@ import twilightforest.TwilightForestMod;
 
 public class IronwoodArmorItem extends ArmorItem {
 
-	public IronwoodArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
-		super(armorMaterial, armorType, props);
+	public IronwoodArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties properties) {
+		super(armorMaterial, armorType, properties);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "ironwood_2.png";
 		} else {
@@ -28,14 +28,15 @@ public class IronwoodArmorItem extends ArmorItem {
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
 		if (this.allowedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
+			ItemStack stack = new ItemStack(this);
 			switch (this.getSlot()) {
-				case HEAD -> istack.enchant(Enchantments.AQUA_AFFINITY, 1);
-				case CHEST, LEGS -> istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 1);
-				case FEET -> istack.enchant(Enchantments.FALL_PROTECTION, 1);
-				default -> { }
+				case HEAD -> stack.enchant(Enchantments.AQUA_AFFINITY, 1);
+				case CHEST, LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 1);
+				case FEET -> stack.enchant(Enchantments.FALL_PROTECTION, 1);
+				default -> {
+				}
 			}
-			list.add(istack);
+			list.add(stack);
 		}
 	}
 }

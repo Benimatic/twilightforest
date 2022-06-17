@@ -19,11 +19,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFEntities;
-import twilightforest.entity.monster.LoyalZombie;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.monster.LoyalZombie;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
+
 import java.util.List;
 
 public class ZombieWandItem extends Item {
@@ -67,7 +67,7 @@ public class ZombieWandItem extends Item {
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack pStack) {
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 
@@ -83,8 +83,8 @@ public class ZombieWandItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
 		tooltip.add(Component.translatable("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

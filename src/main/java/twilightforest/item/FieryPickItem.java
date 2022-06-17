@@ -29,8 +29,8 @@ import java.util.List;
 
 public class FieryPickItem extends PickaxeItem {
 
-	public FieryPickItem(Tier toolMaterial, Properties props) {
-		super(toolMaterial, 1, -2.8F, props);
+	public FieryPickItem(Tier toolMaterial, Properties properties) {
+		super(toolMaterial, 1, -2.8F, properties);
 	}
 
 	@Override
@@ -38,10 +38,10 @@ public class FieryPickItem extends PickaxeItem {
 		boolean result = super.hurtEnemy(stack, target, attacker);
 
 		if (result && !target.fireImmune()) {
-			if (!target.level.isClientSide) {
+			if (!target.getLevel().isClientSide()) {
 				target.setSecondsOnFire(15);
 			} else {
-				target.level.addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
+				target.getLevel().addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
 			}
 		}
 
@@ -50,8 +50,8 @@ public class FieryPickItem extends PickaxeItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, level, tooltip, flags);
 		tooltip.add(Component.translatable(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 }

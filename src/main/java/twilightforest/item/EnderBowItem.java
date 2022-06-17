@@ -6,8 +6,8 @@ import net.minecraft.world.item.BowItem;
 public class EnderBowItem extends BowItem {
 	public static final String KEY = "twilightforest:ender";
 
-	public EnderBowItem(Properties props) {
-		super(props);
+	public EnderBowItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override

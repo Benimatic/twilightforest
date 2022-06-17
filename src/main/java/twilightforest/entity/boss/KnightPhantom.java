@@ -43,7 +43,7 @@ import twilightforest.entity.ai.goal.PhantomThrowWeaponGoal;
 import twilightforest.entity.ai.goal.PhantomUpdateFormationAndMoveGoal;
 import twilightforest.entity.ai.goal.PhantomWatchAndAttackGoal;
 import twilightforest.init.TFItems;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -182,7 +182,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 			// make treasure for killing the last knight
 			// This one won't receive the same loot treatment like the other bosses because this chest is supposed to reward for all of them instead of just the last one killed
-			TFTreasure.STRONGHOLD_BOSS.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
+			TFLootTables.STRONGHOLD_BOSS.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
 
 			//trigger criteria for killing every phantom in a group
 			if(cause.getEntity() instanceof ServerPlayer player) {

@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
@@ -74,8 +74,8 @@ public class StrongholdTreasureRoomComponent extends StructureTFStrongholdCompon
 		this.setSpawner(world, 4, 4, 15, sbb, TFEntities.HELMET_CRAB.get());
 
 		// treasure!
-		this.manualTreaurePlacement(world, 2, 4, 13, Direction.WEST, TFTreasure.STRONGHOLD_ROOM, false, sbb);
-		this.manualTreaurePlacement(world, 6, 4, 13, Direction.EAST, TFTreasure.STRONGHOLD_ROOM, false, sbb);
+		this.manualTreaurePlacement(world, 2, 4, 13, Direction.WEST, TFLootTables.STRONGHOLD_ROOM, false, sbb);
+		this.manualTreaurePlacement(world, 6, 4, 13, Direction.EAST, TFLootTables.STRONGHOLD_ROOM, false, sbb);
 
 		// doors
 		placeDoors(world, sbb);

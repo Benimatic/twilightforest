@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
@@ -190,7 +190,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFTreasure.HEDGE_MAZE, sbb);
+		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFLootTables.HEDGE_MAZE, sbb);
 	}
 
 	/**

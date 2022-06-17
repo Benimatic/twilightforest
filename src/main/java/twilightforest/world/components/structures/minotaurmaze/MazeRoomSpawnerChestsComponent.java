@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
@@ -43,10 +43,10 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 		setSpawner(world, 4, 2, 4, sbb, TFEntities.MINOTAUR.get());
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(world, 4, 2, 11, TFTreasure.LABYRINTH_ROOM, sbb);
+		this.placeTreasureAtCurrentPosition(world, 4, 2, 11, TFLootTables.LABYRINTH_ROOM, sbb);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(world, 11, 2, 4, TFTreasure.LABYRINTH_ROOM, sbb);
+		this.placeTreasureAtCurrentPosition(world, 11, 2, 4, TFLootTables.LABYRINTH_ROOM, sbb);
 
 		// trap
 		placeBlock(world, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), 11, 1, 11, sbb);

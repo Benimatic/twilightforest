@@ -18,27 +18,22 @@ public class ThrowPlayerPacket {
 	}
 
 	public ThrowPlayerPacket(FriendlyByteBuf buf) {
-		motionX = buf.readFloat();
-		motionY = buf.readFloat();
-		motionZ = buf.readFloat();
+		this.motionX = buf.readFloat();
+		this.motionY = buf.readFloat();
+		this.motionZ = buf.readFloat();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeFloat(motionX);
-		buf.writeFloat(motionY);
-		buf.writeFloat(motionZ);
+		buf.writeFloat(this.motionX);
+		buf.writeFloat(this.motionY);
+		buf.writeFloat(this.motionZ);
 	}
 
 	public static class Handler {
 
 		public static boolean onMessage(ThrowPlayerPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Minecraft.getInstance().player.push(message.motionX, message.motionY, message.motionZ);
-				}
-			});
-
+			ctx.get().enqueueWork(() ->
+					Minecraft.getInstance().player.push(message.motionX, message.motionY, message.motionZ));
 			return true;
 		}
 	}

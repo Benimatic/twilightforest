@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.processors.CobblePlankSwizzler;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.SmartGrassProcessor;
@@ -67,6 +67,6 @@ public class FancyWellFeature extends TemplateFeature<NoneFeatureConfiguration> 
 
         world.removeBlock(info.pos, false);
 
-        TFTreasure.FANCY_WELL.generateLootContainer(world, info.pos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
+        TFLootTables.FANCY_WELL.generateLootContainer(world, info.pos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
     }
 }

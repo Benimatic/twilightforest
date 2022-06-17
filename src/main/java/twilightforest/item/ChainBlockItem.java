@@ -14,42 +14,42 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
-import twilightforest.init.TFEnchantments;
-import twilightforest.init.TFSounds;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ChainBlock;
+import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 import twilightforest.util.TwilightItemTier;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class ChainBlockItem extends DiggerItem {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
-	public ChainBlockItem(Properties props) {
-		super(6, -3.0F, TwilightItemTier.KNIGHTMETAL, BlockTags.BASE_STONE_OVERWORLD, props);
+	public ChainBlockItem(Properties properties) {
+		super(6, -3.0F, TwilightItemTier.KNIGHTMETAL, BlockTags.BASE_STONE_OVERWORLD, properties);
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity holder, int slot, boolean isSelected) {
-		if (!world.isClientSide && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
+	public void inventoryTick(ItemStack stack, Level level, Entity holder, int slot, boolean isSelected) {
+		if (!level.isClientSide() && getThrownUuid(stack) != null && getThrownEntity(level, stack) == null) {
 			stack.getTag().remove(THROWN_UUID_KEY);
 		}
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (getThrownUuid(stack) != null)
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
-		player.playSound(TFSounds.BLOCKCHAIN_FIRED.get(), 0.5F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
+		player.playSound(TFSounds.BLOCKCHAIN_FIRED.get(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
 
-		if (!world.isClientSide) {
-			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), world, player, hand, stack);
-			world.addFreshEntity(launchedBlock);
+		if (!level.isClientSide()) {
+			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), level, player, hand, stack);
+			level.addFreshEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 
 			stack.hurtAndBreak(1, player, (user) -> user.broadcastBreakEvent(hand));
@@ -69,11 +69,11 @@ public class ChainBlockItem extends DiggerItem {
 	}
 
 	@Nullable
-	private static ChainBlock getThrownEntity(Level world, ItemStack stack) {
-		if (world instanceof ServerLevel) {
+	private static ChainBlock getThrownEntity(Level level, ItemStack stack) {
+		if (level instanceof ServerLevel server) {
 			UUID id = getThrownUuid(stack);
 			if (id != null) {
-				Entity e = ((ServerLevel) world).getEntity(id);
+				Entity e = server.getEntity(id);
 				if (e instanceof ChainBlock) {
 					return (ChainBlock) e;
 				}

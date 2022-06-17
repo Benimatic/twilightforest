@@ -18,47 +18,43 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import twilightforest.TwilightForestMod;
-import twilightforest.loot.conditions.IsMinion;
-import twilightforest.loot.conditions.ModExists;
-import twilightforest.loot.functions.Enchant;
-import twilightforest.loot.functions.ModItemSwap;
 
 import java.util.Set;
 
-public class TFTreasure {
+public class TFLootTables {
 	// For easy testing:
 	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
 	private static final Set<ResourceLocation> TF_LOOT_TABLES = Sets.newHashSet();
 	private static final int DEFAULT_PLACE_FLAG = 2;
 	
-	public static final TFTreasure SMALL_HOLLOW_HILL = new TFTreasure("hill_1");
-	public static final TFTreasure MEDIUM_HOLLOW_HILL = new TFTreasure("hill_2");
-	public static final TFTreasure LARGE_HOLLOW_HILL = new TFTreasure("hill_3");
-	public static final TFTreasure HEDGE_MAZE = new TFTreasure("hedge_maze");
-	public static final TFTreasure FANCY_WELL = new TFTreasure("fancy_well");
-	public static final TFTreasure WELL = new TFTreasure("well");
-	public static final TFTreasure LABYRINTH_ROOM = new TFTreasure("labyrinth_room");
-	public static final TFTreasure LABYRINTH_DEAD_END = new TFTreasure("labyrinth_dead_end");
-	public static final TFTreasure TOWER_ROOM = new TFTreasure("tower_room");
-	public static final TFTreasure TOWER_LIBRARY = new TFTreasure("tower_library");
-	public static final TFTreasure BASEMENT = new TFTreasure("basement");
-	public static final TFTreasure FOUNDATION_BASEMENT = new TFTreasure("foundation_basement");
-	public static final TFTreasure LABYRINTH_VAULT = new TFTreasure("labyrinth_vault");
-	public static final TFTreasure DARKTOWER_CACHE = new TFTreasure("darktower_cache");
-	public static final TFTreasure DARKTOWER_KEY = new TFTreasure("darktower_key");
-	public static final TFTreasure DARKTOWER_BOSS = new TFTreasure("darktower_boss");
-	public static final TFTreasure TREE_CACHE = new TFTreasure("tree_cache");
-	public static final TFTreasure STRONGHOLD_CACHE = new TFTreasure("stronghold_cache");
-	public static final TFTreasure STRONGHOLD_ROOM = new TFTreasure("stronghold_room");
-	public static final TFTreasure STRONGHOLD_BOSS = new TFTreasure("stronghold_boss");
-	public static final TFTreasure AURORA_CACHE = new TFTreasure("aurora_cache");
-	public static final TFTreasure AURORA_ROOM = new TFTreasure("aurora_room");
-//	public static final TFTreasure AURORA_BOSS = new TFTreasure("aurora_boss"); //unused
-	public static final TFTreasure TROLL_GARDEN = new TFTreasure("troll_garden");
-	public static final TFTreasure TROLL_VAULT = new TFTreasure("troll_vault");
-	public static final TFTreasure GRAVEYARD = new TFTreasure("graveyard");
-	public static final TFTreasure QUEST_GROVE = new TFTreasure("quest_grove_dropper");
-	public static final TFTreasure USELESS_LOOT = new TFTreasure("useless");
+	public static final TFLootTables SMALL_HOLLOW_HILL = new TFLootTables("hill_1");
+	public static final TFLootTables MEDIUM_HOLLOW_HILL = new TFLootTables("hill_2");
+	public static final TFLootTables LARGE_HOLLOW_HILL = new TFLootTables("hill_3");
+	public static final TFLootTables HEDGE_MAZE = new TFLootTables("hedge_maze");
+	public static final TFLootTables FANCY_WELL = new TFLootTables("fancy_well");
+	public static final TFLootTables WELL = new TFLootTables("well");
+	public static final TFLootTables LABYRINTH_ROOM = new TFLootTables("labyrinth_room");
+	public static final TFLootTables LABYRINTH_DEAD_END = new TFLootTables("labyrinth_dead_end");
+	public static final TFLootTables TOWER_ROOM = new TFLootTables("tower_room");
+	public static final TFLootTables TOWER_LIBRARY = new TFLootTables("tower_library");
+	public static final TFLootTables BASEMENT = new TFLootTables("basement");
+	public static final TFLootTables FOUNDATION_BASEMENT = new TFLootTables("foundation_basement");
+	public static final TFLootTables LABYRINTH_VAULT = new TFLootTables("labyrinth_vault");
+	public static final TFLootTables DARKTOWER_CACHE = new TFLootTables("darktower_cache");
+	public static final TFLootTables DARKTOWER_KEY = new TFLootTables("darktower_key");
+	public static final TFLootTables DARKTOWER_BOSS = new TFLootTables("darktower_boss");
+	public static final TFLootTables TREE_CACHE = new TFLootTables("tree_cache");
+	public static final TFLootTables STRONGHOLD_CACHE = new TFLootTables("stronghold_cache");
+	public static final TFLootTables STRONGHOLD_ROOM = new TFLootTables("stronghold_room");
+	public static final TFLootTables STRONGHOLD_BOSS = new TFLootTables("stronghold_boss");
+	public static final TFLootTables AURORA_CACHE = new TFLootTables("aurora_cache");
+	public static final TFLootTables AURORA_ROOM = new TFLootTables("aurora_room");
+//	public static final TFLootTables AURORA_BOSS = new TFLootTables("aurora_boss"); //unused
+	public static final TFLootTables TROLL_GARDEN = new TFLootTables("troll_garden");
+	public static final TFLootTables TROLL_VAULT = new TFLootTables("troll_vault");
+	public static final TFLootTables GRAVEYARD = new TFLootTables("graveyard");
+	public static final TFLootTables QUEST_GROVE = new TFLootTables("quest_grove_dropper");
+	public static final TFLootTables USELESS_LOOT = new TFLootTables("useless");
 
 	public static final ResourceLocation BIGHORN_SHEEP_WHITE = register("entities/bighorn_sheep/white");
 	public static final ResourceLocation BIGHORN_SHEEP_ORANGE = register("entities/bighorn_sheep/orange");
@@ -83,24 +79,10 @@ public class TFTreasure {
 
 	public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 
-	public static LootItemFunctionType ENCHANT;
-	public static LootItemFunctionType ITEM_OR_DEFAULT;
-
-	public static LootItemConditionType IS_MINION;
-	public static LootItemConditionType MOD_EXISTS;
-
 	public final ResourceLocation lootTable;
 
-	private TFTreasure(String path) {
-		lootTable = TwilightForestMod.prefix(String.format("structures/%s", path));
-	}
-
-	public static void init() {
-		ENCHANT = registerFunction("enchant", new LootItemFunctionType(new Enchant.Serializer()));
-		ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootItemFunctionType(new ModItemSwap.Serializer()));
-
-		IS_MINION = registerCondition("is_minion", new LootItemConditionType(new IsMinion.ConditionSerializer()));
-		MOD_EXISTS = registerCondition("mod_exists", new LootItemConditionType(new ModExists.ConditionSerializer()));
+	private TFLootTables(String path) {
+		this.lootTable = TwilightForestMod.prefix(String.format("structures/%s", path));
 	}
 
 	public void generateChest(WorldGenLevel world, BlockPos pos, Direction dir, boolean trapped) {
@@ -125,15 +107,7 @@ public class TFTreasure {
 
 	public void generateChestContents(LevelAccessor world, BlockPos pos, long seed) {
 		if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity lootContainer)
-			lootContainer.setLootTable(lootTable, seed);
-	}
-
-	private static LootItemFunctionType registerFunction(String name, LootItemFunctionType function) {
-		return Registry.register(Registry.LOOT_FUNCTION_TYPE, TwilightForestMod.prefix(name), function); //ILootFunction registry
-	}
-
-	private static LootItemConditionType registerCondition(String name, LootItemConditionType condition) {
-		return Registry.register(Registry.LOOT_CONDITION_TYPE, TwilightForestMod.prefix(name), condition); //ILootCondition registry
+			lootContainer.setLootTable(this.lootTable, seed);
 	}
 
 	private static ResourceLocation register(String id) {
@@ -149,7 +123,7 @@ public class TFTreasure {
 	}
 
 	public static void entityDropsIntoContainer(LivingEntity entity, LootContext lootContext, BlockState blockContaining, BlockPos placement) {
-		if (entity.level instanceof ServerLevel serverLevel
+		if (entity.getLevel() instanceof ServerLevel serverLevel
 				&& serverLevel.setBlock(placement, blockContaining, DEFAULT_PLACE_FLAG)
 				&& serverLevel.getBlockEntity(placement) instanceof Container container)
 			serverLevel.getServer().getLootTables().get(entity.getLootTable()).fill(container, lootContext);

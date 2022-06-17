@@ -12,31 +12,31 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.capabilities.CapabilityList;
 
 import javax.annotation.Nonnull;
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class FortificationWandItem extends Item {
 
-	public FortificationWandItem(Properties props) {
-		super(props);
+	public FortificationWandItem(Properties properties) {
+		super(properties);
 	}
 
 	@Nonnull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (stack.getDamageValue() == stack.getMaxDamage()) {
 			return InteractionResultHolder.fail(stack);
 		}
 
-		if (!world.isClientSide) {
+		if (!level.isClientSide()) {
 			player.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 				cap.replenishShields();
-				stack.hurt(1, world.random, null);
+				stack.hurt(1, level.getRandom(), null);
 			});
 		}
 
@@ -47,7 +47,7 @@ public class FortificationWandItem extends Item {
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack pStack) {
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 
@@ -63,8 +63,8 @@ public class FortificationWandItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, level, tooltip, flags);
 		tooltip.add(Component.translatable("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

@@ -17,9 +17,9 @@ public class MoonDialItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltips, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltips, flag);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
 		boolean aprilFools = LocalDate.of(LocalDate.now().getYear(), 4, 1).equals(LocalDate.now());
-		tooltips.add(Component.translatable("item.twilightforest.moon_dial.phase_" + (level != null && level.dimensionType().natural() ? level.getMoonPhase() : aprilFools ? "unknown_fools" : "unknown")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("item.twilightforest.moon_dial.phase_" + (level != null && level.dimensionType().natural() ? level.getMoonPhase() : aprilFools ? "unknown_fools" : "unknown")).withStyle(ChatFormatting.GRAY));
 	}
 }

@@ -21,7 +21,7 @@ public class UncraftingContainer implements Container {
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack stack : contents) {
+		for (ItemStack stack : this.contents) {
 			if (!stack.isEmpty()) {
 				return false;
 			}
@@ -94,6 +94,6 @@ public class UncraftingContainer implements Container {
 
 	@Override
 	public void clearContent() {
-		contents.clear();
+		this.contents.clear();
 	}
 }

@@ -9,11 +9,9 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeatureUtil;
-
-import java.util.Random;
 
 public class FoundationFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -69,7 +67,7 @@ public class FoundationFeature extends Feature<NoneFeatureConfiguration> {
 			// make chest
 			int cx = rand.nextInt(sx - 1) + 1;
 			int cz = rand.nextInt(sz - 1) + 1;
-			TFTreasure.FOUNDATION_BASEMENT.generateChest(world, pos.offset(cx, -4, cz), Direction.NORTH, false);
+			TFLootTables.FOUNDATION_BASEMENT.generateChest(world, pos.offset(cx, -4, cz), Direction.NORTH, false);
 
 		}
 

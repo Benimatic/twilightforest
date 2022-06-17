@@ -16,10 +16,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,14 +28,14 @@ public class GiantPickItem extends PickaxeItem {
 	public static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
 	public static final UUID GIANT_RANGE_MODIFIER = UUID.fromString("cafc02ed-392f-4bf4-b745-42beff107ec4");
 
-	public GiantPickItem(Tier material, Properties props) {
-		super(material, 8, -3.5F, props);
+	public GiantPickItem(Tier material, Properties properties) {
+		super(material, 8, -3.5F, properties);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, level, tooltip, flags);
 		tooltip.add(Component.translatable(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 

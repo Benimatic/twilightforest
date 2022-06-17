@@ -28,7 +28,7 @@ import twilightforest.entity.TFPart;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -707,7 +707,7 @@ public class Hydra extends Mob implements Enemy {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 

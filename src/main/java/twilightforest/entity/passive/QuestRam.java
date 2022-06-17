@@ -38,7 +38,7 @@ import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.init.TFSounds;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 
@@ -116,7 +116,7 @@ public class QuestRam extends Animal {
 	private void rewardQuest() {
 		// todo flesh the context out more
 		LootContext ctx = new LootContext.Builder((ServerLevel) this.getLevel()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
-		this.getLevel().getServer().getLootTables().get(TFTreasure.QUESTING_RAM_REWARDS).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+		this.getLevel().getServer().getLootTables().get(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 
 		for (ServerPlayer player : this.getLevel().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);

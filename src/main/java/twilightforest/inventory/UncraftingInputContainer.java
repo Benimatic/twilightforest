@@ -20,12 +20,12 @@ public class UncraftingInputContainer implements Container {
 
 	@Override
 	public boolean isEmpty() {
-		return stack.isEmpty();
+		return this.stack.isEmpty();
 	}
 
 	@Override
 	public ItemStack getItem(int index) {
-		return index == 0 ? stack : ItemStack.EMPTY;
+		return index == 0 ? this.stack : ItemStack.EMPTY;
 	}
 
 	@Override
@@ -79,6 +79,6 @@ public class UncraftingInputContainer implements Container {
 
 	@Override
 	public void clearContent() {
-		stack = ItemStack.EMPTY;
+		this.stack = ItemStack.EMPTY;
 	}
 }

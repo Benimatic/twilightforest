@@ -30,7 +30,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import org.jetbrains.annotations.Nullable;
@@ -197,7 +197,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						data.addAll(trap.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 						if (world.setBlock(placement.offset(chestloc), Blocks.TRAPPED_CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags)) {
-							TFTreasure.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
+							TFLootTables.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
 							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());

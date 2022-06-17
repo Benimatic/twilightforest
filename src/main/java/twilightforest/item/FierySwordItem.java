@@ -14,20 +14,17 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import twilightforest.TwilightForestMod;
-import twilightforest.init.TFItems;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
+
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class FierySwordItem extends SwordItem {
 
-	public FierySwordItem(Tier toolMaterial, Properties props) {
-		super(toolMaterial, 3, -2.4F, props);
+	public FierySwordItem(Tier toolMaterial, Properties properties) {
+		super(toolMaterial, 3, -2.4F, properties);
 	}
 
 	@Override

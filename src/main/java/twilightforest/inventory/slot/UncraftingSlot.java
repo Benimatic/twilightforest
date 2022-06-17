@@ -81,7 +81,7 @@ public class UncraftingSlot extends Slot {
 		// do this second so that it doesn't change the contents of the uncrafting grid
 		ItemStack inputStack = this.inputSlot.getItem(0);
 		if (!inputStack.isEmpty()) {
-			this.inputSlot.removeItem(0, uncraftingMatrix.numberOfInputItems);
+			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);
 		}
 
 		super.onTake(player, stack);

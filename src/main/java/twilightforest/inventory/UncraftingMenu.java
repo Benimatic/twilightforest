@@ -49,7 +49,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	private final ResultContainer tinkerResult = new ResultContainer();
 
 	private final ContainerLevelAccess positionData;
-	private final Level world;
+	private final Level level;
 	private final Player player;
 
 	// Conflict resolution
@@ -61,14 +61,14 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	private static int customCost;
 
 	public static UncraftingMenu fromNetwork(int id, Inventory inventory) {
-		return new UncraftingMenu(id, inventory, inventory.player.level, ContainerLevelAccess.NULL);
+		return new UncraftingMenu(id, inventory, inventory.player.getLevel(), ContainerLevelAccess.NULL);
 	}
 
-	public UncraftingMenu(int id, Inventory inventory, Level world, ContainerLevelAccess positionData) {
+	public UncraftingMenu(int id, Inventory inventory, Level level, ContainerLevelAccess positionData) {
 		super(TFMenuTypes.UNCRAFTING.get(), id);
 
 		this.positionData = positionData;
-		this.world = world;
+		this.level = level;
 		this.player = inventory.player;
 
 		this.addSlot(new Slot(this.tinkerInput, 0, 13, 35));
@@ -111,7 +111,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getItem(0);
-			CraftingRecipe[] recipes = getRecipesFor(inputStack, world);
+			CraftingRecipe[] recipes = getRecipesFor(inputStack, this.level);
 
 			int size = recipes.length;
 
@@ -328,7 +328,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 	private void chooseRecipe(CraftingContainer inventory) {
 
-		CraftingRecipe[] recipes = getRecipesFor(inventory, world);
+		CraftingRecipe[] recipes = getRecipesFor(inventory, this.level);
 
 		if (recipes.length == 0) {
 			this.tinkerResult.setItem(0, ItemStack.EMPTY);
@@ -337,7 +337,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 		CraftingRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
-		if (recipe != null && (recipe.isSpecial() || !this.world.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe))) {
+		if (recipe != null && (recipe.isSpecial() || !this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe))) {
 			this.tinkerResult.setRecipeUsed(recipe);
 			this.tinkerResult.setItem(0, recipe.assemble(inventory));
 		} else {
@@ -400,8 +400,8 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 */
 	private int calculateRecraftingCost() {
 
-		ItemStack input = tinkerInput.getItem(0);
-		ItemStack output = tinkerResult.getItem(0);
+		ItemStack input = this.tinkerInput.getItem(0);
+		ItemStack output = this.tinkerResult.getItem(0);
 
 		if (input.isEmpty() || !input.isEnchanted() || output.isEmpty()) {
 			return 0;
@@ -595,8 +595,8 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	public void removed(Player player) {
 		super.removed(player);
 		this.positionData.execute((world, pos) -> {
-			clearContainer(player, assemblyMatrix);
-			clearContainer(player, tinkerInput);
+			this.clearContainer(player, this.assemblyMatrix);
+			this.clearContainer(player, this.tinkerInput);
 		});
 	}
 
@@ -613,6 +613,6 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
+		return stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
 	}
 }

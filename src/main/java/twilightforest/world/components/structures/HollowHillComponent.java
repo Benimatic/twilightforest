@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.init.TFLandmark;
@@ -146,7 +146,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		RandomSource chestRNG = RandomSource.create(world.getSeed() + (long) x * z);
 
 		// try placing it
-		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFTreasure.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFTreasure.MEDIUM_HOLLOW_HILL : TFTreasure.SMALL_HOLLOW_HILL), sbb);
+		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFLootTables.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFLootTables.MEDIUM_HOLLOW_HILL : TFLootTables.SMALL_HOLLOW_HILL), sbb);
 
 		// make something for it to stand on, if necessary
 		placeBlock(world, Blocks.COBBLESTONE.defaultBlockState(), x, y - 1, z, sbb);

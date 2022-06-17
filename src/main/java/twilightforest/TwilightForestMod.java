@@ -53,8 +53,8 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.*;
 import twilightforest.init.TFMenuTypes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
-import twilightforest.loot.TFLootModifiers;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFLootModifiers;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.init.TFBannerPatterns;
 import twilightforest.init.TFStats;
@@ -110,12 +110,14 @@ public class TwilightForestMod {
 		BiomeKeys.BIOMES.register(modbus);
 		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
 		TFBlocks.BLOCKS.register(modbus);
+		TFLoot.CONDITIONS.register(modbus);
 		TFMenuTypes.CONTAINERS.register(modbus);
 		TFDimensionSettings.DIMENSION_TYPES.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
 		TFFeatures.FEATURES.register(modbus);
 		TFFeatureModifiers.FOLIAGE_PLACERS.register(modbus);
+		TFLoot.FUNCTIONS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFLootModifiers.LOOT_MODIFIERS.register(modbus);
 		TFMobEffects.MOB_EFFECTS.register(modbus);
@@ -193,7 +195,6 @@ public class TwilightForestMod {
 		if(Objects.equals(evt.getForgeRegistry(), ForgeRegistries.RECIPE_SERIALIZERS)) {
 			//How do I add a condition serializer as fast as possible? An event that fires really early
 			CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
-			TFTreasure.init();
 
 			//TODO find a better place for these? they work fine here but idk
 			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
