@@ -18,8 +18,8 @@ import twilightforest.init.TFMobEffects;
 public class ChillAuraEnchantment extends LootOnlyEnchantment {
 
 	public ChillAuraEnchantment(Rarity rarity) {
-		super(rarity, EnchantmentCategory.ARMOR, new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST,
-				EquipmentSlot.LEGS, EquipmentSlot.FEET });
+		super(rarity, EnchantmentCategory.ARMOR, new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST,
+				EquipmentSlot.LEGS, EquipmentSlot.FEET});
 	}
 
 	@Override
@@ -45,13 +45,13 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 	@Override
 	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
 		RandomSource random = user.getRandom();
-		if (shouldHit(level, random)) {
-			if(attacker instanceof LivingEntity entity) {
+		if (attacker != null && shouldHit(level, random)) {
+			if (attacker instanceof LivingEntity entity) {
 				if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
 						!entity.getItemBySlot(EquipmentSlot.CHEST).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
 						!entity.getItemBySlot(EquipmentSlot.LEGS).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
 						!entity.getItemBySlot(EquipmentSlot.FEET).is(ItemTags.FREEZE_IMMUNE_WEARABLES)) {
-					if(entity instanceof Player player && !player.isCreative()) {
+					if (entity instanceof Player player && !player.isCreative()) {
 						entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 200, level - 1));
 					}
 				}
@@ -63,7 +63,7 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 		if (level <= 0) {
 			return false;
 		} else {
-			return pRnd.nextFloat() < 0.15F * (float)level;
+			return pRnd.nextFloat() < 0.15F * (float) level;
 		}
 	}
 
