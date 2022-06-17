@@ -302,7 +302,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(ORES_KNIGHTMETAL); // Intentionally blank
 
 		tag(BlockTags.DIRT).add(TFBlocks.UBEROUS_SOIL.get());
-		tag(PORTAL_EDGE).addTags(BlockTags.DIRT);
+		tag(PORTAL_EDGE).addTags(BlockTags.DIRT).add(Blocks.FARMLAND, Blocks.DIRT_PATH);
 		// So yes, we could do fluid tags for the portal pool but the problem is that we're -replacing- the block, effectively replacing what would be waterlogged, with the portal block
 		// In the future if we can "portal log" blocks then we can re-explore doing it as a fluid
 		tag(PORTAL_POOL).add(Blocks.WATER);

@@ -1,4 +1,4 @@
-// 1.19	2022-06-11T22:07:39.861127	Tags for minecraft:block
+// 1.19	2022-06-16T23:28:08.9038712	Tags for minecraft:block
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -72,7 +72,7 @@ c8fafdcc498cb38e705f74c899c6adee8c1c137e data/twilightforest/tags/blocks/ice_bom
 2e3669ba44aac2e69249800a996f0e1b27c08e54 data/twilightforest/tags/blocks/ore_magnet/ignored_ores.json
 d82abba18e7ff90d2c891453ddff813ffdb8e55d data/twilightforest/tags/blocks/ore_magnet/ore_safe_replace_block.json
 8a2dc34fc948688f4378d9a34768e56a09d74dc3 data/twilightforest/tags/blocks/portal/decoration.json
-69c396cb051bbe9a130e6979b67065e5041b179d data/twilightforest/tags/blocks/portal/edge.json
+da907279b0d384a39c5e4714ffe703ce4787f9a7 data/twilightforest/tags/blocks/portal/edge.json
 cf3608bd187922aeb48c566c19e8482b0dca34c7 data/twilightforest/tags/blocks/portal/fluid.json
 58275c15a8c2699ac23fb5057a9ef14b13b733d9 data/twilightforest/tags/blocks/progression_allow_breaking.json
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/blocks/sortwood_logs.json
