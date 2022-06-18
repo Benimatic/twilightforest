@@ -592,10 +592,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8)).value();
-		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed());
+		return generateFeature(world.registryAccess(), chunkX, chunkZ, biomeAt, world.getSeed());
 	}
 
-	public static TFLandmark generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
+	public static TFLandmark generateFeature(RegistryAccess access, int chunkX, int chunkZ, Biome biome, long seed) {
 		// Remove block comment start-marker to enable debug
 		/*if (true) {
 			return LICH_TOWER;
@@ -606,7 +606,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
-		TFLandmark biomeFeature = BIOME_FEATURES.get(ForgeRegistries.BIOMES.getKey(biome));
+		TFLandmark biomeFeature = BIOME_FEATURES.get(access.ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
 
 		if(biomeFeature != null)
 			return biomeFeature;
@@ -920,7 +920,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
 		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
 		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
-		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed()))
+		if (this != generateFeature(context.registryAccess(), chunkPos.x, chunkPos.z, holder.value(), context.seed()))
 			return Optional.empty();
 		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z)).map(piece -> this.getStructurePieceGenerationStubFunction(piece, context, x, y, z));
 	}

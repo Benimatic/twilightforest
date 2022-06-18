@@ -2,6 +2,8 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
@@ -140,7 +142,7 @@ public class MagicMapItem extends MapItem {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && BiomeKeys.STREAM.location().equals(ForgeRegistries.BIOMES.getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(ForgeRegistries.BIOMES.getKey(downBiome)) ? downBiome : biome;
+						biome = overBiome != null && BiomeKeys.STREAM.location().equals(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(downBiome)) ? downBiome : biome;
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(level, biome);
 
@@ -174,13 +176,13 @@ public class MagicMapItem extends MapItem {
 		}
 	}
 
-	private MapColorBrightness getMapColorPerBiome(Level world, Biome biome) {
+	private MapColorBrightness getMapColorPerBiome(Level level, Biome biome) {
 		if (BIOME_COLORS.isEmpty()) {
 			setupBiomeColors();
 		}
 		if (biome == null)
 			return new MapColorBrightness(MaterialColor.COLOR_BLACK);
-		ResourceLocation key = ForgeRegistries.BIOMES.getKey(biome);
+		ResourceLocation key = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 		MapColorBrightness color = BIOME_COLORS.get(key);
 		if (color != null) {
 			return color;
