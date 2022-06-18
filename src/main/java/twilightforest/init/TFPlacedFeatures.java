@@ -1,12 +1,15 @@
 package twilightforest.init;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.worldgen.placement.TreePlacements;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
@@ -114,6 +117,7 @@ public class TFPlacedFeatures {
 	public static final Holder<PlacedFeature> PLACED_HIGHLANDS_TREES = register("tree/selector/highlands_trees", TFConfiguredFeatures.HIGHLANDS_TREES, tfTreeCheckArea(PlacementUtils.countExtra(3, 0.1F, 1), Blocks.SPRUCE_SAPLING.defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_ENCHANTED_FOREST_TREES = register("tree/selector/enchanted_forest_trees", TFConfiguredFeatures.ENCHANTED_FOREST_TREES, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), TFBlocks.RAINBOW_OAK_SAPLING.get().defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_SNOWY_FOREST_TREES = register("tree/selector/snowy_forest_trees", TFConfiguredFeatures.SNOWY_FOREST_TREES, List.of(PlacementUtils.countExtra(10, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureModifier.checkSurface(), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> PLACED_SNOWY_FOREST_TREES = register("tree/selector/snowy_forest_trees", TFConfiguredFeatures.SNOWY_FOREST_TREES, List.of(PlacementUtils.countExtra(10, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureModifier.checkSurface(), EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.not(BlockPredicate.matchesBlocks(Blocks.POWDER_SNOW)), 8), BlockPredicateFilter.forPredicate(TreePlacements.SNOW_TREE_PREDICATE), BiomeFilter.biome()));
 	public static final Holder<PlacedFeature> PLACED_VANILLA_TF_TREES = register("tree/selector/vanilla_trees", TFConfiguredFeatures.VANILLA_TF_TREES, tfTreeCheckArea(TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_VANILLA_TF_BIG_MUSH = register("tree/selector/vanilla_mushrooms", TFConfiguredFeatures.VANILLA_TF_BIG_MUSH, tfTreeCheckArea(TFBlocks.CANOPY_SAPLING.get().defaultBlockState()));
 
