@@ -88,15 +88,21 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		tag(VALID_TROLL_CAVE_BIOMES).add(BiomeKeys.HIGHLANDS);
 		tag(VALID_FINAL_CASTLE_BIOMES).add(BiomeKeys.FINAL_PLATEAU);
 
-		//biome categories
-		tag(BiomeTags.IS_FOREST).add(
-				BiomeKeys.FOREST, BiomeKeys.DENSE_FOREST, BiomeKeys.FIREFLY_FOREST,
-				BiomeKeys.OAK_SAVANNAH, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST,
-				BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_CENTER,
-				BiomeKeys.SNOWY_FOREST, BiomeKeys.HIGHLANDS
-		);
-		tag(BiomeTags.IS_MOUNTAIN).add(BiomeKeys.HIGHLANDS);
-		tag(BiomeTags.IS_HILL).add(BiomeKeys.THORNLANDS);
+		// FIXME as it currently stands, adding our biomes to vanilla biome tags will allow vanilla structure spawns in our dimension.
+		// the 3 issue structures are: mineshafts (use the forest tag), ruined portals (use the forest tag) and pillager outposts (use the mountain tag)
+
+		//vanilla biome categories
+		//shit, ruined portals can spawn thanks to this tag
+//		tag(BiomeTags.IS_FOREST).add(
+//				BiomeKeys.FOREST, BiomeKeys.DENSE_FOREST, BiomeKeys.FIREFLY_FOREST,
+//				BiomeKeys.OAK_SAVANNAH, BiomeKeys.MUSHROOM_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST,
+//				BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_CENTER,
+//				BiomeKeys.SNOWY_FOREST, BiomeKeys.HIGHLANDS
+//		);
+//		tag(BiomeTags.IS_MOUNTAIN).add(BiomeKeys.HIGHLANDS);
+//		tag(BiomeTags.IS_HILL).add(BiomeKeys.THORNLANDS);
+
+		//forge biome categories
 		tag(Tags.Biomes.IS_DENSE).add(BiomeKeys.DENSE_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST, BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_CENTER, BiomeKeys.SNOWY_FOREST, BiomeKeys.THORNLANDS);
 		tag(Tags.Biomes.IS_SPARSE).add(BiomeKeys.CLEARING, BiomeKeys.OAK_SAVANNAH, BiomeKeys.GLACIER, BiomeKeys.FINAL_PLATEAU);
 		tag(Tags.Biomes.IS_PLAINS).add(BiomeKeys.CLEARING);

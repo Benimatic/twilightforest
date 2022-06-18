@@ -1,4 +1,4 @@
-// 1.19	2022-06-11T22:07:39.8880274	Twilight Forest Biome Tags
+// 1.19	2022-06-17T20:22:22.7550905	Twilight Forest Biome Tags
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/forge/tags/worldgen/biome/is_cold.json
 c0ab4555d8e4843166c39003a9e3e683d9ac3702 data/forge/tags/worldgen/biome/is_coniferous.json
 7962d22e7950f3664d8cb46a06a60923349c99cd data/forge/tags/worldgen/biome/is_dead.json
@@ -16,9 +16,6 @@ ffed46f1c73aadb1dec87c223b4930163ccd7036 data/forge/tags/worldgen/biome/is_plate
 289b538480e779c04620dc5e3534d81757ff403a data/forge/tags/worldgen/biome/is_wasteland.json
 67a105a5d5bfc85f5997b340298dd3efc924f648 data/forge/tags/worldgen/biome/is_water.json
 de7eae9ce12a34bc9ba7e9b0a080f206b7bf5ab8 data/minecraft/tags/worldgen/biome/has_closer_water_fog.json
-ea0cab9ba4fd5233f8b577ec2a46320b50fd55e2 data/minecraft/tags/worldgen/biome/is_forest.json
-14d68747ac94023c25f41261e13cdaa54e395331 data/minecraft/tags/worldgen/biome/is_hill.json
-314565d6885146dded331c51c43558f6992cd4f2 data/minecraft/tags/worldgen/biome/is_mountain.json
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spawns_cold_variant_frogs.json
 6fcfc9f11967d4486971cf630ce3613738d77290 data/minecraft/tags/worldgen/biome/spawns_warm_variant_frogs.json
 cb846337ee5998dbc62b197a9a1f006cbc978bf2 data/minecraft/tags/worldgen/biome/without_patrol_spawns.json
