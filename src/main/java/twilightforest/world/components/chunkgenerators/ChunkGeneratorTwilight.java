@@ -5,9 +5,7 @@ import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.Util;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.*;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.WorldGenRegion;
@@ -56,6 +54,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
 			RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(o -> o.structureSets),
+			RegistryCodecs.homogeneousList(Registry.STRUCTURE_SET_REGISTRY).optionalFieldOf("structures_placements").forGetter(o -> o.structureOverrides),
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
@@ -75,8 +74,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public final ConcurrentHashMap<ChunkPos, TFLandmark> featureCache = new ConcurrentHashMap<>();
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight) {
-		super(structures, delegate);
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Optional<HolderSet<StructureSet>> structureOverride, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight) {
+		super(structures, structureOverride, delegate);
 		this.noiseGeneratorSettings = noiseGenSettings;
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
