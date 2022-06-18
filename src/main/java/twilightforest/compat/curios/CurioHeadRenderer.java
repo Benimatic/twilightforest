@@ -5,6 +5,7 @@ import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -27,7 +28,8 @@ public class CurioHeadRenderer implements ICurioRenderer {
 			matrixStack.translate(0.0D, -0.25D, 0.0D);
 			matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 			matrixStack.scale(0.625F, -0.625F, -0.625F);
-			Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.HEAD, false, matrixStack, renderTypeBuffer, light, OverlayTexture.NO_OVERLAY, Minecraft.getInstance().getModelManager().getModel(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(stack.getItem()))));
+			ItemInHandRenderer renderer = new ItemInHandRenderer(Minecraft.getInstance(), Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getItemRenderer());
+			renderer.renderItem(slotContext.entity(), stack, ItemTransforms.TransformType.HEAD, false, matrixStack, renderTypeBuffer, light);
 			matrixStack.popPose();
 		}
 	}
