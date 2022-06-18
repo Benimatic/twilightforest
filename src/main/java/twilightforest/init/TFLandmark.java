@@ -901,17 +901,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		return null;
 	}
 
-	private static boolean isValidBiome(Structure.GenerationContext context) {
-		int x = context.chunkPos().getMiddleBlockX();
-		int z = context.chunkPos().getMiddleBlockZ();
-		int y = 1;
-		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
-		return ForgeRegistries.BIOMES.getKey(holder.value()) != null && Objects.equals(ForgeRegistries.BIOMES.getKey(holder.value()).getNamespace(), TwilightForestMod.ID);
-	}
-
 	public Optional<Structure.GenerationStub> generateStub(Structure.GenerationContext context) {
-		if (!isValidBiome(context)) return Optional.empty();
-
 		ChunkPos chunkPos = context.chunkPos();
 		if (!TFLandmark.isInFeatureChunk(chunkPos.x << 4, chunkPos.z << 4))
 			return Optional.empty();
