@@ -60,13 +60,13 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, true));
+				player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0, false, true));
 				trySpawnHintMonster(player, world, TFLandmark.KNIGHT_STRONGHOLD);
 			}
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST_CENTER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, true));
+				player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0, false, true));
 				trySpawnHintMonster(player, world, TFLandmark.DARK_TOWER);
 			}
 		});
