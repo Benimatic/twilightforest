@@ -4,7 +4,7 @@
   },
   "downfall": 0.4,
   "effects": {
-    "fog_color": 12648408,
+    "fog_color": 3672576,
     "foliage_color": 6563343,
     "grass_color": 5713443,
     "mood_sound": {
@@ -49,7 +49,10 @@
       "twilightforest:legacy_redstone_ore",
       "twilightforest:legacy_diamond_ore",
       "twilightforest:legacy_lapis_ore",
-      "twilightforest:legacy_copper_ore"
+      "twilightforest:legacy_copper_ore",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite"
     ],
     [
       "twilightforest:plant_roots",
