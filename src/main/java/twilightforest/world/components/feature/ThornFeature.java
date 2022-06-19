@@ -46,6 +46,7 @@ public class ThornFeature extends Feature<ThornsConfig> {
 			if (!avoidGiantCloud || dPos.getY() - 64 <= world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, dPos.getX(), dPos.getZ())) {
 				if (Math.abs(dPos.getX() - oPos.getX()) < config.maxSpread() && Math.abs(dPos.getZ() - oPos.getZ()) < config.maxSpread() && canPlaceThorns(world, dPos)) {
 					world.setBlock(dPos, TFBlocks.BROWN_THORNS.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
+					world.getChunk(dPos).markPosForPostprocessing(dPos);
 
 					// did we make it to the end?
 					if (i == length - 1) {
