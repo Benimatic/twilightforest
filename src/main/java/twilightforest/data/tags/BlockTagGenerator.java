@@ -374,7 +374,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				Blocks.CHAIN_COMMAND_BLOCK,
 				Blocks.STRUCTURE_BLOCK,
 				Blocks.JIGSAW,
-				Blocks.MOVING_PISTON
+				Blocks.MOVING_PISTON,
+				Blocks.LIGHT,
+				Blocks.REINFORCED_DEEPSLATE
 		);
 
 		// TODO Test behavior with giant blocks for immunity stuffs
