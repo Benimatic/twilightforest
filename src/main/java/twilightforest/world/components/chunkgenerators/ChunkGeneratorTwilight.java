@@ -721,7 +721,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
 						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2, null).value();
-						if (BiomeKeys.DARK_FOREST.location().equals(ForgeRegistries.BIOMES.getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(ForgeRegistries.BIOMES.getKey(biome))) {
+						if (BiomeKeys.DARK_FOREST.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
 						}

@@ -218,12 +218,12 @@ public class MagicMapItem extends MapItem {
 		BIOME_COLORS.put(biome.location(), color);
 	}
 
-	public static int getBiomeColor(Biome biome) {
+	public static int getBiomeColor(Level level, Biome biome) {
 		if (BIOME_COLORS.isEmpty()) {
 			setupBiomeColors();
 		}
 
-		MapColorBrightness c = BIOME_COLORS.get(ForgeRegistries.BIOMES.getKey(biome));
+		MapColorBrightness c = BIOME_COLORS.get(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
 
 		return c != null ? getMapColor(c) : 0xFF000000;
 	}
