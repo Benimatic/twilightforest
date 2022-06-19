@@ -735,4 +735,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.BEANSTALK_LEAVES.get()
 		).build();
 	}
+
+	@Override
+	public String getName() {
+		return "Twilight Forest Block Tags";
+	}
 }

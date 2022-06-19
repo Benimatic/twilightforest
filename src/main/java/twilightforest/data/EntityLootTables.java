@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.minecraft.Util;
+import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +35,7 @@ import twilightforest.loot.functions.ModItemSwap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
+public class EntityLootTables extends EntityLoot {
 
 	private final Set<EntityType<?>> knownEntities = new HashSet<>();
 

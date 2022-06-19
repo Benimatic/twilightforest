@@ -22,4 +22,9 @@ public class FluidTagGenerator extends FluidTagsProvider {
     protected void addTags() {
         tag(FIRE_JET_FUEL).addTag(FluidTags.LAVA);
     }
+
+    @Override
+    public String getName() {
+        return "Twilight Forest Fluid Tags";
+    }
 }

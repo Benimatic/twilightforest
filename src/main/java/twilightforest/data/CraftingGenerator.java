@@ -755,4 +755,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.CASTLE_BRICK.get()), TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get())).save(consumer, TwilightForestMod.prefix("castleblock/" + "smelted" + "_cracked_castle_brick").toString());
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.UNDERBRICK.get()), TFBlocks.CRACKED_UNDERBRICK.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get())).save(consumer, TwilightForestMod.prefix("smelted" + "_cracked_underbrick").toString());
 	}
+
+	@Override
+	public String getName() {
+		return "Twilight Forest Crafting Recipes";
+	}
 }

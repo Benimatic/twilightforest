@@ -166,7 +166,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 	}
 
 	public String getName() {
-		return "Worldgen";
+		return "Twilight Forest Worldgen";
 	}
 
 	private Map<ResourceLocation, Biome> getBiomes() {

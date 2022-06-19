@@ -129,4 +129,9 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {
         return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, rl);
     }
+
+    @Override
+    public String getName() {
+        return "Twilight Forest Entity Tags";
+    }
 }
