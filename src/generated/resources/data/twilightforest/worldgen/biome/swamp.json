@@ -60,10 +60,10 @@
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
+      "minecraft:patch_grass_badlands",
+      "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
       "twilightforest:tree/hollow_oak",
-      "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",
@@ -80,6 +80,9 @@
       "twilightforest:huge_lily_pad",
       "twilightforest:huge_water_lily",
       "minecraft:patch_waterlily"
+    ],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ],
   "precipitation": "rain",

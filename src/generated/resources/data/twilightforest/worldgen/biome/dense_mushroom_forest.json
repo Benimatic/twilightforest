@@ -62,9 +62,11 @@
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
+      "minecraft:patch_grass_badlands",
+      "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
       "twilightforest:tree/hollow_oak",
-      "twilightforest:forest_grass_placer",
+      "twilightforest:mayapple",
       "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
@@ -85,6 +87,9 @@
       "twilightforest:mushgloom_cluster",
       "twilightforest:tree/selector/canopy_trees",
       "twilightforest:default_fallen_logs"
+    ],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ],
   "precipitation": "rain",

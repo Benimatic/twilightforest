@@ -56,8 +56,10 @@
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
+      "minecraft:patch_grass_badlands",
+      "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
-      "twilightforest:forest_grass_placer",
+      "twilightforest:mayapple",
       "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
@@ -68,6 +70,9 @@
       "twilightforest:hollow_log",
       "minecraft:flower_forest_flowers",
       "twilightforest:default_fallen_logs"
+    ],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ],
   "precipitation": "rain",
