@@ -1,1 +1,0 @@
-gradlew genIntellijRuns --refresh-dependencies --rerun-tasks
