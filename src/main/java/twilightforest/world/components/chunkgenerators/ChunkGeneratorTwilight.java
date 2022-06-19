@@ -448,7 +448,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private void flattenTerrainForFeature(WorldGenRegion primer, TFLandmark nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
-		int mazeHeight = TFGenerationSettings.SEALEVEL + 2;
+		int mazeHeight = TFGenerationSettings.SEALEVEL + 5;
 		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		if (dx <= -FEATURE_BOUNDARY) {
@@ -709,7 +709,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	/**
 	 * Adds dark forest canopy.  This version uses the "unzoomed" array of biomes used in land generation to determine how many of the nearby blocks are dark forest
 	 */
-	// Currently this is too sophisicated to be made into a SurfaceBuilder, it looks like
 	private void addDarkForestCanopy(WorldGenRegion primer, ChunkAccess chunk, int height) {
 		BlockPos blockpos = primer.getCenter().getWorldPosition();
 		int[] thicks = new int[5 * 5];
