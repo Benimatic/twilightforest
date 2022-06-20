@@ -1,4 +1,4 @@
-// 1.19	2022-06-19T16:10:16.5016005	Twilight Forest Worldgen
+// 1.19	2022-06-19T21:10:46.306076	Twilight Forest Worldgen
 dcb8c9e220b677fecbde4dec47583c71ad0b8208 data/twilightforest/dimension/twilight_forest.json
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 8ece13d0da77498a48204c2cac458d7053598920 data/twilightforest/worldgen/biome/clearing.json
@@ -126,8 +126,8 @@ f05fc630c8c2958dadc00c31fcff3aee56411edc data/twilightforest/worldgen/configured
 f37507042a601f66f6b73ce06169e0df36645071 data/twilightforest/worldgen/configured_feature/water_lake.json
 cfcc07ca2cf2d775ebaa046157420f5ce69fb63d data/twilightforest/worldgen/configured_feature/webs.json
 bf86006d2283ba6e7e4c9252adfa1caf205f5fea data/twilightforest/worldgen/configured_feature/well_placer.json
-3ab5078772be7df5bf2842e85bd375806e2e8c17 data/twilightforest/worldgen/noise_settings/skylight_noise_gen.json
-30e627169b540be33839b1bf3d933d46bc6bf191 data/twilightforest/worldgen/noise_settings/twilight_noise_gen.json
+4d3f5f5d420517f45c21316e22200d164bbf89a8 data/twilightforest/worldgen/noise_settings/skylight_noise_gen.json
+13c0b67e4269b037a4401c9d08ff1dc541a3fa04 data/twilightforest/worldgen/noise_settings/twilight_noise_gen.json
 7d478657414f4d60d70c48ab48ad63659d18ddf5 data/twilightforest/worldgen/placed_feature/big_mushgloom.json
 5f80ea05c198e95b977725124d2dd6da07935f15 data/twilightforest/worldgen/placed_feature/birch_fallen_log.json
 22e5bbea5fd183887dd93dad9eacf53f9e6adf7b data/twilightforest/worldgen/placed_feature/canopy_fallen_log.json

@@ -103,20 +103,34 @@ public class TFSurfaceRules {
 										SurfaceRules.isBiome(BiomeKeys.LAKE, BiomeKeys.STREAM),
 										SurfaceRules.sequence(
 												SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, SANDSTONE),
-												SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK),
-												SAND)),
+												SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), SAND)),
+								//make sure the swamps always get grass, they had weird stone patches sometimes
+								SurfaceRules.ifTrue(
+										SurfaceRules.isBiome(BiomeKeys.SWAMP, BiomeKeys.FIRE_SWAMP),
+										SurfaceRules.sequence(
+										SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)),
 								//make everything else grass
-								//check if we're above ground, so hollow hills dont have grassy floors
-								SurfaceRules.ifTrue(SurfaceRules.yStartCheck(VerticalAnchor.absolute(0), 1),
+								SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
 										SurfaceRules.sequence(
 												SurfaceRules.ifTrue(
-														SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)))),
+														//check if we're above ground, so hollow hills dont have grassy floors
+														SurfaceRules.yStartCheck(VerticalAnchor.absolute(-4), 1), GRASS_BLOCK))),
+
+								//if we're around the area hollow hill floors are, check if we're underwater. If so place some dirt.
+								//This fixes streams having weird stone patches
+								SurfaceRules.ifTrue(
+										SurfaceRules.not(
+												SurfaceRules.yStartCheck(VerticalAnchor.absolute(-4), 1)),
+										SurfaceRules.sequence(
+												SurfaceRules.ifTrue(
+														SurfaceRules.not(
+																SurfaceRules.waterBlockCheck(-1, 0)), DIRT))))),
 				//dirt goes under the grass of course!
 				//check if we're above ground, so hollow hills dont have dirt floors
-				SurfaceRules.ifTrue(SurfaceRules.yStartCheck(VerticalAnchor.absolute(0), 1),
+				SurfaceRules.ifTrue(SurfaceRules.waterStartCheck(-6, -1),
 						SurfaceRules.sequence(
 								SurfaceRules.ifTrue(
-										SurfaceRules.waterStartCheck(-6, -1),
+										SurfaceRules.yStartCheck(VerticalAnchor.absolute(-4), 1),
 										SurfaceRules.sequence(
 												SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT))))));
 
