@@ -168,7 +168,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		ShapedRecipeBuilder.shaped(TFBlocks.CANOPY_BOOKSHELF.get())
 				.pattern("---")
-				.pattern("BBB")
+				.pattern("B B")
 				.pattern("---")
 				.define('-', TFBlocks.CANOPY_PLANKS.get())
 				.define('B', Items.BOOK)
