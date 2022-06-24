@@ -41,27 +41,31 @@ public class ChangeBiomePacket {
 
 	public static class Handler {
 
+		@SuppressWarnings("Convert2Lambda")
 		public static boolean onMessage(ChangeBiomePacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				ClientLevel world = Minecraft.getInstance().level;
-				LevelChunk chunkAt = (LevelChunk) world.getChunk(message.pos);
+			ctx.get().enqueueWork(new Runnable() {
+				@Override
+				public void run() {
+					ClientLevel world = Minecraft.getInstance().level;
+					LevelChunk chunkAt = (LevelChunk) world.getChunk(message.pos);
 
-				Holder<Biome> biome = world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getHolderOrThrow(message.biomeId);
+					Holder<Biome> biome = world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getHolderOrThrow(message.biomeId);
 
-				int minY = QuartPos.fromBlock(world.getMinBuildHeight());
-				int maxY = minY + QuartPos.fromBlock(world.getHeight()) - 1;
+					int minY = QuartPos.fromBlock(world.getMinBuildHeight());
+					int maxY = minY + QuartPos.fromBlock(world.getHeight()) - 1;
 
-				int x = QuartPos.fromBlock(message.pos.getX());
-				int z = QuartPos.fromBlock(message.pos.getZ());
+					int x = QuartPos.fromBlock(message.pos.getX());
+					int z = QuartPos.fromBlock(message.pos.getZ());
 
-				for (LevelChunkSection section : chunkAt.getSections()) {
-					int y = Mth.clamp(QuartPos.fromBlock(section.bottomBlockY()), minY, maxY);
-					if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
-						container.set(x & 3, y & 3, z & 3, biome);
-					SectionPos pos = SectionPos.of(message.pos.getX() >> 4, section.bottomBlockY() >> 4, message.pos.getZ() >> 4);
-					world.setSectionDirtyWithNeighbors(pos.x(), pos.y(), pos.z());
+					for (LevelChunkSection section : chunkAt.getSections()) {
+						int y = Mth.clamp(QuartPos.fromBlock(section.bottomBlockY()), minY, maxY);
+						if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
+							container.set(x & 3, y & 3, z & 3, biome);
+						SectionPos pos = SectionPos.of(message.pos.getX() >> 4, section.bottomBlockY() >> 4, message.pos.getZ() >> 4);
+						world.setSectionDirtyWithNeighbors(pos.x(), pos.y(), pos.z());
+					}
+					world.onChunkLoaded(new ChunkPos(message.pos));
 				}
-				world.onChunkLoaded(new ChunkPos(message.pos));
 			});
 
 			return true;

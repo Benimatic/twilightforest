@@ -48,23 +48,26 @@ public class AreaProtectionPacket {
 
 	public static class Handler {
 
+		@SuppressWarnings("Convert2Lambda")
 		public static boolean onMessage(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+			ctx.get().enqueueWork(new Runnable() {
+				@Override
+				public void run() {
+					ClientLevel world = Minecraft.getInstance().level;
+					message.sbb.forEach(box -> addProtectionBox(world, box));
 
-				ClientLevel world = Minecraft.getInstance().level;
-				message.sbb.forEach(box -> addProtectionBox(world, box));
+					for (int i = 0; i < 20; i++) {
 
-				for (int i = 0; i < 20; i++) {
+						double vx = world.getRandom().nextGaussian() * 0.02D;
+						double vy = world.getRandom().nextGaussian() * 0.02D;
+						double vz = world.getRandom().nextGaussian() * 0.02D;
 
-					double vx = world.getRandom().nextGaussian() * 0.02D;
-					double vy = world.getRandom().nextGaussian() * 0.02D;
-					double vz = world.getRandom().nextGaussian() * 0.02D;
+						double x = message.pos.getX() + 0.5D + world.getRandom().nextFloat() - world.getRandom().nextFloat();
+						double y = message.pos.getY() + 0.5D + world.getRandom().nextFloat() - world.getRandom().nextFloat();
+						double z = message.pos.getZ() + 0.5D + world.getRandom().nextFloat() - world.getRandom().nextFloat();
 
-					double x = message.pos.getX() + 0.5D + world.getRandom().nextFloat() - world.getRandom().nextFloat();
-					double y = message.pos.getY() + 0.5D + world.getRandom().nextFloat() - world.getRandom().nextFloat();
-					double z = message.pos.getZ() + 0.5D + world.getRandom().nextFloat() - world.getRandom().nextFloat();
-
-					world.addParticle(TFParticleType.PROTECTION.get(), x, y, z, vx, vy, vz);
+						world.addParticle(TFParticleType.PROTECTION.get(), x, y, z, vx, vy, vz);
+					}
 				}
 			});
 			return true;

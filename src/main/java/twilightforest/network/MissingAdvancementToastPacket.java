@@ -28,9 +28,14 @@ public class MissingAdvancementToastPacket {
 		buf.writeItem(this.icon);
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static boolean handle(MissingAdvancementToastPacket packet, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() ->
-				Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon)));
+		ctx.get().enqueueWork(new Runnable() {
+			@Override
+			public void run() {
+				Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon));
+			}
+		});
 		return true;
 	}
 }

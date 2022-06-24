@@ -45,23 +45,28 @@ public class UpdateTFMultipartPacket {
 	}
 
 	public static class Handler {
+
+		@SuppressWarnings("Convert2Lambda")
 		public static boolean onMessage(UpdateTFMultipartPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				Level world = Minecraft.getInstance().level;
-				if (world == null)
-					return;
-				Entity ent = world.getEntity(message.id);
-				if (ent != null && ent.isMultipartEntity()) {
-					PartEntity<?>[] parts = ent.getParts();
-					if (parts == null)
+			ctx.get().enqueueWork(new Runnable() {
+				@Override
+				public void run() {
+					Level world = Minecraft.getInstance().level;
+					if (world == null)
 						return;
-					for (PartEntity<?> part : parts) {
-						if (part instanceof TFPart<?> tfPart) {
-							tfPart.readData(message.buffer);
-							if (message.buffer.readBoolean()) {
-								List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
-								if (data != null)
-									tfPart.getEntityData().assignValues(data);
+					Entity ent = world.getEntity(message.id);
+					if (ent != null && ent.isMultipartEntity()) {
+						PartEntity<?>[] parts = ent.getParts();
+						if (parts == null)
+							return;
+						for (PartEntity<?> part : parts) {
+							if (part instanceof TFPart<?> tfPart) {
+								tfPart.readData(message.buffer);
+								if (message.buffer.readBoolean()) {
+									List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
+									if (data != null)
+										tfPart.getEntityData().assignValues(data);
+								}
 							}
 						}
 					}
