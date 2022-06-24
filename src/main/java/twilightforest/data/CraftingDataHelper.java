@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.Util;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
@@ -13,12 +14,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.common.crafting.NBTIngredient;
+import net.minecraftforge.common.crafting.PartialNBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
@@ -36,48 +40,20 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 		super(generator);
 	}
 
-	protected final Ingredient itemWithNBT(RegistryObject<? extends ItemLike> item, Consumer<CompoundTag> nbtSetter) {
-		return itemWithNBT(item.get(), nbtSetter);
+	public final PartialNBTIngredient scepter(Item scepter) {
+		return PartialNBTIngredient.of(scepter, Util.make(() -> {
+			CompoundTag nbt = new CompoundTag();
+			nbt.putInt(ItemStack.TAG_DAMAGE, scepter.getMaxDamage());
+			return nbt;
+		}));
 	}
 
-	protected final Ingredient itemWithNBT(ItemLike item, Consumer<CompoundTag> nbtSetter) {
-		ItemStack stack = new ItemStack(item);
-
-		CompoundTag nbt = new CompoundTag();
-		nbtSetter.accept(nbt);
-		stack.setTag(nbt);
-
-		try {
-			Constructor<NBTIngredient> constructor = NBTIngredient.class.getDeclaredConstructor(ItemStack.class);
-
-			constructor.setAccessible(true);
-
-			return constructor.newInstance(stack);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-
-		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
-		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return Ingredient.of(stack);
-	}
-
-	protected final Ingredient multipleIngredients(Ingredient... ingredientArray) {
-		List<Ingredient> ingredientList = ImmutableList.copyOf(ingredientArray);
-
-		try {
-			Constructor<CompoundIngredient> constructor = CompoundIngredient.class.getDeclaredConstructor(List.class);
-
-			constructor.setAccessible(true);
-
-			return constructor.newInstance(ingredientList);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-
-		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
-		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return Ingredient.merge(ingredientList);
+	public final PartialNBTIngredient potion(Potion potion) {
+		return PartialNBTIngredient.of(Items.POTION, Util.make(() -> {
+			CompoundTag nbt = new CompoundTag();
+			nbt.putString("Potion", ForgeRegistries.POTIONS.getKey(potion).toString());
+			return nbt;
+		}));
 	}
 
 	protected final void charmRecipe(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Item> item) {
