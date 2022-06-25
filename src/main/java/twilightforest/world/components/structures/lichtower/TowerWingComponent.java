@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -1809,14 +1811,14 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// initialize a painting object
-			Holder<PaintingVariant> art = getPaintingOfSize(rand, minSize);
+			ResourceKey<PaintingVariant> art = getPaintingOfSize(rand, minSize);
 			Painting painting = new Painting(EntityType.PAINTING, world.getLevel());
 			try {
 				handle_HangingEntity_updateFacingWithBoundingBox.invoke(painting, direction);
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
 			}
-			painting.setVariant(art);
+			painting.setVariant(Registry.PAINTING_VARIANT.getHolderOrThrow(art));
 			painting.setPos(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
 
 			// check if we can fit a painting there
@@ -1830,12 +1832,12 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * At least one of the painting's parameters must be the specified size or greater
 	 */
-	protected Holder<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
-		ArrayList<Holder<PaintingVariant>> valid = new ArrayList<>();
+	protected ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
+		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
 
 		for (PaintingVariant art : ForgeRegistries.PAINTING_VARIANTS) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
-				valid.add(Holder.direct(art));
+				valid.add(ResourceKey.create(Registry.PAINTING_VARIANT_REGISTRY, ForgeRegistries.PAINTING_VARIANTS.getKey(art)));
 			}
 		}
 
