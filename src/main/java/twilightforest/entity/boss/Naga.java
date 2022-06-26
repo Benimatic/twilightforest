@@ -41,6 +41,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.TFPart;
@@ -158,7 +159,12 @@ public class Naga extends Monster {
 			}
 		});
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false) {
+			@Override
+			public boolean canUse() {
+				return Naga.this.isWithinRestriction(Naga.this.blockPosition()) && super.canUse();
+			}
+		});
 
 		this.moveControl = new NagaMoveControl(this);
 	}
@@ -273,7 +279,7 @@ public class Naga extends Monster {
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 
-		if (this.getTarget() != null && (this.distanceToSqr(getTarget()) > 80 * 80 || !this.isEntityWithinHomeArea(this.getTarget()))) {
+		if (this.getTarget() != null && (this.distanceToSqr(getTarget()) > 80 * 80 || !this.areSelfAndTargetInHome(this.getTarget()))) {
 			this.setTarget(null);
 		}
 
@@ -436,8 +442,12 @@ public class Naga extends Monster {
 		}
 	}
 
-	private boolean isEntityWithinHomeArea(Entity entity) {
+	public boolean isEntityWithinHomeArea(Entity entity) {
 		return this.isWithinRestriction(entity.blockPosition());
+	}
+
+	public boolean areSelfAndTargetInHome(Entity entity) {
+		return this.isWithinRestriction(this.blockPosition()) && this.isEntityWithinHomeArea(entity);
 	}
 
 	private void activateBodySegments() {
@@ -598,12 +608,12 @@ public class Naga extends Monster {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 
 	@Override
-	public boolean isPushedByFluid() {
+	public boolean isPushedByFluid(FluidType type) {
 		return false;
 	}
 
