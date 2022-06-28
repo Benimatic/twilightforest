@@ -4,8 +4,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.EntityMountEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
@@ -17,7 +17,7 @@ public class HostileMountEvents {
 	public static volatile boolean allowDismount = false;
 
 	@SubscribeEvent
-	public static void entityHurts(LivingHurtEvent event) {
+	public static void entityHurts(LivingAttackEvent event) {
 		LivingEntity living = event.getEntityLiving();
 		DamageSource damageSource = event.getSource();
 		// lets not make the player take suffocation damage if riding something
