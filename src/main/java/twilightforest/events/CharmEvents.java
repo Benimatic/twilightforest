@@ -58,8 +58,9 @@ public class CharmEvents {
 	public static void applyDeathItems(LivingDeathEvent event) {
 		LivingEntity living = event.getEntityLiving();
 
+		//ensure our player is real and in survival before attempting anything
 		if (living.getLevel().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
-				player.isCreative()) return;
+				player.isCreative() || player.isSpectator()) return;
 
 		if (charmOfLife(player)) {
 			event.setCanceled(true); // Executes if the player had charms
