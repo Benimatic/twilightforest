@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
@@ -31,6 +32,8 @@ import twilightforest.data.tags.CustomTagGenerator;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class PhantomArmorItem extends ArmorItem {
@@ -48,19 +51,22 @@ public class PhantomArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && super.canApplyAtEnchantingTable(stack, enchantment);
+		return !ForgeRegistries.ENCHANTMENTS.tags().getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).contains(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
-
-		for (Enchantment ench : enchants.keySet()) {
-			if (Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(ench))) {
-				return false;
+		AtomicBoolean badEnchant = new AtomicBoolean();
+		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+			for (Enchantment banned : ForgeRegistries.ENCHANTMENTS.tags().getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS)) {
+				if (Objects.equals(banned, enchantment)) {
+					badEnchant.set(true);
+					break;
+				}
 			}
-		}
-		return super.isBookEnchantable(stack, book);
+		});
+
+		return !badEnchant.get();
 	}
 
 	@Override

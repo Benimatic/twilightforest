@@ -33,6 +33,7 @@ import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -51,14 +52,14 @@ public class OreMagnetItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
-
-		for (Enchantment ench : enchants.keySet()) {
-			if (Objects.equals(ForgeRegistries.ENCHANTMENTS.getKey(ench), ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.UNBREAKING))) {
-				return super.isBookEnchantable(stack, book);
+		AtomicBoolean badEnchant = new AtomicBoolean();
+		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+			if (!Objects.equals(Enchantments.UNBREAKING, enchantment)) {
+				badEnchant.set(true);
 			}
-		}
-		return false;
+		});
+
+		return !badEnchant.get() && super.isBookEnchantable(stack, book);
 	}
 
 	@Override
