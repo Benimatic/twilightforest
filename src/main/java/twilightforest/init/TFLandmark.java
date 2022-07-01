@@ -31,7 +31,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
@@ -128,7 +127,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HedgeMazeComponent(this, 0, x + 1, y + 4, z + 1);
+			return new HedgeMazeComponent(this, 0, x + 1, chunkGenerator.getSeaLevel() + 8, z + 1);
 		}
 	};
 	public static final TFLandmark QUEST_GROVE = new TFLandmark( 1, "quest_grove" , true, BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES, TerrainAdjustment.BEARD_THIN) {
@@ -140,7 +139,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new QuestGrove(structureManager, new BlockPos(x - 12, y, z - 12));
+			return new QuestGrove(structureManager, new BlockPos(x - 12, chunkGenerator.getSeaLevel() + 5, z - 12));
 		}
 	};
 	public static final TFLandmark NAGA_COURTYARD = new TFLandmark( 3, "naga_courtyard", true, BiomeTagGenerator.VALID_NAGA_COURTYARD_BIOMES, TerrainAdjustment.BEARD_THIN) {
@@ -152,7 +151,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new CourtyardMain(this, rand, 0, x + 1, y + 1, z + 1, structureManager);
+			return new CourtyardMain(this, rand, 0, x + 1, chunkGenerator.getSeaLevel() + 5, z + 1, structureManager);
 		}
 	};
 	public static final TFLandmark LICH_TOWER = new TFLandmark( 1, "lich_tower", true, BiomeTagGenerator.VALID_LICH_TOWER_BIOMES, TerrainAdjustment.BEARD_THIN, TwilightForestMod.prefix("progress_naga") ) {
