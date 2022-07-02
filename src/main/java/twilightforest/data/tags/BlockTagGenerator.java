@@ -20,6 +20,8 @@ import java.util.function.Predicate;
 
 public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> TOWERWOOD = BlockTags.create(TwilightForestMod.prefix("towerwood"));
+	public static final TagKey<Block> MAZESTONE = BlockTags.create(TwilightForestMod.prefix("mazestone"));
+	public static final TagKey<Block> CASTLE_BLOCKS = BlockTags.create(TwilightForestMod.prefix("castle_blocks"));
 
 	public static final TagKey<Block> TWILIGHT_OAK_LOGS = BlockTags.create(TwilightForestMod.prefix("twilight_oak_logs"));
 	public static final TagKey<Block> CANOPY_LOGS = BlockTags.create(TwilightForestMod.prefix("canopy_logs"));
@@ -57,6 +59,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> TROPHIES = BlockTags.create(TwilightForestMod.prefix("trophies"));
 	public static final TagKey<Block> FIRE_JET_FUEL = BlockTags.create(TwilightForestMod.prefix("fire_jet_fuel"));
 	public static final TagKey<Block> ICE_BOMB_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("ice_bomb_replaceables"));
+	public static final TagKey<Block> MAZEBREAKER_ACCELERATED = BlockTags.create(TwilightForestMod.prefix("mazebreaker_accelerated_mining"));
 
 	public static final TagKey<Block> COMMON_PROTECTIONS = BlockTags.create(TwilightForestMod.prefix("common_protections"));
 	public static final TagKey<Block> ANNIHILATION_INCLUSIONS = BlockTags.create(TwilightForestMod.prefix("annihilation_inclusions"));
@@ -278,6 +281,25 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.MINING_WALL_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get());
 
 		tag(TOWERWOOD).add(TFBlocks.TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get());
+
+		tag(MAZESTONE).add(
+				TFBlocks.MAZESTONE.get(), TFBlocks.MAZESTONE_BRICK.get(),
+				TFBlocks.CRACKED_MAZESTONE.get(), TFBlocks.MOSSY_MAZESTONE.get(),
+				TFBlocks.CUT_MAZESTONE.get(), TFBlocks.DECORATIVE_MAZESTONE.get(),
+				TFBlocks.MAZESTONE_MOSAIC.get(), TFBlocks.MAZESTONE_MOSAIC.get());
+
+		tag(CASTLE_BLOCKS).add(
+				TFBlocks.CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK.get(),
+				TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get(),
+				TFBlocks.CASTLE_ROOF_TILE.get(), TFBlocks.THICK_CASTLE_BRICK.get(),
+				TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(),
+				TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(),
+				TFBlocks.CASTLE_BRICK_STAIRS.get(), TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get()
+		);
+
+		tag(MAZEBREAKER_ACCELERATED).addTag(MAZESTONE).addTag(CASTLE_BLOCKS);
 
 		tag(STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		tag(STORAGE_BLOCKS_CARMINITE).add(TFBlocks.CARMINITE_BLOCK.get());

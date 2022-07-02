@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.lichtower;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
@@ -33,7 +32,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.CastleBlock;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
@@ -1967,7 +1966,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (sbb.isInside(new BlockPos(dx, this.boundingBox.minY() + 1, dz))) {
 			for (int dy = this.getWorldY(startHeight); dy > 0; dy--) {
 				final BlockPos pos = new BlockPos(dx, dy, dz);
-				if (world.getBlockState(pos).getBlock() instanceof CastleBlock) {
+				if (world.getBlockState(pos).is(BlockTagGenerator.CASTLE_BLOCKS) && world.getBlockState(pos).isRedstoneConductor(world, pos)) {
 					world.setBlock(pos, colour, 2);
 				} else {
 					break;

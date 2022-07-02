@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -43,12 +44,14 @@ import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.capabilities.CapabilityList;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFMobEffects;
 import twilightforest.init.TFStats;
 import twilightforest.item.FieryArmorItem;
+import twilightforest.item.MazebreakerPickItem;
 import twilightforest.item.YetiArmorItem;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
@@ -60,6 +63,16 @@ public class PlayerEvents {
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 	private static final boolean globalParry = !ModList.get().isLoaded("parry");
+
+	@SubscribeEvent
+	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
+		ItemStack stack = event.getPlayer().getMainHandItem();
+		if (event.getState().is(BlockTagGenerator.MAZESTONE) || event.getState().is(BlockTagGenerator.CASTLE_BLOCKS)) {
+			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
+				stack.hurtAndBreak(16, event.getPlayer(), (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public static void entityHurts(LivingHurtEvent event) {
