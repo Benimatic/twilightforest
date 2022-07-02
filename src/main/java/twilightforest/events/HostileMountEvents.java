@@ -4,6 +4,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.EntityMountEvent;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +23,14 @@ public class HostileMountEvents {
 		DamageSource damageSource = event.getSource();
 		// lets not make the player take suffocation damage if riding something
 		if (living instanceof Player && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void entityTeleports(EntityTeleportEvent event) {
+		// if our grabbed target tries to teleport dont let them
+		if (event.getEntity() instanceof LivingEntity living && isRidingUnfriendly(living)) {
 			event.setCanceled(true);
 		}
 	}
