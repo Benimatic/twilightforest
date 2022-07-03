@@ -214,7 +214,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		stairsBlock(TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.WORN_CASTLE_BRICK.getId().getPath()));
 		stairsBlock(TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.getId().getPath()));
 		stairsBlock(TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.getId().getPath()));
-		stairsBlock(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.getId().getPath() + "_h"), prefix("block/castleblock_tile"), prefix("block/" + TFBlocks.CASTLE_ROOF_TILE.getId().getPath()));
+		bisectedStairsBlock(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS, prefix("block/encased_castle_brick_pillar_h"), prefix("block/castleblock_tile"), prefix("block/" + TFBlocks.CASTLE_ROOF_TILE.getId().getPath()));
 		stairsBlock(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), prefix("block/" + TFBlocks.BOLD_CASTLE_BRICK_TILE.getId().getPath()));
 
 		ConfiguredModel[] runeBrickModels = new ConfiguredModel[8];
@@ -860,12 +860,13 @@ public class BlockstateGenerator extends BlockStateProvider {
 		etchedNagastone(TFBlocks.ETCHED_NAGASTONE.get(), "");
 		etchedNagastone(TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), "_mossy");
 		etchedNagastone(TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), "_weathered");
-		stairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), prefix("block/etched_nagastone_left"), prefix("block/stone_tiles"), prefix("block/nagastone_bare"));
-		stairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), prefix("block/etched_nagastone_right"), prefix("block/stone_tiles"), prefix("block/nagastone_bare"));
-		stairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(), prefix("block/etched_nagastone_left_mossy"), prefix("block/stone_tiles_mossy"), prefix("block/nagastone_bare_mossy"));
-		stairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(), prefix("block/etched_nagastone_right_mossy"), prefix("block/stone_tiles_mossy"), prefix("block/nagastone_bare_mossy"));
-		stairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(), prefix("block/etched_nagastone_left_weathered"), prefix("block/stone_tiles_weathered"), prefix("block/nagastone_bare_weathered"));
-		stairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(), prefix("block/etched_nagastone_right_weathered"), prefix("block/stone_tiles_weathered"), prefix("block/nagastone_bare_weathered"));
+
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT, prefix("block/etched_nagastone_left"), prefix("block/stone_tiles"), prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT, prefix("block/etched_nagastone_right"), prefix("block/stone_tiles"), prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT, prefix("block/etched_nagastone_left_mossy"), prefix("block/stone_tiles_mossy"), prefix("block/nagastone_bare_mossy"));
+		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT, prefix("block/etched_nagastone_right_mossy"), prefix("block/stone_tiles_mossy"), prefix("block/nagastone_bare_mossy"));
+		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT, prefix("block/etched_nagastone_left_weathered"), prefix("block/stone_tiles_weathered"), prefix("block/nagastone_bare_weathered"));
+		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT, prefix("block/etched_nagastone_right_weathered"), prefix("block/stone_tiles_weathered"), prefix("block/nagastone_bare_weathered"));
 	}
 
 	private void nagastonePillar(Block b, String suffix) {
@@ -2211,6 +2212,18 @@ public class BlockstateGenerator extends BlockStateProvider {
 					.rotationY(yRot)
 					.build();
 		}, DoorBlock.POWERED);
+	}
+
+	private void bisectedStairsBlock(RegistryObject<StairBlock> block, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
+		this.bisectedStairsBlock(block, block.getId().getPath(), side, end, middle);
+	}
+
+	private void bisectedStairsBlock(RegistryObject<StairBlock> block, String name, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
+		ModelFile stairs = this.models().withExistingParent(name, TwilightForestMod.prefix("block/util/bisected_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
+		ModelFile stairsInner = this.models().withExistingParent(name + "_inner", TwilightForestMod.prefix("block/util/bisected_inner_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
+		ModelFile stairsOuter = this.models().withExistingParent(name + "_outer", TwilightForestMod.prefix("block/util/bisected_outer_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
+
+		this.stairsBlock(block.get(), stairs, stairsInner, stairsOuter);
 	}
 
 	@Nonnull
