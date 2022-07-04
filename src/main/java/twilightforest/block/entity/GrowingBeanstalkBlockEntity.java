@@ -181,4 +181,34 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), 2);
 		}
 	}
+
+	@Override
+	protected void saveAdditional(CompoundTag compoundTag) {
+		super.saveAdditional(compoundTag);
+		compoundTag.putInt("ticker", this.ticker);
+		compoundTag.putInt("layer", this.layer);
+		compoundTag.putBoolean("isAreaClearEnough", this.isAreaClearEnough);
+
+		compoundTag.putInt("nextLeafY", this.nextLeafY);
+		compoundTag.putInt("yOffset", this.yOffset);
+		compoundTag.putFloat("cScale", this.cScale);
+		compoundTag.putFloat("rScale", this.rScale);
+		compoundTag.putInt("maxY", this.maxY);
+		compoundTag.putInt("blocksSkipped", this.blocksSkipped);
+	}
+
+	@Override
+	public void load(CompoundTag compoundTag) {
+		super.load(compoundTag);
+		this.ticker = compoundTag.getInt("ticker");
+		this.layer = compoundTag.getInt("layer");
+		this.isAreaClearEnough = compoundTag.getBoolean("isAreaClearEnough");
+
+		this.nextLeafY = compoundTag.getInt("nextLeafY");
+		this.yOffset = compoundTag.getInt("yOffset");
+		this.cScale = compoundTag.getFloat("cScale");
+		this.rScale = compoundTag.getFloat("rScale");
+		this.maxY = compoundTag.getInt("maxY");
+		this.blocksSkipped = compoundTag.getInt("blocksSkipped");
+	}
 }
