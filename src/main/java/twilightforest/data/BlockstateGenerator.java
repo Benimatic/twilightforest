@@ -157,7 +157,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		thorns();
 		simpleBlock(TFBlocks.THORN_ROSE.get(), models().cross(TFBlocks.THORN_ROSE.getId().getPath(), blockTexture(TFBlocks.THORN_ROSE.get())));
 		simpleBlock(TFBlocks.THORN_LEAVES.get(), models().getExistingFile(new ResourceLocation("block/oak_leaves")));
-		simpleBlock(TFBlocks.BEANSTALK_LEAVES.get(), models().getExistingFile(new ResourceLocation("block/spruce_leaves")));
+		simpleBlock(TFBlocks.BEANSTALK_LEAVES.get(), models().getExistingFile(new ResourceLocation("block/azalea_leaves")));
 		simpleBlock(TFBlocks.HOLLOW_OAK_SAPLING.get(), models().cross(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), blockTexture(TFBlocks.HOLLOW_OAK_SAPLING.get())));
 		ModelFile deadrock = models().cubeAll(TFBlocks.DEADROCK.getId().getPath(), blockTexture(TFBlocks.DEADROCK.get()));
 		ModelFile deadrockMirrored = models().withExistingParent(TFBlocks.DEADROCK.getId().getPath() + "_mirrored", prefix("block/util/cube_mirrored_all"))

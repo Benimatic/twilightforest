@@ -137,15 +137,16 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dz = -1; dz <= 1; dz++) {
-				this.tryToPlaceLeaves(world, pos.offset(dx, -1, dz));
-				this.tryToPlaceLeaves(world, pos.offset(dx, 1, dz));
+				int distance = Math.abs(dx) + Math.abs(dz) + 1;
+				this.tryToPlaceLeaves(world, pos.offset(dx, -1, dz), distance);
+				this.tryToPlaceLeaves(world, pos.offset(dx, 1, dz), distance);
 			}
 		}
 		// larger square
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
 				if (!((dx == 2 || dx == -2) && (dz == 2 || dz == -2))) {
-					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz));
+					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz), Math.abs(dx) + Math.abs(dz));
 				}
 			}
 		}
@@ -174,10 +175,10 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		}
 	}
 
-	private void tryToPlaceLeaves(Level world, BlockPos pos) {
+	private void tryToPlaceLeaves(Level world, BlockPos pos, int distance) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 2);
+			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), 2);
 		}
 	}
 }

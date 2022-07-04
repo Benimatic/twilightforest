@@ -1,4 +1,4 @@
-// 1.19	2022-06-17T12:06:40.8040798	TwilightForest item and itemblock models
+// 1.19	2022-06-29T20:57:13.8018087	TwilightForest item and itemblock models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 1fb9b86a63e0c57696cd0fe907f94b1cfae0021e assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -19,7 +19,7 @@ f16218893fb32fcd886fa559ac2b064171e8b85e assets/twilightforest/models/item/arcti
 96b34f14857cd4d6c86e188e389b134c75099612 assets/twilightforest/models/item/aurora_block.json
 c34803aa239dbafa3c0286d98e6c16ab69c749ce assets/twilightforest/models/item/aurora_pillar.json
 c1a459bcf79cfcd7d0bc5ad1cc47ec0c2f7cf2fa assets/twilightforest/models/item/aurora_slab.json
-98068cc49731f021164ccb171cdc43d09dbbecaf assets/twilightforest/models/item/beanstalk_leaves.json
+3b22b7437760208f6214b9b121890393af3278a2 assets/twilightforest/models/item/beanstalk_leaves.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/bighorn_sheep_spawn_egg.json
 9916d25d03b28f2a6fc30d0f18e6b7607ec7f3f1 assets/twilightforest/models/item/birch_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/blockchain_goblin_spawn_egg.json
