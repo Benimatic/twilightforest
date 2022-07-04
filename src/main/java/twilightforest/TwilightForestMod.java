@@ -130,6 +130,7 @@ public class TwilightForestMod {
 		TFStats.STATS.register(modbus);
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modbus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
+		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(modbus);
 		TFStructureSets.STRUCTURE_SETS.register(modbus);
 		TFStructureTypes.STRUCTURE_TYPES.register(modbus);
 		TFStructures.STRUCTURES.register(modbus);
