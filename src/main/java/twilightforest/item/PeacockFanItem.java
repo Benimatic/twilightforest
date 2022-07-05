@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 
 public class PeacockFanItem extends Item {
 
-	boolean launched = false;
+	private static final String launched = "TFLaunched";
 
 	public PeacockFanItem(Properties properties) {
 		super(properties);
@@ -35,13 +35,14 @@ public class PeacockFanItem extends Item {
 	@Nonnull
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 
-		if (player.getCooldowns().isOnCooldown(this))
-			return new InteractionResultHolder<>(InteractionResult.PASS, player.getItemInHand(hand));
+		boolean flag = !player.isOnGround() && !player.isSwimming() && !stack.getOrCreateTag().getBoolean(launched);
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);
-			player.getItemInHand(hand).hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
+			stack.hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
+			if (flag) stack.getOrCreateTag().putBoolean(launched, true);
 		} else {
 			if (player.isFallFlying()) {
 				Vec3 look = player.getLookAngle();
@@ -53,13 +54,12 @@ public class PeacockFanItem extends Item {
 						look.z() * 0.1D + (look.z() * 2.0D - movement.z()) * 0.5D));
 			}
 			// jump if the player is in the air
-			if (!player.isOnGround() && !player.isSwimming() && !this.launched) {
+			if (flag) {
 				player.setDeltaMovement(new Vec3(
 						player.getDeltaMovement().x() * 1.05F,
 						1.5F,
 						player.getDeltaMovement().z() * 1.05F
 				));
-				this.launched = true;
 			} else {
 				AABB fanBox = getEffectAABB(player);
 				Vec3 lookVec = player.getLookAngle();
@@ -73,12 +73,12 @@ public class PeacockFanItem extends Item {
 				}
 			}
 			player.playSound(TFSounds.FAN_WOOSH.get(), 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() * 0.7F + 0.3F);
-			return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
+			return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 		}
 
 		player.startUsingItem(hand);
 
-		return new InteractionResultHolder<>(InteractionResult.PASS, player.getItemInHand(hand));
+		return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 	}
 
 	@Override
@@ -86,11 +86,11 @@ public class PeacockFanItem extends Item {
 		if (entity instanceof Player player && player.isFallFlying() && (player.getItemInHand(InteractionHand.OFF_HAND).is(this) || isSelected)) {
 			player.fallDistance = 0.0F;
 		}
-		if (entity instanceof Player player && this.launched) {
+		if (entity instanceof Player player && stack.getOrCreateTag().getBoolean(launched)) {
 			player.fallDistance = 0.0F;
 		}
-		if (entity instanceof Player player && player.isOnGround() && launched) {
-			launched = false;
+		if (entity instanceof Player player && player.isOnGround() && stack.getOrCreateTag().getBoolean(launched)) {
+			stack.getOrCreateTag().putBoolean(launched, false);
 		}
 		super.inventoryTick(stack, level, entity, slot, isSelected);
 	}
