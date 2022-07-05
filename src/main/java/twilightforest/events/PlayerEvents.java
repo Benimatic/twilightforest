@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -44,6 +45,7 @@ import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.TFBlocks;
@@ -71,6 +73,13 @@ public class PlayerEvents {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
 				stack.hurtAndBreak(16, event.getPlayer(), (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void updateFeatherFanCap(LivingEvent.LivingUpdateEvent event) {
+		if (event.getEntityLiving() instanceof Player player && player.getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent()) {
+			player.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
 		}
 	}
 

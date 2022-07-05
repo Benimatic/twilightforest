@@ -19,14 +19,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
+import twilightforest.capabilities.CapabilityList;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
 
 public class PeacockFanItem extends Item {
-
-	private static final String launched = "TFLaunched";
 
 	public PeacockFanItem(Properties properties) {
 		super(properties);
@@ -37,12 +36,12 @@ public class PeacockFanItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		boolean flag = !player.isOnGround() && !player.isSwimming() && !stack.getOrCreateTag().getBoolean(launched);
+		boolean flag = !player.isOnGround() && !player.isSwimming();
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);
 			stack.hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
-			if (flag) stack.getOrCreateTag().putBoolean(launched, true);
+			if (flag) player.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(cap -> cap.setFalling(true));
 		} else {
 			if (player.isFallFlying()) {
 				Vec3 look = player.getLookAngle();
@@ -61,14 +60,14 @@ public class PeacockFanItem extends Item {
 						player.getDeltaMovement().z() * 1.05F
 				));
 			} else {
-				AABB fanBox = getEffectAABB(player);
+				AABB fanBox = this.getEffectAABB(player);
 				Vec3 lookVec = player.getLookAngle();
 
 				// particle effect
 				for (int i = 0; i < 30; i++) {
 					level.addParticle(ParticleTypes.CLOUD, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
-							fanBox.minY + level.random.nextFloat() * (fanBox.maxY - fanBox.minY),
-							fanBox.minZ + level.random.nextFloat() * (fanBox.maxZ - fanBox.minZ),
+							fanBox.minY + level.getRandom().nextFloat() * (fanBox.maxY - fanBox.minY),
+							fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
 							lookVec.x(), lookVec.y(), lookVec.z());
 				}
 			}
@@ -79,20 +78,6 @@ public class PeacockFanItem extends Item {
 		player.startUsingItem(hand);
 
 		return new InteractionResultHolder<>(InteractionResult.PASS, stack);
-	}
-
-	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
-		if (entity instanceof Player player && player.isFallFlying() && (player.getItemInHand(InteractionHand.OFF_HAND).is(this) || isSelected)) {
-			player.fallDistance = 0.0F;
-		}
-		if (entity instanceof Player player && stack.getOrCreateTag().getBoolean(launched)) {
-			player.fallDistance = 0.0F;
-		}
-		if (entity instanceof Player player && player.isOnGround() && stack.getOrCreateTag().getBoolean(launched)) {
-			stack.getOrCreateTag().putBoolean(launched, false);
-		}
-		super.inventoryTick(stack, level, entity, slot, isSelected);
 	}
 
 	@Nonnull
