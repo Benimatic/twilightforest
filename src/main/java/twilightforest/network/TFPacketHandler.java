@@ -40,5 +40,6 @@ public class TFPacketHandler {
 		CHANNEL.messageBuilder(SpawnFallenLeafFromPacket.class, id++).encoder(SpawnFallenLeafFromPacket::encode).decoder(SpawnFallenLeafFromPacket::new).consumer(SpawnFallenLeafFromPacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(MissingAdvancementToastPacket.class, id++).encoder(MissingAdvancementToastPacket::encode).decoder(MissingAdvancementToastPacket::new).consumer(MissingAdvancementToastPacket::handle).add();
 		CHANNEL.messageBuilder(ParticlePacket.class, id++).encoder(ParticlePacket::encode).decoder(ParticlePacket::new).consumer(ParticlePacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UpdateFeatherFanFallPacket.class, id++).encoder(UpdateFeatherFanFallPacket::encode).decoder(UpdateFeatherFanFallPacket::new).consumer(UpdateFeatherFanFallPacket.Handler::onMessage).add();
 	}
 }

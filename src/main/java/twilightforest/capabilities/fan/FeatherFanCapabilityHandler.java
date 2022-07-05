@@ -2,6 +2,9 @@ package twilightforest.capabilities.fan;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.PacketDistributor;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.network.UpdateFeatherFanFallPacket;
 
 public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 
@@ -27,6 +30,9 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	@Override
 	public void setFalling(boolean falling) {
 		this.falling = falling;
+		if (!this.host.getLevel().isClientSide()) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new UpdateFeatherFanFallPacket(this.host.getId(), this));
+		}
 	}
 
 	@Override
