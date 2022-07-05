@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
@@ -36,7 +37,7 @@ public class PeacockFanItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		boolean flag = !player.isOnGround() && !player.isSwimming() && player.getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent() && !player.getCapability(CapabilityList.FEATHER_FAN_FALLING).resolve().get().getFalling();
+		boolean flag = !player.isOnGround() && !player.isSwimming() && player.getCapability(CapabilityList.FEATHER_FAN_FALLING).map(FeatherFanFallCapability::getFalling).orElse(false);
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);

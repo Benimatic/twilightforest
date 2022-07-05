@@ -1,18 +1,18 @@
 package twilightforest.capabilities.fan;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateFeatherFanFallPacket;
 
 public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 
-	private Player host;
+	private LivingEntity host;
 	private boolean falling;
 
 	@Override
-	public void setEntity(Player entity) {
+	public void setEntity(LivingEntity entity) {
 		this.host = entity;
 	}
 

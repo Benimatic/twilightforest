@@ -52,15 +52,12 @@ public class CapabilityList {
 					inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
 				}
 			});
-		}
-
-		if (e.getObject() instanceof Player player) {
 
 			e.addCapability(FeatherFanFallCapability.ID, new ICapabilitySerializable<CompoundTag>() {
 
 				private final LazyOptional<FeatherFanFallCapability> inst = LazyOptional.of(() -> {
 					FeatherFanCapabilityHandler cap = new FeatherFanCapabilityHandler();
-					cap.setEntity(player);
+					cap.setEntity(living);
 					return cap;
 				});
 
