@@ -143,6 +143,9 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        url "https://maven.tamaized.com/releases"
+    }
 }
 
 dependencies {
@@ -166,6 +169,8 @@ dependencies {
     //deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"
 
     //implementation fg.deobf("curse.maven:the-undergarden-379849:3810810")
+
+    implementation fg.deobf("team-twilight:crossdimcommands:1.19-1.0")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }
