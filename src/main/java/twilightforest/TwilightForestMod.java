@@ -157,7 +157,7 @@ public class TwilightForestMod {
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
 
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
+		if (false && TFConfig.COMMON_CONFIG.doCompat.get()) { // FIXME This is being called before Forge loads configs
 			try {
 				TFCompat.preInitCompat();
 			} catch (Exception e) {
