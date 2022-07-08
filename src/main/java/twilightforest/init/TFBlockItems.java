@@ -1,7 +1,6 @@
 package twilightforest.init;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Rarity;
@@ -9,7 +8,7 @@ import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
@@ -88,10 +87,10 @@ public class TFBlockItems {
 			register(event, blockItem(TFBlocks.TWISTED_STONE_PILLAR));
 			register(event, new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant()) {
 				@Override
-				public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-					consumer.accept(new IItemRenderProperties() {
+				public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+					consumer.accept(new IClientItemExtensions() {
 						@Override
-						public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+						public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 							return new ISTER();
 						}
 					});
@@ -430,10 +429,10 @@ public class TFBlockItems {
 	private static <B extends AbstractSkullCandleBlock> BlockItem skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
 		return new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)) {
 			@Override
-			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-				consumer.accept(new IItemRenderProperties() {
+			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+				consumer.accept(new IClientItemExtensions() {
 					@Override
-					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+					public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 						return new ISTER();
 					}
 				});
@@ -448,10 +447,10 @@ public class TFBlockItems {
 	private static <B extends Block, W extends Block> BlockItem trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
 		return new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())) {
 			@Override
-			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-				consumer.accept(new IItemRenderProperties() {
+			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+				consumer.accept(new IClientItemExtensions() {
 					@Override
-					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+					public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 						return new ISTER();
 					}
 				});
@@ -462,10 +461,10 @@ public class TFBlockItems {
 	private static <T extends Block, E extends BlockEntity> BlockItem wearableBlock(RegistryObject<T> block, RegistryObject<BlockEntityType<E>> tileentity) {
 		return new WearableItem(block.get(), TFItems.defaultBuilder()) {
 			@Override
-			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-				consumer.accept(new IItemRenderProperties() {
+			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+				consumer.accept(new IClientItemExtensions() {
 					@Override
-					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+					public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 						return new ISTER();
 					}
 				});
@@ -484,10 +483,10 @@ public class TFBlockItems {
 	private static void makeBEWLRItem(RegisterEvent event, RegistryObject<? extends Block> block) {
 		register(event, new BlockItem(block.get(), TFItems.defaultBuilder()) {
 			@Override
-			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-				consumer.accept(new IItemRenderProperties() {
+			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+				consumer.accept(new IClientItemExtensions() {
 					@Override
-					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+					public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 						return new ISTER();
 					}
 				});

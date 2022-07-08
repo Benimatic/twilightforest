@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -11,7 +12,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import com.mojang.math.Vector3f;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import twilightforest.potions.FrostedEffect;
 
 import java.util.Random;
@@ -47,7 +48,7 @@ public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
 			stack.mulPose(Vector3f.ZP.rotationDegrees(random.nextFloat() * 360F));
 			stack.translate(-0.5F, -0.5F, -0.5F);
 
-			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(Blocks.ICE.defaultBlockState(), stack, buffer, light, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(Blocks.ICE.defaultBlockState(), stack, buffer, light, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, RenderType.translucent());
 			stack.popPose();
 		}
 	}

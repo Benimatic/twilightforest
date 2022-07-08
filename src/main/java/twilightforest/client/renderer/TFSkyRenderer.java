@@ -3,7 +3,9 @@ package twilightforest.client.renderer;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
@@ -14,25 +16,23 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ISkyRenderHandler;
 
 @OnlyIn(Dist.CLIENT)
-public class TFSkyRenderer implements ISkyRenderHandler {
+public class TFSkyRenderer {
 
-	private VertexBuffer starBuffer;
+	private static VertexBuffer starBuffer;
 
 	public TFSkyRenderer() {
 		this.createStars();
 	}
 
+
 	// [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void render(int ticks, float partialTicks, PoseStack ms, ClientLevel level, Minecraft mc) {
-		LevelRenderer levelRenderer = mc.levelRenderer;
+	public static boolean renderSky(ClientLevel level, int ticks, float partialTicks, PoseStack ms, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+		LevelRenderer levelRenderer = Minecraft.getInstance().levelRenderer;
 
 		RenderSystem.disableTexture();
-		Vec3 vec3 = level.getSkyColor(mc.gameRenderer.getMainCamera().getPosition(), partialTicks);
+		Vec3 vec3 = level.getSkyColor(camera.getPosition(), partialTicks);
 		float f = (float) vec3.x();
 		float f1 = (float) vec3.y();
 		float f2 = (float) vec3.z();
@@ -68,8 +68,8 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		//if (f10 > 0.0F) { Always true
 		RenderSystem.setShaderColor(f10, f10, f10, f10);
 
-		this.starBuffer.bind();
-		this.starBuffer.drawWithShader(ms.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
+		starBuffer.bind();
+		starBuffer.drawWithShader(ms.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
 		VertexBuffer.unbind();
 		//}
 
@@ -77,7 +77,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.disableBlend();
 		ms.popPose();
 		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
-		double d0 = mc.player.getEyePosition(partialTicks).y() + (level.getSeaLevel() - 10);
+		double d0 = camera.getEntity().getEyePosition(partialTicks).y() + (level.getSeaLevel() - 10);
 
 		if (d0 < 0.0D) {
 			ms.pushPose();
@@ -97,6 +97,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 
 		RenderSystem.enableTexture();
 		RenderSystem.depthMask(true);
+		return true;
 	}
 
 	// [VanillaCopy] LevelRenderer.createStars
@@ -104,14 +105,14 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		Tesselator tesselator = Tesselator.getInstance();
 		BufferBuilder bufferbuilder = tesselator.getBuilder();
 		RenderSystem.setShader(GameRenderer::getPositionShader);
-		if (this.starBuffer != null) {
-			this.starBuffer.close();
+		if (starBuffer != null) {
+			starBuffer.close();
 		}
 
-		this.starBuffer = new VertexBuffer();
+		starBuffer = new VertexBuffer();
 		BufferBuilder.RenderedBuffer renderedBuffer = this.drawStars(bufferbuilder);
-		this.starBuffer.bind();
-		this.starBuffer.upload(renderedBuffer);
+		starBuffer.bind();
+		starBuffer.upload(renderedBuffer);
 		VertexBuffer.unbind();
 	}
 

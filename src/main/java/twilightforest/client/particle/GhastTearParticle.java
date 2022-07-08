@@ -12,7 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import twilightforest.init.TFSounds;
 
 @OnlyIn(Dist.CLIENT)
@@ -20,7 +20,7 @@ public class GhastTearParticle extends TextureSheetParticle {
 
 	public GhastTearParticle(ClientLevel level, double x, double y, double z, Item item) {
 		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(item).getParticleIcon(EmptyModelData.INSTANCE);
+		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(item).getParticleIcon(ModelData.EMPTY);
 		this.rCol = this.gCol = this.bCol = 1.0F;
 		this.quadSize = 2.0F;
 		this.gravity = 0.6F;

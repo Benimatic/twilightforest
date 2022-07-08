@@ -1,10 +1,12 @@
 package twilightforest.client;
 
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import twilightforest.init.TFBlocks;
 
 public class RenderLayerRegistration {
+	@SuppressWarnings("removal")
+	//FIXME fix this ASAP. setRenderLayer will be removed very soon
 	public static void init() {
 		RenderType cutoutMipped = RenderType.cutoutMipped();
 		RenderType cutout = RenderType.cutout();

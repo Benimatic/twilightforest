@@ -8,7 +8,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -55,26 +55,26 @@ public class TFParticleType {
 
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
-	public static void registerFactories(ParticleFactoryRegisterEvent event) {
+	public static void registerFactories(RegisterParticleProvidersEvent event) {
 		ParticleEngine particles = Minecraft.getInstance().particleEngine;
 
-		particles.register(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);
-		particles.register(TFParticleType.LEAF_RUNE.get(), LeafRuneParticle.Factory::new);
-		particles.register(TFParticleType.BOSS_TEAR.get(), new GhastTearParticle.Factory());
-		particles.register(TFParticleType.GHAST_TRAP.get(), GhastTrapParticle.Factory::new);
-		particles.register(TFParticleType.PROTECTION.get(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
-		particles.register(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
-		particles.register(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
-		particles.register(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.Factory::new);
-		particles.register(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
-		particles.register(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
-		particles.register(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
-		particles.register(TFParticleType.FIREFLY.get(), FireflyParticle.Factory::new);
-		particles.register(TFParticleType.WANDERING_FIREFLY.get(), WanderingFireflyParticle.Factory::new);
-		particles.register(TFParticleType.JAR_WANDERING_FIREFLY.get(), WanderingFireflyParticle.FromJarFactory::new);
-		particles.register(TFParticleType.FIREFLY_PINNED.get(), PinnedFireflyParticle.Factory::new);
-		particles.register(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);
-		particles.register(TFParticleType.OMINOUS_FLAME.get(), FlameParticle.SmallFlameProvider::new);
-		particles.register(TFParticleType.SORTING_PARTICLE.get(), SortingParticle.Factory::new);
+		event.register(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);
+		event.register(TFParticleType.LEAF_RUNE.get(), LeafRuneParticle.Factory::new);
+		event.register(TFParticleType.BOSS_TEAR.get(), new GhastTearParticle.Factory());
+		event.register(TFParticleType.GHAST_TRAP.get(), GhastTrapParticle.Factory::new);
+		event.register(TFParticleType.PROTECTION.get(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
+		event.register(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
+		event.register(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
+		event.register(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.Factory::new);
+		event.register(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
+		event.register(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
+		event.register(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
+		event.register(TFParticleType.FIREFLY.get(), FireflyParticle.Factory::new);
+		event.register(TFParticleType.WANDERING_FIREFLY.get(), WanderingFireflyParticle.Factory::new);
+		event.register(TFParticleType.JAR_WANDERING_FIREFLY.get(), WanderingFireflyParticle.FromJarFactory::new);
+		event.register(TFParticleType.FIREFLY_PINNED.get(), PinnedFireflyParticle.Factory::new);
+		event.register(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);
+		event.register(TFParticleType.OMINOUS_FLAME.get(), FlameParticle.SmallFlameProvider::new);
+		event.register(TFParticleType.SORTING_PARTICLE.get(), SortingParticle.Factory::new);
 	}
 }

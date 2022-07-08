@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
@@ -19,7 +19,7 @@ public class FogHandler {
 	private static float spoopFog = 1F;
 
 	@SubscribeEvent
-	public static void fogColors(EntityViewRenderEvent.FogColors event) {
+	public static void fogColors(ViewportEvent.ComputeFogColor event) {
 		boolean flag = isSpooky();
 		if (flag || spoopColor > 0F) {
 			final float[] realColors = {event.getRed(), event.getGreen(), event.getBlue()};
@@ -43,7 +43,7 @@ public class FogHandler {
 	}
 
 	@SubscribeEvent
-	public static void fog(EntityViewRenderEvent.RenderFogEvent event) {
+	public static void fog(ViewportEvent.RenderFog event) {
 		boolean flag = isSpooky();
 		if (flag || spoopFog < 1F) {
 			float f = 48F;

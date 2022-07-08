@@ -28,11 +28,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IWeatherRenderHandler;
+import net.minecraftforge.client.DimensionSpecialEffectsManager;
 import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,6 +41,7 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
+import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
@@ -51,6 +50,7 @@ import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -65,13 +65,12 @@ public class TFClientEvents {
 	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {
 		@SubscribeEvent
-		public static void registerLoaders(ModelRegistryEvent event) {
-			ModelLoaderRegistry.registerLoader(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
+		public static void registerLoaders(ModelEvent.RegisterGeometryLoaders event) {
+			event.register("patch", PatchModelLoader.INSTANCE);
 		}
 
-		@Deprecated // tterrag said this would become deprecated soon in favor of above method
 		@SubscribeEvent
-		public static void modelBake(ModelBakeEvent event) {
+		public static void modelBake(ModelEvent.BakingCompleted event) {
 			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
 			fullbrightItem(event, TFItems.FIERY_INGOT);
 			fullbrightItem(event, TFItems.FIERY_BOOTS);
@@ -97,48 +96,48 @@ public class TFClientEvents {
 //			}
 		}
 
-		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
+		private static void fullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item) {
 			fullbrightItem(event, item, f -> f);
 		}
 
-		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
+		private static void fullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
 			fullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
 		}
 
-		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
+		private static void fullbrightBlock(ModelEvent.BakingCompleted event, RegistryObject<Block> block) {
 			fullbrightBlock(event, block, f -> f);
 		}
 
-		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
+		private static void fullbrightBlock(ModelEvent.BakingCompleted event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
 			fullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
 			fullbright(event, Objects.requireNonNull(block.getId()), "", process);
 		}
 
-		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
+		private static void fullbright(ModelEvent.BakingCompleted event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModelRegistry().put(mrl, process.apply(new FullbrightBakedModel(event.getModelRegistry().get(mrl))));
+			event.getModels().put(mrl, process.apply(new FullbrightBakedModel(event.getModels().get(mrl))));
 		}
 
-		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
+		private static void tintedFullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item) {
 			tintedFullbrightItem(event, item, f -> f);
 		}
 
-		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
+		private static void tintedFullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
 			tintedFullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
 		}
 
-		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
+		private static void tintedFullbrightBlock(ModelEvent.BakingCompleted event, RegistryObject<Block> block) {
 			tintedFullbrightBlock(event, block, f -> f);
 		}
 
-		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
+		private static void tintedFullbrightBlock(ModelEvent.BakingCompleted event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
 			tintedFullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
 			tintedFullbright(event, Objects.requireNonNull(block.getId()), "", process);
 		}
 
-		private static void tintedFullbright(ModelBakeEvent event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
+		private static void tintedFullbright(ModelEvent.BakingCompleted event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModelRegistry().put(mrl, process.apply(new TintIndexAwareFullbrightBakedModel(event.getModelRegistry().get(mrl))));
+			event.getModels().put(mrl, process.apply(new TintIndexAwareFullbrightBakedModel(event.getModels().get(mrl))));
 		}
 
 		@SubscribeEvent
@@ -185,15 +184,23 @@ public class TFClientEvents {
 
 
 		@SubscribeEvent
-		public static void registerModels(ModelRegistryEvent event) {
-			ForgeModelBakery.addSpecialModel(ShieldLayer.LOC);
-			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
-			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
-			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
+		public static void registerModels(ModelEvent.RegisterAdditional event) {
+			event.register(ShieldLayer.LOC);
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
 
-			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
-			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
-			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
+			event.register(TwilightForestMod.prefix("block/casket_obsidian"));
+			event.register(TwilightForestMod.prefix("block/casket_stone"));
+			event.register(TwilightForestMod.prefix("block/casket_basalt"));
+		}
+
+		@SubscribeEvent
+		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
+			//TODO if there is a better way to do this, then do it. This works though, so idk
+			new TFSkyRenderer();
+			new TFWeatherRenderer();
+			event.register(TwilightForestMod.prefix("renderer"), new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
 		}
 	}
 
@@ -201,8 +208,8 @@ public class TFClientEvents {
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
 	@SubscribeEvent
-	public static void preOverlay(RenderGameOverlayEvent.PreLayer event) {
-		if (event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT) {
+	public static void preOverlay(RenderGuiOverlayEvent.Pre event) {
+		if (event.getOverlay().id() == VanillaGuiOverlay.MOUNT_HEALTH.id()) {
 			if (HostileMountEvents.isRidingUnfriendly(Minecraft.getInstance().player)) {
 				event.setCanceled(true);
 			}
@@ -272,13 +279,11 @@ public class TFClientEvents {
 		sineTicker = sineTicker + partial;
 
 		BugModelAnimationHelper.animate();
-		DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
+		DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
 
 		// add weather box if needed
 		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {
-			IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
-			if (weatherRenderer instanceof TFWeatherRenderer)
-				((TFWeatherRenderer) weatherRenderer).tick();
+			TFWeatherRenderer.tick();
 		}
 	}
 
@@ -330,14 +335,14 @@ public class TFClientEvents {
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
 	@SubscribeEvent
-	public static void FOVUpdate(FOVModifierEvent event) {
+	public static void FOVUpdate(ComputeFovModifierEvent event) {
 		Player player = event.getPlayer();
 		if (player.isUsingItem()) {
 			Item useItem = player.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
 				float f = player.getTicksUsingItem() / 20.0F;
 				f = f > 1.0F ? 1.0F : f * f;
-				event.setNewFov(event.getFov() * (1.0F - f * 0.15F));
+				event.setNewFovModifier(event.getFovModifier() * (1.0F - f * 0.15F));
 			}
 		}
 	}

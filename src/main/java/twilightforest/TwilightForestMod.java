@@ -149,7 +149,7 @@ public class TwilightForestMod {
 		modbus.addListener(CapabilityList::registerCapabilities);
 
 		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+			//Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 
 		// Poke these so they exist when we need them FIXME this is probably terrible design

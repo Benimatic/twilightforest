@@ -50,7 +50,7 @@ public class TFClientSetup {
 		private static boolean optifineWarningShown = false;
 
 		@SubscribeEvent
-		public static void showOptifineWarning(ScreenEvent.InitScreenEvent.Post event) {
+		public static void showOptifineWarning(ScreenEvent.Init.Post event) {
 			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getScreen() instanceof TitleScreen) {
 				optifineWarningShown = true;
 				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
@@ -72,9 +72,6 @@ public class TFClientSetup {
         RenderLayerRegistration.init();
         TFBlockEntities.registerTileEntityRenders();
         TFMenuTypes.renderScreens();
-
-        TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
-        DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
 
         evt.enqueueWork(() -> {
             Sheets.addWoodType(TFBlocks.TWILIGHT_OAK);

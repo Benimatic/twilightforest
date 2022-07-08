@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -12,9 +11,10 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.RedThreadBlockEntity;
 import twilightforest.client.TFShaders;
@@ -41,16 +41,14 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 	@Override
 	public void render(T thread, float ticks, PoseStack ms, MultiBufferSource source, int light, int overlay) {
 		BlockRenderDispatcher blockrenderdispatcher = Minecraft.getInstance().getBlockRenderer();
+		BlockState state = thread.getBlockState();
 		if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFItems.RED_THREAD.get())) {
-			ForgeHooksClient.setRenderType(GLOW);
 			render(GLOW, blockrenderdispatcher, thread, ms, source, false);
 		} else {
-			RenderType.chunkBufferLayers().stream().filter(type -> ItemBlockRenderTypes.canRenderInLayer(thread.getBlockState(), type)).forEach(type -> {
-				ForgeHooksClient.setRenderType(type);
+			for (RenderType type : blockrenderdispatcher.getBlockModel(state).getRenderTypes(state, thread.getLevel().getRandom(), ModelData.EMPTY)) {
 				render(type, blockrenderdispatcher, thread, ms, source, true);
-			});
+			}
 		}
-		ForgeHooksClient.setRenderType(null);
 	}
 
 	private void render(RenderType type, BlockRenderDispatcher blockrenderdispatcher, T thread, PoseStack ms, MultiBufferSource source, boolean light) {
@@ -77,7 +75,9 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 
 					OverlayTexture.NO_OVERLAY,
 
-					EmptyModelData.INSTANCE
+					ModelData.EMPTY,
+
+					type
 
 			);
 		else
@@ -97,7 +97,9 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 
 					OverlayTexture.NO_OVERLAY,
 
-					EmptyModelData.INSTANCE
+					ModelData.EMPTY,
+
+					type
 
 			);
 	}
