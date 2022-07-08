@@ -1,12 +1,10 @@
 package twilightforest.compat;
 
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 //I was having an issue where the game refused to load with the enum method and I couldnt figure it out, so I moved to a new method of registering compat
@@ -30,29 +28,6 @@ public abstract class TFCompat {
 
     protected TFCompat(String modName) {
         this.modName = modName;
-    }
-
-    public static void preInitCompat() {
-        for (Map.Entry<String, Class<? extends TFCompat>> entry : classes.entrySet()) {
-            if (ModList.get().isLoaded(entry.getKey())) {
-                try {
-                    TFCompat compat = entry.getValue().newInstance();
-                    modules.add(compat);
-                    compat.isActivated = compat.preInit();
-
-                    if (compat.isActivated) {
-                        TwilightForestMod.LOGGER.info("Loaded compatibility for mod {}.", compat.modName);
-                    } else {
-                        TwilightForestMod.LOGGER.warn("Couldn't activate compatibility for mod {}!", compat.modName);
-                    }
-                } catch (Exception e) {
-                    TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in preInit!", e.getLocalizedMessage(), entry.getKey());
-                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
-                }
-            } else {
-                TwilightForestMod.LOGGER.info("Skipped compatibility for mod {}.", entry.getKey());
-            }
-        }
     }
 
     public static void initCompat(FMLCommonSetupEvent event) {
@@ -97,8 +72,6 @@ public abstract class TFCompat {
             }
         }
     }
-
-    protected abstract boolean preInit();
 
     protected abstract void init(FMLCommonSetupEvent event);
 

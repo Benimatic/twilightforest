@@ -36,11 +36,6 @@ public class CuriosCompat extends TFCompat {
 	}
 
 	@Override
-	protected boolean preInit() {
-		return true;
-	}
-
-	@Override
 	protected void init(FMLCommonSetupEvent event) {
 	}
 

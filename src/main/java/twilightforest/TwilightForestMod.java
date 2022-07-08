@@ -12,13 +12,13 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -52,9 +52,7 @@ import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFEntities;
 import twilightforest.init.*;
 import twilightforest.init.TFMenuTypes;
-import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.init.TFLootModifiers;
-import twilightforest.loot.TFLootTables;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.init.TFBannerPatterns;
 import twilightforest.init.TFStats;
@@ -156,18 +154,6 @@ public class TwilightForestMod {
 
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
-
-		if (false && TFConfig.COMMON_CONFIG.doCompat.get()) { // FIXME This is being called before Forge loads configs
-			try {
-				TFCompat.preInitCompat();
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading preInit compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
-		} else {
-			LOGGER.warn("Skipping compatibility!");
-		}
 	}
 
 	@SubscribeEvent
