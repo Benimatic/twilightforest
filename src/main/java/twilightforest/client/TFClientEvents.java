@@ -71,6 +71,8 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void modelBake(ModelEvent.BakingCompleted event) {
+			TFItems.addItemModelProperties();
+
 			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
 			fullbrightItem(event, TFItems.FIERY_INGOT);
 			fullbrightItem(event, TFItems.FIERY_BOOTS);
