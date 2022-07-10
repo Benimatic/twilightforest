@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -55,9 +56,7 @@ public class FogHandler {
 				spoopFog += shift;
 			spoopFog = Mth.clamp(spoopFog, 0F, 1F);
 
-			//FIXME getMode now requires a FogType when it used to want a FogMode. Does this work ok?
-			//if (event.getMode() == FogRenderer.FogMode.FOG_SKY) {
-			if (event.getMode() == FogType.NONE) {
+			if (event.getMode() == FogRenderer.FogMode.FOG_SKY) {
 				RenderSystem.setShaderFogStart(0.0F);
 				RenderSystem.setShaderFogEnd(f);
 			} else {

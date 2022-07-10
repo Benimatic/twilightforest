@@ -222,7 +222,10 @@ public class TFClientEvents {
 	 * Render effects in first-person perspective
 	 */
 	@SubscribeEvent
-	public static void renderWorldLast(RenderLevelLastEvent event) {
+	public static void renderWorldLast(RenderLevelStageEvent event) {
+		// FIXME Verify if this is a good step to run our event for. (This used to be RenderLevelLastEvent)
+		//  "There is no {@link RenderLevelStageEvent.Stage} that directly replaces this event, instead you must decide which Stage best fits your use case."
+		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_WEATHER) return; // Despite Weather rendering inside the translucent
 
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 

@@ -1,9 +1,9 @@
 package twilightforest.loot.modifiers;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,6 +27,7 @@ import twilightforest.init.TFItems;
 //FIXME I simply migrated this out of TFEventListener, it somehow needs to be redone in a more sane way.
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class GiantToolGroupingModifier extends LootModifier {
+	public static final Codec<GiantToolGroupingModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).apply(inst, GiantToolGroupingModifier::new));
 
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
@@ -57,17 +58,9 @@ public class GiantToolGroupingModifier extends LootModifier {
 		return flag ? newLoot : generatedLoot;
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer<GiantToolGroupingModifier> {
-
-		@Override
-		public GiantToolGroupingModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditions) {
-			return new GiantToolGroupingModifier(conditions);
-		}
-
-		@Override
-		public JsonObject write(GiantToolGroupingModifier instance) {
-			return this.makeConditions(instance.conditions);
-		}
+	@Override
+	public Codec<? extends IGlobalLootModifier> codec() {
+		return GiantToolGroupingModifier.CODEC;
 	}
 
 	@SubscribeEvent

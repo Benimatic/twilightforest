@@ -1,20 +1,21 @@
 package twilightforest.loot.modifiers;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class FieryToolSmeltingModifier extends LootModifier {
+	public static final Codec<FieryToolSmeltingModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).apply(inst, FieryToolSmeltingModifier::new));
 
 	public FieryToolSmeltingModifier(LootItemCondition[] conditions) {
 		super(conditions);
@@ -33,16 +34,8 @@ public class FieryToolSmeltingModifier extends LootModifier {
 		return newLoot;
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer<FieryToolSmeltingModifier> {
-
-		@Override
-		public FieryToolSmeltingModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditions) {
-			return new FieryToolSmeltingModifier(conditions);
-		}
-
-		@Override
-		public JsonObject write(FieryToolSmeltingModifier instance) {
-			return this.makeConditions(instance.conditions);
-		}
+	@Override
+	public Codec<? extends IGlobalLootModifier> codec() {
+		return FieryToolSmeltingModifier.CODEC;
 	}
 }

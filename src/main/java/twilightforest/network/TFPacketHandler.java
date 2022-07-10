@@ -5,6 +5,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import twilightforest.TwilightForestMod;
 
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class TFPacketHandler {
@@ -20,26 +21,30 @@ public class TFPacketHandler {
 	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
 		int id = 0;
+
+		// FIXME FORGE BREAKING CHANGE (#8703) By default `consumer()` goes to `consumerMainThread()` - Verify if any of these should go to consumerNetworkThread instead
+
 		//as ugly as this is compared to the rest of the packets do not change it, it crashes the server otherwise
-		CHANNEL.messageBuilder(AreaProtectionPacket.class, id++).encoder(AreaProtectionPacket::encode).decoder(AreaProtectionPacket::new).consumer(new SimpleChannel.MessageBuilder.ToBooleanBiFunction<AreaProtectionPacket, Supplier<NetworkEvent.Context>>() {
+		//noinspection Convert2Lambda,Anonymous2MethodRef
+		CHANNEL.messageBuilder(AreaProtectionPacket.class, id++).encoder(AreaProtectionPacket::encode).decoder(AreaProtectionPacket::new).consumerMainThread(new BiConsumer<>() {
 			@Override
-			public boolean applyAsBool(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-				return AreaProtectionPacket.Handler.onMessage(message, ctx);
+			public void accept(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
+				AreaProtectionPacket.Handler.onMessage(message, ctx);
 			}
 		}).add();
-		CHANNEL.messageBuilder(ChangeBiomePacket.class, id++).encoder(ChangeBiomePacket::encode).decoder(ChangeBiomePacket::new).consumer(ChangeBiomePacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(EnforceProgressionStatusPacket.class, id++).encoder(EnforceProgressionStatusPacket::encode).decoder(EnforceProgressionStatusPacket::new).consumer(EnforceProgressionStatusPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(StructureProtectionPacket.class, id++).encoder(StructureProtectionPacket::encode).decoder(StructureProtectionPacket::new).consumer(StructureProtectionPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(StructureProtectionClearPacket.class, id++).encoder(StructureProtectionClearPacket::encode).decoder(StructureProtectionClearPacket::new).consumer(StructureProtectionClearPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(ThrowPlayerPacket.class, id++).encoder(ThrowPlayerPacket::encode).decoder(ThrowPlayerPacket::new).consumer(ThrowPlayerPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(MagicMapPacket.class, id++).encoder(MagicMapPacket::encode).decoder(MagicMapPacket::new).consumer(MagicMapPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(MazeMapPacket.class, id++).encoder(MazeMapPacket::encode).decoder(MazeMapPacket::new).consumer(MazeMapPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateShieldPacket.class, id++).encoder(UpdateShieldPacket::encode).decoder(UpdateShieldPacket::new).consumer(UpdateShieldPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UncraftingGuiPacket.class, id++).encoder(UncraftingGuiPacket::encode).decoder(UncraftingGuiPacket::new).consumer(UncraftingGuiPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateTFMultipartPacket.class, id++).encoder(UpdateTFMultipartPacket::encode).decoder(UpdateTFMultipartPacket::new).consumer(UpdateTFMultipartPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(SpawnFallenLeafFromPacket.class, id++).encoder(SpawnFallenLeafFromPacket::encode).decoder(SpawnFallenLeafFromPacket::new).consumer(SpawnFallenLeafFromPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(MissingAdvancementToastPacket.class, id++).encoder(MissingAdvancementToastPacket::encode).decoder(MissingAdvancementToastPacket::new).consumer(MissingAdvancementToastPacket::handle).add();
-		CHANNEL.messageBuilder(ParticlePacket.class, id++).encoder(ParticlePacket::encode).decoder(ParticlePacket::new).consumer(ParticlePacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateFeatherFanFallPacket.class, id++).encoder(UpdateFeatherFanFallPacket::encode).decoder(UpdateFeatherFanFallPacket::new).consumer(UpdateFeatherFanFallPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(ChangeBiomePacket.class, id++).encoder(ChangeBiomePacket::encode).decoder(ChangeBiomePacket::new).consumerMainThread(ChangeBiomePacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(EnforceProgressionStatusPacket.class, id++).encoder(EnforceProgressionStatusPacket::encode).decoder(EnforceProgressionStatusPacket::new).consumerMainThread(EnforceProgressionStatusPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(StructureProtectionPacket.class, id++).encoder(StructureProtectionPacket::encode).decoder(StructureProtectionPacket::new).consumerMainThread(StructureProtectionPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(StructureProtectionClearPacket.class, id++).encoder(StructureProtectionClearPacket::encode).decoder(StructureProtectionClearPacket::new).consumerMainThread(StructureProtectionClearPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(ThrowPlayerPacket.class, id++).encoder(ThrowPlayerPacket::encode).decoder(ThrowPlayerPacket::new).consumerMainThread(ThrowPlayerPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(MagicMapPacket.class, id++).encoder(MagicMapPacket::encode).decoder(MagicMapPacket::new).consumerMainThread(MagicMapPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(MazeMapPacket.class, id++).encoder(MazeMapPacket::encode).decoder(MazeMapPacket::new).consumerMainThread(MazeMapPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UpdateShieldPacket.class, id++).encoder(UpdateShieldPacket::encode).decoder(UpdateShieldPacket::new).consumerMainThread(UpdateShieldPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UncraftingGuiPacket.class, id++).encoder(UncraftingGuiPacket::encode).decoder(UncraftingGuiPacket::new).consumerMainThread(UncraftingGuiPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UpdateTFMultipartPacket.class, id++).encoder(UpdateTFMultipartPacket::encode).decoder(UpdateTFMultipartPacket::new).consumerMainThread(UpdateTFMultipartPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(SpawnFallenLeafFromPacket.class, id++).encoder(SpawnFallenLeafFromPacket::encode).decoder(SpawnFallenLeafFromPacket::new).consumerMainThread(SpawnFallenLeafFromPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(MissingAdvancementToastPacket.class, id++).encoder(MissingAdvancementToastPacket::encode).decoder(MissingAdvancementToastPacket::new).consumerMainThread(MissingAdvancementToastPacket::handle).add();
+		CHANNEL.messageBuilder(ParticlePacket.class, id++).encoder(ParticlePacket::encode).decoder(ParticlePacket::new).consumerMainThread(ParticlePacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UpdateFeatherFanFallPacket.class, id++).encoder(UpdateFeatherFanFallPacket::encode).decoder(UpdateFeatherFanFallPacket::new).consumerMainThread(UpdateFeatherFanFallPacket.Handler::onMessage).add();
 	}
 }

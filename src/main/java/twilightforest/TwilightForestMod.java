@@ -216,7 +216,7 @@ public class TwilightForestMod {
 			}
 		}
 
-		TFConfig.build();
+		// TFConfig.build(); FIXME Loading Screen disabled
 		BlockSpikeFeature.loadStalactites();
 
 		evt.enqueueWork(() -> {
