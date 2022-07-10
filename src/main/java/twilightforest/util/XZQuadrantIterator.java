@@ -32,35 +32,37 @@ public class XZQuadrantIterator<T> implements Iterator<T>, Iterable<T> {
 
     @Override
     public boolean hasNext() {
-        return this.dX <= this.radius;
+        return this.dX + 1 <= this.radius;
     }
 
     @Override
     public T next() {
         if (!this.hasNext()) throw new IllegalStateException("Cannot iterate further on XZ quadrants! [" + this + "]");
 
-        int i = this.cardinal;
-
-        return switch (i) {
+        return switch (this.cardinal) {
             case 0 -> {
                 this.cardinal++;
-                yield this.converter.apply(this.xConstant + this.dZ * this.spacing, this.zConstant - this.dX * this.spacing);
+                yield this.generate(this.dZ * this.spacing, -this.dX * this.spacing);
             }
             case 1 -> {
                 this.cardinal++;
-                yield this.converter.apply(this.xConstant - this.dX * this.spacing, this.zConstant - this.dZ * this.spacing);
+                yield this.generate(-this.dX * this.spacing, -this.dZ * this.spacing);
             }
             case 2 -> {
                 this.cardinal++;
-                yield this.converter.apply(this.xConstant - this.dZ * this.spacing, this.zConstant + this.dX * this.spacing);
+                yield this.generate(-this.dZ * this.spacing, this.dX * this.spacing);
             }
             default -> { // Basically -1 or 3
                 this.cardinal = 0;
-                T ret = this.converter.apply(this.xConstant + this.dX * this.spacing, this.zConstant + this.dZ * this.spacing);
+                T ret = this.generate(this.dX * this.spacing, this.dZ * this.spacing);
                 this.tickXZ();
                 yield ret;
             }
         };
+    }
+
+    private T generate(int dX, int dZ) {
+        return this.converter.apply(this.xConstant + dX, this.zConstant + dZ);
     }
 
     // Primes this iterator for next, or deadlocks its completion

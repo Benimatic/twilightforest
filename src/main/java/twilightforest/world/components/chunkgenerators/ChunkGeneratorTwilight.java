@@ -37,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.util.XZQuadrantIterator;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
 import twilightforest.world.components.structures.TFStructureComponent;
@@ -888,7 +887,13 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	public boolean isLandmarkPickedForChunk(TFLandmark landmark, Holder<Biome> biome, int chunkX, int chunkZ, long seed) {
-		return LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ) && (this.biomeGuaranteedLandmark(biome, landmark) || landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed));
+		if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ)) return false;
+
+		boolean forced = this.biomeGuaranteedLandmark(biome, landmark);
+
+		boolean isRolled = landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed);
+
+		return forced || isRolled;
 	}
 
 	public boolean biomeGuaranteedLandmark(Holder<Biome> biome, TFLandmark landmark) {
@@ -909,8 +914,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public Pair<BlockPos, Holder<Structure>> findNearestMapStructure(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
 		RandomState randomState = level.getChunkSource().randomState();
 
-		// TODO Detect for BiomeForcedLandmarkPlacement
-
 		@Nullable
 		Pair<BlockPos, Holder<Structure>> nearest = super.findNearestMapStructure(level, targetStructures, pos, searchRadius, skipKnownStructures);
 
@@ -927,9 +930,9 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		double distance = nearest == null ? Double.MAX_VALUE : nearest.getFirst().distSqr(pos);
 
-		for (BlockPos landmarkCenterPosition : new XZQuadrantIterator<>(pos.getX() >> 4, pos.getZ() >> 4, false, searchRadius, 16, LegacyLandmarkPlacements::getNearestCenterXZ)) {
+		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, Mth.ceil(Mth.sqrt(searchRadius)))) {
 			for (Map.Entry<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> landmarkPlacement : placementSetMap.entrySet()) {
-				if (!landmarkPlacement.getKey().isPlacementChunk(this, randomState, randomState.legacyLevelSeed(), landmarkCenterPosition.getX() << 4, landmarkCenterPosition.getZ() << 4)) continue;
+				if (!landmarkPlacement.getKey().isPlacementChunk(this, randomState, randomState.legacyLevelSeed(), landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
 
 				for (Holder<Structure> targetStructure : targetStructures) {
 					if (landmarkPlacement.getValue().contains(targetStructure)) {

@@ -1,11 +1,11 @@
 package twilightforest.util;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
@@ -46,10 +46,14 @@ public class LegacyLandmarkPlacements {
         return chunkHasLandmarkCenter(blockX >> 4, blockZ >> 4);
     }
 
-    public static boolean chunkHasLandmarkCenter(int chunkX, int chunkZ) {
-        BlockPos cc = getNearestCenterXZ(chunkX, chunkZ);
+    public static boolean chunkHasLandmarkCenter(ChunkPos chunkPos) {
+        return LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkPos.x, chunkPos.z);
+    }
 
-        return chunkX == (cc.getX() >> 4) && chunkZ == (cc.getZ() >> 4);
+    public static boolean chunkHasLandmarkCenter(int chunkX, int chunkZ) {
+        BlockPos nearestCenter = getNearestCenterXZ(chunkX, chunkZ);
+
+        return chunkX == nearestCenter.getX() >> 4 && chunkZ == nearestCenter.getZ() >> 4;
     }
 
     public static TFLandmark pickLandmarkAtBlock(int blockX, int blockZ, WorldGenLevel world) {
@@ -172,6 +176,10 @@ public class LegacyLandmarkPlacements {
      */
     public static TFLandmark getFeatureForRegionPos(int posX, int posZ, WorldGenLevel world) {
         return getFeatureForRegion(posX >> 4, posZ >> 4, world);
+    }
+
+    public static XZQuadrantIterator<BlockPos> landmarkCenterScanner(BlockPos searchFocus, int gridSearchRadius) {
+        return new XZQuadrantIterator<>((searchFocus.getX() >> 4) & ~0b1111, (searchFocus.getZ() >> 4) & ~0b1111, false, gridSearchRadius, 16, LegacyLandmarkPlacements::getNearestCenterXZ);
     }
 
     /**

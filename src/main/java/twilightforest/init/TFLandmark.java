@@ -639,16 +639,13 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 	public Optional<Structure.GenerationStub> generateStub(Structure.GenerationContext context) {
 		ChunkPos chunkPos = context.chunkPos();
 
-		//if (!TFLandmark.isInFeatureChunk(chunkPos.x << 4, chunkPos.z << 4))
-		//	return Optional.empty();
-
 		boolean dontCenter = this == TFLandmark.LICH_TOWER || this == TFLandmark.TROLL_CAVE || this == TFLandmark.YETI_CAVE;
 		int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
-		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
-		//Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
-		//if (this != LegacyLandmarkPlacements.pickBiomeLandmarkLegacy(context.registryAccess(), chunkPos.x, chunkPos.z, holder.value(), context.seed()))
-		//	return Optional.empty();
+		int y = this.shouldAdjustToTerrain()
+				? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7)
+				: context.chunkGenerator().getSeaLevel();
+
 		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z)).map(piece -> this.getStructurePieceGenerationStubFunction(piece, context, x, y, z));
 	}
 
