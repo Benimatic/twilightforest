@@ -107,7 +107,7 @@ public class ASMHooks {
 	 */
 	@Nullable
 	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, @Nullable Level level) {
-		return o == null && isOurMap(stack) ? level == null ? null : MapItem.getSavedData(stack, level) : o;
+		return isOurMap(stack) && level != null ? MapItem.getSavedData(stack, level) : o;
 	}
 
 	/**
