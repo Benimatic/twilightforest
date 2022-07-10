@@ -17,6 +17,7 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.item.recipe.UncraftingRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +76,10 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
             builder.addSlot(RecipeIngredientRole.OUTPUT, x * 18 + 63, y * 18 + 1).addIngredients(outputs.get(j - k)); //Set input as output and place in the grid
         }
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 5, 19).addItemStack(recipe.getResultItem());//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+        if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
+            builder.addSlot(RecipeIngredientRole.INPUT, 5, 19).addIngredients(uncraftingRecipe.getIngredient());//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
+        } else {
+            builder.addSlot(RecipeIngredientRole.INPUT, 5, 19).addItemStack(recipe.getResultItem());//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+        }
     }
 }
