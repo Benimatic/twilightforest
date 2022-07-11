@@ -470,6 +470,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		tag(ROOT_TRACE_SKIP).addTags(BlockTags.FEATURES_CANNOT_REPLACE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get());
 
+		tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(TFBlocks.TROLLSTEINN.get());
+
 		tag(BlockTags.REPLACEABLE_PLANTS).add(
 				TFBlocks.MAYAPPLE.get(),
 				TFBlocks.FIDDLEHEAD.get(),
