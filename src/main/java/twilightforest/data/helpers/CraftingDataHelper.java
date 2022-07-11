@@ -1,6 +1,5 @@
-package twilightforest.data;
+package twilightforest.data.helpers;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -20,18 +19,13 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.CompoundIngredient;
-import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.PartialNBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
 import twilightforest.block.TFChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFBlocks;
 
-import java.lang.reflect.Constructor;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 

@@ -12,6 +12,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.helpers.CraftingDataHelper;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
