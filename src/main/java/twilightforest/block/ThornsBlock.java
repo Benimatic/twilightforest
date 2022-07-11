@@ -20,12 +20,24 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageSources;
 
 import org.jetbrains.annotations.Nullable;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
+
+	protected static final VoxelShape BASE_SHAPE = Block.box(3.0D, 3.0D, 3.0D, 13.0D, 13.0D, 13.0D);
+
+	protected static final VoxelShape WEST_SHAPE = Block.box(0.0D, 3.0D, 3.0D, 3.0D, 13.0D, 13.0D);
+	protected static final VoxelShape EAST_SHAPE = Block.box(13.0D, 3.0D, 3.0D, 16.0D, 13.0D, 13.0D);
+	protected static final VoxelShape DOWN_SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 3.0D, 13.0D);
+	protected static final VoxelShape UP_SHAPE = Block.box(3.0D, 13.0D, 3.0D, 13.0D, 16.0D, 13.0D);
+	protected static final VoxelShape NORTH_SHAPE = Block.box(3.0D, 3.0D, 0.0D, 13.0D, 13.0D, 3.0D);
+	protected static final VoxelShape SOUTH_SHAPE = Block.box(3.0D, 3.0D, 13.0D, 13.0D, 13.0D, 16.0D);
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -45,6 +57,22 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 						|| state.getBlock() == TFBlocks.THORN_ROSE.get()
 						|| state.getBlock() == TFBlocks.THORN_LEAVES.get()
 						|| state.getMaterial() == Material.DIRT);
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		VoxelShape shape = BASE_SHAPE;
+		Direction.Axis axis = state.getValue(AXIS);
+
+		if (state.getValue(DOWN) || axis.equals(Direction.Axis.Y)) shape = Shapes.or(shape, DOWN_SHAPE);
+		if (state.getValue(UP) || axis.equals(Direction.Axis.Y)) shape = Shapes.or(shape, UP_SHAPE);
+		if (state.getValue(NORTH) || axis.equals(Direction.Axis.Z)) shape = Shapes.or(shape, NORTH_SHAPE);
+		if (state.getValue(SOUTH) || axis.equals(Direction.Axis.Z)) shape = Shapes.or(shape, SOUTH_SHAPE);
+		if (state.getValue(WEST) || axis.equals(Direction.Axis.X)) shape = Shapes.or(shape, WEST_SHAPE);
+		if (state.getValue(EAST) || axis.equals(Direction.Axis.X)) shape = Shapes.or(shape, EAST_SHAPE);
+
+		return shape;
 	}
 
 	@Nullable
