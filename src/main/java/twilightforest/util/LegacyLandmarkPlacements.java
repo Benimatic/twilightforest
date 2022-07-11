@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -54,6 +55,18 @@ public class LegacyLandmarkPlacements {
         BlockPos nearestCenter = getNearestCenterXZ(chunkX, chunkZ);
 
         return chunkX == nearestCenter.getX() >> 4 && chunkZ == nearestCenter.getZ() >> 4;
+    }
+
+    // TODO For use with Hollow Hills
+    public static float distanceFromCenter(BlockPos posXZ, boolean euclidean) {
+        BlockPos nearestCenter = getNearestCenterXZ(posXZ.getX() >> 4, posXZ.getZ() >> 4);
+
+        float dX = posXZ.getX() - nearestCenter.getX();
+        float dZ = posXZ.getZ() - nearestCenter.getZ();
+
+        if (euclidean) return Mth.sqrt(dX * dX + dZ * dZ);
+
+        return Mth.abs(dX) + Mth.abs(dZ);
     }
 
     public static TFLandmark pickLandmarkAtBlock(int blockX, int blockZ, WorldGenLevel world) {
@@ -190,6 +203,17 @@ public class LegacyLandmarkPlacements {
      * Maybe in the future we'll have to actually search for a feature chunk nearby, but for now this will work.
      */
     public static BlockPos getNearestCenterXZ(int chunkX, int chunkZ) {
+        return getNearestCenterXZ(chunkX, chunkZ, 0);
+    }
+
+    /**
+     * Given some coordinates, return the center of the nearest feature.
+     * <p>
+     * At the moment, with how features are distributed, just get the closest multiple of 256 and add +8 in both directions.
+     * <p>
+     * Maybe in the future we'll have to actually search for a feature chunk nearby, but for now this will work.
+     */
+    public static BlockPos getNearestCenterXZ(int chunkX, int chunkZ, int height) {
         // generate random number for the whole biome area
         int regionX = (chunkX + 8) >> 4;
         int regionZ = (chunkZ + 8) >> 4;
@@ -221,7 +245,7 @@ public class LegacyLandmarkPlacements {
             ccx = (regionX * 16 + (16 - centerX) - 8) * 16 + 9;
         }
 
-        return new BlockPos(ccx, 0, ccz);
+        return new BlockPos(ccx, height, ccz);
     }
 
     public static boolean isTheseFeatures(TFLandmark feature, TFLandmark... predicates) {

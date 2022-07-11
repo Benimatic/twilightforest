@@ -889,24 +889,17 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public boolean isLandmarkPickedForChunk(TFLandmark landmark, Holder<Biome> biome, int chunkX, int chunkZ, long seed) {
 		if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ)) return false;
 
-		boolean forced = this.biomeGuaranteedLandmark(biome, landmark);
+		var biomeKey = biome.unwrapKey();
+		if (biomeKey.isEmpty()) return false;
 
-		boolean isRolled = landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed);
-
-		return forced || isRolled;
+		return this.biomeLandmarkOverrides.containsKey(biomeKey.get())
+				? this.biomeGuaranteedLandmark(biomeKey.get(), landmark)
+				: landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed);
 	}
 
-	public boolean biomeGuaranteedLandmark(Holder<Biome> biome, TFLandmark landmark) {
-		return biome.unwrapKey().map(rk -> this.biomeGuaranteedLandmark(rk, landmark)).orElse(false);
-	}
-
-	// FIXME Debugger mess, these checks can be made a lot simpler
 	public boolean biomeGuaranteedLandmark(ResourceKey<Biome> biome, TFLandmark landmark) {
 		if (!this.biomeLandmarkOverrides.containsKey(biome)) return false;
-
-		ImmutableSet<TFLandmark> s = this.biomeLandmarkOverrides.getOrDefault(biome, ImmutableSet.of());
-
-		return s.contains(landmark);
+		return this.biomeLandmarkOverrides.getOrDefault(biome, ImmutableSet.of()).contains(landmark);
 	}
 
 	@Nullable
@@ -936,7 +929,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 				for (Holder<Structure> targetStructure : targetStructures) {
 					if (landmarkPlacement.getValue().contains(targetStructure)) {
-						final double newDistance = landmarkCenterPosition.distToLowCornerSqr(pos.getX(), 0 , pos.getZ());
+						final double newDistance = landmarkCenterPosition.distToLowCornerSqr(pos.getX(), landmarkCenterPosition.getY(), pos.getZ());
 
 						if (newDistance < distance) {
 							nearest = new Pair<>(landmarkCenterPosition, targetStructure);

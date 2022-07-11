@@ -33,7 +33,7 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
     @Override
     public boolean isPlacementChunk(ChunkGenerator chunkGenerator, RandomState randomState, long seed, int chunkX, int chunkZ) {
         if (chunkGenerator instanceof ChunkGeneratorTwilight twilightGenerator)
-            return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGenerator.getBiomeSource().getNoiseBiome(chunkX, 0, chunkZ, randomState.sampler()), chunkX, chunkZ, seed);
+            return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGenerator.getBiomeSource().getNoiseBiome(chunkX << 2, 0, chunkZ << 2, randomState.sampler()), chunkX, chunkZ, seed);
 
         if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
             return false;
