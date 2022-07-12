@@ -44,8 +44,8 @@ public abstract class TransformationPowderProvider implements DataProvider {
 		this.registerTransforms();
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> ForgeRegistries.ENTITIES.containsValue(transform.getA()))
-					.filter(s -> ForgeRegistries.ENTITIES.containsValue(transform.getB()))
+					.filter(s -> ForgeRegistries.ENTITY_TYPES.containsValue(transform.getA()))
+					.filter(s -> ForgeRegistries.ENTITY_TYPES.containsValue(transform.getB()))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.collect(Collectors.toList());
@@ -76,8 +76,8 @@ public abstract class TransformationPowderProvider implements DataProvider {
 		JsonObject jsonobject = new JsonObject();
 
 		jsonobject.addProperty("type", ForgeRegistries.RECIPE_SERIALIZERS.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.get()).toString());
-		jsonobject.addProperty("from", ForgeRegistries.ENTITIES.getKey(transformFrom).toString());
-		jsonobject.addProperty("to", ForgeRegistries.ENTITIES.getKey(transformTo).toString());
+		jsonobject.addProperty("from", ForgeRegistries.ENTITY_TYPES.getKey(transformFrom).toString());
+		jsonobject.addProperty("to", ForgeRegistries.ENTITY_TYPES.getKey(transformTo).toString());
 		return jsonobject;
 	}
 
@@ -88,11 +88,11 @@ public abstract class TransformationPowderProvider implements DataProvider {
 
 	//helper methods
 	public void addSingleTransform(EntityType<?> from, EntityType<?> to) {
-		builders.put(ForgeRegistries.ENTITIES.getKey(from).getPath() + "_to_" + ForgeRegistries.ENTITIES.getKey(to).getPath(), new Pair<>(from, to));
+		builders.put(ForgeRegistries.ENTITY_TYPES.getKey(from).getPath() + "_to_" + ForgeRegistries.ENTITY_TYPES.getKey(to).getPath(), new Pair<>(from, to));
 	}
 
 	public void addTwoWayTransform(EntityType<?> from, EntityType<?> to) {
-		builders.put(ForgeRegistries.ENTITIES.getKey(from).getPath() + "_to_" + ForgeRegistries.ENTITIES.getKey(to).getPath(), new Pair<>(from, to));
-		builders.put(ForgeRegistries.ENTITIES.getKey(to).getPath() + "_to_" + ForgeRegistries.ENTITIES.getKey(from).getPath(), new Pair<>(to, from));
+		builders.put(ForgeRegistries.ENTITY_TYPES.getKey(from).getPath() + "_to_" + ForgeRegistries.ENTITY_TYPES.getKey(to).getPath(), new Pair<>(from, to));
+		builders.put(ForgeRegistries.ENTITY_TYPES.getKey(to).getPath() + "_to_" + ForgeRegistries.ENTITY_TYPES.getKey(from).getPath(), new Pair<>(to, from));
 	}
 }

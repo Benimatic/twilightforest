@@ -284,7 +284,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	}
 
 	private static boolean isIngredientProblematic(ItemStack ingredient) {
-		return !ingredient.isEmpty() && ingredient.getItem().hasContainerItem(ingredient);
+		return !ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem(ingredient);
 	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {

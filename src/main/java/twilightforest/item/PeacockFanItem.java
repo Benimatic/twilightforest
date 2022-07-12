@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.init.TFSounds;

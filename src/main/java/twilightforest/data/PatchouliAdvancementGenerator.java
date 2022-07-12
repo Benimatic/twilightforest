@@ -703,7 +703,7 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 				.addCriterion("summon", SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(entity)))
 				.addCriterion("tame", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(entity).build()))
 				.requirements(RequirementsStrategy.OR)
-				.save(consumer, "twilightforest:alt/entities/" + ForgeRegistries.ENTITIES.getKey(entity).getPath());
+				.save(consumer, "twilightforest:alt/entities/" + ForgeRegistries.ENTITY_TYPES.getKey(entity).getPath());
 	}
 
 	private void landmarkAdvancement(RegistryObject<? extends Structure> structure, Consumer<Advancement> consumer, Advancement root) {

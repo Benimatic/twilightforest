@@ -15,7 +15,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +81,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
 					if (dPos.equals(pos))
 						continue;
-					BlockState stateThere = event.getWorld().getBlockState(dPos);
+					BlockState stateThere = event.getLevel().getBlockState(dPos);
 					if (stateThere.getBlock().asItem() != cobbleItem) {
 						allCobble = false;
 						break;
@@ -100,7 +100,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 			// break all nearby blocks
 			if (player instanceof ServerPlayer playerMP) {
 				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
-					if (!dPos.equals(pos) && state.getBlock() == event.getWorld().getBlockState(dPos).getBlock()) {
+					if (!dPos.equals(pos) && state.getBlock() == event.getLevel().getBlockState(dPos).getBlock()) {
 						// try to break that block too!
 						playerMP.gameMode.destroyBlock(dPos);
 					}

@@ -12,7 +12,6 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -23,7 +22,6 @@ import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.Bindings;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -34,34 +32,24 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
-import net.minecraftforge.resource.PathResourcePack;
+import net.minecraftforge.resource.PathPackResources;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.compat.CuriosCompat;
-import twilightforest.compat.TFCompat;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFBlockEntities;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
-import twilightforest.init.TFParticleType;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.TFCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
-import twilightforest.init.TFEnchantments;
-import twilightforest.init.TFEntities;
 import twilightforest.init.*;
-import twilightforest.init.TFMenuTypes;
-import twilightforest.init.TFLootModifiers;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.init.TFBannerPatterns;
-import twilightforest.init.TFStats;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.registration.*;
+import twilightforest.world.registration.TFStructureProcessors;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -162,7 +150,7 @@ public class TwilightForestMod {
 		try {
 			if (event.getPackType() == PackType.CLIENT_RESOURCES) {
 				var resourcePath = ModList.get().getModFileById(TwilightForestMod.ID).getFile().findResource("classic");
-				var pack = new PathResourcePack(ModList.get().getModFileById(TwilightForestMod.ID).getFile().getFileName() + ":" + resourcePath, resourcePath);
+				var pack = new PathPackResources(ModList.get().getModFileById(TwilightForestMod.ID).getFile().getFileName() + ":" + resourcePath, resourcePath);
 				var metadataSection = pack.getMetadataSection(PackMetadataSection.SERIALIZER);
 				if (metadataSection != null) {
 					event.addRepositorySource((packConsumer, packConstructor) ->

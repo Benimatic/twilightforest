@@ -65,8 +65,8 @@ public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> inp
 
 		@Override
 		public TransformPowderRecipe fromJson(ResourceLocation id, JsonObject object) {
-			EntityType<?> input = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
-			EntityType<?> output = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
+			EntityType<?> input = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
+			EntityType<?> output = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
 			if (input != null && output != null) {
 				return new TransformPowderRecipe(id, input, output);
 			}
@@ -76,15 +76,15 @@ public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> inp
 		@Nullable
 		@Override
 		public TransformPowderRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-			EntityType<?> input = buffer.readRegistryIdUnsafe(ForgeRegistries.ENTITIES);
-			EntityType<?> output = buffer.readRegistryIdUnsafe(ForgeRegistries.ENTITIES);
+			EntityType<?> input = buffer.readRegistryIdUnsafe(ForgeRegistries.ENTITY_TYPES);
+			EntityType<?> output = buffer.readRegistryIdUnsafe(ForgeRegistries.ENTITY_TYPES);
 			return new TransformPowderRecipe(id, input, output);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, TransformPowderRecipe recipe) {
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.ENTITIES, recipe.input);
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.ENTITIES, recipe.result);
+			buffer.writeRegistryIdUnsafe(ForgeRegistries.ENTITY_TYPES, recipe.input);
+			buffer.writeRegistryIdUnsafe(ForgeRegistries.ENTITY_TYPES, recipe.result);
 		}
 	}
 }

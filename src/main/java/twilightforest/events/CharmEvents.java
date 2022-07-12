@@ -25,13 +25,11 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.CharmEffect;
 import twilightforest.enums.BlockLoggingEnum;
@@ -40,7 +38,6 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CharmEvents {
@@ -54,7 +51,7 @@ public class CharmEvents {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	// For when the player dies
 	public static void applyDeathItems(LivingDeathEvent event) {
-		LivingEntity living = event.getEntityLiving();
+		LivingEntity living = event.getEntity();
 
 		//ensure our player is real and in survival before attempting anything
 		if (living.getLevel().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
@@ -73,7 +70,7 @@ public class CharmEvents {
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 		if (!event.isEndConquered()) {
 			if (casketExpiration) {
 				serverPlayer.sendSystemMessage(Component.translatable("block.twilightforest.casket.broken").withStyle(ChatFormatting.RED));

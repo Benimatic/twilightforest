@@ -4,7 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -23,7 +23,7 @@ import twilightforest.entity.passive.TinyBird;
 public class MiscEvents {
 
 	@SubscribeEvent
-	public static void addPrey(EntityJoinWorldEvent event) {
+	public static void addPrey(EntityJoinLevelEvent event) {
 		Entity entity = event.getEntity();
 		EntityType<?> type = entity.getType();
 		if (entity instanceof Mob mob) {
@@ -48,20 +48,20 @@ public class MiscEvents {
 
 	@SubscribeEvent
 	public static void armorChanged(LivingEquipmentChangeEvent event) {
-		LivingEntity living = event.getEntityLiving();
+		LivingEntity living = event.getEntity();
 		if (!living.getLevel().isClientSide() && living instanceof ServerPlayer) {
 			TFAdvancements.ARMOR_CHANGED.trigger((ServerPlayer) living, event.getFrom(), event.getTo());
 		}
 	}
 
 	@SubscribeEvent
-	public static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
-		event.getEntityLiving().getCapability(CapabilityList.SHIELDS).ifPresent(IShieldCapability::update);
+	public static void livingUpdate(LivingEvent.LivingTickEvent event) {
+		event.getEntity().getCapability(CapabilityList.SHIELDS).ifPresent(IShieldCapability::update);
 	}
 
 	@SubscribeEvent
 	public static void livingAttack(LivingAttackEvent event) {
-		LivingEntity living = event.getEntityLiving();
+		LivingEntity living = event.getEntity();
 		// shields
 		if (!living.getLevel().isClientSide() && !event.getSource().isBypassArmor()) {
 			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {

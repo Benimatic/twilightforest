@@ -13,7 +13,7 @@ import twilightforest.inventory.UncraftingMenu;
 
 public class TFMenuTypes {
 
-	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, TwilightForestMod.ID);
+	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, TwilightForestMod.ID);
 
 	public static final RegistryObject<MenuType<UncraftingMenu>> UNCRAFTING = CONTAINERS.register("uncrafting",
 			() -> new MenuType<>(UncraftingMenu::fromNetwork));

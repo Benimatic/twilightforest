@@ -19,7 +19,7 @@ public class HostileMountEvents {
 
 	@SubscribeEvent
 	public static void entityHurts(LivingAttackEvent event) {
-		LivingEntity living = event.getEntityLiving();
+		LivingEntity living = event.getEntity();
 		DamageSource damageSource = event.getSource();
 		// lets not make the player take suffocation damage if riding something
 		if (living instanceof Player && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
@@ -45,9 +45,9 @@ public class HostileMountEvents {
 	}
 
 	@SubscribeEvent
-	public static void livingUpdate(LivingEvent.LivingUpdateEvent event) {
-		if (event.getEntityLiving() instanceof IHostileMount)
-			event.getEntityLiving().getPassengers().forEach(e -> e.setShiftKeyDown(false));
+	public static void livingUpdate(LivingEvent.LivingTickEvent event) {
+		if (event.getEntity() instanceof IHostileMount)
+			event.getEntity().getPassengers().forEach(e -> e.setShiftKeyDown(false));
 	}
 
 	public static boolean isRidingUnfriendly(LivingEntity entity) {

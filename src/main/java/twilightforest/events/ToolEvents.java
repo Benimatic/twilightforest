@@ -65,14 +65,14 @@ public class ToolEvents {
 
 	@SubscribeEvent
 	public static void fieryToolSetFire(LivingAttackEvent event) {
-		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.get())) && !event.getEntityLiving().fireImmune()) {
-			event.getEntityLiving().setSecondsOnFire(1);
+		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.get())) && !event.getEntity().fireImmune()) {
+			event.getEntity().setSecondsOnFire(1);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onKnightmetalToolDamage(LivingHurtEvent event) {
-		LivingEntity target = event.getEntityLiving();
+		LivingEntity target = event.getEntity();
 
 		if (!target.getLevel().isClientSide() && event.getSource().getDirectEntity() instanceof LivingEntity living) {
 			ItemStack weapon = living.getMainHandItem();
@@ -98,7 +98,7 @@ public class ToolEvents {
 
 	@SubscribeEvent
 	public static void onMinotaurAxeCharge(LivingHurtEvent event) {
-		LivingEntity target = event.getEntityLiving();
+		LivingEntity target = event.getEntity();
 		Entity source = event.getSource().getDirectEntity();
 		if (!target.getLevel().isClientSide() && source instanceof LivingEntity living && source.isSprinting() && (event.getSource().getMsgId().equals("player") || event.getSource().getMsgId().equals("mob"))) {
 			ItemStack weapon = living.getMainHandItem();

@@ -25,7 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
 import twilightforest.entity.monster.BlockChainGoblin;
 import twilightforest.init.TFDamageSources;

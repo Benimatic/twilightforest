@@ -32,7 +32,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -77,15 +77,15 @@ public class PlayerEvents {
 	}
 
 	@SubscribeEvent
-	public static void updateFeatherFanCap(LivingEvent.LivingUpdateEvent event) {
-		if (event.getEntityLiving() instanceof Player player && player.getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent()) {
+	public static void updateFeatherFanCap(LivingEvent.LivingTickEvent event) {
+		if (event.getEntity() instanceof Player player && player.getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent()) {
 			player.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
 		}
 	}
 
 	@SubscribeEvent
 	public static void entityHurts(LivingHurtEvent event) {
-		LivingEntity living = event.getEntityLiving();
+		LivingEntity living = event.getEntity();
 		DamageSource source = event.getSource();
 		String damageType = source.getMsgId();
 		Entity trueSource = source.getEntity();
@@ -122,7 +122,7 @@ public class PlayerEvents {
 	public static void onCasketBreak(BlockEvent.BreakEvent event) {
 		Block block = event.getState().getBlock();
 		Player player = event.getPlayer();
-		BlockEntity te = event.getWorld().getBlockEntity(event.getPos());
+		BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
 		UUID checker;
 		if (block == TFBlocks.KEEPSAKE_CASKET.get()) {
 			if (te instanceof KeepsakeCasketBlockEntity casket) {
@@ -144,7 +144,7 @@ public class PlayerEvents {
 
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
 		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.get().asItem()) > 0) {
-			Player player = event.getPlayer();
+			Player player = event.getEntity();
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
@@ -153,7 +153,7 @@ public class PlayerEvents {
 
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 		if (event.isEndConquered()) {
 			updateCapabilities(serverPlayer, serverPlayer);
 		}
@@ -172,9 +172,9 @@ public class PlayerEvents {
 	 */
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getPlayer().getLevel().isClientSide() && event.getPlayer() instanceof ServerPlayer) {
-			updateCapabilities((ServerPlayer) event.getPlayer(), event.getPlayer());
-			banishNewbieToTwilightZone(event.getPlayer());
+		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer) {
+			updateCapabilities((ServerPlayer) event.getEntity(), event.getEntity());
+			banishNewbieToTwilightZone(event.getEntity());
 		}
 	}
 
@@ -183,14 +183,14 @@ public class PlayerEvents {
 	 */
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().getLevel().isClientSide() && event.getPlayer() instanceof ServerPlayer player) {
-			updateCapabilities(player, event.getPlayer());
+		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
+			updateCapabilities(player, event.getEntity());
 		}
 	}
 
 	@SubscribeEvent
 	public static void onStartTracking(PlayerEvent.StartTracking event) {
-		updateCapabilities((ServerPlayer) event.getPlayer(), event.getTarget());
+		updateCapabilities((ServerPlayer) event.getEntity(), event.getTarget());
 	}
 
 	// Parrying
@@ -230,11 +230,11 @@ public class PlayerEvents {
 	@SubscribeEvent
 	public static void createSkullCandle(PlayerInteractEvent.RightClickBlock event) {
 		ItemStack stack = event.getItemStack();
-		Level level = event.getWorld();
+		Level level = event.getLevel();
 		BlockPos pos = event.getPos();
 		BlockState state = level.getBlockState(pos);
 		if (!TFConfig.COMMON_CONFIG.disableSkullCandles.get()) {
-			if (stack.is(ItemTags.CANDLES) && ForgeRegistries.ITEMS.getKey(stack.getItem()).getNamespace().equals("minecraft") && !event.getPlayer().isShiftKeyDown()) {
+			if (stack.is(ItemTags.CANDLES) && ForgeRegistries.ITEMS.getKey(stack.getItem()).getNamespace().equals("minecraft") && !event.getEntity().isShiftKeyDown()) {
 				if (state.getBlock() instanceof AbstractSkullBlock skull && ForgeRegistries.BLOCKS.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
 					SkullBlock.Types type = (SkullBlock.Types) skull.getType();
 					boolean wall = state.getBlock() instanceof WallSkullBlock;
@@ -263,10 +263,10 @@ public class PlayerEvents {
 							return;
 						}
 					}
-					if (!event.getPlayer().getAbilities().instabuild) stack.shrink(1);
-					event.getPlayer().swing(event.getHand());
-					if (event.getPlayer() instanceof ServerPlayer)
-						event.getPlayer().awardStat(TFStats.SKULL_CANDLES_MADE.get());
+					if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+					event.getEntity().swing(event.getHand());
+					if (event.getEntity() instanceof ServerPlayer)
+						event.getEntity().awardStat(TFStats.SKULL_CANDLES_MADE.get());
 					//this is to prevent anything from being placed afterwords
 					event.setCanceled(true);
 				}
@@ -276,7 +276,7 @@ public class PlayerEvents {
 
 	private static void makeFloorSkull(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
 		GameProfile profile = null;
-		Level level = event.getWorld();
+		Level level = event.getLevel();
 		if (level.getBlockEntity(event.getPos()) instanceof SkullBlockEntity skull)
 			profile = skull.getOwnerProfile();
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -293,7 +293,7 @@ public class PlayerEvents {
 
 	private static void makeWallSkull(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
 		GameProfile profile = null;
-		Level level = event.getWorld();
+		Level level = event.getLevel();
 		if (level.getBlockEntity(event.getPos()) instanceof SkullBlockEntity skull)
 			profile = skull.getOwnerProfile();
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
