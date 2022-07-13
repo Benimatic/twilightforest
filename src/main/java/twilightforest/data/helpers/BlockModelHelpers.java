@@ -80,6 +80,10 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	}
 
 	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, BanisterBlock banister) {
+		this.plankBlocks(variant, plank, slab, stair, button, fence, gate, plate, door, trapdoor, false, banister);
+	}
+
+	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, boolean cutoutDoors, BanisterBlock banister) {
 		String plankTexName = "planks_" + variant;
 		String plankDir = "block/wood/planks/" + variant + "/";
 		ResourceLocation tex0 = prefix("block/wood/" + plankTexName + "_0");
@@ -114,9 +118,16 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		woodGate(gate, plankTexName, variant);
 		woodPlate(plate, plankTexName, variant);
 		String doorDir = "block/wood/door/" + variant + "/";
-		doorBlockInternal(door, doorDir + name(door), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"));
 		String trapdoorDir = "block/wood/trapdoor/" + variant + "/";
-		trapdoorBlock(trapdoor, trapdoorDir + variant, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true);
+
+		if(cutoutDoors) {
+			doorBlockWithRenderType(door, doorDir + name(door), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"), CUTOUT);
+			trapdoorBlockWithRenderType(trapdoor, trapdoorDir + variant, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true, CUTOUT);
+		} else {
+			doorBlock(door, doorDir + name(door), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"));
+			trapdoorBlock(trapdoor, trapdoorDir + variant, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true);
+
+		}
 		banister(banister, plankTexName, variant);
 	}
 
@@ -385,46 +396,6 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 			return ConfiguredModel.builder()
 					.modelFile(models().withExistingParent(banisterDir + name(banister) + "_" + variant, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).build();
 		}, BanisterBlock.WATERLOGGED);
-	}
-
-
-
-	//TODO temporary, once https://github.com/MinecraftForge/MinecraftForge/pull/8687 is merged use that
-
-	protected ModelBuilder<?> door(String name, String model, ResourceLocation bottom, ResourceLocation top) {
-		return models().withExistingParent(name, "block/" + model)
-				.texture("bottom", bottom)
-				.texture("top", top);
-	}
-
-	protected void doorBlockInternal(DoorBlock block, String baseName, ResourceLocation bottom, ResourceLocation top) {
-		ModelFile bottomLeft = door(baseName + "_bottom_left", "door_bottom_left", bottom, top);
-		ModelFile bottomLeftOpen = door(baseName + "_bottom_left_open", "door_bottom_left_open", bottom, top);
-		ModelFile bottomRight = door(baseName + "_bottom_right", "door_bottom_right", bottom, top);
-		ModelFile bottomRightOpen = door(baseName + "_bottom_right_open", "door_bottom_right_open", bottom, top);
-		ModelFile topLeft = door(baseName + "_top_left", "door_top_left", bottom, top);
-		ModelFile topLeftOpen = door(baseName + "_top_left_open", "door_top_left_open", bottom, top);
-		ModelFile topRight = door(baseName + "_top_right", "door_top_right", bottom, top);
-		ModelFile topRightOpen = door(baseName + "_top_right_open", "door_top_right_open", bottom, top);
-		doorBlock(block, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen);
-	}
-
-	public void doorBlock(DoorBlock block, ModelFile bottomLeft, ModelFile bottomLeftOpen , ModelFile bottomRight, ModelFile bottomRightOpen, ModelFile topLeft, ModelFile topLeftOpen, ModelFile topRight, ModelFile topRightOpen) {
-		getVariantBuilder(block).forAllStatesExcept(state -> {
-			int yRot = ((int) state.getValue(DoorBlock.FACING).toYRot()) + 90;
-			boolean right = state.getValue(DoorBlock.HINGE) == DoorHingeSide.RIGHT;
-			boolean open = state.getValue(DoorBlock.OPEN);
-			if (open) {
-				yRot += 90;
-			}
-			if (right && open) {
-				yRot += 180;
-			}
-			yRot %= 360;
-			return ConfiguredModel.builder().modelFile(state.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER ? (right ? ( open ? bottomRightOpen : bottomRight ) : ( open ? bottomLeftOpen : bottomLeft )) : (right ? ( open ? topRightOpen : topRight) : ( open ? topLeftOpen : topLeft)))
-					.rotationY(yRot)
-					.build();
-		}, DoorBlock.POWERED);
 	}
 
 	protected void bisectedStairsBlock(RegistryObject<StairBlock> block, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {

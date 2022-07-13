@@ -9,12 +9,6 @@ public class RenderLayerRegistration {
 	public static void init() {
 		RenderType cutout = RenderType.cutout();
 		RenderType translucent = RenderType.translucent();
-		//FIXME these have to stay until https://github.com/MinecraftForge/MinecraftForge/pull/8852 is merged
-		ItemBlockRenderTypes.setRenderLayer(TFBlocks.TIME_DOOR.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(TFBlocks.TRANSFORMATION_DOOR.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(TFBlocks.SORTING_DOOR.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(TFBlocks.TIME_TRAPDOOR.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(TFBlocks.SORTING_TRAPDOOR.get(), cutout);
 
 		//FIXME these blocks absolutely refuse to use the render types defined in the json
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.CANDELABRA.get(), cutout);
