@@ -1470,66 +1470,61 @@ public class BlockstateGenerator extends BlockModelHelpers {
 	}
 
 	private void thorns() {
-		boolean fixer = Direction.SOUTH.getAxis() == Direction.Axis.Z;
-		ModelFile green = models().withExistingParent(TFBlocks.GREEN_THORNS.getId().getPath(), prefix("block/thorns_main")).renderType(CUTOUT)
-				.texture("side", prefix("block/green_thorns_side"))
-				.texture("end", prefix("block/green_thorns_top"));
-		ModelFile greenBottom = models().withExistingParent(TFBlocks.GREEN_THORNS.getId().getPath() + "_bottom", prefix("block/thorns_section_bottom")).renderType(CUTOUT)
-				.texture("side", prefix("block/green_thorns_side"))
-				.texture("end", prefix("block/green_thorns_top"));
-		ModelFile greenTop = models().withExistingParent(TFBlocks.GREEN_THORNS.getId().getPath() + "_top", prefix("block/thorns_section_top")).renderType(CUTOUT)
-				.texture("side", prefix("block/green_thorns_side"))
-				.texture("end", prefix("block/green_thorns_top"));
-		getMultipartBuilder(TFBlocks.GREEN_THORNS.get())
-				.part().modelFile(green).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
-				.part().modelFile(green).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
-				.part().modelFile(green).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
-				.part().modelFile(greenTop).rotationX(90).addModel().condition(PipeBlock.UP, true).end()
-				.part().modelFile(greenBottom).rotationX(90).addModel().condition(PipeBlock.DOWN, true).end()
-				.part().modelFile(greenTop).rotationY(270).addModel().condition(PipeBlock.EAST, true).end()
-				.part().modelFile(greenBottom).rotationY(270).addModel().condition(PipeBlock.WEST, true).end()
-				.part().modelFile(fixer ? greenBottom : greenTop).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.SOUTH, true).end()
-				.part().modelFile(fixer ? greenTop : greenBottom).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.NORTH, true).end();
+		for (RegistryObject<Block> block : ImmutableList.of(TFBlocks.GREEN_THORNS, TFBlocks.BROWN_THORNS, TFBlocks.BURNT_THORNS)) {
+			String path = block.getId().getPath();
+			ResourceLocation sideTexture = prefix("block/" + path + "_side");
+			ResourceLocation endTexture = prefix("block/" + path + "_top");
 
-		ModelFile brown = models().withExistingParent(TFBlocks.BROWN_THORNS.getId().getPath(), prefix("block/thorns_main")).renderType(CUTOUT)
-				.texture("side", prefix("block/brown_thorns_side"))
-				.texture("end", prefix("block/brown_thorns_top"));
-		ModelFile brownBottom = models().withExistingParent(TFBlocks.BROWN_THORNS.getId().getPath() + "_bottom", prefix("block/thorns_section_bottom")).renderType(CUTOUT)
-				.texture("side", prefix("block/brown_thorns_side"))
-				.texture("end", prefix("block/brown_thorns_top"));
-		ModelFile brownTop = models().withExistingParent(TFBlocks.BROWN_THORNS.getId().getPath() + "_top", prefix("block/thorns_section_top")).renderType(CUTOUT)
-				.texture("side", prefix("block/brown_thorns_side"))
-				.texture("end", prefix("block/brown_thorns_top"));
-		getMultipartBuilder(TFBlocks.BROWN_THORNS.get())
-				.part().modelFile(brown).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
-				.part().modelFile(brown).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
-				.part().modelFile(brown).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
-				.part().modelFile(brownTop).rotationX(90).addModel().condition(PipeBlock.UP, true).end()
-				.part().modelFile(brownBottom).rotationX(90).addModel().condition(PipeBlock.DOWN, true).end()
-				.part().modelFile(brownTop).rotationY(270).addModel().condition(PipeBlock.EAST, true).end()
-				.part().modelFile(brownBottom).rotationY(270).addModel().condition(PipeBlock.WEST, true).end()
-				.part().modelFile(fixer ? brownBottom : brownTop).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.SOUTH, true).end()
-				.part().modelFile(fixer ? brownTop : brownBottom).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.NORTH, true).end();
+			models().withExistingParent(path, prefix("block/thorns_main")).renderType(CUTOUT)//This is just used for the item model
+					.texture("side", sideTexture)
+					.texture("end", endTexture);
 
-		ModelFile burnt = models().withExistingParent(TFBlocks.BURNT_THORNS.getId().getPath(), prefix("block/thorns_main")).renderType(CUTOUT)
-				.texture("side", prefix("block/burnt_thorns_side"))
-				.texture("end", prefix("block/burnt_thorns_top"));
-		ModelFile burntBottom = models().withExistingParent(TFBlocks.BURNT_THORNS.getId().getPath() + "_bottom", prefix("block/thorns_section_bottom")).renderType(CUTOUT)
-				.texture("side", prefix("block/burnt_thorns_side"))
-				.texture("end", prefix("block/burnt_thorns_top"));
-		ModelFile burntTop = models().withExistingParent(TFBlocks.BURNT_THORNS.getId().getPath() + "_top", prefix("block/thorns_section_top")).renderType(CUTOUT)
-				.texture("side", prefix("block/burnt_thorns_side"))
-				.texture("end", prefix("block/burnt_thorns_top"));
-		getMultipartBuilder(TFBlocks.BURNT_THORNS.get())
-				.part().modelFile(burnt).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
-				.part().modelFile(burnt).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
-				.part().modelFile(burnt).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
-				.part().modelFile(burntTop).rotationX(90).addModel().condition(PipeBlock.UP, true).end()
-				.part().modelFile(burntBottom).rotationX(90).addModel().condition(PipeBlock.DOWN, true).end()
-				.part().modelFile(burntTop).rotationY(270).addModel().condition(PipeBlock.EAST, true).end()
-				.part().modelFile(burntBottom).rotationY(270).addModel().condition(PipeBlock.WEST, true).end()
-				.part().modelFile(fixer ? burntBottom : burntTop).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.SOUTH, true).end()
-				.part().modelFile(fixer ? burntTop : burntBottom).rotationY(fixer ? 180 : 0).addModel().condition(PipeBlock.NORTH, true).end();
+			ModelFile thorns = models().withExistingParent(path + "_thorns", prefix("block/thorns")).renderType(CUTOUT)
+					.texture("side", sideTexture);
+
+			ModelFile top = models().withExistingParent(path + "_top", prefix("block/thorns_section_top")).renderType(CUTOUT)
+					.texture("side", sideTexture)
+					.texture("end", endTexture);
+
+			ModelFile bottom = models().withExistingParent(path + "_bottom", prefix("block/thorns_section_bottom")).renderType(CUTOUT)
+					.texture("side", sideTexture)
+					.texture("end", endTexture);
+
+			ModelFile section = models().withExistingParent(path + "_no_section", prefix("block/thorns_no_section")).renderType(CUTOUT)
+					.texture("side", sideTexture);
+
+			ModelFile noSectionAlt = models().withExistingParent(path + "_no_section_alt", prefix("block/thorns_no_section_alt")).renderType(CUTOUT)
+					.texture("side", sideTexture);
+
+			getMultipartBuilder(block.get())
+					.part().modelFile(thorns).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
+					.part().modelFile(thorns).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
+					.part().modelFile(thorns).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
+
+					.part().modelFile(top).rotationX(90).addModel().condition(PipeBlock.UP, true).end()
+					.part().modelFile(section).rotationX(270).addModel().condition(PipeBlock.UP, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Z, Direction.Axis.Y).end()
+					.part().modelFile(section).rotationX(270).rotationY(90).addModel().condition(PipeBlock.UP, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
+
+					.part().modelFile(bottom).rotationX(90).addModel().condition(PipeBlock.DOWN, true).end()
+					.part().modelFile(section).rotationX(90).addModel().condition(PipeBlock.DOWN, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Z, Direction.Axis.Y).end()
+					.part().modelFile(section).rotationX(90).rotationY(90).addModel().condition(PipeBlock.DOWN, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
+
+					.part().modelFile(top).rotationY(270).addModel().condition(PipeBlock.EAST, true).end()
+					.part().modelFile(section).rotationY(90).addModel().condition(PipeBlock.EAST, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.X).end()
+					.part().modelFile(noSectionAlt).rotationY(90).addModel().condition(PipeBlock.EAST, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
+
+					.part().modelFile(bottom).rotationY(270).addModel().condition(PipeBlock.WEST, true).end()
+					.part().modelFile(section).rotationY(270).addModel().condition(PipeBlock.WEST, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.X).end()
+					.part().modelFile(noSectionAlt).rotationY(270).addModel().condition(PipeBlock.WEST, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
+
+					.part().modelFile(top).addModel().condition(PipeBlock.SOUTH, true).end()
+					.part().modelFile(section).rotationY(180).addModel().condition(PipeBlock.SOUTH, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z).end()
+					.part().modelFile(noSectionAlt).rotationY(180).addModel().condition(PipeBlock.SOUTH, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
+
+					.part().modelFile(bottom).addModel().condition(PipeBlock.NORTH, true).end()
+					.part().modelFile(section).addModel().condition(PipeBlock.NORTH, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z).end()
+					.part().modelFile(noSectionAlt).addModel().condition(PipeBlock.NORTH, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end();
+		}
 	}
 
 	private void auroraBlocks() {
