@@ -3,7 +3,6 @@ package twilightforest.init;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.predicate.BlockPredicate;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -15,14 +14,12 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;
-import java.util.function.Predicate;
 
 @SuppressWarnings({"WeakerAccess", "unused", "deprecation"})
 @Nonnull
