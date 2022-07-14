@@ -24,6 +24,7 @@ public class CapabilityList {
 
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.register(IShieldCapability.class);
+		event.register(FeatherFanFallCapability.class);
 	}
 
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e) {
