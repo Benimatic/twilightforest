@@ -3,6 +3,7 @@ package twilightforest.init;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.predicate.BlockPredicate;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -14,12 +15,14 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;
+import java.util.function.Predicate;
 
 @SuppressWarnings({"WeakerAccess", "unused", "deprecation"})
 @Nonnull
@@ -147,7 +150,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> GREEN_THORNS = BLOCKS.register("green_thorns", () -> new ThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PLANT).strength(50.0F, 2000.0F).sound(SoundType.WOOD).noLootTable()));
 	public static final RegistryObject<Block> BURNT_THORNS = BLOCKS.register("burnt_thorns", () -> new BurntThornsBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.STONE).strength(0.01F, 0.0F).sound(SoundType.SAND).noLootTable()));
 	public static final RegistryObject<Block> THORN_ROSE = BLOCKS.register("thorn_rose", () -> new ThornRoseBlock(BlockBehaviour.Properties.of(Material.PLANT).strength(10.0F, 0.0F).sound(SoundType.GRASS).noCollission()));
-	public static final RegistryObject<Block> THORN_LEAVES = BLOCKS.register("thorn_leaves", () -> new TFLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
+	public static final RegistryObject<Block> THORN_LEAVES = BLOCKS.register("thorn_leaves", () -> new ThornLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
 	public static final RegistryObject<Block> BEANSTALK_LEAVES = BLOCKS.register("beanstalk_leaves", () -> new BeanstalkLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().noOcclusion().sound(SoundType.AZALEA_LEAVES).isSuffocating((state, getter, pos) -> false).isViewBlocking((state, getter, pos) -> false)));
 	public static final RegistryObject<Block> DEADROCK = BLOCKS.register("deadrock", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 6000000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> CRACKED_DEADROCK = BLOCKS.register("cracked_deadrock", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 6000000.0F).sound(SoundType.STONE)));
