@@ -460,6 +460,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
 		tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
 
+		tag(BlockTags.DAMPENS_VIBRATIONS).add(TFBlocks.ARCTIC_FUR_BLOCK.get(), TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get());
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 
 		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());

@@ -1,4 +1,4 @@
-// 1.19	2022-07-15T12:17:41.9502918	Twilight Forest Block Tags
+// 1.19	2022-07-15T22:45:40.3751335	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -11,6 +11,7 @@ ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.js
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/forge/tags/blocks/storage_blocks.json
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/minecraft/tags/blocks/beacon_base_blocks.json
 421e214e66436fb5f6d5903b7cdce6c73e7c4ef8 data/minecraft/tags/blocks/climbable.json
+ae78e21d1c31cc73a6963c28dc434ec41063c9f9 data/minecraft/tags/blocks/dampens_vibrations.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/blocks/dirt.json
 1094f05635217cf3ce4a1062e85d14129a347cef data/minecraft/tags/blocks/dragon_immune.json
 f285ead821ac84499caf16d88d7a2b79c397953b data/minecraft/tags/blocks/features_cannot_replace.json
