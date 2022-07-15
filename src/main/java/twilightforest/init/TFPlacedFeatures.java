@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TwilightForestMod;
@@ -56,7 +55,7 @@ public class TFPlacedFeatures {
 	public static final Holder<PlacedFeature> PLACED_TORCH_BERRIES = register("torch_berries", TFConfiguredFeatures.TORCH_BERRIES, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(60)), CountPlacement.of(8), OutOfStructureModifier.checkUnderground(), BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_TROLL_ROOTS = register("troll_roots", TFConfiguredFeatures.TROLL_ROOTS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(60)), CountPlacement.of(8), BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_VANILLA_ROOTS = register("vanilla_roots", TFConfiguredFeatures.VANILLA_ROOTS, tfFeatureCheckArea(OutOfStructureModifier.checkUnderground(), 1, CountPlacement.of(16), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(10))).build());
-	public static final Holder<PlacedFeature> PLACED_WEBS = register("webs", TFConfiguredFeatures.WEBS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, InSquarePlacement.spread(), CountPlacement.of(60), BiomeFilter.biome()).build());
+	public static final Holder<PlacedFeature> PLACED_WEBS = register("webs", TFConfiguredFeatures.WEBS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, CountPlacement.of(60), InSquarePlacement.spread(), BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_WOOD_ROOTS_SPREAD = register("wood_roots", TFConfiguredFeatures.WOOD_ROOTS_SPREAD, tfFeatureCheckArea(OutOfStructureModifier.checkUnderground(), 40, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(0))).build());
 	public static final Holder<PlacedFeature> PLACED_SNOW_UNDER_TREES = register("snow_under_trees", TFConfiguredFeatures.SNOW_UNDER_TREES, ImmutableList.<PlacementModifier>builder().add(BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_TF_OAK_FALLEN_LOG = register("tf_oak_fallen_log", TFConfiguredFeatures.TF_OAK_FALLEN_LOG, hollowLog(OutOfStructureModifier.checkSurface(), 40).build());
@@ -152,7 +151,7 @@ public class TFPlacedFeatures {
 		return ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, filter);
 	}
 
-	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<PlacedFeature> register(String name, Holder<? extends ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
+	public static Holder<PlacedFeature> register(String name, Holder<? extends ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
 		return BuiltinRegistries.registerExact(BuiltinRegistries.PLACED_FEATURE, TwilightForestMod.prefix(name).toString(), new PlacedFeature(Holder.hackyErase(feature), List.copyOf(placements)));
 	}
 }
