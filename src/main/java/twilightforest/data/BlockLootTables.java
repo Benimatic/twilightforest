@@ -203,16 +203,16 @@ public class BlockLootTables extends BlockLoot {
 		add(TFBlocks.QUEST_RAM_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
 		add(TFBlocks.QUEST_RAM_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
 
-		add(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.ZOMBIE_HEAD));
-		add(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.ZOMBIE_HEAD));
-		add(TFBlocks.SKELETON_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.SKELETON_SKULL));
-		add(TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.SKELETON_SKULL));
-		add(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.WITHER_SKELETON_SKULL));
-		add(TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.WITHER_SKELETON_SKULL));
-		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.CREEPER_HEAD));
-		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.CREEPER_HEAD));
-		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
-		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
+		add(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
+		add(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
+		add(TFBlocks.SKELETON_SKULL_CANDLE.get(), createSingleItemTable(Blocks.SKELETON_SKULL));
+		add(TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.SKELETON_SKULL));
+		add(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), createSingleItemTable(Blocks.WITHER_SKELETON_SKULL));
+		add(TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.WITHER_SKELETON_SKULL));
+		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
+		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
+		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
+		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
 
 		dropSelf(TFBlocks.IRON_LADDER.get());
 		dropSelf(TFBlocks.TWISTED_STONE.get());
