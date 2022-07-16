@@ -30,11 +30,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.FluidType;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.TFPart;
@@ -109,7 +111,8 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 				.add(Attributes.FLYING_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 7.0D)
 				.add(Attributes.FOLLOW_RANGE, 40.0D)
-				.add(Attributes.MAX_HEALTH, 200.0D);
+				.add(Attributes.MAX_HEALTH, 200.0D)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.75D);
 	}
 
 	@Override
@@ -363,6 +366,7 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 				BlockState state = this.getLevel().getBlockState(pos);
 				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
 					this.getLevel().destroyBlock(pos, false);
+					this.gameEvent(GameEvent.BLOCK_DESTROY);
 				}
 			}
 		}
@@ -427,6 +431,7 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 				attemptZ = targetedEntity.getZ() + this.getRandom().nextGaussian() * 6.0D;
 			}
 			if (minion.randomTeleport(attemptX, attemptY, attemptZ, true)) {
+				this.gameEvent(GameEvent.ENTITY_PLACE, minion);
 				break;
 			}
 		}
@@ -477,12 +482,12 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 
 	@Override
-	public boolean isPushedByFluid() {
+	public boolean isPushedByFluid(FluidType type) {
 		return false;
 	}
 

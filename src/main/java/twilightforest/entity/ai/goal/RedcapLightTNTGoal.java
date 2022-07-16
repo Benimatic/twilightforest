@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.monster.Redcap;
@@ -71,6 +72,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 			Blocks.TNT.onCaughtFire(Blocks.TNT.defaultBlockState(), this.redcap.getLevel(), this.tntPos, Direction.UP, this.redcap);
 			this.redcap.swing(InteractionHand.MAIN_HAND);
 			this.redcap.getLevel().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
+			this.redcap.gameEvent(GameEvent.PRIME_FUSE);
 			this.redcap.getNavigation().stop();
 		} else {
 			this.redcap.getNavigation().moveTo(this.tntPos.getX(), this.tntPos.getY(), this.tntPos.getZ(), this.pursueSpeed);

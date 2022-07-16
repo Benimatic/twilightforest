@@ -13,6 +13,7 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
@@ -29,7 +30,6 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 
 	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world) {
 		super(type, world);
-		this.fireImmune();
 	}
 
 	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world, LivingEntity thrower) {
@@ -97,6 +97,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 							this.getLevel().removeBlock(pos, false);
 							this.playSound(TFSounds.BLOCK_ANNIHILATED.get(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
 							this.annihilateParticles(this.getLevel(), pos);
+							this.gameEvent(GameEvent.BLOCK_DESTROY);
 						} else {
 							this.hasHitObstacle = true;
 						}

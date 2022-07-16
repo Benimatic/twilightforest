@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFSounds;
@@ -145,6 +146,7 @@ public class NagaMovementPattern extends Goal {
 	private void doIntimidate() {
 		this.state = MovementState.INTIMIDATE;
 		this.naga.playSound(TFSounds.NAGA_RATTLE.get(), 4.0F, this.naga.getVoicePitch());
+		this.naga.gameEvent(GameEvent.ENTITY_ROAR);
 
 		this.stateCounter += 15 + this.naga.getRandom().nextInt(10);
 		this.naga.goSlow();

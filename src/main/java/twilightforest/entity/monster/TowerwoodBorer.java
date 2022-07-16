@@ -18,6 +18,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -211,6 +212,7 @@ public class TowerwoodBorer extends Monster {
 							if (state.is(TFBlocks.INFESTED_TOWERWOOD.get())) {
 								if (ForgeEventFactory.getMobGriefingEvent(world, this.borer)) {
 									world.destroyBlock(offsetPos, true);
+									this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
 								} else {
 									// TF - reset to normal tower wood
 									world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), 3);

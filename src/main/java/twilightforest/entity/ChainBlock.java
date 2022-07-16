@@ -17,6 +17,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -135,6 +136,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 			if (!this.isReturning) {
 				this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
+				this.gameEvent(GameEvent.HIT_GROUND);
 			}
 
 			if (this.blocksSmashed < MAX_SMASH) {

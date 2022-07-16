@@ -29,6 +29,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -110,7 +111,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 				.add(Attributes.MAX_HEALTH, 200.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.38D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D);
+				.add(Attributes.FOLLOW_RANGE, 40.0D)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	@Override
@@ -308,7 +310,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		if (!this.canRampage) {
 			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.getLevel(), this);
 
-			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
+			// [VanillaCopy] Part of Skeleton.performRangedAttack
 			double d0 = target.getX() - this.getX();
 			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - ice.getY();
 			double d2 = target.getZ() - this.getZ();
@@ -316,6 +318,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			ice.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 14 - this.getLevel().getDifficulty().getId() * 4);
 
 			this.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.getLevel().addFreshEntity(ice);
 		}
 	}

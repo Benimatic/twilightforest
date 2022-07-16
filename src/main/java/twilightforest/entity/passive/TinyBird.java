@@ -22,6 +22,7 @@ import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.ai.goal.TinyBirdFlyGoal;
@@ -156,6 +157,7 @@ public class TinyBird extends Bird {
 			}
 		} else {
 			this.currentFlightTime++;
+			this.gameEvent(GameEvent.FLAP);
 
 			// [VanillaCopy] Modified version of last half of Bat.customServerAiStep(). Edits noted
 			if (this.spawnPosition != null && (!this.getLevel().isEmptyBlock(this.spawnPosition) || this.spawnPosition.getY() <= this.getLevel().getMinBuildHeight())) {

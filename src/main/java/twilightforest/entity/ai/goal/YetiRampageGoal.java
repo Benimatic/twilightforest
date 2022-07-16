@@ -1,6 +1,7 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFEntities;
@@ -17,8 +18,8 @@ public class YetiRampageGoal extends Goal {
 	private final int maxTantrumTimeOut;
 	private final int tantrumDuration;
 
-	public YetiRampageGoal(AlphaYeti entityTFYetiAlpha, int timeout, int duration) {
-		this.yeti = entityTFYetiAlpha;
+	public YetiRampageGoal(AlphaYeti yeti, int timeout, int duration) {
+		this.yeti = yeti;
 		this.currentTimeOut = timeout;
 		this.maxTantrumTimeOut = timeout;
 		this.tantrumDuration = duration;
@@ -43,6 +44,7 @@ public class YetiRampageGoal extends Goal {
 		this.currentDuration = this.tantrumDuration;
 		this.yeti.setRampaging(true);
 		this.yeti.playSound(TFSounds.ALPHAYETI_ROAR.get(), 4F, 0.5F + yeti.getRandom().nextFloat() * 0.5F);
+		this.yeti.gameEvent(GameEvent.ENTITY_ROAR);
 	}
 
 	/**
@@ -66,6 +68,7 @@ public class YetiRampageGoal extends Goal {
 
 		if (this.yeti.isOnGround()) {
             this.yeti.setDeltaMovement(0, 0.4, 0);
+			this.yeti.gameEvent(GameEvent.HIT_GROUND);
 		}
 
 		this.yeti.destroyBlocksInAABB(this.yeti.getBoundingBox().inflate(1, 2, 1).move(0, 2, 0));
@@ -90,6 +93,7 @@ public class YetiRampageGoal extends Goal {
 			Vec3 vec = new Vec3(0.5F + this.yeti.getRandom().nextFloat() * 0.5F, 0.5F + this.yeti.getRandom().nextFloat() * 0.3F, 0).yRot(this.yeti.getRandom().nextFloat() * 360F);
 			ice.shoot(vec.x(), vec.y(), vec.z(), 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
 			this.yeti.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.yeti.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.yeti.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.yeti.getLevel().addFreshEntity(ice);
 		}
 	}
