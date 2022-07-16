@@ -7,6 +7,7 @@ import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.util.NullableEntityDamageSource;
 
 public class TFDamageSources {
     public static final DamageSource GHAST_TEAR = new DamageSource(tfSource("ghastTear")).bypassArmor(); //ur-ghast
@@ -29,9 +30,8 @@ public class TFDamageSources {
     public static DamageSource axing(LivingEntity mob) {
         return new EntityDamageSource(tfSource("axing"), mob); //minotaur, minoshroom
     }
-    //TODO actually figure out how to implement this one
-    public static DamageSource yeeted(LivingEntity mob) {
-        return new EntityDamageSource(tfSource("yeeted"), mob); //yetis, alpha yeti
+    public static DamageSource yeeted(@Nullable LivingEntity mob) {
+        return new NullableEntityDamageSource(tfSource("yeeted"), mob).bypassArmor().setIsFall(); //yetis, alpha yeti
     }
     public static DamageSource ant(LivingEntity mob) {
         return new EntityDamageSource(tfSource("ant"), mob); //giants

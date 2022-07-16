@@ -46,5 +46,6 @@ public class TFPacketHandler {
 		CHANNEL.messageBuilder(MissingAdvancementToastPacket.class, id++).encoder(MissingAdvancementToastPacket::encode).decoder(MissingAdvancementToastPacket::new).consumerMainThread(MissingAdvancementToastPacket::handle).add();
 		CHANNEL.messageBuilder(ParticlePacket.class, id++).encoder(ParticlePacket::encode).decoder(ParticlePacket::new).consumerMainThread(ParticlePacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(UpdateFeatherFanFallPacket.class, id++).encoder(UpdateFeatherFanFallPacket::encode).decoder(UpdateFeatherFanFallPacket::new).consumerMainThread(UpdateFeatherFanFallPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UpdateThrownPacket.class, id++).encoder(UpdateThrownPacket::encode).decoder(UpdateThrownPacket::new).consumerMainThread(UpdateThrownPacket.Handler::onMessage).add();
 	}
 }

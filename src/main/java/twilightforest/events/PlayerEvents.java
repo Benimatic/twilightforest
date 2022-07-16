@@ -46,6 +46,7 @@ import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
+import twilightforest.capabilities.thrown.YetiThrowCapability;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.TFBlocks;
@@ -78,8 +79,12 @@ public class PlayerEvents {
 
 	@SubscribeEvent
 	public static void updateFeatherFanCap(LivingEvent.LivingTickEvent event) {
-		if (event.getEntity() instanceof Player player && player.getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent()) {
-			player.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
+		if (event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent()) {
+			event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
+		}
+
+		if (event.getEntity().getCapability(CapabilityList.YETI_THROWN).isPresent()) {
+			event.getEntity().getCapability(CapabilityList.YETI_THROWN).ifPresent(YetiThrowCapability::update);
 		}
 	}
 

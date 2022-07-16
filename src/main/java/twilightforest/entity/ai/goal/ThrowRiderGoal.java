@@ -8,6 +8,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
+import twilightforest.capabilities.CapabilityList;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.network.TFPacketHandler;
@@ -82,8 +83,11 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 			rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 
-			if (rider instanceof ServerPlayer player) {
+			if (rider instanceof LivingEntity entity) {
+				entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> cap.setThrown(true, this.mob));
+			}
 
+			if (rider instanceof ServerPlayer player) {
 				ThrowPlayerPacket message = new ThrowPlayerPacket((float) throwVec.x(), (float) throwVec.y(), (float) throwVec.z());
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
 			}

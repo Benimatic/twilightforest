@@ -10,7 +10,10 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
+import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.thrown.YetiThrowCapability;
 import twilightforest.entity.IHostileMount;
+import twilightforest.init.TFDamageSources;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class HostileMountEvents {
@@ -24,6 +27,12 @@ public class HostileMountEvents {
 		// lets not make the player take suffocation damage if riding something
 		if (living instanceof Player && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
 			event.setCanceled(true);
+		}
+
+		if (damageSource == DamageSource.FALL && living.getCapability(CapabilityList.YETI_THROWN).map(YetiThrowCapability::getThrown).orElse(false)) {
+			float amount = event.getAmount();
+			event.setCanceled(true);
+			living.hurt(TFDamageSources.yeeted(living.getCapability(CapabilityList.YETI_THROWN).resolve().get().getThrower()), amount);
 		}
 	}
 
