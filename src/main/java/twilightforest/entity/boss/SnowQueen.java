@@ -286,7 +286,7 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 	private void applyShieldCollision(Entity collider, Entity collided) {
 		if (collided != this) {
 			collided.push(collider);
-			if (collided instanceof LivingEntity && super.doHurtTarget(collided)) {
+			if (collided instanceof LivingEntity && this.doHurtTarget(collided)) {
 				Vec3 motion = collided.getDeltaMovement();
 				collided.setDeltaMovement(motion.x(), motion.y() + 0.4, motion.z());
 				this.playSound(TFSounds.SNOW_QUEEN_ATTACK.get(), 1.0F, 1.0F);
