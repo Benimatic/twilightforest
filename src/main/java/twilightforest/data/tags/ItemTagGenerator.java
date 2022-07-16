@@ -250,6 +250,13 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(),
 				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
 				TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem());
+
+		tag(Tags.Items.HEADS).add(
+				TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem(),
+				TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(),
+				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
+				TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(),
+				TFBlocks.PLAYER_SKULL_CANDLE.get().asItem());
 	}
 
 	@Override
