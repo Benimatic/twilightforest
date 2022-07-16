@@ -96,7 +96,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						}
 						if (firstProperStack != -1) { //If there weren't any non-full stacks, we transfer to an empty space instead
 							ItemStack newStack = inputIItemHandler.extractItem(i, 1, false);
-							if (!newStack.isEmpty() && outputIItemHandler.insertItem(firstProperStack, newStack, true).isEmpty()) {//TODO Check
+							if (!newStack.isEmpty() && outputIItemHandler.insertItem(firstProperStack, newStack, true).isEmpty()) {
 								outputIItemHandler.insertItem(firstProperStack, newStack, false);
 								transferred = true;
 
