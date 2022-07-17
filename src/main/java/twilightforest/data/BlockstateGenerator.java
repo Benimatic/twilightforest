@@ -1033,7 +1033,7 @@ public class BlockstateGenerator extends BlockModelHelpers {
 		//}
 		//simpleBlock(TFBlocks.CLOVER_PATCH.get(), cloverModels);
 		simpleBlock(TFBlocks.CLOVER_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/clover_patch"))));
-		simpleBlock(TFBlocks.FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.FIDDLEHEAD.getId().getPath(), "block/tinted_cross")
+		simpleBlock(TFBlocks.FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.FIDDLEHEAD.getId().getPath(), "block/tinted_cross").renderType(CUTOUT)
 				.texture("cross", blockTexture(TFBlocks.FIDDLEHEAD.get())));
 		simpleBlock(TFBlocks.MUSHGLOOM.get(), models().withExistingParent(TFBlocks.MUSHGLOOM.getId().getPath(), prefix("block/util/cross_2_layer")).renderType(CUTOUT)
 				.texture("cross", blockTexture(TFBlocks.MUSHGLOOM.get()))

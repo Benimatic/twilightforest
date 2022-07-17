@@ -1,4 +1,4 @@
-// 1.19	2022-07-13T20:34:50.9130051	TwilightForest blockstates and block models
+// 1.19	2022-07-17T09:21:04.2697831	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -636,7 +636,7 @@ cf01d847cf45249fc239966cc5b95f22e01f0921 assets/twilightforest/models/block/expe
 4221d84dcfdab83ff6ffff9b3feb303e51259e72 assets/twilightforest/models/block/experiment115_6_8_regenerating.json
 032b2aa0e1057f24837798282f152e4ed2290684 assets/twilightforest/models/block/experiment115_7_8_regenerating.json
 6a36220a910476f613aae9dfd7aa0debcba6f20c assets/twilightforest/models/block/experiment115_8_8_regenerating.json
-6e8a13f94f47fae32290e3c44055700427613889 assets/twilightforest/models/block/fiddlehead.json
+e5d2c8ffbbfbcaf285c60e093d4037b6d1122959 assets/twilightforest/models/block/fiddlehead.json
 9d7f647e9f1f988c576388a90d98569927846f24 assets/twilightforest/models/block/firefly.json
 a8cb3a9bf21cd70ede74f84c27528adcfc805cb4 assets/twilightforest/models/block/fluffy_cloud.json
 0bc8f183959148d163987f05f20c8c6c52b35cca assets/twilightforest/models/block/force_field/blue_force_field_down.json
