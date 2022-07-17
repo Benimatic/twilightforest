@@ -1,4 +1,4 @@
-// 1.19	2022-07-15T14:25:48.297118	Twilight Forest Worldgen
+// 1.19	2022-07-17T19:31:03.1157886	Twilight Forest Worldgen
 5dd5ee50cdd295b8f0ccb241055f83d13b65323c data/twilightforest/dimension/twilight_forest.json
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 8ece13d0da77498a48204c2cac458d7053598920 data/twilightforest/worldgen/biome/clearing.json
@@ -17,7 +17,7 @@ ed91b41b7da474cd5cad43950acbbe73435e8f23 data/twilightforest/worldgen/biome/glac
 3d6ab756baa1ae3d8ada51f8995cfa1008386690 data/twilightforest/worldgen/biome/mushroom_forest.json
 42a7e55932a299194cc22553dff56e253d69d3c5 data/twilightforest/worldgen/biome/oak_savannah.json
 152faf88310bba2eb3cb031d7d65429727f29ba8 data/twilightforest/worldgen/biome/snowy_forest.json
-7427f15f5e7b331b1a5829066320b615ca341ad8 data/twilightforest/worldgen/biome/spooky_forest.json
+b9c0a8fefdaf87d1412b12a05a6eb71cd2cab797 data/twilightforest/worldgen/biome/spooky_forest.json
 30d147099129aeeb4a48629abbafe3909aa94672 data/twilightforest/worldgen/biome/stream.json
 faf083ec036198dccaa6373545a6df1aef755de0 data/twilightforest/worldgen/biome/swamp.json
 320d248167f19c5f126cfafa67a0beee4fa6c67c data/twilightforest/worldgen/biome/thornlands.json

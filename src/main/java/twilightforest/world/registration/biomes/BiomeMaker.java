@@ -112,7 +112,7 @@ public final class BiomeMaker extends BiomeHelper {
 						defaultAmbientBuilder()
 								.grassColorOverride(0xC45123)
 								.foliageColorOverride(0xFF8501)
-								.waterColor(0xFA9111)
+								.waterColor(0xBC8857)
 								.grassColorModifier(BiomeGrassColors.SPOOKY_FOREST),
 						spookSpawning(),
 						spookyForestGen()
