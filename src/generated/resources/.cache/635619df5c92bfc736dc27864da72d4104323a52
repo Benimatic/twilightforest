@@ -1,4 +1,4 @@
-// 1.19	2022-07-17T19:31:03.1157886	Twilight Forest Worldgen
+// 1.19	2022-07-17T12:50:38.7169003	Twilight Forest Worldgen
 5dd5ee50cdd295b8f0ccb241055f83d13b65323c data/twilightforest/dimension/twilight_forest.json
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 8ece13d0da77498a48204c2cac458d7053598920 data/twilightforest/worldgen/biome/clearing.json
@@ -19,7 +19,7 @@ ed91b41b7da474cd5cad43950acbbe73435e8f23 data/twilightforest/worldgen/biome/glac
 152faf88310bba2eb3cb031d7d65429727f29ba8 data/twilightforest/worldgen/biome/snowy_forest.json
 b9c0a8fefdaf87d1412b12a05a6eb71cd2cab797 data/twilightforest/worldgen/biome/spooky_forest.json
 30d147099129aeeb4a48629abbafe3909aa94672 data/twilightforest/worldgen/biome/stream.json
-faf083ec036198dccaa6373545a6df1aef755de0 data/twilightforest/worldgen/biome/swamp.json
+da6f22f309cfb3201c201d92673c45e6eb5edce9 data/twilightforest/worldgen/biome/swamp.json
 320d248167f19c5f126cfafa67a0beee4fa6c67c data/twilightforest/worldgen/biome/thornlands.json
 5f90dbc8c186bbd0ccfbf20eb0829b50650dd78c data/twilightforest/worldgen/configured_carver/highland_caves.json
 a4a4f203951a7e61b1654e7e272426a4196d58e9 data/twilightforest/worldgen/configured_carver/tf_caves.json

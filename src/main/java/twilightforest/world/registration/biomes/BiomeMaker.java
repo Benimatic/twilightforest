@@ -161,7 +161,7 @@ public final class BiomeMaker extends BiomeHelper {
 		biomes.put(BiomeKeys.SWAMP,
 				biomeWithDefaults(
 						defaultAmbientBuilder()
-								.waterColor(0x002112)
+								.skyColor(0x002112)
 								.fogColor(0x003F21)
 								.grassColorOverride(0x5C694E)
 								.foliageColorOverride(0x496137)
