@@ -61,6 +61,8 @@ public class BlockLootTables extends BlockLoot {
 	@Override
 	protected void addTables() {
 		registerEmpty(TFBlocks.EXPERIMENT_115.get());
+		registerEmpty(TFBlocks.SLIDER.get());
+		registerEmpty(TFBlocks.INFESTED_TOWERWOOD.get());
 		dropSelf(TFBlocks.TOWERWOOD.get());
 		dropSelf(TFBlocks.ENCASED_TOWERWOOD.get());
 		dropSelf(TFBlocks.CRACKED_TOWERWOOD.get());
@@ -252,6 +254,7 @@ public class BlockLootTables extends BlockLoot {
 		dropSelf(TFBlocks.DARK_OAK_BANISTER.get());
 		dropSelf(TFBlocks.CRIMSON_BANISTER.get());
 		dropSelf(TFBlocks.WARPED_BANISTER.get());
+		dropSelf(TFBlocks.VANGROVE_BANISTER.get());
 
 		add(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get()));
