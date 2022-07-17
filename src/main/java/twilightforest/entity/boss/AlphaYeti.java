@@ -289,7 +289,6 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	private void makeBlockFall(BlockPos pos, int hangTime) {
 		FallingIce ice = new FallingIce(this.getLevel(), pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, this.getLevel().getBlockState(pos), hangTime);
 		this.getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-		//this.getLevel().playSound(null, pos, SoundEvents.NOTE_BLOCK_CHIME, SoundSource.NEUTRAL, 1000.0F, 1.0F);
 		this.getLevel().addFreshEntity(ice);
 	}
 
