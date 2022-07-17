@@ -8,7 +8,6 @@ import net.minecraftforge.network.NetworkEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.thrown.YetiThrowCapability;
 
-import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class UpdateThrownPacket {
@@ -16,10 +15,12 @@ public class UpdateThrownPacket {
 	private final int entityID;
 	private final boolean thrown;
 	private int thrower = 0;
+	private final int throwCooldown;
 
 	public UpdateThrownPacket(int id, YetiThrowCapability cap) {
 		this.entityID = id;
 		this.thrown = cap.getThrown();
+		this.throwCooldown = cap.getThrowCooldown();
 		if(cap.getThrower() != null) {
 			this.thrower = cap.getThrower().getId();
 		}
@@ -33,12 +34,14 @@ public class UpdateThrownPacket {
 		this.entityID = buf.readInt();
 		this.thrown = buf.readBoolean();
 		this.thrower = buf.readInt();
+		this.throwCooldown = buf.readInt();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeInt(this.entityID);
 		buf.writeBoolean(this.thrown);
 		buf.writeInt(this.thrower);
+		buf.writeInt(this.throwCooldown);
 	}
 
 	public static class Handler {
@@ -50,6 +53,7 @@ public class UpdateThrownPacket {
 					entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
 						LivingEntity thrower = message.thrower != 0 ? (LivingEntity) Minecraft.getInstance().level.getEntity(message.thrower) : null;
 						cap.setThrown(message.thrown, thrower);
+						cap.setThrowCooldown(message.throwCooldown);
 					});
 				}
 			});

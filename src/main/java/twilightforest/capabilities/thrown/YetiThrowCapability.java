@@ -21,4 +21,8 @@ public interface YetiThrowCapability extends INBTSerializable<CompoundTag> {
 
 	@Nullable
 	LivingEntity getThrower();
+
+	int getThrowCooldown();
+
+	void setThrowCooldown(int cooldown);
 }

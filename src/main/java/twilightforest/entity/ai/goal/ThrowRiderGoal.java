@@ -29,6 +29,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 		return this.mob.getPassengers().isEmpty() &&
 				this.mob.getTarget() != null &&
 				!this.mob.getTarget().getType().is(EntityTagGenerator.BOSSES) &&
+				this.mob.getTarget().getCapability(CapabilityList.YETI_THROWN).map(cap -> cap.getThrowCooldown() <= 0).orElse(true) &&
 				super.canUse();
 	}
 
@@ -79,12 +80,16 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			HostileMountEvents.allowDismount = false;
 
 			Vec3 throwVec = this.mob.getLookAngle().scale(2);
-			throwVec = new Vec3(throwVec.x(), 0.9, throwVec.z);
+			throwVec = new Vec3(throwVec.x(), 0.9, throwVec.z());
 
 			rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 
 			if (rider instanceof LivingEntity entity) {
-				entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> cap.setThrown(true, this.mob));
+				entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
+					cap.setThrown(true, this.mob);
+					//make it so other yetis wont try to pick us up for a bit, 10 seconds seems fair
+					cap.setThrowCooldown(200);
+				});
 			}
 
 			if (rider instanceof ServerPlayer player) {
