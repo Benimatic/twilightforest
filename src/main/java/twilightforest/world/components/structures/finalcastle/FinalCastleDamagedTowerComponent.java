@@ -58,7 +58,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 
 
 		// keep on building?
-		this.buildNonCriticalTowers(parent, list, rand);
+		this.buildNonCriticalTowers(list, rand);
 	}
 
 	@Override

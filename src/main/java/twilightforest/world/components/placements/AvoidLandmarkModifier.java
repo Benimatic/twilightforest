@@ -16,35 +16,34 @@ import twilightforest.init.TFFeatureModifiers;
 
 import java.util.stream.Stream;
 
-// TODO Rename to AvoidLandmarkFilter to read Structure for DecorationClearance data
-public class OutOfStructureModifier extends PlacementModifier {
+public class AvoidLandmarkModifier extends PlacementModifier {
 
-	public static final Codec<OutOfStructureModifier> CODEC = RecordCodecBuilder.<OutOfStructureModifier>create(instance -> instance.group(
+	public static final Codec<AvoidLandmarkModifier> CODEC = RecordCodecBuilder.<AvoidLandmarkModifier>create(instance -> instance.group(
 			Codec.BOOL.fieldOf("occupies_surface").forGetter(o -> o.occupiesSurface),
 			Codec.BOOL.fieldOf("occupies_underground").forGetter(o -> o.occupiesUnderground),
 			Codec.INT.fieldOf("additional_clearance").forGetter(o -> o.additionalClearance)
-	).apply(instance, OutOfStructureModifier::new)).flatXmap(OutOfStructureModifier::validate, OutOfStructureModifier::validate);
+	).apply(instance, AvoidLandmarkModifier::new)).flatXmap(AvoidLandmarkModifier::validate, AvoidLandmarkModifier::validate);
 
 	private final boolean occupiesSurface;
 	private final boolean occupiesUnderground;
 	private final int additionalClearance;
 
-	public OutOfStructureModifier(boolean occupiesSurface, boolean occupiesUnderground, int additionalClearance) {
+	public AvoidLandmarkModifier(boolean occupiesSurface, boolean occupiesUnderground, int additionalClearance) {
 		this.occupiesSurface = occupiesSurface;
 		this.occupiesUnderground = occupiesUnderground;
 		this.additionalClearance = additionalClearance;
 	}
 
-	public static OutOfStructureModifier checkSurface() {
-		return new OutOfStructureModifier(true, false, 0);
+	public static AvoidLandmarkModifier checkSurface() {
+		return new AvoidLandmarkModifier(true, false, 0);
 	}
 
-	public static OutOfStructureModifier checkUnderground() {
-		return new OutOfStructureModifier(false, true, 0);
+	public static AvoidLandmarkModifier checkUnderground() {
+		return new AvoidLandmarkModifier(false, true, 0);
 	}
 
-	public static OutOfStructureModifier checkBoth() {
-		return new OutOfStructureModifier(true, true, 0);
+	public static AvoidLandmarkModifier checkBoth() {
+		return new AvoidLandmarkModifier(true, true, 0);
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class OutOfStructureModifier extends PlacementModifier {
 		return TFFeatureModifiers.NO_STRUCTURE.get();
 	}
 
-	private static DataResult<OutOfStructureModifier> validate(OutOfStructureModifier config) {
+	private static DataResult<AvoidLandmarkModifier> validate(AvoidLandmarkModifier config) {
 		return config.occupiesSurface || config.occupiesUnderground ? DataResult.success(config) : DataResult.error("Feature Decorator cannot occupy neither surface nor underground");
 	}
 }

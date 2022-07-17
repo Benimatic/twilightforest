@@ -59,7 +59,6 @@ import java.util.Objects;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TwilightForestMod {
 
-	// TODO: might be a good idea to find proper spots for all of these? also remove redundants
 	public static final String ID = "twilightforest";
 
 	private static final String MODEL_DIR = "textures/model/";
@@ -141,7 +140,6 @@ public class TwilightForestMod {
 			//Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 
-		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
 	}
 
@@ -168,7 +166,6 @@ public class TwilightForestMod {
 	@SubscribeEvent
 	public static void registerSerializers(RegisterEvent evt) {
 		if (Objects.equals(evt.getForgeRegistry(), ForgeRegistries.RECIPE_SERIALIZERS)) {
-			//TODO find a better place for these? they work fine here but idk
 			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 
@@ -205,7 +202,6 @@ public class TwilightForestMod {
 			}
 		}
 
-		// TFConfig.build(); FIXME Loading Screen disabled
 		BlockSpikeFeature.loadStalactites();
 
 		evt.enqueueWork(() -> {

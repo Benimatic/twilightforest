@@ -222,7 +222,7 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
 
     @Override
     public ItemOverrides getOverrides() {
-        return ItemOverrides.EMPTY; // TODO I doubt we need to do anything here
+        return ItemOverrides.EMPTY; //I doubt we need to do anything here
     }
 
     @Override

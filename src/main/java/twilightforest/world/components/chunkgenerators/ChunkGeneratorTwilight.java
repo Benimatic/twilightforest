@@ -35,7 +35,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.IntPair;
+import twilightforest.util.Vec2i;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
@@ -419,7 +419,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
 	protected final void deformTerrainForFeature(WorldGenRegion primer, ChunkAccess chunk) {
-		IntPair featureRelativePos = new IntPair();
+		Vec2i featureRelativePos = new Vec2i();
 		TFLandmark nearFeature = LegacyLandmarkPlacements.getNearestLandmark(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
 
 		//Optional<StructureStart<?>> structureStart = TFGenerationSettings.locateTFStructureInRange(primer.getLevel(), nearFeature, chunk.getPos().getWorldPosition(), nearFeature.size + 1);
@@ -755,7 +755,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		if (!biomeFound) return;
 
-		IntPair nearCenter = new IntPair();
+		Vec2i nearCenter = new Vec2i();
 		TFLandmark nearFeature = LegacyLandmarkPlacements.getNearestLandmark(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
 
 		double d = 0.03125D;
@@ -871,10 +871,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(structureManager, mobCategory, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
-		//FIXME forge has StructureSpawnManager commented out, find out if theyre redoing this class or removing it entirely
-//		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, mobCategory, pos);
-//		if (spawns != null)
-//			return spawns;
 		return mobCategory == MobCategory.MONSTER && pos.getY() >= this.getSeaLevel() ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, mobCategory, pos);
 	}
 

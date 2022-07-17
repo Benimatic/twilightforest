@@ -326,7 +326,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 			return switch (enumfacing) {
 				case SOUTH -> this.boundingBox.minX() + x;
 				case WEST -> this.boundingBox.maxX() - z;
-				case NORTH -> this.boundingBox.maxX() - x; // TF - Add case for NORTH todo 1.9 is this correct?
+				case NORTH -> this.boundingBox.maxX() - x; // TF - Add case for NORTH
 				case EAST -> this.boundingBox.minX() + z;
 				default -> x;
 			};

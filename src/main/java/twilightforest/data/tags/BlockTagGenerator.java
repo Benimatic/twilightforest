@@ -401,7 +401,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				Blocks.REINFORCED_DEEPSLATE
 		);
 
-		// TODO Test behavior with giant blocks for immunity stuffs
 		tag(BlockTags.DRAGON_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.GIANT_OBSIDIAN.get(), TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());
 
 		tag(BlockTags.WITHER_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());

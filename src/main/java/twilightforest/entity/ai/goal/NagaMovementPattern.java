@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFSounds;
 import twilightforest.util.EntityUtil;
@@ -170,7 +171,6 @@ public class NagaMovementPattern extends Goal {
 			BlockPos pos = new BlockPos(dx, dy, dz);
 
 			if (EntityUtil.canDestroyBlock(this.naga.getLevel(), pos, this.naga)) {
-				// todo limit what can be broken
 				this.naga.getLevel().destroyBlock(pos, true);
 
 				// sparkle!!

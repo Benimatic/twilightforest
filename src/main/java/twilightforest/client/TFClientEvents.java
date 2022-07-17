@@ -199,7 +199,6 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
-			//TODO if there is a better way to do this, then do it. This works though, so idk
 			new TFSkyRenderer();
 			new TFWeatherRenderer();
 			event.register(TwilightForestMod.prefix("renderer"), new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
@@ -223,22 +222,20 @@ public class TFClientEvents {
 	 */
 	@SubscribeEvent
 	public static void renderWorldLast(RenderLevelStageEvent event) {
-		// FIXME Verify if this is a good step to run our event for. (This used to be RenderLevelLastEvent)
-		//  "There is no {@link RenderLevelStageEvent.Stage} that directly replaces this event, instead you must decide which Stage best fits your use case."
-		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_WEATHER) return; // Despite Weather rendering inside the translucent
+		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) { // after particles says its best for special rendering effects, and thats what I consider this
+			if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
-		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
+			Options settings = Minecraft.getInstance().options;
+			if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;
 
-		Options settings = Minecraft.getInstance().options;
-		if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;
-
-		Entity entity = Minecraft.getInstance().getCameraEntity();
-		if (entity instanceof LivingEntity) {
-			EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
-			if (renderer instanceof LivingEntityRenderer<?, ?>) {
-				for (EffectRenders effect : EffectRenders.VALUES) {
-					if (effect.shouldRender((LivingEntity) entity, true)) {
-						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?, ?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
+			Entity entity = Minecraft.getInstance().getCameraEntity();
+			if (entity instanceof LivingEntity) {
+				EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+				if (renderer instanceof LivingEntityRenderer<?, ?>) {
+					for (EffectRenders effect : EffectRenders.VALUES) {
+						if (effect.shouldRender((LivingEntity) entity, true)) {
+							effect.render((LivingEntity) entity, ((LivingEntityRenderer<?, ?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
+						}
 					}
 				}
 			}
@@ -299,24 +296,6 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void tooltipEvent(ItemTooltipEvent event) {
 		ItemStack item = event.getItemStack();
-
-		/*
-			There's some kinda crash here where the "Tag % used before it was bound" crash happens from
-			StaticTagHelper$Wrapper.resolve() because the tag wrapped is null. I assume this crash happens because
-			somehow the game attempts to load a tooltip for an item in the main menu or something upon
-			resourcepack reload when the player has not loaded into a save. See Issue #1270 for crashlog
-		*/
-
-		//TODO do we need this anymore? If so, ho do we re-add it?
-//		boolean wip = (ItemTagGenerator.WIP instanceof StaticTagHelper.Wrapper<Item> wrappedWIP) && wrappedWIP.tag != null && item.is(wrappedWIP);
-		// WIP takes precedence over NYI
-//		boolean nyi = !wip && (ItemTagGenerator.NYI instanceof StaticTagHelper.Wrapper<Item> wrappedNYI) && wrappedNYI.tag != null && item.is(wrappedNYI);
-
-//		if (!wip && !nyi)
-//			return;
-
-		//if (item.getDisplayName() instanceof MutableComponent displayName)
-		//	displayName/*.append(wip ? " [WIP]" : " [NYI]")*/.setStyle(displayName.getStyle().withColor(ChatFormatting.DARK_GRAY));
 
 		if (!item.is(ItemTagGenerator.WIP) && !item.is(ItemTagGenerator.NYI)) return;
 

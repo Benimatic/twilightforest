@@ -29,8 +29,8 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		super(TFStructurePieceTypes.TFFCBelTo.get(), nbt);
 	}
 
-	public FinalCastleBellTower21Component(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCBelTo.get(), feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+	public FinalCastleBellTower21Component(TFLandmark feature, int i, int x, int y, int z, Direction direction) {
+		super(TFStructurePieceTypes.TFFCBelTo.get(), feature, i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;
@@ -51,7 +51,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = new FinalCastleRoof13CrenellatedComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		TFStructureComponentOld roof = new FinalCastleRoof13CrenellatedComponent(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}

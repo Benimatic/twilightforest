@@ -18,14 +18,10 @@ public class TFPacketHandler {
 			PROTOCOL_VERSION::equals
 	);
 
-	@SuppressWarnings("UnusedAssignment")
+	@SuppressWarnings({"UnusedAssignment", "Convert2Lambda", "Anonymous2MethodRef"})
 	public static void init() {
 		int id = 0;
-
-		// FIXME FORGE BREAKING CHANGE (#8703) By default `consumer()` goes to `consumerMainThread()` - Verify if any of these should go to consumerNetworkThread instead
-
 		//as ugly as this is compared to the rest of the packets do not change it, it crashes the server otherwise
-		//noinspection Convert2Lambda,Anonymous2MethodRef
 		CHANNEL.messageBuilder(AreaProtectionPacket.class, id++).encoder(AreaProtectionPacket::encode).decoder(AreaProtectionPacket::new).consumerMainThread(new BiConsumer<>() {
 			@Override
 			public void accept(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
