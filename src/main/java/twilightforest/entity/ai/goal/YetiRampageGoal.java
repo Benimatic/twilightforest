@@ -67,28 +67,28 @@ public class YetiRampageGoal extends Goal {
 		}
 
 		if (this.yeti.isOnGround()) {
-            this.yeti.setDeltaMovement(0, 0.4, 0);
+            this.yeti.setDeltaMovement(0, 0.4D, 0);
 			this.yeti.gameEvent(GameEvent.HIT_GROUND);
 		}
 
 		this.yeti.destroyBlocksInAABB(this.yeti.getBoundingBox().inflate(1, 2, 1).move(0, 2, 0));
 
-		// regular falling blocks
-		if (this.currentDuration % 20 == 0) {
-			this.yeti.makeRandomBlockFall();
+		// regular falling blocks, twice a second
+		if (this.currentDuration % 10 == 0) {
+			this.yeti.makeRandomBlockFall(30, 80);
 		}
 
-		// blocks target players
-		if (this.currentDuration % 40 == 0) {
+		// blocks target players, one every second
+		if (this.currentDuration % 20 == 0) {
 			this.yeti.makeBlockAboveTargetFall();
 		}
 
-		// blocks target players
+		// blocks that fall close to the yeti, twice a second near the end of the rampage
 		if (this.currentDuration < 40 && this.currentDuration % 10 == 0) {
-			this.yeti.makeNearbyBlockFall();
+			this.yeti.makeRandomBlockFall(15, 40);
 		}
 
-		if (this.currentDuration % 10 == 0) {
+		if (this.currentDuration % 20 == 0) {
 			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.yeti.getLevel(), this.yeti);
 			Vec3 vec = new Vec3(0.5F + this.yeti.getRandom().nextFloat() * 0.5F, 0.5F + this.yeti.getRandom().nextFloat() * 0.3F, 0).yRot(this.yeti.getRandom().nextFloat() * 360F);
 			ice.shoot(vec.x(), vec.y(), vec.z(), 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);

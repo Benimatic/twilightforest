@@ -31,6 +31,7 @@ public class TFParticleType {
 	public static final RegistryObject<SimpleParticleType> PROTECTION = PARTICLE_TYPES.register("protection", () -> new SimpleParticleType(true));
 	public static final RegistryObject<SimpleParticleType> SNOW = PARTICLE_TYPES.register("snow", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> SNOW_WARNING = PARTICLE_TYPES.register("snow_warning", () -> new SimpleParticleType(false));
+	public static final RegistryObject<SimpleParticleType> EXTENDED_SNOW_WARNING = PARTICLE_TYPES.register("extended_snow_warning", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> SNOW_GUARDIAN = PARTICLE_TYPES.register("snow_guardian", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> ICE_BEAM = PARTICLE_TYPES.register("ice_beam", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> ANNIHILATE = PARTICLE_TYPES.register("annihilate", () -> new SimpleParticleType(false));
@@ -65,7 +66,8 @@ public class TFParticleType {
 		event.register(TFParticleType.PROTECTION.get(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
 		event.register(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
 		event.register(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
-		event.register(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.Factory::new);
+		event.register(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.SimpleFactory::new);
+		event.register(TFParticleType.EXTENDED_SNOW_WARNING.get(), SnowWarningParticle.ExtendedFactory::new);
 		event.register(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
 		event.register(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
 		event.register(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
