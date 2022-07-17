@@ -1,10 +1,7 @@
 package twilightforest.init;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -215,7 +212,7 @@ public class TFBlockItems {
 			register(event, blockItem(TFBlocks.MUSHGLOOM));
 			register(event, blockItem(TFBlocks.TORCHBERRY_PLANT));
 			register(event, blockItem(TFBlocks.ROOT_STRAND));
-			register(event, blockItem(TFBlocks.FALLEN_LEAVES));
+			register(event, placeOnWaterBlockItem(TFBlocks.FALLEN_LEAVES));
 			register(event, wearableBlock(TFBlocks.FIREFLY, TFBlockEntities.FIREFLY));
 			register(event, wearableBlock(TFBlocks.CICADA, TFBlockEntities.CICADA));
 			register(event, wearableBlock(TFBlocks.MOONWORM, TFBlockEntities.MOONWORM));
@@ -420,6 +417,10 @@ public class TFBlockItems {
 
 	private static <B extends Block> BlockItem blockItem(RegistryObject<B> block) {
 		return new BlockItem(block.get(), TFItems.defaultBuilder());
+	}
+
+	private static <B extends Block> BlockItem placeOnWaterBlockItem(RegistryObject<B> block) {
+		return new PlaceOnWaterBlockItem(block.get(), TFItems.defaultBuilder());
 	}
 
 	private static <B extends Block> BlockItem fireImmuneBlock(RegistryObject<B> block) {
