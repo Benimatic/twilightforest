@@ -34,6 +34,7 @@ public class ThrowPlayerPacket {
 		public static boolean onMessage(ThrowPlayerPacket message, Supplier<NetworkEvent.Context> ctx) {
 			ctx.get().enqueueWork(() ->
 					Minecraft.getInstance().player.push(message.motionX, message.motionY, message.motionZ));
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

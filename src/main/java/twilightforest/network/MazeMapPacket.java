@@ -50,6 +50,7 @@ public class MazeMapPacket {
 					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}
 			});
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

@@ -49,6 +49,7 @@ public class UncraftingGuiPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

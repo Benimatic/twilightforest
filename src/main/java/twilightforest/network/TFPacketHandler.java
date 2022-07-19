@@ -22,26 +22,26 @@ public class TFPacketHandler {
 	public static void init() {
 		int id = 0;
 		//as ugly as this is compared to the rest of the packets do not change it, it crashes the server otherwise
-		CHANNEL.messageBuilder(AreaProtectionPacket.class, id++).encoder(AreaProtectionPacket::encode).decoder(AreaProtectionPacket::new).consumerMainThread(new BiConsumer<>() {
+		CHANNEL.registerMessage(id++, AreaProtectionPacket.class, AreaProtectionPacket::encode, AreaProtectionPacket::new, new BiConsumer<>() {
 			@Override
 			public void accept(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
 				AreaProtectionPacket.Handler.onMessage(message, ctx);
 			}
-		}).add();
-		CHANNEL.messageBuilder(ChangeBiomePacket.class, id++).encoder(ChangeBiomePacket::encode).decoder(ChangeBiomePacket::new).consumerMainThread(ChangeBiomePacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(EnforceProgressionStatusPacket.class, id++).encoder(EnforceProgressionStatusPacket::encode).decoder(EnforceProgressionStatusPacket::new).consumerMainThread(EnforceProgressionStatusPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(StructureProtectionPacket.class, id++).encoder(StructureProtectionPacket::encode).decoder(StructureProtectionPacket::new).consumerMainThread(StructureProtectionPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(StructureProtectionClearPacket.class, id++).encoder(StructureProtectionClearPacket::encode).decoder(StructureProtectionClearPacket::new).consumerMainThread(StructureProtectionClearPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(ThrowPlayerPacket.class, id++).encoder(ThrowPlayerPacket::encode).decoder(ThrowPlayerPacket::new).consumerMainThread(ThrowPlayerPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(MagicMapPacket.class, id++).encoder(MagicMapPacket::encode).decoder(MagicMapPacket::new).consumerMainThread(MagicMapPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(MazeMapPacket.class, id++).encoder(MazeMapPacket::encode).decoder(MazeMapPacket::new).consumerMainThread(MazeMapPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateShieldPacket.class, id++).encoder(UpdateShieldPacket::encode).decoder(UpdateShieldPacket::new).consumerMainThread(UpdateShieldPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UncraftingGuiPacket.class, id++).encoder(UncraftingGuiPacket::encode).decoder(UncraftingGuiPacket::new).consumerMainThread(UncraftingGuiPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateTFMultipartPacket.class, id++).encoder(UpdateTFMultipartPacket::encode).decoder(UpdateTFMultipartPacket::new).consumerMainThread(UpdateTFMultipartPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(SpawnFallenLeafFromPacket.class, id++).encoder(SpawnFallenLeafFromPacket::encode).decoder(SpawnFallenLeafFromPacket::new).consumerMainThread(SpawnFallenLeafFromPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(MissingAdvancementToastPacket.class, id++).encoder(MissingAdvancementToastPacket::encode).decoder(MissingAdvancementToastPacket::new).consumerMainThread(MissingAdvancementToastPacket::handle).add();
-		CHANNEL.messageBuilder(ParticlePacket.class, id++).encoder(ParticlePacket::encode).decoder(ParticlePacket::new).consumerMainThread(ParticlePacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateFeatherFanFallPacket.class, id++).encoder(UpdateFeatherFanFallPacket::encode).decoder(UpdateFeatherFanFallPacket::new).consumerMainThread(UpdateFeatherFanFallPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateThrownPacket.class, id++).encoder(UpdateThrownPacket::encode).decoder(UpdateThrownPacket::new).consumerMainThread(UpdateThrownPacket.Handler::onMessage).add();
+		});
+		CHANNEL.registerMessage(id++, ChangeBiomePacket.class, ChangeBiomePacket::encode, ChangeBiomePacket::new, ChangeBiomePacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, EnforceProgressionStatusPacket.class, EnforceProgressionStatusPacket::encode, EnforceProgressionStatusPacket::new, EnforceProgressionStatusPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, MagicMapPacket.class, MagicMapPacket::encode, MagicMapPacket::new, MagicMapPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, MazeMapPacket.class, MazeMapPacket::encode, MazeMapPacket::new, MazeMapPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, MissingAdvancementToastPacket.class, MissingAdvancementToastPacket::encode, MissingAdvancementToastPacket::new, MissingAdvancementToastPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, ParticlePacket.class, ParticlePacket::encode, ParticlePacket::new, ParticlePacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, SpawnFallenLeafFromPacket.class, SpawnFallenLeafFromPacket::encode, SpawnFallenLeafFromPacket::new, SpawnFallenLeafFromPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, StructureProtectionClearPacket.class, StructureProtectionClearPacket::encode, StructureProtectionClearPacket::new, StructureProtectionClearPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, StructureProtectionPacket.class, StructureProtectionPacket::encode, StructureProtectionPacket::new, StructureProtectionPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, ThrowPlayerPacket.class, ThrowPlayerPacket::encode, ThrowPlayerPacket::new, ThrowPlayerPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, UncraftingGuiPacket.class, UncraftingGuiPacket::encode, UncraftingGuiPacket::new, UncraftingGuiPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, UpdateFeatherFanFallPacket.class, UpdateFeatherFanFallPacket::encode, UpdateFeatherFanFallPacket::new, UpdateFeatherFanFallPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, UpdateShieldPacket.class, UpdateShieldPacket::encode, UpdateShieldPacket::new, UpdateShieldPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, UpdateTFMultipartPacket.class, UpdateTFMultipartPacket::encode, UpdateTFMultipartPacket::new, UpdateTFMultipartPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, UpdateThrownPacket.class, UpdateThrownPacket::encode, UpdateThrownPacket::new, UpdateThrownPacket.Handler::onMessage);
 	}
 }

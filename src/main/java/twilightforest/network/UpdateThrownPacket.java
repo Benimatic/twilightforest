@@ -58,6 +58,7 @@ public class UpdateThrownPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

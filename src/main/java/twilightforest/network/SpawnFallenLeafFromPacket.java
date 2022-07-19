@@ -59,6 +59,7 @@ public class SpawnFallenLeafFromPacket {
 					);
 				}
 			});
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

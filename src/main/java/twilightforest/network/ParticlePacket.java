@@ -73,6 +73,7 @@ public class ParticlePacket {
 					level.addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
 				}
 			});
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

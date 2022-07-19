@@ -70,6 +70,7 @@ public class ChangeBiomePacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

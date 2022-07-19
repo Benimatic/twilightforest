@@ -72,6 +72,7 @@ public class UpdateTFMultipartPacket {
 					}
 				}
 			});
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

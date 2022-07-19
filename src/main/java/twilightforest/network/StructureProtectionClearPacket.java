@@ -32,6 +32,7 @@ public class StructureProtectionClearPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

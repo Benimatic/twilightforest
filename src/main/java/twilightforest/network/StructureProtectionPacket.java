@@ -46,6 +46,7 @@ public class StructureProtectionPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

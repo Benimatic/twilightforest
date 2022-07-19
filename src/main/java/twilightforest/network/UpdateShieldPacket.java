@@ -51,6 +51,7 @@ public class UpdateShieldPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

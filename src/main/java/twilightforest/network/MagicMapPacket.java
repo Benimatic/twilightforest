@@ -71,6 +71,7 @@ public class MagicMapPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

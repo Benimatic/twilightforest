@@ -46,6 +46,7 @@ public class UpdateFeatherFanFallPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

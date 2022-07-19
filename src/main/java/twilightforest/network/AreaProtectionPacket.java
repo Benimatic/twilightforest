@@ -70,6 +70,7 @@ public class AreaProtectionPacket {
 					}
 				}
 			});
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 
