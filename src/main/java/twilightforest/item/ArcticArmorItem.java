@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
+import twilightforest.init.TFItems;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -120,6 +121,11 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, level, tooltip, flagIn);
 		tooltip.add(TOOLTIP);
+	}
+
+	@Override
+	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+		return stack.is(TFItems.ARCTIC_BOOTS.get());
 	}
 
 	@Override

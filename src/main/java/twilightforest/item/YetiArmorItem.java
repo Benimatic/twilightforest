@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.YetiArmorModel;
+import twilightforest.init.TFItems;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -65,6 +66,11 @@ public class YetiArmorItem extends ArmorItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
 		tooltip.add(TOOLTIP);
+	}
+
+	@Override
+	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+		return stack.is(TFItems.YETI_BOOTS.get());
 	}
 
 	@Override
