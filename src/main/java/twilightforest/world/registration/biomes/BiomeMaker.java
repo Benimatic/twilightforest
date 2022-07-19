@@ -165,7 +165,7 @@ public final class BiomeMaker extends BiomeHelper {
 								.fogColor(0x003F21)
 								.grassColorOverride(0x5C694E)
 								.foliageColorOverride(0x496137)
-								.waterColor(0xE0FFAE)
+								.waterColor(0x95B55F)
 								.grassColorModifier(BiomeGrassColors.SWAMP),
 						swampSpawning(),
 						swampGen()
@@ -227,7 +227,11 @@ public final class BiomeMaker extends BiomeHelper {
 	private static void snowRegionBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SNOWY_FOREST,
 				biomeWithDefaults(
-						defaultAmbientBuilder(),
+						defaultAmbientBuilder()
+								.skyColor(0x808080)
+								.fogColor(0xFFFFFF)
+								.foliageColorOverride(0xFFFFFF)
+								.grassColorOverride(0xFFFFFF),
 						snowForestSpawning(),
 						snowyForestGen()
 				)
@@ -239,7 +243,9 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.GLACIER,
 				biomeWithDefaults(
-						defaultAmbientBuilder(),
+						defaultAmbientBuilder()
+								.skyColor(0x130D28)
+								.fogColor(0x361F88),
 						penguinSpawning(),
 						glacierGen()
 				)
