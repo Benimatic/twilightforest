@@ -398,7 +398,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new FinalCastleMainComponent(this, rand, 0, x, y, z);
+			return new FinalCastleMainComponent(this, 0, x, y, z);
 		}
 	};
 	public static final TFLandmark MUSHROOM_TOWER = new TFLandmark( 2, "mushroom_tower", true, BiomeTagGenerator.VALID_MUSHROOM_TOWER_BIOMES, TerrainAdjustment.NONE ) {
