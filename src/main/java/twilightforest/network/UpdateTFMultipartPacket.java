@@ -9,18 +9,23 @@ import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.network.NetworkEvent;
 import twilightforest.entity.TFPart;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class UpdateTFMultipartPacket {
 
 	private int id;
-	private FriendlyByteBuf buffer;
 	private Entity entity;
+	private int len;
+	private List<PartDataHolder> data = new ArrayList<>();
 
 	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
 		this.id = buf.readInt();
-		this.buffer = buf;
+		this.len = buf.readInt();
+		for (int i = 0; i < len; i++) {
+			data.add(PartDataHolder.decode(buf));
+		}
 	}
 
 	public UpdateTFMultipartPacket(Entity entity) {
@@ -32,13 +37,10 @@ public class UpdateTFMultipartPacket {
 		PartEntity<?>[] parts = this.entity.getParts();
 		// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
 		if (parts != null) {
+			buf.writeInt(parts.length);
 			for (PartEntity<?> part : parts) {
 				if (part instanceof TFPart<?> tfPart) {
-					tfPart.writeData(buf);
-					boolean dirty = tfPart.getEntityData().isDirty();
-					buf.writeBoolean(dirty);
-					if (dirty)
-						SynchedEntityData.pack(tfPart.getEntityData().packDirty(), buf);
+					tfPart.writeData().encode(buf);
 				}
 			}
 		}
@@ -59,14 +61,11 @@ public class UpdateTFMultipartPacket {
 						PartEntity<?>[] parts = ent.getParts();
 						if (parts == null)
 							return;
+						int index = 0;
 						for (PartEntity<?> part : parts) {
 							if (part instanceof TFPart<?> tfPart) {
-								tfPart.readData(message.buffer);
-								if (message.buffer.readBoolean()) {
-									List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
-									if (data != null)
-										tfPart.getEntityData().assignValues(data);
-								}
+								tfPart.readData(message.data.get(index));
+								index++;
 							}
 						}
 					}
@@ -75,5 +74,50 @@ public class UpdateTFMultipartPacket {
 			ctx.get().setPacketHandled(true);
 			return true;
 		}
+	}
+
+	public record PartDataHolder(double x,
+								 double y,
+								 double z,
+								 float yRot,
+								 float xRot,
+								 float width,
+								 float height,
+								 boolean fixed,
+								 boolean dirty,
+								 List<SynchedEntityData.DataItem<?>> data) {
+
+
+		public void encode(FriendlyByteBuf buffer) {
+			buffer.writeDouble(x);
+			buffer.writeDouble(y);
+			buffer.writeDouble(z);
+			buffer.writeFloat(yRot);
+			buffer.writeFloat(xRot);
+			buffer.writeFloat(width);
+			buffer.writeFloat(height);
+			buffer.writeBoolean(fixed);
+			buffer.writeBoolean(dirty);
+			if (dirty) {
+				SynchedEntityData.pack(data, buffer);
+			}
+		}
+
+		static PartDataHolder decode(FriendlyByteBuf buffer) {
+			boolean dirty;
+			return new PartDataHolder(
+					buffer.readDouble(),
+					buffer.readDouble(),
+					buffer.readDouble(),
+					buffer.readFloat(),
+					buffer.readFloat(),
+					buffer.readFloat(),
+					buffer.readFloat(),
+					buffer.readBoolean(),
+					dirty = buffer.readBoolean(),
+					dirty ? SynchedEntityData.unpack(buffer) : null
+			);
+		}
+
 	}
 }
