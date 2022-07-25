@@ -215,4 +215,8 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		this.maxY = compoundTag.getInt("maxY");
 		this.blocksSkipped = compoundTag.getInt("blocksSkipped");
 	}
+
+	public boolean isBeanstalkRumbling() {
+		return this.ticker < 110;
+	}
 }

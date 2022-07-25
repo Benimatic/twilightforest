@@ -14,10 +14,12 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +28,7 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.DimensionSpecialEffectsManager;
@@ -39,6 +42,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -50,9 +54,9 @@ import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Objects;
@@ -266,6 +270,8 @@ public class TFClientEvents {
 		}
 	}
 
+	private static float intensity = 0.0F;
+
 	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent event) {
 		if (event.phase != TickEvent.Phase.END || Minecraft.getInstance().isPaused()) return;
@@ -284,8 +290,34 @@ public class TFClientEvents {
 		DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
 
 		// add weather box if needed
-		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {
+		if (mc.level != null && info instanceof TwilightForestRenderInfo) {
 			TFWeatherRenderer.tick();
+		}
+
+		if (mc.level != null && mc.player != null) {
+			for (BlockPos pos : WorldUtil.getAllAround(mc.player.blockPosition(), 16)) {
+				if (mc.level.getBlockEntity(pos) instanceof GrowingBeanstalkBlockEntity bean && bean.isBeanstalkRumbling()) {
+					Player player = mc.player;
+					intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(pos)) / Math.pow(16, 2));
+					if (intensity > 0) {
+						player.moveTo(player.getX(), player.getY(), player.getZ(),
+								player.getYRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity,
+								player.getXRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity);
+						intensity = 0.0F;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void camera(ViewportEvent.ComputeCameraAngles event) {
+		if (!Minecraft.getInstance().isPaused() && intensity > 0 && Minecraft.getInstance().player != null) {
+			event.setYaw((float) Mth.lerp(event.getPartialTick(), event.getYaw(), event.getYaw() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
+			event.setPitch((float) Mth.lerp(event.getPartialTick(), event.getPitch(), event.getPitch() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
+			event.setRoll((float) Mth.lerp(event.getPartialTick(), event.getRoll(), event.getRoll() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
+			intensity = 0F;
 		}
 	}
 
