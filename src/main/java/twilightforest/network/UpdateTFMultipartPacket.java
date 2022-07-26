@@ -24,7 +24,9 @@ public class UpdateTFMultipartPacket {
 		this.id = buf.readInt();
 		this.len = buf.readInt();
 		for (int i = 0; i < len; i++) {
-			data.add(PartDataHolder.decode(buf));
+			if (buf.readBoolean()) {
+				data.add(PartDataHolder.decode(buf));
+			}
 		}
 	}
 
@@ -40,9 +42,14 @@ public class UpdateTFMultipartPacket {
 			buf.writeInt(parts.length);
 			for (PartEntity<?> part : parts) {
 				if (part instanceof TFPart<?> tfPart) {
+					buf.writeBoolean(true);
 					tfPart.writeData().encode(buf);
+				} else {
+					buf.writeBoolean(false);
 				}
 			}
+		} else {
+			buf.writeInt(0);
 		}
 	}
 
