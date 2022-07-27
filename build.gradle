@@ -118,7 +118,7 @@ jar {
 
 repositories {
     maven {
-        name 'progwm\'s Maven' // JEI + Mantle + TCon
+        name 'progwm\'s Maven' // JEI
         url 'https://dvs1.progwml6.com/files/maven'
     }
     maven {
@@ -126,25 +126,19 @@ repositories {
         url 'https://maven.tterrag.com/'
     }
     maven {
-        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
-        url 'https://maven.blamejared.com/'
-    }
-    maven {
-        name 'theillusivec4\'s Maven' //Curios
+        name 'theillusivec4\'s Maven' // Curios
         url 'https://maven.theillusivec4.top/'
     }
-    //maven {
-    //    name 'player\'s Maven' // Forestry
-    //    url 'http://maven.ic2.player.to/'
-    //}
     maven {
+        name 'Tama\'s Maven' // Cross-Dim Commands
+        url "https://maven.tamaized.com/releases"
+    }
+    maven {
+        name 'Curseforge Maven' // Jade
         url "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
-    }
-    maven {
-        url "https://maven.tamaized.com/releases"
     }
 }
 
@@ -154,9 +148,6 @@ dependencies {
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
-
-    // blamejared
-    implementation fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
 
     // theillusivec4
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${minecraft_version}-${curios_version}")
