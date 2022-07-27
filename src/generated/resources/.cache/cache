@@ -2653,6 +2653,7 @@ a8874d42dc4f9129f48f85a9c211eb4b48a7af84 data/forge/tags/items/storage_blocks/fi
 b46619288c25b03d804d08e7a346199a7ea10584 data/forge/tags/items/storage_blocks/ironwood.json
 ce978eb7b0d7b3818c727f89885495607c0a9935 data/forge/tags/items/storage_blocks/knightmetal.json
 860fef57503636556a38177bd5325f6fad222200 data/forge/tags/items/storage_blocks/steeleaf.json
+ee9169ad135f3e1d6c422fe98e92c20bcb274147 data/immersiveengineering/tags/entity_types/shaderbag/blacklist.json
 81816d7478675dcbc72e5f1d0515916062e197e9 data/minecraft/tags/blocks/beacon_base_blocks.json
 0cb869be8b241bde53e69e7470e08efe3cf00ade data/minecraft/tags/blocks/climbable.json
 37ad5686f1317adcfb31418e82641cfb7479be44 data/minecraft/tags/blocks/dirt.json

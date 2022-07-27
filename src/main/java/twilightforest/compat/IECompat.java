@@ -1,10 +1,8 @@
 package twilightforest.compat;
 
-import blusunrize.immersiveengineering.ImmersiveEngineering;
 import blusunrize.immersiveengineering.api.crafting.builders.ThermoelectricSourceBuilder;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.tool.RailgunHandler;
-import blusunrize.immersiveengineering.common.EventHandler;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +16,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -31,7 +28,6 @@ import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.compat.ie.ShaderBagItemModel;
 import twilightforest.compat.ie.TFShaderGrabbagItem;
 import twilightforest.compat.ie.TFShaderItem;
-import twilightforest.entity.boss.*;
 import twilightforest.entity.projectile.CicadaShot;
 
 import javax.annotation.Nullable;
@@ -90,22 +86,6 @@ public class IECompat extends TFCompat {
         ThermoelectricSourceBuilder.builder(TFBlocks.FIERY_BLOCK.get()).kelvin(2500);
 
         IEShaderRegister.initShaders();
-
-        //prevent our bosses from dropping epic shader bags
-        //TODO workaround, IMCs dont seem to be working for IE atm
-        EventHandler.listOfBoringBosses.add(Naga.class);
-        EventHandler.listOfBoringBosses.add(Lich.class);
-        EventHandler.listOfBoringBosses.add(Minoshroom.class);
-        EventHandler.listOfBoringBosses.add(Hydra.class);
-        EventHandler.listOfBoringBosses.add(KnightPhantom.class);
-        EventHandler.listOfBoringBosses.add(UrGhast.class);
-        EventHandler.listOfBoringBosses.add(AlphaYeti.class);
-        EventHandler.listOfBoringBosses.add(SnowQueen.class);
-        EventHandler.listOfBoringBosses.add(PlateauBoss.class);
-    }
-
-    private void excludeFromShaderBags(Class<? extends Entity> entityClass) {
-        InterModComms.sendTo(ImmersiveEngineering.MODID, "shaderbag_exclude", entityClass::getName);
     }
 
     @Override
@@ -115,15 +95,6 @@ public class IECompat extends TFCompat {
 
     @Override
     protected void handleIMCs() {
-        excludeFromShaderBags(Naga.class);
-        excludeFromShaderBags(Lich.class);
-        excludeFromShaderBags(Minoshroom.class);
-        excludeFromShaderBags(Hydra.class);
-        excludeFromShaderBags(KnightPhantom.class);
-        excludeFromShaderBags(UrGhast.class);
-        excludeFromShaderBags(AlphaYeti.class);
-        excludeFromShaderBags(SnowQueen.class);
-        excludeFromShaderBags(PlateauBoss.class);
     }
 
     public static void registerShaderColors(ItemColors colors) {

@@ -1,5 +1,6 @@
 package twilightforest.data.tags;
 
+import blusunrize.immersiveengineering.api.IETags;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -124,6 +125,8 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
                 EntityType.TRADER_LLAMA,
                 EntityType.DONKEY,
                 EntityType.MULE);
+
+        tag(IETags.shaderbagBlacklist).addTag(BOSSES);
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {
