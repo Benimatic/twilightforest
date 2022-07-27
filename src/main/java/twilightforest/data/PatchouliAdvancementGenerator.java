@@ -717,7 +717,7 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 	}
 
 	public static LocationPredicate inStructure(ResourceKey<Structure> p_220590_) {
-		return new LocationPredicate(MinMaxBounds.Doubles.ANY, MinMaxBounds.Doubles.ANY, MinMaxBounds.Doubles.ANY, (ResourceKey<Biome>)null, p_220590_, (ResourceKey<Level>)null, (Boolean)null, LightPredicate.ANY, BlockPredicate.ANY, FluidPredicate.ANY);
+		return new LocationPredicate(MinMaxBounds.Doubles.ANY, MinMaxBounds.Doubles.ANY, MinMaxBounds.Doubles.ANY, null, p_220590_, null, null, LightPredicate.ANY, BlockPredicate.ANY, FluidPredicate.ANY);
 	}
 
 	private void minorKeyBiomes(Consumer<Advancement> consumer, Advancement root) {

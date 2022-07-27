@@ -245,7 +245,7 @@ public class BlockstateGenerator extends BlockModelHelpers {
 		castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get());
 
 		simpleBlockExisting(TFBlocks.KNIGHTMETAL_BLOCK.get());
-		simpleBlockExisting(TFBlocks.IRONWOOD_BLOCK.get());
+		simpleBlock(TFBlocks.IRONWOOD_BLOCK.get());
 		simpleBlockExisting(TFBlocks.FIERY_BLOCK.get());
 		simpleBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		ModelFile steeleafBlock = models().cubeAll(TFBlocks.STEELEAF_BLOCK.getId().getPath(), prefix("block/" + TFBlocks.STEELEAF_BLOCK.getId().getPath()));
@@ -1173,9 +1173,9 @@ public class BlockstateGenerator extends BlockModelHelpers {
 
 	private void castleDoor(Block b) {
 		ModelFile overlay = models().getExistingFile(prefix("block/castle_door_overlay"));
-		ModelFile main = models().cubeAll(name(b), prefix("block/castle_door")).renderType(CUTOUT);
+		ModelFile main = models().getExistingFile(prefix("block/castle_door_template"));
 		getMultipartBuilder(b)
-				.part().modelFile(overlay).addModel().end()
+				.part().modelFile(overlay).addModel().condition(CastleDoorBlock.VANISHED, true).end()
 				.part().modelFile(main).addModel().condition(CastleDoorBlock.VANISHED, false).end();
 	}
 

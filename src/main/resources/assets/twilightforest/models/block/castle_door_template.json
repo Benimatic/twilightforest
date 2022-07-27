@@ -3,7 +3,7 @@
   "parent": "block/block",
   "children": {
     "main": {
-      "parent": "twilightforest:block/castle_door_template"
+      "parent": "twilightforest:block/castle_door"
     },
     "overlay": {
       "parent": "twilightforest:block/castle_door_overlay"
