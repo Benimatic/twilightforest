@@ -162,12 +162,8 @@
   "enchantment.twilightforest.fire_react.desc": "Adds a chance for the attacker to be set on fire after hitting the wearer.",
   "enchantment.twilightforest.chill_aura": "Chill Aura",
   "enchantment.twilightforest.chill_aura.desc": "Adds a chance for the attacker to gain the frosted effect after hitting the wearer.",
-  "enchantment.twilightforest.preservation": "Preservation",
-  "enchantment.twilightforest.preservation.desc": "Makes the block and chain not break blocks when hitting them.",
-  "enchantment.twilightforest.block_strength": "Block Strength",
-  "enchantment.twilightforest.block_strength.desc": "Allows the block and chain to break stronger blocks.",
   "enchantment.twilightforest.destruction": "Destruction",
-  "enchantment.twilightforest.destruction.desc": "Makes the block and chain destruction area bigger.",
+  "enchantment.twilightforest.destruction.desc": "Allows the Block and Chain to break blocks with a higher mining tier.",
 
   // Effects
   "effect.twilightforest.frosted": "Frosted",
