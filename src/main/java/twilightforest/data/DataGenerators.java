@@ -19,7 +19,6 @@ public class DataGenerators {
 		ExistingFileHelper helper = evt.getExistingFileHelper();
 
 		generator.addProvider(true, new AdvancementGenerator(generator, helper));
-		generator.addProvider(true, new PatchouliAdvancementGenerator(generator, helper));
 		generator.addProvider(true, new BlockstateGenerator(generator, helper));
 		generator.addProvider(true, new ItemModelGenerator(generator, helper));
 		generator.addProvider(true, new BiomeTagGenerator(generator, helper));
