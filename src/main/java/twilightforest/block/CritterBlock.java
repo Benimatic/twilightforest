@@ -193,12 +193,4 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		super.createBlockStateDefinition(builder);
 		builder.add(FACING, WATERLOGGED);
 	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, getter, tooltip, flag);
-//		if (ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
-//			tooltip.add((Component.translatable("tooltip.pebble")).withStyle(ChatFormatting.GRAY));
-//		}
-	}
 }

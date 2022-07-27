@@ -33,7 +33,7 @@
     }, {
       "type": "spotlight",
       "title": "Activation Item",
-      "item": "#twilightforest:portal/activator",
+      "item": "minecraft:diamond",
       "text": "Drop a diamond into the water!"
     }, {
       "type": "multiblock",

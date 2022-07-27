@@ -49,8 +49,7 @@ import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.compat.CuriosCompat;
-import twilightforest.compat.TFCompat;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
@@ -96,10 +95,6 @@ public class TFClientEvents {
 				tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 				tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 			}
-
-//			if(ModList.get().isLoaded(TFCompat.IE_ID)) {
-//				IECompat.registerShaderModels(event);
-//			}
 		}
 
 		private static void fullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item) {
@@ -157,37 +152,7 @@ public class TFClientEvents {
 						.forEach(evt::addSprite);
 
 			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
-
-			//FIXME bring back if you can get GradientMappedTexture working
-		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
-			map.setTextureEntry(new GradientMappedTexture(new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_grip"), IEShaderRegister.PROCESSED_REVOLVER_GRIP_LAYER, true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry(new GradientMappedTexture(new ResourceLocation("immersiveengineering", "revolvers/shaders/revolver_0"), IEShaderRegister.PROCESSED_REVOLVER_LAYER, true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry(new GradientMappedTexture(new ResourceLocation("immersiveengineering", "items/shaders/chemthrower_0"), IEShaderRegister.PROCESSED_CHEMTHROW_LAYER, true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry(new GradientMappedTexture(new ResourceLocation("immersiveengineering", "items/shaders/drill_diesel_0"), IEShaderRegister.PROCESSED_DRILL_LAYER, true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry(new GradientMappedTexture(new ResourceLocation("immersiveengineering", "items/shaders/railgun_0"), IEShaderRegister.PROCESSED_RAILGUN_LAYER, true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry(new GradientMappedTexture(new ResourceLocation("immersiveengineering", "items/shaders/shield_0"), IEShaderRegister.PROCESSED_SHIELD_LAYER, true, EASY_GRAYSCALING_MAP));
-			//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), IEShaderRegister.PROCESSED_MINECART_LAYER     , true, EASY_GRAYSCALING_MAP ));
-			map.setTextureEntry(new GradientMappedTexture(new ResourceLocation("immersiveengineering", "blocks/shaders/balloon_0"), IEShaderRegister.PROCESSED_BALLOON_LAYER, true, EASY_GRAYSCALING_MAP));
-
-			final String[] types = new String[]{"1_0", "1_2", "1_4", "1_5", "1_6"};
-
-			for (IEShaderRegister.CaseType caseType : IEShaderRegister.CaseType.everythingButMinecart()) {
-				for (String type : types) {
-					map.setTextureEntry(new GradientMappedTexture(
-							IEShaderRegister.ModType.IMMERSIVE_ENGINEERING.provideTex(caseType, type),
-							IEShaderRegister.ModType.TWILIGHT_FOREST.provideTex(caseType, type),
-							true, EASY_GRAYSCALING_MAP
-					));
-				}
-			}*/
 		}
-
-		/*public static final GradientNode[] EASY_GRAYSCALING_MAP = {
-			new GradientNode(0.0f, 0xFF_80_80_80),
-			new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
-			new GradientNode(1.0f, 0xFF_FF_FF_FF)
-		};*/
-
 
 		@SubscribeEvent
 		public static void registerModels(ModelEvent.RegisterAdditional event) {
@@ -381,7 +346,7 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+		if (ModList.get().isLoaded("curios")) {
 			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
 		}
 		return false;

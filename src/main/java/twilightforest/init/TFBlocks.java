@@ -20,6 +20,7 @@ import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 @SuppressWarnings({"WeakerAccess", "unused", "deprecation"})
 @Nonnull
@@ -556,8 +557,9 @@ public class TFBlocks {
 
 	@SubscribeEvent
 	public static void registerItemblocks(RegisterEvent evt) {
-		TFBlockItems.registerBlockItems(evt);
-		//TFCompat.initCompatItems(evt);
+		if (Objects.equals(evt.getForgeRegistry(), ForgeRegistries.ITEMS)) {
+			TFBlockItems.registerBlockItems(evt);
+		}
 	}
 
 	private static BlockBehaviour.Properties logProperties(MaterialColor color) {

@@ -2,7 +2,7 @@
   "name": "Aurora Palace",
   "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "twilightforest:major_landmarks",
-  "advancement": "twilightforest:alt/major_landmarks/ice_tower",
+  "advancement": "twilightforest:alt/major_landmarks/aurora_palace",
   "sortnum": 7110,
   "pages": [
     {

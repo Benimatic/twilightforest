@@ -400,10 +400,6 @@ public class TFEntities {
 		event.registerEntityRenderer(SLIDER.get(), SlideBlockRenderer::new);
 		event.registerEntityRenderer(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		event.registerEntityRenderer(ICE_ARROW.get(), DefaultArrowRenderer::new);
-
-//		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
-//			UndergardenCompat.registerSlingshotRenders(event);
-//		}
 	}
 
 	@OnlyIn(Dist.CLIENT)

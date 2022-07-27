@@ -150,27 +150,20 @@ repositories {
 
 dependencies {
     // progwml6
-    //implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-
-    //implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_version}-${mantle_version}")
-    //implementation fg.deobf("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tcon_version}")
+    implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
 
     // blamejared
-    //implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${minecraft_version}-${immersive_engineering_version}")
-    //implementation fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
+    implementation fg.deobf("vazkii.patchouli:Patchouli:${minecraft_version}-${patchouli_version}")
 
     // theillusivec4
-    //implementation fg.deobf("top.theillusivec4.curios:curios-forge:${minecraft_version}-${curios_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${minecraft_version}-${curios_version}")
 
-    // player
-    //deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"
-
-    //implementation fg.deobf("curse.maven:the-undergarden-379849:3810810")
-
-    implementation fg.deobf("team-twilight:crossdimcommands:1.19-1.0")
+    //mods we dont have compat with but are nice to have
+    runtimeOnly fg.deobf("team-twilight:crossdimcommands:1.19-1.0")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:3872400")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }

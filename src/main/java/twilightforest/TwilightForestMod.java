@@ -22,6 +22,7 @@ import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.Bindings;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -40,7 +41,7 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.TFCompat;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
 import twilightforest.network.TFPacketHandler;
@@ -124,20 +125,11 @@ public class TwilightForestMod {
 		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
 
-//		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
-//			UndergardenCompat.ENTITIES.register(modbus);
-//		}
-//
-//		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
-//			TConCompat.FLUIDS.register(modbus);
-//			TConCompat.MODIFIERS.register(modbus);
-//		}
-
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
 
-		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			//Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+		if (ModList.get().isLoaded("curios")) {
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 
 		new BiomeGrassColors();
@@ -157,8 +149,7 @@ public class TwilightForestMod {
 									() -> pack, metadataSection, Pack.Position.TOP, PackSource.BUILT_IN, false)));
 				}
 			}
-		}
-		catch(IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -174,33 +165,15 @@ public class TwilightForestMod {
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
-		TFCompat.sendIMCs();
+		if (ModList.get().isLoaded("curios")) {
+			CuriosCompat.handleCuriosIMCs();
+		}
 	}
 
 	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent evt) {
 		TFPacketHandler.init();
 		TFAdvancements.init();
-
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-			try {
-				TFCompat.initCompat(evt);
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading init compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
-		}
-
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-			try {
-				TFCompat.postInitCompat();
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading postInit compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
-		}
 
 		BlockSpikeFeature.loadStalactites();
 

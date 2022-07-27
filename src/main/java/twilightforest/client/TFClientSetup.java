@@ -3,7 +3,6 @@ package twilightforest.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -21,14 +20,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.compat.CuriosCompat;
-import twilightforest.compat.TFCompat;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.init.TFMenuTypes;
-import twilightforest.init.TFItems;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -82,7 +79,7 @@ public class TFClientSetup {
             Sheets.addWoodType(TFBlocks.MINING);
             Sheets.addWoodType(TFBlocks.SORTING);
 
-			if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			if(ModList.get().isLoaded("curios")) {
 				CuriosCompat.registerCurioRenderers();
 			}
         });

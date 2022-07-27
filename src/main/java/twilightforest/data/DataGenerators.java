@@ -38,9 +38,5 @@ public class DataGenerators {
 
 		generator.addProvider(true, new CrumbleHornGenerator(generator, helper));
 		generator.addProvider(true, new TransformationPowderGenerator(generator, helper));
-
-//		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
-//			TConCompat.tConDatagen(evt);
-//		}
 	}
 }

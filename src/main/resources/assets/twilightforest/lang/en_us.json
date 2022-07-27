@@ -131,7 +131,6 @@
   "commands.tffeature.structure.conquer.update": "Structure conquer flag was %s, changing to %s",
   "commands.tffeature.structure.spawn_list": "Spawn list for this area is:",
   "commands.tffeature.structure.spawn_info": "%s, Weight %s",
-  "commands.tfreload.reload": "Reloading Twilight Forest shaders!",
 
   // Biomes
   "biome.twilightforest.forest": "Twilight Forest",
@@ -196,7 +195,6 @@
   "block.twilightforest.rainbow_oak_leaves": "Rainbow Oak Leaves",
   "block.twilightforest.firefly": "Firefly",
   "block.twilightforest.cicada": "Cicada",
-  "block.twilightforest.cicada.desc": "What if this could be launched at someone with a Railgun...?",
   "block.twilightforest.twilight_portal": "Twilight Forest Portal",
   "block.twilightforest.mazestone": "Mazestone",
   "block.twilightforest.mazestone_brick": "Mazestone Brick",
