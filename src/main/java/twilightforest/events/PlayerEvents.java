@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -65,7 +66,7 @@ import java.util.UUID;
 public class PlayerEvents {
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
-	private static final boolean globalParry = !ModList.get().isLoaded("parry");
+	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
 
 	@SubscribeEvent
 	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
@@ -200,26 +201,24 @@ public class PlayerEvents {
 
 	// Parrying
 	@SubscribeEvent
-	public static void throwableParry(ProjectileImpactEvent event) {
+	public static void onParryProjectile(ProjectileImpactEvent event) {
 		final Projectile projectile = event.getProjectile();
 
-		if (!projectile.getCommandSenderWorld().isClientSide() && globalParry &&
-				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
-						|| projectile instanceof ITFProjectile)) {
-
+		if (!projectile.getCommandSenderWorld().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get() || projectile instanceof ITFProjectile)) {
 			if (event.getRayTraceResult() instanceof EntityHitResult result) {
 				Entity entity = result.getEntity();
 
 				if (event.getEntity() != null && entity instanceof LivingEntity entityBlocking) {
-					if (entityBlocking.isDamageSourceBlocked(new DamageSource("parry_this") {
-						@Override
-						public Vec3 getSourcePosition() {
-							return projectile.position();
-						}
-					}) && (entityBlocking.getUseItem().getItem().getUseDuration(entityBlocking.getUseItem()) - entityBlocking.getUseItemRemainingTicks()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksThrowable.get()) {
-						Vec3 playerVec3 = entityBlocking.getLookAngle();
-						projectile.shoot(playerVec3.x(), playerVec3.y(), playerVec3.z(), 1.1F, 0.1F);  // reflect faster and more accurately
+					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicks.get()) {
 						projectile.setOwner(entityBlocking);
+						Vec3 rebound = entityBlocking.getLookAngle();
+						projectile.shoot(rebound.x(), rebound.y(), rebound.z(), 1.1F, 0.1F);  // reflect faster and more accurately
+						if (projectile instanceof AbstractHurtingProjectile hurting) {
+							hurting.xPower = rebound.x() * 0.1D;
+							hurting.yPower = rebound.y() * 0.1D;
+							hurting.zPower = rebound.z() * 0.1D;
+						}
+
 						event.setCanceled(true);
 					}
 				}
