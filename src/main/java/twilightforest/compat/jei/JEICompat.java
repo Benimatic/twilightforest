@@ -21,6 +21,7 @@ import twilightforest.inventory.UncraftingMenu;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @JeiPlugin
 public class JEICompat implements IModPlugin {
@@ -49,13 +50,13 @@ public class JEICompat implements IModPlugin {
 	public void registerRecipes(IRecipeRegistration registration) {
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 		List<CraftingRecipe> recipes = manager.getAllRecipesFor(RecipeType.CRAFTING);
-		if (recipes != null) {
-			recipes.removeIf(recipe -> recipe.getResultItem().isEmpty() ||
-					recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
-					TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) ||
-					TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() != TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace()));//Prevents things that are tagged as banned from showing up
-			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-		}
+		recipes = recipes.stream().filter(recipe -> !recipe.getResultItem().isEmpty() || //get rid of empty items
+				!recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) || //Prevents things that are tagged as banned from showing up
+				!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) || //remove disabled recipes
+				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) //remove blacklisted mod ids
+				.collect(Collectors.toList());
+		recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
+
 		registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
 	}
 
