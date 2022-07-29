@@ -3,8 +3,7 @@ package twilightforest.client.model.item;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-
-import net.minecraftforge.client.model.IQuadTransformer;
+import net.minecraftforge.client.model.QuadTransformers;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class TintIndexAwareFullbrightBakedModel extends FullbrightBakedModel {
 		List<BakedQuad> finalQuads = new ArrayList<>();
 		for (BakedQuad quad : quads)
 			if (quad.isTinted())
-				finalQuads.add(IQuadTransformer.applyingLightmap(0xF000F0).process(quad));
+				finalQuads.add(QuadTransformers.applyingLightmap(0xF000F0).process(quad));
 			else
 				finalQuads.add(quad);
 		return finalQuads;
