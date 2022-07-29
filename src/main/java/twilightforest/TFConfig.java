@@ -1,18 +1,16 @@
 package twilightforest;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.util.PlayerHelper;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -240,6 +238,7 @@ public class TFConfig {
 		}
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
+		@Nullable
 		public ResourceLocation portalLockingAdvancement;
 
 		public static class ShieldInteractions {
@@ -283,23 +282,21 @@ public class TFConfig {
 
 	private static final String config = TwilightForestMod.ID + ".config.";
 
-	@SubscribeEvent // FIXME Not Firing
-	public static void onConfigChanged(ModConfigEvent.Reloading event) {
-		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
-			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
+	@Nullable
+	public static ResourceLocation getPortalLockingAdvancement(Player player) {
+		//only run assigning logic if the config has an advancement set and the RL is null
+		if (!COMMON_CONFIG.portalAdvancementLock.get().isEmpty() && COMMON_CONFIG.portalLockingAdvancement == null) {
 
-			build();
+			if (!ResourceLocation.isValidResourceLocation(COMMON_CONFIG.portalAdvancementLock.get()) || PlayerHelper.getAdvancement(player, ResourceLocation.tryParse(COMMON_CONFIG.portalAdvancementLock.get())) == null) {
+				//if the RL is not a valid advancement fail us
+				TwilightForestMod.LOGGER.fatal("The portal locking advancement is not a valid advancement! Setting to null!");
+				COMMON_CONFIG.portalAdvancementLock.set("");
+			} else {
+				COMMON_CONFIG.portalLockingAdvancement = ResourceLocation.tryParse(COMMON_CONFIG.portalAdvancementLock.get());
+				TwilightForestMod.LOGGER.debug("Portal Locking Advancement reloaded.");
+			}
 		}
-	}
-
-	// FIXME Remove once the top works again
-	//  This lets us have a RL without inserting RL creation into ticking code
-	@Deprecated
-	public static ResourceLocation getPortalLockingAdvancement() {
-		if (COMMON_CONFIG.portalLockingAdvancement == null) {
-			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
-		}
-
+		//always return the RL, even if its null. We can use this to run logic less often
 		return COMMON_CONFIG.portalLockingAdvancement;
 	}
 
