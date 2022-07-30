@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
+import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -235,41 +236,54 @@ public class TFClientEvents {
 		}
 	}
 
+	public static int time = 0;
+	private static int rotationTickerI = 0;
+	private static int sineTickerI = 0;
+	public static float rotationTicker = 0;
+	public static float sineTicker = 0;
+	public static final float PI = (float) Math.PI;
+	private static final int SINE_TICKER_BOUND = (int) ((PI * 200.0F) - 1.0F);
 	private static float intensity = 0.0F;
 
 	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent event) {
-		if (event.phase != TickEvent.Phase.END || Minecraft.getInstance().isPaused()) return;
-		time++;
-
+		if (event.phase != TickEvent.Phase.END) return;
 		Minecraft mc = Minecraft.getInstance();
 		float partial = mc.getFrameTime();
 
-		rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
-		sineTickerI = (sineTickerI >= SINE_TICKER_BOUND ? 0 : sineTickerI + 1);
+		if (!mc.isPaused() ||
+				(mc.screen != null &&
+						mc.screen.getClass().equals(AdvancementsScreen.class))) {
+			time++;
 
-		rotationTicker = rotationTickerI + partial;
-		sineTicker = sineTicker + partial;
+			rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
+			sineTickerI = (sineTickerI >= SINE_TICKER_BOUND ? 0 : sineTickerI + 1);
 
-		BugModelAnimationHelper.animate();
-		DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
-
-		// add weather box if needed
-		if (mc.level != null && info instanceof TwilightForestRenderInfo) {
-			TFWeatherRenderer.tick();
+			rotationTicker = rotationTickerI + partial;
+			sineTicker = sineTicker + partial;
 		}
 
-		if (mc.level != null && mc.player != null) {
-			for (BlockPos pos : WorldUtil.getAllAround(mc.player.blockPosition(), 16)) {
-				if (mc.level.getBlockEntity(pos) instanceof GrowingBeanstalkBlockEntity bean && bean.isBeanstalkRumbling()) {
-					Player player = mc.player;
-					intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(pos)) / Math.pow(16, 2));
-					if (intensity > 0) {
-						player.moveTo(player.getX(), player.getY(), player.getZ(),
-								player.getYRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity,
-								player.getXRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity);
-						intensity = 0.0F;
-						break;
+		if (!mc.isPaused()) {
+			BugModelAnimationHelper.animate();
+			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
+
+			// add weather box if needed
+			if (mc.level != null && info instanceof TwilightForestRenderInfo) {
+				TFWeatherRenderer.tick();
+			}
+
+			if (mc.level != null && mc.player != null) {
+				for (BlockPos pos : WorldUtil.getAllAround(mc.player.blockPosition(), 16)) {
+					if (mc.level.getBlockEntity(pos) instanceof GrowingBeanstalkBlockEntity bean && bean.isBeanstalkRumbling()) {
+						Player player = mc.player;
+						intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(pos)) / Math.pow(16, 2));
+						if (intensity > 0) {
+							player.moveTo(player.getX(), player.getY(), player.getZ(),
+									player.getYRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity,
+									player.getXRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity);
+							intensity = 0.0F;
+							break;
+						}
 					}
 				}
 			}
@@ -304,14 +318,6 @@ public class TFClientEvents {
 		}
 	}
 
-	public static int time = 0;
-	private static int rotationTickerI = 0;
-	private static int sineTickerI = 0;
-	public static float rotationTicker = 0;
-	public static float sineTicker = 0;
-	public static final float PI = (float) Math.PI;
-	private static final int SINE_TICKER_BOUND = (int) ((PI * 200.0F) - 1.0F);
-
 	/**
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
@@ -339,10 +345,6 @@ public class TFClientEvents {
 				humanoidModel.hat.visible = false;
 			}
 		}
-	}
-
-	private static boolean partShown(Entity entity) {
-		return !(entity instanceof AbstractClientPlayer player) || player.isModelPartShown(PlayerModelPart.HAT);
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
