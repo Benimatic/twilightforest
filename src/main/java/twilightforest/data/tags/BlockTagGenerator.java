@@ -192,6 +192,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.DARK_OAK_BANISTER.get(),
 				TFBlocks.CRIMSON_BANISTER.get(),
 				TFBlocks.WARPED_BANISTER.get(),
+				TFBlocks.VANGROVE_BANISTER.get(),
 
 				TFBlocks.TWILIGHT_OAK_BANISTER.get(),
 				TFBlocks.CANOPY_BANISTER.get(),
@@ -625,11 +626,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(),
 				TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(),
 				TFBlocks.IRON_LADDER.get(),
-				//TFBlocks.TERRORCOTTA_CIRCLE.get(),
-				//TFBlocks.TERRORCOTTA_DIAGONAL.get(),
 				TFBlocks.TWISTED_STONE.get(),
 				TFBlocks.TWISTED_STONE_PILLAR.get(),
-				//TFBlocks.LAPIS_BLOCK.get(),
 				TFBlocks.KEEPSAKE_CASKET.get(),
 				TFBlocks.BOLD_STONE_PILLAR.get()
 		);

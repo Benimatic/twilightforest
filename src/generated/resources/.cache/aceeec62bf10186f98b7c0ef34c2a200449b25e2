@@ -1,4 +1,4 @@
-// 1.19	2022-07-15T22:45:40.3751335	Twilight Forest Block Tags
+// 1.19.1	2022-07-29T16:35:20.7668599	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -51,7 +51,7 @@ f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/blocks/wooden_stair
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/blocks/wooden_trapdoors.json
 e61eeb87b9b5ecebdb3a29a8ba0b33a4881b48c7 data/twilightforest/tags/blocks/annihilation_inclusions.json
 db96f9da8df39e1498ebf29839892448faa170ec data/twilightforest/tags/blocks/antibuilder_ignores.json
-45e292697e9f4919a7d7c4ad3852090d0273372d data/twilightforest/tags/blocks/banisters.json
+fde6c4812b9605196b988840ddf7a18543095022 data/twilightforest/tags/blocks/banisters.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/blocks/canopy_logs.json
 65138d47619b3b87ed5cdf3b4ec226e0bfebfb64 data/twilightforest/tags/blocks/carminite_reactor_immune.json
 66c63c2aea9e2f572dee901056877665b812ae56 data/twilightforest/tags/blocks/carminite_reactor_ores.json
