@@ -13,6 +13,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,9 +25,12 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.YetiArmorModel;
+import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFItems;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class YetiArmorItem extends ArmorItem {
@@ -33,6 +38,23 @@ public class YetiArmorItem extends ArmorItem {
 
 	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
 		super(material, slot, properties);
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		AtomicBoolean badEnchant = new AtomicBoolean();
+		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment)) {
+				badEnchant.set(true);
+			}
+		});
+
+		return !badEnchant.get();
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return !Enchantments.THORNS.equals(enchantment) && !TFEnchantments.FIRE_REACT.get().equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
