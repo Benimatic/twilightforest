@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -181,6 +182,11 @@ public class TFItems {
 		@Override
 		public ItemStack makeIcon() {
 			return new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get());
+		}
+
+		@Override
+		public EnchantmentCategory[] getEnchantmentCategories() {
+			return new EnchantmentCategory[] { TFEnchantments.BLOCK_AND_CHAIN };
 		}
 	};
 
