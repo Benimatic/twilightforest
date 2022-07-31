@@ -17,7 +17,8 @@ import java.util.function.Consumer;
 import static twilightforest.TwilightForestMod.prefix;
 
 public abstract class BlockModelHelpers extends BlockStateProvider {
-	
+
+	protected static final ResourceLocation SOLID = new ResourceLocation("solid");
 	protected static final ResourceLocation CUTOUT = new ResourceLocation("cutout");
 	protected static final ResourceLocation CUTOUT_MIPPED = new ResourceLocation("cutout_mipped");
 	protected static final ResourceLocation TRANSLUCENT = new ResourceLocation("translucent");

@@ -89,13 +89,6 @@ public class TFClientEvents {
 			fullbrightItem(event, TFItems.RED_THREAD);
 
 			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
-
-			if (!ModList.get().isLoaded("ctm")) {
-				tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-				tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-				tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-				tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-			}
 		}
 
 		private static void fullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item) {
