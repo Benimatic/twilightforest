@@ -84,8 +84,9 @@ public class TFDispenserBehaviors {
 			}
 		});
 
-		DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new IgniteLightableDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.FIRE_CHARGE, new IgniteLightableDispenseBehavior());
+		//FIXME this overrides vanilla behavior, either find a way to work with it or remove it completely
+		//DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new IgniteLightableDispenseBehavior());
+		//DispenserBlock.registerBehavior(Items.FIRE_CHARGE, new IgniteLightableDispenseBehavior());
 
 		//handling tags should be a thing smh
 		DispenserBlock.registerBehavior(Items.CANDLE, new SkullCandleDispenseBehavior());
