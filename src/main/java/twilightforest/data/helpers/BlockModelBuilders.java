@@ -5,11 +5,14 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
+
+import static twilightforest.TwilightForestMod.prefix;
 
 public abstract class BlockModelBuilders extends BlockModelHelpers {
 
@@ -17,26 +20,66 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 		super(generator, helper);
 	}
 
-	protected BlockModelBuilder makeTintedBlock(String name, ResourceLocation renderType, int emissivity) {
-		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#all")
-				.element().from(6.0F, 6.0F, 6.0F).to(10.0F, 10.0F, 10.0F)
-				.face(Direction.NORTH).texture("#all").cullface(Direction.NORTH).emissivity(emissivity).end()
-				.face(Direction.EAST).texture("#all").cullface(Direction.EAST).emissivity(emissivity).end()
-				.face(Direction.SOUTH).texture("#all").cullface(Direction.SOUTH).emissivity(emissivity).end()
-				.face(Direction.WEST).texture("#all").cullface(Direction.WEST).emissivity(emissivity).end()
-				.face(Direction.UP).texture("#all").cullface(Direction.UP).emissivity(emissivity).end()
-				.face(Direction.DOWN).texture("#all").cullface(Direction.DOWN).emissivity(emissivity).end().end();
+	protected BlockModelBuilder makeTintedBlockAll(String name, ResourceLocation renderType) {
+		return this.makeTintedBlock(name, renderType)
+				.texture("north", "#all").texture("south", "#all").texture("east", "#all")
+				.texture("west", "#all").texture("up", "#all").texture("down", "#all");
 	}
 
-	protected BlockModelBuilder makeSmallCube(String name, ResourceLocation renderType, int emissivity) {
-		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#all")
+	protected BlockModelBuilder makeTintedBlockColumn(String name) {
+		return this.makeTintedBlock(name, SOLID)
+				.texture("north", "#side").texture("south", "#side").texture("east", "#side")
+				.texture("west", "#side").texture("up", "#end").texture("down", "#end");
+	}
+
+	protected BlockModelBuilder makeTintedBlockColumnUniqueBottom(String name) {
+		return this.makeTintedBlock(name, SOLID)
+				.texture("north", "#side").texture("south", "#side").texture("east", "#side")
+				.texture("west", "#side").texture("up", "#top").texture("down", "#bottom");
+	}
+
+	protected BlockModelBuilder makeTintedBlock(String name, ResourceLocation renderType) {
+		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#north")
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).tintindex(0).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).tintindex(0).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).tintindex(0).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).tintindex(0).end()
+				.face(Direction.UP).texture("#up").cullface(Direction.UP).tintindex(0).end()
+				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).tintindex(0).end().end();
+	}
+
+	protected BlockModelBuilder makeTintedFlippedBlockAll(String name) {
+		return models().withExistingParent(name, "minecraft:block/block").texture("particle", "#all")
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+				.face(Direction.NORTH).uvs(0.0F, 16.0F, 16.0F, 0.0F).texture("#all").cullface(Direction.NORTH).tintindex(0).end()
+				.face(Direction.EAST).uvs(0.0F, 16.0F, 16.0F, 0.0F).texture("#all").cullface(Direction.EAST).tintindex(0).end()
+				.face(Direction.SOUTH).uvs(0.0F, 16.0F, 16.0F, 0.0F).texture("#all").cullface(Direction.SOUTH).tintindex(0).end()
+				.face(Direction.WEST).uvs(0.0F, 16.0F, 16.0F, 0.0F).texture("#all").cullface(Direction.WEST).tintindex(0).end()
+				.face(Direction.UP).uvs(0.0F, 16.0F, 16.0F, 0.0F).texture("#all").cullface(Direction.UP).tintindex(0).end()
+				.face(Direction.DOWN).uvs(0.0F, 16.0F, 16.0F, 0.0F).texture("#all").cullface(Direction.DOWN).tintindex(0).end().end();
+	}
+
+	protected BlockModelBuilder makeTintedSlab(String name) {
+		return models().withExistingParent(name, "minecraft:block/block").texture("particle", "#side")
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 8.0F, 16.0F)
+				.face(Direction.NORTH).texture("#side").cullface(Direction.NORTH).tintindex(0).end()
+				.face(Direction.EAST).texture("#side").cullface(Direction.EAST).tintindex(0).end()
+				.face(Direction.SOUTH).texture("#side").cullface(Direction.SOUTH).tintindex(0).end()
+				.face(Direction.WEST).texture("#side").cullface(Direction.WEST).tintindex(0).end()
+				.face(Direction.UP).texture("#top").tintindex(0).end()
+				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).tintindex(0).end().end();
+	}
+
+	protected BlockModelBuilder make4x4x4SmallCube(String name) {
+		return models().withExistingParent(name, "minecraft:block/block").renderType(CUTOUT).texture("particle", "#all")
 				.element().from(6.0F, 6.0F, 6.0F).to(10.0F, 10.0F, 10.0F)
-				.face(Direction.NORTH).texture("#all").cullface(Direction.NORTH).emissivity(emissivity).end()
-				.face(Direction.EAST).texture("#all").cullface(Direction.EAST).emissivity(emissivity).end()
-				.face(Direction.SOUTH).texture("#all").cullface(Direction.SOUTH).emissivity(emissivity).end()
-				.face(Direction.WEST).texture("#all").cullface(Direction.WEST).emissivity(emissivity).end()
-				.face(Direction.UP).texture("#all").cullface(Direction.UP).emissivity(emissivity).end()
-				.face(Direction.DOWN).texture("#all").cullface(Direction.DOWN).emissivity(emissivity).end().end();
+				.face(Direction.NORTH).texture("#all").cullface(Direction.NORTH).emissivity(15).end()
+				.face(Direction.EAST).texture("#all").cullface(Direction.EAST).emissivity(15).end()
+				.face(Direction.SOUTH).texture("#all").cullface(Direction.SOUTH).emissivity(15).end()
+				.face(Direction.WEST).texture("#all").cullface(Direction.WEST).emissivity(15).end()
+				.face(Direction.UP).texture("#all").cullface(Direction.UP).emissivity(15).end()
+				.face(Direction.DOWN).texture("#all").cullface(Direction.DOWN).emissivity(15).end().end();
 	}
 
 	protected BlockModelBuilder makeCubeWithTopLayer(String name, ResourceLocation renderType, int layer1em, int layer2em) {
@@ -50,12 +93,6 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1em).end().end()
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
 				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2em).end().end();
-	}
-
-	protected BlockModelBuilder make2LayerCubeAllSideEm(String name, ResourceLocation renderType, int layer1em, int layer2em, boolean shade) {
-		return this.make2LayerCube(name, renderType,
-				layer1em, layer1em, layer1em, layer1em, layer1em, layer1em,
-				layer2em, layer2em, layer2em, layer2em, layer2em, layer2em, shade);
 	}
 
 	protected BlockModelBuilder make2LayerCubeAllSidesSame(String name, ResourceLocation renderType, int layer1em, int layer2em, boolean shade) {
@@ -105,18 +142,11 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2em).end().end();
 	}
 
-	protected BlockModelBuilder make3LayerCubeAllSideEm(String name, ResourceLocation renderType, int layer1em, int layer2em, int layer3em, boolean shade) {
-		return this.make3LayerCube(name, renderType,
-				layer1em, layer1em, layer1em, layer1em, layer1em, layer1em,
-				layer2em, layer2em, layer2em, layer2em, layer2em, layer2em,
-				layer3em, layer3em, layer3em, layer3em, layer3em, layer3em, shade);
-	}
-	
 	protected BlockModelBuilder make3LayerCubeAllSidesSame(String name, ResourceLocation renderType, int layer1em, int layer2em, int layer3em) {
 		return this.make3LayerCube(name, renderType,
-				layer1em, layer1em, layer1em, layer1em, layer1em, layer1em,
-				layer2em, layer2em, layer2em, layer2em, layer2em, layer2em,
-				layer3em, layer3em, layer3em, layer3em, layer3em, layer3em, true)
+						layer1em, layer1em, layer1em, layer1em, layer1em, layer1em,
+						layer2em, layer2em, layer2em, layer2em, layer2em, layer2em,
+						layer3em, layer3em, layer3em, layer3em, layer3em, layer3em)
 				.texture("north", "#all").texture("south", "#all").texture("east", "#all")
 				.texture("west", "#all").texture("top", "#all").texture("bottom", "#all")
 				.texture("north2", "#all2").texture("south2", "#all2").texture("east2", "#all2")
@@ -128,23 +158,23 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 	protected BlockModelBuilder make3LayerCube(String name, ResourceLocation renderType,
 											   int layer1emN, int layer1emS, int layer1emW, int layer1emE, int layer1emU, int layer1emD,
 											   int layer2emN, int layer2emS, int layer2emW, int layer2emE, int layer2emU, int layer2emD,
-											   int layer3emN, int layer3emS, int layer3emW, int layer3emE, int layer3emU, int layer3emD, boolean shade) {
+											   int layer3emN, int layer3emS, int layer3emW, int layer3emE, int layer3emU, int layer3emD) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#bottom")
-				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
 				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1emN).end()
 				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1emE).end()
 				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1emS).end()
 				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1emW).end()
 				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1emU).end()
 				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1emD).end().end()
-				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
 				.face(Direction.NORTH).texture("#north2").cullface(Direction.NORTH).emissivity(layer2emN).end()
 				.face(Direction.EAST).texture("#east2").cullface(Direction.EAST).emissivity(layer2emE).end()
 				.face(Direction.SOUTH).texture("#south2").cullface(Direction.SOUTH).emissivity(layer2emS).end()
 				.face(Direction.WEST).texture("#west2").cullface(Direction.WEST).emissivity(layer2emW).end()
 				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2emU).end()
 				.face(Direction.DOWN).texture("#bottom2").cullface(Direction.DOWN).emissivity(layer2emD).end().end()
-				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
 				.face(Direction.NORTH).texture("#north3").cullface(Direction.NORTH).emissivity(layer3emN).end()
 				.face(Direction.EAST).texture("#east3").cullface(Direction.EAST).emissivity(layer3emE).end()
 				.face(Direction.SOUTH).texture("#south3").cullface(Direction.SOUTH).emissivity(layer3emS).end()
@@ -153,39 +183,32 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 				.face(Direction.DOWN).texture("#bottom3").cullface(Direction.DOWN).emissivity(layer3emD).end().end();
 	}
 
-	protected BlockModelBuilder make3LayerCubeIdenticalSides1Bottom(String name, ResourceLocation renderType, int layer1em, int layer2em, int layer3em, boolean shade) {
-		return this.make3LayerCubeIdenticalSides1Bottom(name, renderType,
-				layer1em, layer1em, layer1em, layer1em, layer1em, layer1em,
-				layer2em, layer2em, layer2em, layer2em, layer2em,
-				layer3em, layer3em, layer3em, layer3em, layer3em, shade);
-	}
-
-	protected BlockModelBuilder make3LayerCubeIdenticalSides1Bottom(String name, ResourceLocation renderType, int layer1em, int layer2emTop, int layer2emSides, int layer3emTop, int layer3emSides, boolean shade) {
-		return this.make3LayerCubeIdenticalSides1Bottom(name, renderType,
+	protected BlockModelBuilder make3LayerCubeIdenticalSides1Bottom(String name, int layer1em, int layer2emTop, int layer2emSides, int layer3emTop, int layer3emSides) {
+		return this.make3LayerCubeIdenticalSides1Bottom(name,
 				layer1em, layer1em, layer1em, layer1em, layer1em, layer1em,
 				layer2emSides, layer2emSides, layer2emSides, layer2emSides, layer2emTop,
-				layer3emSides, layer3emSides, layer3emSides, layer3emSides, layer3emTop, shade);
+				layer3emSides, layer3emSides, layer3emSides, layer3emSides, layer3emTop);
 	}
 
-	protected BlockModelBuilder make3LayerCubeIdenticalSides1Bottom(String name, ResourceLocation renderType,
+	protected BlockModelBuilder make3LayerCubeIdenticalSides1Bottom(String name,
 																	int layer1emN, int layer1emS, int layer1emW, int layer1emE, int layer1emU, int layer1emD,
 																	int layer2emN, int layer2emS, int layer2emW, int layer2emE, int layer2emU,
-																	int layer3emN, int layer3emS, int layer3emW, int layer3emE, int layer3emU, boolean shade) {
-		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#bottom")
-				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
+																	int layer3emN, int layer3emS, int layer3emW, int layer3emE, int layer3emU) {
+		return models().withExistingParent(name, "minecraft:block/block").renderType(CUTOUT).texture("particle", "#bottom")
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
 				.face(Direction.NORTH).texture("#side").cullface(Direction.NORTH).emissivity(layer1emN).end()
 				.face(Direction.EAST).texture("#side").cullface(Direction.EAST).emissivity(layer1emE).end()
 				.face(Direction.SOUTH).texture("#side").cullface(Direction.SOUTH).emissivity(layer1emS).end()
 				.face(Direction.WEST).texture("#side").cullface(Direction.WEST).emissivity(layer1emW).end()
 				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1emU).end()
 				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1emD).end().end()
-				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
 				.face(Direction.NORTH).texture("#side2").cullface(Direction.NORTH).emissivity(layer2emN).end()
 				.face(Direction.EAST).texture("#side2").cullface(Direction.EAST).emissivity(layer2emE).end()
 				.face(Direction.SOUTH).texture("#side2").cullface(Direction.SOUTH).emissivity(layer2emS).end()
 				.face(Direction.WEST).texture("#side2").cullface(Direction.WEST).emissivity(layer2emW).end()
 				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2emU).end().end()
-				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
 				.face(Direction.NORTH).texture("#side3").cullface(Direction.NORTH).emissivity(layer3emN).end()
 				.face(Direction.EAST).texture("#side3").cullface(Direction.EAST).emissivity(layer3emE).end()
 				.face(Direction.SOUTH).texture("#side3").cullface(Direction.SOUTH).emissivity(layer3emS).end()
@@ -208,13 +231,13 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 				.element().from(0.8F, 0.0F, 8.0F).to(15.2F, 16.0F, 8.0F)
 				.rotation().origin(8.0F, 8.0F, 8.0F).axis(Direction.Axis.Y).angle(45.0F).rescale(true).end()
 				.shade(false)
-				.face(Direction.NORTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer1em).end()
-				.face(Direction.SOUTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer1em).end().end()
+				.face(Direction.NORTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em).end()
+				.face(Direction.SOUTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em).end().end()
 				.element().from(8.0F, 0.0F, 0.8F).to(8.0F, 16.0F, 15.2F)
 				.rotation().origin(8.0F, 8.0F, 8.0F).axis(Direction.Axis.Y).angle(45.0F).rescale(true).end()
 				.shade(false)
-				.face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer1em).end()
-				.face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer1em).end().end();
+				.face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em).end()
+				.face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em).end().end();
 	}
 
 	protected ModelFile buildCandelabra(final int leftHeight, final int centerHeight, final int rightHeight) {
@@ -351,36 +374,32 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 				.face(Direction.DOWN).texture("#end").emissivity(0).end()
 				.face(Direction.NORTH).texture("#north").emissivity(0).end().face(Direction.SOUTH).texture("#south").emissivity(0).end()
 				.face(Direction.WEST).texture("#west").emissivity(0).end().face(Direction.EAST).texture("#east").emissivity(0).end().end();
-		
-		if(has2layers) {
+
+		if (has2layers) {
 			model = model.element().from(2.0F, 3.0F, 2.0F).to(14.0F, 13.0F, 14.0F)
 					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
 					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
 					.face(Direction.WEST).texture("#west2").emissivity(15).end()
 					.face(Direction.EAST).texture("#east2").emissivity(15).end().end()
 					.element().from(1.0F, 0.0F, 1.0F).to(15.0F, 16.0F, 15.0F)
-					.face(Direction.DOWN).texture("#end2").emissivity(15).cullface(Direction.DOWN).end()
-					.face(Direction.UP).texture("#end2").emissivity(15).cullface(Direction.UP).end().end()
+					.face(Direction.DOWN).texture("#end2").emissivity(12).cullface(Direction.DOWN).end()
+					.face(Direction.UP).texture("#end2").emissivity(12).cullface(Direction.UP).end().end()
 					.element().from(1.0F, 12.0F, 1.0F).to(4.0F, 13.0F, 4.0F)
-					.face(Direction.DOWN).texture("#end2").emissivity(15).end()
 					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
 					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
 					.face(Direction.WEST).texture("#west2").emissivity(15).end()
 					.face(Direction.EAST).texture("#east2").emissivity(15).end().end()
 					.element().from(12.0F, 12.0F, 1.0F).to(15.0F, 13.0F, 4.0F)
-					.face(Direction.DOWN).texture("#end2").emissivity(15).end()
 					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
 					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
 					.face(Direction.WEST).texture("#west2").emissivity(15).end()
 					.face(Direction.EAST).texture("#east2").emissivity(15).end().end()
 					.element().from(1.0F, 12.0F, 12.0F).to(4.0F, 13.0F, 15.0F)
-					.face(Direction.DOWN).texture("#end2").emissivity(15).end()
 					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
 					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
 					.face(Direction.WEST).texture("#west2").emissivity(15).end()
 					.face(Direction.EAST).texture("#east2").emissivity(15).end().end()
 					.element().from(12.0F, 12.0F, 12.0F).to(15.0F, 13.0F, 15.0F)
-					.face(Direction.DOWN).texture("#end2").emissivity(15).end()
 					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
 					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
 					.face(Direction.WEST).texture("#west2").emissivity(15).end()
@@ -390,31 +409,46 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 					.face(Direction.NORTH).texture("#north3").emissivity(10).end()
 					.face(Direction.SOUTH).texture("#south3").emissivity(10).end()
 					.face(Direction.WEST).texture("#west3").emissivity(10).end()
-					.face(Direction.EAST).texture("#east3").emissivity(10).end().end()
-					.element().from(1.0F, 12.0F, 1.0F).to(4.0F, 13.0F, 4.0F)
-					.face(Direction.NORTH).texture("#north3").emissivity(10).end()
-					.face(Direction.SOUTH).texture("#south3").emissivity(10).end()
-					.face(Direction.WEST).texture("#west3").emissivity(10).end()
-					.face(Direction.EAST).texture("#east3").emissivity(10).end().end()
-					.element().from(12.0F, 12.0F, 1.0F).to(15.0F, 13.0F, 4.0F)
-					.face(Direction.NORTH).texture("#north3").emissivity(10).end()
-					.face(Direction.SOUTH).texture("#south3").emissivity(10).end()
-					.face(Direction.WEST).texture("#west3").emissivity(10).end()
-					.face(Direction.EAST).texture("#east3").emissivity(10).end().end()
-					.element().from(1.0F, 12.0F, 12.0F).to(4.0F, 13.0F, 15.0F)
-					.face(Direction.NORTH).texture("#north3").emissivity(10).end()
-					.face(Direction.SOUTH).texture("#south3").emissivity(10).end()
-					.face(Direction.WEST).texture("#west3").emissivity(10).end()
-					.face(Direction.EAST).texture("#east3").emissivity(10).end().end()
-					.element().from(12.0F, 12.0F, 12.0F).to(15.0F, 13.0F, 15.0F)
-					.face(Direction.DOWN).texture("#end3").emissivity(10).end()
-					.face(Direction.NORTH).texture("#north3").emissivity(10).end()
-					.face(Direction.SOUTH).texture("#south3").emissivity(10).end()
-					.face(Direction.WEST).texture("#west3").emissivity(10).end()
 					.face(Direction.EAST).texture("#east3").emissivity(10).end().end();
 		}
 
 		return model;
 	}
-	
+
+	protected BlockModelBuilder makeJar(String name) {
+		return models().withExistingParent(name, "minecraft:block/block").renderType(CUTOUT)
+				.texture("particle", "#side")
+				.texture("side", prefix("block/jar_side"))
+				.texture("bottom", prefix("block/jar_bottom"))
+				.texture("top", prefix("block/jar_top"))
+				.element().from(3.0F, 0.0F, 3.0F).to(13.0F, 14.0F, 13.0F)
+				.face(Direction.UP).texture("#top").end()
+				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).end()
+				.face(Direction.NORTH).texture("#side").end()
+				.face(Direction.SOUTH).texture("#side").end()
+				.face(Direction.WEST).texture("#side").end()
+				.face(Direction.EAST).texture("#side").end().end()
+				.element().from(4.0F, 12.0F, 4.0F).to(12.0F, 16.0F, 12.0F)
+				.face(Direction.UP).uvs(4.0F, 4.0F, 12.0F, 12.0F).texture("#cork").cullface(Direction.UP).end()
+				.face(Direction.DOWN).uvs(4.0F, 4.0F, 12.0F, 12.0F).texture("#cork").end()
+				.face(Direction.NORTH).uvs(4.0F, 0.0F, 12.0F, 4.0F).texture("#cork").end()
+				.face(Direction.SOUTH).uvs(4.0F, 0.0F, 12.0F, 4.0F).texture("#cork").end()
+				.face(Direction.WEST).uvs(4.0F, 0.0F, 12.0F, 4.0F).texture("#cork").end()
+				.face(Direction.EAST).uvs(4.0F, 0.0F, 12.0F, 4.0F).texture("#cork").end().end();
+	}
+
+	protected BlockModelBuilder cubeAllTinted(String name, String all, boolean flipV) {
+		return (flipV ? this.makeTintedFlippedBlockAll(name) : this.makeTintedBlockAll(name, SOLID)).texture("all", "block/" + all);
+	}
+
+	protected BlockModelBuilder cubeAllTinted(String name, String all) {
+		return cubeAllTinted(name, all, false);
+	}
+
+	protected void tintedAndFlipped(Block b) {
+		simpleBlock(b, ConfiguredModel.builder()
+				.modelFile(cubeAllTinted(name(b), name(b))).nextModel()
+				.modelFile(cubeAllTinted(name(b) + "_flipped", name(b), true)).build()
+		);
+	}
 }

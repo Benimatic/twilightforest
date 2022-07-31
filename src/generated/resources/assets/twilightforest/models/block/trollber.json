@@ -94,7 +94,7 @@
     {
       "faces": {
         "north": {
-          "emissivity": 1,
+          "emissivity": 10,
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -104,7 +104,7 @@
           ]
         },
         "south": {
-          "emissivity": 1,
+          "emissivity": 10,
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -139,7 +139,7 @@
     {
       "faces": {
         "east": {
-          "emissivity": 1,
+          "emissivity": 10,
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -149,7 +149,7 @@
           ]
         },
         "west": {
-          "emissivity": 1,
+          "emissivity": 10,
           "texture": "#cross2",
           "uv": [
             0.0,

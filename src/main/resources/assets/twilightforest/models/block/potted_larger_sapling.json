@@ -1,8 +1,6 @@
 {
 	"ambientocclusion": false,
-	"render_type": "minecraft:cutout",
 	"textures": {
-		"sapling": "twilightforest:block/darkwood_sapling",
 		"particle": "block/flower_pot",
 		"flowerpot": "block/flower_pot",
 		"dirt": "block/dirt"
@@ -61,21 +59,21 @@
 			}
 		},
 		{
-			"from": [3.9, 4, 8],
-			"to": [12.7, 17, 8],
+			"from": [4, 4, 8],
+			"to": [11.8, 14, 8],
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#sapling"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#sapling"}
+				"north": {"uv": [0, 0, 16, 16], "texture": "#plant"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#plant"}
 			}
 		},
 		{
-			"from": [8, 4, 3.9],
-			"to": [8, 17, 12.7],
+			"from": [8, 4, 4],
+			"to": [8, 14, 11.8],
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
 			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#sapling"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#sapling"}
+				"east": {"uv": [0, 0, 16, 16], "texture": "#plant"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#plant"}
 			}
 		}
 	]

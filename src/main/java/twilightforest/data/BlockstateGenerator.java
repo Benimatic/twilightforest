@@ -163,13 +163,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.BEANSTALK_LEAVES.get(), models().withExistingParent("beanstalk_leaves", new ResourceLocation("block/azalea_leaves")).renderType(CUTOUT_MIPPED));
 		simpleBlock(TFBlocks.HOLLOW_OAK_SAPLING.get(), models().cross(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), blockTexture(TFBlocks.HOLLOW_OAK_SAPLING.get())).renderType(CUTOUT_MIPPED));
 		ModelFile deadrock = models().cubeAll(TFBlocks.DEADROCK.getId().getPath(), blockTexture(TFBlocks.DEADROCK.get()));
-		ModelFile deadrockMirrored = models().withExistingParent(TFBlocks.DEADROCK.getId().getPath() + "_mirrored", prefix("block/util/cube_mirrored_all"))
-				.texture("all", blockTexture(TFBlocks.DEADROCK.get()));
 		simpleBlock(TFBlocks.DEADROCK.get(), ConfiguredModel.builder()
 				.modelFile(deadrock).nextModel()
 				.rotationY(180).modelFile(deadrock).nextModel()
-				.modelFile(deadrockMirrored).nextModel()
-				.rotationY(180).modelFile(deadrockMirrored).build()
+				.rotationY(90).modelFile(deadrock).nextModel()
+				.rotationY(270).modelFile(deadrock).build()
 		);
 		ModelFile deadrockCracked = models().cubeAll(TFBlocks.CRACKED_DEADROCK.getId().getPath(), blockTexture(TFBlocks.CRACKED_DEADROCK.get()));
 		allRotations(TFBlocks.CRACKED_DEADROCK.get(), deadrockCracked);
@@ -278,9 +276,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), bigSpawner);
-		simpleBlockExisting(TFBlocks.FIREFLY_JAR.get());
+		simpleBlock(TFBlocks.FIREFLY_JAR.get(), this.makeJar(TFBlocks.FIREFLY_JAR.getId().getPath())
+				.texture("cork", prefix("block/firefly_jar_cork")));
 		simpleBlockExisting(TFBlocks.FIREFLY_SPAWNER.get());
-		simpleBlockExisting(TFBlocks.CICADA_JAR.get());
+		simpleBlock(TFBlocks.CICADA_JAR.get(), this.makeJar(TFBlocks.CICADA_JAR.getId().getPath())
+				.texture("cork", prefix("block/cicada_jar_cork")));
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
 		simpleBlock(TFBlocks.LIVEROOT_BLOCK.get());
@@ -354,26 +354,26 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				}
 			}
 		}, TomeSpawnerBlock.SPAWNER);
-		
+
 		registerWoodBlocks();
 		registerNagastone();
 		registerForceFields();
-		simpleBlock(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), models().getExistingFile(prefix("block/potted_twilight_oak_sapling")));
-		simpleBlock(TFBlocks.POTTED_CANOPY_SAPLING.get(), models().getExistingFile(prefix("block/potted_canopy_sapling")));
-		simpleBlock(TFBlocks.POTTED_MANGROVE_SAPLING.get(), models().getExistingFile(prefix("block/potted_mangrove_sapling")));
-		simpleBlock(TFBlocks.POTTED_DARKWOOD_SAPLING.get(), models().getExistingFile(prefix("block/potted_darkwood_sapling")));
-		simpleBlock(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), models().getExistingFile(prefix("block/potted_hollow_oak_sapling")));
-		simpleBlock(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), models().getExistingFile(prefix("block/potted_rainboak_sapling")));
-		simpleBlock(TFBlocks.POTTED_TIME_SAPLING.get(), models().getExistingFile(prefix("block/potted_time_sapling")));
-		simpleBlock(TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), models().getExistingFile(prefix("block/potted_trans_sapling")));
-		simpleBlock(TFBlocks.POTTED_MINING_SAPLING.get(), models().getExistingFile(prefix("block/potted_mine_sapling")));
-		simpleBlock(TFBlocks.POTTED_SORTING_SAPLING.get(), models().getExistingFile(prefix("block/potted_sort_sapling")));
+		simpleBlock(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TWILIGHT_OAK_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_CANOPY_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_CANOPY_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.CANOPY_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_MANGROVE_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_MANGROVE_SAPLING.getId().getPath(), prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.MANGROVE_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_DARKWOOD_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_DARKWOOD_SAPLING.getId().getPath(),  prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.DARKWOOD_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.HOLLOW_OAK_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.RAINBOW_OAK_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_TIME_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TIME_SAPLING.getId().getPath(),  prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TIME_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TRANSFORMATION_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TRANSFORMATION_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_MINING_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_MINING_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.MINING_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_SORTING_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_SORTING_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.SORTING_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_MAYAPPLE.get(), models().getExistingFile(prefix("block/potted_mayapple")));
-		simpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), models().getExistingFile(prefix("block/potted_fiddlehead")));
-		simpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(), models().getExistingFile(prefix("block/potted_mushgloom")));
-		simpleBlock(TFBlocks.POTTED_THORN.get(), models().getExistingFile(prefix("block/potted_thorn")));
-		simpleBlock(TFBlocks.POTTED_GREEN_THORN.get(), models().getExistingFile(prefix("block/potted_green_thorn")));
-		simpleBlock(TFBlocks.POTTED_DEAD_THORN.get(), models().getExistingFile(prefix("block/potted_dead_thorn")));
+		simpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.POTTED_FIDDLEHEAD.getId().getPath(), "block/tinted_flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.POTTED_FIDDLEHEAD.get())));
+		simpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(), models().withExistingParent(TFBlocks.POTTED_MUSHGLOOM.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.POTTED_MUSHGLOOM.get())));
+		simpleBlock(TFBlocks.POTTED_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/brown_thorns_top")).texture("thorn_side", prefix("block/brown_thorns_side")));
+		simpleBlock(TFBlocks.POTTED_GREEN_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/green_thorns_top")).texture("thorn_side", prefix("block/green_thorns_side")));
+		simpleBlock(TFBlocks.POTTED_DEAD_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/burnt_thorns_top")).texture("thorn_side", prefix("block/burnt_thorns_side")));
 
 		builtinEntity(TFBlocks.TWILIGHT_OAK_SIGN.get(), "twilightforest:block/wood/planks_twilight_oak_0");
 		builtinEntity(TFBlocks.TWILIGHT_WALL_SIGN.get(), "twilightforest:block/wood/planks_twilight_oak_0");
@@ -414,196 +414,196 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		String baseName = "block/force_field/force_field";
 		//WEST
 		BlockModelBuilder west = this.models().withExistingParent(baseName + "_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder no_west = this.models().withExistingParent(baseName + "_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//EAST
 		BlockModelBuilder east = this.models().withExistingParent(baseName + "_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.EAST).cullface(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.EAST).cullface(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder no_east = this.models().withExistingParent(baseName + "_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.EAST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//DOWN
 		BlockModelBuilder down = this.models().withExistingParent(baseName + "_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder no_down = this.models().withExistingParent(baseName + "_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.DOWN).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//UP
 		BlockModelBuilder up = this.models().withExistingParent(baseName + "_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.UP).cullface(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.UP).cullface(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder no_up = this.models().withExistingParent(baseName + "_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.UP).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//NORTH
 		BlockModelBuilder north = this.models().withExistingParent(baseName + "_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder no_north = this.models().withExistingParent(baseName + "_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.NORTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//SOUTH
 		BlockModelBuilder south = this.models().withExistingParent(baseName + "_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder no_south = this.models().withExistingParent(baseName + "_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 7).to(9, 9, 9).face(Direction.SOUTH).uvs(7, 7, 9, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//DOWN WEST
 		BlockModelBuilder down_west = this.models().withExistingParent(baseName + "_down_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(0, 0, 7).to(7, 7, 9)
 				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(0, 7, 7, 9).end()
 				.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 0, 9, 7).end()
 				.face(Direction.NORTH).uvs(0, 0, 7, 7).end()
-				.face(Direction.SOUTH).uvs(9, 0, 16, 7).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.SOUTH).uvs(9, 0, 16, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder down_no_west = this.models().withExistingParent(baseName + "_down_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.WEST).uvs(7, 0, 9, 7).texture("#pane").end().shade(false).end();
+				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.WEST).uvs(7, 0, 9, 7).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder west_no_down = this.models().withExistingParent(baseName + "_west_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.DOWN).uvs(0, 7, 7, 9).texture("#pane").end().shade(false).end();
+				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.DOWN).uvs(0, 7, 7, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//DOWN EAST
 		BlockModelBuilder down_east = this.models().withExistingParent(baseName + "_down_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(9, 0, 7).to(16, 7, 9)
 				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(9, 7, 16, 9).end()
 				.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 0, 9, 7).end()
 				.face(Direction.NORTH).uvs(9, 0, 16, 7).end()
-				.face(Direction.SOUTH).uvs(0, 0, 7, 7).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.SOUTH).uvs(0, 0, 7, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder down_no_east = this.models().withExistingParent(baseName + "_down_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.EAST).uvs(7, 0, 9, 7).texture("#pane").end().shade(false).end();
+				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.EAST).uvs(7, 0, 9, 7).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder east_no_down = this.models().withExistingParent(baseName + "_east_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.DOWN).uvs(9, 7, 16, 9).texture("#pane").end().shade(false).end();
+				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.DOWN).uvs(9, 7, 16, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//DOWN NORTH
 		BlockModelBuilder down_north = this.models().withExistingParent(baseName + "_down_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(7, 0, 0).to(9, 7, 7)
 				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 0, 9, 7).end()
 				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 0, 9, 7).end()
 				.face(Direction.WEST).uvs(0, 0, 7, 7).end()
-				.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder down_no_north = this.models().withExistingParent(baseName + "_down_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.NORTH).uvs(7, 0, 9, 7).texture("#pane").end().shade(false).end();
+				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.NORTH).uvs(7, 0, 9, 7).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder north_no_down = this.models().withExistingParent(baseName + "_north_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.DOWN).uvs(7, 0, 9, 7).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.DOWN).uvs(7, 0, 9, 7).texture("#pane").emissivity(15).end().shade(false).end();
 		//DOWN SOUTH
 		BlockModelBuilder down_south = this.models().withExistingParent(baseName + "_down_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(7, 0, 9).to(9, 7, 16)
 				.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 9, 9, 16).end()
 				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 0, 9, 7).end()
 				.face(Direction.WEST).uvs(9, 0, 16, 7).end()
-				.face(Direction.EAST).uvs(0, 0, 7, 7).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.EAST).uvs(0, 0, 7, 7).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder down_no_south = this.models().withExistingParent(baseName + "_down_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.SOUTH).uvs(7, 0, 9, 7).texture("#pane").end().shade(false).end();
+				.element().from(7, 0, 7).to(9, 7, 9).face(Direction.SOUTH).uvs(7, 0, 9, 7).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder south_no_down = this.models().withExistingParent(baseName + "_south_no_down", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.DOWN).uvs(7, 9, 9, 16).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.DOWN).uvs(7, 9, 9, 16).texture("#pane").emissivity(15).end().shade(false).end();
 		//UP WEST
 		BlockModelBuilder up_west = this.models().withExistingParent(baseName + "_up_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(0, 9, 7).to(7, 16, 9)
 				.face(Direction.UP).cullface(Direction.UP).uvs(0, 7, 7, 9).end()
 				.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 9, 9, 16).end()
 				.face(Direction.NORTH).uvs(0, 9, 7, 16).end()
-				.face(Direction.SOUTH).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.SOUTH).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder up_no_west = this.models().withExistingParent(baseName + "_up_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.WEST).uvs(7, 9, 9, 16).texture("#pane").end().shade(false).end();
+				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.WEST).uvs(7, 9, 9, 16).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder west_no_up = this.models().withExistingParent(baseName + "_west_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.UP).uvs(0, 7, 7, 9).texture("#pane").end().shade(false).end();
+				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.UP).uvs(0, 7, 7, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//UP EAST
 		BlockModelBuilder up_east = this.models().withExistingParent(baseName + "_up_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(9, 9, 7).to(16, 16, 9)
 				.face(Direction.UP).cullface(Direction.UP).uvs(9, 7, 16, 9).end()
 				.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 9, 9, 16).end()
 				.face(Direction.NORTH).uvs(9, 9, 16, 16).end()
-				.face(Direction.SOUTH).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.SOUTH).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder up_no_east = this.models().withExistingParent(baseName + "_up_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.EAST).uvs(7, 9, 9, 16).texture("#pane").end().shade(false).end();
+				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.EAST).uvs(7, 9, 9, 16).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder east_no_up = this.models().withExistingParent(baseName + "_east_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.UP).uvs(9, 7, 16, 9).texture("#pane").end().shade(false).end();
+				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.UP).uvs(9, 7, 16, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//UP NORTH
 		BlockModelBuilder up_north = this.models().withExistingParent(baseName + "_up_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(7, 9, 0).to(9, 16, 7)
 				.face(Direction.UP).cullface(Direction.UP).uvs(7, 0, 9, 7).end()
 				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 9, 9, 16).end()
 				.face(Direction.WEST).uvs(0, 9, 7, 16).end()
-				.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.EAST).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder up_no_north = this.models().withExistingParent(baseName + "_up_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.NORTH).uvs(7, 9, 9, 16).texture("#pane").end().shade(false).end();
+				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.NORTH).uvs(7, 9, 9, 16).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder north_no_up = this.models().withExistingParent(baseName + "_north_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.UP).uvs(7, 0, 9, 7).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.UP).uvs(7, 0, 9, 7).texture("#pane").emissivity(15).end().shade(false).end();
 		//UP SOUTH
 		BlockModelBuilder up_south = this.models().withExistingParent(baseName + "_up_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(7, 9, 9).to(9, 16, 16)
 				.face(Direction.UP).cullface(Direction.UP).uvs(7, 9, 9, 16).end()
 				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 9, 9, 16).end()
 				.face(Direction.WEST).uvs(9, 9, 16, 16).end()
-				.face(Direction.EAST).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.EAST).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder up_no_south = this.models().withExistingParent(baseName + "_up_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.SOUTH).uvs(7, 9, 9, 16).texture("#pane").end().shade(false).end();
+				.element().from(7, 9, 7).to(9, 16, 9).face(Direction.SOUTH).uvs(7, 9, 9, 16).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder south_no_up = this.models().withExistingParent(baseName + "_south_no_up", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.UP).uvs(7, 9, 9, 16).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.UP).uvs(7, 9, 9, 16).texture("#pane").emissivity(15).end().shade(false).end();
 		//NORTH WEST
 		BlockModelBuilder north_west = this.models().withExistingParent(baseName + "_north_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(0, 7, 0).to(7, 9, 7)
 				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(0, 7, 7, 9).end()
 				.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
 				.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
-				.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder north_no_west = this.models().withExistingParent(baseName + "_north_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder west_no_north = this.models().withExistingParent(baseName + "_west_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.NORTH).uvs(0, 7, 7, 9).texture("#pane").end().shade(false).end();
+				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.NORTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//NORTH EAST
 		BlockModelBuilder north_east = this.models().withExistingParent(baseName + "_north_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(9, 7, 0).to(16, 9, 7)
 				.face(Direction.NORTH).cullface(Direction.NORTH).uvs(9, 7, 16, 9).end()
 				.face(Direction.EAST).cullface(Direction.EAST).uvs(0, 7, 7, 9).end()
 				.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
-				.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder north_no_east = this.models().withExistingParent(baseName + "_north_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.EAST).uvs(0, 7, 7, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 0).to(9, 9, 7).face(Direction.EAST).uvs(0, 7, 7, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder east_no_north = this.models().withExistingParent(baseName + "_east_no_north", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.NORTH).uvs(9, 7, 16, 9).texture("#pane").end().shade(false).end();
+				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.NORTH).uvs(9, 7, 16, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//SOUTH WEST
 		BlockModelBuilder south_west = this.models().withExistingParent(baseName + "_south_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(0, 7, 9).to(7, 9, 16)
 				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
 				.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
 				.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
-				.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.UP).uvs(9, 9, 16, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder south_no_west = this.models().withExistingParent(baseName + "_south_no_west", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.WEST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder west_no_south = this.models().withExistingParent(baseName + "_west_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().shade(false).end();
+				.element().from(0, 7, 7).to(7, 9, 9).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15).end().shade(false).end();
 		//SOUTH EAST
 		BlockModelBuilder south_east = this.models().withExistingParent(baseName + "_south_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
 				.element().from(9, 7, 9).to(16, 9, 16)
 				.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
 				.face(Direction.EAST).cullface(Direction.EAST).uvs(9, 7, 16, 9).end()
 				.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
-				.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane")).shade(false).end();
+				.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, builder) -> builder.texture("#pane").emissivity(15)).shade(false).end();
 
 		BlockModelBuilder south_no_east = this.models().withExistingParent(baseName + "_south_no_east", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").end().shade(false).end();
+				.element().from(7, 7, 9).to(9, 9, 16).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		BlockModelBuilder east_no_south = this.models().withExistingParent(baseName + "_east_no_south", "minecraft:block/block").texture("particle", "#pane").ao(false)
-				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().shade(false).end();
+				.element().from(9, 7, 7).to(16, 9, 9).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15).end().shade(false).end();
 
 		for (RegistryObject<Block> block : ImmutableList.of(TFBlocks.PINK_FORCE_FIELD, TFBlocks.BLUE_FORCE_FIELD, TFBlocks.GREEN_FORCE_FIELD, TFBlocks.VIOLET_FORCE_FIELD, TFBlocks.ORANGE_FORCE_FIELD)) {
 			String blockName = "block/force_field/" + block.getId().getPath();
@@ -968,10 +968,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void registerSmokersAndJets() {
-		simpleBlock(TFBlocks.SMOKER.get(), new ConfiguredModel(models().getExistingFile(prefix("block/jet"))));
-		simpleBlock(TFBlocks.FIRE_JET.get(), new ConfiguredModel(models().getExistingFile(prefix("block/jet"))));
+		simpleBlock(TFBlocks.SMOKER.get(), this.makeTintedBlockColumnUniqueBottom(TFBlocks.SMOKER.getId().getPath())
+				.texture("side", prefix("block/firejet_side"))
+				.texture("top", prefix("block/firejet_top"))
+				.texture("bottom", new ResourceLocation("block/grass_block_top")));
+		simpleBlock(TFBlocks.FIRE_JET.get(), this.makeTintedBlockColumnUniqueBottom(TFBlocks.FIRE_JET.getId().getPath())
+				.texture("side", prefix("block/firejet_side"))
+				.texture("top", prefix("block/firejet_top"))
+				.texture("bottom", new ResourceLocation("block/grass_block_top")));
 
-		ModelFile smokerOff = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_SMOKER.getId().getPath(), CUTOUT, 0, 10, 15, 10, 10, true)
+		ModelFile smokerOff = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_SMOKER.getId().getPath(), 0, 10, 15, 10, 10)
 				.texture("top", prefix("block/towerdev_ghasttraplid_off"))
 				.texture("side", prefix("block/towerdev_smoker_off"))
 				.texture("bottom", blockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
@@ -980,7 +986,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
 				.texture("side3", prefix("block/tower_device_level_2/towerdev_smoker_off_1"));
 
-		ModelFile smokerOn = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_SMOKER.getId().getPath() + "_on", CUTOUT, 0, 10, 15, 7, 10, true)
+		ModelFile smokerOn = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_SMOKER.getId().getPath() + "_on", 0, 10, 15, 7, 10)
 				.texture("top", prefix("block/towerdev_ghasttraplid_on"))
 				.texture("side", prefix("block/towerdev_firejet_on"))
 				.texture("bottom", blockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
@@ -993,7 +999,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		getVariantBuilder(TFBlocks.ENCASED_SMOKER.get()).partialState()
 				.with(EncasedSmokerBlock.ACTIVE, true).setModels(new ConfiguredModel(smokerOn));
 
-		ModelFile encasedJetOff = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_FIRE_JET.getId().getPath(), CUTOUT, 0, 10, 15, 10, 10, true)
+		ModelFile encasedJetOff = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_FIRE_JET.getId().getPath(), 0, 10, 15, 10, 10)
 				.texture("top", prefix("block/towerdev_ghasttraplid_off"))
 				.texture("side", prefix("block/towerdev_firejet_off"))
 				.texture("bottom", blockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
@@ -1002,7 +1008,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
 				.texture("side3", prefix("block/tower_device_level_2/towerdev_firejet_off_1"));
 
-		ModelFile encasedJetOn = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_FIRE_JET.getId().getPath() + "_on", CUTOUT, 0, 10, 15, 7, 10, true)
+		ModelFile encasedJetOn = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_FIRE_JET.getId().getPath() + "_on", 0, 10, 15, 7, 10)
 				.texture("top", prefix("block/towerdev_ghasttraplid_on"))
 				.texture("side", prefix("block/towerdev_firejet_on"))
 				.texture("bottom", blockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
@@ -1222,13 +1228,13 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("all", prefix("block/towerdev_reappearing_off"))
 				.texture("all2", prefix("block/tower_device_level_1/towerdev_reappearing_off_1"))
 				.texture("all3", prefix("block/tower_device_level_2/towerdev_reappearing_off_2"));
-		ModelFile reappearActive =  this.make3LayerCubeAllSidesSame(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_active", CUTOUT, 0, 15, 10)
+		ModelFile reappearActive = this.make3LayerCubeAllSidesSame(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_active", CUTOUT, 0, 15, 10)
 				.texture("all", prefix("block/towerdev_reappearing_on"))
 				.texture("all2", prefix("block/tower_device_level_1/towerdev_reappearing_on_1"))
 				.texture("all3", prefix("block/tower_device_level_2/towerdev_reappearing_on_2"));
-		ModelFile reappearVanished = this.makeSmallCube(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_vanished", CUTOUT, 15)
+		ModelFile reappearVanished = this.make4x4x4SmallCube(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_vanished")
 				.texture("all", prefix("block/towerdev_reappearing_trace_off"));
-		ModelFile reappearVanishedActive = this.makeSmallCube(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_vanished_active", CUTOUT, 15)
+		ModelFile reappearVanishedActive = this.make4x4x4SmallCube(TFBlocks.REAPPEARING_BLOCK.getId().getPath() + "_vanished_active")
 				.texture("all", prefix("block/towerdev_reappearing_trace_on"));
 		getVariantBuilder(TFBlocks.REAPPEARING_BLOCK.get()).forAllStates(s -> {
 			ModelFile model;
@@ -1266,7 +1272,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		getVariantBuilder(TFBlocks.LOCKED_VANISHING_BLOCK.get()).partialState()
 				.with(LockedVanishingBlock.LOCKED, false).setModels(new ConfiguredModel(vanishUnlocked));
 
-		ModelFile ghastTrap = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.GHAST_TRAP.getId().getPath(), CUTOUT, 0, 10, 15, 10, 10, true)
+		ModelFile ghastTrap = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.GHAST_TRAP.getId().getPath(), 0, 10, 15, 10, 10)
 				.texture("top", prefix("block/towerdev_ghasttraplid_off"))
 				.texture("side", prefix("block/towerdev_ghasttrap_off"))
 				.texture("bottom", prefix("block/encased_towerwood"))
@@ -1274,7 +1280,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("side2", prefix("block/tower_device_level_1/towerdev_ghasttrap_off_1"))
 				.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
 				.texture("side3", prefix("block/tower_device_level_2/towerdev_ghasttrap_off_2"));
-		ModelFile ghastTrapActive = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.GHAST_TRAP.getId().getPath() + "_active", CUTOUT, 0, 10, 15, 7, 10, true)
+		ModelFile ghastTrapActive = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.GHAST_TRAP.getId().getPath() + "_active", 0, 10, 15, 7, 10)
 				.texture("top", prefix("block/towerdev_ghasttraplid_on"))
 				.texture("side", prefix("block/towerdev_ghasttrap_on"))
 				.texture("bottom", prefix("block/encased_towerwood"))
@@ -1462,7 +1468,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		int variants = 16;
 		ModelFile[] models = new ModelFile[variants];
 		for (int i = 0; i < variants; i++) {
-			models[i] = this.makeTintedBlock(TFBlocks.AURORA_BLOCK.getId().getPath() + "_" + i, SOLID, 0)
+			models[i] = this.makeTintedBlockAll(TFBlocks.AURORA_BLOCK.getId().getPath() + "_" + i, SOLID)
 					.texture("all", prefix("block/" + TFBlocks.AURORA_BLOCK.getId().getPath() + "_" + i));
 		}
 		for (int i = 0; i < variants; i++) {
@@ -1472,16 +1478,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 							.weight(1).modelFile(models[(i + 1) % variants]).build());
 		}
 
-		ModelFile pillarModel = models().withExistingParent(TFBlocks.AURORA_PILLAR.getId().getPath(), prefix("block/util/tinted_cube_column"))
+		ModelFile pillarModel = this.makeTintedBlockColumn(TFBlocks.AURORA_PILLAR.getId().getPath())
 				.texture("end", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
 				.texture("side", blockTexture(TFBlocks.AURORA_PILLAR.get()));
 		axisBlock(TFBlocks.AURORA_PILLAR.get(), pillarModel, pillarModel);
 
-		ModelFile slabModel = models().withExistingParent(TFBlocks.AURORA_SLAB.getId().getPath(), prefix("block/util/tinted_slab"))
+		ModelFile slabModel = this.makeTintedSlab(TFBlocks.AURORA_SLAB.getId().getPath())
 				.texture("bottom", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
 				.texture("top", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
 				.texture("side", prefix("block/" + TFBlocks.AURORA_SLAB.getId().getPath() + "_side"));
-		ModelFile doubleSlabModel = models().withExistingParent(TFBlocks.AURORA_SLAB.getId().getPath() + "_double", prefix("block/util/tinted_cube_column"))
+		ModelFile doubleSlabModel = this.makeTintedBlockColumn(TFBlocks.AURORA_SLAB.getId().getPath() + "_double")
 				.texture("end", prefix("block/" + TFBlocks.AURORA_PILLAR.getId().getPath() + "_top"))
 				.texture("side", prefix("block/" + TFBlocks.AURORA_SLAB.getId().getPath() + "_side"));
 
@@ -1492,7 +1498,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		getVariantBuilder(TFBlocks.AURORA_SLAB.get()).partialState()
 				.with(SlabBlock.TYPE, SlabType.DOUBLE).setModels(new ConfiguredModel(doubleSlabModel));
 
-		ModelFile auroraGlass = this.makeTintedBlock(TFBlocks.AURORALIZED_GLASS.getId().getPath(), TRANSLUCENT, 0)
+		ModelFile auroraGlass = this.makeTintedBlockAll(TFBlocks.AURORALIZED_GLASS.getId().getPath(), TRANSLUCENT)
 				.texture("all", blockTexture(TFBlocks.AURORALIZED_GLASS.get()));
 		simpleBlock(TFBlocks.AURORALIZED_GLASS.get(), auroraGlass);
 	}

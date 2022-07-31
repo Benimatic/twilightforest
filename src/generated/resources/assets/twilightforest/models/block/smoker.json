@@ -48,13 +48,15 @@
   ],
   "render_type": "minecraft:solid",
   "textures": {
-    "all": "twilightforest:block/aurora_block_13",
-    "down": "#all",
-    "east": "#all",
-    "north": "#all",
+    "bottom": "minecraft:block/grass_block_top",
+    "down": "#bottom",
+    "east": "#side",
+    "north": "#side",
     "particle": "#north",
-    "south": "#all",
-    "up": "#all",
-    "west": "#all"
+    "side": "twilightforest:block/firejet_side",
+    "south": "#side",
+    "top": "twilightforest:block/firejet_top",
+    "up": "#top",
+    "west": "#side"
   }
 }
