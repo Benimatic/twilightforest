@@ -219,7 +219,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.TIME_SAPLING.get().asItem(),
 				TFBlocks.TRANSFORMATION_SAPLING.get().asItem(),
 				TFBlocks.MINING_SAPLING.get().asItem(),
-				TFBlocks.SORTING_SAPLING.get().asItem());
+				TFBlocks.SORTING_SAPLING.get().asItem(),
+				TFItems.TRANSFORMATION_POWDER.get());
 
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
 
