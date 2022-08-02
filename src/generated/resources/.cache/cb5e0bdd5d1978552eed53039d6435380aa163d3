@@ -1,4 +1,4 @@
-// 1.19	2022-07-17T16:00:34.6838971	TwilightForest loot tables
+// 1.19.1	2022-08-01T22:41:54.6472117	TwilightForest loot tables
 9992978a24c986ab8bbacfd4cb5c88b4b3d653a2 data/twilightforest/loot_tables/blocks/acacia_banister.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -448,8 +448,8 @@ ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/twilightforest/loot_tables/entitie
 1d3e4ac30c5733614feb6ac4ea4f54a54303ab81 data/twilightforest/loot_tables/entities/lich.json
 ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/twilightforest/loot_tables/entities/lich_minion.json
 7291073021c6e3fc1889111955c60f3735966f87 data/twilightforest/loot_tables/entities/lower_goblin_knight.json
-46a1c356512977c4344c24f650289c3d84da52cb data/twilightforest/loot_tables/entities/maze_slime.json
 ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/twilightforest/loot_tables/entities/loyal_zombie.json
+46a1c356512977c4344c24f650289c3d84da52cb data/twilightforest/loot_tables/entities/maze_slime.json
 e7ea8d1e801b0f90aedd93be997774c962fcef07 data/twilightforest/loot_tables/entities/minoshroom.json
 376d7a51b6aabbab40aa9306047fbe0bce174ba4 data/twilightforest/loot_tables/entities/minotaur.json
 783fb88bf21bbcf0f105eec241d8d17b8741c997 data/twilightforest/loot_tables/entities/mist_wolf.json

@@ -14,6 +14,7 @@ import twilightforest.init.BiomeKeys;
 public class BiomeTagGenerator extends BiomeTagsProvider {
 
 	public static final TagKey<Biome> IS_TWILIGHT = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("in_twilight_forest"));
+	public static final TagKey<Biome> UNDERGROUND = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("underground"));
 
 	public static final TagKey<Biome> VALID_QUEST_GROVE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_quest_grove_biomes"));
 
@@ -50,6 +51,10 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 				BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_CENTER,
 				BiomeKeys.SNOWY_FOREST, BiomeKeys.GLACIER,
 				BiomeKeys.HIGHLANDS, BiomeKeys.THORNLANDS, BiomeKeys.FINAL_PLATEAU
+		);
+
+		tag(UNDERGROUND).add(
+				BiomeKeys.UNDERGROUND
 		);
 
 		tag(VALID_QUEST_GROVE_BIOMES).add(BiomeKeys.ENCHANTED_FOREST);

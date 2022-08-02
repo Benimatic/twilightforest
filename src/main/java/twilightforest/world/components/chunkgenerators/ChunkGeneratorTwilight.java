@@ -60,7 +60,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			RegistryCodecs.homogeneousList(Registry.STRUCTURE_SET_REGISTRY).fieldOf("structures_placements").forGetter(o -> o.structureOverrides),
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
-			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
+			Codec.unboundedMap(MobCategory.CODEC, RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY)).fieldOf("mob_categories_per_biomes").forGetter(o -> o.mobCategoriesPerBiomes),
 			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
 			Codec.unboundedMap(ResourceKey.codec(Registry.BIOME_REGISTRY), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
 	).apply(instance, ChunkGeneratorTwilight::new));
@@ -69,7 +69,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	private final Holder<NoiseGeneratorSettings> noiseGeneratorSettings;
 	private final boolean genDarkForestCanopy;
-	private final boolean monsterSpawnsBelowSeaLevel;
 	private final Optional<Integer> darkForestCanopyHeight;
 
 	private final BlockState defaultBlock;
@@ -78,18 +77,20 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private final Optional<TFTerrainWarp> warper;
 
 	private final HolderSet<StructureSet> structureOverrides;
+	private final Map<MobCategory, HolderSet<Biome>> mobCategoriesPerBiomes;
 
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, HolderSet<StructureSet> structureOverrides, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, HolderSet<StructureSet> structureOverrides, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, Map<MobCategory, HolderSet<Biome>> mobCategoriesPerBiomes, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
 		super(structures, Optional.of(structureOverrides), delegate);
 		this.structureOverrides = structureOverrides;
 
 		this.biomeLandmarkOverrides = biomeLandmarkOverrides;
 		this.noiseGeneratorSettings = noiseGenSettings;
 		this.genDarkForestCanopy = genDarkForestCanopy;
-		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
+
+		this.mobCategoriesPerBiomes = mobCategoriesPerBiomes;
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
 			this.defaultBlock = noiseGen.defaultBlock;
@@ -743,7 +744,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
-						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2, null).value();
+						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 256, p.getZ() >> 2, null).value();
 						if (BiomeKeys.DARK_FOREST.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
@@ -866,12 +867,11 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Override
 	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory mobCategory, BlockPos pos) {
-		if (!this.monsterSpawnsBelowSeaLevel) return super.getMobsAt(biome, structureManager, mobCategory, pos);
-
 		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(structureManager, mobCategory, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
-		return mobCategory == MobCategory.MONSTER && pos.getY() >= this.getSeaLevel() ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, mobCategory, pos);
+
+		return this.mobCategoriesPerBiomes.get(mobCategory).contains(biome) ? super.getMobsAt(biome, structureManager, mobCategory, pos) : WeightedRandomList.create();
 	}
 
 	public TFLandmark pickLandmarkForChunk(final ChunkPos chunk, final WorldGenLevel world) {
