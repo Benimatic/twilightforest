@@ -24,7 +24,7 @@ import twilightforest.TwilightForestMod;
 
 import java.util.*;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"rawtypes", "deprecation"})
 //yoinked from TCon, entity melting rendering looks so good and I couldnt be bothered to write my own system
 public class EntityRenderer implements IIngredientRenderer<EntityType> {
 
@@ -143,15 +143,8 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 		entityrenderdispatcher.overrideCameraOrientation(quaternion1);
 		entityrenderdispatcher.setRenderShadow(false);
 		MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-		RenderSystem.runAsFancy(() -> {
-			entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880);
-			if (entity.isMultipartEntity()) {
-				Arrays.stream(entity.getParts())
-						.filter(Objects::nonNull)
-						.forEach(partEntity ->
-								entityrenderdispatcher.render(partEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
-			}
-		});
+		RenderSystem.runAsFancy(() ->
+				entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
 		multibuffersource$buffersource.endBatch();
 		entityrenderdispatcher.setRenderShadow(true);
 		entity.yBodyRot = f2;

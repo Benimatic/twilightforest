@@ -1644,6 +1644,7 @@
   "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead.",
 
   // JEI
+  "gui.crumble_horn_jei": "Crumble Horn",
   "gui.transformation_jei": "Transformation Powder",
   "gui.uncrafting_jei": "Uncrafting"
 }
