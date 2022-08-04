@@ -90,7 +90,9 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [
+    "creature": [],
+    "misc": [],
+    "monster": [
       {
         "type": "minecraft:creeper",
         "maxCount": 4,
@@ -110,8 +112,6 @@
         "weight": 10
       }
     ],
-    "misc": [],
-    "monster": [],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

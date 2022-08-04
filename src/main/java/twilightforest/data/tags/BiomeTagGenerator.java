@@ -14,7 +14,6 @@ import twilightforest.init.BiomeKeys;
 public class BiomeTagGenerator extends BiomeTagsProvider {
 
 	public static final TagKey<Biome> IS_TWILIGHT = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("in_twilight_forest"));
-	public static final TagKey<Biome> UNDERGROUND = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("underground"));
 
 	public static final TagKey<Biome> VALID_QUEST_GROVE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_quest_grove_biomes"));
 
@@ -46,15 +45,11 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 				BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST,
 				BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST,
 				BiomeKeys.ENCHANTED_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST,
-				BiomeKeys.LAKE, BiomeKeys.STREAM,
+				BiomeKeys.LAKE, BiomeKeys.STREAM, BiomeKeys.UNDERGROUND,
 				BiomeKeys.SWAMP, BiomeKeys.FIRE_SWAMP,
 				BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_CENTER,
 				BiomeKeys.SNOWY_FOREST, BiomeKeys.GLACIER,
 				BiomeKeys.HIGHLANDS, BiomeKeys.THORNLANDS, BiomeKeys.FINAL_PLATEAU
-		);
-
-		tag(UNDERGROUND).add(
-				BiomeKeys.UNDERGROUND
 		);
 
 		tag(VALID_QUEST_GROVE_BIOMES).add(BiomeKeys.ENCHANTED_FOREST);
@@ -120,6 +115,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		tag(Tags.Biomes.IS_WASTELAND).add(BiomeKeys.GLACIER, BiomeKeys.THORNLANDS, BiomeKeys.FINAL_PLATEAU);
 		tag(Tags.Biomes.IS_DRY).add(BiomeKeys.THORNLANDS, BiomeKeys.FINAL_PLATEAU);
 		tag(Tags.Biomes.IS_PLATEAU).add(BiomeKeys.FINAL_PLATEAU);
+		tag(Tags.Biomes.IS_UNDERGROUND).add(BiomeKeys.UNDERGROUND);
 
 		//other vanilla tags
 		tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).addTag(IS_TWILIGHT);

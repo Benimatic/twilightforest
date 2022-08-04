@@ -80,9 +80,18 @@
   "precipitation": "rain",
   "spawn_costs": {},
   "spawners": {
-    "ambient": [],
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 20
+      }
+    ],
     "axolotls": [],
-    "creature": [
+    "creature": [],
+    "misc": [],
+    "monster": [
       {
         "type": "minecraft:spider",
         "maxCount": 4,
@@ -100,16 +109,8 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 5
-      },
-      {
-        "type": "minecraft:bat",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 20
       }
     ],
-    "misc": [],
-    "monster": [],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

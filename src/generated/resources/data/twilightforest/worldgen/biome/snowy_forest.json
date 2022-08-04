@@ -61,7 +61,9 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [
+    "creature": [],
+    "misc": [],
+    "monster": [
       {
         "type": "twilightforest:winter_wolf",
         "maxCount": 2,
@@ -75,8 +77,6 @@
         "weight": 5
       }
     ],
-    "misc": [],
-    "monster": [],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

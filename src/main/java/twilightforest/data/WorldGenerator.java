@@ -118,16 +118,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Map.of(
-				MobCategory.MONSTER, biomeRegistry.getOrCreateTag(BiomeTagGenerator.UNDERGROUND),
-				MobCategory.CREATURE, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.AMBIENT, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.AXOLOTLS, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.UNDERGROUND_WATER_CREATURE, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.WATER_CREATURE, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.WATER_AMBIENT, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.MISC, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT)
-		), Optional.of(12), BIOME_FEATURES_SETS)), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Optional.of(12), BIOME_FEATURES_SETS)), Lifecycle.experimental());
 		return writableregistry;
 	}
 
@@ -145,16 +136,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Map.of(
-				MobCategory.MONSTER, biomeRegistry.getOrCreateTag(BiomeTagGenerator.UNDERGROUND),
-				MobCategory.CREATURE, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.AMBIENT, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.AXOLOTLS, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.UNDERGROUND_WATER_CREATURE, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.WATER_CREATURE, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.WATER_AMBIENT, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT),
-				MobCategory.MISC, biomeRegistry.getOrCreateTag(BiomeTagGenerator.IS_TWILIGHT)
-		), Optional.of(12), BIOME_FEATURES_SETS)), Lifecycle.stable());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Optional.of(12), BIOME_FEATURES_SETS)), Lifecycle.stable());
 		return writableregistry;
 	}
 
