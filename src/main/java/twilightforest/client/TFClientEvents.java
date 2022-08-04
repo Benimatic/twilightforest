@@ -7,7 +7,6 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -16,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -25,9 +25,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -59,6 +59,7 @@ import twilightforest.item.*;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
@@ -345,5 +346,22 @@ public class TFClientEvents {
 			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
 		}
 		return false;
+	}
+
+	@SubscribeEvent
+	public static void translateBookAuthor(ItemTooltipEvent event) {
+		ItemStack stack = event.getItemStack();
+		if (stack.getItem() instanceof WrittenBookItem && stack.hasTag()) {
+			CompoundTag tag = stack.getOrCreateTag();
+			if (tag.contains(TwilightForestMod.ID + ":book")) {
+				List<Component> components = event.getToolTip();
+				for (Component component : components) {
+					if (component.toString().contains("book.byAuthor")) {
+						components.set(components.indexOf(component), (Component.translatable("book.byAuthor")
+								.append(Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
+					}
+				}
+			}
+		}
 	}
 }
