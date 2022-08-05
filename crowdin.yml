@@ -25,11 +25,13 @@ files:
         en-GB: en_gb
         en-NZ: en_nz
         en-PT: en_pt
+        en-UD: en_ud
         en-US: en_us
         en-ZA: en_za
         eo: eo_uy
         es-AR: es_ar
         es-CL: es_cl
+        es-EC: es_ec
         es-ES: es_es
         es-MX: es_mx
         es-UY: es_uy
@@ -42,6 +44,7 @@ files:
         fo: fo_fo
         fr-CA: fr_ca
         fr: fr_fr
+        fr-QC: fr_qc
         fra-DE: fra_de
         fy-NL: fy_nl
         ga-IE: ga_ie
@@ -85,6 +88,7 @@ files:
         nl-BE: nl_be
         nl: nl_nl
         nn-NO: nn_no
+        no-NO: no_no
         oc: oc_fr
         oj: oj_ca
         pl: pl_pl
@@ -93,6 +97,7 @@ files:
         qya-AA: qya_aa
         ro: ro_ro
         ru: ru_ru
+        se-NO: se_no
         sk: sk_sk
         sl: sl_si
         so: so_so
@@ -110,6 +115,7 @@ files:
         val-ES: val_es
         vec: vec_it
         vi: vi_vn
+        vls-BE: vls_be
         yi: yi_de
         yo: yo_ng
         zh-CN: zh_cn
