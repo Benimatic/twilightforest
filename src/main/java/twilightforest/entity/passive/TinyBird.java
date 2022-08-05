@@ -26,6 +26,7 @@ public class TinyBird extends FlyingBird {
 
 	public TinyBird(EntityType<? extends TinyBird> type, Level world) {
 		super(type, world);
+		this.setBirdType(TinyBirdVariant.getVariantId(TinyBirdVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class TinyBird extends FlyingBird {
 	}
 
 	public TinyBirdVariant getBirdType() {
-		return TinyBirdVariant.getVariant(this.entityData.get(TYPE));
+		return TinyBirdVariant.getVariant(this.entityData.get(TYPE)).orElse(TinyBirdVariant.BLUE.get());
 	}
 
 	public void setBirdType(String type) {

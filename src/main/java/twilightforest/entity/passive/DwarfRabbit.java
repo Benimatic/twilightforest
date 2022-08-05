@@ -34,6 +34,7 @@ public class DwarfRabbit extends Animal {
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
+		this.setBunnyType(DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
@@ -100,7 +101,7 @@ public class DwarfRabbit extends Animal {
 	}
 
 	public DwarfRabbitVariant getBunnyType() {
-		return DwarfRabbitVariant.getVariant(this.entityData.get(TYPE));
+		return DwarfRabbitVariant.getVariant(this.entityData.get(TYPE)).orElse(DwarfRabbitVariant.BROWN.get());
 	}
 
 	public void setBunnyType(String type) {
