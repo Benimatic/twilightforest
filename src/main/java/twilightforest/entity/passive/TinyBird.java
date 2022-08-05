@@ -97,7 +97,7 @@ public class TinyBird extends FlyingBird {
 	@Override
 	public boolean isSpooked() {
 		if (this.hurtTime > 0) return true;
-		Player closestPlayer = this.getLevel().getNearestPlayer(this, 4.0D);
+		Player closestPlayer = this.getLevel().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 4.0D, true);
 		return closestPlayer != null
 				&& !SEEDS.test(closestPlayer.getMainHandItem())
 				&& !SEEDS.test(closestPlayer.getOffhandItem());
