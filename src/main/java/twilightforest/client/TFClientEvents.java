@@ -220,7 +220,7 @@ public class TFClientEvents {
 				if (minecraft.gui != null) {
 					minecraft.gui.vignetteBrightness = 0.0F;
 				}
-			}//*/
+			}
 
 			if (minecraft.player != null && HostileMountEvents.isRidingUnfriendly(minecraft.player)) {
 				if (minecraft.gui != null) {
@@ -266,7 +266,7 @@ public class TFClientEvents {
 				TFWeatherRenderer.tick();
 			}
 
-			if (mc.level != null && mc.player != null) {
+			if (TFConfig.CLIENT_CONFIG.firstPersonEffects.get() && mc.level != null && mc.player != null) {
 				for (BlockPos pos : WorldUtil.getAllAround(mc.player.blockPosition(), 16)) {
 					if (mc.level.getBlockEntity(pos) instanceof GrowingBeanstalkBlockEntity bean && bean.isBeanstalkRumbling()) {
 						Player player = mc.player;
@@ -286,7 +286,7 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void camera(ViewportEvent.ComputeCameraAngles event) {
-		if (!Minecraft.getInstance().isPaused() && intensity > 0 && Minecraft.getInstance().player != null) {
+		if (TFConfig.CLIENT_CONFIG.firstPersonEffects.get() && !Minecraft.getInstance().isPaused() && intensity > 0 && Minecraft.getInstance().player != null) {
 			event.setYaw((float) Mth.lerp(event.getPartialTick(), event.getYaw(), event.getYaw() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
 			event.setPitch((float) Mth.lerp(event.getPartialTick(), event.getPitch(), event.getPitch() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
 			event.setRoll((float) Mth.lerp(event.getPartialTick(), event.getRoll(), event.getRoll() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
