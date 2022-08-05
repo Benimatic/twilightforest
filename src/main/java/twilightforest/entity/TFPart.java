@@ -91,8 +91,18 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	@Override
-	public EntityDimensions getDimensions(Pose poseIn) {
-		return realSize;
+	public boolean isCurrentlyGlowing() {
+		return this.getParent().isCurrentlyGlowing();
+	}
+
+	@Override
+	public boolean isInvisible() {
+		return this.getParent().isInvisible();
+	}
+
+	@Override
+	public EntityDimensions getDimensions(Pose pose) {
+		return this.realSize;
 	}
 
 	@Override
