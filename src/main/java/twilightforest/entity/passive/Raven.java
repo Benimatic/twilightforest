@@ -12,7 +12,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFSounds;
 
-public class Raven extends TinyBird {
+public class Raven extends FlyingBird {
+
+	private PanicGoal panic;
 
 	public Raven(EntityType<? extends Raven> type, Level world) {
 		super(type, world);
@@ -21,7 +23,7 @@ public class Raven extends TinyBird {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5F));
+		this.goalSelector.addGoal(1, this.panic = new PanicGoal(this, 1.5F));
 		this.goalSelector.addGoal(2, new TemptGoal(this, 0.85F, SEEDS, true));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
@@ -31,7 +33,7 @@ public class Raven extends TinyBird {
 	public static AttributeSupplier.Builder registerAttributes() {
 		return TinyBird.registerAttributes()
 				.add(Attributes.MAX_HEALTH, 10.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2);
+				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 
 	@Override
@@ -66,6 +68,6 @@ public class Raven extends TinyBird {
 
 	@Override
 	public boolean isSpooked() {
-		return this.hurtTime > 0;
+		return this.hurtTime > 0 || this.panic.isRunning();
 	}
 }

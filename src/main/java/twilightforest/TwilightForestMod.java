@@ -44,6 +44,8 @@ import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
+import twilightforest.init.custom.DwarfRabbitVariant;
+import twilightforest.init.custom.TinyBirdVariant;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
@@ -124,6 +126,9 @@ public class TwilightForestMod {
 		TFStructures.STRUCTURES.register(modbus);
 		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
+
+		DwarfRabbitVariant.DWARF_RABBITS.register(modbus);
+		TinyBirdVariant.TINY_BIRDS.register(modbus);
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
