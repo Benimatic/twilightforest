@@ -25,9 +25,9 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    //mappings channel: "official", version: "1.19.1"
+    //mappings channel: "official", version: "1.19.2"
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    mappings channel: 'parchment', version: '1.18.2-2022.07.03-1.19.1'
+    mappings channel: 'parchment', version: '1.18.2-2022.07.03-1.19.2'
 
     //version = minecraft_version + "-" + forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
@@ -144,13 +144,13 @@ repositories {
 
 dependencies {
     // progwml6
-    implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    implementation fg.deobf("mezz.jei:jei-1.19.1-forge:${jei_version}")
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
 
     // theillusivec4
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${minecraft_sub_version}-${curios_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.1-${curios_version}")
 
     //mods we dont have compat with but are nice to have
     runtimeOnly fg.deobf("team-twilight:crossdimcommands:1.19-1.0")
