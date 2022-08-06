@@ -77,15 +77,15 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.REDCAP.get(), 10, 4, 4)
-					.addMonster(TFEntities.REDCAP_SAPPER.get(), 1, 1, 4)
-					.addMonster(TFEntities.KOBOLD.get(), 10, 4, 8)
-					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(TFEntities.SWARM_SPIDER.get(), 10, 4, 4)
-					.addMonster(EntityType.SPIDER, 10, 4, 4)
-					.addMonster(EntityType.CREEPER, 10, 4, 4)
-					.addMonster(TFEntities.FIRE_BEETLE.get(), 5, 4, 4)
-					.addMonster(TFEntities.SLIME_BEETLE.get(), 5, 4, 4)
+			this.addMonster(TFEntities.REDCAP.get(), 10, 1, 2)
+					.addMonster(TFEntities.REDCAP_SAPPER.get(), 1, 1, 2)
+					.addMonster(TFEntities.KOBOLD.get(), 10, 2, 4)
+					.addMonster(EntityType.SKELETON, 10, 2, 3)
+					.addMonster(TFEntities.SWARM_SPIDER.get(), 10, 2, 4)
+					.addMonster(EntityType.SPIDER, 10, 1, 3)
+					.addMonster(EntityType.CREEPER, 10, 1, 2)
+					.addMonster(TFEntities.FIRE_BEETLE.get(), 5, 1, 1)
+					.addMonster(TFEntities.SLIME_BEETLE.get(), 5, 1, 1)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
@@ -99,16 +99,16 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.REDCAP.get(), 10, 4, 4)
-					.addMonster(TFEntities.REDCAP_SAPPER.get(), 2, 1, 4)
-					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
-					.addMonster(EntityType.CREEPER, 10, 4, 4)
-					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(TFEntities.WRAITH.get(), 2, 1, 4)
-					.addMonster(TFEntities.FIRE_BEETLE.get(), 10, 4, 4)
-					.addMonster(TFEntities.SLIME_BEETLE.get(), 10, 4, 4)
-					.addMonster(TFEntities.PINCH_BEETLE.get(), 10, 2, 4)
+			this.addMonster(TFEntities.REDCAP.get(), 10, 2, 4)
+					.addMonster(TFEntities.REDCAP_SAPPER.get(), 2, 1, 2)
+					.addMonster(EntityType.SKELETON, 10, 2, 3)
+					.addMonster(EntityType.CAVE_SPIDER, 10, 1, 2)
+					.addMonster(EntityType.CREEPER, 10, 1, 1)
+					.addMonster(EntityType.ENDERMAN, 1, 1, 1)
+					.addMonster(TFEntities.WRAITH.get(), 2, 1, 2)
+					.addMonster(TFEntities.FIRE_BEETLE.get(), 10, 1, 2)
+					.addMonster(TFEntities.SLIME_BEETLE.get(), 10, 1, 2)
+					.addMonster(TFEntities.PINCH_BEETLE.get(), 10, 1, 2)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
@@ -154,11 +154,11 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 	};
 	public static final TFLandmark LICH_TOWER = new TFLandmark( 1, "lich_tower", true, BiomeTagGenerator.VALID_LICH_TOWER_BIOMES, TerrainAdjustment.BEARD_THIN, TwilightForestMod.prefix("progress_naga") ) {
 		{
-			this.addMonster(EntityType.ZOMBIE, 10, 4, 4)
-					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(EntityType.CREEPER, 1, 4, 4)
-					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(TFEntities.DEATH_TOME.get(), 10, 4, 4)
+			this.addMonster(EntityType.ZOMBIE, 10, 1, 2)
+					.addMonster(EntityType.SKELETON, 10, 1, 2)
+					.addMonster(EntityType.CREEPER, 1, 1, 1)
+					.addMonster(EntityType.ENDERMAN, 1, 1, 2)
+					.addMonster(TFEntities.DEATH_TOME.get(), 10, 2, 3)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 
 			this.adjustToTerrainHeight = true;
@@ -205,14 +205,14 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 			this.enableDecorations();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.MINOTAUR.get(), 20, 2, 4)
-					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
-					.addMonster(EntityType.CREEPER, 10, 4, 4)
-					.addMonster(TFEntities.MAZE_SLIME.get(), 10, 4, 4)
-					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(TFEntities.FIRE_BEETLE.get(), 10, 4, 4)
-					.addMonster(TFEntities.SLIME_BEETLE.get(), 10, 4, 4)
-					.addMonster(TFEntities.PINCH_BEETLE.get(), 10, 2, 4);
+			this.addMonster(TFEntities.MINOTAUR.get(), 20, 2, 3)
+					.addMonster(EntityType.CAVE_SPIDER, 10, 1, 2)
+					.addMonster(EntityType.CREEPER, 10, 1, 2)
+					.addMonster(TFEntities.MAZE_SLIME.get(), 10, 2, 4)
+					.addMonster(EntityType.ENDERMAN, 1, 1, 2)
+					.addMonster(TFEntities.FIRE_BEETLE.get(), 10, 1, 2)
+					.addMonster(TFEntities.SLIME_BEETLE.get(), 10, 1, 2)
+					.addMonster(TFEntities.PINCH_BEETLE.get(), 10, 1, 1);
 		}
 
 		@Override
@@ -237,16 +237,16 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 	};
 	public static final TFLandmark DARK_TOWER = new TFLandmark( 1, "dark_tower", true, BiomeTagGenerator.VALID_DARK_TOWER_BIOMES, TerrainAdjustment.BEARD_THIN, TwilightForestMod.prefix("progress_knights") ) {
 		{
-			this.addMonster(TFEntities.CARMINITE_GOLEM.get(), 10, 4, 4)
-					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(EntityType.CREEPER, 10, 4, 4)
-					.addMonster(EntityType.ENDERMAN, 2, 1, 4)
+			this.addMonster(TFEntities.CARMINITE_GOLEM.get(), 10, 1, 2)
+					.addMonster(EntityType.SKELETON, 10, 1, 2)
+					.addMonster(EntityType.CREEPER, 5, 1, 1)
+					.addMonster(EntityType.ENDERMAN, 2, 1, 2)
 					.addMonster(EntityType.WITCH, 1, 1, 1)
-					.addMonster(TFEntities.CARMINITE_GHASTLING.get(), 10, 1, 4)
-					.addMonster(TFEntities.CARMINITE_BROODLING.get(), 10, 8, 8)
-					.addMonster(TFEntities.PINCH_BEETLE.get(), 10, 2, 4)
+					.addMonster(TFEntities.CARMINITE_GHASTLING.get(), 10, 1, 2)
+					.addMonster(TFEntities.CARMINITE_BROODLING.get(), 10, 4, 4)
+					.addMonster(TFEntities.PINCH_BEETLE.get(), 10, 1, 1)
 					// roof ghasts
-					.addMonster(1, TFEntities.CARMINITE_GHASTGUARD.get(), 10, 1, 4)
+					.addMonster(1, TFEntities.CARMINITE_GHASTGUARD.get(), 10, 1, 2)
 					// aquarium squids (only in aquariums between y = 35 and y = 64. :/
 					.addWaterCreature(EntityType.SQUID, 10, 4, 4);
 
@@ -273,13 +273,13 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 			this.enableDecorations().disableProtectionAura();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.BLOCKCHAIN_GOBLIN.get(), 10, 4, 4)
+			this.addMonster(TFEntities.BLOCKCHAIN_GOBLIN.get(), 10, 1, 2)
 					.addMonster(TFEntities.LOWER_GOBLIN_KNIGHT.get(), 5, 1, 2)
-					.addMonster(TFEntities.HELMET_CRAB.get(), 10, 4, 4)
-					.addMonster(TFEntities.SLIME_BEETLE.get(), 10, 4, 4)
-					.addMonster(TFEntities.REDCAP_SAPPER.get(), 2, 1, 4)
-					.addMonster(TFEntities.KOBOLD.get(), 10, 4, 8)
-					.addMonster(EntityType.CREEPER, 10, 4, 4)
+					.addMonster(TFEntities.HELMET_CRAB.get(), 10, 2, 4)
+					.addMonster(TFEntities.SLIME_BEETLE.get(), 10, 2, 3)
+					.addMonster(TFEntities.REDCAP_SAPPER.get(), 2, 1, 2)
+					.addMonster(TFEntities.KOBOLD.get(), 10, 2, 4)
+					.addMonster(EntityType.CREEPER, 5, 1, 2)
 					.addMonster(EntityType.SLIME, 5, 4, 4);
 		}
 
@@ -308,7 +308,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
 
-			this.addMonster(TFEntities.YETI.get(), 10, 4, 4);
+			this.addMonster(TFEntities.YETI.get(), 5, 1, 2);
 		}
 
 		@Override
@@ -328,9 +328,9 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 	};
 	public static final TFLandmark ICE_TOWER = new TFLandmark( 2, "ice_tower", true, BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES, TerrainAdjustment.NONE, TwilightForestMod.prefix("progress_yeti") ) {
 		{
-			this.addMonster(TFEntities.SNOW_GUARDIAN.get(), 10, 4, 4)
-					.addMonster(TFEntities.STABLE_ICE_CORE.get(), 10, 4, 4)
-					.addMonster(TFEntities.UNSTABLE_ICE_CORE.get(), 5, 4, 4);
+			this.addMonster(TFEntities.SNOW_GUARDIAN.get(), 10, 1, 2)
+					.addMonster(TFEntities.STABLE_ICE_CORE.get(), 10, 1, 2)
+					.addMonster(TFEntities.UNSTABLE_ICE_CORE.get(), 5, 1, 2);
 		}
 
 		@Override
@@ -353,9 +353,9 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
-			this.addMonster(EntityType.CREEPER, 5, 4, 4)
-					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(TFEntities.TROLL.get(), 20, 4, 4)
+			this.addMonster(EntityType.CREEPER, 5, 1, 2)
+					.addMonster(EntityType.SKELETON, 10, 1, 2)
+					.addMonster(TFEntities.TROLL.get(), 20, 1, 2)
 					.addMonster(EntityType.WITCH, 5, 1, 1)
 					// cloud monsters
 					.addMonster(1, TFEntities.GIANT_MINER.get(), 10, 1, 1)
@@ -385,12 +385,12 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle", true, BiomeTagGenerator.VALID_FINAL_CASTLE_BIOMES, TerrainAdjustment.BEARD_THIN, TwilightForestMod.prefix("progress_troll") ) {
 		{
 			// plain parts of the castle, like the tower maze
-			this.addMonster(TFEntities.KOBOLD.get(), 10, 4, 4)
+			this.addMonster(TFEntities.KOBOLD.get(), 10, 1, 2)
 					.addMonster(TFEntities.ADHERENT.get(), 10, 1, 1)
 					.addMonster(TFEntities.HARBINGER_CUBE.get(), 10, 1, 1)
 					.addMonster(EntityType.ENDERMAN, 10, 1, 1)
 					// internal castle
-					.addMonster(1, TFEntities.KOBOLD.get(), 10, 4, 4)
+					.addMonster(1, TFEntities.KOBOLD.get(), 10, 1, 2)
 					.addMonster(1, TFEntities.ADHERENT.get(), 10, 1, 1)
 					.addMonster(1, TFEntities.HARBINGER_CUBE.get(), 10, 1, 1)
 					.addMonster(1, TFEntities.ARMORED_GIANT.get(), 10, 1, 1)
