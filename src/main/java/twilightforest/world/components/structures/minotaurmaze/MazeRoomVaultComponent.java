@@ -60,14 +60,13 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 		// LEWTZ!
 		int i = rand.nextInt(4); //Set the index of the jackpot chest, so it's not always the same one
 
-		this.setVaultDoubleLootChest(world, 7, 6, 8, 6, Direction.SOUTH, sbb, i == 0, rand);
-		this.setVaultDoubleLootChest(world, 8, 9, 7, 9, Direction.NORTH, sbb, i == 1, rand);
-		this.setVaultDoubleLootChest(world, 6, 8, 6, 7, Direction.EAST, sbb, i == 2, rand);
-		this.setVaultDoubleLootChest(world, 9, 7, 9, 8, Direction.WEST, sbb, i == 3, rand);
+		this.setVaultDoubleLootChest(world, 7, 6, 8, 6, Direction.SOUTH, sbb, i == 0);
+		this.setVaultDoubleLootChest(world, 8, 9, 7, 9, Direction.NORTH, sbb, i == 1);
+		this.setVaultDoubleLootChest(world, 6, 8, 6, 7, Direction.EAST, sbb, i == 2);
+		this.setVaultDoubleLootChest(world, 9, 7, 9, 8, Direction.WEST, sbb, i == 3);
 	}
 
-	private void setVaultDoubleLootChest(WorldGenLevel world, int x, int z, int x2, int z2, Direction facing, BoundingBox sbb, boolean jackpot, RandomSource rand) {
-		TFLootTables vaultLoot = jackpot ? TFLootTables.LABYRINTH_VAULT_JACKPOT : TFLootTables.LABYRINTH_VAULT;
-		this.setDoubleLootChest(world, x, 2, z, x2, 2, z2, facing, vaultLoot, TFLootTables.LABYRINTH_VAULT, sbb, false);
+	private void setVaultDoubleLootChest(WorldGenLevel world, int x, int z, int x2, int z2, Direction facing, BoundingBox sbb, boolean jackpot) {
+		this.setDoubleLootChest(world, x, 2, z, x2, 2, z2, facing, jackpot ? TFLootTables.LABYRINTH_VAULT_JACKPOT : TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_VAULT, sbb, false);
 	}
 }
