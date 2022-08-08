@@ -578,8 +578,46 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.ENDER_CHEST))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_PICKAXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 4).apply(Enchantments.SILK_TOUCH, 1)))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD.get()).apply(Enchant.builder().apply(Enchantments.SHARPNESS, 4).apply(Enchantments.KNOCKBACK, 2)))
-                                .add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD.get()).apply(Enchant.builder().apply(Enchantments.BANE_OF_ARTHROPODS, 5).apply(Enchantments.FIRE_ASPECT, 2)))
-                                .add(LootItem.lootTableItem(TFItems.MAZEBREAKER_PICKAXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 3).apply(Enchantments.BLOCK_FORTUNE, 2)))));
+                                .add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD.get()).apply(Enchant.builder().apply(Enchantments.BANE_OF_ARTHROPODS, 5).apply(Enchantments.FIRE_ASPECT, 2)))));
+
+		//Same as the one above, but with a 100% chance to get a mazebreaker
+		register.accept(TFLootTables.LABYRINTH_VAULT_JACKPOT.lootTable,
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(4))
+								//common loot
+								.add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 9))))
+								.add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))))
+								.add(LootItem.lootTableItem(TFItems.IRONWOOD_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 9))))
+								.add(LootItem.lootTableItem(TFItems.MAZE_WAFER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))))
+								.add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:strong_regeneration")))))
+								.add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:strong_healing")))))
+								.add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:strong_swiftness"))))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(2))
+								//uncommon loot
+								.add(LootItem.lootTableItem(Items.BOW).apply(Enchant.builder().apply(Enchantments.INFINITY_ARROWS, 1).apply(Enchantments.PUNCH_ARROWS, 2)))
+								.add(LootItem.lootTableItem(Items.BOW).apply(Enchant.builder().apply(Enchantments.POWER_ARROWS, 3).apply(Enchantments.FLAMING_ARROWS, 1)))
+								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_SHOVEL.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 2)))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_AXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 5)))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_CHESTPLATE.get()).apply(Enchant.builder().apply(Enchantments.ALL_DAMAGE_PROTECTION, 3)))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_BOOTS.get()).apply(Enchant.builder().apply(Enchantments.ALL_DAMAGE_PROTECTION, 2)))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_LEGGINGS.get()).apply(Enchant.builder().apply(Enchantments.FIRE_PROTECTION, 4)))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_HELMET.get()).apply(Enchant.builder().apply(Enchantments.RESPIRATION, 3))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								//rare loot
+								.add(LootItem.lootTableItem(Items.EMERALD_BLOCK))
+								.add(LootItem.lootTableItem(Items.ENDER_CHEST))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_PICKAXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 4).apply(Enchantments.SILK_TOUCH, 1)))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD.get()).apply(Enchant.builder().apply(Enchantments.SHARPNESS, 4).apply(Enchantments.KNOCKBACK, 2)))
+								.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD.get()).apply(Enchant.builder().apply(Enchantments.BANE_OF_ARTHROPODS, 5).apply(Enchantments.FIRE_ASPECT, 2))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								//jackpot guaranteed mazebreaker
+								.add(LootItem.lootTableItem(TFItems.MAZEBREAKER_PICKAXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 3).apply(Enchantments.BLOCK_FORTUNE, 2)))));
 
         register.accept(TFLootTables.STRONGHOLD_CACHE.lootTable,
                 LootTable.lootTable()

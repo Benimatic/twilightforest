@@ -37,6 +37,7 @@ public class TFLootTables {
 	public static final TFLootTables BASEMENT = new TFLootTables("basement");
 	public static final TFLootTables FOUNDATION_BASEMENT = new TFLootTables("foundation_basement");
 	public static final TFLootTables LABYRINTH_VAULT = new TFLootTables("labyrinth_vault");
+	public static final TFLootTables LABYRINTH_VAULT_JACKPOT = new TFLootTables("labyrinth_vault_jackpot");
 	public static final TFLootTables DARKTOWER_CACHE = new TFLootTables("darktower_cache");
 	public static final TFLootTables DARKTOWER_KEY = new TFLootTables("darktower_key");
 	public static final TFLootTables DARKTOWER_BOSS = new TFLootTables("darktower_boss");
