@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-08T13:16:55.7768086	TwilightForest loot tables
+// 1.19.2	2022-08-08T07:25:59.7837087	TwilightForest loot tables
 9992978a24c986ab8bbacfd4cb5c88b4b3d653a2 data/twilightforest/loot_tables/blocks/acacia_banister.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -506,6 +506,7 @@ cb693e0cfb32ad67188eee0dbe316dafa8bf7308 data/twilightforest/loot_tables/structu
 6c1fa3f44b09e942fc4a74631594d8600a706236 data/twilightforest/loot_tables/structures/tower_room.json
 1f494e4d7c92f059e4a30a6bbd35795aba66bf38 data/twilightforest/loot_tables/structures/tree_cache.json
 8504dd8602cdf5a750a8a3627fca6ada91849302 data/twilightforest/loot_tables/structures/troll_garden.json
-5f8d12992825ba846815547e7764d28620c28efa data/twilightforest/loot_tables/structures/troll_vault.json
+2b51965a8272bd9ccd89e34945375af2c9920e85 data/twilightforest/loot_tables/structures/troll_vault.json
+7d33970ccd06cbf3e766d12b3bb22f62908758e9 data/twilightforest/loot_tables/structures/troll_vault_with_lamp.json
 9b0a99dfcb566400ad55577de0c36d9f0727b1b0 data/twilightforest/loot_tables/structures/useless.json
 c1da0ba3e2ac74fef87ceb1f6f8919f638349c59 data/twilightforest/loot_tables/structures/well.json

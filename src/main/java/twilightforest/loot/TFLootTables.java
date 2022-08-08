@@ -50,6 +50,7 @@ public class TFLootTables {
 //	public static final TFLootTables AURORA_BOSS = new TFLootTables("aurora_boss"); //unused
 	public static final TFLootTables TROLL_GARDEN = new TFLootTables("troll_garden");
 	public static final TFLootTables TROLL_VAULT = new TFLootTables("troll_vault");
+	public static final TFLootTables TROLL_VAULT_WITH_LAMP = new TFLootTables("troll_vault_with_lamp");
 	public static final TFLootTables GRAVEYARD = new TFLootTables("graveyard");
 	public static final TFLootTables QUEST_GROVE = new TFLootTables("quest_grove_dropper");
 	public static final TFLootTables USELESS_LOOT = new TFLootTables("useless");

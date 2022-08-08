@@ -68,7 +68,6 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 
 	private void setVaultDoubleLootChest(WorldGenLevel world, int x, int z, int x2, int z2, Direction facing, BoundingBox sbb, boolean jackpot, RandomSource rand) {
 		TFLootTables vaultLoot = jackpot ? TFLootTables.LABYRINTH_VAULT_JACKPOT : TFLootTables.LABYRINTH_VAULT;
-		boolean randomBoolean = rand.nextBoolean(); //Set the filler room loot to sometimes be in the left, and sometimes in the right chest
-		this.setDoubleLootChest(world, x, 2, z, x2, 2, z2, facing, randomBoolean ? vaultLoot : TFLootTables.LABYRINTH_ROOM, randomBoolean ? TFLootTables.LABYRINTH_ROOM : vaultLoot, sbb, false);
+		this.setDoubleLootChest(world, x, 2, z, x2, 2, z2, facing, vaultLoot, TFLootTables.LABYRINTH_VAULT, sbb, false);
 	}
 }
