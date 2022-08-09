@@ -49,7 +49,6 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
                 TFEntities.LICH_BOLT.get(),
                 TFEntities.WAND_BOLT.get(),
                 TFEntities.LICH_BOMB.get(),
-                TFEntities.CICADA_SHOT.get(),
                 TFEntities.MOONWORM_SHOT.get(),
                 TFEntities.SLIME_BLOB.get(),
                 TFEntities.THROWN_WEP.get(),
@@ -111,11 +110,7 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
         // These entities forcefully take players from the entity they're riding
         tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
 
-        tag(DONT_KILL_BUGS).add(TFEntities.CICADA_SHOT.get(), TFEntities.MOONWORM_SHOT.get());
-                //these ones have to be optional. They aren't registered unless undergarden is actually installed.
-//                .addOptional(UndergardenCompat.CICADA_SLINGSHOT.get().getRegistryName())
-//                .addOptional(UndergardenCompat.FIREFLY_SLINGSHOT.get().getRegistryName())
-//                .addOptional(UndergardenCompat.MOONWORM_SLINGSHOT.get().getRegistryName());
+        tag(DONT_KILL_BUGS).add(TFEntities.MOONWORM_SHOT.get());
 
         tag(SORTABLE_ENTITIES).add(
                 EntityType.CHEST_MINECART,

@@ -85,7 +85,6 @@ public class TFEntities {
 	public static final RegistryObject<EntityType<CarminiteGolem>> CARMINITE_GOLEM = make(TFEntityNames.CARMINITE_GOLEM, CarminiteGolem::new, MobCategory.MONSTER, 1.4F, 2.9F, 0x6b3d20, 0xe2ddda);
 	public static final RegistryObject<EntityType<ChainBlock>> CHAIN_BLOCK = build(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(ChainBlock.class, ChainBlock::new, 0.6F, 0.6F, 80, 1), true);
 	public static final RegistryObject<EntityType<CharmEffect>> CHARM_EFFECT = make(TFEntityNames.CHARM_EFFECT, CharmEffect::new, MobCategory.MISC, 0.25F, 0.25F, 0, 0);
-	public static final RegistryObject<EntityType<CicadaShot>> CICADA_SHOT = build(TFEntityNames.CICADA_SHOT, makeCastedBuilder(CicadaShot.class, CicadaShot::new, 0.25F, 0.25F, 150, 3), false);
 	public static final RegistryObject<EntityType<CubeOfAnnihilation>> CUBE_OF_ANNIHILATION = build(TFEntityNames.CUBE_OF_ANNIHILATION, makeCastedBuilder(CubeOfAnnihilation.class, CubeOfAnnihilation::new, 1.0F, 1.0F, 80, 1), true);
 	public static final RegistryObject<EntityType<DeathTome>> DEATH_TOME = make(TFEntityNames.DEATH_TOME, DeathTome::new, MobCategory.MONSTER, 0.6F, 1.1F, 0x774e22, 0xdbcdbe);
 	public static final RegistryObject<EntityType<Deer>> DEER = make(TFEntityNames.DEER, Deer::new, MobCategory.CREATURE, 0.7F, 1.8F, 0x7b4d2e, 0x4b241d);
@@ -388,7 +387,6 @@ public class TFEntities {
 		event.registerEntityRenderer(TOME_BOLT.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(HYDRA_MORTAR.get(), HydraMortarRenderer::new);
 		event.registerEntityRenderer(SLIME_BLOB.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(CICADA_SHOT.get(), CicadaShotRenderer::new);
 		event.registerEntityRenderer(MOONWORM_SHOT.get(), MoonwormShotRenderer::new);
 		event.registerEntityRenderer(CHARM_EFFECT.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(LICH_BOMB.get(), ThrownItemRenderer::new);
