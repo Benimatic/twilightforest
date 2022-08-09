@@ -4,6 +4,7 @@ import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -15,15 +16,17 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.IShapedRecipe;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
+import twilightforest.init.TFRecipes;
 import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
 import twilightforest.inventory.slot.UncraftingSlot;
-import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.TFItemStackUtils;
 
@@ -149,7 +152,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 				// mark the appropriate number of damaged components
 				if (inputStack.isDamaged()) {
-					int damagedParts = countDamagedParts(inputStack);
+					int damagedParts = this.countDamagedParts(inputStack);
 
 					for (int i = 0; i < 9 && damagedParts > 0; i++) {
 						ItemStack stack = this.uncraftingMatrix.getItem(i);
@@ -170,7 +173,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
 				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.getResultItem().getCount();//Uncrafting recipes need this method call
-				this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
+				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
 
 			} else {
@@ -183,22 +186,13 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		if (inventory == this.assemblyMatrix || inventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
 				// display the output
-				chooseRecipe(this.assemblyMatrix);
-				this.uncraftingMatrix.recraftingCost = 0;
+				this.chooseRecipe(this.assemblyMatrix);
 			} else {
-//    			if (isMatrixEmpty(this.assemblyMatrix)) {
-//    				// we just emptied the assembly matrix and need to re-prepare for uncrafting
-//	    			this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
-//        			this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
-//        			this.uncraftingMatrix.recraftingCost = 0;
-//    			}
-//    			else {
 				// we placed an item in the assembly matrix, the next step will re-initialize these with correct values
 				this.tinkerResult.setItem(0, ItemStack.EMPTY);
-				this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
-				this.uncraftingMatrix.recraftingCost = 0;
-//    			}
+				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
 			}
+			this.uncraftingMatrix.recraftingCost = 0;
 		}
 
 		// repairing / recrafting: if there is an input item, and items in both grids, can we combine them to produce an output item that is the same type as the input item?
@@ -218,7 +212,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				}
 			}
 			// is there a result from this combined thing?
-			chooseRecipe(this.combineMatrix);
+			this.chooseRecipe(this.combineMatrix);
 
 			ItemStack input = this.tinkerInput.getItem(0);
 			ItemStack result = this.tinkerResult.getItem(0);
@@ -239,8 +233,9 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				inputEnchantments.keySet().removeIf(enchantment -> enchantment == null || !enchantment.canEnchant(result));
 
 				if (inputTags != null) {
-					// remove enchantments, copy tags, re-add filtered enchantments
+					// remove enchantments and damage, copy tags, re-add filtered enchantments
 					inputTags.remove("ench");
+					inputTags.remove("Damage");
 					result.setTag(inputTags);
 					EnchantmentHelper.setEnchantments(inputEnchantments, result);
 				}
@@ -259,7 +254,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 				this.tinkerResult.setItem(0, result);
 				this.uncraftingMatrix.uncraftingCost = 0;
-				this.uncraftingMatrix.recraftingCost = calculateRecraftingCost();
+				this.uncraftingMatrix.recraftingCost = this.calculateRecraftingCost();
 
 				// if there is a recrafting cost, increment the repair cost of the output
 				if (this.uncraftingMatrix.recraftingCost > 0 && !result.hasCustomHoverName()) {
@@ -278,6 +273,8 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		return stackTag != null && stackTag.getBoolean(TAG_MARKER);
 	}
 
+	//might be handy one day
+	@SuppressWarnings("unused")
 	public static void unmarkStack(ItemStack stack) {
 		TFItemStackUtils.clearInfoTag(stack, TAG_MARKER);
 	}
@@ -304,7 +301,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 						!recipe.getIngredients().isEmpty() &&
 						matches(inputStack, recipe.getResultItem()) &&
 						!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
-					if(TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) {
+					if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) {
 						recipes.add(rec);
 					}
 				}
@@ -318,7 +315,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	}
 
 	private static boolean matches(ItemStack input, ItemStack output) {
-		return input.getItem() == output.getItem() && input.getCount() >= output.getCount();
+		return input.is(output.getItem()) && input.getCount() >= output.getCount();
 	}
 
 	private static CraftingRecipe[] getRecipesFor(CraftingContainer matrix, Level world) {
@@ -345,9 +342,8 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	}
 
 	/**
-	 * Checks if the result is a valid match for the input.  Currently only accepts armor or tools that are the same type as the input
+	 * Checks if the result is a valid match for the input. Currently, only accepts armor or tools that are the same type as the input
 	 */
-	// TODO Should we also check the slot the armors can go into, in case they don't extend armor class..?
 	private static boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
 		if (inputStack.getItem() instanceof PickaxeItem && resultStack.getItem() instanceof PickaxeItem) {
 			return true;
@@ -368,12 +364,19 @@ public class UncraftingMenu extends AbstractContainerMenu {
 			return true;
 		}
 
-		if (inputStack.getItem() instanceof ArmorItem inputArmor && resultStack.getItem() instanceof ArmorItem resultArmor) {
-
-			return inputArmor.getSlot() == resultArmor.getSlot();
+		if (inputStack.is(Tags.Items.ARMORS) && resultStack.is(Tags.Items.ARMORS)) {
+			return getSlot(inputStack) == getSlot(resultStack);
 		}
 
 		return false;
+	}
+
+	@Nullable
+	private static EquipmentSlot getSlot(ItemStack stack) {
+		if (stack.getItem() instanceof ArmorItem armor) {
+			return armor.getSlot();
+		}
+		return stack.getEquipmentSlot();
 	}
 
 	public int getUncraftingCost() {
@@ -417,11 +420,11 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		cost += enchantCost;
 
 		// broken pieces cost
-		int damagedCost = (1 + countDamagedParts(input)) * EnchantmentHelper.getEnchantments(output).size();
+		int damagedCost = (1 + this.countDamagedParts(input)) * EnchantmentHelper.getEnchantments(output).size();
 		cost += damagedCost;
 
-		// factor in enchantibility difference
-		int enchantabilityDifference = input.getItem().getEnchantmentValue() - output.getItem().getEnchantmentValue();
+		// factor in enchantability difference
+		int enchantabilityDifference = input.getItem().getEnchantmentValue(input) - output.getItem().getEnchantmentValue(output);
 		cost += enchantabilityDifference;
 
 		// minimum cost of 1 if we're even calling this part
@@ -472,7 +475,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 		// if the player is trying to take the result item and they don't have the XP to pay for it, reject them
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.tinkerResult
-				&& calculateRecraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
+				&& this.calculateRecraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
 
 			return;
 		}
@@ -480,7 +483,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.uncraftingMatrix) {
 
 			// similarly, reject uncrafting if they can't do that either
-			if (calculateUncraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
+			if (this.calculateUncraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
 				return;
 			}
 
@@ -508,7 +511,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Should the specified item count for taking damage?
 	 */
 	private static boolean isDamageableComponent(ItemStack itemStack) {
-		return !itemStack.isEmpty() && itemStack.getItem() != Items.STICK;
+		return !itemStack.isEmpty() && !itemStack.is(Tags.Items.RODS_WOODEN);
 	}
 
 	/**
@@ -520,7 +523,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 			if (!matrix.getItem(i).isEmpty()) {
 				count++;
 			}
-			if(isIngredientProblematic(matrix.getItem(i)) || isMarked(matrix.getItem(i))) {
+			if (isIngredientProblematic(matrix.getItem(i)) || isMarked(matrix.getItem(i)) || !isDamageableComponent(matrix.getItem(i))) {
 				count--;
 			}
 		}
@@ -529,7 +532,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 	/**
 	 * Determine, based on the item damage, how many parts are damaged.  We're already
-	 * assuming that the item is loaded into the uncrafing matrix.
+	 * assuming that the item is loaded into the uncrafting matrix.
 	 */
 	private int countDamagedParts(ItemStack input) {
 		int totalMax4 = Math.max(4, countDamageableParts(this.uncraftingMatrix));
@@ -538,12 +541,13 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	}
 
 	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
+	 * Called to transfer a stack from one inventory to the other e.g. when shift clicking.
 	 */
 	@Override
 	public ItemStack quickMoveStack(Player player, int slotNum) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(slotNum);
+		//noinspection ConstantConditions
 		if (slot != null && slot.hasItem()) {
 			ItemStack itemstack1 = slot.getItem();
 			itemstack = itemstack1.copy();
@@ -552,10 +556,8 @@ public class UncraftingMenu extends AbstractContainerMenu {
 					return ItemStack.EMPTY;
 				}
 				slot.onQuickCraft(itemstack1, itemstack);
-			}  else if (slotNum == 1) {
-				this.positionData.execute((p_39378_, p_39379_) -> {
-					itemstack1.getItem().onCraftedBy(itemstack1, p_39378_, player);
-				});
+			} else if (slotNum == 1) {
+				this.positionData.execute((p_39378_, p_39379_) -> itemstack1.getItem().onCraftedBy(itemstack1, p_39378_, player));
 				if (!this.moveItemStackTo(itemstack1, 20, 56, true)) {
 					return ItemStack.EMPTY;
 				}
