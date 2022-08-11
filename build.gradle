@@ -144,16 +144,16 @@ repositories {
 
 dependencies {
     // progwml6
-    implementation fg.deobf("mezz.jei:jei-1.19.1-forge:${jei_version}")
+    implementation fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${jei_version}")
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
 
     // theillusivec4
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.1-${curios_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.minecraft_sub_version}-${curios_version}")
 
     //mods we dont have compat with but are nice to have
-    runtimeOnly fg.deobf("team-twilight:crossdimcommands:1.19-1.0")
+    runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_version}-1.0")
     runtimeOnly fg.deobf("curse.maven:jade-324717:3903693")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
