@@ -48,7 +48,6 @@ public class EntityLootTables extends EntityLoot {
 		add(TFEntities.ADHERENT.get(), emptyLootTable());
 		add(TFEntities.LICH_MINION.get(), emptyLootTable());
 		add(TFEntities.LOYAL_ZOMBIE.get(), emptyLootTable());
-		add(TFEntities.RISING_ZOMBIE.get(), emptyLootTable());
 		add(TFEntities.KNIGHT_PHANTOM.get(), emptyLootTable());
 		//haha no loot for you
 		add(TFEntities.PLATEAU_BOSS.get(), emptyLootTable());
@@ -70,6 +69,7 @@ public class EntityLootTables extends EntityLoot {
 		add(TFEntities.CARMINITE_BROODLING.get(), fromEntityLootTable(EntityType.SPIDER));
 		add(TFEntities.CARMINITE_GHASTGUARD.get(), fromEntityLootTable(EntityType.GHAST));
 		add(TFEntities.BIGHORN_SHEEP.get(), fromEntityLootTable(EntityType.SHEEP));
+		add(TFEntities.RISING_ZOMBIE.get(), fromEntityLootTable(EntityType.ZOMBIE));
 		add(TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
 		add(TFLootTables.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
 		add(TFLootTables.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
