@@ -70,13 +70,13 @@ public class JEICompat implements IModPlugin {
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) { //we only do this if uncrafting is not disabled
 			List<CraftingRecipe> recipes = manager.getAllRecipesFor(RecipeType.CRAFTING);
-			recipes = recipes.stream().filter(recipe -> !recipe.getResultItem().isEmpty() || //get rid of empty items
-							!recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) || //Prevents things that are tagged as banned from showing up
-							!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) || //remove disabled recipes
+			recipes = recipes.stream().filter(recipe ->
+							!recipe.getResultItem().isEmpty() && //get rid of empty items
+							!recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
+							TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) && //remove disabled recipes
 							TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) //remove blacklisted mod ids
 					.collect(Collectors.toList());
 			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-
 			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
 		}
 		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, manager.getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()));

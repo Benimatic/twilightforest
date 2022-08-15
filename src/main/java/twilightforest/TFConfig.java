@@ -132,6 +132,11 @@ public class TFConfig {
 								If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
 								If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
 						defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
+				UNCRAFTING_STUFFS.reverseRecipeBlacklist = builder.
+						worldRestart().
+						translation(config + "uncrafting_recipes_flip").
+						comment("If true, this will invert the above uncrafting recipe list from a blacklist to a whitelist.").
+						define("flipRecipeList", false);
 				UNCRAFTING_STUFFS.blacklistedUncraftingModIds = builder.
 						worldRestart().
 						translation(config + "uncrafting_mod_ids").
@@ -238,6 +243,7 @@ public class TFConfig {
 		public static class UncraftingStuff {
 			public ForgeConfigSpec.BooleanValue disableUncrafting;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
+			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
 			public ForgeConfigSpec.BooleanValue flipUncraftingModIdList;
 		}
