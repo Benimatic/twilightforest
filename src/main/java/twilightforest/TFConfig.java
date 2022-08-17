@@ -143,7 +143,7 @@ public class TFConfig {
 						comment("""
 								If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.
 								To add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.
-								Example: "twilightforest:moonworm_queen" will disable uncrafting the moonworm queen into itself and 3 torchberries.
+								Example: "twilightforest:firefly_particle_spawner" will disable uncrafting the particle spawner into a firefly jar, firefly, and poppy.
 								If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
 								If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
 						defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
