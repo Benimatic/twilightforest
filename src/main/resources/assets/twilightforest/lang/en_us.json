@@ -1457,6 +1457,10 @@
   "twilightforest.config.uncrafting.tooltip": "Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.",
   "twilightforest.config.uncrafting_recipes": "Disable Uncrafting Recipes in Uncrafting Table",
   "twilightforest.config.uncrafting_recipes.tooltip": "If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.\nTo add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.\nExample: \"twilightforest:moonworm_queen\" will disable uncrafting the moonworm queen into itself and 3 torchberries.\nIf an item has multiple crafting recipes and you wish to disable them all, add the item to the \"twilightforest:banned_uncraftables\" item tag.\nIf you have a problematic ingredient, like infested towerwood for example, add the item to the \"twilightforest:banned_uncrafting_ingredients\" item tag.",
+  "twilightforest.config.uncrafting_xp_cost": "Disable Uncrafting XP Cost",
+  "twilightforest.config.uncrafting_xp_cost.tooltip": "Setting this to true will make it so you dont have to pay XP to uncraft stuff. This will only affect uncrafting.\nIf you want to disable the xp cost for repairing and recrafting, see the below option.",
+  "twilightforest.config.repairing_xp_cost": "Disable Repairing/Recrafting XP Cost",
+  "twilightforest.config.repairing_xp_cost.tooltip": "Setting this to true will make it so you dont have to pay XP to repair and recraft stuff in the uncrafting table. This wont affect uncrafting cost.\nIf youre confused about what repairing and recrafting are, you can read about them here: http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table\nIf you want to disable the xp cost for uncrafting, see the above option.",
 
   "twilightforest.config.optifine": "Disable the nag screen when Optifine is installed.",
   "twilightforest.config.optifine.tooltip": "Disables the nag screen shown on launch when Optifine is installed.",

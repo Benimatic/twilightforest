@@ -391,6 +391,9 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Calculate the cost of uncrafting, if any.  Return 0 if uncrafting is not available at this time
 	 */
 	private int calculateUncraftingCost() {
+		//disable the uncrafting cost if the config option says to
+		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingXpCost.get()) return 0;
+
 		// we don't want to display anything if there is anything in the assembly grid
 		if (this.assemblyMatrix.isEmpty()) {
 			return this.customCost >= 0 ? this.customCost : countDamageableParts(this.uncraftingMatrix);
@@ -401,6 +404,9 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Return the cost of recrafting, if any.  Return 0 if recrafting is not available at this time
 	 */
 	private int calculateRecraftingCost() {
+
+		//disable the recrafting/repairing cost if the config option says to
+		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableRepairingXpCost.get()) return 0;
 
 		ItemStack input = this.tinkerInput.getItem(0);
 		ItemStack output = this.tinkerResult.getItem(0);
