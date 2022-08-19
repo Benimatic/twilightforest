@@ -19,7 +19,7 @@ An enchanted forest dimension.
 [[dependencies.twilightforest]]
     modId="forge"
     mandatory=true
-    versionRange="[43.0.8,)"
+    versionRange="[43.1.0,)"
     ordering="NONE"
     side="BOTH"
 
