@@ -65,7 +65,6 @@ public class TFClientSetup {
 			optifinePresent = false;
 		}
 
-        RenderLayerRegistration.init();
         TFBlockEntities.registerTileEntityRenders();
         TFMenuTypes.renderScreens();
 

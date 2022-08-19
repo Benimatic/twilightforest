@@ -107,11 +107,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
 		toBlockModel(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
 		toBlockModel(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
-		generated(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		generated(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		generated(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		generated(TFBlocks.VIOLET_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		generated(TFBlocks.ORANGE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.VIOLET_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.ORANGE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
 		toBlock(TFBlocks.CINDER_LOG.get());
 		toBlock(TFBlocks.CINDER_WOOD.get());
 		toBlockModel(TFBlocks.CINDER_FURNACE.get(), new ResourceLocation("block/furnace"));
@@ -640,6 +640,15 @@ public class ItemModelGenerator extends ItemModelProvider {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
 		if (fullbright) builder = builder.customLoader(ItemLayersModelBuilder::begin).emissive(0).end();
+		return builder;
+	}
+
+	private ItemModelBuilder forcefield(String name, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(name, "item/generated");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		builder = builder.customLoader(ItemLayersModelBuilder::begin).emissive(0).renderType(new ResourceLocation("translucent"), 0).end();
 		return builder;
 	}
 
