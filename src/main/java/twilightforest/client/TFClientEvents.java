@@ -19,7 +19,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -28,7 +27,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -40,12 +38,9 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
-import twilightforest.client.model.item.FullbrightBakedModel;
-import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
@@ -53,15 +48,12 @@ import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.function.UnaryOperator;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
@@ -77,63 +69,6 @@ public class TFClientEvents {
 		@SubscribeEvent
 		public static void modelBake(ModelEvent.BakingCompleted event) {
 			TFItems.addItemModelProperties();
-
-			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
-			fullbrightItem(event, TFItems.FIERY_INGOT);
-			fullbrightItem(event, TFItems.FIERY_BOOTS);
-			fullbrightItem(event, TFItems.FIERY_CHESTPLATE);
-			fullbrightItem(event, TFItems.FIERY_HELMET);
-			fullbrightItem(event, TFItems.FIERY_LEGGINGS);
-			fullbrightItem(event, TFItems.FIERY_PICKAXE);
-			fullbrightItem(event, TFItems.FIERY_SWORD);
-
-			fullbrightItem(event, TFItems.RED_THREAD);
-
-			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
-		}
-
-		private static void fullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item) {
-			fullbrightItem(event, item, f -> f);
-		}
-
-		private static void fullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
-			fullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
-		}
-
-		private static void fullbrightBlock(ModelEvent.BakingCompleted event, RegistryObject<Block> block) {
-			fullbrightBlock(event, block, f -> f);
-		}
-
-		private static void fullbrightBlock(ModelEvent.BakingCompleted event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
-			fullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
-			fullbright(event, Objects.requireNonNull(block.getId()), "", process);
-		}
-
-		private static void fullbright(ModelEvent.BakingCompleted event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
-			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModels().put(mrl, process.apply(new FullbrightBakedModel(event.getModels().get(mrl))));
-		}
-
-		private static void tintedFullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item) {
-			tintedFullbrightItem(event, item, f -> f);
-		}
-
-		private static void tintedFullbrightItem(ModelEvent.BakingCompleted event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
-			tintedFullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
-		}
-
-		private static void tintedFullbrightBlock(ModelEvent.BakingCompleted event, RegistryObject<Block> block) {
-			tintedFullbrightBlock(event, block, f -> f);
-		}
-
-		private static void tintedFullbrightBlock(ModelEvent.BakingCompleted event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
-			tintedFullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
-			tintedFullbright(event, Objects.requireNonNull(block.getId()), "", process);
-		}
-
-		private static void tintedFullbright(ModelEvent.BakingCompleted event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
-			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModels().put(mrl, process.apply(new TintIndexAwareFullbrightBakedModel(event.getModels().get(mrl))));
 		}
 
 		@SubscribeEvent
