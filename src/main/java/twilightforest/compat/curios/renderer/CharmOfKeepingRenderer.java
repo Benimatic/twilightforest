@@ -1,4 +1,4 @@
-package twilightforest.compat.curios;
+package twilightforest.compat.curios.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,7 +15,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.item.CharmOfKeepingModel;
+import twilightforest.compat.curios.model.CharmOfKeepingModel;
 import twilightforest.item.CuriosCharmItem;
 
 public class CharmOfKeepingRenderer implements ICurioRenderer {

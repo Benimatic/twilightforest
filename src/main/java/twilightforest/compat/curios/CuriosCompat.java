@@ -7,14 +7,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.InterModComms;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
+import top.theillusivec4.curios.api.*;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.event.DropRulesEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.common.capability.CurioItemCapability;
+import twilightforest.compat.curios.renderer.CharmOfKeepingRenderer;
+import twilightforest.compat.curios.renderer.CharmOfLife1NecklaceRenderer;
+import twilightforest.compat.curios.renderer.CharmOfLife2NecklaceRenderer;
+import twilightforest.compat.curios.renderer.CurioHeadRenderer;
 import twilightforest.events.CharmEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -40,12 +41,12 @@ public class CuriosCompat {
 
 			@Nonnull
 			@Override
-			public SoundInfo getEquipSound(top.theillusivec4.curios.api.SlotContext slotContext) {
+			public SoundInfo getEquipSound(SlotContext slotContext) {
 				return new SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
 			}
 
 			@Override
-			public boolean canEquipFromUse(top.theillusivec4.curios.api.SlotContext slotContext) {
+			public boolean canEquipFromUse(SlotContext slotContext) {
 				return true;
 			}
 		});
