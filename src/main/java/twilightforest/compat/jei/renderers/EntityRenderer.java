@@ -8,16 +8,12 @@ import com.mojang.math.Vector3f;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -76,10 +72,9 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 						PoseStack modelView = RenderSystem.getModelViewStack();
 						modelView.pushPose();
 						modelView.mulPoseMatrix(stack.last().pose());
-						InventoryScreen.renderEntityInInventoryRaw(this.size / 2, this.size - 2, scale, 25.0F, 145.0F, livingEntity);
+						this.renderTheEntity(this.size / 2, this.size - 2, scale, livingEntity);
 						modelView.popPose();
 						RenderSystem.applyModelViewMatrix();
-						return;
 					} catch (Exception e) {
 						TwilightForestMod.LOGGER.error("Error drawing entity " + ForgeRegistries.ENTITY_TYPES.getKey(type), e);
 						IGNORED_ENTITIES.add(type);
@@ -91,14 +86,6 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 					this.ENTITY_MAP.remove(type);
 				}
 			}
-
-			// fallback, draw a pink and black "spawn egg"
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderSystem.setShaderTexture(0, TwilightForestMod.getGuiTexture("transformation_jei.png"));
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-			int offset = (this.size - 16) / 2;
-			Screen.blit(stack, offset, offset, 149.0F, 58.0F, 16, 16, 256, 256);
 		}
 	}
 
@@ -110,5 +97,59 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 			tooltip.add(Component.literal(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(type)).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
 		return tooltip;
+	}
+
+	//[VanillaCopy] of InventoryScreen.renderEntityInInventory, with added rotations and some other modified values
+	private void renderTheEntity(int x, int y, int scale, LivingEntity entity) {
+		PoseStack posestack = RenderSystem.getModelViewStack();
+		posestack.pushPose();
+		posestack.translate(x, y, 1050.0D);
+		if (entity.getType() == EntityType.GHAST) posestack.translate(0.0D, -8.5D, 0.0D);
+		posestack.scale(1.0F, 1.0F, -1.0F);
+		RenderSystem.applyModelViewMatrix();
+		PoseStack posestack1 = new PoseStack();
+		posestack1.translate(0.0D, 0.0D, 1000.0D);
+		posestack1.scale((float) scale, (float) scale, (float) scale);
+		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
+		Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
+		quaternion.mul(quaternion1);
+		posestack1.mulPose(quaternion);
+		posestack1.mulPose(Vector3f.XN.rotationDegrees(35.0F));
+		posestack1.mulPose(Vector3f.YN.rotationDegrees(145.0F));
+		float f2 = entity.yBodyRot;
+		float f3 = entity.getYRot();
+		float f4 = entity.getXRot();
+		float f5 = entity.yHeadRotO;
+		float f6 = entity.yHeadRot;
+		entity.yBodyRot = 0.0F;
+		entity.setYRot(0.0F);
+		entity.setXRot(0.0F);
+		entity.yHeadRot = entity.getYRot();
+		entity.yHeadRotO = entity.getYRot();
+		Lighting.setupForEntityInInventory();
+		EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+		quaternion1.conj();
+		entityrenderdispatcher.overrideCameraOrientation(quaternion1);
+		entityrenderdispatcher.setRenderShadow(false);
+		MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
+		RenderSystem.runAsFancy(() -> {
+			entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880);
+			if (entity.isMultipartEntity()) {
+				Arrays.stream(entity.getParts())
+						.filter(Objects::nonNull)
+						.forEach(partEntity ->
+								entityrenderdispatcher.render(partEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
+			}
+		});
+		multibuffersource$buffersource.endBatch();
+		entityrenderdispatcher.setRenderShadow(true);
+		entity.yBodyRot = f2;
+		entity.setYRot(f3);
+		entity.setXRot(f4);
+		entity.yHeadRotO = f5;
+		entity.yHeadRot = f6;
+		posestack.popPose();
+		RenderSystem.applyModelViewMatrix();
+		Lighting.setupFor3DItems();
 	}
 }
