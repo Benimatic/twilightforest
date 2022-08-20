@@ -77,6 +77,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> ROOT_GROUND = BlockTags.create(new ResourceLocation("forge", "ore_bearing_ground/root"));
 	public static final TagKey<Block> ROOT_ORES = BlockTags.create(new ResourceLocation("forge", "ores_in_ground/root"));
 
+	public static final TagKey<Block> TIME_CORE_EXCLUDED = BlockTags.create(TwilightForestMod.prefix("time_core_excluded"));
+
 	public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
 		super(generator, TwilightForestMod.ID, exFileHelper);
 	}
@@ -482,6 +484,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.MOSS_PATCH.get(),
 				TFBlocks.CLOVER_PATCH.get(),
 				TFBlocks.FALLEN_LEAVES.get());
+
+		tag(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
 
 		tag(BlockTags.MINEABLE_WITH_AXE).addTags(BANISTERS, HOLLOW_LOGS).add(
 				TFBlocks.HEDGE.get(),

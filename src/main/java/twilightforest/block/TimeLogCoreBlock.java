@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFConfig;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
@@ -39,15 +40,17 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 			BlockState state = level.getBlockState(dPos);
 
-			if (state.isRandomlyTicking()) {
-				state.randomTick((ServerLevel) level, dPos, rand);
-			}
+			if (!state.is(BlockTagGenerator.TIME_CORE_EXCLUDED)) {
+				if (state.isRandomlyTicking()) {
+					state.randomTick((ServerLevel) level, dPos, rand);
+				}
 
-			BlockEntity entity = level.getBlockEntity(dPos);
-			if (entity != null) {
-				BlockEntityTicker<BlockEntity> ticker = state.getTicker(level, (BlockEntityType<BlockEntity>) entity.getType());
-				if (ticker != null)
-					ticker.tick(level, dPos, state, entity);
+				BlockEntity entity = level.getBlockEntity(dPos);
+				if (entity != null) {
+					BlockEntityTicker<BlockEntity> ticker = state.getTicker(level, (BlockEntityType<BlockEntity>) entity.getType());
+					if (ticker != null)
+						ticker.tick(level, dPos, state, entity);
+				}
 			}
 		}
 	}
