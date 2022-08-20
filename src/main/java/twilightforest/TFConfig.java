@@ -174,6 +174,60 @@ public class TFConfig {
 			builder.pop();
 
 			builder.
+					comment("Settings for all things related to the magic trees.").
+					push("Magic Trees");
+			{
+				MAGIC_TREES.disableTime = builder.
+						worldRestart().
+						translation(config + "disable_time").
+						comment("If true, prevents the Timewood Core from functioning.").
+						define("disableTimeCore", false);
+
+				MAGIC_TREES.timeRange = builder.
+						worldRestart().
+						translation(config + "time_range").
+						comment("Defines the radius at which the Timewood Core works. Can be a number anywhere between 1 and 128.")
+						.defineInRange("timeCoreRange", 16, 1, 128);
+
+				MAGIC_TREES.disableTransformation = builder.
+						worldRestart().
+						translation(config + "disable_transformation").
+						comment("If true, prevents the Transformation Core from functioning.").
+						define("disableTransformationCore", false);
+
+				MAGIC_TREES.transformationRange = builder.
+						worldRestart().
+						translation(config + "transformation_range").
+						comment("Defines the radius at which the Transformation Core works. Can be a number anywhere between 1 and 128.")
+						.defineInRange("transformationCoreRange", 16, 1, 128);
+
+				MAGIC_TREES.disableMining = builder.
+						worldRestart().
+						translation(config + "disable_mining").
+						comment("If true, prevents the Minewood Core from functioning.").
+						define("disableMiningCore", false);
+
+				MAGIC_TREES.miningRange = builder.
+						worldRestart().
+						translation(config + "mining_range").
+						comment("Defines the radius at which the Minewood Core works. Can be a number anywhere between 1 and 128.")
+						.defineInRange("miningCoreRange", 16, 1, 128);
+
+				MAGIC_TREES.disableSorting = builder.
+						worldRestart().
+						translation(config + "disable_sorting").
+						comment("If true, prevents the Sortingwood Core from functioning.").
+						define("disableSortingCore", false);
+
+				MAGIC_TREES.sortingRange = builder.
+						worldRestart().
+						translation(config + "sorting_range").
+						comment("Defines the radius at which the Sortingwood Core works. Can be a number anywhere between 1 and 128.")
+						.defineInRange("sortingCoreRange", 16, 1, 128);
+			}
+			builder.pop();
+
+			builder.
 					comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
 					push("Shield Parrying");
 			{
@@ -252,6 +306,19 @@ public class TFConfig {
 		public ForgeConfigSpec.IntValue maxPortalSize;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public ForgeConfigSpec.BooleanValue disableSkullCandles;
+
+		public MagicTrees MAGIC_TREES = new MagicTrees();
+
+		public static class MagicTrees {
+			public ForgeConfigSpec.BooleanValue disableTime;
+			public ForgeConfigSpec.IntValue timeRange;
+			public ForgeConfigSpec.BooleanValue disableTransformation;
+			public ForgeConfigSpec.IntValue transformationRange;
+			public ForgeConfigSpec.BooleanValue disableMining;
+			public ForgeConfigSpec.IntValue miningRange;
+			public ForgeConfigSpec.BooleanValue disableSorting;
+			public ForgeConfigSpec.IntValue sortingRange;
+		}
 
 		public UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 

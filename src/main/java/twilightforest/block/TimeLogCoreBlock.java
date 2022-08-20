@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.TFConfig;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
@@ -16,6 +17,11 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 	public TimeLogCoreBlock(Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public boolean doesCoreFunction() {
+		return !TFConfig.COMMON_CONFIG.MAGIC_TREES.disableTime.get();
 	}
 
 	/**
@@ -29,7 +35,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 		for (int i = 0; i < numticks; i++) {
 
-			BlockPos dPos = WorldUtil.randomOffset(rand, pos, 16);
+			BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.miningRange.get());
 
 			BlockState state = level.getBlockState(dPos);
 
@@ -48,6 +54,6 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
-		level.playSound(null, pos, TFSounds.TIME_CORE.get(), SoundSource.BLOCKS, 0.1F, 0.5F);
+		level.playSound(null, pos, TFSounds.TIME_CORE.get(), SoundSource.BLOCKS, 0.35F, 0.5F);
 	}
 }
