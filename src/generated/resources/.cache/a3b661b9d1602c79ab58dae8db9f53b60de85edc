@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-28T10:53:32.4050798	Twilight Forest Item Tags
+// 1.19.2	2022-08-28T12:52:48.1178451	Twilight Forest Item Tags
 3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/items/charm.json
 28506418ae14efe13cfbe34765fa39ba5d6e03e7 data/curios/tags/items/head.json
 017a0eae9dcb1c009506ab7fb1bf5ed2867507aa data/forge/tags/items/armors/boots.json
@@ -76,4 +76,5 @@ aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/items/timewood
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/items/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/items/transwood_logs.json
 d94381f990d5908c2d71247b1b14946ef4a4ef3d data/twilightforest/tags/items/twilight_oak_logs.json
+00307f9c52357fb388557306df3446b2f1fcef42 data/twilightforest/tags/items/uncrafting_ignores_cost.json
 01dc9db4a8fa2842566a0d9311358d09014c1c41 data/twilightforest/tags/items/wip.json

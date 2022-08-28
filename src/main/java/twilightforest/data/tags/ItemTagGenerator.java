@@ -63,6 +63,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = ItemTags.create(TwilightForestMod.prefix("banned_uncrafting_ingredients"));
 	public static final TagKey<Item> BANNED_UNCRAFTABLES = ItemTags.create(TwilightForestMod.prefix("banned_uncraftables"));
+	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = ItemTags.create(TwilightForestMod.prefix("uncrafting_ignores_cost"));
 
 	public static final TagKey<Item> KEPT_ON_DEATH = ItemTags.create(TwilightForestMod.prefix("kept_on_death"));
 
@@ -223,6 +224,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFItems.TRANSFORMATION_POWDER.get());
 
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
+		tag(UNCRAFTING_IGNORES_COST).addTag(Tags.Items.RODS_WOODEN);
 
 		tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 

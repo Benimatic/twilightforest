@@ -523,7 +523,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Should the specified item count for taking damage?
 	 */
 	private static boolean isDamageableComponent(ItemStack itemStack) {
-		return !itemStack.is(Tags.Items.RODS_WOODEN);
+		return !itemStack.is(ItemTagGenerator.UNCRAFTING_IGNORES_COST);
 	}
 
 	/**
