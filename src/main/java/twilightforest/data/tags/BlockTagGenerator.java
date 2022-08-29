@@ -289,7 +289,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.MAZESTONE.get(), TFBlocks.MAZESTONE_BRICK.get(),
 				TFBlocks.CRACKED_MAZESTONE.get(), TFBlocks.MOSSY_MAZESTONE.get(),
 				TFBlocks.CUT_MAZESTONE.get(), TFBlocks.DECORATIVE_MAZESTONE.get(),
-				TFBlocks.MAZESTONE_MOSAIC.get(), TFBlocks.MAZESTONE_MOSAIC.get());
+				TFBlocks.MAZESTONE_MOSAIC.get(), TFBlocks.MAZESTONE_BORDER.get());
 
 		tag(CASTLE_BLOCKS).add(
 				TFBlocks.CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK.get(),
@@ -299,7 +299,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(),
 				TFBlocks.CASTLE_BRICK_STAIRS.get(), TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(),
 				TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get()
+				TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(),
+				TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()
 		);
 
 		tag(MAZEBREAKER_ACCELERATED).addTag(MAZESTONE).addTag(CASTLE_BLOCKS);
@@ -487,7 +491,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		tag(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
 
-		tag(BlockTags.MINEABLE_WITH_AXE).addTags(BANISTERS, HOLLOW_LOGS).add(
+		tag(BlockTags.MINEABLE_WITH_AXE).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD).add(
 				TFBlocks.HEDGE.get(),
 				TFBlocks.ROOT_BLOCK.get(),
 				TFBlocks.LIVEROOT_BLOCK.get(),
@@ -499,11 +503,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.TRANSFORMATION_LOG_CORE.get(),
 				TFBlocks.MINING_LOG_CORE.get(),
 				TFBlocks.SORTING_LOG_CORE.get(),
-				TFBlocks.TOWERWOOD.get(),
-				TFBlocks.MOSSY_TOWERWOOD.get(),
-				TFBlocks.CRACKED_TOWERWOOD.get(),
-				TFBlocks.INFESTED_TOWERWOOD.get(),
-				TFBlocks.ENCASED_TOWERWOOD.get(),
 				TFBlocks.REAPPEARING_BLOCK.get(),
 				TFBlocks.ANTIBUILDER.get(),
 				TFBlocks.CARMINITE_REACTOR.get(),
@@ -546,15 +545,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.ARCTIC_FUR_BLOCK.get()
 		);
 
-		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
-				TFBlocks.MAZESTONE.get(),
-				TFBlocks.MAZESTONE_BORDER.get(),
-				TFBlocks.MAZESTONE_BRICK.get(),
-				TFBlocks.CUT_MAZESTONE.get(),
-				TFBlocks.CRACKED_MAZESTONE.get(),
-				TFBlocks.DECORATIVE_MAZESTONE.get(),
-				TFBlocks.MAZESTONE_MOSAIC.get(),
-				TFBlocks.MOSSY_MAZESTONE.get(),
+		tag(BlockTags.MINEABLE_WITH_PICKAXE).addTags(MAZESTONE, CASTLE_BLOCKS).add(
 				TFBlocks.NAGASTONE.get(),
 				TFBlocks.NAGASTONE_HEAD.get(),
 				TFBlocks.STRONGHOLD_SHIELD.get(),
@@ -573,30 +564,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.GIANT_OBSIDIAN.get(),
 				TFBlocks.GIANT_COBBLESTONE.get(),
 				TFBlocks.GIANT_LOG.get(),
-				TFBlocks.CASTLE_BRICK.get(),
-				TFBlocks.WORN_CASTLE_BRICK.get(),
-				TFBlocks.CRACKED_CASTLE_BRICK.get(),
-				TFBlocks.CASTLE_ROOF_TILE.get(),
-				TFBlocks.MOSSY_CASTLE_BRICK.get(),
-				TFBlocks.THICK_CASTLE_BRICK.get(),
-				TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(),
-				TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(),
-				TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(),
-				TFBlocks.BOLD_CASTLE_BRICK_TILE.get(),
-				TFBlocks.CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.PINK_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.PINK_CASTLE_DOOR.get(),
-				TFBlocks.YELLOW_CASTLE_DOOR.get(),
-				TFBlocks.BLUE_CASTLE_DOOR.get(),
-				TFBlocks.VIOLET_CASTLE_DOOR.get(),
 				TFBlocks.CINDER_FURNACE.get(),
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
 				//TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE.get(),
@@ -679,43 +646,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.KNIGHTMETAL_BLOCK.get()
 		);
 
-		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
-				TFBlocks.MAZESTONE.get(),
-				TFBlocks.MAZESTONE_BRICK.get(),
-				TFBlocks.CRACKED_MAZESTONE.get(),
-				TFBlocks.MOSSY_MAZESTONE.get(),
-				TFBlocks.DECORATIVE_MAZESTONE.get(),
-				TFBlocks.CUT_MAZESTONE.get(),
-				TFBlocks.MAZESTONE_BORDER.get(),
-				TFBlocks.MAZESTONE_MOSAIC.get(),
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).addTags(CASTLE_BLOCKS, MAZESTONE).add(
 				TFBlocks.AURORA_BLOCK.get(),
 				TFBlocks.DEADROCK.get(),
 				TFBlocks.CRACKED_DEADROCK.get(),
-				TFBlocks.WEATHERED_DEADROCK.get(),
-				TFBlocks.CASTLE_BRICK.get(),
-				TFBlocks.WORN_CASTLE_BRICK.get(),
-				TFBlocks.CRACKED_CASTLE_BRICK.get(),
-				TFBlocks.MOSSY_CASTLE_BRICK.get(),
-				TFBlocks.THICK_CASTLE_BRICK.get(),
-				TFBlocks.CASTLE_ROOF_TILE.get(),
-				TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(),
-				TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(),
-				TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(),
-				TFBlocks.BOLD_CASTLE_BRICK_TILE.get(),
-				TFBlocks.CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(),
-				TFBlocks.PINK_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
-				TFBlocks.PINK_CASTLE_DOOR.get(),
-				TFBlocks.YELLOW_CASTLE_DOOR.get(),
-				TFBlocks.BLUE_CASTLE_DOOR.get(),
-				TFBlocks.VIOLET_CASTLE_DOOR.get()
+				TFBlocks.WEATHERED_DEADROCK.get()
 		);
 
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
