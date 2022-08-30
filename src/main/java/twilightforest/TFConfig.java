@@ -366,6 +366,10 @@ public class TFConfig {
 					translation(config + "locked_toasts").
 					comment("Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.").
 					define("disableLockedBiomeToasts", false);
+			showQuestRamCrosshairIndicator = builder.
+					translation(config + "ram_indicator").
+					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
+					define("questRamWoolIndicator", true);
 		}
 
 		public ForgeConfigSpec.BooleanValue silentCicadas;
@@ -373,6 +377,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
+		public ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 	}
 
 	private static final String config = TwilightForestMod.ID + ".config.";

@@ -154,7 +154,7 @@ dependencies {
 
     //mods we dont have compat with but are nice to have
     runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_version}-1.0")
-    runtimeOnly fg.deobf("curse.maven:jade-324717:3903693")
+    implementation fg.deobf("curse.maven:jade-324717:3916646-api-3916647")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
 }
