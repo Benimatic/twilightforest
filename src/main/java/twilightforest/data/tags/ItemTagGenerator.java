@@ -214,7 +214,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.MUSIC_DISCS).addTag(TF_MUSIC_DISCS);
 
 		tag(BANNED_UNCRAFTING_INGREDIENTS).add(
-				TFBlocks.GIANT_LOG.get().asItem(),
 				TFBlocks.INFESTED_TOWERWOOD.get().asItem(),
 				TFBlocks.HOLLOW_OAK_SAPLING.get().asItem(),
 				TFBlocks.TIME_SAPLING.get().asItem(),
