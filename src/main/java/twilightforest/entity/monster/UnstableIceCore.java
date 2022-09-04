@@ -77,7 +77,7 @@ public class UnstableIceCore extends BaseIceMob {
 		{
 			if (!this.getLevel().isClientSide()) {
 				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this);
-				this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.DESTROY);
+				this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE);
 
 				if (mobGriefing) {
 					this.transformBlocks();
