@@ -2,16 +2,19 @@ package twilightforest.compat.curios;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.network.PacketDistributor;
 import top.theillusivec4.curios.api.*;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.event.DropRulesEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.common.capability.CurioItemCapability;
+import twilightforest.TFConfig;
 import twilightforest.compat.curios.renderer.CharmOfKeepingRenderer;
 import twilightforest.compat.curios.renderer.CharmOfLife1NecklaceRenderer;
 import twilightforest.compat.curios.renderer.CharmOfLife2NecklaceRenderer;
@@ -21,6 +24,8 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.item.SkullCandleItem;
 import twilightforest.item.TrophyItem;
+import twilightforest.network.CreateMovingCicadaSoundPacket;
+import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -43,6 +48,16 @@ public class CuriosCompat {
 			@Override
 			public SoundInfo getEquipSound(SlotContext slotContext) {
 				return new SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
+			}
+
+			@Override
+			public void onEquip(SlotContext context, ItemStack prevStack) {
+				//check that we dont have a cicada already on our head before trying to start the sound
+				if (!context.entity().getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.get().asItem())) {
+					if (stack.is(TFBlocks.CICADA.get().asItem()) && !context.entity().getLevel().isClientSide()) {
+						TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(context::entity), new CreateMovingCicadaSoundPacket(context.entity().getId()));
+					}
+				}
 			}
 
 			@Override
@@ -94,6 +109,11 @@ public class CuriosCompat {
 		CuriosRendererRegistry.register(TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::new);
 		CuriosRendererRegistry.register(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::new);
 		CuriosRendererRegistry.register(TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::new);
+	}
+
+	public static boolean isCicadaEquipped(LivingEntity entity) {
+		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.is(TFBlocks.CICADA.get().asItem()));
+		return slot.isPresent();
 	}
 
 	public static boolean isTrophyCurioEquipped(LivingEntity entity) {
