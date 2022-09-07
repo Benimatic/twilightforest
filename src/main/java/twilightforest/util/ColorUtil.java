@@ -75,4 +75,10 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 		DyeColor color = DyeColor.byId(rand.nextInt(16));
 		return this.getColor(color).getBlock();
 	}
+
+	public static int argbToABGR(int argbColor) {
+		int r = (argbColor >> 16) & 0xFF;
+		int b = argbColor & 0xFF;
+		return (argbColor & 0xFF00FF00) | (b << 16) | r;
+	}
 }
