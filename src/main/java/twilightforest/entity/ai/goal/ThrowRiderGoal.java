@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.data.tags.EntityTagGenerator;
@@ -28,7 +29,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public boolean canUse() {
 		return this.mob.getPassengers().isEmpty() &&
 				this.mob.getTarget() != null &&
-				!this.mob.getTarget().getType().is(EntityTagGenerator.BOSSES) &&
+				!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
 				this.mob.getTarget().getCapability(CapabilityList.YETI_THROWN).map(cap -> cap.getThrowCooldown() <= 0).orElse(true) &&
 				super.canUse();
 	}
