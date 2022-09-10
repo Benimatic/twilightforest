@@ -83,13 +83,8 @@ public class PlayerEvents {
 
 	@SubscribeEvent
 	public static void updateCaps(LivingEvent.LivingTickEvent event) {
-		if (event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent()) {
-			event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
-		}
-
-		if (event.getEntity().getCapability(CapabilityList.YETI_THROWN).isPresent()) {
-			event.getEntity().getCapability(CapabilityList.YETI_THROWN).ifPresent(YetiThrowCapability::update);
-		}
+		event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
+		event.getEntity().getCapability(CapabilityList.YETI_THROWN).ifPresent(YetiThrowCapability::update);
 	}
 
 	// from what I can see, vanilla doesnt have a hook for this in the item class. So this will have to do.
