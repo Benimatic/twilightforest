@@ -27,11 +27,15 @@ public class CreateMovingCicadaSoundPacket {
 
 	public static class Handler {
 
+		@SuppressWarnings("Convert2Lambda")
 		public static boolean onMessage(CreateMovingCicadaSoundPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-				if (entity instanceof LivingEntity living) {
-					Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
+			ctx.get().enqueueWork(new Runnable() {
+				@Override
+				public void run() {
+					Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
+					if (entity instanceof LivingEntity living) {
+						Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
+					}
 				}
 			});
 
