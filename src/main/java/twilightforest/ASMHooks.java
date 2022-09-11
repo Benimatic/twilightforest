@@ -214,7 +214,6 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}<br>
 	 * [BEFORE ARETURN]
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static Component book(Component component, CompoundTag tag) {
 		if (tag.contains(TwilightForestMod.ID + ":book")) {
 			return Component.translatable(component.getString());
