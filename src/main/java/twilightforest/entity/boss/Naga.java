@@ -44,6 +44,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
 import twilightforest.entity.ai.goal.NagaAttackGoal;
@@ -63,7 +64,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Naga extends Monster {
+public class Naga extends Monster implements EnforcedHomePoint {
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -524,25 +525,14 @@ public class Naga extends Monster {
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
-		if (this.getRestrictCenter() != BlockPos.ZERO) {
-			BlockPos home = this.getRestrictCenter();
-			compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
-		}
-
+		this.saveHomePointToNbt(compound);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		if (compound.contains("Home", 9)) {
-			ListTag nbttaglist = compound.getList("Home", 6);
-			int hx = (int) nbttaglist.getDouble(0);
-			int hy = (int) nbttaglist.getDouble(1);
-			int hz = (int) nbttaglist.getDouble(2);
-			this.restrictTo(new BlockPos(hx, hy, hz), 20);
-		}
-
+		this.loadHomePointFromNbt(compound, 20);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -631,5 +621,15 @@ public class Naga extends Monster {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }
