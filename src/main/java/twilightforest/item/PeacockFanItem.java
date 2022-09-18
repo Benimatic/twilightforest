@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,9 +20,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.network.PacketDistributor;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.init.TFSounds;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.network.ThrowPlayerPacket;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
@@ -108,8 +112,8 @@ public class PeacockFanItem extends Item {
 				fannedEntities++;
 			}
 
-			if (entity instanceof Player pushedPlayer && pushedPlayer != player && !entity.isShiftKeyDown()) {
-				pushedPlayer.setDeltaMovement(moveVec.x(), moveVec.y(), moveVec.z());
+			if (entity instanceof ServerPlayer pushedPlayer && pushedPlayer != player && !pushedPlayer.isShiftKeyDown()) {
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> pushedPlayer), new ThrowPlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
 				player.getCooldowns().addCooldown(fan, 40);
 				fannedEntities += 2;
 			}
