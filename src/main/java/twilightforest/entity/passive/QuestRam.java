@@ -186,7 +186,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		this.loadHomePointFromNbt(compound, 13);
 	}
 
-	private int getColorFlags() {
+	public int getColorFlags() {
 		return this.entityData.get(DATA_COLOR);
 	}
 
