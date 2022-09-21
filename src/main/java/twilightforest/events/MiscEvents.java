@@ -9,15 +9,21 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
 import twilightforest.entity.passive.Squirrel;
 import twilightforest.entity.passive.TinyBird;
+import twilightforest.init.TFBlocks;
+import twilightforest.network.CreateMovingCicadaSoundPacket;
+import twilightforest.network.TFPacketHandler;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class MiscEvents {
@@ -52,24 +58,21 @@ public class MiscEvents {
 		if (!living.getLevel().isClientSide() && living instanceof ServerPlayer) {
 			TFAdvancements.ARMOR_CHANGED.trigger((ServerPlayer) living, event.getFrom(), event.getTo());
 		}
-	}
 
-	@SubscribeEvent
-	public static void livingUpdate(LivingEvent.LivingTickEvent event) {
-		event.getEntity().getCapability(CapabilityList.SHIELDS).ifPresent(IShieldCapability::update);
-	}
+		// from what I can see, vanilla doesnt have a hook for this in the item class. So this will have to do.
+		// we only have to check equipping, when its unequipped the sound instance handles the rest
 
-	@SubscribeEvent
-	public static void livingAttack(LivingAttackEvent event) {
-		LivingEntity living = event.getEntity();
-		// shields
-		if (!living.getLevel().isClientSide() && !event.getSource().isBypassArmor()) {
-			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
-				if (cap.shieldsLeft() > 0) {
-					cap.breakShield();
-					event.setCanceled(true);
-				}
-			});
+		//if we have a cicada in our curios slot, dont try to run this
+		if (ModList.get().isLoaded("curios")) {
+			if (CuriosCompat.isCicadaEquipped(event.getEntity())) {
+				return;
+			}
+		}
+
+		if (event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
+			if (!event.getEntity().getLevel().isClientSide() && event.getEntity() != null) {
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(event::getEntity), new CreateMovingCicadaSoundPacket(event.getEntity().getId()));
+			}
 		}
 	}
 }

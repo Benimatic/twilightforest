@@ -3,6 +3,7 @@ package twilightforest.events;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,11 +13,14 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFItems;
 import twilightforest.item.EnderBowItem;
+import twilightforest.item.MazebreakerPickItem;
 import twilightforest.item.MinotaurAxeItem;
 
 import org.jetbrains.annotations.Nullable;
@@ -106,6 +110,17 @@ public class ToolEvents {
 				event.setAmount(event.getAmount() + MINOTAUR_AXE_BONUS_DAMAGE);
 				// enchantment attack sparkles
 				((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+			}
+		}
+	}
+
+
+	@SubscribeEvent
+	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
+		ItemStack stack = event.getPlayer().getMainHandItem();
+		if (event.getState().is(BlockTagGenerator.MAZESTONE) || event.getState().is(BlockTagGenerator.CASTLE_BLOCKS)) {
+			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
+				stack.hurtAndBreak(16, event.getPlayer(), (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 			}
 		}
 	}

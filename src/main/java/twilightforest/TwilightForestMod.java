@@ -1,7 +1,6 @@
 package twilightforest;
 
 import com.google.common.collect.Maps;
-import mcjty.theoneprobe.TheOneProbe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
