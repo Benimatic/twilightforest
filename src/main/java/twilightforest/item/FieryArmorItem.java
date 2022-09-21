@@ -45,7 +45,9 @@ public class FieryArmorItem extends ArmorItem {
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
 		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
-			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)) {
+			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)
+					|| Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment)
+					|| Objects.equals(Enchantments.FROST_WALKER, enchantment)) {
 				badEnchant.set(true);
 			}
 		});
@@ -55,7 +57,11 @@ public class FieryArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.THORNS.equals(enchantment) && !TFEnchantments.CHILL_AURA.get().equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
+		return !TFEnchantments.FIRE_REACT.get().equals(enchantment) &&
+				!Enchantments.THORNS.equals(enchantment) &&
+				!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
+				!Enchantments.FROST_WALKER.equals(enchantment) &&
+				super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override

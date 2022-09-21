@@ -54,7 +54,10 @@ public class YetiArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.THORNS.equals(enchantment) && !TFEnchantments.FIRE_REACT.get().equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
+		return !TFEnchantments.FIRE_REACT.get().equals(enchantment) &&
+				!Enchantments.THORNS.equals(enchantment) &&
+				!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
+				super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
