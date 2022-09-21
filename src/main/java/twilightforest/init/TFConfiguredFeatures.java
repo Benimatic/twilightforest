@@ -136,6 +136,7 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> DARK_FOREST_BIRCH_TREE = register("tree/dark_forest_birch_tree", TFFeatures.DARK_CANOPY_TREE.get(), TreeFeatures.BIRCH.value().config());
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> VANILLA_OAK_TREE = register("tree/vanilla_oak_tree", Feature.TREE, TreeFeatures.OAK.value().config());
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> VANILLA_BIRCH_TREE = register("tree/vanilla_birch_tree", Feature.TREE, TreeFeatures.BIRCH.value().config());
+	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> SMALLER_JUNGLE_TREE = register("tree/smaller_jungle_tree", Feature.TREE, TreeConfigurations.SMALL_JUNGLE);
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> DUMMY_TREE = register("tree/dummy", Feature.NO_OP, NoneFeatureConfiguration.INSTANCE);
 
 	//random selectors

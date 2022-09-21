@@ -1,5 +1,5 @@
-933485428510f8d1993a84601c599ee0185d3575 data/twilightforest/dimension/twilight_forest.json
-// 1.19.2	2022-09-04T09:44:46.4227873	Twilight Forest Worldgen
+// 1.19.2	2022-09-20T20:08:59.7392619	Twilight Forest Worldgen
+2a6f45e57415b62e156572f677262eb28afda7f7 data/twilightforest/dimension/twilight_forest.json
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 f93870d438ca6484df5554f1b95724adff04814a data/twilightforest/worldgen/biome/clearing.json
 adde6d9d12fba5fa83c2f0bb895b7eb6f2d4698f data/twilightforest/worldgen/biome/dark_forest.json
@@ -110,6 +110,7 @@ c29d954b3c3aee862675c64c0805ac29852bac8b data/twilightforest/worldgen/configured
 3a5804397a82b2a712e0721f0b08faf6ad80719e data/twilightforest/worldgen/configured_feature/tree/selector/snowy_forest_trees.json
 a273ae0c707476c603fd68540093aabe244eda06 data/twilightforest/worldgen/configured_feature/tree/selector/vanilla/vanilla_mushrooms.json
 18ffcf7ec69980631b5ffa2c49115ce282c586e0 data/twilightforest/worldgen/configured_feature/tree/selector/vanilla_trees.json
+9fd60fc820ee73e76b076c44f3abf90f7c02356b data/twilightforest/worldgen/configured_feature/tree/smaller_jungle_tree.json
 c2de1ef3446f3fc9421279c41b06fdd9ed2b3fc2 data/twilightforest/worldgen/configured_feature/tree/snowy_spruce_tree.json
 5598712394f57b4cf98eb5fe12c247c548581b24 data/twilightforest/worldgen/configured_feature/tree/sorting_tree.json
 46c6a189971484b9ab7951a9fdd07e12cf35e4d3 data/twilightforest/worldgen/configured_feature/tree/swampy_oak_tree.json

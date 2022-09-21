@@ -15,7 +15,9 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePla
 import net.minecraft.world.level.levelgen.feature.foliageplacers.MegaPineFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.LeaveVineDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TrunkVineDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.GiantTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
@@ -167,6 +169,20 @@ public class TreeConfigurations {
 							new WeightedStateProvider(createBlockList().add(Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true), 1))
 					)
 			))
+			.ignoreVines()
+			.build();
+
+	public static final TreeConfiguration SMALL_JUNGLE = new TreeConfiguration.TreeConfigurationBuilder(
+			BlockStateProvider.simple(Blocks.JUNGLE_LOG),
+			new StraightTrunkPlacer(3, 2, 2),
+			BlockStateProvider.simple(Blocks.JUNGLE_LEAVES),
+			new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+			new TwoLayersFeatureSize(1, 0, 1)
+	)
+			.decorators(ImmutableList.of(
+					new CocoaDecorator(0.7F),
+					TrunkVineDecorator.INSTANCE,
+					new LeaveVineDecorator(0.25F)))
 			.ignoreVines()
 			.build();
 
