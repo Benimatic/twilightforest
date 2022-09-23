@@ -197,7 +197,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HydraLairComponent(this, rand, 0, x - 7, y, z - 7);
+			return new HydraLairComponent(this, 0, x - 7, y, z - 7);
 		}
 	};
 	public static final TFLandmark LABYRINTH = new TFLandmark( 3, "labyrinth", true, BiomeTagGenerator.VALID_LABYRINTH_BIOMES, TerrainAdjustment.BURY, TwilightForestMod.prefix("progress_lich") ) {
@@ -323,7 +323,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new YetiCaveComponent(this, rand, 0, x, y, z);
+			return new YetiCaveComponent(this, 0, x, y, z);
 		}
 	};
 	public static final TFLandmark ICE_TOWER = new TFLandmark( 2, "ice_tower", true, BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES, TerrainAdjustment.NONE, TwilightForestMod.prefix("progress_yeti") ) {

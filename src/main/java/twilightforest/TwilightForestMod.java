@@ -40,6 +40,7 @@ import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
+import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
 import twilightforest.init.custom.DwarfRabbitVariant;
@@ -49,7 +50,6 @@ import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import java.io.IOException;
@@ -89,6 +89,7 @@ public class TwilightForestMod {
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInitiator::call);
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
+		MinecraftForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -180,8 +181,6 @@ public class TwilightForestMod {
 	public static void init(FMLCommonSetupEvent evt) {
 		TFPacketHandler.init();
 		TFAdvancements.init();
-
-		BlockSpikeFeature.loadStalactites();
 
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();

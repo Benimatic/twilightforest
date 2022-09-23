@@ -1,5 +1,5 @@
-// 1.19.2	2022-09-20T20:08:59.7392619	Twilight Forest Worldgen
 2a6f45e57415b62e156572f677262eb28afda7f7 data/twilightforest/dimension/twilight_forest.json
+// 1.19.2	2022-09-23T10:33:10.9941615	Twilight Forest Worldgen
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 f93870d438ca6484df5554f1b95724adff04814a data/twilightforest/worldgen/biome/clearing.json
 adde6d9d12fba5fa83c2f0bb895b7eb6f2d4698f data/twilightforest/worldgen/biome/dark_forest.json
@@ -69,7 +69,7 @@ c3eeb6eb0efc5b75da15dcec536219848991b95c data/twilightforest/worldgen/configured
 789267d7f05d18b18cad911247b66ab3b5581514 data/twilightforest/worldgen/configured_feature/mycelium_blob.json
 a3b5f0d4235b96f1678571bc16ad945a760e7e8e data/twilightforest/worldgen/configured_feature/oak_fallen_log.json
 326ae891c0a4883ac9e31ed393b302765dd880b3 data/twilightforest/worldgen/configured_feature/ore/wood_roots_spread.json
-167e15d9d44179efd45b39adc3a19f76b8499620 data/twilightforest/worldgen/configured_feature/outside_stalagmite.json
+995bb8fcefa7ce71e563feae5aae7bb003793ff6 data/twilightforest/worldgen/configured_feature/outside_stalagmite.json
 01b533444dbfaa068f6edd34591e37eb2c6e646e data/twilightforest/worldgen/configured_feature/plant_roots.json
 e3ecdf3a84ab2dc18b49b98fba9f73bb318278b2 data/twilightforest/worldgen/configured_feature/pumpkin_lamppost.json
 0cd303f547bd03f2604e7d0512a972ba4f8ba4c1 data/twilightforest/worldgen/configured_feature/simple_well.json

@@ -10,6 +10,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.custom.UncraftingRecipeGenerator;
+import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -39,5 +40,6 @@ public class DataGenerators {
 		generator.addProvider(true, new CrumbleHornGenerator(generator, helper));
 		generator.addProvider(true, new TransformationPowderGenerator(generator, helper));
 		generator.addProvider(true, new UncraftingRecipeGenerator(generator, helper));
+		generator.addProvider(true, new StalactiteGenerator(generator));
 	}
 }
