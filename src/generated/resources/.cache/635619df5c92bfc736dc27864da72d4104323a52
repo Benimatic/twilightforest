@@ -1,5 +1,5 @@
-2a6f45e57415b62e156572f677262eb28afda7f7 data/twilightforest/dimension/twilight_forest.json
-// 1.19.2	2022-09-23T10:33:10.9941615	Twilight Forest Worldgen
+// 1.19.2	2022-09-25T18:23:04.4266114	Twilight Forest Worldgen
+e8c091d3aff2f8600d7c81fdd376035f8cff7885 data/twilightforest/dimension/twilight_forest.json
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 f93870d438ca6484df5554f1b95724adff04814a data/twilightforest/worldgen/biome/clearing.json
 adde6d9d12fba5fa83c2f0bb895b7eb6f2d4698f data/twilightforest/worldgen/biome/dark_forest.json
@@ -214,7 +214,7 @@ a1d839762ec049f9eab550bead548cbbd151ab70 data/twilightforest/worldgen/placed_fea
 91163ff8db0c65dce4ca25aa7d023229ead688cf data/twilightforest/worldgen/placed_feature/wood_roots.json
 8e9967ca65a21e5e41e551d1958c9a2617fb3fdf data/twilightforest/worldgen/structure/aurora_palace.json
 7895265a57cdaba67f4a96f6e8093faa992cc40c data/twilightforest/worldgen/structure/dark_tower.json
-13153ee7694af9da9b8206d92d5004a40c4850ae data/twilightforest/worldgen/structure/final_castle.json
+21a0079966da3e50974f0224b5d9f69b164ce380 data/twilightforest/worldgen/structure/final_castle.json
 ffdb84fd8e7a2255eddac7eb508a69a4f35e45b7 data/twilightforest/worldgen/structure/hedge_maze.json
 68dcbe1aa78805cc1472ba119987f1d03e2f8e5a data/twilightforest/worldgen/structure/hydra_lair.json
 5fedebf12558b35c358e888ad1895d429f2fa7e1 data/twilightforest/worldgen/structure/knight_stronghold.json

@@ -383,22 +383,22 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 	};
 	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle", true, BiomeTagGenerator.VALID_FINAL_CASTLE_BIOMES, TerrainAdjustment.BEARD_THIN, TwilightForestMod.prefix("progress_troll") ) {
-		{
-			// plain parts of the castle, like the tower maze
-			this.addMonster(TFEntities.KOBOLD.get(), 10, 1, 2)
-					.addMonster(TFEntities.ADHERENT.get(), 10, 1, 1)
-					.addMonster(TFEntities.HARBINGER_CUBE.get(), 10, 1, 1)
-					.addMonster(EntityType.ENDERMAN, 10, 1, 1)
-					// internal castle
-					.addMonster(1, TFEntities.KOBOLD.get(), 10, 1, 2)
-					.addMonster(1, TFEntities.ADHERENT.get(), 10, 1, 1)
-					.addMonster(1, TFEntities.HARBINGER_CUBE.get(), 10, 1, 1)
-					.addMonster(1, TFEntities.ARMORED_GIANT.get(), 10, 1, 1)
-					// dungeons
-					.addMonster(2, TFEntities.ADHERENT.get(), 10, 1, 1)
-					// forge
-					.addMonster(3, EntityType.BLAZE, 10, 1, 1);
-		}
+//		{
+//			// plain parts of the castle, like the tower maze
+//			this.addMonster(TFEntities.KOBOLD.get(), 10, 1, 2)
+//					.addMonster(TFEntities.ADHERENT.get(), 10, 1, 1)
+//					.addMonster(TFEntities.HARBINGER_CUBE.get(), 10, 1, 1)
+//					.addMonster(EntityType.ENDERMAN, 10, 1, 1)
+//					// internal castle
+//					.addMonster(1, TFEntities.KOBOLD.get(), 10, 1, 2)
+//					.addMonster(1, TFEntities.ADHERENT.get(), 10, 1, 1)
+//					.addMonster(1, TFEntities.HARBINGER_CUBE.get(), 10, 1, 1)
+//					.addMonster(1, TFEntities.ARMORED_GIANT.get(), 10, 1, 1)
+//					// dungeons
+//					.addMonster(2, TFEntities.ADHERENT.get(), 10, 1, 1)
+//					// forge
+//					.addMonster(3, EntityType.BLAZE, 10, 1, 1);
+//		}
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
