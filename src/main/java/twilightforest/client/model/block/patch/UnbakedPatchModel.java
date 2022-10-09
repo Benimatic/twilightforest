@@ -1,4 +1,4 @@
-package twilightforest.client;
+package twilightforest.client.model.block.patch;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
-import twilightforest.client.model.PatchModel;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package twilightforest.client;
+package twilightforest.client.model.block.patch;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;

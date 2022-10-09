@@ -1,6 +1,5 @@
 {
-  "parent": "twilightforest:block/util/giant_block",
-  "render_type": "minecraft:cutout_mipped",
+  "parent": "minecraft:block/leaves",
   "textures": {
     "all": "minecraft:block/oak_leaves"
   }
