@@ -64,7 +64,6 @@ public class EntityLootTables extends EntityLoot {
 		add(TFEntities.KING_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
 		add(TFEntities.MIST_WOLF.get(), fromEntityLootTable(EntityType.WOLF));
 		add(TFEntities.REDCAP_SAPPER.get(), fromEntityLootTable(TFEntities.REDCAP.get()));
-		add(TFEntities.SLIME_BEETLE.get(), fromEntityLootTable(EntityType.SLIME));
 		add(TFEntities.SWARM_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
 		add(TFEntities.CARMINITE_BROODLING.get(), fromEntityLootTable(EntityType.SPIDER));
 		add(TFEntities.CARMINITE_GHASTGUARD.get(), fromEntityLootTable(EntityType.GHAST));
@@ -352,6 +351,14 @@ public class EntityLootTables extends EntityLoot {
 								.add(LootItem.lootTableItem(TFBlocks.TOWERWOOD.get()))
 									.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 									.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))));
+
+		add(TFEntities.SLIME_BEETLE.get(),
+				LootTable.lootTable()
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1.0F))
+								.add(LootItem.lootTableItem(Items.SLIME_BALL)
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
 		add(TFEntities.TROLL.get(),
 				LootTable.lootTable()
