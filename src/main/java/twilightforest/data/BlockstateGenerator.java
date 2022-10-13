@@ -17,6 +17,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.enums.*;
 import twilightforest.init.TFBlocks;
@@ -168,15 +169,14 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		perFaceBlock(TFBlocks.TROLLSTEINN.get(), blockTexture(TFBlocks.TROLLSTEINN.get()), prefix("block/" + TFBlocks.TROLLSTEINN.getId().getPath() + "_light"));
 		simpleBlockWithRenderType(TFBlocks.WISPY_CLOUD.get(), TRANSLUCENT);
 		simpleBlock(TFBlocks.FLUFFY_CLOUD.get());
-		simpleBlock(TFBlocks.GIANT_COBBLESTONE.get(), models().withExistingParent(TFBlocks.GIANT_COBBLESTONE.getId().getPath(), prefix("block/util/giant_block"))
-				.texture("all", blockTexture(Blocks.COBBLESTONE)));
-		simpleBlock(TFBlocks.GIANT_LOG.get(), models().withExistingParent(TFBlocks.GIANT_LOG.getId().getPath(), prefix("block/util/giant_column"))
-				.texture("side", blockTexture(Blocks.OAK_LOG))
-				.texture("end", new ResourceLocation("block/oak_log_top")));
-		simpleBlock(TFBlocks.GIANT_LEAVES.get(), models().withExistingParent(TFBlocks.GIANT_LEAVES.getId().getPath(), new ResourceLocation("block/leaves"))
-				.texture("all", blockTexture(Blocks.OAK_LEAVES)));
-		simpleBlock(TFBlocks.GIANT_OBSIDIAN.get(), models().withExistingParent(TFBlocks.GIANT_OBSIDIAN.getId().getPath(), prefix("block/util/giant_block"))
-				.texture("all", blockTexture(Blocks.OBSIDIAN)));
+		simpleBlock(TFBlocks.GIANT_COBBLESTONE.get(), models().withExistingParent(TFBlocks.GIANT_COBBLESTONE.getId().getPath(), new ResourceLocation("block/block"))
+				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.COBBLESTONE).allSidedTexture(blockTexture(Blocks.COBBLESTONE)).end());
+		simpleBlock(TFBlocks.GIANT_LOG.get(), models().withExistingParent(TFBlocks.GIANT_LOG.getId().getPath(), new ResourceLocation("block/block"))
+				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OAK_LOG).columnTextures(new ResourceLocation("block/oak_log_top"), blockTexture(Blocks.OAK_LOG)).end());
+		simpleBlock(TFBlocks.GIANT_LEAVES.get(), models().withExistingParent(TFBlocks.GIANT_LEAVES.getId().getPath(), new ResourceLocation("block/block"))
+				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OAK_LEAVES).allSidedTexture(blockTexture(Blocks.OAK_LEAVES)).renderType("minecraft:cutout_mipped").end());
+		simpleBlock(TFBlocks.GIANT_OBSIDIAN.get(), models().withExistingParent(TFBlocks.GIANT_OBSIDIAN.getId().getPath(), new ResourceLocation("block/block"))
+				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OBSIDIAN).allSidedTexture(blockTexture(Blocks.OBSIDIAN)).end());
 		simpleBlock(TFBlocks.UBEROUS_SOIL.get(), models().withExistingParent(TFBlocks.UBEROUS_SOIL.getId().getPath(), "block/template_farmland").renderType(TRANSLUCENT)
 				.texture("top", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
 				.texture("dirt", blockTexture(TFBlocks.UBEROUS_SOIL.get())));

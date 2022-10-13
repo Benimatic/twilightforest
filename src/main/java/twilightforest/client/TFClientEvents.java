@@ -45,6 +45,7 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
+import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -72,6 +73,7 @@ public class TFClientEvents {
 		@SubscribeEvent
 		public static void registerLoaders(ModelEvent.RegisterGeometryLoaders event) {
 			event.register("patch", PatchModelLoader.INSTANCE);
+			event.register("giant_block", GiantBlockModelLoader.INSTANCE);
 		}
 
 		@SubscribeEvent
