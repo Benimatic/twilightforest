@@ -68,7 +68,6 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 
 	private void render(T thread, Direction face, PoseStack poseStack, VertexConsumer consumer, int light) {
 		Level level = thread.getLevel();
-		if (level == null) return;
 		BlockPos pos = thread.getBlockPos();
 
 		this.redThreadModel.center.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -77,14 +76,14 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 				//We check the blockState to see if the thread on this face is connecting to a different face of the same block.
 				boolean flag = thread.getBlockState().getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction));
 
-				if (!flag) { //If there is no other face to connect to, we check neighbouring positions for other red thread blocks.
+				if (!flag && level != null) { //If there is no other face to connect to, we check neighbouring positions for other red thread blocks.
 					BlockState state = level.getBlockState(pos.relative(direction));
 					flag = state.getBlock().equals(TFBlocks.RED_THREAD.get()) && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face));
-				}
 
-				if (!flag) { //And if the above check also fails, we check if there is a red thread behind the corner for us to connect to.
-					BlockState state = level.getBlockState(pos.relative(direction).relative(face));
-					flag = state.getBlock().equals(TFBlocks.RED_THREAD.get()) && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
+					if (!flag) { //And if the above check also fails, we check if there is a red thread behind the corner for us to connect to.
+						state = level.getBlockState(pos.relative(direction).relative(face));
+						flag = state.getBlock().equals(TFBlocks.RED_THREAD.get()) && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
+					}
 				}
 
 				if (flag) this.redThreadModel.getPart(face, direction).render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
