@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-29T12:19:11.762866	Twilight Forest Block Tags
+// 1.19.2	2022-10-09T12:24:13.1205609	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -76,6 +76,7 @@ dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/blocks/mazebre
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/blocks/ores/knightmetal.json
 2e3669ba44aac2e69249800a996f0e1b27c08e54 data/twilightforest/tags/blocks/ore_magnet/ignored_ores.json
 d82abba18e7ff90d2c891453ddff813ffdb8e55d data/twilightforest/tags/blocks/ore_magnet/ore_safe_replace_block.json
+0ce6b55aef503d7bff8b5dd86b38092ba2b14c46 data/twilightforest/tags/blocks/plants_hang_on.json
 8a2dc34fc948688f4378d9a34768e56a09d74dc3 data/twilightforest/tags/blocks/portal/decoration.json
 da907279b0d384a39c5e4714ffe703ce4787f9a7 data/twilightforest/tags/blocks/portal/edge.json
 cf3608bd187922aeb48c566c19e8482b0dca34c7 data/twilightforest/tags/blocks/portal/fluid.json

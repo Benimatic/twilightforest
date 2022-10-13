@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.PlantType;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 
 public abstract class TFPlantBlock extends BushBlock implements BonemealableBlock {
@@ -21,23 +22,8 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 		super(properties);
 	}
 
-	@Override
-	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
-		BlockState soil = reader.getBlockState(pos.below());
-		return (reader.getMaxLocalRawBrightness(pos) >= 3 || reader.canSeeSkyFromBelowWater(pos)) && soil.canSustainPlant(reader, pos.below(), Direction.UP, this);
-	}
-
 	public static boolean canPlaceRootAt(LevelReader reader, BlockPos pos) {
-		BlockState state = reader.getBlockState(pos.above());
-		if (state.getMaterial() == Material.DIRT || state.getMaterial() == Material.GRASS) {
-			// can always hang below dirt blocks
-			return true;
-		} else {
-			return (state.getBlock() == TFBlocks.ROOT_STRAND.get()
-					|| state.is(TFBlocks.ROOT_BLOCK.get())
-					|| state.is(TFBlocks.LIVEROOT_BLOCK.get())
-					|| state.is(TFBlocks.MANGROVE_ROOT.get()));
-		}
+		return reader.getBlockState(pos.above()).is(BlockTagGenerator.PLANTS_HANG_ON);
 	}
 
 	@Override

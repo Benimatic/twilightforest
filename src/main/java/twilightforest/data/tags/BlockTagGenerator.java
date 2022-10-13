@@ -60,6 +60,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> FIRE_JET_FUEL = BlockTags.create(TwilightForestMod.prefix("fire_jet_fuel"));
 	public static final TagKey<Block> ICE_BOMB_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("ice_bomb_replaceables"));
 	public static final TagKey<Block> MAZEBREAKER_ACCELERATED = BlockTags.create(TwilightForestMod.prefix("mazebreaker_accelerated_mining"));
+	public static final TagKey<Block> PLANTS_HANG_ON = BlockTags.create(TwilightForestMod.prefix("plants_hang_on"));
 
 	public static final TagKey<Block> COMMON_PROTECTIONS = BlockTags.create(TwilightForestMod.prefix("common_protections"));
 	public static final TagKey<Block> ANNIHILATION_INCLUSIONS = BlockTags.create(TwilightForestMod.prefix("annihilation_inclusions"));
@@ -371,6 +372,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(ICE_BOMB_REPLACEABLES)
 				.add(TFBlocks.MAYAPPLE.get(), TFBlocks.FIDDLEHEAD.get(), Blocks.GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
 				.addTag(BlockTags.FLOWERS);
+
+		tag(PLANTS_HANG_ON)
+				.addTag(BlockTags.DIRT)
+				.add(Blocks.MOSS_BLOCK, TFBlocks.MANGROVE_ROOT.get(), TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get());
 
 		tag(COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
 				TFBlocks.NAGA_BOSS_SPAWNER.get(),
