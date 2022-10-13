@@ -1,4 +1,4 @@
-// 1.19.2	2022-09-14T08:58:23.242941	TwilightForest item and itemblock models
+// 1.19.2	2022-10-12T19:08:41.8415011	TwilightForest item and itemblock models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 1fb9b86a63e0c57696cd0fe907f94b1cfae0021e assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -396,7 +396,7 @@ b2e0e0513eb1aef915a551acb1c6d3996ad29b5b assets/twilightforest/models/item/rainb
 34f086e26bfdc800d357f3e53e4976a0df5fa8df assets/twilightforest/models/item/reappearing_block.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/redcap_sapper_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/redcap_spawn_egg.json
-b19597433e1b5e6c3920394dcbaa13c38ad29c25 assets/twilightforest/models/item/red_thread.json
+f7ae90be35a883b732fe6c012c2390dc57219ca5 assets/twilightforest/models/item/red_thread.json
 40f22ccfa085414838c7cab1bb685b6270733126 assets/twilightforest/models/item/root.json
 8537a6ba9f4a50d69cf01630607b3b2bbdd7c50e assets/twilightforest/models/item/root_strand.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/roving_cube_spawn_egg.json

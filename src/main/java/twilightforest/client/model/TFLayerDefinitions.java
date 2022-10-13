@@ -159,6 +159,8 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, CasketTileEntityRenderer::create);
 		event.registerLayerDefinition(TFModelLayers.MOONWORM, MoonwormModel::create);
 
+		event.registerLayerDefinition(TFModelLayers.RED_THREAD, RedThreadModel::create);
+
 		if (ModList.get().isLoaded("curios")) {
 			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
 			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);

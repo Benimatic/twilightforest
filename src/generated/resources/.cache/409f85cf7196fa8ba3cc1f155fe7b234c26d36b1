@@ -1,4 +1,4 @@
-// 1.19.2	2022-10-08T18:28:23.0098609	TwilightForest blockstates and block models
+// 1.19.2	2022-10-12T18:59:59.1112025	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -287,7 +287,7 @@ d799fe07d26489146924f9e3965d2dd78d5fd86f assets/twilightforest/blockstates/potte
 418c88c60c39a82bf3d9c577d3f7ce7048ec9ea6 assets/twilightforest/blockstates/rainbow_oak_sapling.json
 c3d60011dd0cdefa0cc3f0b45672794fe5a9f305 assets/twilightforest/blockstates/reactor_debris.json
 56675fe7a49ad0f6077a6fd86e2e97c3f5731ae8 assets/twilightforest/blockstates/reappearing_block.json
-de184591346fe8f27df4f113ddb0d9e16f5d0959 assets/twilightforest/blockstates/red_thread.json
+559af5d22287bc8d15ab9819c724f8451b48b20d assets/twilightforest/blockstates/red_thread.json
 bb7819736d9dd523bd69ca88e344478c4c2e4a45 assets/twilightforest/blockstates/root.json
 c7e8c3ec3d2c159a84327ac576f92eae60eb200e assets/twilightforest/blockstates/root_strand.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/skeleton_skull_candle.json
@@ -1184,6 +1184,7 @@ c4b9a403a5509fe38407bc0996b3ef2017e6d83a assets/twilightforest/models/block/reap
 ba4813291c6d67ac422cb757585da47393b72440 assets/twilightforest/models/block/reappearing_block_active.json
 7afc0e422c170f583b053a9cb656c010286d35b6 assets/twilightforest/models/block/reappearing_block_vanished.json
 92b1def27ca84ad49c56101118c34237d32878ff assets/twilightforest/models/block/reappearing_block_vanished_active.json
+9d7f647e9f1f988c576388a90d98569927846f24 assets/twilightforest/models/block/red_thread.json
 1cf498908e2faa0c9f648013b26c477d382b25c1 assets/twilightforest/models/block/root.json
 90f5aacf15e0b6d31622c680d5323a1941981426 assets/twilightforest/models/block/smoker.json
 d518aca55dc8aad690c416b1704203c8445b19db assets/twilightforest/models/block/sorting_chest.json
