@@ -180,8 +180,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		tag(WIP).add(
 				TFBlocks.KEEPSAKE_CASKET.get().asItem(),
-				TFItems.CUBE_OF_ANNIHILATION.get(),
-				TFBlocks.RED_THREAD.get().asItem()
+				TFItems.CUBE_OF_ANNIHILATION.get()
 		);
 
 		tag(NYI).add(
