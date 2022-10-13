@@ -1,4 +1,4 @@
-// 1.19.2	2022-10-09T12:24:13.1205609	Twilight Forest Block Tags
+// 1.19.2	2022-10-13T20:49:41.9663387	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -25,6 +25,7 @@ e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/blocks/flower_pots.
 7177f5d8a3deacfcbfc12170902b73749e87213c data/minecraft/tags/blocks/mineable/hoe.json
 c63d6b6410a738e387285a07c999f83e3c294490 data/minecraft/tags/blocks/mineable/pickaxe.json
 944d5178d1a94490d123e31a73bc58d4eea852ab data/minecraft/tags/blocks/mineable/shovel.json
+44cc0123e6b6b654303a046d924b4e8fca617f41 data/minecraft/tags/blocks/moss_replaceable.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/blocks/mushroom_grow_block.json
 2bf47fe6e0917f3367c02164a55fb63e562f268d data/minecraft/tags/blocks/needs_diamond_tool.json
 d1f677ac5e8be6bff6bd3a82b3586cd745434ef9 data/minecraft/tags/blocks/needs_iron_tool.json

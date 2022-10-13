@@ -659,6 +659,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		);
 
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
+
+		tag(BlockTags.MOSS_REPLACEABLE).add(
+				TFBlocks.ROOT_BLOCK.get(),
+				TFBlocks.LIVEROOT_BLOCK.get(),
+				TFBlocks.TROLLSTEINN.get()
+		);
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
