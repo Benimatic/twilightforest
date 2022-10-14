@@ -1,5 +1,5 @@
-// 1.19.2	2022-09-25T18:23:04.4266114	Twilight Forest Worldgen
 e8c091d3aff2f8600d7c81fdd376035f8cff7885 data/twilightforest/dimension/twilight_forest.json
+// 1.19.2	2022-10-14T12:26:51.0755731	Twilight Forest Worldgen
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 f93870d438ca6484df5554f1b95724adff04814a data/twilightforest/worldgen/biome/clearing.json
 adde6d9d12fba5fa83c2f0bb895b7eb6f2d4698f data/twilightforest/worldgen/biome/dark_forest.json
@@ -207,7 +207,7 @@ e39028889d77af9811dafd69515b84a753af07b0 data/twilightforest/worldgen/placed_fea
 4d0d9f46439931bd7ad4888c7ed768f8980e3a46 data/twilightforest/worldgen/placed_feature/tree/swampy_oak_tree.json
 6943943394be9e30047e0cb352a71d5456581e0b data/twilightforest/worldgen/placed_feature/tree/twilight_oak_tree.json
 b0b25f873a811fe10bfb3927a3b28d5aefd6bdc8 data/twilightforest/worldgen/placed_feature/troll_roots.json
-a1d839762ec049f9eab550bead548cbbd151ab70 data/twilightforest/worldgen/placed_feature/vanilla_roots.json
+8d26fd5e2996a81369053feae59b7fb4fd471173 data/twilightforest/worldgen/placed_feature/vanilla_roots.json
 0db450698ceaa57e529678a5ac1ad1e83af8fed4 data/twilightforest/worldgen/placed_feature/water_lake.json
 8b40d9464bfda34641b8bc897e0052a8a811297e data/twilightforest/worldgen/placed_feature/webs.json
 899c9a4b24433bd5272d5aebe63e2bfc872e7b02 data/twilightforest/worldgen/placed_feature/well_placer.json
