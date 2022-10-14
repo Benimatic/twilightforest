@@ -46,6 +46,16 @@ public class TreeConfigurations {
 			.decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
 			.build();
 
+	public static final TreeConfiguration LARGE_TWILIGHT_OAK = new TreeConfiguration.TreeConfigurationBuilder(
+			BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()),
+			new FancyTrunkPlacer(3, 11, 0),
+			BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.get()),
+			new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+			new TwoLayersFeatureSize(4, 1, 0, OptionalInt.of(4))
+	)
+			.decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
+			.build();
+
 	public static final TreeConfiguration SWAMPY_OAK = new TreeConfiguration.TreeConfigurationBuilder(
 			BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()),
 			new StraightTrunkPlacer(4, 2, 0),

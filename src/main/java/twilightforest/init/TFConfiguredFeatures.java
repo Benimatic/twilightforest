@@ -112,6 +112,7 @@ public final class TFConfiguredFeatures {
 
 	//Trees!
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> TWILIGHT_OAK_TREE = register("tree/twilight_oak_tree", Feature.TREE, TreeConfigurations.TWILIGHT_OAK);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> LARGE_TWILIGHT_OAK_TREE = register("tree/large_twilight_oak_tree", Feature.TREE, TreeConfigurations.LARGE_TWILIGHT_OAK);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> SWAMPY_OAK_TREE = register("tree/swampy_oak_tree", Feature.TREE, TreeConfigurations.SWAMPY_OAK);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> CANOPY_TREE = register("tree/canopy_tree", Feature.TREE, TreeConfigurations.CANOPY_TREE);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> FIREFLY_CANOPY_TREE = register("tree/firefly_canopy_tree", Feature.TREE, TreeConfigurations.CANOPY_TREE_FIREFLY);
