@@ -8,7 +8,6 @@ import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.sounds.Music;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
@@ -24,7 +23,10 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockS
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TorchberryPlantBlock;
-import twilightforest.world.components.feature.config.*;
+import twilightforest.world.components.feature.config.HollowLogConfig;
+import twilightforest.world.components.feature.config.RootConfig;
+import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.components.feature.config.ThornsConfig;
 import twilightforest.world.registration.TreeConfigurations;
 import twilightforest.world.registration.TreeDecorators;
 
@@ -186,6 +188,26 @@ public final class TFConfiguredFeatures {
 					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
 
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FLOWER_PLACER = register("flower_placer", Feature.FLOWER, SMALL_FLOWER_CONFIG);
+
+	public static final RandomPatchConfiguration SMALL_FLOWER_CONFIG_ALT = (new RandomPatchConfiguration(32, 7, 7,
+			PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+					new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
+							Blocks.WHITE_TULIP.defaultBlockState(),
+							Blocks.PINK_TULIP.defaultBlockState(),
+							Blocks.ORANGE_TULIP.defaultBlockState(),
+							Blocks.RED_TULIP.defaultBlockState(),
+							Blocks.DANDELION.defaultBlockState(),
+							Blocks.POPPY.defaultBlockState(),
+							Blocks.OXEYE_DAISY.defaultBlockState(),
+							Blocks.AZURE_BLUET.defaultBlockState(),
+							Blocks.ALLIUM.defaultBlockState(),
+							Blocks.BLUE_ORCHID.defaultBlockState(),
+							Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
+							Blocks.CORNFLOWER.defaultBlockState())
+					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+
+	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FLOWER_PLACER_ALT = register("flower_placer_alt", Feature.FLOWER, SMALL_FLOWER_CONFIG_ALT);
+
 
 	//music!
 	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC.get(), 1200, 12000, true);
