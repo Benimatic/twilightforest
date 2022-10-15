@@ -23,6 +23,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
+import twilightforest.item.GiantPickItem;
 
 //FIXME I simply migrated this out of TFEventListener, it somehow needs to be redone in a more sane way.
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -113,7 +114,11 @@ public class GiantToolGroupingModifier extends LootModifier {
 
 	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
 		ItemStack heldStack = player.getMainHandItem();
-		Item heldItem = heldStack.getItem();
-		return heldItem == TFItems.GIANT_PICKAXE.get() && ForgeHooks.isCorrectToolForDrops(state, player);
+		if (heldStack.is(TFItems.GIANT_PICKAXE.get()) && ForgeHooks.isCorrectToolForDrops(state, player)) {
+			if (heldStack.getOrCreateTag().contains(GiantPickItem.blockBreaker)) {
+				return heldStack.getOrCreateTag().getLong(GiantPickItem.blockBreaker) == player.level.getGameTime();
+			}
+		}
+		return false;
 	}
 }

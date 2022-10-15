@@ -3,10 +3,12 @@ package twilightforest.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
@@ -27,6 +29,8 @@ public class GiantPickItem extends PickaxeItem {
 
 	public static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
 	public static final UUID GIANT_RANGE_MODIFIER = UUID.fromString("cafc02ed-392f-4bf4-b745-42beff107ec4");
+
+	public static final String blockBreaker = "TFBlockBreaker";
 
 	public GiantPickItem(Tier material, Properties properties) {
 		super(material, 8, -3.5F, properties);
@@ -55,5 +59,14 @@ public class GiantPickItem extends PickaxeItem {
 		destroySpeed *= (state.getBlock() == TFBlocks.GIANT_OBSIDIAN.get()) ? 64 : 1;
 		// 64x strength vs giant blocks
 		return state.getBlock() instanceof GiantBlock ? destroySpeed * 64 : destroySpeed;
+	}
+
+	@Override
+	public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
+		ItemStack stack = pPlayer.getMainHandItem();
+		if (stack.is(this)) {
+			stack.getOrCreateTag().putLong(blockBreaker, pLevel.getGameTime());
+		}
+		return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
 	}
 }
