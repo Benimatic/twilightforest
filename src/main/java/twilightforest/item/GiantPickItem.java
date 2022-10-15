@@ -20,6 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.GiantBlock;
+import twilightforest.capabilities.CapabilityList;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
@@ -29,8 +30,6 @@ public class GiantPickItem extends PickaxeItem {
 
 	public static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
 	public static final UUID GIANT_RANGE_MODIFIER = UUID.fromString("cafc02ed-392f-4bf4-b745-42beff107ec4");
-
-	public static final String blockBreaker = "TFBlockBreaker";
 
 	public GiantPickItem(Tier material, Properties properties) {
 		super(material, 8, -3.5F, properties);
@@ -65,7 +64,7 @@ public class GiantPickItem extends PickaxeItem {
 	public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
 		ItemStack stack = pPlayer.getMainHandItem();
 		if (stack.is(this)) {
-			stack.getOrCreateTag().putLong(blockBreaker, pLevel.getGameTime());
+			pPlayer.getCapability(CapabilityList.GIANT_PICK_MINE).ifPresent(cap -> cap.setMining(pLevel.getGameTime()));
 		}
 		return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
 	}
