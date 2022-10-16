@@ -200,15 +200,17 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	}
 
 	private void affectBlocksInAABB(AABB box) {
-		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			BlockState state = this.getLevel().getBlockState(pos);
-			Block block = state.getBlock();
+		if (this.getOwner() instanceof Player player) {
+			boolean creative = player.getAbilities().instabuild;
 
-			if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
-				if (this.getOwner() instanceof Player player) {
+			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+				BlockState state = this.getLevel().getBlockState(pos);
+				Block block = state.getBlock();
+
+				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.getLevel(), pos, state, player))) {
 						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
-							block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
+							if (!creative) block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 
 							this.getLevel().destroyBlock(pos, false);
 							this.blocksSmashed++;
