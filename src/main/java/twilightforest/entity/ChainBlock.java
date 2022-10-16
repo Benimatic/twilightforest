@@ -186,7 +186,10 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 				if (this.canSmashBlocks) {
 					// demolish some blocks
-					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.5D));
+					AABB aabb = this.getBoundingBox().inflate(0.5D);
+					//I don't know why, and I can't find out why, but we have to subtract the coordinates by 1 here.
+					//Otherwise, it will sometimes not break blocks when hitting west, and always break too many when hitting east.
+					this.affectBlocksInAABB(aabb.move(result.getLocation().subtract(aabb.getCenter()).add(-1D, 0D, 0D)));
 				}
 			}
 
