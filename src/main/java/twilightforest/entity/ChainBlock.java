@@ -210,9 +210,8 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.getLevel(), pos, state, player))) {
 						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
-							if (!creative) block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
-
 							this.getLevel().destroyBlock(pos, false);
+							if (!creative) block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 							this.blocksSmashed++;
 						}
 					}
