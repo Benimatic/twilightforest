@@ -1,9 +1,9 @@
-// 1.19.2	2022-10-17T01:26:40.293393	Twilight Forest Worldgen
 7bc3239dedf9b77e924e1b00ac1ac3d03fe0ac18 data/twilightforest/dimension/twilight_forest.json
+// 1.19.2	2022-10-17T01:42:37.0987012	Twilight Forest Worldgen
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 f93870d438ca6484df5554f1b95724adff04814a data/twilightforest/worldgen/biome/clearing.json
-adde6d9d12fba5fa83c2f0bb895b7eb6f2d4698f data/twilightforest/worldgen/biome/dark_forest.json
-930a9c628e27f6f763801b81340720010c134d9f data/twilightforest/worldgen/biome/dark_forest_center.json
+089eed3c59ca39ea5ba55880d42c4cb4b06709be data/twilightforest/worldgen/biome/dark_forest.json
+5171f57124f5bb358232999ece036f23b72e0d6a data/twilightforest/worldgen/biome/dark_forest_center.json
 112262087873018c00c2150291252b9ef985fd2c data/twilightforest/worldgen/biome/dense_forest.json
 b1edfc315e42e2985d7f3c8bc39967b02d3ad3d0 data/twilightforest/worldgen/biome/dense_mushroom_forest.json
 f99502836012e384b6ea8b3e42dfdbb7913c8611 data/twilightforest/worldgen/biome/enchanted_forest.json
