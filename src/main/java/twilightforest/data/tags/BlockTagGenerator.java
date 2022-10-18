@@ -33,8 +33,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> SORTING_LOGS = BlockTags.create(TwilightForestMod.prefix("sortwood_logs"));
 
 	public static final TagKey<Block> TF_LOGS = BlockTags.create(TwilightForestMod.prefix("logs"));
-	public static final TagKey<Block> TF_FENCES = BlockTags.create(TwilightForestMod.prefix("fences"));
-	public static final TagKey<Block> TF_FENCE_GATES = BlockTags.create(TwilightForestMod.prefix("fence_gates"));
 	public static final TagKey<Block> BANISTERS = BlockTags.create(TwilightForestMod.prefix("banisters"));
 	public static final TagKey<Block> HOLLOW_LOGS_HORIZONTAL = BlockTags.create(TwilightForestMod.prefix("hollow_logs_horizontal"));
 	public static final TagKey<Block> HOLLOW_LOGS_VERTICAL = BlockTags.create(TwilightForestMod.prefix("hollow_logs_vertical"));
@@ -79,6 +77,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> ROOT_ORES = BlockTags.create(new ResourceLocation("forge", "ores_in_ground/root"));
 
 	public static final TagKey<Block> TIME_CORE_EXCLUDED = BlockTags.create(TwilightForestMod.prefix("time_core_excluded"));
+
+	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("penguins_spawnable_on"));
+	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("giants_spawnable_on"));
 
 	public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
 		super(generator, TwilightForestMod.ID, exFileHelper);
@@ -126,12 +127,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.add(TFBlocks.TIME_PLANKS.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.MINING_PLANKS.get(), TFBlocks.SORTING_PLANKS.get())
 				.add(TFBlocks.TOWERWOOD.get(), TFBlocks.ENCASED_TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get());
 
-		tag(TF_FENCES)
-				.add(TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.CANOPY_FENCE.get(), TFBlocks.MANGROVE_FENCE.get(), TFBlocks.DARK_FENCE.get())
-				.add(TFBlocks.TIME_FENCE.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.MINING_FENCE.get(), TFBlocks.SORTING_FENCE.get());
-		tag(TF_FENCE_GATES)
-				.add(TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.DARK_GATE.get())
-				.add(TFBlocks.TIME_GATE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.SORTING_GATE.get());
 		tag(BlockTags.WOODEN_FENCES)
 				.add(TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.CANOPY_FENCE.get(), TFBlocks.MANGROVE_FENCE.get(), TFBlocks.DARK_FENCE.get())
 				.add(TFBlocks.TIME_FENCE.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.MINING_FENCE.get(), TFBlocks.SORTING_FENCE.get());
@@ -495,6 +490,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.FALLEN_LEAVES.get());
 
 		tag(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
+
+		tag(PENGUINS_SPAWNABLE_ON).add(Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE);
+		tag(GIANTS_SPAWNABLE_ON).add(TFBlocks.WISPY_CLOUD.get(), TFBlocks.FLUFFY_CLOUD.get());
 
 		tag(BlockTags.MINEABLE_WITH_AXE).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD).add(
 				TFBlocks.HEDGE.get(),
