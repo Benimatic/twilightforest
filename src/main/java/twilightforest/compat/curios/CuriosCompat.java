@@ -118,11 +118,11 @@ public class CuriosCompat {
 
 	public static boolean isTrophyCurioEquipped(LivingEntity entity) {
 		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.getItem() instanceof TrophyItem);
-		return slot.isPresent() && slot.get().slotContext().visible();
+		return slot.isPresent() && slot.get().slotContext() != null && slot.get().slotContext().visible();
 	}
 
 	public static boolean isSkullCurioEquipped(LivingEntity entity) {
 		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.getItem() instanceof SkullCandleItem);
-		return slot.isPresent() && slot.get().slotContext().visible();
+		return slot.isPresent() && slot.get().slotContext() != null && slot.get().slotContext().visible();
 	}
 }
