@@ -1,4 +1,4 @@
-// 1.19.2	2022-10-13T10:17:58.4449744	TwilightForest blockstates and block models
+// 1.19.2	2022-11-01T17:45:24.4918207	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -940,10 +940,10 @@ fa357ec0aed825d4ffea3af170ae05c09f589cab assets/twilightforest/models/block/forc
 61b9200ce9b7fb8547d43ca376716e6a9b463f65 assets/twilightforest/models/block/force_field/violet_force_field_west_no_up.json
 4d115f0f94bf15cb3294c14aea73b178d1381763 assets/twilightforest/models/block/ghast_trap.json
 f9e8b0d3193b4eeff2417bdc0642fe59034f35f7 assets/twilightforest/models/block/ghast_trap_active.json
-4dd4ad3bbb3a947899298311967876824efb4b94 assets/twilightforest/models/block/giant_cobblestone.json
-34170bc3c846a5c593e3b254faaa0c337e8020e6 assets/twilightforest/models/block/giant_leaves.json
-cc531c7cb73a6822e6714aff3737633b8b706dc5 assets/twilightforest/models/block/giant_log.json
-101358f0b413fc9df4b3f48df83862456dbbf614 assets/twilightforest/models/block/giant_obsidian.json
+d98f580667f315a9f380d31d514079e802a464ad assets/twilightforest/models/block/giant_cobblestone.json
+b69de5961d3239c8fd9cf9a814f07a26c9724dda assets/twilightforest/models/block/giant_leaves.json
+4ae0e02ed577bfa8b0adf60c048d912394d6428e assets/twilightforest/models/block/giant_log.json
+f1f280a90a54ddf816e123930e13add0b68ee99c assets/twilightforest/models/block/giant_obsidian.json
 7057d96d897529b87e727d08dfe498d05367242b assets/twilightforest/models/block/green_thorns.json
 d8f4bbc8889aec16292774a1548cded7fdc9a9b9 assets/twilightforest/models/block/green_thorns_bottom.json
 322f7cd4e7e179f38597e6cf1dfac8eb1ec5fdb3 assets/twilightforest/models/block/green_thorns_no_section.json

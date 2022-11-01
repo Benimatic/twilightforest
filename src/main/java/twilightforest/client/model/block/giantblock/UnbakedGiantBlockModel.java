@@ -6,26 +6,43 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraftforge.client.RenderTypeGroup;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 
 import java.util.*;
 import java.util.function.Function;
 
-public record UnbakedGiantBlockModel(Map<ResourceLocation, Map<Direction, ResourceLocation>> textures, String renderType, ResourceLocation parent) implements IUnbakedGeometry<UnbakedGiantBlockModel> {
+public record UnbakedGiantBlockModel(ResourceLocation parent) implements IUnbakedGeometry<UnbakedGiantBlockModel> {
 
 	@Override
 	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
-		Map<Direction, TextureAtlasSprite> texturesReal = new HashMap<>();
-		for (Direction direction : Direction.values()) {
-			texturesReal.put(direction, spriteGetter.apply(new Material(InventoryMenu.BLOCK_ATLAS, this.textures().get(this.parent()).get(direction))));
+		TextureAtlasSprite[] sprites;
+		if (context.hasMaterial("all")) {
+			sprites = new TextureAtlasSprite[]{spriteGetter.apply(context.getMaterial("all"))};
+		} else {
+			ArrayList<TextureAtlasSprite> materials = new ArrayList<>();
+			for (Direction dir : Direction.values()) {
+				materials.add(spriteGetter.apply(context.getMaterial(dir.getName().toLowerCase(Locale.ROOT))));
+			}
+			sprites = materials.toArray(new TextureAtlasSprite[]{});
 		}
-		return new GiantBlockModel(texturesReal, context.getRenderType(ResourceLocation.tryParse(this.renderType())).block());
+
+		ResourceLocation renderTypeHint = context.getRenderTypeHint();
+		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
+		return new GiantBlockModel(sprites, renderTypes);
 	}
 
 	@Override
 	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-		return Collections.emptyList();
+		if (context.hasMaterial("all")) {
+			return Collections.singleton(context.getMaterial("all"));
+		} else {
+			ArrayList<Material> materials = new ArrayList<>();
+			for (Direction dir : Direction.values()) {
+				materials.add(context.getMaterial(dir.getName().toLowerCase(Locale.ROOT)));
+			}
+			return materials;
+		}
 	}
 }

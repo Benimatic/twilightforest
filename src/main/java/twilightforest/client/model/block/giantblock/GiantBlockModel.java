@@ -9,9 +9,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ChunkRenderTypeSet;
+import net.minecraftforge.client.RenderTypeGroup;
 import net.minecraftforge.client.model.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
@@ -22,12 +24,23 @@ import twilightforest.util.Vec2i;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
-public record GiantBlockModel(Map<Direction, TextureAtlasSprite> texture, RenderType type) implements IDynamicBakedModel {
+public class GiantBlockModel implements IDynamicBakedModel {
 
 	private static final ModelProperty<GiantBlockData> DATA = new ModelProperty<>();
 	private static final FaceBakery FACE_BAKERY = new FaceBakery();
+
+	private final TextureAtlasSprite[] textures;
+	private final ChunkRenderTypeSet blockRenderTypes;
+	private final List<RenderType> itemRenderTypes;
+	private final List<RenderType> fabulousItemRenderTypes;
+
+	public GiantBlockModel(TextureAtlasSprite[] texture, RenderTypeGroup group) {
+		this.textures = texture;
+		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+		this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;
+		this.fabulousItemRenderTypes = !group.isEmpty() ? List.of(group.entityFabulous()) : null;
+	}
 
 	@Override
 	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
@@ -37,7 +50,9 @@ public record GiantBlockModel(Map<Direction, TextureAtlasSprite> texture, Render
 			BlockPos pos = extraData.get(DATA).pos();
 			Vec2i coords = this.calculateOffset(side, pos.offset(this.magicOffsetFromDir(side)));
 
-			quads.add(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(side, side.ordinal(), side.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), this.texture().get(side), side, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(this.texture().get(side).getName().getNamespace(), this.texture().get(side).getName().getPath() + "_" + side.name().toLowerCase(Locale.ROOT))));
+			TextureAtlasSprite sprite = this.textures[this.textures.length > 1 ? side.ordinal() : 0];
+
+			quads.add(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(side, side.ordinal(), side.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, side, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(sprite.getName().getNamespace(), sprite.getName().getPath() + "_" + side.name().toLowerCase(Locale.ROOT))));
 		}
 
 		return quads;
@@ -117,7 +132,7 @@ public record GiantBlockModel(Map<Direction, TextureAtlasSprite> texture, Render
 
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
-		return this.texture.get(Direction.NORTH);
+		return this.textures[0];
 	}
 
 	@Override
@@ -125,9 +140,25 @@ public record GiantBlockModel(Map<Direction, TextureAtlasSprite> texture, Render
 		return ItemOverrides.EMPTY;
 	}
 
+
+	@NotNull
 	@Override
 	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		return ChunkRenderTypeSet.of(this.type());
+		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
+	}
+
+	@NotNull
+	@Override
+	public List<RenderType> getRenderTypes(@NotNull ItemStack stack, boolean fabulous) {
+		if (!fabulous) {
+			if (this.itemRenderTypes != null) {
+				return this.itemRenderTypes;
+			}
+		} else if (this.fabulousItemRenderTypes != null) {
+			return this.fabulousItemRenderTypes;
+		}
+
+		return IDynamicBakedModel.super.getRenderTypes(stack, fabulous);
 	}
 
 	//modeldata holder
