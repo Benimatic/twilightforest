@@ -170,18 +170,22 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlockWithRenderType(TFBlocks.WISPY_CLOUD.get(), TRANSLUCENT);
 		simpleBlock(TFBlocks.FLUFFY_CLOUD.get());
 		simpleBlock(TFBlocks.GIANT_COBBLESTONE.get(), models().withExistingParent(TFBlocks.GIANT_COBBLESTONE.getId().getPath(), new ResourceLocation("block/block"))
+				.texture("particle", blockTexture(Blocks.COBBLESTONE))
 				.texture("all", blockTexture(Blocks.COBBLESTONE))
 				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.COBBLESTONE).end());
 		simpleBlock(TFBlocks.GIANT_LOG.get(), models().withExistingParent(TFBlocks.GIANT_LOG.getId().getPath(), new ResourceLocation("block/block"))
+				.texture("particle", blockTexture(Blocks.OAK_LOG))
 				.texture("north", blockTexture(Blocks.OAK_LOG)).texture("south", blockTexture(Blocks.OAK_LOG))
 				.texture("west", blockTexture(Blocks.OAK_LOG)).texture("east", blockTexture(Blocks.OAK_LOG))
 				.texture("up", blockTexture(Blocks.OAK_LOG) + "_top").texture("down", blockTexture(Blocks.OAK_LOG) + "_top")
 				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OAK_LOG).end());
 		simpleBlock(TFBlocks.GIANT_LEAVES.get(), models().withExistingParent(TFBlocks.GIANT_LEAVES.getId().getPath(), new ResourceLocation("block/block"))
 				.renderType(CUTOUT_MIPPED)
+				.texture("particle", blockTexture(Blocks.OAK_LEAVES))
 				.texture("all", blockTexture(Blocks.OAK_LEAVES))
 				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OAK_LEAVES).end());
 		simpleBlock(TFBlocks.GIANT_OBSIDIAN.get(), models().withExistingParent(TFBlocks.GIANT_OBSIDIAN.getId().getPath(), new ResourceLocation("block/block"))
+				.texture("particle", blockTexture(Blocks.OBSIDIAN))
 				.texture("all", blockTexture(Blocks.OBSIDIAN))
 				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OBSIDIAN).end());
 		simpleBlock(TFBlocks.UBEROUS_SOIL.get(), models().withExistingParent(TFBlocks.UBEROUS_SOIL.getId().getPath(), "block/template_farmland").renderType(TRANSLUCENT)

@@ -4,6 +4,7 @@
   "parent_block": "minecraft:oak_leaves",
   "render_type": "minecraft:cutout_mipped",
   "textures": {
-    "all": "minecraft:block/oak_leaves"
+    "all": "minecraft:block/oak_leaves",
+    "particle": "minecraft:block/oak_leaves"
   }
 }

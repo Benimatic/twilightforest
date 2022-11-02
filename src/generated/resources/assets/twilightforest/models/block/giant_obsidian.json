@@ -3,6 +3,7 @@
   "loader": "twilightforest:giant_block",
   "parent_block": "minecraft:obsidian",
   "textures": {
-    "all": "minecraft:block/obsidian"
+    "all": "minecraft:block/obsidian",
+    "particle": "minecraft:block/obsidian"
   }
 }

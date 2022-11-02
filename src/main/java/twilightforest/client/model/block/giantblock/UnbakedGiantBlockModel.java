@@ -30,18 +30,19 @@ public record UnbakedGiantBlockModel(ResourceLocation parent) implements IUnbake
 
 		ResourceLocation renderTypeHint = context.getRenderTypeHint();
 		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
-		return new GiantBlockModel(sprites, sprites[0], overrides, context.getTransforms(), renderTypes);
+		return new GiantBlockModel(sprites, spriteGetter.apply(context.getMaterial("particle")), overrides, context.getTransforms(), renderTypes);
 	}
 
 	@Override
 	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
 		if (context.hasMaterial("all")) {
-			return Collections.singleton(context.getMaterial("all"));
+			return List.of(context.getMaterial("all"), context.getMaterial("particle"));
 		} else {
 			ArrayList<Material> materials = new ArrayList<>();
 			for (Direction dir : Direction.values()) {
 				materials.add(context.getMaterial(dir.getName().toLowerCase(Locale.ROOT)));
 			}
+			materials.add(context.getMaterial("particle"));
 			return materials;
 		}
 	}
