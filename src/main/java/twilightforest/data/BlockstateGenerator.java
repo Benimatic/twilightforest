@@ -14,9 +14,11 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.client.model.block.doors.CastleDoorBuilder;
 import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.enums.*;
@@ -1178,11 +1180,23 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void castleDoor(Block b) {
-		ModelFile overlay = models().getExistingFile(prefix("block/castle_door_overlay"));
-		ModelFile main = models().getExistingFile(prefix("block/castle_door_template"));
-		getMultipartBuilder(b)
-				.part().modelFile(overlay).addModel().condition(CastleDoorBlock.VANISHED, true).end()
-				.part().modelFile(main).addModel().condition(CastleDoorBlock.VANISHED, false).end();
+		ModelFile vanished = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath() + "_vanished", "block/block")
+				.texture("base", TwilightForestMod.prefix("block/castle_door_vanished"))
+				.texture("particle", TwilightForestMod.prefix("block/castle_door_vanished"))
+				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
+				.texture("overlay_connected", TwilightForestMod.prefix("block/castle_door_rune_ctm"))
+				.renderType(CUTOUT)
+				.customLoader(CastleDoorBuilder::begin).end();
+
+		ModelFile main = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath(), "block/block")
+				.texture("base", TwilightForestMod.prefix("block/castle_door"))
+				.texture("particle", TwilightForestMod.prefix("block/castle_door"))
+				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
+				.texture("overlay_connected", TwilightForestMod.prefix("block/castle_door_rune_ctm"))
+				.renderType(CUTOUT)
+				.customLoader(CastleDoorBuilder::begin).end();
+
+		getVariantBuilder(b).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(CastleDoorBlock.VANISHED) ? vanished : main).build());
 	}
 
 	private void allRotations(Block b, ModelFile model) {
