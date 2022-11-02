@@ -30,7 +30,7 @@ public record UnbakedGiantBlockModel(ResourceLocation parent) implements IUnbake
 
 		ResourceLocation renderTypeHint = context.getRenderTypeHint();
 		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
-		return new GiantBlockModel(sprites, renderTypes);
+		return new GiantBlockModel(sprites, sprites[0], overrides, context.getTransforms(), renderTypes);
 	}
 
 	@Override

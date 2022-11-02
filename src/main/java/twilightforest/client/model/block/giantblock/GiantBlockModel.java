@@ -31,12 +31,18 @@ public class GiantBlockModel implements IDynamicBakedModel {
 	private static final FaceBakery FACE_BAKERY = new FaceBakery();
 
 	private final TextureAtlasSprite[] textures;
+	private final TextureAtlasSprite particle;
+	private final ItemOverrides overrides;
+	private final ItemTransforms transforms;
 	private final ChunkRenderTypeSet blockRenderTypes;
 	private final List<RenderType> itemRenderTypes;
 	private final List<RenderType> fabulousItemRenderTypes;
 
-	public GiantBlockModel(TextureAtlasSprite[] texture, RenderTypeGroup group) {
+	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {
 		this.textures = texture;
+		this.particle = particle;
+		this.overrides = overrides;
+		this.transforms = transforms;
 		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
 		this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;
 		this.fabulousItemRenderTypes = !group.isEmpty() ? List.of(group.entityFabulous()) : null;
@@ -132,14 +138,19 @@ public class GiantBlockModel implements IDynamicBakedModel {
 
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
-		return this.textures[0];
+		return this.particle;
 	}
 
 	@Override
 	public ItemOverrides getOverrides() {
-		return ItemOverrides.EMPTY;
+		return this.overrides;
 	}
 
+	@NotNull
+	@Override
+	public ItemTransforms getTransforms() {
+		return this.transforms;
+	}
 
 	@NotNull
 	@Override
