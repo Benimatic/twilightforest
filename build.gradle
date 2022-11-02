@@ -153,7 +153,7 @@ dependencies {
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.minecraft_sub_version}-${curios_version}")
 
     //curse maven
-    implementation fg.deobf("curse.maven:jade-324717:3916646-api-3916647")
+    implementation fg.deobf("curse.maven:jade-324717:4054920-api-4054921")
     runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3944903")
 
     //bookshelf apparently prevents datagen from running, uncomment these if you need to test botany pot compat
