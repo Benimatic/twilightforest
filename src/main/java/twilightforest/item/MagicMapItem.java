@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -20,14 +19,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.network.NetworkDirection;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMagicMapData;
 import twilightforest.init.BiomeKeys;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFLandmark;
-import twilightforest.network.MagicMapPacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -255,8 +251,7 @@ public class MagicMapItem extends MapItem {
 	public Packet<?> getUpdatePacket(ItemStack stack, Level world, Player player) {
 		Integer id = getMapId(stack);
 		TFMagicMapData mapdata = getCustomMapData(stack, world);
-		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
-		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p), NetworkDirection.PLAY_TO_CLIENT) : p;
+		return id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
 	}
 
 	@Override
