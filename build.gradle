@@ -19,7 +19,7 @@ apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remappe
 
 version = (hasProperty("CIRevision") ? CIRevision : mod_version)
 group = group_name
-archivesBaseName = "${mod_id}-${minecraft_sub_version}"
+archivesBaseName = "${mod_id}-${minecraft_version}"
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
