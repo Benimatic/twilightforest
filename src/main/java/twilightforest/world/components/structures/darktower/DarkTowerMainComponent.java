@@ -4,8 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
@@ -1083,7 +1085,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		int dy = getWorldY(y + 1);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		if (sbb.isInside(new BlockPos(dx, dy, dz))) {
-			Holder<ConfiguredFeature<TreeConfiguration,?>> treeGen = switch (treeNum) {
+			ResourceKey<ConfiguredFeature<?, ?>> treeGen = switch (treeNum) {
 				case 1 ->
 						// jungle tree
 						// made a custom one so it doesnt cut through the floor
@@ -1100,7 +1102,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.value().place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
+				if (world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).place(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
 					break;
 				}
 			}

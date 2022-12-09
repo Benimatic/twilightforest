@@ -1,6 +1,7 @@
 package twilightforest.world.registration;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,7 +18,7 @@ import java.util.function.Supplier;
  */
 public class TFStructureProcessors {
 
-	public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSORS = DeferredRegister.create(Registry.STRUCTURE_PROCESSOR_REGISTRY, TwilightForestMod.ID);
+	public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSORS = DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, TwilightForestMod.ID);
 
 	public static final RegistryObject<StructureProcessorType<CobbleVariants>> COBBLE_VARIANTS = registerProcessor("cobble_variants", () -> () -> CobbleVariants.CODEC);
 	public static final RegistryObject<StructureProcessorType<SmoothStoneVariants>> SMOOTH_STONE_VARIANTS = registerProcessor("smooth_stone_variants", () -> () -> SmoothStoneVariants.CODEC);

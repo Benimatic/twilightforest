@@ -7,6 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -103,7 +104,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		}
 	}
 
-	protected <FC extends FeatureConfiguration> void generate(WorldGenLevel world, ChunkGenerator generator, Holder<ConfiguredFeature<FC, ?>> feature, RandomSource rand, int x, int y, int z, BoundingBox sbb) {
+	protected void generate(WorldGenLevel world, ChunkGenerator generator, ResourceKey<ConfiguredFeature<?, ?>> feature, RandomSource rand, int x, int y, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
@@ -111,7 +112,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos)) {
-			feature.value().place(world, generator, rand, pos);
+			world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(feature).place(world, generator, rand, pos);
 		}
 	}
 }

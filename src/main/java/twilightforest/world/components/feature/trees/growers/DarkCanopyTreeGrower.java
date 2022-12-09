@@ -4,12 +4,14 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFConfiguredFeatures;
 
 public class DarkCanopyTreeGrower extends AbstractTreeGrower {
 
+	@Nullable
 	@Override
-	public ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource rand, boolean largeHive) {
+	protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean makeBees) {
 		return TFConfiguredFeatures.HOMEGROWN_DARKWOOD_TREE;
 	}
 }

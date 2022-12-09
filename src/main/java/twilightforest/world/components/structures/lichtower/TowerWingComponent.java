@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -48,6 +50,7 @@ import java.lang.reflect.Method;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings({"deprecation", "unused"})
 public class TowerWingComponent extends TFStructureComponentOld {
@@ -1817,7 +1820,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
 			}
-			painting.setVariant(Registry.PAINTING_VARIANT.getHolderOrThrow(art));
+			painting.setVariant(BuiltInRegistries.PAINTING_VARIANT.getHolderOrThrow(art));
 			painting.setPos(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
 
 			// check if we can fit a painting there
@@ -1831,12 +1834,13 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * At least one of the painting's parameters must be the specified size or greater
 	 */
+	@Nullable
 	protected ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
 		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
 
 		for (PaintingVariant art : ForgeRegistries.PAINTING_VARIANTS) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
-				valid.add(ResourceKey.create(Registry.PAINTING_VARIANT_REGISTRY, ForgeRegistries.PAINTING_VARIANTS.getKey(art)));
+				valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(ForgeRegistries.PAINTING_VARIANTS.getKey(art))));
 			}
 		}
 
@@ -1850,7 +1854,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * This is similar to PaintingEntity.isOnValidSurface, except that it does not check for a solid wall behind the painting.
 	 */
-	protected boolean checkPainting(WorldGenLevel world, Painting painting) {
+	protected boolean checkPainting(WorldGenLevel world, @Nullable Painting painting) {
 
 		if (painting == null) {
 			return false;
