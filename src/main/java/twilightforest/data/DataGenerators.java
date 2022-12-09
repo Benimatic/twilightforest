@@ -18,32 +18,34 @@ import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
+
 	@SubscribeEvent
-	public static void gatherData(GatherDataEvent evt) {
-		DataGenerator generator = evt.getGenerator();
-		PackOutput output = evt.getGenerator().getPackOutput();
-		ExistingFileHelper helper = evt.getExistingFileHelper();
-		CompletableFuture<HolderLookup.Provider> provider = evt.getLookupProvider();
+	public static void gatherData(GatherDataEvent event) {
+		DataGenerator generator = event.getGenerator();
+		PackOutput output = event.getGenerator().getPackOutput();
+		CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
+		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		generator.addProvider(true, new AdvancementGenerator(output, provider, helper));
-		generator.addProvider(true, new BlockstateGenerator(generator, helper));
-		generator.addProvider(true, new ItemModelGenerator(generator, helper));
-		generator.addProvider(true, new BiomeTagGenerator(output, provider, helper));
-		generator.addProvider(true, new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new AdvancementGenerator(output, provider, helper));
+		generator.addProvider(event.includeClient(), new BlockstateGenerator(generator, helper));
+		generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, helper));
+		generator.addProvider(event.includeServer(), new BiomeTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
 		BlockTagGenerator blocktags = new BlockTagGenerator(generator.getPackOutput(), provider, helper);
-		generator.addProvider(true, blocktags);
-		generator.addProvider(true, new FluidTagGenerator(output, provider, helper));
-		generator.addProvider(true, new ItemTagGenerator(output, provider, blocktags, helper));
-		generator.addProvider(true, new EntityTagGenerator(output, provider, helper));
-		generator.addProvider(true, new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
-		generator.addProvider(true, new LootGenerator(output));
-		generator.addProvider(true, new StonecuttingGenerator(output));
-		generator.addProvider(true, new CraftingGenerator(output));
-		generator.addProvider(true, new LootModifierGenerator(generator));
+		generator.addProvider(event.includeServer(), blocktags);
+		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags, helper));
+		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new LootGenerator(output));
+		generator.addProvider(event.includeServer(), new StonecuttingGenerator(output));
+		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
+		generator.addProvider(event.includeServer(), new LootModifierGenerator(generator));
+		generator.addProvider(event.includeServer(), new WorldGenerator(output));
 
-		generator.addProvider(true, new CrumbleHornGenerator(output, helper));
-		generator.addProvider(true, new TransformationPowderGenerator(output, helper));
-		generator.addProvider(true, new UncraftingRecipeGenerator(output, helper));
-		generator.addProvider(true, new StalactiteGenerator(output));
+		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new UncraftingRecipeGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
 	}
 }
