@@ -1,7 +1,10 @@
 package twilightforest.data.tags;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -13,19 +16,21 @@ import twilightforest.init.TFBannerPatterns;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CompletableFuture;
+
 //a place to hold all custom tags, since I imagine we wont have a lot of them
 public class CustomTagGenerator {
 
 	public static class EnchantmentTagGenerator extends TagsProvider<Enchantment> {
 
-		public static final TagKey<Enchantment> PHANTOM_ARMOR_BANNED_ENCHANTS = TagKey.create(Registry.ENCHANTMENT_REGISTRY, TwilightForestMod.prefix("phantom_armor_banned_enchants"));
+		public static final TagKey<Enchantment> PHANTOM_ARMOR_BANNED_ENCHANTS = TagKey.create(Registries.ENCHANTMENT, TwilightForestMod.prefix("phantom_armor_banned_enchants"));
 
-		public EnchantmentTagGenerator(DataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
-			super(generatorIn, Registry.ENCHANTMENT, TwilightForestMod.ID, existingFileHelper);
+		public EnchantmentTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
+			super(output, Registries.ENCHANTMENT, provider, TwilightForestMod.ID, helper);
 		}
 
 		@Override
-		protected void addTags() {
+		protected void addTags(HolderLookup.Provider provider) {
 			tag(PHANTOM_ARMOR_BANNED_ENCHANTS).add(Enchantments.VANISHING_CURSE, Enchantments.BINDING_CURSE);
 		}
 
@@ -47,12 +52,12 @@ public class CustomTagGenerator {
 		public static final TagKey<BannerPattern> SNOW_QUEEN_BANNER_PATTERN = create("pattern_item/snow_queen");
 		public static final TagKey<BannerPattern> QUEST_RAM_BANNER_PATTERN = create("pattern_item/quest_ram");
 
-		public BannerPatternTagGenerator(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-			super(generator, Registry.BANNER_PATTERN, TwilightForestMod.ID, existingFileHelper);
+		public BannerPatternTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
+			super(output, Registries.BANNER_PATTERN, provider, TwilightForestMod.ID, existingFileHelper);
 		}
 
 		@Override
-		protected void addTags() {
+		protected void addTags(HolderLookup.Provider provider) {
 			tag(NAGA_BANNER_PATTERN).add(TFBannerPatterns.NAGA.get());
 			tag(LICH_BANNER_PATTERN).add(TFBannerPatterns.LICH.get());
 			tag(MINOSHROOM_BANNER_PATTERN).add(TFBannerPatterns.MINOSHROOM.get());
@@ -65,7 +70,7 @@ public class CustomTagGenerator {
 		}
 
 		private static TagKey<BannerPattern> create(String name) {
-			return TagKey.create(Registry.BANNER_PATTERN_REGISTRY, TwilightForestMod.prefix(name));
+			return TagKey.create(Registries.BANNER_PATTERN, TwilightForestMod.prefix(name));
 		}
 
 		@Override

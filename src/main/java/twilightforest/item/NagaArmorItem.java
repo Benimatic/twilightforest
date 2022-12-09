@@ -24,17 +24,16 @@ public class NagaArmorItem extends ArmorItem {
 		}
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			switch (this.getSlot()) {
-				case CHEST -> stack.enchant(Enchantments.FIRE_PROTECTION, 3);
-				case LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 3);
-				default -> {
-				}
-			}
-			items.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			switch (this.getSlot()) {
+//				case CHEST -> stack.enchant(Enchantments.FIRE_PROTECTION, 3);
+//				case LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 3);
+//				default -> {
+//				}
+//			}
+//			items.add(stack);
+//		}
+//	}
 }

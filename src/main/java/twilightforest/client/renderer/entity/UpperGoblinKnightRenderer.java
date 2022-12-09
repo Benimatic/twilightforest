@@ -1,8 +1,9 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.client.model.entity.UpperGoblinKnightModel;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
@@ -16,7 +17,7 @@ public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnight
 		super.setupRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
 
 		if (upperKnight.heavySpearTimer > 0) {
-			stack.mulPose(Vector3f.XP.rotationDegrees(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));
+			stack.mulPose(Axis.XP.rotationDegrees(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));
 		}
 	}
 

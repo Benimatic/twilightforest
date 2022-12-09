@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
@@ -108,8 +109,8 @@ public class MagicMapItem extends MapItem {
 		if (level.dimension() == data.dimension && viewer instanceof Player && level instanceof ServerLevel serverLevel && TFGenerationSettings.usesTwilightChunkGenerator(serverLevel)) {
 			int biomesPerPixel = 4;
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
-			int centerX = data.x;
-			int centerZ = data.z;
+			int centerX = data.centerX;
+			int centerZ = data.centerZ;
 			int viewerX = Mth.floor(viewer.getX() - centerX) / blocksPerPixel + 64;
 			int viewerZ = Mth.floor(viewer.getZ() - centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 512 / blocksPerPixel;
@@ -222,7 +223,7 @@ public class MagicMapItem extends MapItem {
 			setupBiomeColors();
 		}
 
-		MapColorBrightness c = BIOME_COLORS.get(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
+		MapColorBrightness c = BIOME_COLORS.get(level.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome));
 
 		return c != null ? getMapColor(c) : 0xFF000000;
 	}

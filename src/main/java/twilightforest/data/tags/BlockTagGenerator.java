@@ -1,8 +1,10 @@
 package twilightforest.data.tags;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -16,9 +18,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
-public class BlockTagGenerator extends BlockTagsProvider {
+public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 	public static final TagKey<Block> TOWERWOOD = BlockTags.create(TwilightForestMod.prefix("towerwood"));
 	public static final TagKey<Block> MAZESTONE = BlockTags.create(TwilightForestMod.prefix("mazestone"));
 	public static final TagKey<Block> CASTLE_BLOCKS = BlockTags.create(TwilightForestMod.prefix("castle_blocks"));
@@ -81,13 +84,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("penguins_spawnable_on"));
 	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("giants_spawnable_on"));
 
-	public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
-		super(generator, TwilightForestMod.ID, exFileHelper);
+	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
+		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key(), TwilightForestMod.ID, helper);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		tag(TWILIGHT_OAK_LOGS)
 				.add(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
 		tag(CANOPY_LOGS)
@@ -327,14 +330,14 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(ORES_KNIGHTMETAL); // Intentionally blank
 
 		tag(BlockTags.DIRT).add(TFBlocks.UBEROUS_SOIL.get());
-		tag(PORTAL_EDGE).addTags(BlockTags.DIRT).add(Blocks.FARMLAND, Blocks.DIRT_PATH);
+		tag(PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).addTags(BlockTags.DIRT);
 		// So yes, we could do fluid tags for the portal pool but the problem is that we're -replacing- the block, effectively replacing what would be waterlogged, with the portal block
 		// In the future if we can "portal log" blocks then we can re-explore doing it as a fluid
 		tag(PORTAL_POOL).add(Blocks.WATER);
 		tag(PORTAL_DECO)
-				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
 				.add(Blocks.BAMBOO)
-				.add(getAllMinecraftOrTwilightBlocks(b -> (b.material == Material.PLANT || b.material == Material.REPLACEABLE_PLANT || b.material == Material.LEAVES) && !plants.contains(b)));
+				.add(getAllMinecraftOrTwilightBlocks(b -> (b.material == Material.PLANT || b.material == Material.REPLACEABLE_PLANT || b.material == Material.LEAVES) && !plants.contains(b)))
+				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS);
 
 		tag(DARK_TOWER_ALLOWED_POTS)
 				.add(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), TFBlocks.POTTED_CANOPY_SAPLING.get(), TFBlocks.POTTED_MANGROVE_SAPLING.get(),
@@ -424,7 +427,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.add(TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get())
 				.add(TFBlocks.BROWN_THORNS.get(), TFBlocks.GREEN_THORNS.get());
 
-		tag(ANTIBUILDER_IGNORES).addTag(COMMON_PROTECTIONS).addOptional(new ResourceLocation("gravestone:gravestone")).add(
+		tag(ANTIBUILDER_IGNORES).add(
 				Blocks.REDSTONE_LAMP,
 				Blocks.TNT,
 				Blocks.WATER,
@@ -437,11 +440,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.GHAST_TRAP.get(),
 				TFBlocks.FAKE_DIAMOND.get(),
 				TFBlocks.FAKE_GOLD.get()
-		);
+		).addTag(COMMON_PROTECTIONS).addOptional(new ResourceLocation("gravestone:gravestone"));
 
-		tag(STRUCTURE_BANNED_INTERACTIONS)
-				.addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS).add(Blocks.LEVER)
-				.add(TFBlocks.ANTIBUILDER.get());
+		tag(STRUCTURE_BANNED_INTERACTIONS).add(Blocks.LEVER).add(TFBlocks.ANTIBUILDER.get()).addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS);
 
 		// TODO add more grave mods to this list 
 		tag(PROGRESSION_ALLOW_BREAKING)
@@ -475,7 +476,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		// For anything that permits replacement during Worldgen
 		tag(WORLDGEN_REPLACEABLES).addTags(BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.REPLACEABLE_PLANTS);
 
-		tag(ROOT_TRACE_SKIP).addTags(BlockTags.FEATURES_CANNOT_REPLACE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get());
+		tag(ROOT_TRACE_SKIP).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get()).addTags(BlockTags.FEATURES_CANNOT_REPLACE);
 
 		tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(TFBlocks.TROLLSTEINN.get());
 
@@ -494,7 +495,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(PENGUINS_SPAWNABLE_ON).add(Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE);
 		tag(GIANTS_SPAWNABLE_ON).add(TFBlocks.WISPY_CLOUD.get(), TFBlocks.FLUFFY_CLOUD.get());
 
-		tag(BlockTags.MINEABLE_WITH_AXE).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD).add(
+		tag(BlockTags.MINEABLE_WITH_AXE).add(
 				TFBlocks.HEDGE.get(),
 				TFBlocks.ROOT_BLOCK.get(),
 				TFBlocks.LIVEROOT_BLOCK.get(),
@@ -528,7 +529,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.TRANSFORMATION_CHEST.get(),
 				TFBlocks.MINING_CHEST.get(),
 				TFBlocks.SORTING_CHEST.get()
-		);
+		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD);
 
 		tag(BlockTags.MINEABLE_WITH_HOE).add(
 				//vanilla doesnt use the leaves tag
@@ -548,7 +549,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.ARCTIC_FUR_BLOCK.get()
 		);
 
-		tag(BlockTags.MINEABLE_WITH_PICKAXE).addTags(MAZESTONE, CASTLE_BLOCKS).add(
+		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 				TFBlocks.NAGASTONE.get(),
 				TFBlocks.NAGASTONE_HEAD.get(),
 				TFBlocks.STRONGHOLD_SHIELD.get(),
@@ -604,7 +605,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.TWISTED_STONE_PILLAR.get(),
 				TFBlocks.KEEPSAKE_CASKET.get(),
 				TFBlocks.BOLD_STONE_PILLAR.get()
-		);
+		).addTags(MAZESTONE, CASTLE_BLOCKS);
 
 		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
 				TFBlocks.SMOKER.get(),
@@ -649,12 +650,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.KNIGHTMETAL_BLOCK.get()
 		);
 
-		tag(BlockTags.NEEDS_DIAMOND_TOOL).addTags(CASTLE_BLOCKS, MAZESTONE).add(
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
 				TFBlocks.AURORA_BLOCK.get(),
 				TFBlocks.DEADROCK.get(),
 				TFBlocks.CRACKED_DEADROCK.get(),
 				TFBlocks.WEATHERED_DEADROCK.get()
-		);
+		).addTags(CASTLE_BLOCKS, MAZESTONE);
 
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
 

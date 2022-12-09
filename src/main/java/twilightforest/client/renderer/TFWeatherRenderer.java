@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -496,7 +497,7 @@ public class TFWeatherRenderer {
 	private static RenderType getRenderType(Biome b) {
 		if (Minecraft.getInstance().level == null)
 			return null;
-		ResourceLocation biome = Minecraft.getInstance().level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(b);
+		ResourceLocation biome = Minecraft.getInstance().level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b);
 		if (BiomeKeys.SNOWY_FOREST.location().equals(biome) || BiomeKeys.GLACIER.location().equals(biome)) {
 			return RenderType.BLIZZARD;
 		} else if (BiomeKeys.SWAMP.location().equals(biome)) {

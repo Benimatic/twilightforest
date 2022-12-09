@@ -13,12 +13,11 @@ public class IronwoodShovelItem extends ShovelItem {
 		super(toolMaterial, 1.5F, -3.0F, properties);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.enchant(Enchantments.UNBREAKING, 1);
-			list.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.enchant(Enchantments.UNBREAKING, 1);
+//			list.add(stack);
+//		}
+//	}
 }

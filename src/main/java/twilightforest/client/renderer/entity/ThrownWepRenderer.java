@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -10,7 +11,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.entity.projectile.ThrownWep;
 
 public class ThrownWepRenderer extends EntityRenderer<ThrownWep> {
@@ -39,8 +40,8 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWep> {
 		float f9 = 0.5F;
 		float f10 = 0.25F;
 
-		matrix.mulPose(Vector3f.YP.rotationDegrees(rotation + 90));
-		matrix.mulPose(Vector3f.ZP.rotationDegrees(spin));
+		matrix.mulPose(Axis.YP.rotationDegrees(rotation + 90));
+		matrix.mulPose(Axis.ZP.rotationDegrees(spin));
 
 		float f12 = 0.0625F;
 		float f11 = 0.021875F;

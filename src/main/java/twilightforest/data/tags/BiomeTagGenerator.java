@@ -1,7 +1,10 @@
 package twilightforest.data.tags;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
@@ -10,33 +13,35 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.BiomeKeys;
 
+import java.util.concurrent.CompletableFuture;
+
 public class BiomeTagGenerator extends BiomeTagsProvider {
 
-	public static final TagKey<Biome> IS_TWILIGHT = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("in_twilight_forest"));
+	public static final TagKey<Biome> IS_TWILIGHT = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("in_twilight_forest"));
 
-	public static final TagKey<Biome> VALID_QUEST_GROVE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_quest_grove_biomes"));
+	public static final TagKey<Biome> VALID_QUEST_GROVE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_quest_grove_biomes"));
 
-	public static final TagKey<Biome> VALID_HEDGE_MAZE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_hedge_maze_biomes"));
-	public static final TagKey<Biome> VALID_HOLLOW_HILL_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_hollow_hill_biomes"));
-	public static final TagKey<Biome> VALID_MUSHROOM_TOWER_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_mushroom_tower_biomes"));
+	public static final TagKey<Biome> VALID_HEDGE_MAZE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_hedge_maze_biomes"));
+	public static final TagKey<Biome> VALID_HOLLOW_HILL_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_hollow_hill_biomes"));
+	public static final TagKey<Biome> VALID_MUSHROOM_TOWER_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_mushroom_tower_biomes"));
 
-	public static final TagKey<Biome> VALID_NAGA_COURTYARD_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_naga_courtyard_biomes"));
-	public static final TagKey<Biome> VALID_LICH_TOWER_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_lich_tower_biomes"));
-	public static final TagKey<Biome> VALID_LABYRINTH_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_labyrinth_biomes"));
-	public static final TagKey<Biome> VALID_HYDRA_LAIR_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_hydra_lair_biomes"));
-	public static final TagKey<Biome> VALID_KNIGHT_STRONGHOLD_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_knight_stronghold_biomes"));
-	public static final TagKey<Biome> VALID_DARK_TOWER_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_dark_tower_biomes"));
-	public static final TagKey<Biome> VALID_YETI_CAVE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_yeti_cave_biomes"));
-	public static final TagKey<Biome> VALID_AURORA_PALACE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_aurora_palace_biomes"));
-	public static final TagKey<Biome> VALID_TROLL_CAVE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_troll_cave_biomes"));
-	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_final_castle_biomes"));
+	public static final TagKey<Biome> VALID_NAGA_COURTYARD_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_naga_courtyard_biomes"));
+	public static final TagKey<Biome> VALID_LICH_TOWER_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_lich_tower_biomes"));
+	public static final TagKey<Biome> VALID_LABYRINTH_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_labyrinth_biomes"));
+	public static final TagKey<Biome> VALID_HYDRA_LAIR_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_hydra_lair_biomes"));
+	public static final TagKey<Biome> VALID_KNIGHT_STRONGHOLD_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_knight_stronghold_biomes"));
+	public static final TagKey<Biome> VALID_DARK_TOWER_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_dark_tower_biomes"));
+	public static final TagKey<Biome> VALID_YETI_CAVE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_yeti_cave_biomes"));
+	public static final TagKey<Biome> VALID_AURORA_PALACE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_aurora_palace_biomes"));
+	public static final TagKey<Biome> VALID_TROLL_CAVE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_troll_cave_biomes"));
+	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
-	public BiomeTagGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, TwilightForestMod.ID, helper);
+	public BiomeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
+		super(output, provider, TwilightForestMod.ID, helper);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 
 		tag(IS_TWILIGHT).add(
 				BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST,

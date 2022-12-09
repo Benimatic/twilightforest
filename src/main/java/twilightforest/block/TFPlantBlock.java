@@ -32,7 +32,7 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean client) {
+	public boolean isValidBonemealTarget(LevelReader reader, BlockPos pos, BlockState state, boolean client) {
 		return false;
 	}
 

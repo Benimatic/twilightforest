@@ -2,7 +2,9 @@ package twilightforest.data;
 
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,6 +30,8 @@ import twilightforest.init.TFStats;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.init.TFStructures;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class AdvancementGenerator extends AdvancementProvider {
@@ -47,12 +51,12 @@ public class AdvancementGenerator extends AdvancementProvider {
 			TFBlocks.ROOT_BLOCK.get(), TFBlocks.ROOT_STRAND.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.RAINBOW_OAK_SAPLING.get(), TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.GIANT_LOG.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.HUGE_STALK.get(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.THORN_ROSE.get(), TFBlocks.HEDGE.get(), TFBlocks.FALLEN_LEAVES.get(), TFBlocks.MANGROVE_ROOT.get(),
 	};
 
-	public AdvancementGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, helper);
+	public AdvancementGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
+		super(output, provider, List.of(), helper);
 	}
 
 	@Override
-	protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper helper) {
+	protected void registerAdvancements(HolderLookup.Provider registries, Consumer<Advancement> consumer, ExistingFileHelper helper) {
 		Advancement root = Advancement.Builder.advancement().display(
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
 				Component.translatable("itemGroup.twilightforest"),
@@ -554,10 +558,5 @@ public class AdvancementGenerator extends AdvancementProvider {
 
 	private PlayerTrigger.TriggerInstance advancementTrigger(String name) {
 		return new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), EntityPredicate.Composite.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()));
-	}
-
-	@Override
-	public String getName() {
-		return "Twilight Forest Advancements";
 	}
 }

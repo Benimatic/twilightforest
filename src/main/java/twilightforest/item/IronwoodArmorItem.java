@@ -25,18 +25,17 @@ public class IronwoodArmorItem extends ArmorItem {
 		}
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			switch (this.getSlot()) {
-				case HEAD -> stack.enchant(Enchantments.AQUA_AFFINITY, 1);
-				case CHEST, LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 1);
-				case FEET -> stack.enchant(Enchantments.FALL_PROTECTION, 1);
-				default -> {
-				}
-			}
-			list.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			switch (this.getSlot()) {
+//				case HEAD -> stack.enchant(Enchantments.AQUA_AFFINITY, 1);
+//				case CHEST, LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 1);
+//				case FEET -> stack.enchant(Enchantments.FALL_PROTECTION, 1);
+//				default -> {
+//				}
+//			}
+//			list.add(stack);
+//		}
+//	}
 }

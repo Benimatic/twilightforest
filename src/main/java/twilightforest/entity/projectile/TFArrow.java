@@ -22,11 +22,6 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
-
-	@Override
 	protected ItemStack getPickupItem() {
 		return new ItemStack(Items.ARROW);
 	}

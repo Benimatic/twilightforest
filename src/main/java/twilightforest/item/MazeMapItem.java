@@ -87,8 +87,8 @@ public class MazeMapItem extends MapItem {
 	public void update(Level level, Entity viewer, MapItemSavedData data) {
 		if (level.dimension() == data.dimension && viewer instanceof Player) {
 			int blocksPerPixel = 1 << data.scale;
-			int centerX = data.x;
-			int centerZ = data.z;
+			int centerX = data.centerX;
+			int centerZ = data.centerZ;
 			int viewerX = Mth.floor(viewer.getX() - centerX) / blocksPerPixel + 64;
 			int viewerZ = Mth.floor(viewer.getZ() - centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map

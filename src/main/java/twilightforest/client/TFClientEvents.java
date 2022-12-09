@@ -8,12 +8,9 @@ import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -52,8 +49,6 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
@@ -88,18 +83,19 @@ public class TFClientEvents {
 			models.forEach(entry -> event.getModels().put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 		}
 
-		@SubscribeEvent
-		public static void texStitch(TextureStitchEvent.Pre evt) {
-			TextureAtlas map = evt.getAtlas();
-
-			if (Sheets.CHEST_SHEET.equals(map.location()))
-				TwilightChestRenderer.MATERIALS.values().stream()
-						.flatMap(e -> e.values().stream())
-						.map(Material::texture)
-						.forEach(evt::addSprite);
-
-			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
-		}
+		//TODO move to atlas jsons
+//		@SubscribeEvent
+//		public static void texStitch(TextureStitchEvent.Pre evt) {
+//			TextureAtlas map = evt.getAtlas();
+//
+//			if (Sheets.CHEST_SHEET.equals(map.location()))
+//				TwilightChestRenderer.MATERIALS.values().stream()
+//						.flatMap(e -> e.values().stream())
+//						.map(Material::texture)
+//						.forEach(evt::addSprite);
+//
+//			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
+//		}
 
 		@SubscribeEvent
 		public static void registerModels(ModelEvent.RegisterAdditional event) {
@@ -306,9 +302,9 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
-		}
+//		if (ModList.get().isLoaded("curios")) {
+//			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
+//		}
 		return false;
 	}
 

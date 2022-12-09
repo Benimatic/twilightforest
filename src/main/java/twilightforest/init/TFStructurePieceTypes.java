@@ -1,6 +1,7 @@
 package twilightforest.init;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -20,7 +21,7 @@ import twilightforest.world.components.structures.trollcave.*;
 import java.util.Locale;
 
 public class TFStructurePieceTypes {
-    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, TwilightForestMod.ID);
+    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registries.STRUCTURE_PIECE, TwilightForestMod.ID);
 
     // Single-Piece Structures
     //IStructurePieceTypes that can be referred to

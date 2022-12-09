@@ -1,13 +1,14 @@
 package twilightforest.data.custom.stalactites;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 
 public class StalactiteGenerator extends StalactiteProvider {
-	public StalactiteGenerator(DataGenerator generator) {
-		super(generator, TwilightForestMod.ID);
+	public StalactiteGenerator(PackOutput output) {
+		super(output, TwilightForestMod.ID);
 	}
 
 	@Override

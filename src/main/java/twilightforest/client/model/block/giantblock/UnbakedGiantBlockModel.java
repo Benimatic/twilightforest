@@ -16,7 +16,7 @@ import java.util.function.Function;
 public record UnbakedGiantBlockModel(ResourceLocation parent) implements IUnbakedGeometry<UnbakedGiantBlockModel> {
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
 		TextureAtlasSprite[] sprites;
 		if (context.hasMaterial("all")) {
 			sprites = new TextureAtlasSprite[]{spriteGetter.apply(context.getMaterial("all"))};
@@ -33,17 +33,18 @@ public record UnbakedGiantBlockModel(ResourceLocation parent) implements IUnbake
 		return new GiantBlockModel(sprites, spriteGetter.apply(context.getMaterial("particle")), overrides, context.getTransforms(), renderTypes);
 	}
 
-	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-		if (context.hasMaterial("all")) {
-			return List.of(context.getMaterial("all"), context.getMaterial("particle"));
-		} else {
-			ArrayList<Material> materials = new ArrayList<>();
-			for (Direction dir : Direction.values()) {
-				materials.add(context.getMaterial(dir.getName().toLowerCase(Locale.ROOT)));
-			}
-			materials.add(context.getMaterial("particle"));
-			return materials;
-		}
-	}
+
+	//TODO this method is gone, what now
+//	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+//		if (context.hasMaterial("all")) {
+//			return List.of(context.getMaterial("all"), context.getMaterial("particle"));
+//		} else {
+//			ArrayList<Material> materials = new ArrayList<>();
+//			for (Direction dir : Direction.values()) {
+//				materials.add(context.getMaterial(dir.getName().toLowerCase(Locale.ROOT)));
+//			}
+//			materials.add(context.getMaterial("particle"));
+//			return materials;
+//		}
+//	}
 }

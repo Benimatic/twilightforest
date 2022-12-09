@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -15,12 +16,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.compat.curios.CuriosCompat;
 
 public class TrophyItem extends StandingAndWallBlockItem {
 
 	public TrophyItem(Block floorBlock, Block wallBlock, Properties properties) {
-		super(floorBlock, wallBlock, properties);
+		super(floorBlock, wallBlock, properties, Direction.DOWN);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class TrophyItem extends StandingAndWallBlockItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
 		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.setupCuriosCapability(stack);
+			//return CuriosCompat.setupCuriosCapability(stack);
 		}
 		return super.initCapabilities(stack, tag);
 	}

@@ -27,9 +27,4 @@ public class LootOnlyEnchantment extends Enchantment {
 	public boolean isDiscoverable() {
 		return false;
 	}
-
-	@Override
-	public boolean allowedInCreativeTab(Item book, CreativeModeTab tab) {
-		return super.allowedInCreativeTab(book, tab) || TFItems.creativeTab.equals(tab);
-	}
 }

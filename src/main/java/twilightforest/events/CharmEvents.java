@@ -27,8 +27,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
@@ -41,7 +39,6 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CharmEvents {
@@ -317,12 +314,12 @@ public class CharmEvents {
 
 	private static boolean hasCharmCurio(Item item, Player player) {
 		if (ModList.get().isLoaded("curios")) {
-			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
-
-			if (slot.isPresent()) {
-				slot.get().stack().shrink(1);
-				return true;
-			}
+//			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
+//
+//			if (slot.isPresent()) {
+//				slot.get().stack().shrink(1);
+//				return true;
+//			}
 		}
 
 		return false;

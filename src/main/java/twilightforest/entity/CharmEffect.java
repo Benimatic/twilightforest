@@ -106,12 +106,6 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		this.newPosRotationIncrements = posRotationIncrements;
 	}
 
-	@Nonnull
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
-
 	@Override
 	protected void defineSynchedData() {
 		this.entityData.define(DATA_ITEMID, ItemStack.EMPTY);

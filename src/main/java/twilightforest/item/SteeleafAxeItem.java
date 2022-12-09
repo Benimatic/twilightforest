@@ -13,12 +13,11 @@ public class SteeleafAxeItem extends AxeItem {
 		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, props);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 2);
-			items.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 2);
+//			items.add(stack);
+//		}
+//	}
 }

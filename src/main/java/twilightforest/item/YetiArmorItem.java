@@ -69,22 +69,21 @@ public class YetiArmorItem extends ArmorItem {
 		}
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			switch (this.getSlot()) {
-				case HEAD, CHEST, LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
-				case FEET -> {
-					stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
-					stack.enchant(Enchantments.FALL_PROTECTION, 4);
-				}
-				default -> {
-				}
-			}
-			items.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			switch (this.getSlot()) {
+//				case HEAD, CHEST, LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
+//				case FEET -> {
+//					stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
+//					stack.enchant(Enchantments.FALL_PROTECTION, 4);
+//				}
+//				default -> {
+//				}
+//			}
+//			items.add(stack);
+//		}
+//	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)

@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -28,7 +29,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		for (Item i : Registry.ITEM) {
+		for (Item i : ForgeRegistries.ITEMS) {
 			if (i instanceof SpawnEggItem && ForgeRegistries.ITEMS.getKey(i).getNamespace().equals(TwilightForestMod.ID)) {
 				getBuilder(ForgeRegistries.ITEMS.getKey(i).getPath())
 								.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));

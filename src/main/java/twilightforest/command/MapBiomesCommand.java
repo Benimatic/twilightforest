@@ -9,7 +9,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -21,13 +21,9 @@ import twilightforest.item.MagicMapItem;
 import twilightforest.util.ColorUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,7 +96,7 @@ public class MapBiomesCommand {
 			for (int z = 0; z < img.getWidth(); z++) {
 				ServerLevel level = source.getLevel();
 				Biome b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2)).value();
-				ResourceLocation key = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(b);
+				ResourceLocation key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b);
 				MapColor color = BIOME2COLOR.get(key);
 
 				if (color == null) {
@@ -132,7 +128,7 @@ public class MapBiomesCommand {
 			source.sendSuccess(Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
 			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
 			biomeCount.forEach((biome, integer) -> source.sendSuccess(Component.literal(
-							source.getLevel().registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome).toString())
+							source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome).toString())
 					.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
 		}
 

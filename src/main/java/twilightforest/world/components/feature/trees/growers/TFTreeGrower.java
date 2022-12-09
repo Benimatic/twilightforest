@@ -2,6 +2,7 @@ package twilightforest.world.components.feature.trees.growers;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
@@ -10,17 +11,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
-import org.jetbrains.annotations.Nullable;
-import java.util.Random;
-
 /**
  * It's just a Tree, but for TFTreeFeatureConfig
  */
 public abstract class TFTreeGrower extends AbstractTreeGrower {
 
-	@Nullable
 	@Override
-	protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean b) {
+	protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean b) {
 		return null;
 	}
 

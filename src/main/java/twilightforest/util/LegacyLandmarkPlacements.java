@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
@@ -88,7 +89,7 @@ public class LegacyLandmarkPlacements {
     }
 
     public static TFLandmark pickBiomeLandmarkLegacy(RegistryAccess access, int chunkX, int chunkZ, Biome biome, long seed) {
-        Optional<? extends Registry<Biome>> registryOpt = access.registry(Registry.BIOME_REGISTRY);
+        Optional<? extends Registry<Biome>> registryOpt = access.registry(Registries.BIOME);
 
         if (registryOpt.isPresent()) {
             TFLandmark biomeFeature = BIOME_FEATURES.get(registryOpt.get().getKey(biome));

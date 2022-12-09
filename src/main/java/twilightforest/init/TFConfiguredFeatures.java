@@ -2,12 +2,13 @@ package twilightforest.init;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Holder;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.sounds.Music;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TorchberryPlantBlock;
@@ -83,18 +85,18 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<HollowLogConfig, ?>> BIRCH_FALLEN_LOG = register("birch_fallen_log", TFFeatures.FALLEN_SMALL_LOG.get(), new HollowLogConfig(Blocks.BIRCH_LOG.defaultBlockState(), TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get().defaultBlockState()));
 
 	//smol stone veins
-	public static final Holder<ConfiguredFeature<OreConfiguration,?>> SMALL_GRANITE = register("small_granite", Feature.ORE, new OreConfiguration(OreFeatures.NATURAL_STONE, Blocks.GRANITE.defaultBlockState(), 16));
-	public static final Holder<ConfiguredFeature<OreConfiguration,?>> SMALL_DIORITE = register("small_diorite", Feature.ORE, new OreConfiguration(OreFeatures.NATURAL_STONE, Blocks.DIORITE.defaultBlockState(), 16));
-	public static final Holder<ConfiguredFeature<OreConfiguration,?>> SMALL_ANDESITE = register("small_andesite", Feature.ORE, new OreConfiguration(OreFeatures.NATURAL_STONE, Blocks.ANDESITE.defaultBlockState(), 16));
+	public static final Holder<ConfiguredFeature<OreConfiguration,?>> SMALL_GRANITE = register("small_granite", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.BASE_STONE_OVERWORLD), Blocks.GRANITE.defaultBlockState(), 16));
+	public static final Holder<ConfiguredFeature<OreConfiguration,?>> SMALL_DIORITE = register("small_diorite", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.BASE_STONE_OVERWORLD), Blocks.DIORITE.defaultBlockState(), 16));
+	public static final Holder<ConfiguredFeature<OreConfiguration,?>> SMALL_ANDESITE = register("small_andesite", Feature.ORE, new OreConfiguration( new TagMatchTest(BlockTags.BASE_STONE_OVERWORLD), Blocks.ANDESITE.defaultBlockState(), 16));
 
 	//Ores! Lets keep pre 1.18 ore rates :)
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_COAL_ORE = register("legacy_coal_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.COAL_ORE.defaultBlockState(), 17));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_IRON_ORE = register("legacy_iron_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.IRON_ORE.defaultBlockState(), 9));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_GOLD_ORE = register("legacy_gold_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.GOLD_ORE.defaultBlockState(), 9));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_REDSTONE_ORE = register("legacy_redstone_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.REDSTONE_ORE.defaultBlockState(), 8));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_DIAMOND_ORE = register("legacy_diamond_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.DIAMOND_ORE.defaultBlockState(), 8));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_LAPIS_ORE = register("legacy_lapis_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.LAPIS_ORE.defaultBlockState(), 7));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_COPPER_ORE = register("legacy_copper_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.COPPER_ORE.defaultBlockState(), 10));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_COAL_ORE = register("legacy_coal_ore", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), Blocks.COAL_ORE.defaultBlockState(), 17));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_IRON_ORE = register("legacy_iron_ore", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), Blocks.IRON_ORE.defaultBlockState(), 9));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_GOLD_ORE = register("legacy_gold_ore", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), Blocks.GOLD_ORE.defaultBlockState(), 9));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_REDSTONE_ORE = register("legacy_redstone_ore", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), Blocks.REDSTONE_ORE.defaultBlockState(), 8));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_DIAMOND_ORE = register("legacy_diamond_ore", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), Blocks.DIAMOND_ORE.defaultBlockState(), 8));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_LAPIS_ORE = register("legacy_lapis_ore", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), Blocks.LAPIS_ORE.defaultBlockState(), 7));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_COPPER_ORE = register("legacy_copper_ore", Feature.ORE, new OreConfiguration(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), Blocks.COPPER_ORE.defaultBlockState(), 10));
 
 	//Dark Forest needs special placements, so here we go
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> DARK_MUSHGLOOMS = register("dark_mushglooms", TFFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.MUSHGLOOM.get())), List.of(Blocks.GRASS_BLOCK), 50));
@@ -214,6 +216,6 @@ public final class TFConfiguredFeatures {
 	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC.get(), 1200, 12000, true);
 
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String name, F feature, FC featureConfiguration) {
-		return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, TwilightForestMod.prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));
+		return BuiltinRegistries.registerExact(Registries.CONFIGURED_FEATURE, TwilightForestMod.prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));
 	}
 }

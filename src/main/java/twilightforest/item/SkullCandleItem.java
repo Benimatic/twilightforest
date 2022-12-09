@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -25,7 +26,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.List;
 public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, Properties properties) {
-		super(floor, wall, properties);
+		super(floor, wall, properties, Direction.DOWN);
 	}
 
 	@Override
@@ -121,20 +121,20 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
 		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.setupCuriosCapability(stack);
+			//return CuriosCompat.setupCuriosCapability(stack);
 		}
 		return super.initCapabilities(stack, tag);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			CompoundTag tag = new CompoundTag();
-			tag.putInt("CandleAmount", 1);
-			tag.putInt("CandleColor", 0);
-			stack.addTagElement("BlockEntityTag", tag);
-			items.add(stack);
-		}
-	}
+	//FIXME
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			CompoundTag tag = new CompoundTag();
+//			tag.putInt("CandleAmount", 1);
+//			tag.putInt("CandleColor", 0);
+//			stack.addTagElement("BlockEntityTag", tag);
+//			items.add(stack);
+//		}
+//	}
 }

@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.Util;
 import net.minecraft.core.*;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -57,12 +58,10 @@ import java.util.function.Predicate;
 public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
-			RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(o -> o.structureSets),
-			RegistryCodecs.homogeneousList(Registry.STRUCTURE_SET_REGISTRY).fieldOf("structures_placements").forGetter(o -> o.structureOverrides),
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
-			Codec.unboundedMap(ResourceKey.codec(Registry.BIOME_REGISTRY), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
+			Codec.unboundedMap(ResourceKey.codec(Registries.BIOME), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
 	).apply(instance, ChunkGeneratorTwilight::new));
 
 	private final Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides;
@@ -76,13 +75,10 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private final Optional<Climate.Sampler> surfaceNoiseGetter;
 	private final Optional<TFTerrainWarp> warper;
 
-	private final HolderSet<StructureSet> structureOverrides;
-
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, HolderSet<StructureSet> structureOverrides, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
-		super(structures, Optional.of(structureOverrides), delegate);
-		this.structureOverrides = structureOverrides;
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
+		super(delegate);
 
 		this.biomeLandmarkOverrides = biomeLandmarkOverrides;
 		this.noiseGeneratorSettings = noiseGenSettings;
@@ -90,7 +86,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
-			this.defaultBlock = noiseGen.defaultBlock;
+			this.defaultBlock = noiseGenSettings.value().defaultBlock();
 			this.defaultFluid = noiseGenSettings.value().defaultFluid();
 			this.surfaceNoiseGetter = Optional.empty();//Optional.of(noiseGen.sampler);
 		} else {
@@ -213,7 +209,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomes, Executor executor, RandomState random, Blender blender, StructureManager manager, ChunkAccess chunkAccess) {
+	public CompletableFuture<ChunkAccess> createBiomes(Executor executor, RandomState random, Blender blender, StructureManager manager, ChunkAccess chunkAccess) {
 		//Mimic behaviour of ChunkGenerator, NoiseBasedChunkGenerator does weird things
 		return CompletableFuture.supplyAsync(Util.wrapThreadWithTaskName("init_biomes", () -> {
 			chunkAccess.fillBiomesFromNoise(this.getBiomeSource(), Climate.empty());
@@ -733,7 +729,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
 						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 256, p.getZ() >> 2, null).value();
-						if (BiomeKeys.DARK_FOREST.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome))) {
+						if (BiomeKeys.DARK_FOREST.location().equals(primer.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(primer.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
 						}
@@ -835,7 +831,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Nullable
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (Structure structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY)) {
+		for (Structure structure : structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE)) {
 			if (structure instanceof LegacyLandmark landmark) {
 				StructureStart start = structureManager.getStructureAt(pos, landmark);
 				if (!start.isValid())

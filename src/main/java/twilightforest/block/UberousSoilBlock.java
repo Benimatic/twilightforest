@@ -15,6 +15,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -125,7 +126,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	@Override
 	//check each side of the block, as well as above and below each of those positions for valid spots
-	public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state, boolean isClient) {
 		for (Direction dir : Direction.values()) {
 			if (dir != Direction.UP && dir != Direction.DOWN) {
 				BlockState blockAt = getter.getBlockState(pos.relative(dir));

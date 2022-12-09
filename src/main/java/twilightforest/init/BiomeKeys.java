@@ -1,5 +1,6 @@
 package twilightforest.init;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
@@ -51,10 +52,10 @@ public class BiomeKeys {
 				//.scale(0)
 				.temperature(0)
 				.specialEffects(new BiomeSpecialEffects.Builder().fogColor(0).waterColor(0).waterFogColor(0).skyColor(0).build())
-				.generationSettings(new BiomeGenerationSettings.Builder().build())
+				.generationSettings(BiomeGenerationSettings.EMPTY)
 				.mobSpawnSettings(new MobSpawnSettings.Builder().build())
 				.temperatureAdjustment(Biome.TemperatureModifier.NONE)
 				.build());
-		return ResourceKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.BIOME, TwilightForestMod.prefix(name));
 	}
 }

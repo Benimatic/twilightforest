@@ -18,7 +18,7 @@ public class UpdateTFMultipartPacket {
 	private int id;
 	private Entity entity;
 	private int len;
-	private List<PartDataHolder> data = new ArrayList<>();
+	private final List<PartDataHolder> data = new ArrayList<>();
 
 	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
 		this.id = buf.readInt();
@@ -92,21 +92,25 @@ public class UpdateTFMultipartPacket {
 								 float height,
 								 boolean fixed,
 								 boolean dirty,
-								 List<SynchedEntityData.DataItem<?>> data) {
+								 List<SynchedEntityData.DataValue<?>> data) {
 
 
 		public void encode(FriendlyByteBuf buffer) {
-			buffer.writeDouble(x);
-			buffer.writeDouble(y);
-			buffer.writeDouble(z);
-			buffer.writeFloat(yRot);
-			buffer.writeFloat(xRot);
-			buffer.writeFloat(width);
-			buffer.writeFloat(height);
-			buffer.writeBoolean(fixed);
-			buffer.writeBoolean(dirty);
-			if (dirty) {
-				SynchedEntityData.pack(data, buffer);
+			buffer.writeDouble(this.x);
+			buffer.writeDouble(this.y);
+			buffer.writeDouble(this.z);
+			buffer.writeFloat(this.yRot);
+			buffer.writeFloat(this.xRot);
+			buffer.writeFloat(this.width);
+			buffer.writeFloat(this.height);
+			buffer.writeBoolean(this.fixed);
+			buffer.writeBoolean(this.dirty);
+			if (this.dirty) {
+				for(SynchedEntityData.DataValue<?> datavalue : this.data) {
+					datavalue.write(buffer);
+				}
+
+				buffer.writeByte(255);
 			}
 		}
 
@@ -122,8 +126,19 @@ public class UpdateTFMultipartPacket {
 					buffer.readFloat(),
 					buffer.readBoolean(),
 					dirty = buffer.readBoolean(),
-					dirty ? SynchedEntityData.unpack(buffer) : null
+					dirty ? unpack(buffer) : null
 			);
+		}
+
+		private static List<SynchedEntityData.DataValue<?>> unpack(FriendlyByteBuf buf) {
+			List<SynchedEntityData.DataValue<?>> list = new ArrayList<>();
+
+			int i;
+			while((i = buf.readUnsignedByte()) != 255) {
+				list.add(SynchedEntityData.DataValue.read(buf, i));
+			}
+
+			return list;
 		}
 
 	}

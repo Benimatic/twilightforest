@@ -334,9 +334,4 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		}
 		this.setHand(buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
 }

@@ -19,7 +19,7 @@ public class Layer {
 
 	public Holder<Biome> get(Registry<Biome> registry, int p_76717_, int p_76718_) {
 		int i = this.area.get(p_76717_, p_76718_);
-		Optional<Holder<Biome>> biome = registry.getHolder(i);
+		Optional<Holder.Reference<Biome>> biome = registry.getHolder(i);
 		if (biome.isEmpty()) {
 			Util.logAndPauseIfInIde("Unknown biome id: " + i);
 			return registry.getHolderOrThrow(Biomes.PLAINS);

@@ -1,6 +1,6 @@
 package twilightforest.client.model.block.giantblock;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -58,7 +58,7 @@ public class GiantBlockModel implements IDynamicBakedModel {
 
 			TextureAtlasSprite sprite = this.textures[this.textures.length > 1 ? side.ordinal() : 0];
 
-			quads.add(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(side, side.ordinal(), side.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, side, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(sprite.getName().getNamespace(), sprite.getName().getPath() + "_" + side.name().toLowerCase(Locale.ROOT))));
+			quads.add(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(side, side.ordinal(), side.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, side, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(sprite.atlasLocation().getNamespace(), sprite.atlasLocation().getPath() + "_" + side.name().toLowerCase(Locale.ROOT))));
 		}
 
 		return quads;

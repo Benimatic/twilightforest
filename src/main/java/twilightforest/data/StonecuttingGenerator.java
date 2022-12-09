@@ -2,6 +2,7 @@ package twilightforest.data;
 
 import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
@@ -20,12 +21,12 @@ import java.util.function.Consumer;
 import static twilightforest.TwilightForestMod.prefix;
 
 public class StonecuttingGenerator extends RecipeProvider {
-	public StonecuttingGenerator(DataGenerator generator) {
-		super(generator);
+	public StonecuttingGenerator(PackOutput output) {
+		super(output);
 	}
 
 	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		consumer.accept(stonecutting(TFBlocks.CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
 		consumer.accept(stonecutting(TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
 		consumer.accept(stonecutting(TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
@@ -114,11 +115,6 @@ public class StonecuttingGenerator extends RecipeProvider {
 		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.BOLD_STONE_PILLAR.get()));
 
 		consumer.accept(stonecutting(TFBlocks.UNDERBRICK.get(), TFBlocks.UNDERBRICK_FLOOR.get()));
-	}
-
-	@Override
-	public String getName() {
-		return "Twilight Forest stonecutting recipes";
 	}
 
 	private static Wrapper stonecutting(ItemLike input, ItemLike output) {

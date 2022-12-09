@@ -13,12 +13,11 @@ public class IronwoodHoeItem extends HoeItem {
 		super(material, -2, -1.0F, properties);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
-			list.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
+//			list.add(stack);
+//		}
+//	}
 }

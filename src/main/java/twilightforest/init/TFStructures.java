@@ -1,6 +1,7 @@
 package twilightforest.init;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.registries.DeferredRegister;
@@ -9,7 +10,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.start.LegacyLandmark;
 
 public class TFStructures {
-	public static final DeferredRegister<Structure> STRUCTURES = DeferredRegister.create(Registry.STRUCTURE_REGISTRY, TwilightForestMod.ID);
+	public static final DeferredRegister<Structure> STRUCTURES = DeferredRegister.create(Registries.STRUCTURE, TwilightForestMod.ID);
 
 	public static final RegistryObject<LegacyLandmark> HEDGE_MAZE = STRUCTURES.register("hedge_maze", () -> LegacyLandmark.extractLandmark(TFLandmark.HEDGE_MAZE));
 	public static final RegistryObject<LegacyLandmark> QUEST_GROVE = STRUCTURES.register("quest_grove", () -> LegacyLandmark.extractLandmark(TFLandmark.QUEST_GROVE));

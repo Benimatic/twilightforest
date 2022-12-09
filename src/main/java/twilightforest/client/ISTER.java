@@ -3,7 +3,8 @@ package twilightforest.client;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModelBase;
@@ -88,8 +89,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					ms.translate(0.5F, 0.5F, 0.5F);
 					if (trophyBlock.getVariant() == BossVariant.HYDRA || trophyBlock.getVariant() == BossVariant.QUEST_RAM)
 						ms.scale(0.9F, 0.9F, 0.9F);
-					ms.mulPose(Vector3f.XP.rotationDegrees(30));
-					ms.mulPose(Vector3f.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : -45));
+					ms.mulPose(Axis.XP.rotationDegrees(30));
+					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);

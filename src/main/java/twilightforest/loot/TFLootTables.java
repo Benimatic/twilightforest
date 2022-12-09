@@ -20,6 +20,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class TFLootTables {
@@ -146,5 +147,9 @@ public class TFLootTables {
 				}
 			}
 		}
+	}
+
+	public static Set<ResourceLocation> allBuiltin() {
+		return Collections.unmodifiableSet(TF_LOOT_TABLES);
 	}
 }

@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -33,7 +34,7 @@ public class TwilightChestRenderer<T extends TwilightChestEntity> extends ChestR
 
         MATERIALS = builder.build();
 
-        ModelBakery.UNREFERENCED_TEXTURES.addAll(MATERIALS.values().stream().flatMap(e -> e.values().stream()).collect(Collectors.toList()));
+        //ModelBakery.UNREFERENCED_TEXTURES.addAll(MATERIALS.values().stream().flatMap(e -> e.values().stream()).collect(Collectors.toList()));
     }
 
     public TwilightChestRenderer(BlockEntityRendererProvider.Context context) {

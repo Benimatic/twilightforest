@@ -1,12 +1,14 @@
 package twilightforest.init;
 
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseRouter;
+import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
@@ -18,8 +20,8 @@ import java.util.OptionalLong;
 //does this need a better name? Does it need to be split up, or can we possibly add more dimension related registries here?
 public class TFDimensionSettings {
 
-	public static final DeferredRegister<NoiseGeneratorSettings> NOISE_GENERATORS = DeferredRegister.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.ID);
-	public static final DeferredRegister<DimensionType> DIMENSION_TYPES = DeferredRegister.create(Registry.DIMENSION_TYPE_REGISTRY, TwilightForestMod.ID);
+	public static final DeferredRegister<NoiseGeneratorSettings> NOISE_GENERATORS = DeferredRegister.create(Registries.NOISE_SETTINGS, TwilightForestMod.ID);
+	public static final DeferredRegister<DimensionType> DIMENSION_TYPES = DeferredRegister.create(Registries.DIMENSION_TYPE, TwilightForestMod.ID);
 
 	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFDimensionSettings::tfDefault);
 	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFDimensionSettings::skylight);

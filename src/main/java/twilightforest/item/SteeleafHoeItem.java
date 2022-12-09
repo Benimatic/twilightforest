@@ -13,12 +13,11 @@ public class SteeleafHoeItem extends HoeItem {
 		super(material, -3, -0.5F, props);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
-			items.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
+//			items.add(stack);
+//		}
+//	}
 }

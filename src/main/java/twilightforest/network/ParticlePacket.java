@@ -5,6 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
@@ -23,7 +24,7 @@ public class ParticlePacket {
 	public ParticlePacket(FriendlyByteBuf buf) {
 		int size = buf.readInt();
 		for (int i = 0; i < size; i++) {
-			ParticleType<?> type = Registry.PARTICLE_TYPE.byId(buf.readInt());
+			ParticleType<?> type = Registries.PARTICLE_TYPE.byId(buf.readInt());
 			if (type == null)
 				break; // Fail silently and end execution entirely. Due to Type serialization we now have completely unknown data in the pipeline without any way to safely read it all
 			this.queuedParticles.add(new QueuedParticle(readParticle(type, buf), buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));

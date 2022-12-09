@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -45,11 +46,11 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 						float angle = (entity.tickCount + partialTicks) * 60F;
 						stack.translate(0.0, 0.5, 0.0);
 						if (axis == Direction.Axis.Y) {
-							stack.mulPose(Vector3f.YP.rotationDegrees(angle));
+							stack.mulPose(Axis.YP.rotationDegrees(angle));
 						} else if (axis == Direction.Axis.X) {
-							stack.mulPose(Vector3f.XP.rotationDegrees(angle));
+							stack.mulPose(Axis.XP.rotationDegrees(angle));
 						} else if (axis == Direction.Axis.Z) {
-							stack.mulPose(Vector3f.ZP.rotationDegrees(angle));
+							stack.mulPose(Axis.ZP.rotationDegrees(angle));
 						}
 						stack.translate(-0.5, -0.5, -0.5);
 					}

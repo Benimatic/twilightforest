@@ -1,10 +1,11 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraHeadModel;
@@ -31,7 +32,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadModel>
 		if (headCon != null) {
 			// see whether we want to render these
 			if (headCon.shouldRenderHead()) {
-				stack.mulPose(Vector3f.YP.rotationDegrees(-180));
+				stack.mulPose(Axis.YP.rotationDegrees(-180));
 				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}
 

@@ -13,12 +13,11 @@ public class IronwoodAxeItem extends AxeItem {
 		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, properties);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.enchant(Enchantments.BLOCK_FORTUNE, 1);
-			list.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.enchant(Enchantments.BLOCK_FORTUNE, 1);
+//			list.add(stack);
+//		}
+//	}
 }

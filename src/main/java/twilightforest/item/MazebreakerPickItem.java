@@ -16,16 +16,15 @@ public class MazebreakerPickItem extends PickaxeItem {
 		super(material, 1, -2.8F, properties);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 4);
-			stack.enchant(Enchantments.UNBREAKING, 3);
-			stack.enchant(Enchantments.BLOCK_FORTUNE, 2);
-			items.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 4);
+//			stack.enchant(Enchantments.UNBREAKING, 3);
+//			stack.enchant(Enchantments.BLOCK_FORTUNE, 2);
+//			items.add(stack);
+//		}
+//	}
 
 	@Override
 	public float getDestroySpeed(@Nonnull ItemStack stack, BlockState state) {

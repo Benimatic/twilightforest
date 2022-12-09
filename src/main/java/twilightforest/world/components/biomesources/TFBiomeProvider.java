@@ -3,7 +3,9 @@ package twilightforest.world.components.biomesources;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -32,14 +34,14 @@ import java.util.stream.Collectors;
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFFeatureModifiers.seed).forGetter(o -> o.seed),
-			RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(o -> o.registry),
+			RegistryOps.retrieveRegistryLookup(Registries.BIOME).forGetter(o -> o.registry),
 			Biome.CODEC.fieldOf("underground_biome").forGetter(o -> o.undergroundBiome),
 			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> List.copyOf(m.values())).forGetter(o -> o.biomeList),
 			Codec.FLOAT.fieldOf("base_offset").forGetter(o -> o.baseOffset),
 			Codec.FLOAT.fieldOf("base_factor").forGetter(o -> o.baseFactor)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
-	private final Registry<Biome> registry;
+	private final HolderLookup.RegistryLookup<Biome> registry;
 	private final Holder<Biome> undergroundBiome;
 	private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
 	private final Layer genBiomes;
@@ -58,7 +60,7 @@ public class TFBiomeProvider extends BiomeSource {
 		this.baseOffset = offset;
 		this.baseFactor = factor;
 
-		this.registry = registryIn;
+		this.registry = registryIn.asLookup();
 		this.undergroundBiome = undergroundBiome;
 		this.biomeList = list;
 		this.genBiomes = makeLayers(seed, registryIn);
@@ -144,7 +146,7 @@ public class TFBiomeProvider extends BiomeSource {
 			@Override
 			public Holder<Biome> get(Registry<Biome> registry, int p_242936_2_, int p_242936_3_) {
 				int i = this.area.get(p_242936_2_, p_242936_3_);
-				Optional<Holder<Biome>> biome = registry.getHolder(i);
+				Optional<Holder.Reference<Biome>> biome = registry.getHolder(i);
 				if (biome.isEmpty())
 					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
 				return biome.get();

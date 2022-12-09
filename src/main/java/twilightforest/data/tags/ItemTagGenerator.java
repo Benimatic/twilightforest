@@ -1,19 +1,23 @@
 package twilightforest.data.tags;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
+
+import java.util.concurrent.CompletableFuture;
 
 public class ItemTagGenerator extends ItemTagsProvider {
 	public static final TagKey<Item> TWILIGHT_OAK_LOGS = ItemTags.create(TwilightForestMod.prefix("twilight_oak_logs"));
@@ -66,12 +70,12 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	private static final TagKey<Item> CHARM = ItemTags.create(new ResourceLocation("curios", "charm"));
 	private static final TagKey<Item> HEAD = ItemTags.create(new ResourceLocation("curios", "head"));
 
-	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
-		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);
+	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, TagsProvider<Block> provider, ExistingFileHelper helper) {
+		super(output, future, provider, TwilightForestMod.ID, helper);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, TWILIGHT_OAK_LOGS);
 		this.copy(BlockTagGenerator.CANOPY_LOGS, CANOPY_LOGS);
 		this.copy(BlockTagGenerator.MANGROVE_LOGS, MANGROVE_LOGS);

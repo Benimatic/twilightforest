@@ -13,12 +13,11 @@ public class SteeleafSwordItem extends SwordItem {
 		super(material, 3, -2.4F, props);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.enchant(Enchantments.MOB_LOOTING, 2);
-			items.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.enchant(Enchantments.MOB_LOOTING, 2);
+//			items.add(stack);
+//		}
+//	}
 }

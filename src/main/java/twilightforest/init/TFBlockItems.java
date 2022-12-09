@@ -82,7 +82,7 @@ public class TFBlockItems {
 //      register(event, blockItem(TFBlocks.LAPIS_BLOCK));
 			register(event, blockItem(TFBlocks.TWISTED_STONE));
 			register(event, blockItem(TFBlocks.TWISTED_STONE_PILLAR));
-			register(event, new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant()) {
+			register(event, new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), new Item.Properties().fireResistant()) {
 				@Override
 				public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 					consumer.accept(new IClientItemExtensions() {
@@ -102,8 +102,8 @@ public class TFBlockItems {
 			register(event, skullCandleItem(TFBlocks.WITHER_SKELE_SKULL_CANDLE, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE));
 			register(event, skullCandleItem(TFBlocks.CREEPER_SKULL_CANDLE, TFBlocks.CREEPER_WALL_SKULL_CANDLE));
 			register(event, skullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE, TFBlocks.PLAYER_WALL_SKULL_CANDLE));
-			register(event, new HugeWaterLilyItem(TFBlocks.HUGE_WATER_LILY.get(), TFItems.defaultBuilder()));
-			register(event, new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), TFItems.defaultBuilder()));
+			register(event, new HugeWaterLilyItem(TFBlocks.HUGE_WATER_LILY.get(), new Item.Properties()));
+			register(event, new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), new Item.Properties()));
 			register(event, blockItem(TFBlocks.MAZESTONE));
 			register(event, blockItem(TFBlocks.MAZESTONE_BRICK));
 			register(event, blockItem(TFBlocks.CRACKED_MAZESTONE));
@@ -412,23 +412,23 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block> BlockItem hollowLog(RegistryObject<HollowLogHorizontal> horizontalLog, RegistryObject<HollowLogVertical> verticalLog, RegistryObject<HollowLogClimbable> climbable, String name) {
-		return new HollowLogItem(horizontalLog, verticalLog, climbable, TFItems.defaultBuilder());
+		return new HollowLogItem(horizontalLog, verticalLog, climbable, new Item.Properties());
 	}
 
 	private static <B extends Block> BlockItem blockItem(RegistryObject<B> block) {
-		return new BlockItem(block.get(), TFItems.defaultBuilder());
+		return new BlockItem(block.get(), new Item.Properties());
 	}
 
 	private static <B extends Block> BlockItem placeOnWaterBlockItem(RegistryObject<B> block) {
-		return new PlaceOnWaterBlockItem(block.get(), TFItems.defaultBuilder());
+		return new PlaceOnWaterBlockItem(block.get(), new Item.Properties());
 	}
 
 	private static <B extends Block> BlockItem fireImmuneBlock(RegistryObject<B> block) {
-		return new BlockItem(block.get(), TFItems.defaultBuilder().fireResistant());
+		return new BlockItem(block.get(), new Item.Properties().fireResistant());
 	}
 
 	private static <B extends AbstractSkullCandleBlock> BlockItem skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
-		return new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)) {
+		return new SkullCandleItem(floor.get(), wall.get(), new Item.Properties().rarity(Rarity.UNCOMMON)) {
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 				consumer.accept(new IClientItemExtensions() {
@@ -442,11 +442,11 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block> BlockItem burningItem(RegistryObject<B> block, int burntime) {
-		return new FurnaceFuelItem(block.get(), TFItems.defaultBuilder(), burntime);
+		return new FurnaceFuelItem(block.get(), new Item.Properties(), burntime);
 	}
 
 	private static <B extends Block, W extends Block> BlockItem trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		return new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())) {
+		return new TrophyItem(block.get(), wallblock.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())) {
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 				consumer.accept(new IClientItemExtensions() {
@@ -460,7 +460,7 @@ public class TFBlockItems {
 	}
 
 	private static <T extends Block, E extends BlockEntity> BlockItem wearableBlock(RegistryObject<T> block, RegistryObject<BlockEntityType<E>> tileentity) {
-		return new WearableItem(block.get(), TFItems.defaultBuilder()) {
+		return new WearableItem(block.get(), new Item.Properties()) {
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 				consumer.accept(new IClientItemExtensions() {
@@ -474,15 +474,15 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block> BlockItem tallBlock(RegistryObject<B> block) {
-		return new DoubleHighBlockItem(block.get(), TFItems.defaultBuilder());
+		return new DoubleHighBlockItem(block.get(), new Item.Properties());
 	}
 
 	private static <B extends Block, W extends Block> BlockItem signBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		return new SignItem(TFItems.defaultBuilder().stacksTo(16), block.get(), wallblock.get());
+		return new SignItem(new Item.Properties().stacksTo(16), block.get(), wallblock.get());
 	}
 
 	private static void makeBEWLRItem(RegisterEvent event, RegistryObject<? extends Block> block) {
-		register(event, new BlockItem(block.get(), TFItems.defaultBuilder()) {
+		register(event, new BlockItem(block.get(), new Item.Properties()) {
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 				consumer.accept(new IClientItemExtensions() {

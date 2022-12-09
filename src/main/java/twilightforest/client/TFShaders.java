@@ -17,7 +17,7 @@ public class TFShaders {
 	public static void init(IEventBus bus) {
 		bus.addListener((Consumer<RegisterShadersEvent>) event -> {
 			try {
-				event.registerShader(new ShaderInstance(event.getResourceManager(), new ResourceLocation(TwilightForestMod.ID, "red_thread/red_thread"), DefaultVertexFormat.
+				event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(TwilightForestMod.ID, "red_thread/red_thread"), DefaultVertexFormat.
 						BLOCK), shader -> RED_THREAD = shader);
 			} catch (IOException e) {
 				e.printStackTrace();

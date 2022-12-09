@@ -4,9 +4,11 @@ import com.google.common.collect.Maps;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
@@ -30,7 +32,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
-import net.minecraftforge.resource.PathPackResources;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,8 +39,6 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.compat.top.TopCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
@@ -133,7 +132,7 @@ public class TwilightForestMod {
 		modbus.addListener(CapabilityList::registerCapabilities);
 
 		if (ModList.get().isLoaded("curios")) {
-			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+			//Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 
 		new BiomeGrassColors();
@@ -141,39 +140,30 @@ public class TwilightForestMod {
 
 	@SubscribeEvent
 	public static void addClassicPack(AddPackFindersEvent event) {
-		try {
-			if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-				var resourcePath = ModList.get().getModFileById(TwilightForestMod.ID).getFile().findResource("classic");
-				var pack = new PathPackResources(ModList.get().getModFileById(TwilightForestMod.ID).getFile().getFileName() + ":" + resourcePath, resourcePath);
-				var metadataSection = pack.getMetadataSection(PackMetadataSection.SERIALIZER);
-				if (metadataSection != null) {
-					event.addRepositorySource((packConsumer, packConstructor) ->
-							packConsumer.accept(packConstructor.create(
-									"builtin/twilight_forest_legacy_resources", Component.literal("Twilight Classic"), false,
-									() -> pack, metadataSection, Pack.Position.TOP, PackSource.BUILT_IN, false)));
-				}
-			}
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+		if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+			var resourcePath = ModList.get().getModFileById(TwilightForestMod.ID).getFile().findResource("classic");
+			var pack = Pack.readMetaAndCreate("builtin/twilight_forest_classic_resources", Component.literal("Twilight Classic"), false,
+					path -> new PathPackResources(path, resourcePath, true), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
+			event.addRepositorySource(consumer -> consumer.accept(pack));
 		}
 	}
 
 	@SubscribeEvent
 	public static void registerSerializers(RegisterEvent evt) {
 		if (Objects.equals(evt.getForgeRegistry(), ForgeRegistries.RECIPE_SERIALIZERS)) {
-			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
-			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
+			Registry.register(Registries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
+			Registry.register(Registries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 
-			Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+			Registry.register(Registries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
 		}
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		if (ModList.get().isLoaded("curios")) {
-			CuriosCompat.handleCuriosIMCs();
+			//CuriosCompat.handleCuriosIMCs();
 		}
 		if (ModList.get().isLoaded("theoneprobe")) {
-			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 
@@ -186,7 +176,6 @@ public class TwilightForestMod {
 			TFBlocks.tfCompostables();
 			TFBlocks.tfBurnables();
 			TFBlocks.tfPots();
-			TFEntities.registerSpawnPlacements();
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
 			TFStats.init();

@@ -13,12 +13,11 @@ public class IronwoodSwordItem extends SwordItem {
 		super(material, 3, -2.4F, properties);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.enchant(Enchantments.KNOCKBACK, 1);
-			list.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.enchant(Enchantments.KNOCKBACK, 1);
+//			list.add(stack);
+//		}
+//	}
 }

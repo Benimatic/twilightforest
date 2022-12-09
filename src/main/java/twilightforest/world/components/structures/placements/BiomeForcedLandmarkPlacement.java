@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class BiomeForcedLandmarkPlacement extends StructurePlacement {
     public static final Codec<BiomeForcedLandmarkPlacement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
             TFLandmark.CODEC.fieldOf("landmark_set").forGetter(p -> p.landmark),
-            Codec.intRange(-64, 256).fieldOf("scan_elevation").forGetter(p -> p.scanHeight)
+            Codec.intRange(-32, 256).fieldOf("scan_elevation").forGetter(p -> p.scanHeight)
     ).apply(inst, BiomeForcedLandmarkPlacement::new));
 
     private final TFLandmark landmark;
@@ -31,7 +32,7 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
     }
 
     @Override
-    public boolean isStructureChunk(ChunkGenerator chunkGenerator, RandomState randomState, long seed, int chunkX, int chunkZ) {
+    public boolean isPlacementChunk(ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
         return this.isPlacementChunk(chunkGenerator, randomState, seed, chunkX, chunkZ);
     }
 

@@ -2,6 +2,7 @@ package twilightforest.init;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraftforge.registries.DeferredRegister;
@@ -12,7 +13,7 @@ import twilightforest.world.components.structures.placements.BiomeForcedLandmark
 import java.util.function.Supplier;
 
 public class TFStructureSets {
-    public static final DeferredRegister<StructureSet> STRUCTURE_SETS = DeferredRegister.create(Registry.STRUCTURE_SET_REGISTRY, TwilightForestMod.ID);
+    public static final DeferredRegister<StructureSet> STRUCTURE_SETS = DeferredRegister.create(Registries.STRUCTURE_SET, TwilightForestMod.ID);
 
     public static final RegistryObject<StructureSet> HEDGE_MAZE = register(TFStructures.HEDGE_MAZE, () -> TFLandmark.HEDGE_MAZE);
     public static final RegistryObject<StructureSet> QUEST_GROVE = register(TFStructures.QUEST_GROVE, () -> TFLandmark.QUEST_GROVE);
@@ -32,6 +33,6 @@ public class TFStructureSets {
     public static final RegistryObject<StructureSet> FINAL_CASTLE = register(TFStructures.FINAL_CASTLE, () -> TFLandmark.FINAL_CASTLE);
 
     private static RegistryObject<StructureSet> register(RegistryObject<? extends Structure> structure, Supplier<TFLandmark> landmark) {
-        return TFStructureSets.STRUCTURE_SETS.register(structure.getId().getPath(), () -> new StructureSet(structure.getHolder().map(Holder::<Structure>hackyErase).get(), new BiomeForcedLandmarkPlacement(landmark.get(), 256)));
+        return TFStructureSets.STRUCTURE_SETS.register(structure.getId().getPath(), () -> new StructureSet(structure.getHolder().get(), new BiomeForcedLandmarkPlacement(landmark.get(), 256)));
     }
 }

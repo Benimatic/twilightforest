@@ -1,6 +1,7 @@
 package twilightforest.data.custom;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
@@ -8,8 +9,8 @@ import twilightforest.init.TFBlocks;
 
 public class CrumbleHornGenerator extends CrumbleHornProvider {
 
-	public CrumbleHornGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, TwilightForestMod.ID, helper);
+	public CrumbleHornGenerator(PackOutput output, ExistingFileHelper helper) {
+		super(output, TwilightForestMod.ID, helper);
 	}
 
 	@Override
