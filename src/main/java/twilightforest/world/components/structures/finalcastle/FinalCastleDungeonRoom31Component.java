@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -152,8 +153,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		 Predicate<Biome> plateauBiomes = biome ->
-				biome == world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).get(BiomeKeys.THORNLANDS) ||
-						biome == world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).get(BiomeKeys.FINAL_PLATEAU);
+				biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(BiomeKeys.THORNLANDS) ||
+						biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(BiomeKeys.FINAL_PLATEAU);
 
 		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes)) {
 			return;

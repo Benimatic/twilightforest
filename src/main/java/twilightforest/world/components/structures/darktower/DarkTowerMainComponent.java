@@ -27,6 +27,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -1107,10 +1108,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	private void placeRandomPlant(WorldGenLevel world, RandomSource decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		BlockState flowerPot = Registry.BLOCK.getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS)
-				.flatMap(tag -> tag.getRandomElement(decoRNG))
-				.map(holder -> holder.value().defaultBlockState())
-				.orElse(Blocks.FLOWER_POT.defaultBlockState());
+		BlockState flowerPot = ForgeRegistries.BLOCKS.tags().getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS).getRandomElement(decoRNG).get().defaultBlockState();
 		setBlockStateRotated(world, decoRNG.nextInt(10) == 0 ? Blocks.FLOWER_POT.defaultBlockState() : flowerPot, x, y, z, rotation, sbb);
 	}
 

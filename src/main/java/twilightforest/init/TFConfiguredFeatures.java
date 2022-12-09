@@ -213,7 +213,7 @@ public final class TFConfiguredFeatures {
 
 
 	//music!
-	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC.get(), 1200, 12000, true);
+	public static final Music TFMUSICTYPE = new Music(Holder.direct(TFSounds.MUSIC.get()), 1200, 12000, true);
 
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String name, F feature, FC featureConfiguration) {
 		return BuiltinRegistries.registerExact(Registries.CONFIGURED_FEATURE, TwilightForestMod.prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));

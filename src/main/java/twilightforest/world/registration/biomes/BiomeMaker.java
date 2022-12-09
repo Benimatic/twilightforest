@@ -5,11 +5,15 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import twilightforest.init.BiomeKeys;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
@@ -19,7 +23,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public final class BiomeMaker extends BiomeHelper {
-	public static final Map<ResourceKey<Biome>, Biome> BIOMES = generateBiomes();
 
 	public static List<TerrainColumn> makeBiomeList(HolderLookup.RegistryLookup<Biome> biomeRegistry, Holder<Biome> undergroundBiome) {
 		return List.of(
@@ -76,12 +79,12 @@ public final class BiomeMaker extends BiomeHelper {
 		return new TerrainColumn(biomeHolder, Util.make(new Float2ObjectAVLTreeMap<>(), layerBuilder), noiseDepth, noiseScale);
 	}
 
-	public static Holder<Biome> registerUnderground(Registry<Biome> registry, boolean fullRegister) {
+	public static Holder<Biome> registerUnderground(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, Registry<Biome> registry, boolean fullRegister) {
 		Holder.Reference<Biome> holder = Holder.Reference.createStandAlone(registry.asLookup(), BiomeKeys.UNDERGROUND);
 		Biome underground = biomeWithDefaults(
 				defaultAmbientBuilder(),
 				undergroundMobSpawning(),
-				undergroundGen()
+				undergroundGen(featureGetter, carverGetter)
 		)
 				.temperature(0.7F)
 				.downfall(0.0F)
@@ -95,26 +98,26 @@ public final class BiomeMaker extends BiomeHelper {
 		return holder;
 	}
 
-	private static Map<ResourceKey<Biome>, Biome> generateBiomes() {
+	public static Map<ResourceKey<Biome>, Biome> generateBiomes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
 		final ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes = ImmutableMap.builder();
 
-		commonBiomes(biomes);
-		mushroomBiomes(biomes);
-		rareBiomes(biomes);
-		swampBiomes(biomes);
-		darkForestBiomes(biomes);
-		snowRegionBiomes(biomes);
-		highlandsBiomes(biomes);
+		commonBiomes(featureGetter, carverGetter, biomes);
+		mushroomBiomes(featureGetter, carverGetter, biomes);
+		rareBiomes(featureGetter, carverGetter, biomes);
+		swampBiomes(featureGetter, carverGetter, biomes);
+		darkForestBiomes(featureGetter, carverGetter, biomes);
+		snowRegionBiomes(featureGetter, carverGetter, biomes);
+		highlandsBiomes(featureGetter, carverGetter, biomes);
 
 		return biomes.build();
 	}
 
-	private static void commonBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
+	private static void commonBiomes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.FOREST,
 				biomeWithDefaults(
 						fireflyParticles(defaultAmbientBuilder()),
 						defaultMobSpawning(),
-						twilightForestGen()
+						twilightForestGen(featureGetter, carverGetter)
 				)
 						.build()
 		);
@@ -124,7 +127,7 @@ public final class BiomeMaker extends BiomeHelper {
 						fireflyParticles(defaultAmbientBuilder())
 								.waterColor(0x005522),
 						defaultMobSpawning(),
-						denseForestGen()
+						denseForestGen(featureGetter, carverGetter)
 				)
 						.temperature(0.7F)
 						.downfall(0.8F)
@@ -135,7 +138,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(
 						fireflyForestParticles(defaultAmbientBuilder()),
 						defaultMobSpawning(),
-						fireflyForestGen()
+						fireflyForestGen(featureGetter, carverGetter)
 				)
 						.temperature(0.5F)
 						.downfall(1)
@@ -146,7 +149,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(
 						defaultAmbientBuilder(),
 						defaultMobSpawning(),
-						clearingGen()
+						clearingGen(featureGetter, carverGetter)
 				)
 						.temperature(0.8F)
 						.downfall(0.4F)
@@ -157,7 +160,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(
 						defaultAmbientBuilder(),
 						defaultMobSpawning(),
-						oakSavannaGen()
+						oakSavannaGen(featureGetter, carverGetter)
 				)
 						.temperature(0.9F)
 						.downfall(0)
@@ -165,12 +168,12 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 	}
 
-	private static void mushroomBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
+	private static void mushroomBiomes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.MUSHROOM_FOREST,
 				biomeWithDefaults(
 						fireflyParticles(defaultAmbientBuilder()),
 						defaultMobSpawning(),
-						mushroomForestGen()
+						mushroomForestGen(featureGetter, carverGetter)
 				)
 						.temperature(0.8F)
 						.downfall(0.8F)
@@ -181,7 +184,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(
 						fireflyParticles(defaultAmbientBuilder()),
 						defaultMobSpawning(),
-						denseMushroomForestGen()
+						denseMushroomForestGen(featureGetter, carverGetter)
 				)
 						.temperature(0.8F)
 						.downfall(1)
@@ -189,7 +192,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 	}
 
-	private static void rareBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
+	private static void rareBiomes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SPOOKY_FOREST,
 				biomeWithDefaults(
 						defaultAmbientBuilder()
@@ -198,7 +201,7 @@ public final class BiomeMaker extends BiomeHelper {
 								.waterColor(0xBC8857)
 								.grassColorModifier(BiomeGrassColors.SPOOKY_FOREST),
 						spookSpawning(),
-						spookyForestGen()
+						spookyForestGen(featureGetter, carverGetter)
 				)
 						.temperature(0.5F)
 						.downfall(1)
@@ -212,7 +215,7 @@ public final class BiomeMaker extends BiomeHelper {
 								.grassColorOverride(0x00FFFF)
 								.grassColorModifier(BiomeGrassColors.ENCHANTED_FOREST),
 						defaultMobSpawning(),
-						enchantedForestGen()
+						enchantedForestGen(featureGetter, carverGetter)
 				)
 						.precipitation(Biome.Precipitation.NONE)
 						.build()
@@ -222,7 +225,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(
 						defaultAmbientBuilder(),
 						defaultMobSpawning(),
-						streamsAndLakes(false))
+						streamsAndLakes(featureGetter, carverGetter, false))
 						.temperature(0.5F)
 						.downfall(0.1F)
 						.build()
@@ -232,7 +235,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(
 						defaultAmbientBuilder(),
 						defaultMobSpawning(),
-						streamsAndLakes(true)
+						streamsAndLakes(featureGetter, carverGetter, true)
 				)
 						.temperature(0.66F)
 						.downfall(1)
@@ -240,7 +243,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 	}
 
-	private static void swampBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
+	private static void swampBiomes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SWAMP,
 				biomeWithDefaults(
 						defaultAmbientBuilder()
@@ -251,7 +254,7 @@ public final class BiomeMaker extends BiomeHelper {
 								.waterColor(0x95B55F)
 								.grassColorModifier(BiomeGrassColors.SWAMP),
 						swampSpawning(),
-						swampGen()
+						swampGen(featureGetter, carverGetter)
 				)
 						.temperature(0.8F)
 						.downfall(0.9F)
@@ -267,7 +270,7 @@ public final class BiomeMaker extends BiomeHelper {
 								.foliageColorOverride(0x64260F)
 								.waterColor(0x6C2C2C),
 						new MobSpawnSettings.Builder(),
-						fireSwampGen()
+						fireSwampGen(featureGetter, carverGetter)
 				)
 						.precipitation(Biome.Precipitation.NONE)
 						.temperature(1)
@@ -276,7 +279,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 	}
 
-	private static void darkForestBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
+	private static void darkForestBiomes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.DARK_FOREST,
 				biomeWithDefaults(defaultAmbientBuilder()
 								.skyColor(0x000000)
@@ -285,7 +288,7 @@ public final class BiomeMaker extends BiomeHelper {
 								foliageColorOverride(0x3B5E3F)
 								.grassColorModifier(BiomeGrassColors.DARK_FOREST),
 						darkForestSpawning(),
-						darkForestGen()
+						darkForestGen(featureGetter, carverGetter)
 				)
 						.temperature(0.7F)
 						.downfall(0.8F)
@@ -301,13 +304,13 @@ public final class BiomeMaker extends BiomeHelper {
 								.foliageColorOverride(0xF9821E)
 								.grassColorModifier(BiomeGrassColors.DARK_FOREST_CENTER),
 						new MobSpawnSettings.Builder(),
-						darkForestCenterGen()
+						darkForestCenterGen(featureGetter, carverGetter)
 				)
 						.build()
 		);
 	}
 
-	private static void snowRegionBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
+	private static void snowRegionBiomes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SNOWY_FOREST,
 				biomeWithDefaults(
 						defaultAmbientBuilder()
@@ -316,7 +319,7 @@ public final class BiomeMaker extends BiomeHelper {
 								.foliageColorOverride(0xFFFFFF)
 								.grassColorOverride(0xFFFFFF),
 						snowForestSpawning(),
-						snowyForestGen()
+						snowyForestGen(featureGetter, carverGetter)
 				)
 						.precipitation(Biome.Precipitation.SNOW)
 						.temperature(0.09F)
@@ -330,7 +333,7 @@ public final class BiomeMaker extends BiomeHelper {
 								.skyColor(0x130D28)
 								.fogColor(0x361F88),
 						penguinSpawning(),
-						glacierGen()
+						glacierGen(featureGetter, carverGetter)
 				)
 						.temperature(0.8F)
 						.downfall(0.1F)
@@ -339,12 +342,12 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 	}
 
-	private static void highlandsBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
+	private static void highlandsBiomes(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter, ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.HIGHLANDS,
 				biomeWithDefaults(
 						defaultAmbientBuilder(),
 						defaultMobSpawning(),
-						highlandsGen()
+						highlandsGen(featureGetter, carverGetter)
 				)
 						.temperature(0.4F)
 						.downfall(0.7F)
@@ -355,7 +358,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(
 						defaultAmbientBuilder(),
 						new MobSpawnSettings.Builder(),
-						thornlandsGen()
+						thornlandsGen(featureGetter, carverGetter)
 				)
 						.temperature(0.3F)
 						.downfall(0.2F)
@@ -366,7 +369,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(
 						defaultAmbientBuilder(),
 						ravenSpawning(),
-						plateauGen()
+						new BiomeGenerationSettings.Builder(featureGetter, carverGetter)
 				)
 						.temperature(1.0F)
 						.downfall(0.2F)

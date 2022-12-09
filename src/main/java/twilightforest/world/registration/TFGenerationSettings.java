@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -137,7 +138,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		Biome currentBiome = world.getBiome(player.blockPosition()).value();
 		if (isBiomeSafeFor(currentBiome, player))
 			return;
-		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(currentBiome));
+		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(world.registryAccess().registryOrThrow(Registries.BIOME).getKey(currentBiome));
 		if (exec != null)
 			exec.accept(player, world);
 	}
@@ -152,8 +153,8 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	public static final int SEALEVEL = 0;
 
 	public static final ResourceLocation DIMENSION = TwilightForestMod.prefix("twilight_forest");
-	public static final ResourceKey<LevelStem> WORLDGEN_KEY = ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, DIMENSION);
-	public static final ResourceKey<Level> DIMENSION_KEY = ResourceKey.create(Registry.DIMENSION_REGISTRY, DIMENSION);
+	public static final ResourceKey<LevelStem> WORLDGEN_KEY = ResourceKey.create(Registries.LEVEL_STEM, DIMENSION);
+	public static final ResourceKey<Level> DIMENSION_KEY = ResourceKey.create(Registries.DIMENSION, DIMENSION);
 
 	// Checks if the world is linked by the default Twilight Portal.
 	// If you want to check if the world is a Twilight world, use usesTwilightChunkGenerator instead
@@ -178,7 +179,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.getLevel().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
+		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome));
 		if (advancements != null && entity instanceof Player)
 			return PlayerHelper.doesPlayerHaveRequiredAdvancements((Player) entity, advancements);
 		return true;
@@ -206,7 +207,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (Structure structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream().toList()) {
+		for (Structure structureFeature : world.registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {
 			if (!(structureFeature instanceof LegacyLandmark legacyData))
 				continue;
 			TFLandmark feature = legacyData.feature;
