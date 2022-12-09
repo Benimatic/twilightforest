@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -20,7 +21,7 @@ import java.util.function.Consumer;
 public final class BiomeMaker extends BiomeHelper {
 	public static final Map<ResourceKey<Biome>, Biome> BIOMES = generateBiomes();
 
-	public static List<TerrainColumn> makeBiomeList(Registry<Biome> biomeRegistry, Holder<Biome> undergroundBiome) {
+	public static List<TerrainColumn> makeBiomeList(HolderLookup.RegistryLookup<Biome> biomeRegistry, Holder<Biome> undergroundBiome) {
 		return List.of(
 				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, BiomeKeys.FOREST, undergroundBiome),
 				biomeColumnWithUnderground(0.1F, 0.2F, biomeRegistry, BiomeKeys.DENSE_FOREST, undergroundBiome),
@@ -51,10 +52,10 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 	}
 
-	private static TerrainColumn biomeColumnWithUnderground(float noiseDepth, float noiseScale, Registry<Biome> biomeRegistry, ResourceKey<Biome> key, Holder<Biome> undergroundBiome) {
+	private static TerrainColumn biomeColumnWithUnderground(float noiseDepth, float noiseScale, HolderLookup.RegistryLookup<Biome> biomeRegistry, ResourceKey<Biome> key, Holder<Biome> undergroundBiome) {
 		Holder.Reference<Biome> biomeHolder = Holder.Reference.createStandAlone(biomeRegistry, key);
 
-		biomeHolder.bind(key, BIOMES.get(key));
+		biomeHolder.bindKey(key);
 
 		return makeColumn(noiseDepth, noiseScale, biomeHolder, treeMap -> {
 			// This will put the transition boundary around Y-8
@@ -63,10 +64,10 @@ public final class BiomeMaker extends BiomeHelper {
 		});
 	}
 
-	private static TerrainColumn biomeColumnToBedrock(float noiseDepth, float noiseScale, Registry<Biome> biomeRegistry, ResourceKey<Biome> key) {
+	private static TerrainColumn biomeColumnToBedrock(float noiseDepth, float noiseScale, HolderLookup.RegistryLookup<Biome> biomeRegistry, ResourceKey<Biome> key) {
 		Holder.Reference<Biome> biomeHolder = Holder.Reference.createStandAlone(biomeRegistry, key);
 
-		biomeHolder.bind(key, BIOMES.get(key));
+		biomeHolder.bindKey(key);
 
 		return makeColumn(noiseDepth, noiseScale, biomeHolder, treeMap -> treeMap.put(0, biomeHolder));
 	}
@@ -76,7 +77,7 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	public static Holder<Biome> registerUnderground(Registry<Biome> registry, boolean fullRegister) {
-		Holder.Reference<Biome> holder = Holder.Reference.createStandAlone(registry, BiomeKeys.UNDERGROUND);
+		Holder.Reference<Biome> holder = Holder.Reference.createStandAlone(registry.asLookup(), BiomeKeys.UNDERGROUND);
 		Biome underground = biomeWithDefaults(
 				defaultAmbientBuilder(),
 				undergroundMobSpawning(),
@@ -89,7 +90,7 @@ public final class BiomeMaker extends BiomeHelper {
 		if (fullRegister)
 			Registry.register(registry, BiomeKeys.UNDERGROUND, underground);
 
-		holder.bind(BiomeKeys.UNDERGROUND, underground);
+		holder.bindKey(BiomeKeys.UNDERGROUND);
 
 		return holder;
 	}

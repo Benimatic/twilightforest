@@ -49,28 +49,28 @@ public class TFBiomeProvider extends BiomeSource {
 	private final float baseOffset;
 	private final float baseFactor;
 
-	public TFBiomeProvider(long seed, Registry<Biome> registryIn, Holder<Biome> undergroundBiome, List<TerrainColumn> list, float offset, float factor) {
-		this(seed, registryIn, undergroundBiome, list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
+	public TFBiomeProvider(long seed, HolderLookup.RegistryLookup<Biome> registry, Holder<Biome> undergroundBiome, List<TerrainColumn> list, float offset, float factor) {
+		this(seed, registry, undergroundBiome, list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
 	}
 
-	public TFBiomeProvider(long seed, Registry<Biome> registryIn, Holder<Biome> undergroundBiome, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
+	public TFBiomeProvider(long seed, HolderLookup.RegistryLookup<Biome> registryIn, Holder<Biome> undergroundBiome, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
 		super(list.values().stream().flatMap(TerrainColumn::getBiomes));
 
 		this.seed = seed;
 		this.baseOffset = offset;
 		this.baseFactor = factor;
 
-		this.registry = registryIn.asLookup();
+		this.registry = registryIn;
 		this.undergroundBiome = undergroundBiome;
 		this.biomeList = list;
 		this.genBiomes = makeLayers(seed, registryIn);
 	}
 
-	public static int getBiomeId(ResourceKey<Biome> biome, Registry<Biome> registry) {
+	public static int getBiomeId(ResourceKey<Biome> biome, HolderLookup.RegistryLookup<Biome> registry) {
 		return registry.getId(registry.get(biome));
 	}
 
-	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, Registry<Biome> registry, long rawSeed) {
+	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, HolderLookup.RegistryLookup<Biome> registry, long rawSeed) {
  		AreaFactory<T> biomes = GenLayerTFBiomes.INSTANCE.setup(registry).run(seed.apply(1L));
 		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(registry, rawSeed).run(seed.apply(1000L), biomes);
 		biomes = GenLayerTFCompanionBiomes.INSTANCE.setup(registry).run(seed.apply(1000L), biomes);
@@ -94,7 +94,7 @@ public class TFBiomeProvider extends BiomeSource {
 		return biomes;
 	}
 	
-	public static Layer makeLayers(long seed, Registry<Biome> registry) {
+	public static Layer makeLayers(long seed, HolderLookup.RegistryLookup<Biome> registry) {
 		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
 		// Debug code to render an image of the biome layout within the ide
 		/*final java.util.Map<Integer, Integer> remapColors = new java.util.HashMap<>();
@@ -144,7 +144,7 @@ public class TFBiomeProvider extends BiomeSource {
  		System.out.println("breakpoint");*/
 		return new Layer(areaFactory) {
 			@Override
-			public Holder<Biome> get(Registry<Biome> registry, int p_242936_2_, int p_242936_3_) {
+			public Holder<Biome> get(HolderLookup.RegistryLookup<Biome> registry, int p_242936_2_, int p_242936_3_) {
 				int i = this.area.get(p_242936_2_, p_242936_3_);
 				Optional<Holder.Reference<Biome>> biome = registry.getHolder(i);
 				if (biome.isEmpty())

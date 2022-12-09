@@ -1,5 +1,6 @@
 package twilightforest.world.components.layer;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
@@ -12,9 +13,9 @@ public enum GenLayerTFCompanionBiomes implements CastleTransformer {
 
 	GenLayerTFCompanionBiomes() { }
 
-	private Registry<Biome> registry;
+	private HolderLookup.RegistryLookup<Biome> registry;
 
-	public GenLayerTFCompanionBiomes setup(Registry<Biome> registry) {
+	public GenLayerTFCompanionBiomes setup(HolderLookup.RegistryLookup<Biome> registry) {
 		this.registry = registry;
 		return this;
 	}

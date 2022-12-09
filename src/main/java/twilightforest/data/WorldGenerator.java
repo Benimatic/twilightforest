@@ -64,30 +64,31 @@ public record WorldGenerator(DataGenerator generator, CompletableFuture<HolderLo
 
 	public CompletableFuture<?> run(CachedOutput cache) {
 		PackOutput path = this.generator.getPackOutput();
-		RegistryAccess registryaccess = this.provider.;
-		DynamicOps<JsonElement> dynamicops = RegistryOps.create(JsonOps.INSTANCE, registryaccess);
+		this.provider.thenCompose(access -> {
+			DynamicOps<JsonElement> dynamicops = RegistryOps.create(JsonOps.INSTANCE, access);
 
-		HolderSet<StructureSet> structureOverrides = this.makeStructureList();
+			HolderSet<StructureSet> structureOverrides = this.makeStructureList();
 
-		Registry<LevelStem> twilight = this.registerTFSettings(registryaccess, structureOverrides);
-		//Registry<LevelStem> skylight = this.registerSkylightSettings(registryaccess);
-		//TODO void world
+			Registry<LevelStem> twilight = this.registerTFSettings(access, structureOverrides);
+			//Registry<LevelStem> skylight = this.registerSkylightSettings(registryaccess);
+			//TODO void world
 
-		WritableRegistry<Biome> biomeRegistry = new MappedRegistry<>(Registries.BIOME, Lifecycle.experimental());
-		BiomeMaker.registerUnderground(biomeRegistry, true);
-		Map<ResourceLocation, Biome> biomes = this.getBiomes();
-		biomes.forEach((rl, biome) -> biomeRegistry.register(ResourceKey.create(Registries.BIOME, rl), biome, Lifecycle.experimental()));
+			WritableRegistry<Biome> biomeRegistry = new MappedRegistry<>(Registries.BIOME, Lifecycle.experimental());
+			BiomeMaker.registerUnderground(biomeRegistry, true);
+			Map<ResourceLocation, Biome> biomes = this.getBiomes();
+			biomes.forEach((rl, biome) -> biomeRegistry.register(ResourceKey.create(Registries.BIOME, rl), biome, Lifecycle.experimental()));
 
-		StreamSupport.stream(BuiltInRegistries.REGISTRY.holders().spliterator(), false)
-				.filter(r -> registryaccess.registry(r.key()).isPresent() && !r.key().equals(Registries.BIOME))
-				.forEach((data) -> dumpRegistryCap(cache, path, registryaccess, dynamicops, data));
+			StreamSupport.stream(BuiltInRegistries.REGISTRY.holders().spliterator(), false)
+					.filter(r -> access.lookup(r.key()).isPresent() && !r.key().equals(Registries.BIOME))
+					.forEach((data) -> dumpRegistryCap(cache, path, access, dynamicops, data));
 
-		LOGGER.info("Dumping real BIOME_REGISTRY");
-		dumpRegistry(path, cache, dynamicops, Registries.BIOME, biomeRegistry, Biome.DIRECT_CODEC);
+			LOGGER.info("Dumping real BIOME_REGISTRY");
+			dumpRegistry(path, cache, dynamicops, Registries.BIOME, biomeRegistry, Biome.DIRECT_CODEC);
 
-		LOGGER.info("Dumping real LEVEL_STEM_REGISTRY");
-		dumpRegistry(path, cache, dynamicops, Registries.LEVEL_STEM, twilight, LevelStem.CODEC);
-		return null;
+			LOGGER.info("Dumping real LEVEL_STEM_REGISTRY");
+			dumpRegistry(path, cache, dynamicops, Registries.LEVEL_STEM, twilight, LevelStem.CODEC);
+			return null;
+		});
 	}
 
 	private HolderSet<StructureSet> makeStructureList() {
@@ -103,16 +104,16 @@ public record WorldGenerator(DataGenerator generator, CompletableFuture<HolderLo
 		);
 	}
 
-	private static <T> void dumpRegistryCap(CachedOutput cache, PackOutput path, RegistryAccess access, DynamicOps<JsonElement> ops, RegistryAccess.RegistryEntry<T> data) {
+	private static <T> void dumpRegistryCap(CachedOutput cache, PackOutput path, HolderLookup.Provider provider, DynamicOps<JsonElement> ops, RegistryAccess.RegistryEntry<T> data) {
 		LOGGER.info("Dumping: {}", data.key());
-		dumpRegistry(path, cache, ops, data.key(), access.registryOrThrow(data.key()), data.value().byNameCodec());
+		dumpRegistry(path, cache, ops, data.key(), provider.lookupOrThrow(data.key()), data.value().byNameCodec());
 	}
 
-	private Registry<LevelStem> registerTFSettings(RegistryAccess access, HolderSet<StructureSet> structureOverrides) {
+	private Registry<LevelStem> registerTFSettings(HolderLookup.Provider provider, HolderSet<StructureSet> structureOverrides) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registries.LEVEL_STEM, Lifecycle.experimental());
-		Registry<Biome> biomeRegistry = access.registryOrThrow(Registries.BIOME);
+		HolderLookup.RegistryLookup<Biome> biomeRegistry = provider.lookupOrThrow(Registries.BIOME);
 		Holder<Biome> undergroundHolder = BiomeMaker.registerUnderground(biomeRegistry, false);
-		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registries.NOISE_SETTINGS).getHolderOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN.getKey());
+		Holder<NoiseGeneratorSettings> noiseGenSettings = provider.lookupOrThrow(Registries.NOISE_SETTINGS).get(TFDimensionSettings.TWILIGHT_NOISE_GEN.getKey()).get();
 
 		NoiseBasedChunkGenerator forestChunkGen =
 				new NoiseBasedChunkGenerator(
@@ -120,15 +121,15 @@ public record WorldGenerator(DataGenerator generator, CompletableFuture<HolderLo
 						noiseGenSettings
 				);
 
-		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registries.STRUCTURE_SET), structureOverrides, noiseGenSettings, true, Optional.of(19), BIOME_FEATURES_SETS)), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, noiseGenSettings, true, Optional.of(19), BIOME_FEATURES_SETS)), Lifecycle.experimental());
 		return writableregistry;
 	}
 
-	private Registry<LevelStem> registerSkylightSettings(RegistryAccess access, HolderSet<StructureSet> structureOverrides) {
+	private Registry<LevelStem> registerSkylightSettings(HolderLookup.Provider provider, HolderSet<StructureSet> structureOverrides) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registries.LEVEL_STEM, Lifecycle.experimental());
-		Registry<Biome> biomeRegistry = new MappedRegistry<>(Registries.BIOME, Lifecycle.experimental());
+		HolderLookup.RegistryLookup<Biome> biomeRegistry = provider.lookupOrThrow(Registries.BIOME);
 		Holder<Biome> undergroundHolder = BiomeMaker.registerUnderground(biomeRegistry, false); // FIXME Hmmm...
-		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registries.NOISE_SETTINGS).getHolderOrThrow(TFDimensionSettings.SKYLIGHT_NOISE_GEN.getKey());
+		Holder<NoiseGeneratorSettings> noiseGenSettings = provider.lookupOrThrow(Registries.NOISE_SETTINGS).get(TFDimensionSettings.SKYLIGHT_NOISE_GEN.getKey()).get();
 
 		NoiseBasedChunkGenerator forestChunkGen =
 				new NoiseBasedChunkGenerator(
@@ -136,7 +137,7 @@ public record WorldGenerator(DataGenerator generator, CompletableFuture<HolderLo
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registries.LEVEL_STEM, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registries.STRUCTURE_SET), structureOverrides, noiseGenSettings, true, Optional.of(16), BIOME_FEATURES_SETS)), Lifecycle.stable());
+		writableregistry.register(ResourceKey.create(Registries.LEVEL_STEM, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, noiseGenSettings, true, Optional.of(16), BIOME_FEATURES_SETS)), Lifecycle.stable());
 		return writableregistry;
 	}
 

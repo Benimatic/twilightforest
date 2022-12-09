@@ -89,7 +89,7 @@ public class LegacyLandmarkPlacements {
     }
 
     public static TFLandmark pickBiomeLandmarkLegacy(RegistryAccess access, int chunkX, int chunkZ, Biome biome, long seed) {
-        Optional<? extends Registry<Biome>> registryOpt = access.registry(Registries.BIOME);
+        Optional<? extends HolderLookup.RegistryLookup<Biome>> registryOpt = access.registry(Registries.BIOME);
 
         if (registryOpt.isPresent()) {
             TFLandmark biomeFeature = BIOME_FEATURES.get(registryOpt.get().getKey(biome));

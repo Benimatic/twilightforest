@@ -1,5 +1,6 @@
 package twilightforest.world.components.layer;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
@@ -22,11 +23,11 @@ public enum GenLayerTFRiverMix implements AreaTransformer2, DimensionOffset0Tran
 //		this.riverLayer = riverLayer;
 //	}
 
-	private Registry<Biome> registry;
+	private HolderLookup.RegistryLookup<Biome> registry;
 
 	GenLayerTFRiverMix() { }
 
-	public GenLayerTFRiverMix setup(Registry<Biome> registry) {
+	public GenLayerTFRiverMix setup(HolderLookup.RegistryLookup<Biome> registry) {
 		this.registry = registry;
 		return this;
 	}

@@ -31,7 +31,7 @@ public class CustomTagGenerator {
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
-			tag(PHANTOM_ARMOR_BANNED_ENCHANTS).add(Enchantments.VANISHING_CURSE, Enchantments.BINDING_CURSE);
+			//tag(PHANTOM_ARMOR_BANNED_ENCHANTS).add(Enchantments.VANISHING_CURSE, Enchantments.BINDING_CURSE);
 		}
 
 		@Override
@@ -58,15 +58,15 @@ public class CustomTagGenerator {
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
-			tag(NAGA_BANNER_PATTERN).add(TFBannerPatterns.NAGA.get());
-			tag(LICH_BANNER_PATTERN).add(TFBannerPatterns.LICH.get());
-			tag(MINOSHROOM_BANNER_PATTERN).add(TFBannerPatterns.MINOSHROOM.get());
-			tag(HYDRA_BANNER_PATTERN).add(TFBannerPatterns.HYDRA.get());
-			tag(KNIGHT_PHANTOM_BANNER_PATTERN).add(TFBannerPatterns.KNIGHT_PHANTOM.get());
-			tag(UR_GHAST_BANNER_PATTERN).add(TFBannerPatterns.UR_GHAST.get());
-			tag(ALPHA_YETI_BANNER_PATTERN).add(TFBannerPatterns.ALPHA_YETI.get());
-			tag(SNOW_QUEEN_BANNER_PATTERN).add(TFBannerPatterns.SNOW_QUEEN.get());
-			tag(QUEST_RAM_BANNER_PATTERN).add(TFBannerPatterns.QUEST_RAM.get());
+//			tag(NAGA_BANNER_PATTERN).add(TFBannerPatterns.NAGA.get());
+//			tag(LICH_BANNER_PATTERN).add(TFBannerPatterns.LICH.get());
+//			tag(MINOSHROOM_BANNER_PATTERN).add(TFBannerPatterns.MINOSHROOM.get());
+//			tag(HYDRA_BANNER_PATTERN).add(TFBannerPatterns.HYDRA.get());
+//			tag(KNIGHT_PHANTOM_BANNER_PATTERN).add(TFBannerPatterns.KNIGHT_PHANTOM.get());
+//			tag(UR_GHAST_BANNER_PATTERN).add(TFBannerPatterns.UR_GHAST.get());
+//			tag(ALPHA_YETI_BANNER_PATTERN).add(TFBannerPatterns.ALPHA_YETI.get());
+//			tag(SNOW_QUEEN_BANNER_PATTERN).add(TFBannerPatterns.SNOW_QUEEN.get());
+//			tag(QUEST_RAM_BANNER_PATTERN).add(TFBannerPatterns.QUEST_RAM.get());
 		}
 
 		private static TagKey<BannerPattern> create(String name) {
