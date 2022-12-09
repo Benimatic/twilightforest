@@ -5,20 +5,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,24 +69,7 @@ public class YetiArmorItem extends ArmorItem {
 		}
 	}
 
-//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-//		if (this.allowedIn(tab)) {
-//			ItemStack stack = new ItemStack(this);
-//			switch (this.getSlot()) {
-//				case HEAD, CHEST, LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
-//				case FEET -> {
-//					stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
-//					stack.enchant(Enchantments.FALL_PROTECTION, 4);
-//				}
-//				default -> {
-//				}
-//			}
-//			items.add(stack);
-//		}
-//	}
-
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
 		tooltip.add(TOOLTIP);

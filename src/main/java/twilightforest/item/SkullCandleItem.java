@@ -125,16 +125,4 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 		}
 		return super.initCapabilities(stack, tag);
 	}
-
-	//FIXME
-//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-//		if (this.allowedIn(tab)) {
-//			ItemStack stack = new ItemStack(this);
-//			CompoundTag tag = new CompoundTag();
-//			tag.putInt("CandleAmount", 1);
-//			tag.putInt("CandleColor", 0);
-//			stack.addTagElement("BlockEntityTag", tag);
-//			items.add(stack);
-//		}
-//	}
 }
