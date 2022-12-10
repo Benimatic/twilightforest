@@ -60,6 +60,7 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FIRE_JET = registerKey("fire_jet");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FOUNDATION = registerKey("foundation");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> GROVE_RUINS = registerKey("grove_ruins");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> HOLLOW_LOG = registerKey("hollow_log");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> HOLLOW_STUMP = registerKey("hollow_stump");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> HUGE_LILY_PAD = registerKey("huge_lily_pad");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> HUGE_WATER_LILY = registerKey("huge_water_lily");
@@ -160,6 +161,11 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> VANILLA_TF_TREES = registerKey("tree/selector/vanilla_trees");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> VANILLA_TF_BIG_MUSH = registerKey("tree/selector/vanilla/vanilla_mushrooms");
 
+	//FIXME double check this once we're correctly running. These used to sit in TFPlacedFeatures since they caused classloading issues, but they shouldnt anymore. If they are move them back
+	public static final ResourceKey<ConfiguredFeature<?, ?>> WELL_PLACER = TFConfiguredFeatures.registerKey("well_placer");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LAMPPOST_PLACER = TFConfiguredFeatures.registerKey("lamppost_placer");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> DEFAULT_FALLEN_LOGS = TFConfiguredFeatures.registerKey("default_fallen_logs");
+
 	//super funky tree placement lists
 	public static final ResourceKey<ConfiguredFeature<?, ?>> CANOPY_MUSHROOMS_SPARSE = registerKey("mushroom/canopy_mushrooms_sparse");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> CANOPY_MUSHROOMS_DENSE = registerKey("mushroom/canopy_mushrooms_dense");
@@ -225,6 +231,7 @@ public final class TFConfiguredFeatures {
 		context.register(FIRE_JET, new ConfiguredFeature<>(TFFeatures.FIRE_JET.get(), new BlockStateConfiguration(TFBlocks.FIRE_JET.get().defaultBlockState())));
 		context.register(FOUNDATION, new ConfiguredFeature<>(TFFeatures.FOUNDATION.get(), NoneFeatureConfiguration.NONE));
 		context.register(GROVE_RUINS, new ConfiguredFeature<>(TFFeatures.GROVE_RUINS.get(), NoneFeatureConfiguration.NONE));
+		context.register(HOLLOW_LOG, new ConfiguredFeature<>(TFFeatures.FALLEN_HOLLOW_LOG.get(), NoneFeatureConfiguration.NONE));
 		context.register(HOLLOW_STUMP, new ConfiguredFeature<>(TFFeatures.HOLLOW_STUMP.get(), TreeConfigurations.HOLLOW_TREE));
 		context.register(HUGE_LILY_PAD, new ConfiguredFeature<>(TFFeatures.HUGE_LILY_PAD.get(), NoneFeatureConfiguration.NONE));
 		context.register(HUGE_WATER_LILY, new ConfiguredFeature<>(TFFeatures.HUGE_WATER_LILY.get(), NoneFeatureConfiguration.NONE));
@@ -307,7 +314,11 @@ public final class TFConfiguredFeatures {
 		context.register(VANILLA_BIRCH_TREE, new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(Blocks.BIRCH_LOG), new StraightTrunkPlacer(5, 2, 0), BlockStateProvider.simple(Blocks.BIRCH_LEAVES), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3), new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().build()));
 		context.register(SMALLER_JUNGLE_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.SMALL_JUNGLE));
 		context.register(DUMMY_TREE, new ConfiguredFeature<>(Feature.NO_OP, NoneFeatureConfiguration.INSTANCE));
-		
+
+		context.register(WELL_PLACER, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(FANCY_WELL)), 0.05F)), PlacementUtils.inlinePlaced(features.getOrThrow(SIMPLE_WELL)))));
+		context.register(LAMPPOST_PLACER, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(CICADA_LAMPPOST)), 0.1F)), PlacementUtils.inlinePlaced(features.getOrThrow(FIREFLY_LAMPPOST)))));
+		context.register(DEFAULT_FALLEN_LOGS, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(BIRCH_FALLEN_LOG)), 0.1F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(OAK_FALLEN_LOG)), 0.2F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(CANOPY_FALLEN_LOG)), 0.4F)), PlacementUtils.inlinePlaced(features.getOrThrow(TF_OAK_FALLEN_LOG)))));
+
 		context.register(CANOPY_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(CANOPY_TREE)), 0.6F)), PlacementUtils.inlinePlaced(features.getOrThrow(TWILIGHT_OAK_TREE)))));
 		context.register(DENSE_CANOPY_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(CANOPY_TREE)), 0.7F)), PlacementUtils.inlinePlaced(features.getOrThrow(TWILIGHT_OAK_TREE)))));
 		context.register(FIREFLY_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(CANOPY_TREE)), 0.33F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(FIREFLY_CANOPY_TREE)), 0.45F)), PlacementUtils.inlinePlaced(features.getOrThrow(TWILIGHT_OAK_TREE)))));
