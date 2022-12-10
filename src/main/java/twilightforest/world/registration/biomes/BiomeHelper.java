@@ -17,7 +17,7 @@ import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFPlacedFeatures;
-import twilightforest.world.registration.ConfiguredWorldCarvers;
+import twilightforest.init.TFCaveCarvers;
 
 public abstract class BiomeHelper {
 
@@ -394,7 +394,7 @@ public abstract class BiomeHelper {
 
 	//Caves!
 	public static void addCaves(BiomeGenerationSettings.Builder biome) {
-		biome.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.TFCAVES_CONFIGURED);
+		biome.addCarver(GenerationStep.Carving.AIR, TFCaveCarvers.TFCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_PLANT_ROOTS);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_TORCH_BERRIES);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_VANILLA_ROOTS);
@@ -402,7 +402,7 @@ public abstract class BiomeHelper {
 	}
 
 	public static void addHighlandCaves(BiomeGenerationSettings.Builder biome) {
-		biome.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.HIGHLANDCAVES_CONFIGURED);
+		biome.addCarver(GenerationStep.Carving.AIR, TFCaveCarvers.HIGHLANDCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_TROLL_ROOTS);
 		addLegacyOres(biome);
 	}

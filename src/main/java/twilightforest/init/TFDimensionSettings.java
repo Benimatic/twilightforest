@@ -1,37 +1,40 @@
 package twilightforest.init;
 
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.levelgen.DensityFunctions;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.NoiseRouter;
-import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.registration.biomes.BiomeMaker;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
 import java.util.OptionalLong;
 
-//does this need a better name? Does it need to be split up, or can we possibly add more dimension related registries here?
 public class TFDimensionSettings {
 
-	public static final DeferredRegister<NoiseGeneratorSettings> NOISE_GENERATORS = DeferredRegister.create(Registries.NOISE_SETTINGS, TwilightForestMod.ID);
-	public static final DeferredRegister<DimensionType> DIMENSION_TYPES = DeferredRegister.create(Registries.DIMENSION_TYPE, TwilightForestMod.ID);
+	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
+	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));
 
-	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFDimensionSettings::tfDefault);
-	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFDimensionSettings::skylight);
+	public static final ResourceKey<DimensionType> TWILIGHT_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, TwilightForestMod.prefix("twilight_forest_type"));
 
-	public static final RegistryObject<DimensionType> TWILIGHT_DIM_TYPE = DIMENSION_TYPES.register("twilight_forest_type", TFDimensionSettings::twilightDimType);
-
+	public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM =  ResourceKey.create(Registries.LEVEL_STEM, TwilightForestMod.prefix("twilight_forest"));
 
 	private static DimensionType twilightDimType() {
 		return new DimensionType(
-				OptionalLong.of(13000L), //fixed time TODO Kill the celestial bodies
+				OptionalLong.of(13000L), //fixed time
 				true, //skylight
 				false, //ceiling
 				false, //ultrawarm
@@ -129,5 +132,14 @@ public class TFDimensionSettings {
 				false,
 				false
 		);
+	}
+
+	public static void bootstrapNoise(BootstapContext<NoiseGeneratorSettings> context) {
+		context.register(TWILIGHT_NOISE_GEN, tfDefault());
+		context.register(SKYLIGHT_NOISE_GEN, skylight());
+	}
+
+	public static void bootstrapType(BootstapContext<DimensionType> context) {
+		context.register(TWILIGHT_DIM_TYPE, twilightDimType());
 	}
 }
