@@ -2,6 +2,7 @@ package twilightforest.util;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -89,7 +90,7 @@ public class LegacyLandmarkPlacements {
     }
 
     public static TFLandmark pickBiomeLandmarkLegacy(RegistryAccess access, int chunkX, int chunkZ, Biome biome, long seed) {
-        Optional<? extends HolderLookup.RegistryLookup<Biome>> registryOpt = access.registry(Registries.BIOME);
+        Optional<? extends Registry<Biome>> registryOpt = access.registry(Registries.BIOME);
 
         if (registryOpt.isPresent()) {
             TFLandmark biomeFeature = BIOME_FEATURES.get(registryOpt.get().getKey(biome));

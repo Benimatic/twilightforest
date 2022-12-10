@@ -119,9 +119,7 @@ public class TwilightForestMod {
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modbus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
 		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(modbus);
-		TFStructureSets.STRUCTURE_SETS.register(modbus);
 		TFStructureTypes.STRUCTURE_TYPES.register(modbus);
-		TFStructures.STRUCTURES.register(modbus);
 		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
 

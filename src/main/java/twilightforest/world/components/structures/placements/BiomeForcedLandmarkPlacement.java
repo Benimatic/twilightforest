@@ -6,6 +6,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import twilightforest.init.TFLandmark;
@@ -33,18 +34,14 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
 
     @Override
     public boolean isPlacementChunk(ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
-        return this.isPlacementChunk(chunkGenerator, randomState, seed, chunkX, chunkZ);
-    }
-
-    @Override
-    public boolean isPlacementChunk(ChunkGenerator chunkGenerator, RandomState randomState, long seed, int chunkX, int chunkZ) {
-        if (chunkGenerator instanceof ChunkGeneratorTwilight twilightGenerator)
-            return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGenerator.getBiomeSource().getNoiseBiome(chunkX << 2, this.scanHeight, chunkZ << 2, randomState.sampler()), chunkX, chunkZ, seed);
+        //TODO can we still access the chunk generator?
+//        if (chunkGenerator instanceof ChunkGeneratorTwilight twilightGenerator)
+//            return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGenerator.getBiomeSource().getNoiseBiome(chunkX << 2, this.scanHeight, chunkZ << 2, randomState.sampler()), chunkX, chunkZ, seed);
 
         if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
             return false;
 
-        return LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed) == this.landmark;
+        return LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, state.getLevelSeed()) == this.landmark;
     }
 
     @Override

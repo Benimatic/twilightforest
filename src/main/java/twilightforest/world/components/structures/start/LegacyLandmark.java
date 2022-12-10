@@ -3,8 +3,10 @@ package twilightforest.world.components.structures.start;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -43,7 +45,7 @@ public class LegacyLandmark extends ProgressionStructure implements LegacyLandma
         this.feature = landmark;
     }
 
-    public static LegacyLandmark extractLandmark(TFLandmark landmark) {
+    public static LegacyLandmark extractLandmark(BootstapContext<Structure> context, TFLandmark landmark) {
         return new LegacyLandmark(
                 landmark,
                 new AdvancementLockConfig(landmark.getRequiredAdvancements()),
@@ -51,7 +53,7 @@ public class LegacyLandmark extends ProgressionStructure implements LegacyLandma
                 ControlledSpawns.ControlledSpawningConfig.create(landmark.getSpawnableMonsterLists(), landmark.getAmbientCreatureList(), landmark.getWaterCreatureList()),
                 new DecorationClearance.DecorationConfig(landmark.isSurfaceDecorationsAllowed(), landmark.isUndergroundDecoAllowed(), landmark.shouldAdjustToTerrain()),
                 new Structure.StructureSettings(
-                        Registries.BIOME.getTag(landmark.getBiomeTag()),
+                        context.lookup(Registries.BIOME).getOrThrow(landmark.getBiomeTag()),
                         Map.of(), // Landmarks have Controlled Mob spawning
                         landmark.getDecorationStage(),
                         landmark.getBeardifierContribution()
