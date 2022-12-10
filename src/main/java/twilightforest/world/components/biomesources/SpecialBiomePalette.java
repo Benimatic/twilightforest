@@ -9,8 +9,12 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import twilightforest.util.Codecs;
 
@@ -53,7 +57,7 @@ public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Hol
 
     private static SpecialBiomePalette create() {
         // FIXME populate correct biomes
-        return create(Holder.direct(OverworldBiomes.theVoid()), new Climate.ParameterList<>(Collections.emptyList()), HolderSet.direct(), Collections.emptyList());
+        return create(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.THE_VOID), new Climate.ParameterList<>(Collections.emptyList()), HolderSet.direct(), Collections.emptyList());
     }
 
     private static SpecialBiomePalette create(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> common, HolderSet<Biome> rare, List<Float2ObjectSortedMap<Holder<Biome>>> clusters) {

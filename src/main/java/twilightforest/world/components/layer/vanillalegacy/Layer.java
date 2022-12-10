@@ -4,6 +4,9 @@ import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import twilightforest.world.components.layer.vanillalegacy.area.AreaFactory;
@@ -20,7 +23,7 @@ public class Layer {
 
 	public Holder<Biome> get(HolderLookup.RegistryLookup<Biome> registry, int p_76717_, int p_76718_) {
 		int i = this.area.get(p_76717_, p_76718_);
-		Optional<Holder.Reference<Biome>> biome = registry.getHolder(i);
+		Optional<Holder.Reference<Biome>> biome = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.BIOME).getHolder(i);
 		if (biome.isEmpty()) {
 			Util.logAndPauseIfInIde("Unknown biome id: " + i);
 			return registry.getOrThrow(Biomes.PLAINS);

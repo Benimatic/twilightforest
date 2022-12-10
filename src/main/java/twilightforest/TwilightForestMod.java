@@ -98,7 +98,6 @@ public class TwilightForestMod {
 		TFBlocks.BLOCKS.register(modbus);
 		TFLoot.CONDITIONS.register(modbus);
 		TFMenuTypes.CONTAINERS.register(modbus);
-		TFDimensionSettings.DIMENSION_TYPES.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
 		TFFeatures.FEATURES.register(modbus);
@@ -107,7 +106,6 @@ public class TwilightForestMod {
 		TFItems.ITEMS.register(modbus);
 		TFLootModifiers.LOOT_MODIFIERS.register(modbus);
 		TFMobEffects.MOB_EFFECTS.register(modbus);
-		TFDimensionSettings.NOISE_GENERATORS.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(modbus);
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);

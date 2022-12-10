@@ -5,6 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
@@ -67,7 +69,7 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	public static int getBiomeId(ResourceKey<Biome> biome, HolderLookup.RegistryLookup<Biome> registry) {
-		return registry.getId(registry.get(biome));
+		return RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.BIOME).getId(registry.get(biome).get().get());
 	}
 
 	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, HolderLookup.RegistryLookup<Biome> registry, long rawSeed) {
@@ -146,7 +148,7 @@ public class TFBiomeProvider extends BiomeSource {
 			@Override
 			public Holder<Biome> get(HolderLookup.RegistryLookup<Biome> registry, int p_242936_2_, int p_242936_3_) {
 				int i = this.area.get(p_242936_2_, p_242936_3_);
-				Optional<Holder.Reference<Biome>> biome = registry.getHolder(i);
+				Optional<Holder.Reference<Biome>> biome = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.BIOME).getHolder(i);
 				if (biome.isEmpty())
 					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
 				return biome.get();

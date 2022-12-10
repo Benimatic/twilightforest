@@ -23,10 +23,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -886,14 +883,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	@Nullable
 	@Override
 	public Pair<BlockPos, Holder<Structure>> findNearestMapStructure(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
-		RandomState randomState = level.getChunkSource().randomState();
+		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
 
 		@Nullable
 		Pair<BlockPos, Holder<Structure>> nearest = super.findNearestMapStructure(level, targetStructures, pos, searchRadius, skipKnownStructures);
 
 		Map<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> placementSetMap = new Object2ObjectArrayMap<>();
 		for (Holder<Structure> holder : targetStructures) {
-			for (StructurePlacement structureplacement : this.getPlacementsForStructure(holder, randomState)) {
+			for (StructurePlacement structureplacement : state.getPlacementsForStructure(holder)) {
 				if (structureplacement instanceof BiomeForcedLandmarkPlacement landmarkPlacement) {
 					placementSetMap.computeIfAbsent(landmarkPlacement, v -> new ObjectArraySet<>()).add(holder);
 				}
@@ -906,7 +903,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, Mth.ceil(Mth.sqrt(searchRadius)))) {
 			for (Map.Entry<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> landmarkPlacement : placementSetMap.entrySet()) {
-				if (!landmarkPlacement.getKey().isPlacementChunk(this, randomState, randomState.legacyLevelSeed(), landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
+				if (!landmarkPlacement.getKey().isPlacementChunk(state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
 
 				for (Holder<Structure> targetStructure : targetStructures) {
 					if (landmarkPlacement.getValue().contains(targetStructure)) {
