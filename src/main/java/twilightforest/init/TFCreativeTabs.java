@@ -254,15 +254,17 @@ public class TFCreativeTabs {
 					output.accept(TFBlocks.ALPHA_YETI_TROPHY.get());
 					output.accept(TFBlocks.SNOW_QUEEN_TROPHY.get());
 					output.accept(TFBlocks.QUEST_RAM_TROPHY.get());
-					output.accept(TFBlocks.NAGA_BOSS_SPAWNER.get());
-					output.accept(TFBlocks.LICH_BOSS_SPAWNER.get());
-					output.accept(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get());
-					output.accept(TFBlocks.HYDRA_BOSS_SPAWNER.get());
-					output.accept(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get());
-					output.accept(TFBlocks.UR_GHAST_BOSS_SPAWNER.get());
-					output.accept(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get());
-					output.accept(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
-					output.accept(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get());
+					if (operator) {
+						output.accept(TFBlocks.NAGA_BOSS_SPAWNER.get());
+						output.accept(TFBlocks.LICH_BOSS_SPAWNER.get());
+						output.accept(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get());
+						output.accept(TFBlocks.HYDRA_BOSS_SPAWNER.get());
+						output.accept(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get());
+						output.accept(TFBlocks.UR_GHAST_BOSS_SPAWNER.get());
+						output.accept(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get());
+						output.accept(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
+						output.accept(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get());
+					}
 					output.accept(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get());
 					output.accept(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
 					output.accept(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get());
