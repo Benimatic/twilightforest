@@ -2,7 +2,6 @@ package twilightforest.util;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -12,7 +11,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFLandmark;
 
 import java.util.Map;
@@ -22,17 +21,17 @@ import java.util.Random;
 public class LegacyLandmarkPlacements {
 
     private static final Map<ResourceLocation, TFLandmark> BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFLandmark>()
-            //.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
-            .put(BiomeKeys.ENCHANTED_FOREST.location(), TFLandmark.QUEST_GROVE)
-            .put(BiomeKeys.LAKE.location(), TFLandmark.QUEST_ISLAND)
-            .put(BiomeKeys.SWAMP.location(), TFLandmark.LABYRINTH)
-            .put(BiomeKeys.FIRE_SWAMP.location(), TFLandmark.HYDRA_LAIR)
-            .put(BiomeKeys.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
-            .put(BiomeKeys.DARK_FOREST_CENTER.location(), TFLandmark.DARK_TOWER)
-            .put(BiomeKeys.SNOWY_FOREST.location(), TFLandmark.YETI_CAVE)
-            .put(BiomeKeys.GLACIER.location(), TFLandmark.ICE_TOWER)
-            .put(BiomeKeys.HIGHLANDS.location(), TFLandmark.TROLL_CAVE)
-            .put(BiomeKeys.FINAL_PLATEAU.location(), TFLandmark.FINAL_CASTLE)
+            //.put(TFBiomes.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
+            .put(TFBiomes.ENCHANTED_FOREST.location(), TFLandmark.QUEST_GROVE)
+            .put(TFBiomes.LAKE.location(), TFLandmark.QUEST_ISLAND)
+            .put(TFBiomes.SWAMP.location(), TFLandmark.LABYRINTH)
+            .put(TFBiomes.FIRE_SWAMP.location(), TFLandmark.HYDRA_LAIR)
+            .put(TFBiomes.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
+            .put(TFBiomes.DARK_FOREST_CENTER.location(), TFLandmark.DARK_TOWER)
+            .put(TFBiomes.SNOWY_FOREST.location(), TFLandmark.YETI_CAVE)
+            .put(TFBiomes.GLACIER.location(), TFLandmark.ICE_TOWER)
+            .put(TFBiomes.HIGHLANDS.location(), TFLandmark.TROLL_CAVE)
+            .put(TFBiomes.FINAL_PLATEAU.location(), TFLandmark.FINAL_CASTLE)
             .build();
 
     /**

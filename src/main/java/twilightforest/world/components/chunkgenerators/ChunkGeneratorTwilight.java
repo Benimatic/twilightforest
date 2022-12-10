@@ -9,7 +9,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.Util;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
@@ -28,10 +27,10 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.Vec2i;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -43,7 +42,6 @@ import twilightforest.world.components.structures.start.LegacyLandmark;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.init.BiomeKeys;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -93,17 +91,17 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		}
 
 		//BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFLandmark>()
-		//		.put(BiomeKeys.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
-		//		.put(BiomeKeys.DARK_FOREST_CENTER.location(), TFLandmark.DARK_TOWER)
-		//		//.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
-		//		.put(BiomeKeys.ENCHANTED_FOREST.location(), TFLandmark.QUEST_GROVE)
-		//		.put(BiomeKeys.FINAL_PLATEAU.location(), TFLandmark.FINAL_CASTLE)
-		//		.put(BiomeKeys.FIRE_SWAMP.location(), TFLandmark.HYDRA_LAIR)
-		//		.put(BiomeKeys.GLACIER.location(), TFLandmark.ICE_TOWER)
-		//		.put(BiomeKeys.HIGHLANDS.location(), TFLandmark.TROLL_CAVE)
-		//		.put(BiomeKeys.SNOWY_FOREST.location(), TFLandmark.YETI_CAVE)
-		//		.put(BiomeKeys.SWAMP.location(), TFLandmark.LABYRINTH)
-		//		.put(BiomeKeys.LAKE.location(), TFLandmark.QUEST_ISLAND)
+		//		.put(TFBiomes.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
+		//		.put(TFBiomes.DARK_FOREST_CENTER.location(), TFLandmark.DARK_TOWER)
+		//		//.put(TFBiomes.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
+		//		.put(TFBiomes.ENCHANTED_FOREST.location(), TFLandmark.QUEST_GROVE)
+		//		.put(TFBiomes.FINAL_PLATEAU.location(), TFLandmark.FINAL_CASTLE)
+		//		.put(TFBiomes.FIRE_SWAMP.location(), TFLandmark.HYDRA_LAIR)
+		//		.put(TFBiomes.GLACIER.location(), TFLandmark.ICE_TOWER)
+		//		.put(TFBiomes.HIGHLANDS.location(), TFLandmark.TROLL_CAVE)
+		//		.put(TFBiomes.SNOWY_FOREST.location(), TFLandmark.YETI_CAVE)
+		//		.put(TFBiomes.SWAMP.location(), TFLandmark.LABYRINTH)
+		//		.put(TFBiomes.LAKE.location(), TFLandmark.QUEST_ISLAND)
 		//		.build();
 
 //FIXME Watch this space, make sure it worked
@@ -370,7 +368,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Optional<ResourceKey<Biome>> biome = primer.getBiome(primer.getCenter().getWorldPosition().offset(x, 0, z)).unwrapKey();
-				if (biome.isEmpty() || !BiomeKeys.GLACIER.location().equals(biome.get().location())) continue;
+				if (biome.isEmpty() || !TFBiomes.GLACIER.location().equals(biome.get().location())) continue;
 
 				// find the (current) top block
 				int gBase = -1;
@@ -486,7 +484,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		// sets the ground level to the maze height, but dont move anything in rivers
 		for (int y = 0; y < mazeHeight; y++) {
 			BlockState b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y));
-			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(BiomeKeys.STREAM)) {
+			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(TFBiomes.STREAM)) {
 				if (b.isAir() || b.getMaterial().isLiquid()) {
 					primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
 				}
@@ -495,7 +493,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		for (int y = mazeHeight; y <= 127; y++) {
 			BlockState b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y));
-			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(BiomeKeys.STREAM)) {
+			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(TFBiomes.STREAM)) {
 				if (!b.isAir() && !b.getMaterial().isLiquid()) {
 					primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.AIR.defaultBlockState(), 3);
 				}
@@ -726,7 +724,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
 						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 256, p.getZ() >> 2, null).value();
-						if (BiomeKeys.DARK_FOREST.location().equals(primer.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(primer.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome))) {
+						if (TFBiomes.DARK_FOREST.location().equals(primer.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome)) || TFBiomes.DARK_FOREST_CENTER.location().equals(primer.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
 						}

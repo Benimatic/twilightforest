@@ -5,7 +5,7 @@ import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.world.components.BiomeGrassColors;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,17 +28,17 @@ public final class FoliageColorHandler {
 	private interface Handler {
 
 		Map<ResourceLocation, Handler> REGISTRY = new HashMap<>() {{
-			put(BiomeKeys.SPOOKY_FOREST.location(), (o, x, z) -> {
+			put(TFBiomes.SPOOKY_FOREST.location(), (o, x, z) -> {
 				double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
 				return BiomeGrassColors.blendColors(0xFF8501, 0xF7FF01, noise > 0.6D ? noise * 0.2D : noise);
 			});
-			put(BiomeKeys.ENCHANTED_FOREST.location(), (o, x, z) -> (o & 0xFFFF00) + BiomeGrassColors.getEnchantedColor((int) x, (int) z));
-			put(BiomeKeys.DARK_FOREST_CENTER.location(), (o, x, z) -> {
+			put(TFBiomes.ENCHANTED_FOREST.location(), (o, x, z) -> (o & 0xFFFF00) + BiomeGrassColors.getEnchantedColor((int) x, (int) z));
+			put(TFBiomes.DARK_FOREST_CENTER.location(), (o, x, z) -> {
 				double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
 				return noise < -0.1D ? 0xF9821E : 0xE94E14;
 			});
-			put(BiomeKeys.DARK_FOREST.location(), (o, x, z) -> ((FoliageColor.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2);
-			put(BiomeKeys.SWAMP.location(), (o, x, z) -> ((FoliageColor.get(0.8F, 0.9F) & 0xFEFEFE) + 0x4E0E4E) / 2);
+			put(TFBiomes.DARK_FOREST.location(), (o, x, z) -> ((FoliageColor.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2);
+			put(TFBiomes.SWAMP.location(), (o, x, z) -> ((FoliageColor.get(0.8F, 0.9F) & 0xFEFEFE) + 0x4E0E4E) / 2);
 		}};
 
 		Handler DEFAULT = (o, x, z) -> o;

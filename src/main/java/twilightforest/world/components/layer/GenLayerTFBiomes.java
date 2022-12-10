@@ -2,13 +2,12 @@ package twilightforest.world.components.layer;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.init.TFBiomes;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer0;
-import twilightforest.init.BiomeKeys;
 
 import java.util.List;
 
@@ -22,18 +21,18 @@ public enum GenLayerTFBiomes implements AreaTransformer0 {
 	private static final int RARE_BIOME_CHANCE = 15;
 
 	private static final List<ResourceKey<Biome>> commonBiomes = ImmutableList.of(
-			BiomeKeys.FOREST,
-			BiomeKeys.DENSE_FOREST,
-			BiomeKeys.MUSHROOM_FOREST,
-			BiomeKeys.OAK_SAVANNAH,
-			BiomeKeys.FIREFLY_FOREST
+			TFBiomes.FOREST,
+			TFBiomes.DENSE_FOREST,
+			TFBiomes.MUSHROOM_FOREST,
+			TFBiomes.OAK_SAVANNAH,
+			TFBiomes.FIREFLY_FOREST
 	);
 	private static final List<ResourceKey<Biome>> rareBiomes = ImmutableList.of(
-			BiomeKeys.LAKE,
-			BiomeKeys.DENSE_MUSHROOM_FOREST,
-			BiomeKeys.ENCHANTED_FOREST,
-			BiomeKeys.CLEARING,
-			BiomeKeys.SPOOKY_FOREST
+			TFBiomes.LAKE,
+			TFBiomes.DENSE_MUSHROOM_FOREST,
+			TFBiomes.ENCHANTED_FOREST,
+			TFBiomes.CLEARING,
+			TFBiomes.SPOOKY_FOREST
 	);
 
 	private HolderLookup.RegistryLookup<Biome> registry;

@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -21,7 +20,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
@@ -498,15 +497,15 @@ public class TFWeatherRenderer {
 		if (Minecraft.getInstance().level == null)
 			return null;
 		ResourceLocation biome = Minecraft.getInstance().level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b);
-		if (BiomeKeys.SNOWY_FOREST.location().equals(biome) || BiomeKeys.GLACIER.location().equals(biome)) {
+		if (TFBiomes.SNOWY_FOREST.location().equals(biome) || TFBiomes.GLACIER.location().equals(biome)) {
 			return RenderType.BLIZZARD;
-		} else if (BiomeKeys.SWAMP.location().equals(biome)) {
+		} else if (TFBiomes.SWAMP.location().equals(biome)) {
 			return RenderType.MOSQUITO;
-		} else if (BiomeKeys.FIRE_SWAMP.location().equals(biome)) {
+		} else if (TFBiomes.FIRE_SWAMP.location().equals(biome)) {
 			return RenderType.ASHES;
-		} else if (BiomeKeys.DARK_FOREST.location().equals(biome) || BiomeKeys.DARK_FOREST_CENTER.location().equals(biome)) {
+		} else if (TFBiomes.DARK_FOREST.location().equals(biome) || TFBiomes.DARK_FOREST_CENTER.location().equals(biome)) {
 			return random.nextInt(2) == 0 ? RenderType.DARK_STREAM : null;
-		} else if (BiomeKeys.HIGHLANDS.location().equals(biome) || BiomeKeys.THORNLANDS.location().equals(biome) || BiomeKeys.FINAL_PLATEAU.location().equals(biome)) {
+		} else if (TFBiomes.HIGHLANDS.location().equals(biome) || TFBiomes.THORNLANDS.location().equals(biome) || TFBiomes.FINAL_PLATEAU.location().equals(biome)) {
 			return RenderType.BIG_RAIN;
 		}
 		return null;

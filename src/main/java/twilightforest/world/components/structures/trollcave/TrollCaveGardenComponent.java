@@ -2,8 +2,6 @@ package twilightforest.world.components.structures.trollcave;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
@@ -16,12 +14,11 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFConfiguredFeatures;
@@ -51,7 +48,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Predicate<Biome> highlands = biome -> biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(BiomeKeys.HIGHLANDS);
+		Predicate<Biome> highlands = biome -> biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.HIGHLANDS);
 		if (this.isBoundingBoxOutsideBiomes(world, highlands)) {
 			return;
 		}

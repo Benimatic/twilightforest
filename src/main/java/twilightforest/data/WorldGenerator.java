@@ -16,7 +16,8 @@ public class WorldGenerator extends DatapackBuiltinEntriesProvider {
 			.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
 			.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
 			.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
-			.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType);
+			.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType)
+			.add(Registries.BIOME, TFBiomes::bootstrap);
 
 	public WorldGenerator(PackOutput output) {
 		super(output, BUILDER);

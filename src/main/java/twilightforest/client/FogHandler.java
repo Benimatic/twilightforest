@@ -4,13 +4,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class FogHandler {
@@ -68,6 +67,6 @@ public class FogHandler {
 
 	private static boolean isSpooky() {
 		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null &&
-				Minecraft.getInstance().level.getBiome(Minecraft.getInstance().player.blockPosition()).is(BiomeKeys.SPOOKY_FOREST);
+				Minecraft.getInstance().level.getBiome(Minecraft.getInstance().player.blockPosition()).is(TFBiomes.SPOOKY_FOREST);
 	}
 }

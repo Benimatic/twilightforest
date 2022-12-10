@@ -3,7 +3,6 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +20,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.network.ChangeBiomePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 
 public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
@@ -39,7 +38,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	 */
 	@Override
 	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
-		ResourceKey<Biome> target = BiomeKeys.ENCHANTED_FOREST;
+		ResourceKey<Biome> target = TFBiomes.ENCHANTED_FOREST;
 		Holder<Biome> biome = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(target);
 		int range = TFConfig.COMMON_CONFIG.MAGIC_TREES.transformationRange.get();
 		for (int i = 0; i < 16; i++) {

@@ -1,11 +1,10 @@
 package twilightforest.world.components.layer;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.init.TFBiomes;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
-import twilightforest.init.BiomeKeys;
 
 public enum GenLayerTFThornBorder implements IThornsTransformer {
 	INSTANCE;
@@ -21,8 +20,8 @@ public enum GenLayerTFThornBorder implements IThornsTransformer {
 
 	@Override
 	public int apply(Context noise, int up, int left, int down, int right, int center, int nw, int sw, int se, int ne) {
-		int highlandsCenter = TFBiomeProvider.getBiomeId(BiomeKeys.FINAL_PLATEAU, registry);
-		int thornlands      = TFBiomeProvider.getBiomeId(BiomeKeys.THORNLANDS, registry);
+		int highlandsCenter = TFBiomeProvider.getBiomeId(TFBiomes.FINAL_PLATEAU, registry);
+		int thornlands      = TFBiomeProvider.getBiomeId(TFBiomes.THORNLANDS, registry);
 
 		if (onBorder(highlandsCenter, center, right, left, up, down)) {
 			return thornlands;
