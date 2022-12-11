@@ -31,6 +31,6 @@ public class CharmOfKeepingRenderer implements ICurioRenderer {
 		CuriosCharmItem charm = (CuriosCharmItem) stack.getItem();
 		ICurioRenderer.followBodyRotations(slotContext.entity(), this.model);
 		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(TwilightForestMod.getModelTexture("curios/" + ForgeRegistries.ITEMS.getKey(charm).getPath() + ".png")));
-		model.renderToBuffer(ms, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(ms, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

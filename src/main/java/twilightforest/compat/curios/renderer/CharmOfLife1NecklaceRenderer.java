@@ -14,21 +14,22 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.compat.curios.model.CharmOfLife2NecklaceModel;
+import twilightforest.compat.curios.model.CharmOfLife1NecklaceModel;
 
-public class CharmOfLife2NecklaceRenderer implements ICurioRenderer {
+public class CharmOfLife1NecklaceRenderer implements ICurioRenderer {
 
-	private final CharmOfLife2NecklaceModel model;
+	private final CharmOfLife1NecklaceModel model;
 
-	public CharmOfLife2NecklaceRenderer() {
-		this.model = new CharmOfLife2NecklaceModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_LIFE_2));
+	public CharmOfLife1NecklaceRenderer() {
+		this.model = new CharmOfLife1NecklaceModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_LIFE_1));
 	}
 
 	@Override
 	public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack item, SlotContext slotContext, PoseStack stack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource buffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-
-		ICurioRenderer.followBodyRotations(slotContext.entity(), model);
-		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(TwilightForestMod.getModelTexture("curios/charm_of_life_2.png")));
-		model.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.setupAnim(slotContext.entity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		this.model.prepareMobModel(slotContext.entity(), limbSwing, limbSwingAmount, partialTicks);
+		ICurioRenderer.followBodyRotations(slotContext.entity(), this.model);
+		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(TwilightForestMod.getModelTexture("curios/charm_of_life_1.png")));
+		this.model.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

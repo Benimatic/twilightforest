@@ -150,7 +150,7 @@ dependencies {
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
 
     // theillusivec4
-    //implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.minecraft_sub_version}-${curios_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.minecraft_sub_version}-${curios_version}")
 
     //curse maven
     //implementation fg.deobf("curse.maven:jade-324717:4054920-api-4054921")
