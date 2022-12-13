@@ -1,9 +1,8 @@
 package twilightforest.data.tags;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.TagKey;
@@ -11,10 +10,10 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -31,7 +30,7 @@ public class CustomTagGenerator {
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
-			//tag(PHANTOM_ARMOR_BANNED_ENCHANTS).add(Enchantments.VANISHING_CURSE, Enchantments.BINDING_CURSE);
+			tag(PHANTOM_ARMOR_BANNED_ENCHANTS).add(ForgeRegistries.ENCHANTMENTS.getResourceKey(Enchantments.VANISHING_CURSE).get(), ForgeRegistries.ENCHANTMENTS.getResourceKey(Enchantments.BINDING_CURSE).get());
 		}
 
 		@Override
@@ -58,15 +57,15 @@ public class CustomTagGenerator {
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
-//			tag(NAGA_BANNER_PATTERN).add(TFBannerPatterns.NAGA.get());
-//			tag(LICH_BANNER_PATTERN).add(TFBannerPatterns.LICH.get());
-//			tag(MINOSHROOM_BANNER_PATTERN).add(TFBannerPatterns.MINOSHROOM.get());
-//			tag(HYDRA_BANNER_PATTERN).add(TFBannerPatterns.HYDRA.get());
-//			tag(KNIGHT_PHANTOM_BANNER_PATTERN).add(TFBannerPatterns.KNIGHT_PHANTOM.get());
-//			tag(UR_GHAST_BANNER_PATTERN).add(TFBannerPatterns.UR_GHAST.get());
-//			tag(ALPHA_YETI_BANNER_PATTERN).add(TFBannerPatterns.ALPHA_YETI.get());
-//			tag(SNOW_QUEEN_BANNER_PATTERN).add(TFBannerPatterns.SNOW_QUEEN.get());
-//			tag(QUEST_RAM_BANNER_PATTERN).add(TFBannerPatterns.QUEST_RAM.get());
+			tag(NAGA_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.NAGA.get()).get());
+			tag(LICH_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.LICH.get()).get());
+			tag(MINOSHROOM_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.MINOSHROOM.get()).get());
+			tag(HYDRA_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.HYDRA.get()).get());
+			tag(KNIGHT_PHANTOM_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.KNIGHT_PHANTOM.get()).get());
+			tag(UR_GHAST_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.UR_GHAST.get()).get());
+			tag(ALPHA_YETI_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.ALPHA_YETI.get()).get());
+			tag(SNOW_QUEEN_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.SNOW_QUEEN.get()).get());
+			tag(QUEST_RAM_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.QUEST_RAM.get()).get());
 		}
 
 		private static TagKey<BannerPattern> create(String name) {
