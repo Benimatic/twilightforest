@@ -3,28 +3,33 @@ package twilightforest.client;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import org.joml.Vector3f;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModelBase;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
@@ -36,11 +41,14 @@ import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFChestBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.TwilightChestEntity;
+import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
+import twilightforest.item.KnightmetalShieldItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,9 +65,15 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeInstance(map, TFBlocks.MINING_CHEST);
 		makeInstance(map, TFBlocks.SORTING_CHEST);
 	});
+	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 
 	public ISTER() {
 		super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+	}
+
+	@Override
+	public void onResourceManagerReload(ResourceManager manager) {
+		this.shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 	}
 
 	@Override
@@ -141,12 +155,18 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					}
 				}
 			}
+		} else if (item instanceof KnightmetalShieldItem) {
+			ms.pushPose();
+			ms.scale(1.0F, -1.0F, -1.0F);
+			Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "model/knightmetal_shield"));
+			VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
+			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			ms.popPose();
 		}
 	}
 
 	public static void makeInstance(Map<Block, TwilightChestEntity> map, RegistryObject<? extends ChestBlock> registryObject) {
 		ChestBlock block = registryObject.get();
-
 		map.put(block, new TwilightChestEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 }
