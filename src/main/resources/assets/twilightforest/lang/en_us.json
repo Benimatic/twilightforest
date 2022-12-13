@@ -1,6 +1,9 @@
 {
-  "itemGroup.twilightforest": "Twilight Forest",
+  "itemGroup.twilightforest.blocks": "Twilight Forest: Blocks",
+  "itemGroup.twilightforest.items": "Twilight Forest: Items",
+  "itemGroup.twilightforest.equipment": "Twilight Forest: Equipment",
 
+  "advancement.twilightforest.root": "Twilight Forest",
   "advancement.twilightforest.root.desc": "Enter the mysterious magical woodlands: the Twilight Forest.",
   "advancement.twilightforest.hedge": "Bug Stomper",
   "advancement.twilightforest.hedge.desc": "Defeat a spider in a Hedge Maze.",

@@ -47,7 +47,7 @@ public class TFAdvancementGenerator implements ForgeAdvancementProvider.Advancem
 	public void generate(HolderLookup.Provider registries, Consumer<Advancement> consumer, ExistingFileHelper helper) {
 		Advancement root = Advancement.Builder.advancement().display(
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
-				Component.translatable("itemGroup.twilightforest"),
+				Component.translatable("advancement.twilightforest.root"),
 				Component.translatable("advancement.twilightforest.root.desc"),
 				new ResourceLocation(TwilightForestMod.ID, "textures/block/mazestone_large_brick.png"),
 				FrameType.TASK,

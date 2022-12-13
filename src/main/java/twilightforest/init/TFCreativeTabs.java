@@ -4,10 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -26,7 +23,7 @@ public class TFCreativeTabs {
 
 	@SubscribeEvent
 	public static void registerTFBlocksTab(CreativeModeTabEvent.Register event) {
-		event.registerCreativeModeTab(TwilightForestMod.prefix("blocks"), builder -> builder
+		CreativeModeTab BLOCKS = event.registerCreativeModeTab(TwilightForestMod.prefix("blocks"), builder -> builder
 				.title(Component.translatable("itemGroup.twilightforest.blocks"))
 				.icon(() -> new ItemStack(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get()))
 				.displayItems((featureFlag, output, operator) -> {
@@ -164,7 +161,7 @@ public class TFCreativeTabs {
 					output.accept(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
 					output.accept(TFBlocks.STRIPPED_MINING_LOG.get());
 					output.accept(TFBlocks.STRIPPED_SORTING_LOG.get());
-					output.accept(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get());
+					output.accept(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get());
 					output.accept(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
 					output.accept(TFBlocks.STRIPPED_CANOPY_WOOD.get());
 					output.accept(TFBlocks.STRIPPED_MANGROVE_WOOD.get());
@@ -273,8 +270,8 @@ public class TFCreativeTabs {
 					output.accept(TFBlocks.CRACKED_ETCHED_NAGASTONE.get());
 					output.accept(TFBlocks.MOSSY_ETCHED_NAGASTONE.get());
 					output.accept(TFBlocks.NAGASTONE_PILLAR.get());
-					output.accept(TFBlocks.CRACKED_ETCHED_NAGASTONE.get());
-					output.accept(TFBlocks.MOSSY_ETCHED_NAGASTONE.get());
+					output.accept(TFBlocks.CRACKED_NAGASTONE_PILLAR.get());
+					output.accept(TFBlocks.MOSSY_NAGASTONE_PILLAR.get());
 					output.accept(TFBlocks.NAGASTONE_STAIRS_LEFT.get());
 					output.accept(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get());
 					output.accept(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get());
@@ -378,7 +375,7 @@ public class TFCreativeTabs {
 					output.accept(TFBlocks.IRON_LADDER.get());
 				}));
 
-		event.registerCreativeModeTab(TwilightForestMod.prefix("items"), builder -> builder
+		CreativeModeTab ITEMS = event.registerCreativeModeTab(TwilightForestMod.prefix("items"), List.of(), List.of(BLOCKS), builder -> builder
 				.title(Component.translatable("itemGroup.twilightforest.items"))
 				.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()))
 				.displayItems((featureFlag, output, operator) -> {
@@ -448,7 +445,7 @@ public class TFCreativeTabs {
 					createSpawnEggsAlphabetical(output);
 				}));
 
-		event.registerCreativeModeTab(TwilightForestMod.prefix("equipment"), builder -> builder
+		event.registerCreativeModeTab(TwilightForestMod.prefix("equipment"), List.of(), List.of(ITEMS), builder -> builder
 				.title(Component.translatable("itemGroup.twilightforest.equipment"))
 				.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()))
 				.displayItems((featureFlag, output, operator) -> {
@@ -482,7 +479,7 @@ public class TFCreativeTabs {
 					output.accept(TFItems.FIERY_HELMET.get());
 					output.accept(TFItems.FIERY_CHESTPLATE.get());
 					output.accept(TFItems.FIERY_LEGGINGS.get());
-					output.accept(TFItems.FIERY_LEGGINGS.get());
+					output.accept(TFItems.FIERY_BOOTS.get());
 					output.accept(TFItems.FIERY_SWORD.get());
 					output.accept(TFItems.FIERY_PICKAXE.get());
 					generateGearWithEnchants(output, TFItems.MAZEBREAKER_PICKAXE.get(), new EnchantmentInstance(Enchantments.BLOCK_EFFICIENCY, 4), new EnchantmentInstance(Enchantments.UNBREAKING, 3), new EnchantmentInstance(Enchantments.BLOCK_FORTUNE, 2));
