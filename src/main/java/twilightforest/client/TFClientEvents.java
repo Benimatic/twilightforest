@@ -84,20 +84,6 @@ public class TFClientEvents {
 			models.forEach(entry -> event.getModels().put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 		}
 
-		//TODO move to atlas jsons
-//		@SubscribeEvent
-//		public static void texStitch(TextureStitchEvent.Pre evt) {
-//			TextureAtlas map = evt.getAtlas();
-//
-//			if (Sheets.CHEST_SHEET.equals(map.location()))
-//				TwilightChestRenderer.MATERIALS.values().stream()
-//						.flatMap(e -> e.values().stream())
-//						.map(Material::texture)
-//						.forEach(evt::addSprite);
-//
-//			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
-//		}
-
 		@SubscribeEvent
 		public static void registerModels(ModelEvent.RegisterAdditional event) {
 			event.register(ShieldLayer.LOC);
