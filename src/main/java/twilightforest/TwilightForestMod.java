@@ -41,6 +41,7 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.compat.top.TopCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
@@ -159,7 +160,7 @@ public class TwilightForestMod {
 			CuriosCompat.handleCuriosIMCs();
 		}
 		if (ModList.get().isLoaded("theoneprobe")) {
-			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 
