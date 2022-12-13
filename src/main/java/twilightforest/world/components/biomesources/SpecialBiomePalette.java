@@ -16,6 +16,7 @@ import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import twilightforest.util.Codecs;
 
 import org.jetbrains.annotations.Nullable;
@@ -57,7 +58,7 @@ public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Hol
 
     private static SpecialBiomePalette create() {
         // FIXME populate correct biomes
-        return create(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY).registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.THE_VOID), new Climate.ParameterList<>(Collections.emptyList()), HolderSet.direct(), Collections.emptyList());
+        return create(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.THE_VOID), new Climate.ParameterList<>(Collections.emptyList()), HolderSet.direct(), Collections.emptyList());
     }
 
     private static SpecialBiomePalette create(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> common, HolderSet<Biome> rare, List<Float2ObjectSortedMap<Holder<Biome>>> clusters) {

@@ -42,6 +42,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
 		generator.addProvider(event.includeServer(), new WorldGenerator(output));
+		generator.addProvider(event.includeServer(), WorldGenerator.createLevelStem(output, helper));
 
 		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
