@@ -2,6 +2,7 @@ package twilightforest.data;
 
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
@@ -12,8 +13,8 @@ import twilightforest.loot.modifiers.FieryToolSmeltingModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 
 public class LootModifierGenerator extends GlobalLootModifierProvider {
-	public LootModifierGenerator(DataGenerator gen) {
-		super(gen, TwilightForestMod.ID);
+	public LootModifierGenerator(PackOutput output) {
+		super(output, TwilightForestMod.ID);
 	}
 
 	@Override

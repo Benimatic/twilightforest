@@ -27,6 +27,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 	@Override
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+		StonecuttingGenerator.buildRecipes(consumer);
+
 		// The Recipe Builder currently doesn't support enchantment-resulting recipes, those must be manually created.
 		blockCompressionRecipes(consumer);
 		equipmentRecipes(consumer);

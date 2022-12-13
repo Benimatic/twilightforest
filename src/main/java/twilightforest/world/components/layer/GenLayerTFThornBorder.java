@@ -1,5 +1,6 @@
 package twilightforest.world.components.layer;
 
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
@@ -9,11 +10,11 @@ import twilightforest.world.components.layer.vanillalegacy.context.Context;
 public enum GenLayerTFThornBorder implements IThornsTransformer {
 	INSTANCE;
 
-	private HolderLookup.RegistryLookup<Biome> registry;
+	private HolderGetter<Biome> registry;
 
 	GenLayerTFThornBorder() { }
 
-	public GenLayerTFThornBorder setup(HolderLookup.RegistryLookup<Biome> registry) {
+	public GenLayerTFThornBorder setup(HolderGetter<Biome> registry) {
 		this.registry = registry;
 		return this;
 	}

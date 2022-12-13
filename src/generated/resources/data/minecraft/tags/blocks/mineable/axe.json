@@ -1,8 +1,5 @@
 {
   "values": [
-    "#twilightforest:banisters",
-    "#twilightforest:hollow_logs",
-    "#twilightforest:towerwood",
     "twilightforest:hedge",
     "twilightforest:root",
     "twilightforest:liveroot_block",
@@ -35,6 +32,9 @@
     "twilightforest:time_chest",
     "twilightforest:transformation_chest",
     "twilightforest:mining_chest",
-    "twilightforest:sorting_chest"
+    "twilightforest:sorting_chest",
+    "#twilightforest:banisters",
+    "#twilightforest:hollow_logs",
+    "#twilightforest:towerwood"
   ]
 }

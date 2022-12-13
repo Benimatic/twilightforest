@@ -1,9 +1,5 @@
 {
   "values": [
-    "#minecraft:flowers",
-    "#minecraft:leaves",
-    "#minecraft:saplings",
-    "#minecraft:crops",
     "minecraft:bamboo",
     "minecraft:mangrove_propagule",
     "minecraft:mangrove_leaves",
@@ -55,6 +51,10 @@
     "twilightforest:unripe_trollber",
     "twilightforest:trollber",
     "twilightforest:steeleaf_block",
-    "twilightforest:hardened_dark_leaves"
+    "twilightforest:hardened_dark_leaves",
+    "#minecraft:flowers",
+    "#minecraft:leaves",
+    "#minecraft:saplings",
+    "#minecraft:crops"
   ]
 }

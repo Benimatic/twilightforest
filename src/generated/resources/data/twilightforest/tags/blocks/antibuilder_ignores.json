@@ -1,10 +1,5 @@
 {
   "values": [
-    "#twilightforest:common_protections",
-    {
-      "id": "gravestone:gravestone",
-      "required": false
-    },
     "minecraft:redstone_lamp",
     "minecraft:tnt",
     "minecraft:water",
@@ -16,6 +11,11 @@
     "twilightforest:reappearing_block",
     "twilightforest:ghast_trap",
     "twilightforest:fake_diamond",
-    "twilightforest:fake_gold"
+    "twilightforest:fake_gold",
+    "#twilightforest:common_protections",
+    {
+      "id": "gravestone:gravestone",
+      "required": false
+    }
   ]
 }

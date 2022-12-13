@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,8 +34,8 @@ import static twilightforest.TwilightForestMod.prefix;
 //make better helper methods and move them to BlockModelBuilders
 //finish datagenning blocks that arent done yet
 public class BlockstateGenerator extends BlockModelBuilders {
-	public BlockstateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
-		super(gen, exFileHelper);
+	public BlockstateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
+		super(output, exFileHelper);
 	}
 
 	@Override

@@ -75,7 +75,7 @@ public class TFClientEvents {
 		}
 
 		@SubscribeEvent
-		public static void modelBake(ModelEvent.BakingCompleted event) {
+		public static void modelBake(ModelEvent.ModifyBakingResult event) {
 			TFItems.addItemModelProperties();
 
 			List<Map.Entry<ResourceLocation, BakedModel>> models =  event.getModels().entrySet().stream()

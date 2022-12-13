@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -110,7 +111,6 @@ public class TwilightForestMod {
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(modbus);
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFRecipes.RECIPE_TYPES.register(modbus);
-		//TFPotions.POTIONS.register(modbus);
 		TFSounds.SOUNDS.register(modbus);
 		TFEntities.SPAWN_EGGS.register(modbus);
 		TFStats.STATS.register(modbus);
@@ -131,7 +131,7 @@ public class TwilightForestMod {
 			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 
-		new BiomeGrassColors();
+		BiomeGrassColors.init();
 	}
 
 	@SubscribeEvent
@@ -147,10 +147,10 @@ public class TwilightForestMod {
 	@SubscribeEvent
 	public static void registerSerializers(RegisterEvent evt) {
 		if (Objects.equals(evt.getForgeRegistry(), ForgeRegistries.RECIPE_SERIALIZERS)) {
-//			Registry.register(Registries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
-//			Registry.register(Registries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
-//
-//			Registry.register(Registries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
+			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
+
+			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
 		}
 	}
 

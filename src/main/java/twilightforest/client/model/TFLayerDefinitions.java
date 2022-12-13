@@ -16,6 +16,9 @@ import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
+import twilightforest.compat.curios.model.CharmOfKeepingModel;
+import twilightforest.compat.curios.model.CharmOfLife1NecklaceModel;
+import twilightforest.compat.curios.model.CharmOfLife2NecklaceModel;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFLayerDefinitions {
@@ -157,9 +160,9 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.RED_THREAD, RedThreadModel::create);
 
 		if (ModList.get().isLoaded("curios")) {
-//			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
-//			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
-//			event.registerLayerDefinition(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);
+			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
+			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
+			event.registerLayerDefinition(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);
 		}
 	}
 }

@@ -18,7 +18,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFCreativeTabs {
@@ -544,8 +545,8 @@ public class TFCreativeTabs {
 	}
 
 	private static void createSpawnEggsAlphabetical(CreativeModeTab.Output output) {
-		List<RegistryObject<Item>> eggs = TFEntities.SPAWN_EGGS.getEntries().stream().sorted().toList();
-		eggs.forEach(item -> output.accept(item.get()));
+		Collection<Item> eggs = TFEntities.SPAWN_EGGS.getEntries().stream().map(RegistryObject::get).collect(Collectors.toList());
+		eggs.forEach(output::accept);
 	}
 
 	private static void makeSkullCandle(CreativeModeTab.Output output, ItemLike item) {

@@ -1,5 +1,6 @@
 package twilightforest.world.components.layer;
 
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
@@ -11,11 +12,11 @@ public enum GenLayerTFStream implements CastleTransformer {
 
 	INSTANCE;
 
-	private HolderLookup.RegistryLookup<Biome> registry;
+	private HolderGetter<Biome> registry;
 
 	GenLayerTFStream() { }
 
-	public GenLayerTFStream setup(HolderLookup.RegistryLookup<Biome> registry) {
+	public GenLayerTFStream setup(HolderGetter<Biome> registry) {
 		this.registry = registry;
 		return this;
 	}

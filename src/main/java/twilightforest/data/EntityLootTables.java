@@ -2,6 +2,7 @@ package twilightforest.data;
 
 import net.minecraft.Util;
 import net.minecraft.data.loot.EntityLootSubProvider;
+import net.minecraft.data.loot.packs.VanillaEntityLoot;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.EntityType;
@@ -549,9 +550,10 @@ public class EntityLootTables extends EntityLootSubProvider {
 										}))))));
 
 		//Block entities are entities too, alright?
-		add(TFEntities.MOONWORM_SHOT.get(), TFLootTables.CICADA_SQUISH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.GRAY_DYE))));
-		add(TFEntities.MOONWORM_SHOT.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.GLOWSTONE_DUST))));
-		add(TFEntities.MOONWORM_SHOT.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.LIME_DYE))));
+		//TODO these require a parent entity, I think we need to move these elsewhere. This seems very hacky
+		add(TFEntities.HARBINGER_CUBE.get(), TFLootTables.CICADA_SQUISH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.GRAY_DYE))));
+		add(TFEntities.HARBINGER_CUBE.get(), TFLootTables.FIREFLY_SQUISH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.GLOWSTONE_DUST))));
+		add(TFEntities.HARBINGER_CUBE.get(), TFLootTables.MOONWORM_SQUISH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.LIME_DYE))));
 	}
 
 	public LootTable.Builder emptyLootTable() {

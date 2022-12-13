@@ -1,7 +1,5 @@
 {
   "values": [
-    "#twilightforest:mazestone",
-    "#twilightforest:castle_blocks",
     "twilightforest:nagastone",
     "twilightforest:nagastone_head",
     "twilightforest:stronghold_shield",
@@ -44,6 +42,8 @@
     "twilightforest:twisted_stone",
     "twilightforest:twisted_stone_pillar",
     "twilightforest:keepsake_casket",
-    "twilightforest:bold_stone_pillar"
+    "twilightforest:bold_stone_pillar",
+    "#twilightforest:mazestone",
+    "#twilightforest:castle_blocks"
   ]
 }

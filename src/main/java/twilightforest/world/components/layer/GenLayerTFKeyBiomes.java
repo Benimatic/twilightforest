@@ -1,5 +1,6 @@
 package twilightforest.world.components.layer;
 
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
@@ -18,13 +19,13 @@ import java.util.Random;
 public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	INSTANCE;
 
-	private HolderLookup.RegistryLookup<Biome> registry;
+	private HolderGetter<Biome> registry;
 	private long seed;
 	private static final Random RANDOM = new Random();
 
 	GenLayerTFKeyBiomes() { }
 
-	public GenLayerTFKeyBiomes setup(HolderLookup.RegistryLookup<Biome> registry, long seed) {
+	public GenLayerTFKeyBiomes setup(HolderGetter<Biome> registry, long seed) {
 		this.registry = registry;
 		this.seed = seed;
 		return this;

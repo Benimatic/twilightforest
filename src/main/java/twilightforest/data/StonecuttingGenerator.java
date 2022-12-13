@@ -20,13 +20,9 @@ import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;
 
-public class StonecuttingGenerator extends RecipeProvider {
-	public StonecuttingGenerator(PackOutput output) {
-		super(output);
-	}
+public class StonecuttingGenerator {
 
-	@Override
-	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+	protected static void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		consumer.accept(stonecutting(TFBlocks.CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
 		consumer.accept(stonecutting(TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
 		consumer.accept(stonecutting(TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));

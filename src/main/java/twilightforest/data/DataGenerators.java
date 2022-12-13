@@ -26,22 +26,22 @@ public class DataGenerators {
 		CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
 		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		generator.addProvider(event.includeServer(), new AdvancementGenerator(output, provider, helper));
-		generator.addProvider(event.includeClient(), new BlockstateGenerator(generator, helper));
-		generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, helper));
+		generator.addProvider(event.includeServer(), new AdvancementProvider(output, provider, helper));
+		generator.addProvider(event.includeClient(), new BlockstateGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new BiomeTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
-		BlockTagGenerator blocktags = new BlockTagGenerator(generator.getPackOutput(), provider, helper);
+		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
 		generator.addProvider(event.includeServer(), blocktags);
 		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags, helper));
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new LootGenerator(output));
-		generator.addProvider(event.includeServer(), new StonecuttingGenerator(output));
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
-		generator.addProvider(event.includeServer(), new LootModifierGenerator(generator));
+		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
 		generator.addProvider(event.includeServer(), new WorldGenerator(output));
+		//generator.addProvider(event.includeServer(), WorldGenerator.createStem(output, helper));
 
 		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));

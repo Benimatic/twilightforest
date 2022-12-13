@@ -1,21 +1,40 @@
 package twilightforest.world.registration.biomes;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public final class BiomeMaker extends BiomeHelper {
 
-	public static List<TerrainColumn> makeBiomeList(HolderLookup.RegistryLookup<Biome> biomeRegistry, Holder<Biome> undergroundBiome) {
+	public static final Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> BIOME_FEATURES_SETS = new ImmutableMap.Builder<ResourceKey<Biome>, ImmutableSet<TFLandmark>>()
+			//.put(TFBiomes.DENSE_MUSHROOM_FOREST, Set.of(MUSHROOM_TOWER))
+			.put(TFBiomes.ENCHANTED_FOREST, ImmutableSet.of(TFLandmark.QUEST_GROVE))
+			//.put(TFBiomes.LAKE, ImmutableSet.of(TFLandmark.QUEST_ISLAND))
+			.put(TFBiomes.SWAMP, ImmutableSet.of(TFLandmark.LABYRINTH))
+			.put(TFBiomes.FIRE_SWAMP, ImmutableSet.of(TFLandmark.HYDRA_LAIR))
+			.put(TFBiomes.DARK_FOREST, ImmutableSet.of(TFLandmark.KNIGHT_STRONGHOLD))
+			.put(TFBiomes.DARK_FOREST_CENTER, ImmutableSet.of(TFLandmark.DARK_TOWER))
+			.put(TFBiomes.SNOWY_FOREST, ImmutableSet.of(TFLandmark.YETI_CAVE))
+			.put(TFBiomes.GLACIER, ImmutableSet.of(TFLandmark.ICE_TOWER))
+			.put(TFBiomes.HIGHLANDS, ImmutableSet.of(TFLandmark.TROLL_CAVE))
+			.put(TFBiomes.FINAL_PLATEAU, ImmutableSet.of(TFLandmark.FINAL_CASTLE))
+			.build();
+
+	public static List<TerrainColumn> makeBiomeList(HolderGetter<Biome> biomeRegistry, Holder<Biome> undergroundBiome) {
 		return List.of(
 				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, TFBiomes.FOREST, undergroundBiome),
 				biomeColumnWithUnderground(0.1F, 0.2F, biomeRegistry, TFBiomes.DENSE_FOREST, undergroundBiome),
@@ -46,8 +65,8 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 	}
 
-	private static TerrainColumn biomeColumnWithUnderground(float noiseDepth, float noiseScale, HolderLookup.RegistryLookup<Biome> biomeRegistry, ResourceKey<Biome> key, Holder<Biome> undergroundBiome) {
-		Holder.Reference<Biome> biomeHolder = Holder.Reference.createStandAlone(biomeRegistry, key);
+	private static TerrainColumn biomeColumnWithUnderground(float noiseDepth, float noiseScale, HolderGetter<Biome> biomeRegistry, ResourceKey<Biome> key, Holder<Biome> undergroundBiome) {
+		Holder.Reference<Biome> biomeHolder = biomeRegistry.getOrThrow(key);
 
 		biomeHolder.bindKey(key);
 
@@ -58,8 +77,8 @@ public final class BiomeMaker extends BiomeHelper {
 		});
 	}
 
-	private static TerrainColumn biomeColumnToBedrock(float noiseDepth, float noiseScale, HolderLookup.RegistryLookup<Biome> biomeRegistry, ResourceKey<Biome> key) {
-		Holder.Reference<Biome> biomeHolder = Holder.Reference.createStandAlone(biomeRegistry, key);
+	private static TerrainColumn biomeColumnToBedrock(float noiseDepth, float noiseScale, HolderGetter<Biome> biomeRegistry, ResourceKey<Biome> key) {
+		Holder.Reference<Biome> biomeHolder = biomeRegistry.getOrThrow(key);
 
 		biomeHolder.bindKey(key);
 

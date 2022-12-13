@@ -10,6 +10,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -69,7 +70,7 @@ public abstract class CrumbleHornProvider implements DataProvider {
 	}
 
 	private boolean missing(String name) {
-		return !this.helper.exists(new ResourceLocation(modId, name), new ExistingFileHelper.ResourceType(net.minecraft.server.packs.PackType.SERVER_DATA, ".json", "crumble_horn/"));
+		return !this.helper.exists(new ResourceLocation(modId, name), new ExistingFileHelper.ResourceType(PackType.SERVER_DATA, ".json", "crumble_horn"));
 	}
 
 	private Path createPath(ResourceLocation name) {

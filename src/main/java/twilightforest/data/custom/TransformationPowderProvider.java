@@ -64,7 +64,7 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	}
 
 	private boolean missing(String name) {
-		return this.helper == null || !this.helper.exists(new ResourceLocation(this.modId, name), new ExistingFileHelper.ResourceType(net.minecraft.server.packs.PackType.SERVER_DATA, ".json", "crumble_horn/"));
+		return this.helper == null || !this.helper.exists(new ResourceLocation(this.modId, name), new ExistingFileHelper.ResourceType(net.minecraft.server.packs.PackType.SERVER_DATA, ".json", "transformation_powder"));
 	}
 
 	private Path createPath(ResourceLocation name) {

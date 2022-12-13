@@ -2,6 +2,7 @@ package twilightforest.data.helpers;
 
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.*;
@@ -23,8 +24,8 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	protected static final ResourceLocation CUTOUT_MIPPED = new ResourceLocation("cutout_mipped");
 	protected static final ResourceLocation TRANSLUCENT = new ResourceLocation("translucent");
 	
-	public BlockModelHelpers(DataGenerator gen, ExistingFileHelper exFileHelper) {
-		super(gen, TwilightForestMod.ID, exFileHelper);
+	public BlockModelHelpers(PackOutput output, ExistingFileHelper exFileHelper) {
+		super(output, TwilightForestMod.ID, exFileHelper);
 	}
 
 	protected void builtinEntity(Block b, String particle) {

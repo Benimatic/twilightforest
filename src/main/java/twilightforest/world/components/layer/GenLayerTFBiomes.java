@@ -1,7 +1,7 @@
 package twilightforest.world.components.layer;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
@@ -35,9 +35,9 @@ public enum GenLayerTFBiomes implements AreaTransformer0 {
 			TFBiomes.SPOOKY_FOREST
 	);
 
-	private HolderLookup.RegistryLookup<Biome> registry;
+	private HolderGetter<Biome> registry;
 
-	public GenLayerTFBiomes setup(HolderLookup.RegistryLookup<Biome> registry) {
+	public GenLayerTFBiomes setup(HolderGetter<Biome> registry) {
 		this.registry = registry;
 		return this;
 	}

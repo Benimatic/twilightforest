@@ -85,7 +85,7 @@ public class TFLootTables {
 	public static final ResourceLocation FIREFLY_SQUISH_DROPS = register("blocks/firefly_squish");
 	public static final ResourceLocation MOONWORM_SQUISH_DROPS = register("blocks/moonworm_squish");
 
-	public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
+	//public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 
 	public final ResourceLocation lootTable;
 

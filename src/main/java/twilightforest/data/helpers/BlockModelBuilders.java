@@ -2,6 +2,7 @@ package twilightforest.data.helpers;
 
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
@@ -16,8 +17,8 @@ import static twilightforest.TwilightForestMod.prefix;
 
 public abstract class BlockModelBuilders extends BlockModelHelpers {
 
-	public BlockModelBuilders(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, helper);
+	public BlockModelBuilders(PackOutput output, ExistingFileHelper helper) {
+		super(output, helper);
 	}
 
 	protected BlockModelBuilder makeTintedBlockAll(String name, ResourceLocation renderType) {

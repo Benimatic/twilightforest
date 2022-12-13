@@ -15,7 +15,6 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
-apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
 version = (hasProperty("CIRevision") ? CIRevision : mod_version)
 group = group_name
@@ -27,7 +26,7 @@ compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecat
 minecraft {
     //mappings channel: "official", version: "1.19.2"
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    mappings channel: 'parchment', version: '1.18.2-2022.07.03-1.19.3'
+    mappings channel: 'parchment', version: '1.19.2-2022.11.27-1.19.3'
 
     //version = minecraft_version + "-" + forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.

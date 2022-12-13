@@ -63,7 +63,7 @@ public abstract class UncraftingRecipeProvider implements DataProvider {
 	}
 
 	private boolean missing(String name) {
-		return !this.helper.exists(new ResourceLocation(this.modId, name), new ExistingFileHelper.ResourceType(net.minecraft.server.packs.PackType.SERVER_DATA, ".json", "crumble_horn/"));
+		return !this.helper.exists(new ResourceLocation(this.modId, name), new ExistingFileHelper.ResourceType(net.minecraft.server.packs.PackType.SERVER_DATA, ".json", "uncrafting"));
 	}
 
 	private Path createPath(ResourceLocation name) {
