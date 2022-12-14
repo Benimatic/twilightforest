@@ -33,6 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.network.PacketDistributor;
+import org.joml.Matrix4f;
 import twilightforest.init.TFEntities;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
