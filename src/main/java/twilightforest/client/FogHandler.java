@@ -1,9 +1,11 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -11,16 +13,17 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 
+import javax.annotation.Nullable;
+
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class FogHandler {
 
 	private static final float[] spoopColors = new float[3];
 	private static float spoopColor = 0F;
-	private static float spoopFog = 1F;
 
 	@SubscribeEvent
 	public static void fogColors(ViewportEvent.ComputeFogColor event) {
-		boolean flag = isSpooky();
+		boolean flag = isSpooky(Minecraft.getInstance().level, Minecraft.getInstance().player);
 		if (flag || spoopColor > 0F) {
 			final float[] realColors = {event.getRed(), event.getGreen(), event.getBlue()};
 			final float[] lerpColors = {130F / 255F, 115F / 255F, 145F / 255F};
@@ -42,31 +45,49 @@ public class FogHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void fog(ViewportEvent.RenderFog event) {
-		boolean flag = isSpooky();
-		if (flag || spoopFog < 1F) {
-			float f = 48F;
-			f = f >= event.getFarPlaneDistance() ? event.getFarPlaneDistance() : Mth.clampedLerp(f, event.getFarPlaneDistance(), spoopFog);
-			float shift = (float) (0.001F * event.getPartialTick());
-			if (flag)
-				spoopFog -= shift;
-			else
-				spoopFog += shift;
-			spoopFog = Mth.clamp(spoopFog, 0F, 1F);
+	private static float TERRAIN_NEAR = Float.NaN;
+	private static float TERRAIN_FAR = Float.NaN;
 
-			if (event.getMode() == FogRenderer.FogMode.FOG_SKY) {
-				RenderSystem.setShaderFogStart(0.0F);
-				RenderSystem.setShaderFogEnd(f);
+	private static float SKY_NEAR = Float.NaN;
+	private static float SKY_FAR = Float.NaN;
+
+	@SubscribeEvent
+	public static void renderFog(ViewportEvent.RenderFog event) {
+		if (Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo renderInfo) {
+			event.setCanceled(true);
+			boolean spooky = isSpooky(clientLevel, player);
+
+			if (event.getMode().equals(FogRenderer.FogMode.FOG_TERRAIN)) {
+				float far = spooky ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();
+				float near = spooky ? far * 0.75F : event.getNearPlaneDistance();
+
+				if (Float.isNaN(TERRAIN_FAR) && clientLevel.isLoaded(player.blockPosition())) TERRAIN_FAR = far;
+				else TERRAIN_FAR = Mth.lerp(0.003F, TERRAIN_FAR, far);
+				if (Float.isNaN(TERRAIN_NEAR) && clientLevel.isLoaded(player.blockPosition())) TERRAIN_NEAR = near;
+				else TERRAIN_NEAR = Mth.lerp(0.003F * (TERRAIN_NEAR < near ? 0.5F : 2.0F), TERRAIN_NEAR, near);
+
+				if (event.getType().equals(FogType.NONE)) {
+					event.setNearPlaneDistance(TERRAIN_NEAR);
+					event.setFarPlaneDistance(TERRAIN_FAR);
+				}
 			} else {
-				RenderSystem.setShaderFogStart(f * 0.75F);
-				RenderSystem.setShaderFogEnd(f);
+				float far = spooky ? event.getNearPlaneDistance() * 0.5F : event.getNearPlaneDistance();
+				float near = spooky ? 0.0F : event.getNearPlaneDistance();
+
+				if (Float.isNaN(SKY_FAR) && clientLevel.isLoaded(player.blockPosition())) SKY_FAR = far;
+				else SKY_FAR = Mth.lerp(0.003F, SKY_FAR, far);
+				if (Float.isNaN(SKY_NEAR) && clientLevel.isLoaded(player.blockPosition())) SKY_NEAR = near;
+				else SKY_NEAR = Mth.lerp(0.003F * (SKY_FAR < near ? 0.5F : 2.0F), SKY_NEAR, near);
+
+				if (event.getType().equals(FogType.NONE)) {
+					event.setNearPlaneDistance(SKY_NEAR);
+					event.setFarPlaneDistance(SKY_FAR);
+				}
 			}
 		}
 	}
 
-	private static boolean isSpooky() {
-		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null &&
-				Minecraft.getInstance().level.getBiome(Minecraft.getInstance().player.blockPosition()).is(TFBiomes.SPOOKY_FOREST);
+	private static boolean isSpooky(@Nullable ClientLevel level, @Nullable LocalPlayer player) {
+		return level != null && player != null && level.getBiome(player.blockPosition()).is(TFBiomes.SPOOKY_FOREST);
 	}
 }
