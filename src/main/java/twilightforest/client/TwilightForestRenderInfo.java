@@ -45,7 +45,7 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
             if (biome.isPresent()) {
                 boolean spooky = biome.get() == TFBiomes.SPOOKY_FOREST;
 
-                if (player.position().y > 42 && !spooky) {
+                if (player.position().y > 20 && !spooky) {
                     return false; // If player is above the dark forest then no need to make it so spooky. The darkwood leaves cover everything as low as y42.
                 }
 
