@@ -8,6 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
@@ -103,6 +104,11 @@ public class FogHandler {
 		}
 	}
 
+	@SubscribeEvent
+	public static void onUnload(LevelEvent.Unload event) { //As supernatural as the fog is, it shouldn't follow the player between worlds
+		SKY_CHUNK_LOADED = false;
+		TERRAIN_CHUNK_LOADED = false;
+	}
 
 	private static boolean isSpooky(@Nullable ClientLevel level, @Nullable LocalPlayer player) {
 		return level != null && player != null && level.getBiome(player.blockPosition()).is(TFBiomes.SPOOKY_FOREST);
