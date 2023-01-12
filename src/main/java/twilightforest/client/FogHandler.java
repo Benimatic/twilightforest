@@ -45,47 +45,64 @@ public class FogHandler {
 		}
 	}
 
-	private static float TERRAIN_NEAR = Float.NaN;
-	private static float TERRAIN_FAR = Float.NaN;
+	private static boolean SKY_CHUNK_LOADED = false;
 
-	private static float SKY_NEAR = Float.NaN;
-	private static float SKY_FAR = Float.NaN;
+	private static float SKY_FAR = 0.0F;
+	private static float SKY_NEAR = 0.0F;
+
+	private static boolean TERRAIN_CHUNK_LOADED = false;
+
+	private static float TERRAIN_FAR = 0.0F;
+	private static float TERRAIN_NEAR = 0.0F;
+
 
 	@SubscribeEvent
 	public static void renderFog(ViewportEvent.RenderFog event) {
-		if (Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo renderInfo) {
-			event.setCanceled(true);
-			boolean spooky = isSpooky(clientLevel, player);
+		if (Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo) {
+			if (event.getMode().equals(FogRenderer.FogMode.FOG_SKY)) {
+				if (SKY_CHUNK_LOADED) {
+					event.setCanceled(true);
+					boolean spooky = isSpooky(clientLevel, player);
 
-			if (event.getMode().equals(FogRenderer.FogMode.FOG_TERRAIN)) {
-				float far = spooky ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();
-				float near = spooky ? far * 0.75F : event.getNearPlaneDistance();
+					float far = spooky ? event.getNearPlaneDistance() * 0.5F : event.getNearPlaneDistance();
+					float near = spooky ? 0.0F : event.getNearPlaneDistance();
 
-				if (Float.isNaN(TERRAIN_FAR) && clientLevel.isLoaded(player.blockPosition())) TERRAIN_FAR = far;
-				else TERRAIN_FAR = Mth.lerp(0.003F, TERRAIN_FAR, far);
-				if (Float.isNaN(TERRAIN_NEAR) && clientLevel.isLoaded(player.blockPosition())) TERRAIN_NEAR = near;
-				else TERRAIN_NEAR = Mth.lerp(0.003F * (TERRAIN_NEAR < near ? 0.5F : 2.0F), TERRAIN_NEAR, near);
+					SKY_FAR = Mth.lerp(0.003F, SKY_FAR, far);
+					SKY_NEAR = Mth.lerp(0.003F * (SKY_NEAR < near ? 0.5F : 2.0F), SKY_NEAR, near);
 
-				if (event.getType().equals(FogType.NONE)) {
-					event.setNearPlaneDistance(TERRAIN_NEAR);
-					event.setFarPlaneDistance(TERRAIN_FAR);
+					if (event.getType().equals(FogType.NONE)) {
+						event.setFarPlaneDistance(SKY_FAR);
+						event.setNearPlaneDistance(SKY_NEAR);
+					}
+				} else if (clientLevel.isLoaded(player.blockPosition())) { //We do a first-time set up after the chunk the player is in is loaded
+					SKY_CHUNK_LOADED = true;
+					SKY_FAR = isSpooky(clientLevel, player) ? event.getNearPlaneDistance() * 0.5F : event.getNearPlaneDistance();
+					SKY_NEAR = isSpooky(clientLevel, player) ? 0.0F : event.getNearPlaneDistance();
 				}
 			} else {
-				float far = spooky ? event.getNearPlaneDistance() * 0.5F : event.getNearPlaneDistance();
-				float near = spooky ? 0.0F : event.getNearPlaneDistance();
+				if (TERRAIN_CHUNK_LOADED) {
+					event.setCanceled(true);
+					boolean spooky = isSpooky(clientLevel, player);
 
-				if (Float.isNaN(SKY_FAR) && clientLevel.isLoaded(player.blockPosition())) SKY_FAR = far;
-				else SKY_FAR = Mth.lerp(0.003F, SKY_FAR, far);
-				if (Float.isNaN(SKY_NEAR) && clientLevel.isLoaded(player.blockPosition())) SKY_NEAR = near;
-				else SKY_NEAR = Mth.lerp(0.003F * (SKY_FAR < near ? 0.5F : 2.0F), SKY_NEAR, near);
+					float far = spooky ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();
+					float near = spooky ? far * 0.75F : event.getNearPlaneDistance();
 
-				if (event.getType().equals(FogType.NONE)) {
-					event.setNearPlaneDistance(SKY_NEAR);
-					event.setFarPlaneDistance(SKY_FAR);
+					TERRAIN_FAR = Mth.lerp(0.003F, TERRAIN_FAR, far);
+					TERRAIN_NEAR = Mth.lerp(0.003F * (TERRAIN_NEAR < near ? 0.5F : 2.0F), TERRAIN_NEAR, near);
+
+					if (event.getType().equals(FogType.NONE)) {
+						event.setFarPlaneDistance(TERRAIN_FAR);
+						event.setNearPlaneDistance(TERRAIN_NEAR);
+					}
+				} else if (SKY_CHUNK_LOADED) { //SKY is always called first in vanilla, so we only need to check if the SKY flag is true
+					TERRAIN_CHUNK_LOADED = true;
+					TERRAIN_FAR = isSpooky(clientLevel, player) ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();
+					TERRAIN_NEAR = isSpooky(clientLevel, player) ? TERRAIN_FAR * 0.75F : event.getNearPlaneDistance();
 				}
 			}
 		}
 	}
+
 
 	private static boolean isSpooky(@Nullable ClientLevel level, @Nullable LocalPlayer player) {
 		return level != null && player != null && level.getBiome(player.blockPosition()).is(TFBiomes.SPOOKY_FOREST);
