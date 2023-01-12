@@ -91,7 +91,7 @@ public class FogHandler {
 
 					event.setFarPlaneDistance(TERRAIN_FAR);
 					event.setNearPlaneDistance(TERRAIN_NEAR);
-				} else if (SKY_CHUNK_LOADED) { //SKY is always called first in vanilla, so we only need to check if the SKY flag is true
+				} else if (SKY_CHUNK_LOADED || clientLevel.isLoaded(player.blockPosition())) { //SKY is always called first in vanilla, so we only need to check if the SKY flag is true, but just in case
 					TERRAIN_CHUNK_LOADED = true;
 					TERRAIN_FAR = isSpooky(clientLevel, player) ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();
 					TERRAIN_NEAR = isSpooky(clientLevel, player) ? TERRAIN_FAR * 0.75F : event.getNearPlaneDistance();
