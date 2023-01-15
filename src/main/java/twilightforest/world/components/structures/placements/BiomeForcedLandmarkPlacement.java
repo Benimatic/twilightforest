@@ -5,8 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
-import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import twilightforest.init.TFLandmark;
@@ -32,12 +30,18 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
         this.scanHeight = biomeScanHeight;
     }
 
-    @Override
-    public boolean isPlacementChunk(ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
-        //TODO can we still access the chunk generator?
-//        if (chunkGenerator instanceof ChunkGeneratorTwilight twilightGenerator)
-//            return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGenerator.getBiomeSource().getNoiseBiome(chunkX << 2, this.scanHeight, chunkZ << 2, randomState.sampler()), chunkX, chunkZ, seed);
+    public boolean isTFPlacementChunk(ChunkGenerator chunkGen, ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
+        if (chunkGen instanceof ChunkGeneratorTwilight twilightGenerator)
+            return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGen.getBiomeSource().getNoiseBiome(chunkX << 2, this.scanHeight, chunkZ << 2, state.randomState().sampler()), chunkX, chunkZ, state.getLevelSeed());
 
+        if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
+            return false;
+
+        return LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, state.getLevelSeed()) == this.landmark;
+    }
+
+    @Override
+    protected boolean isPlacementChunk(ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
         if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
             return false;
 

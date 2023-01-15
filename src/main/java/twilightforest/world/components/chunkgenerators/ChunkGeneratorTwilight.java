@@ -27,8 +27,10 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
@@ -882,6 +884,66 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return this.biomeLandmarkOverrides.getOrDefault(biome, ImmutableSet.of()).contains(landmark);
 	}
 
+	//copy of ChunkGenerator.createStructures, we just need to allow TF structures to correctly spawn
+	@Override
+	public void createStructures(RegistryAccess access, ChunkGeneratorStructureState state, StructureManager manager, ChunkAccess chunk, StructureTemplateManager templateManager) {
+		ChunkPos chunkpos = chunk.getPos();
+		SectionPos sectionpos = SectionPos.bottomOf(chunk);
+		RandomState randomstate = state.randomState();
+		state.possibleStructureSets().forEach((p_255564_) -> {
+			StructurePlacement structureplacement = p_255564_.value().placement();
+			List<StructureSet.StructureSelectionEntry> list = p_255564_.value().structures();
+
+			for(StructureSet.StructureSelectionEntry structureset$structureselectionentry : list) {
+				StructureStart structurestart = manager.getStartForStructure(sectionpos, structureset$structureselectionentry.structure().value(), chunk);
+				if (structurestart != null && structurestart.isValid()) {
+					return;
+				}
+			}
+
+			//TF: check if we're trying to add a TF structure and handle that accordingly. We need to still feed the chunk generator into the placement method, so we absolutely have to do this
+			//stupid mojang always changing everything
+			if ((structureplacement instanceof BiomeForcedLandmarkPlacement forced && forced.isTFPlacementChunk(this, state, chunkpos.x, chunkpos.z)) || structureplacement.isStructureChunk(state, chunkpos.x, chunkpos.z)) {
+				if (list.size() == 1) {
+					this.tryGenerateStructure(list.get(0), manager, access, randomstate, templateManager, state.getLevelSeed(), chunk, chunkpos, sectionpos);
+				} else {
+					ArrayList<StructureSet.StructureSelectionEntry> arraylist = new ArrayList<>(list.size());
+					arraylist.addAll(list);
+					WorldgenRandom worldgenrandom = new WorldgenRandom(new LegacyRandomSource(0L));
+					worldgenrandom.setLargeFeatureSeed(state.getLevelSeed(), chunkpos.x, chunkpos.z);
+					int i = 0;
+
+					for(StructureSet.StructureSelectionEntry structureset$structureselectionentry1 : arraylist) {
+						i += structureset$structureselectionentry1.weight();
+					}
+
+					while(!arraylist.isEmpty()) {
+						int j = worldgenrandom.nextInt(i);
+						int k = 0;
+
+						for(StructureSet.StructureSelectionEntry structureset$structureselectionentry2 : arraylist) {
+							j -= structureset$structureselectionentry2.weight();
+							if (j < 0) {
+								break;
+							}
+
+							++k;
+						}
+
+						StructureSet.StructureSelectionEntry structureset$structureselectionentry3 = arraylist.get(k);
+						if (this.tryGenerateStructure(structureset$structureselectionentry3, manager, access, randomstate, templateManager, state.getLevelSeed(), chunk, chunkpos, sectionpos)) {
+							return;
+						}
+
+						arraylist.remove(k);
+						i -= structureset$structureselectionentry3.weight();
+					}
+
+				}
+			}
+		});
+	}
+
 	@Nullable
 	@Override
 	public Pair<BlockPos, Holder<Structure>> findNearestMapStructure(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
@@ -905,7 +967,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, Mth.ceil(Mth.sqrt(searchRadius)))) {
 			for (Map.Entry<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> landmarkPlacement : placementSetMap.entrySet()) {
-				if (!landmarkPlacement.getKey().isPlacementChunk(state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
+				if (!landmarkPlacement.getKey().isTFPlacementChunk(this, state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
 
 				for (Holder<Structure> targetStructure : targetStructures) {
 					if (landmarkPlacement.getValue().contains(targetStructure)) {
