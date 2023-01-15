@@ -3,7 +3,6 @@ package twilightforest.data;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
@@ -154,7 +153,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.MOSSY_UNDERBRICK.get());
 		simpleBlock(TFBlocks.UNDERBRICK_FLOOR.get());
 		thorns();
-		simpleBlock(TFBlocks.THORN_ROSE.get(), models().cross(TFBlocks.THORN_ROSE.getId().getPath(), blockTexture(TFBlocks.THORN_ROSE.get())).renderType(CUTOUT));
+		thornRose();
 		simpleBlock(TFBlocks.THORN_LEAVES.get(), models().withExistingParent("thorn_leaves", new ResourceLocation("block/oak_leaves")));
 		simpleBlock(TFBlocks.BEANSTALK_LEAVES.get(), models().withExistingParent("beanstalk_leaves", new ResourceLocation("block/azalea_leaves")));
 		simpleBlock(TFBlocks.HOLLOW_OAK_SAPLING.get(), models().cross(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), blockTexture(TFBlocks.HOLLOW_OAK_SAPLING.get())).renderType(CUTOUT));
@@ -1485,6 +1484,18 @@ public class BlockstateGenerator extends BlockModelBuilders {
 					.part().modelFile(section).addModel().condition(PipeBlock.NORTH, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z).end()
 					.part().modelFile(noSectionAlt).addModel().condition(PipeBlock.NORTH, false).condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end();
 		}
+	}
+
+	private void thornRose() {
+		ModelFile rose = models().cross(TFBlocks.THORN_ROSE.getId().getPath(), blockTexture(TFBlocks.THORN_ROSE.get())).renderType(CUTOUT);
+		getVariantBuilder(TFBlocks.THORN_ROSE.get()).forAllStates(state -> switch (state.getValue(DirectionalBlock.FACING)) {
+			case UP -> ConfiguredModel.builder().modelFile(rose).build();
+			case DOWN -> ConfiguredModel.builder().modelFile(rose).rotationX(180).build();
+			case SOUTH -> ConfiguredModel.builder().modelFile(rose).rotationX(270).build();
+			case NORTH -> ConfiguredModel.builder().modelFile(rose).rotationX(90).build();
+			case WEST -> ConfiguredModel.builder().modelFile(rose).rotationY(90).rotationX(270).build();
+			case EAST -> ConfiguredModel.builder().modelFile(rose).rotationY(90).rotationX(90).build();
+		});
 	}
 
 	private void auroraBlocks() {
