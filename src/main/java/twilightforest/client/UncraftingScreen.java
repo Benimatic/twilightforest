@@ -209,7 +209,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		UncraftingMenu container = this.menu;
 
 		for (int i = 0; i < 9; i++) {
-			if (container.getCarried().isEmpty() && container.slots.get(2 + i).hasItem() && this.hoveredSlot == container.slots.get(11 + i)) {
+			if (container.getCarried().isEmpty() && container.slots.get(2 + i).hasItem() && this.hoveredSlot == container.slots.get(11 + i) && !container.slots.get(11 + i).hasItem()) {
 				this.renderTooltip(pPoseStack, container.slots.get(2 + i).getItem(), pX, pY);
 			}
 		}
