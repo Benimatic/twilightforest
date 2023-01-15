@@ -34,6 +34,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.network.PacketDistributor;
 import org.joml.Matrix4f;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFEntities;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
@@ -51,11 +52,11 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.levelgen.WorldGenSettings#WorldGenSettings(long, boolean, boolean, net.minecraft.core.Registry, Optional)}<br>
+	 * {@link net.minecraft.world.level.levelgen.WorldOptions#WorldOptions(long, boolean, boolean, Optional)} <br>
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
-		TFFeatureModifiers.seed = seed;
+		TFDimensionSettings.seed = seed;
 		return seed;
 	}
 
@@ -65,7 +66,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE]
 	 */
 	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
-		TFFeatureModifiers.seed = ((CompoundTag) seed.getValue()).getLong("seed");
+		TFDimensionSettings.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 
