@@ -93,13 +93,4 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
 		return new CastleDoorModel(baseQuads, quads, spriteGetter.apply(context.getMaterial("particle")), overrides, context.getTransforms(), renderTypes);
 	}
-
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-		ArrayList<Material> materials = new ArrayList<>();
-		materials.add(context.getMaterial("base"));
-		materials.add(context.getMaterial("particle"));
-		materials.add(context.getMaterial("overlay"));
-		materials.add(context.getMaterial("overlay_connected"));
-		return materials;
-	}
 }

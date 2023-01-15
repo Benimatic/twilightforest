@@ -1,4 +1,4 @@
-// 1.19.3	2023-01-15T00:02:02.3642265	TwilightForest Item and BlockItem models
+// 1.19.3	2023-01-15T00:31:59.4756692	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -73,7 +73,7 @@ a826eed852f134c6ef4023acfd6ec961e119018a assets/twilightforest/models/item/canop
 b70f386b9e5b703004bb3e6a2d154b51c1bbd3a0 assets/twilightforest/models/item/canopy_stairs.json
 d744d5d72c5b80d630777c1fe0d5198272e06767 assets/twilightforest/models/item/canopy_trapdoor.json
 8b68feea16bd21e81106fe7c3c3aa053f5a16145 assets/twilightforest/models/item/canopy_wood.json
-b64a0f7415d168bdff399cab1809a75e11190a14 assets/twilightforest/models/item/carminite.json
+9901000538c862f49e76ff36814f9896accae32d assets/twilightforest/models/item/carminite.json
 0eab36383e5aa3d785ef173f463bd32e7f6d0753 assets/twilightforest/models/item/carminite_block.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/carminite_broodling_spawn_egg.json
 9ec9bd5027d11975e744829f1a345afbabcde74f assets/twilightforest/models/item/carminite_builder.json

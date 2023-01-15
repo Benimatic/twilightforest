@@ -161,7 +161,6 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> VANILLA_TF_TREES = registerKey("tree/selector/vanilla_trees");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> VANILLA_TF_BIG_MUSH = registerKey("tree/selector/vanilla/vanilla_mushrooms");
 
-	//FIXME double check this once we're correctly running. These used to sit in TFPlacedFeatures since they caused classloading issues, but they shouldnt anymore. If they are move them back
 	public static final ResourceKey<ConfiguredFeature<?, ?>> WELL_PLACER = TFConfiguredFeatures.registerKey("well_placer");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LAMPPOST_PLACER = TFConfiguredFeatures.registerKey("lamppost_placer");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> DEFAULT_FALLEN_LOGS = TFConfiguredFeatures.registerKey("default_fallen_logs");

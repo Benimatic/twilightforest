@@ -470,10 +470,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.CHARM_OF_LIFE_1);
 		singleTex(TFItems.CHARM_OF_LIFE_2);
 		singleTexFullbright(TFItems.TOWER_KEY);
-		//TODO layer 1 has an emissivity of 7, layer 2 has 15
 		generated(TFItems.BORER_ESSENCE.getId().getPath(), prefix("item/" + TFItems.BORER_ESSENCE.getId().getPath()), prefix("item/borer_essence_particles"));
-		//TODO has an emissivity of 7
-		singleTex(TFItems.CARMINITE);
+		buildItem(TFItems.CARMINITE.getId().getPath(), "item/generated", 7, prefix("item/" + TFItems.CARMINITE.getId().getPath()));
 		singleTex(TFItems.ARMOR_SHARD);
 		singleTex(TFItems.ARMOR_SHARD_CLUSTER);
 		singleTex(TFItems.KNIGHTMETAL_INGOT);
@@ -622,27 +620,27 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void fullbright(String name, ResourceLocation... layers) {
-		buildItem(name, "item/generated", true, layers);
+		buildItem(name, "item/generated", 15, layers);
 	}
 
 	private ItemModelBuilder fullbrightTool(String name, ResourceLocation... layers) {
-		return buildItem(name, "item/handheld", true, layers);
+		return buildItem(name, "item/handheld", 15, layers);
 	}
 
 	private ItemModelBuilder generated(String name, ResourceLocation... layers) {
-		return buildItem(name, "item/generated", false, layers);
+		return buildItem(name, "item/generated", 0, layers);
 	}
 
 	private ItemModelBuilder tool(String name, ResourceLocation... layers) {
-		return buildItem(name, "item/handheld", false, layers);
+		return buildItem(name, "item/handheld", 0, layers);
 	}
 
-	private ItemModelBuilder buildItem(String name, String parent, boolean fullbright, ResourceLocation... layers) {
+	private ItemModelBuilder buildItem(String name, String parent, int emissivity, ResourceLocation... layers) {
 		ItemModelBuilder builder = withExistingParent(name, parent);
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
-		if (fullbright) builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("forge_entity_unsorted_translucent", 0).end();
+		if (emissivity > 0) builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(emissivity, emissivity, 0).renderType("forge_entity_unsorted_translucent", 0).end();
 		return builder;
 	}
 

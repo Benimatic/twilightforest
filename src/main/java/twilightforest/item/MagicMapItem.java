@@ -186,8 +186,7 @@ public class MagicMapItem extends MapItem {
 		if (color != null) {
 			return color;
 		}
-		//FIXME surface builder where
-		return new MapColorBrightness(MaterialColor.COLOR_MAGENTA); //biome.getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial().getMapColor(world, BlockPos.ZERO));
+		return new MapColorBrightness(MaterialColor.COLOR_MAGENTA);
 	}
 
 	private static void setupBiomeColors() {

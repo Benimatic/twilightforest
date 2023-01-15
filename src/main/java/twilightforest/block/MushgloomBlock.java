@@ -20,8 +20,7 @@ public class MushgloomBlock extends MushroomBlock {
 	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
 
 	public MushgloomBlock(Properties properties) {
-		//FIXME replace the resource key creation once configured features are converted over to keys
-		super(properties, ResourceKey.create(Registries.CONFIGURED_FEATURE, TwilightForestMod.prefix("big_mushgloom")));
+		super(properties, TFConfiguredFeatures.BIG_MUSHGLOOM);
 	}
 
 	@Override
