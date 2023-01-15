@@ -106,6 +106,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get());
 		toBlock(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get());
 		toBlock(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
+		toBlock(TFBlocks.PINK_CASTLE_DOOR.get());
+		toBlock(TFBlocks.YELLOW_CASTLE_DOOR.get());
+		toBlock(TFBlocks.BLUE_CASTLE_DOOR.get());
+		toBlock(TFBlocks.VIOLET_CASTLE_DOOR.get());
 		toBlockModel(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
 		toBlockModel(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
 		toBlockModel(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
@@ -696,7 +700,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private ItemModelBuilder phaseTex(String name, ResourceLocation... layers) {
-		ItemModelBuilder builder = withExistingParent(name, "twilightforest:item/util/readable");
+		ItemModelBuilder builder = withExistingParent(name, "twilightforest:item/moon_dial_template");
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
