@@ -78,10 +78,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		//ingredient buttons
 		if(x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
 			if(direction > 0) {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
 				menu.ingredientsInCycle++;
 			} else {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
 				menu.ingredientsInCycle--;
 			}
 			menu.slotsChanged(menu.tinkerInput);
@@ -90,10 +90,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		//uncrafting recipe buttons
 		if(x > this.leftPos + 40 && x < this.leftPos + 54 && y > this.topPos + 22 && y < this.topPos + 64) {
 			if(direction > 0) {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
 				menu.unrecipeInCycle++;
 			} else {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
 				menu.unrecipeInCycle--;
 			}
 			menu.slotsChanged(menu.tinkerInput);
@@ -108,7 +108,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(5));
 				menu.recipeInCycle--;
 			}
-			menu.slotsChanged(menu.tinkerInput);
+			menu.slotsChanged(menu.assemblyMatrix);
 		}
 
 		return scrolled;
