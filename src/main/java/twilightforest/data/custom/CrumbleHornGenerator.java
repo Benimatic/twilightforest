@@ -51,15 +51,5 @@ public class CrumbleHornGenerator extends CrumbleHornProvider {
 		addDissolve(Blocks.ANDESITE);
 		addDissolve(Blocks.DIORITE);
 		addDissolve(Blocks.GRANITE);
-
-//		addTransform(UGBlocks.DEPTHROCK_BRICKS.get(), UGBlocks.CRACKED_DEPTHROCK_BRICKS.get());
-//		addTransform(UGBlocks.SHIVERSTONE_BRICKS.get(), UGBlocks.CRACKED_SHIVERSTONE_BRICKS.get());
-//		addTransform(UGBlocks.TREMBLECRUST_BRICKS.get(), UGBlocks.CRACKED_TREMBLECRUST_BRICKS.get());
-//		addTransform(UGBlocks.COARSE_DEEPSOIL.get(), UGBlocks.DEEPSOIL.get());
-//		addTransform(UGBlocks.DEEPTURF_BLOCK.get(), UGBlocks.DEEPSOIL.get());
-//		addTransform(UGBlocks.ASHEN_DEEPTURF_BLOCK.get(), UGBlocks.DEEPSOIL.get());
-//		addTransform(UGBlocks.FROZEN_DEEPTURF_BLOCK.get(), UGBlocks.DEEPSOIL.get());
-//		addDissolve(UGBlocks.DEEPSOIL.get());
-//		addDissolve(UGBlocks.SEDIMENT.get());
 	}
 }

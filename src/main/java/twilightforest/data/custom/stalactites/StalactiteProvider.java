@@ -10,6 +10,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
@@ -82,7 +83,7 @@ public abstract class StalactiteProvider implements DataProvider {
 	/**
 	 * Add a new Stalactite entry for hollow hills! This will allow your ores (or even blocks, I don't care what you do) to show up in hollow hills.
 	 *
-	 * @param stalactite the stalactite to make. Takes in a block to use, the size variation (a lower number typically means longer stalactites), a max length, and the weight of the entry.
+	 * @param stalactite the stalactite to make. Takes in list of blocks to use + their weights, the size variation (a lower number typically means longer stalactites), a max length, and the weight of the entry.
 	 * @param type       the type of hill this stalactite appears in.
 	 *                   <br>
 	 *                   Do note that this entry is the lowest tier it appears in, meaning if you add a stalactite to a small hill it will show up in all 3 hills.
@@ -90,7 +91,11 @@ public abstract class StalactiteProvider implements DataProvider {
 	 *                   Pick your weights wisely! All weights from lower tiers are transferred up, so if you want to see your spike more often in a given hill, give it a high weight!
 	 */
 	protected void makeStalactite(Stalactite stalactite, Stalactite.HollowHillType type) {
-		this.builder.putIfAbsent(Pair.of(new ResourceLocation(this.modid, ForgeRegistries.BLOCKS.getKey(stalactite.ore()).getPath() + "_stalactite"), stalactite), type);
+		String name = "";
+		for (Map.Entry<Block, Integer> entry : stalactite.ores().entrySet()) {
+			name = name + ForgeRegistries.BLOCKS.getKey(entry.getKey()).getPath() + "_";
+		}
+		this.builder.putIfAbsent(Pair.of(new ResourceLocation(this.modid, name + "stalactite"), stalactite), type);
 	}
 
 	@Override

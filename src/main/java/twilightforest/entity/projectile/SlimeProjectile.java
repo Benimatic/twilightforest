@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -64,9 +65,9 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 		if (!this.getLevel().isClientSide() && target instanceof LivingEntity) {
 			target.hurt(DamageSource.thrown(this, this.getOwner()), 4);
 			//damage armor pieces
-			if (target instanceof Player) {
-				for (ItemStack stack : target.getArmorSlots())
-					stack.hurtAndBreak(this.random.nextInt(1), ((Player) target), (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot()));
+			if (target instanceof Player player) {
+				for (ItemStack stack : player.getArmorSlots())
+					stack.hurtAndBreak(this.random.nextInt(1), player, (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot() != null ? stack.getEquipmentSlot() : EquipmentSlot.HEAD));
 			}
 		}
 	}
