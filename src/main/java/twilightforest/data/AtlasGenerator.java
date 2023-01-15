@@ -1,10 +1,10 @@
 package twilightforest.data;
 
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.SpriteSourceProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 

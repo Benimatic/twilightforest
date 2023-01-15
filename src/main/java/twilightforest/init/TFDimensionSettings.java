@@ -1,6 +1,5 @@
 package twilightforest.init;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -140,5 +139,31 @@ public class TFDimensionSettings {
 
 	public static void bootstrapType(BootstapContext<DimensionType> context) {
 		context.register(TWILIGHT_DIM_TYPE, twilightDimType());
+	}
+
+	public static void bootstrapStem(BootstapContext<LevelStem> context) {
+		HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
+		HolderGetter<DimensionType> dimTypes = context.lookup(Registries.DIMENSION_TYPE);
+		HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
+
+		NoiseBasedChunkGenerator wrappedChunkGenerator = new NoiseBasedChunkGenerator(
+				new TFBiomeProvider(
+						0L,
+						biomeRegistry,
+						BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
+						-1.25F,
+						2.5F),
+				noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN));
+
+		LevelStem stem = new LevelStem(
+				dimTypes.getOrThrow(TFDimensionSettings.TWILIGHT_DIM_TYPE),
+				new ChunkGeneratorTwilight(
+						wrappedChunkGenerator,
+						noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN),
+						true,
+						Optional.of(19),
+						BiomeMaker.BIOME_FEATURES_SETS));
+
+		context.register(TWILIGHT_LEVEL_STEM, stem);
 	}
 }

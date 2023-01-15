@@ -8,10 +8,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.ForgeRenderTypes;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.loaders.ItemLayersModelBuilder;
+import net.minecraftforge.client.model.generators.loaders.ItemLayerModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -641,7 +642,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
-		if (fullbright) builder = builder.customLoader(ItemLayersModelBuilder::begin).emissive(0).end();
+		if (fullbright) builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("forge_entity_unsorted_translucent", 0).end();
 		return builder;
 	}
 
@@ -650,7 +651,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
-		builder = builder.customLoader(ItemLayersModelBuilder::begin).emissive(0).renderType(new ResourceLocation("translucent"), 0).end();
+		builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType(new ResourceLocation("translucent"), 0).end();
 		return builder;
 	}
 
