@@ -1,15 +1,10 @@
 package twilightforest.item;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -18,6 +13,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.init.TFSounds;
 
 public class GlassSwordItem extends SwordItem {
+	protected BlockParticleOption whiteGlass = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState());
 
 	public GlassSwordItem(Tier toolMaterial, Properties properties) {
 		super(toolMaterial, 3, -2.4F, properties);
@@ -30,7 +26,7 @@ public class GlassSwordItem extends SwordItem {
 				double px = target.getX() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
 				double py = target.getY() + target.getRandom().nextFloat() * target.getBbHeight();
 				double pz = target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				server.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState()), px, py, pz, 1, 0, 0, 0, 0);
+				server.sendParticles(whiteGlass, px, py, pz, 1, 0, 0, 0, 0);
 			}
 		}
 
