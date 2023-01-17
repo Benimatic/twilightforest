@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "twilightforest:structures/useless",
+          "name": "twilightforest:chests/useless",
           "weight": 25
         },
         {
@@ -16,13 +16,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 4.0,
+                "max": 9.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:iron_ingot",
+          "name": "minecraft:gold_nugget",
           "weight": 75
         },
         {
@@ -38,7 +38,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:wheat",
+          "name": "minecraft:potato",
           "weight": 75
         },
         {
@@ -54,12 +54,23 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:string",
+          "name": "minecraft:cod",
           "weight": 75
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:bucket",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:torchberries",
           "weight": 75
         }
       ],
@@ -115,7 +126,22 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:bread"
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:steeleaf_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:pumpkin_pie"
         },
         {
           "type": "minecraft:item",
@@ -134,48 +160,6 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:liveroot",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:gold_ingot",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:iron_pickaxe",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:diamond",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
                 "max": 12.0,
                 "min": 1.0
               },
@@ -183,7 +167,26 @@
             }
           ],
           "name": "twilightforest:transformation_powder",
-          "weight": 25
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "enchantments": {
+                "minecraft:efficiency": 1,
+                "minecraft:fortune": 1
+              },
+              "function": "twilightforest:enchant"
+            }
+          ],
+          "name": "twilightforest:ironwood_pickaxe",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:magic_map",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -192,19 +195,39 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 3.0,
+                "max": 2.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:steeleaf_ingot",
+          "name": "minecraft:diamond",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:music_disc_findings",
+          "name": "twilightforest:moonworm_queen",
           "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:charm_of_life_1",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:charm_of_keeping_1",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:ironwood_block",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:music_disc_maker",
+          "weight": 20
         }
       ],
       "rolls": 1.0

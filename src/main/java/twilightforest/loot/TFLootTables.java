@@ -90,7 +90,7 @@ public class TFLootTables {
 	public final ResourceLocation lootTable;
 
 	private TFLootTables(String path) {
-		this.lootTable = TwilightForestMod.prefix(String.format("structures/%s", path));
+		this.lootTable = TwilightForestMod.prefix(String.format("chests/%s", path));
 	}
 
 	public void generateChest(WorldGenLevel world, BlockPos pos, Direction dir, boolean trapped) {

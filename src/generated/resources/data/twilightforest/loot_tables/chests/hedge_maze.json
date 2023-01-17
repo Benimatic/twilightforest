@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "twilightforest:structures/useless",
+          "name": "twilightforest:chests/useless",
           "weight": 25
         },
         {
@@ -22,7 +22,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:iron_ingot",
+          "name": "minecraft:oak_planks",
           "weight": 75
         },
         {
@@ -38,7 +38,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:gunpowder",
+          "name": "minecraft:brown_mushroom",
           "weight": 75
         },
         {
@@ -54,7 +54,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:ironwood_ingot",
+          "name": "minecraft:red_mushroom",
           "weight": 75
         },
         {
@@ -64,13 +64,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 5.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:firefly",
+          "name": "minecraft:wheat",
           "weight": 75
         },
         {
@@ -80,29 +80,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:experiment_115",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:glowstone_dust",
+          "name": "minecraft:string",
           "weight": 75
         },
         {
@@ -118,7 +102,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:redstone",
+          "name": "minecraft:stick",
           "weight": 75
         }
       ],
@@ -134,45 +118,73 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 6.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:steeleaf_ingot"
+          "name": "minecraft:melon_slice"
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:charm_of_keeping_1"
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:melon_seeds"
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:steeleaf_helmet"
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:pumpkin_seeds"
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:steeleaf_chestplate"
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:arrow"
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:steeleaf_leggings"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:steeleaf_boots"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:steeleaf_pickaxe"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:ironwood_chestplate"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:ironwood_sword"
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:firefly"
         }
       ],
       "rolls": 2.0
@@ -182,53 +194,75 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "twilightforest:charm_of_life_1"
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:cobweb",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "enchantments": {
-                "minecraft:feather_falling": 3
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:apple",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": {
-                "minecraft:knockback": 2
-              },
-              "function": "twilightforest:enchant"
-            }
-          ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:shears",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": {
-                "minecraft:efficiency": 3
-              },
-              "function": "twilightforest:enchant"
-            }
-          ],
-          "name": "minecraft:enchanted_book"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+          "name": "minecraft:saddle",
+          "weight": 75
+        },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:tower_key"
+          "name": "minecraft:bow",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_apple",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:mushroom_stew",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond_hoe",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:music_disc_motion",
+          "weight": 15
         }
       ],
       "rolls": 1.0

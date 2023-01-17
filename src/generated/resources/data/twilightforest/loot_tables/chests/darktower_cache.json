@@ -6,55 +6,23 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "twilightforest:structures/useless",
+          "name": "twilightforest:chests/useless",
           "weight": 25
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{Potion:\"minecraft:water\"}"
-            }
-          ],
-          "name": "minecraft:potion",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 6.0,
+                "max": 12.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:rotten_flesh",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:poisonous_potato",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:water_bucket",
+          "name": "minecraft:stick",
           "weight": 75
         },
         {
@@ -70,12 +38,60 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:torch",
+          "name": "minecraft:charcoal",
           "weight": 75
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:milk_bucket",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:arrow",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 9.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:experiment_115",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:red_wool",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:redstone",
           "weight": 75
         }
       ],
@@ -91,43 +107,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 6.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:wheat"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{Potion:\"minecraft:awkward\"}"
-            }
-          ],
-          "name": "minecraft:potion"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{Potion:\"minecraft:mundane\"}"
-            }
-          ],
-          "name": "minecraft:potion"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{Potion:\"minecraft:thick\"}"
-            }
-          ],
-          "name": "minecraft:potion"
+          "name": "minecraft:redstone_lamp"
         },
         {
           "type": "minecraft:item",
@@ -142,7 +128,22 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:rotten_flesh"
+          "name": "minecraft:iron_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:ironwood_ingot"
         },
         {
           "type": "minecraft:item",
@@ -157,22 +158,11 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:melon_seeds"
+          "name": "twilightforest:firefly"
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:pumpkin_seeds"
+          "name": "twilightforest:charm_of_keeping_1"
         }
       ],
       "rolls": 2.0
@@ -187,29 +177,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
+                "max": 8.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:glistering_melon_slice",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:map",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:charm_of_keeping_1",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:music_disc_thread",
-          "weight": 50
+          "name": "twilightforest:steeleaf_ingot"
         },
         {
           "type": "minecraft:item",
@@ -224,34 +198,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:golden_apple",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:golden_carrot",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:oak_boat",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:hollow_oak_sapling",
-          "weight": 25
+          "name": "minecraft:diamond"
         }
       ],
       "rolls": 1.0

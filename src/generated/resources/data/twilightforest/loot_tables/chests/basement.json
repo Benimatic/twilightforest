@@ -6,23 +6,18 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "twilightforest:structures/useless",
+          "name": "twilightforest:chests/useless",
           "weight": 25
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "function": "minecraft:set_nbt",
+              "tag": "{Potion:\"minecraft:water\"}"
             }
           ],
-          "name": "minecraft:stick",
+          "name": "minecraft:potion",
           "weight": 75
         },
         {
@@ -32,61 +27,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
+                "max": 6.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:coal",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:arrow",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:ice",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:packed_ice",
+          "name": "minecraft:rotten_flesh",
           "weight": 75
         },
         {
@@ -102,34 +49,8 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:ironwood_ingot",
+          "name": "minecraft:poisonous_potato",
           "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 9.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:maze_wafer",
-          "weight": 75
-        }
-      ],
-      "rolls": 4.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:charm_of_keeping_1"
         },
         {
           "type": "minecraft:item",
@@ -144,7 +65,8 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:ironwood_ingot"
+          "name": "minecraft:wheat",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -153,13 +75,51 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 5.0,
+                "max": 6.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:firefly"
+          "name": "minecraft:potato",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:carrot",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:melon_slice",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:water_bucket",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -174,7 +134,18 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:aurora_block"
+          "name": "minecraft:torch",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:mushroom_stew",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:milk_bucket",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
@@ -183,16 +154,33 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 3.0,
+                "max": 7.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:sweet_berries",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:arctic_fur"
+          "name": "minecraft:melon_seeds",
+          "weight": 75
         }
       ],
-      "rolls": 2.0
+      "rolls": 4.0
     },
     {
       "bonus_rolls": 0.0,
@@ -210,101 +198,187 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:arctic_fur",
+          "name": "minecraft:bread"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:cooked_beef"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:cooked_porkchop"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:baked_potato"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 10.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:cooked_chicken"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 8.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:cooked_cod"
+        }
+      ],
+      "rolls": 2.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:glistering_melon_slice",
           "weight": 75
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:ice_bow",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:apple",
           "weight": 75
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:ender_bow",
+          "name": "minecraft:map",
           "weight": 75
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:ice_sword",
+          "name": "twilightforest:charm_of_keeping_1",
           "weight": 75
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "enchantments": {
-                "minecraft:sharpness": 4
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:golden_apple",
           "weight": 25
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "enchantments": {
-                "minecraft:power": 4
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:golden_carrot",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": {
-                "minecraft:punch": 2
-              },
-              "function": "twilightforest:enchant"
-            }
-          ],
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:cake",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": {
-                "minecraft:unbreaking": 2
-              },
-              "function": "twilightforest:enchant"
-            }
-          ],
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:oak_boat",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": [
-                "twilightforest:chill_aura"
-              ],
-              "function": "minecraft:enchant_randomly"
-            }
-          ],
-          "name": "minecraft:book",
+          "name": "twilightforest:hollow_oak_sapling",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": {
-                "minecraft:infinity": 1
-              },
-              "function": "twilightforest:enchant"
-            }
-          ],
-          "name": "minecraft:enchanted_book",
-          "weight": 25
+          "name": "twilightforest:music_disc_home",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:music_disc_radiance",
+          "weight": 15
         }
       ],
       "rolls": 1.0

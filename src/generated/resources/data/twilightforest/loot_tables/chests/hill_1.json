@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "twilightforest:structures/useless",
+          "name": "twilightforest:chests/useless",
           "weight": 25
         },
         {
@@ -16,13 +16,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 2.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:poisonous_potato",
+          "name": "minecraft:iron_ingot",
           "weight": 75
         },
         {
@@ -32,7 +32,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 6.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -48,71 +48,18 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 6.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:potato",
+          "name": "minecraft:string",
           "weight": 75
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 6.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:carrot",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 6.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:melon_slice",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:melon_seeds",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:water_bucket",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:milk_bucket",
+          "name": "minecraft:bucket",
           "weight": 75
         }
       ],
@@ -128,58 +75,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 4.0,
+                "max": 12.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:twilight_oak_sapling"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:canopy_sapling"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:mangrove_sapling"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:darkwood_sapling"
+          "name": "minecraft:torch"
         },
         {
           "type": "minecraft:item",
@@ -194,7 +96,30 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:firefly"
+          "name": "minecraft:arrow"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:gunpowder"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bread"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:ore_magnet"
         }
       ],
       "rolls": 2.0
@@ -209,14 +134,40 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
+                "max": 3.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:pumpkin_pie",
+          "name": "twilightforest:liveroot",
           "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:gold_ingot",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:iron_pickaxe",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
@@ -231,47 +182,28 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:apple",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:charm_of_keeping_1",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:charm_of_life_1",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:hollow_oak_sapling",
+          "name": "twilightforest:transformation_powder",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:time_sapling",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:steeleaf_ingot",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:transformation_sapling",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:mining_sapling",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:sorting_sapling",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:music_disc_superstitious",
+          "name": "twilightforest:music_disc_findings",
           "weight": 25
         }
       ],

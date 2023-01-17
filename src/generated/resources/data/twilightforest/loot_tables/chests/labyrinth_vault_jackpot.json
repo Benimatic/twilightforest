@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "twilightforest:structures/labyrinth_vault"
+          "name": "twilightforest:chests/labyrinth_vault"
         }
       ],
       "rolls": 1.0
