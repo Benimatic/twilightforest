@@ -161,7 +161,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:4159743")
 
     //mods we dont have compat with but are nice to have
-    //runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_version}-1.0")
+    runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_sub_version}-1.0")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
 }
