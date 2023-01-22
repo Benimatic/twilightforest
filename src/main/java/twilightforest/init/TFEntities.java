@@ -360,8 +360,8 @@ public class TFEntities {
 
 		// projectiles
 		event.registerEntityRenderer(NATURE_BOLT.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
-		event.registerEntityRenderer(WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
+		event.registerEntityRenderer(LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/item/twilight_orb.png")));
+		event.registerEntityRenderer(WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/item/twilight_orb.png")));
 		event.registerEntityRenderer(TOME_BOLT.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(HYDRA_MORTAR.get(), HydraMortarRenderer::new);
 		event.registerEntityRenderer(SLIME_BLOB.get(), ThrownItemRenderer::new);
