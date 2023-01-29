@@ -65,7 +65,7 @@ public class FogHandler {
 					event.setCanceled(true);
 					boolean spooky = isSpooky(clientLevel, player);
 
-					float far = spooky ? event.getNearPlaneDistance() * 0.5F : event.getNearPlaneDistance();
+					float far = spooky ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();
 					float near = spooky ? 0.0F : event.getNearPlaneDistance();
 
 					SKY_FAR = Mth.lerp(0.003F, SKY_FAR, far);
@@ -75,7 +75,7 @@ public class FogHandler {
 					event.setNearPlaneDistance(SKY_NEAR);
 				} else if (clientLevel.isLoaded(player.blockPosition())) { //We do a first-time set up after the chunk the player is in is loaded
 					SKY_CHUNK_LOADED = true;
-					SKY_FAR = isSpooky(clientLevel, player) ? event.getNearPlaneDistance() * 0.5F : event.getNearPlaneDistance();
+					SKY_FAR = isSpooky(clientLevel, player) ? event.getFarPlaneDistance() * 0.5F : event.getFarPlaneDistance();
 					SKY_NEAR = isSpooky(clientLevel, player) ? 0.0F : event.getNearPlaneDistance();
 				}
 			} else {
