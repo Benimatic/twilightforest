@@ -4,6 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -15,6 +16,8 @@ import twilightforest.capabilities.giant_pick.GiantPickMineCapability;
 import twilightforest.capabilities.giant_pick.GiantPickMineCapabilityHandler;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.capabilities.shield.ShieldCapabilityHandler;
+import twilightforest.capabilities.teleporter_cache.TeleporterCacheCapability;
+import twilightforest.capabilities.teleporter_cache.TeleporterCacheCapabilityHandler;
 import twilightforest.capabilities.thrown.YetiThrowCapability;
 import twilightforest.capabilities.thrown.YetiThrowCapabilityHandler;
 
@@ -22,16 +25,43 @@ import javax.annotation.Nonnull;
 
 public class CapabilityList {
 
+	public static final Capability<TeleporterCacheCapability> TELEPORTER_CACHE = CapabilityManager.get(new CapabilityToken<>() {});
 	public static final Capability<IShieldCapability> SHIELDS = CapabilityManager.get(new CapabilityToken<>() {});
 	public static final Capability<FeatherFanFallCapability> FEATHER_FAN_FALLING = CapabilityManager.get(new CapabilityToken<>() {});
 	public static final Capability<YetiThrowCapability> YETI_THROWN = CapabilityManager.get(new CapabilityToken<>() {});
 	public static final Capability<GiantPickMineCapability> GIANT_PICK_MINE = CapabilityManager.get(new CapabilityToken<>() {});
 
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		event.register(TeleporterCacheCapability.class);
 		event.register(IShieldCapability.class);
 		event.register(FeatherFanFallCapability.class);
 		event.register(YetiThrowCapability.class);
 		event.register(GiantPickMineCapability.class);
+	}
+
+	public static void attachLevelCapability(AttachCapabilitiesEvent<Level> e) {
+		if (e.getObject().dimension().equals(Level.OVERWORLD)) {
+			e.addCapability(TeleporterCacheCapability.ID, new ICapabilitySerializable<CompoundTag>() {
+
+				final LazyOptional<TeleporterCacheCapability> inst = LazyOptional.of(TeleporterCacheCapabilityHandler::new);
+
+				@Nonnull
+				@Override
+				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) {
+					return TELEPORTER_CACHE.orEmpty(capability, inst.cast());
+				}
+
+				@Override
+				public CompoundTag serializeNBT() {
+					return inst.orElseThrow(NullPointerException::new).serializeNBT();
+				}
+
+				@Override
+				public void deserializeNBT(CompoundTag nbt) {
+					inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
+				}
+			});
+		}
 	}
 
 	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e) {

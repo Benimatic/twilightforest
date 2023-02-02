@@ -5,6 +5,9 @@ import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +31,6 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -50,6 +52,55 @@ public class TFTeleporter implements ITeleporter {
 
 	public TFTeleporter(boolean locked) {
 		TFTeleporter.locked = locked;
+	}
+
+	public static CompoundTag saveLinks() {
+		CompoundTag tag = new CompoundTag();
+		ListTag dcc = new ListTag();
+		destinationCoordinateCache.forEach((rl, map) -> {
+			CompoundTag ct = new CompoundTag();
+			ListTag links = new ListTag();
+			map.forEach((columnPos, portalPos) -> {
+				CompoundTag link = new CompoundTag();
+				CompoundTag column = new CompoundTag();
+				column.putInt("x", columnPos.x());
+				column.putInt("z", columnPos.z());
+				link.put("column", column);
+				CompoundTag portal = new CompoundTag();
+				portal.putLong("time", portalPos.lastUpdateTime);
+				portal.putLong("pos", portalPos.pos.asLong());
+				link.put("portal", portal);
+				links.add(link);
+			});
+			ct.put("links", links);
+			ct.putString("name", rl.toString());
+			dcc.add(ct);
+		});
+		tag.put("dest", dcc);
+		ListTag cm = new ListTag();
+		columnMap.forEach((columnPos, factor) -> {
+			CompoundTag column = new CompoundTag();
+			column.putInt("x", columnPos.x());
+			column.putInt("z", columnPos.z());
+			column.putLong("factor", factor);
+			cm.add(column);
+		});
+		tag.put("columns", cm);
+		return tag;
+	}
+
+	public static void loadLinks(CompoundTag tag) {
+		tag.getList("dest", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(dest -> {
+			ResourceLocation name = new ResourceLocation(dest.getString("name"));
+			destinationCoordinateCache.putIfAbsent(name, Maps.newHashMapWithExpectedSize(4096));
+			dest.getList("links", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(link -> {
+				CompoundTag column = link.getCompound("column");
+				CompoundTag portal = link.getCompound("portal");
+				destinationCoordinateCache.get(name).put(new ColumnPos(column.getInt("x"), column.getInt("z")), new PortalPosition(BlockPos.of(portal.getLong("pos")), portal.getLong("time")));
+			});
+		});
+		tag.getList("columns", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast)
+				.forEach(column -> columnMap.put(new ColumnPos(column.getInt("x"), column.getInt("z")), column.getLong("factor")));
 	}
 
 	@Nullable

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -90,6 +91,7 @@ public class TwilightForestMod {
 
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInitiator::call);
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+		MinecraftForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		MinecraftForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
 
