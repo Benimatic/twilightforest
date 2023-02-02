@@ -28,6 +28,8 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -252,7 +254,7 @@ public class TFTeleporter implements ITeleporter {
 	private static boolean checkStructure(Level world, BlockPos pos) {
 		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null)
-			return !TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0).isPresent();
+			return TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0).isEmpty() && !LegacyLandmarkPlacements.blockNearLandmarkCenter(pos.getX(), pos.getZ(), 5);
 		return true;
 	}
 

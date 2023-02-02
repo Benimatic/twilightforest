@@ -44,6 +44,16 @@ public class LegacyLandmarkPlacements {
         return TFLandmark.NOTHING;
     }
 
+	public static boolean blockNearLandmarkCenter(int blockX, int blockZ, int range) {
+		for (int x = -range; x <= range; x++) {
+			for (int z = -range; z <= range; z++) {
+				if (LegacyLandmarkPlacements.chunkHasLandmarkCenter(blockX >> 4 + x, blockZ >> 4 + z))
+					return true;
+			}
+		}
+		return false;
+	}
+
     public static boolean blockIsInLandmarkCenter(int blockX, int blockZ) {
         return chunkHasLandmarkCenter(blockX >> 4, blockZ >> 4);
     }
