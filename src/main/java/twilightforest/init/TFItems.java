@@ -56,7 +56,7 @@ public class TFItems {
 	public static final RegistryObject<Item> IRONWOOD_SWORD = ITEMS.register("ironwood_sword", () -> new SwordItem(TwilightItemTier.IRONWOOD, 3, -2.4F, new Item.Properties()));
 	public static final RegistryObject<Item> IRONWOOD_SHOVEL = ITEMS.register("ironwood_shovel", () -> new ShovelItem(TwilightItemTier.IRONWOOD, 1.5F, -3.0F, new Item.Properties()));
 	public static final RegistryObject<Item> IRONWOOD_PICKAXE = ITEMS.register("ironwood_pickaxe", () -> new PickaxeItem(TwilightItemTier.IRONWOOD, 1, -2.8F, new Item.Properties()));
-	public static final RegistryObject<Item> IRONWOOD_AXE = ITEMS.register("ironwood_axe", () -> new AxeItem(TwilightItemTier.IRONWOOD, 6.0F, -3.7F, new Item.Properties()));
+	public static final RegistryObject<Item> IRONWOOD_AXE = ITEMS.register("ironwood_axe", () -> new AxeItem(TwilightItemTier.IRONWOOD, 6.0F, -3.1F, new Item.Properties()));
 	public static final RegistryObject<Item> IRONWOOD_HOE = ITEMS.register("ironwood_hoe", () -> new HoeItem(TwilightItemTier.IRONWOOD, -2, -1.0F, new Item.Properties()));
 	public static final RegistryObject<Item> TORCHBERRIES = ITEMS.register("torchberries", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(MobEffects.GLOWING, 100, 0), 0.75F).build())));
 	public static final RegistryObject<Item> RAW_VENISON = ITEMS.register("raw_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).meat().build())));
