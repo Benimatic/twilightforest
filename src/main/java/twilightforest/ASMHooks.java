@@ -34,15 +34,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.network.PacketDistributor;
 import org.joml.Matrix4f;
+import twilightforest.client.TFClientSetup;
 import twilightforest.init.TFDimensionSettings;
-import twilightforest.init.TFEntities;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.init.TFFeatureModifiers;
 
 import org.jetbrains.annotations.Nullable;
 import java.util.*;
@@ -145,7 +144,7 @@ public class ASMHooks {
 	@OnlyIn(Dist.CLIENT)
 	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
 		if(entity instanceof TFPart<?>)
-			return TFEntities.BakedMultiPartRenderers.lookup(((TFPart<?>) entity).renderer());
+			return TFClientSetup.BakedMultiPartRenderers.lookup(((TFPart<?>) entity).renderer());
 		return renderer;
 	}
 
@@ -156,7 +155,7 @@ public class ASMHooks {
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
-		TFEntities.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
+		TFClientSetup.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
 		return context;
 	}
 
