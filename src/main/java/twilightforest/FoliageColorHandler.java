@@ -34,7 +34,7 @@ public final class FoliageColorHandler {
 		Map<ResourceKey<Biome>, Handler> REGISTRY = new HashMap<>() {{
 			put(TFBiomes.SPOOKY_FOREST, (o, x, z) -> {
 				double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
-				return BiomeGrassColors.blendColors(0xFF8501, 0xF7FF01, noise > 0.6D ? noise * 0.2D : noise);
+				return BiomeGrassColors.blendColors(0xFF0101, 0x49FF01, noise > 0.6D ? noise * 0.2D : noise);
 			});
 			put(TFBiomes.ENCHANTED_FOREST, (o, x, z) -> (o & 0xFFFF00) + BiomeGrassColors.getEnchantedColor((int) x, (int) z));
 			put(TFBiomes.DARK_FOREST_CENTER, (o, x, z) -> {
