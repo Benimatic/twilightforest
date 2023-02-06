@@ -45,8 +45,8 @@ import java.util.function.Predicate;
 
 public class TFTeleporter implements ITeleporter {
 
+	// destinationCoordinateCache is (src -> dest) [DestWorld, [SrcPos, DestPos]]
 	private static final Map<ResourceLocation, Map<ColumnPos, PortalPosition>> destinationCoordinateCache = new HashMap<>();
-	private static final Object2LongMap<ColumnPos> columnMap = new Object2LongOpenHashMap<>();
 
 	private static boolean locked;
 
@@ -77,15 +77,6 @@ public class TFTeleporter implements ITeleporter {
 			dcc.add(ct);
 		});
 		tag.put("dest", dcc);
-		ListTag cm = new ListTag();
-		columnMap.forEach((columnPos, factor) -> {
-			CompoundTag column = new CompoundTag();
-			column.putInt("x", columnPos.x());
-			column.putInt("z", columnPos.z());
-			column.putLong("factor", factor);
-			cm.add(column);
-		});
-		tag.put("columns", cm);
 		return tag;
 	}
 
@@ -99,8 +90,6 @@ public class TFTeleporter implements ITeleporter {
 				destinationCoordinateCache.get(name).put(new ColumnPos(column.getInt("x"), column.getInt("z")), new PortalPosition(BlockPos.of(portal.getLong("pos")), portal.getLong("time")));
 			});
 		});
-		tag.getList("columns", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast)
-				.forEach(column -> columnMap.put(new ColumnPos(column.getInt("x"), column.getInt("z")), column.getLong("factor")));
 	}
 
 	@Nullable
@@ -116,89 +105,33 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	@Nullable
-	private static PortalInfo placeInExistingPortal(ServerLevel world, Entity entity, BlockPos pos, boolean isPlayer) {
-		int i = 200; // scan radius up to 200, and also un-inline this variable back into below
+	private static PortalInfo placeInExistingPortal(ServerLevel destDim, Entity entity, BlockPos pos, boolean isPlayer) {
 		boolean flag = true;
-		BlockPos blockpos = BlockPos.ZERO;
-		ColumnPos columnPos = new ColumnPos(pos.getX(), pos.getZ());
+		BlockPos blockpos;
+		ColumnPos columnPos = new ColumnPos(entity.blockPosition().getX(), entity.blockPosition().getZ()); // Must be the position from the src dim
 
-		if (!isPlayer && columnMap.containsKey(columnPos)) {
-			return null;
+		PortalPosition portalPosition = destinationCoordinateCache.containsKey(destDim.dimension().location()) ? destinationCoordinateCache.get(destDim.dimension().location()).get(columnPos) : null;
+		if (portalPosition != null) {
+			blockpos = portalPosition.pos;
+			portalPosition.lastUpdateTime = destDim.getGameTime();
+			flag = false;
 		} else {
-			PortalPosition portalPosition = destinationCoordinateCache.containsKey(world.dimension().location()) ? destinationCoordinateCache.get(world.dimension().location()).get(columnPos) : null;
-			if (portalPosition != null) {
-				blockpos = portalPosition.pos;
-				portalPosition.lastUpdateTime = world.getGameTime();
-				flag = false;
-			} else {
-				//BlockPos blockpos3 = new BlockPos(entity);
-				double d0 = Double.MAX_VALUE;
-
-				for (int i1 = -i; i1 <= i; ++i1) {
-					BlockPos blockpos2;
-
-					for (int j1 = -i; j1 <= i; ++j1) {
-
-						// skip positions outside current world border (MC-114796)
-						if (!world.getWorldBorder().isWithinBounds(pos.offset(i1, 0, j1))) {
-							continue;
-						}
-
-						// skip chunks that aren't generated
-						ChunkPos chunkPos = new ChunkPos(pos.offset(i1, 0, j1));
-						if (!world.getChunkSource().chunkMap.isExistingChunkFull(chunkPos)) {
-							continue;
-						}
-
-						// explicitly fetch chunk so it can be unloaded if needed
-						LevelChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
-
-						for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(world, pos) - pos.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
-							blockpos2 = blockpos1.below();
-
-							// don't lookup state if inner condition would fail
-							if (d0 >= 0.0D && blockpos1.distSqr(pos) >= d0) {
-								continue;
-							}
-
-							// use our portal block
-							if (isPortal(chunk.getBlockState(blockpos1))) {
-								for (blockpos2 = blockpos1.below(); isPortal(chunk.getBlockState(blockpos2)); blockpos2 = blockpos2.below()) {
-									blockpos1 = blockpos2;
-								}
-
-								float d1 = (float) blockpos1.distSqr(pos);
-								if (d0 < 0.0D || d1 < d0) {
-									d0 = d1;
-									blockpos = blockpos1;
-									// restrict search radius to new distance
-									i = Mth.ceil(Mth.sqrt(d1));
-								}
-							}
-						}
-
-						// mark unwatched chunks for unload
-						//						if (!this.world.getPlayerChunkMap().contains(chunkPos.x, chunkPos.z)) {
-						//							this.world.getChunkProvider().queueUnload(chunk);
-						//						}
-					}
-				}
-			}
+			//BlockPos blockpos3 = new BlockPos(entity);
+			blockpos = getExitPosition(destDim, pos);
 		}
 
 		if (blockpos.equals(BlockPos.ZERO)) {
-			long factor = world.getGameTime() + 300L;
-			columnMap.put(columnPos, factor);
 			return null;
 		} else {
-			if (flag) {
-				destinationCoordinateCache.putIfAbsent(world.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
-				destinationCoordinateCache.get(world.dimension().location()).put(columnPos, new PortalPosition(blockpos, world.getGameTime()));
-				world.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x(), blockpos.getY(), columnPos.z()));
+			if (flag && !blockpos.equals(BlockPos.ZERO)) {
+				destinationCoordinateCache.putIfAbsent(destDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
+				destinationCoordinateCache.get(destDim.dimension().location()).put(columnPos, new PortalPosition(blockpos, destDim.getGameTime()));
+				// the last param is just an object for tracking, don't worry about it using columnPos instead of blockpos
+				destDim.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x(), blockpos.getY(), columnPos.z()));
 			}
 
 			// replace with our own placement logic
-			BlockPos[] portalBorder = getBoundaryPositions(world, blockpos).toArray(new BlockPos[0]);
+			BlockPos[] portalBorder = getBoundaryPositions(destDim, blockpos).toArray(new BlockPos[0]);
 			BlockPos borderPos = portalBorder[0/*random.nextInt(portalBorder.length)*/];
 
 			double portalX = borderPos.getX() + 0.5;
@@ -207,6 +140,63 @@ public class TFTeleporter implements ITeleporter {
 
 			return makePortalInfo(entity, portalX, portalY, portalZ);
 		}
+	}
+
+	private static BlockPos getExitPosition(ServerLevel destDim, BlockPos pos) {
+		int i = 200; // scan radius up to 200, and also un-inline this variable back into below
+		double d0 = Double.MAX_VALUE;
+		BlockPos result = BlockPos.ZERO;
+
+		for (int i1 = -i; i1 <= i; ++i1) {
+			BlockPos blockpos2;
+
+			for (int j1 = -i; j1 <= i; ++j1) {
+
+				// skip positions outside current world border (MC-114796)
+				if (!destDim.getWorldBorder().isWithinBounds(pos.offset(i1, 0, j1))) {
+					continue;
+				}
+
+				// skip chunks that aren't generated
+				ChunkPos chunkPos = new ChunkPos(pos.offset(i1, 0, j1));
+				if (!destDim.getChunkSource().chunkMap.isExistingChunkFull(chunkPos)) {
+					continue;
+				}
+
+				// explicitly fetch chunk so it can be unloaded if needed
+				LevelChunk chunk = destDim.getChunk(chunkPos.x, chunkPos.z);
+
+				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
+					blockpos2 = blockpos1.below();
+
+					// don't lookup state if inner condition would fail
+					if (d0 >= 0.0D && blockpos1.distSqr(pos) >= d0) {
+						continue;
+					}
+
+					// use our portal block
+					if (isPortal(chunk.getBlockState(blockpos1))) {
+						for (blockpos2 = blockpos1.below(); isPortal(chunk.getBlockState(blockpos2)); blockpos2 = blockpos2.below()) {
+							blockpos1 = blockpos2;
+						}
+
+						float d1 = (float) blockpos1.distSqr(pos);
+						if (d0 < 0.0D || d1 < d0) {
+							d0 = d1;
+							result = blockpos1;
+							// restrict search radius to new distance
+							i = Mth.ceil(Mth.sqrt(d1));
+						}
+					}
+				}
+
+				// mark unwatched chunks for unload
+				//						if (!this.world.getPlayerChunkMap().contains(chunkPos.x, chunkPos.z)) {
+				//							this.world.getChunkProvider().queueUnload(chunk);
+				//						}
+			}
+		}
+		return result;
 	}
 
 	private static int getScanHeight(ServerLevel world, BlockPos pos) {
@@ -329,6 +319,8 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private void makePortal(Entity entity, ServerLevel world, Vec3 pos) {
+		ServerLevel src = entity.getLevel() instanceof ServerLevel serverLevel ? serverLevel : null;
+
 		// ensure area is populated first
 		loadSurroundingArea(world, pos);
 
@@ -337,7 +329,7 @@ public class TFTeleporter implements ITeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found existing portal for {} at {}", name, spot);
-			cachePortalCoords(world, pos, spot);
+			cacheNewPortalCoords(src, spot, entity.blockPosition());
 			return;
 		}
 
@@ -345,7 +337,7 @@ public class TFTeleporter implements ITeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found ideal portal spot for {} at {}", name, spot);
-			cachePortalCoords(world, pos, makePortalAt(world, spot));
+			cacheNewPortalCoords(src, makePortalAt(world, spot), entity.blockPosition());
 			return;
 		}
 
@@ -354,7 +346,7 @@ public class TFTeleporter implements ITeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
-			cachePortalCoords(world, pos, makePortalAt(world, spot));
+			cacheNewPortalCoords(src, makePortalAt(world, spot), entity.blockPosition());
 			return;
 		}
 
@@ -364,7 +356,7 @@ public class TFTeleporter implements ITeleporter {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
-		cachePortalCoords(world, pos, makePortalAt(world, new BlockPos(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())));
+		cacheNewPortalCoords(src, makePortalAt(world, new BlockPos(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
 	}
 
 	private static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
@@ -429,10 +421,16 @@ public class TFTeleporter implements ITeleporter {
 		return world.dimension().location().equals(Level.OVERWORLD.location()) ? 2.0 : 0.5;
 	}
 
-	private static void cachePortalCoords(ServerLevel world, Vec3 loc, BlockPos pos) {
-		int x = Mth.floor(loc.x), z = Mth.floor(loc.z);
-		destinationCoordinateCache.putIfAbsent(world.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
-		destinationCoordinateCache.get(world.dimension().location()).put(new ColumnPos(x, z), new PortalPosition(pos, world.getGameTime()));
+	private static void cacheNewPortalCoords(@Nullable ServerLevel srcDim, BlockPos pos, BlockPos srcPos) {
+		// src/dest is backwards logic because we're caching the opposite direction
+		if (srcDim == null)
+			return;
+		BlockPos exitPos = getExitPosition(srcDim, srcPos);
+		destinationCoordinateCache.putIfAbsent(srcDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
+		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.getX(), pos.getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
+		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.south().getX(), pos.south().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
+		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.east().getX(), pos.east().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
+		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.south().east().getX(), pos.south().east().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
 	}
 
 	private static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
