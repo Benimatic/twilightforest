@@ -31,6 +31,7 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.init.TFBlocks;
+import twilightforest.item.MagicMapItem;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -264,9 +265,34 @@ public class TFTeleporter implements ITeleporter {
 			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
+		TwilightForestMod.LOGGER.info("Did not find a safe portal spot at second try, trying to move slightly towards the center between key biomes.");
+		safeCoords = findSafeCoords(world, 400, moveTowardsCenter(pos, 0.5F), entity, checkProgression);
+
+		if (safeCoords != null) {
+			TwilightForestMod.LOGGER.info("Safely rerouted to slightly centered portal.  Return trip not guaranteed.");
+			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
+		}
+
+		TwilightForestMod.LOGGER.info("Did not find a safe portal spot at third try, trying to move very towards the center between key biomes.");
+		safeCoords = findSafeCoords(world, 400, moveTowardsCenter(pos, 0.9F), entity, checkProgression);
+
+		if (safeCoords != null) {
+			TwilightForestMod.LOGGER.info("Safely rerouted to very centered portal.  Return trip not guaranteed.");
+			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
+		}
+
 		TwilightForestMod.LOGGER.warn("Still did not find a safe portal spot.");
 
 		return makePortalInfo(entity, entity.position());
+	}
+
+	private static BlockPos moveTowardsCenter(BlockPos pos, float lerp) {
+		ColumnPos centerPos = MagicMapItem.getMagicMapCenter(pos.getX(), pos.getZ());
+		float vx = centerPos.x() - pos.getX();
+		float vz = centerPos.z() - pos.getZ();
+		float nx = pos.getX() + vx * lerp;
+		float nz = pos.getZ() + vz * lerp;
+		return new BlockPos(nx, pos.getY(), nz);
 	}
 
 	public static boolean isSafeAround(Level world, BlockPos pos, Entity entity, boolean checkProgression) {
