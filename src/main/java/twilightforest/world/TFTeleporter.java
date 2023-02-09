@@ -24,10 +24,12 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -537,22 +539,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static BlockState randNatureBlock(RandomSource random) {
-		//should this be a tag? If so, what do we call it?
-		//I dont want to use the portal/deco tag because then rare saplings and stuff can generate, and thats no good
-		Block[] blocks = {
-				Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM,
-				Blocks.GRASS, Blocks.FERN,
-				Blocks.POPPY, Blocks.DANDELION,
-				Blocks.BLUE_ORCHID, Blocks.AZURE_BLUET,
-				Blocks.LILY_OF_THE_VALLEY, Blocks.OXEYE_DAISY,
-				Blocks.ALLIUM, Blocks.CORNFLOWER,
-				Blocks.WHITE_TULIP, Blocks.PINK_TULIP,
-				Blocks.ORANGE_TULIP, Blocks.RED_TULIP,
-				TFBlocks.MUSHGLOOM.get(),
-				TFBlocks.MAYAPPLE.get(),
-				TFBlocks.FIDDLEHEAD.get()
-		};
-		return blocks[random.nextInt(blocks.length)].defaultBlockState();
+		return ForgeRegistries.BLOCKS.tags().getTag(BlockTagGenerator.GENERATED_PORTAL_DECO).getRandomElement(random).get().defaultBlockState();
 	}
 
 	private static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {
