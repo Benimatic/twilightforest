@@ -1,21 +1,19 @@
 package twilightforest.world;
 
 import com.google.common.collect.Maps;
-import it.unimi.dsi.fastutil.objects.Object2LongMap;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -97,16 +95,16 @@ public class TFTeleporter implements ITeleporter {
 	@Override
 	public PortalInfo getPortalInfo(Entity entity, ServerLevel dest, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
 		PortalInfo pos;
-		if ((pos = placeInExistingPortal(dest, entity, entity.blockPosition(), entity instanceof Player)) == null) {
+		if ((pos = placeInExistingPortal(dest, entity, entity.blockPosition())) == null) {
 			pos = moveToSafeCoords(dest, entity);
 			makePortal(entity, dest, pos.pos);
-			pos = placeInExistingPortal(dest, entity, new BlockPos(pos.pos), entity instanceof Player);
+			pos = placeInExistingPortal(dest, entity, new BlockPos(pos.pos));
 		}
-		return pos;
+		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
 	}
 
 	@Nullable
-	private static PortalInfo placeInExistingPortal(ServerLevel destDim, Entity entity, BlockPos pos, boolean isPlayer) {
+	private static PortalInfo placeInExistingPortal(ServerLevel destDim, Entity entity, BlockPos pos) {
 		boolean flag = true;
 		BlockPos blockpos;
 		ColumnPos columnPos = new ColumnPos(entity.blockPosition().getX(), entity.blockPosition().getZ()); // Must be the position from the src dim
@@ -118,7 +116,7 @@ public class TFTeleporter implements ITeleporter {
 			flag = false;
 		} else {
 			//BlockPos blockpos3 = new BlockPos(entity);
-			blockpos = getExitPosition(destDim, pos);
+			blockpos = getPortalPosition(destDim, pos);
 		}
 
 		if (blockpos.equals(BlockPos.ZERO)) {
@@ -143,7 +141,7 @@ public class TFTeleporter implements ITeleporter {
 		}
 	}
 
-	private static BlockPos getExitPosition(ServerLevel destDim, BlockPos pos) {
+	private static BlockPos getPortalPosition(ServerLevel destDim, BlockPos pos) {
 		int i = 200; // scan radius up to 200, and also un-inline this variable back into below
 		double d0 = Double.MAX_VALUE;
 		BlockPos result = BlockPos.ZERO;
@@ -158,14 +156,13 @@ public class TFTeleporter implements ITeleporter {
 					continue;
 				}
 
-				// skip chunks that aren't generated
 				ChunkPos chunkPos = new ChunkPos(pos.offset(i1, 0, j1));
-				if (!destDim.getChunkSource().chunkMap.isExistingChunkFull(chunkPos)) {
+				LevelChunk chunk = destDim.getChunkSource().getChunkNow(chunkPos.x, chunkPos.z);
+
+				// skip chunks that aren't generated
+				if (chunk == null || chunk.getFullStatus() == ChunkHolder.FullChunkStatus.INACCESSIBLE) {
 					continue;
 				}
-
-				// explicitly fetch chunk so it can be unloaded if needed
-				LevelChunk chunk = destDim.getChunk(chunkPos.x, chunkPos.z);
 
 				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
 					blockpos2 = blockpos1.below();
@@ -266,7 +263,7 @@ public class TFTeleporter implements ITeleporter {
 		}
 
 		TwilightForestMod.LOGGER.info("Did not find a safe portal spot at second try, trying to move slightly towards the center between key biomes.");
-		safeCoords = findSafeCoords(world, 400, moveTowardsCenter(pos, 0.5F), entity, checkProgression);
+		safeCoords = findSafeCoords(world, 200, moveTowardsCenter(pos, 0.5F), entity, checkProgression);
 
 		if (safeCoords != null) {
 			TwilightForestMod.LOGGER.info("Safely rerouted to slightly centered portal.  Return trip not guaranteed.");
@@ -274,7 +271,7 @@ public class TFTeleporter implements ITeleporter {
 		}
 
 		TwilightForestMod.LOGGER.info("Did not find a safe portal spot at third try, trying to move very towards the center between key biomes.");
-		safeCoords = findSafeCoords(world, 400, moveTowardsCenter(pos, 0.9F), entity, checkProgression);
+		safeCoords = findSafeCoords(world, 200, moveTowardsCenter(pos, 0.9F), entity, checkProgression);
 
 		if (safeCoords != null) {
 			TwilightForestMod.LOGGER.info("Safely rerouted to very centered portal.  Return trip not guaranteed.");
@@ -451,7 +448,7 @@ public class TFTeleporter implements ITeleporter {
 		// src/dest is backwards logic because we're caching the opposite direction
 		if (srcDim == null)
 			return;
-		BlockPos exitPos = getExitPosition(srcDim, srcPos);
+		BlockPos exitPos = getPortalPosition(srcDim, srcPos);
 		destinationCoordinateCache.putIfAbsent(srcDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
 		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.getX(), pos.getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
 		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.south().getX(), pos.south().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
