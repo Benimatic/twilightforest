@@ -254,27 +254,27 @@ public class TFTeleporter implements ITeleporter {
 			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
-		TwilightForestMod.LOGGER.info("Did not find a safe portal spot at first try, trying again with longer range.");
+		TwilightForestMod.LOGGER.info("Did not find a safe portal spot first try, trying again with longer range.");
 		safeCoords = findSafeCoords(world, 400, pos, entity, checkProgression);
 
 		if (safeCoords != null) {
-			TwilightForestMod.LOGGER.info("Safely rerouted to long range portal.  Return trip not guaranteed.");
+			TwilightForestMod.LOGGER.info("Safely rerouted to long range portal. Return trip not guaranteed.");
 			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
-		TwilightForestMod.LOGGER.info("Did not find a safe portal spot at second try, trying to move slightly towards the center between key biomes.");
-		safeCoords = findSafeCoords(world, 200, moveTowardsCenter(pos, 0.5F), entity, checkProgression);
+		TwilightForestMod.LOGGER.info("Did not find a safe portal spot second try, trying to move slightly towards the center between key biomes.");
+		safeCoords = findSafeCoords(world, 400, moveTowardsCenter(pos, 0.5F), entity, checkProgression);
 
 		if (safeCoords != null) {
-			TwilightForestMod.LOGGER.info("Safely rerouted to slightly centered portal.  Return trip not guaranteed.");
+			TwilightForestMod.LOGGER.info("Safely rerouted to slightly centered portal. Return trip not guaranteed.");
 			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
-		TwilightForestMod.LOGGER.info("Did not find a safe portal spot at third try, trying to move very towards the center between key biomes.");
-		safeCoords = findSafeCoords(world, 200, moveTowardsCenter(pos, 0.9F), entity, checkProgression);
+		TwilightForestMod.LOGGER.info("Did not find a safe portal spot third try, trying to move further towards the center between key biomes.");
+		safeCoords = findSafeCoords(world, 400, moveTowardsCenter(pos, 0.9F), entity, checkProgression);
 
 		if (safeCoords != null) {
-			TwilightForestMod.LOGGER.info("Safely rerouted to very centered portal.  Return trip not guaranteed.");
+			TwilightForestMod.LOGGER.info("Safely rerouted to very centered portal. Return trip not guaranteed.");
 			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
