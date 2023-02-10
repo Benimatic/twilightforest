@@ -71,7 +71,7 @@ public abstract class StalactiteProvider implements DataProvider {
 
 			JsonObject object = new JsonObject();
 			object.addProperty("replace", false);
-			object.add("stalactites", hillGson.toJsonTree(mapToUse.keySet().stream().map(ResourceLocation::toString).collect(Collectors.toList())));
+			object.add("stalactites", hillGson.toJsonTree(mapToUse.keySet().stream().map(ResourceLocation::toString).sorted().collect(Collectors.toList())));
 
 			futuresBuilder.add(DataProvider.saveStable(output, object, hillPath));
 		}
