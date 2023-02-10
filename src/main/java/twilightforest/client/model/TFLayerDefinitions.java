@@ -15,16 +15,23 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.*;
+import twilightforest.client.renderer.entity.TwilightBoatRenderer;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
 import twilightforest.compat.curios.model.CharmOfKeepingModel;
 import twilightforest.compat.curios.model.CharmOfLife1NecklaceModel;
 import twilightforest.compat.curios.model.CharmOfLife2NecklaceModel;
+import twilightforest.entity.TwilightBoat;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFLayerDefinitions {
 
 	@SubscribeEvent
 	public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+
+		for(TwilightBoat.Type boatType : TwilightBoat.Type.values()) {
+			event.registerLayerDefinition(TwilightBoatRenderer.createBoatModelName(boatType), BoatModel::createBodyModel);
+			event.registerLayerDefinition(TwilightBoatRenderer.createChestBoatModelName(boatType), ChestBoatModel::createBodyModel);
+		}
 
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_INNER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_OUTER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));
