@@ -1,19 +1,24 @@
 package twilightforest;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.network.SyncUncraftingTableConfigPacket;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.PlayerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFConfig {
 
 	public static Common COMMON_CONFIG;
@@ -336,12 +341,41 @@ public class TFConfig {
 		return COMMON_CONFIG.portalLockingAdvancement;
 	}
 
-	private static Optional<Block> parseBlock(String string) {
-		ResourceLocation id = ResourceLocation.tryParse(string);
-		if (id == null || !ForgeRegistries.BLOCKS.containsKey(id)) {
-			return Optional.empty();
-		} else {
-			return Optional.ofNullable(ForgeRegistries.BLOCKS.getValue(id));
+	@SubscribeEvent
+	public static void onConfigReload(final ModConfigEvent.Reloading event) {
+		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
+		if (ServerLifecycleHooks.getCurrentServer() != null) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncUncraftingTableConfigPacket(
+					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+		}
+		//sets cached portal locking advancement to null just in case it changed
+		COMMON_CONFIG.portalLockingAdvancement = null;
+	}
+
+	//damn forge events
+	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+	public static class ConfigSync {
+		//sends uncrafting settings to a player on a server when they log in. This prevents desyncs when the configs dont match up between the player and the server.
+		@SubscribeEvent
+		public static void syncConfigOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
+			if (event.getEntity() instanceof ServerPlayer player) {
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SyncUncraftingTableConfigPacket(
+						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+			}
 		}
 	}
 }
