@@ -12,6 +12,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
@@ -114,13 +115,13 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getItem(0);
-			CraftingRecipe[] recipes = getRecipesFor(inputStack, this.level);
+			Recipe<?>[] recipes = getRecipesFor(inputStack, this.level);
 
 			int size = recipes.length;
 
 			if (size > 0 && !inputStack.is(ItemTagGenerator.BANNED_UNCRAFTABLES)) {
 
-				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
+				Recipe<?> recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				this.customCost = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCost() : -1;
 				ItemStack[] recipeItems = getIngredients(recipe);
 
@@ -281,7 +282,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	}
 
 	private static boolean isIngredientProblematic(ItemStack ingredient) {
-		return !ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem(ingredient);
+		return (!ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem(ingredient)) || ingredient.is(Items.BARRIER);
 	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
@@ -291,20 +292,20 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		return ingredient;
 	}
 
-	private static CraftingRecipe[] getRecipesFor(ItemStack inputStack, Level world) {
+	private static Recipe<?>[] getRecipesFor(ItemStack inputStack, Level world) {
 
-		List<CraftingRecipe> recipes = new ArrayList<>();
+		List<Recipe<?>> recipes = new ArrayList<>();
 
 		if (!inputStack.isEmpty()) {
 			for (Recipe<?> recipe : world.getRecipeManager().getRecipes()) {
-				if (recipe instanceof CraftingRecipe rec &&
+				if (isRecipeSupported(recipe) &&
 						!recipe.isIncomplete() &&
 						recipe.canCraftInDimensions(3, 3) &&
 						!recipe.getIngredients().isEmpty() &&
 						matches(inputStack, recipe.getResultItem()) &&
 						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
 					if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) {
-						recipes.add(rec);
+						recipes.add(recipe);
 					}
 				}
 			}
@@ -313,7 +314,11 @@ public class UncraftingMenu extends AbstractContainerMenu {
 			}
 		}
 
-		return recipes.toArray(new CraftingRecipe[0]);
+		return recipes.toArray(new Recipe<?>[0]);
+	}
+
+	private static boolean isRecipeSupported(Recipe<?> recipe) {
+		return TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get() ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
 	}
 
 	private static boolean matches(ItemStack input, ItemStack output) {
@@ -609,7 +614,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		});
 	}
 
-	private ItemStack[] getIngredients(CraftingRecipe recipe) {
+	private ItemStack[] getIngredients(Recipe<?> recipe) {
 		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
 		for (int i = 0; i < recipe.getIngredients().size(); i++) {

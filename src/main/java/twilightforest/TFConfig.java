@@ -131,6 +131,13 @@ public class TFConfig {
 						translation(config + "uncrafting_mod_id_flip").
 						comment("If true, this will invert the above option from a blacklist to a whitelist.").
 						define("flipIdList", false);
+				UNCRAFTING_STUFFS.allowShapelessUncrafting = builder.
+						worldRestart().
+						translation(config + "shapeless_uncrafting").
+						comment("""
+								If true, the uncrafting table will also be allowed to uncraft shapeless recipes.
+								The table was originally intended to only take shaped recipes, but this option remains for people who wish to keep the functionality.""").
+						define("enableShapelessCrafting", false);
 				UNCRAFTING_STUFFS.disableUncrafting = builder.
 						worldRestart().
 						translation(config + "uncrafting").
@@ -248,6 +255,7 @@ public class TFConfig {
 		public static class UncraftingStuff {
 			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
 			public ForgeConfigSpec.DoubleValue repairingXpCostMultiplier;
+			public ForgeConfigSpec.BooleanValue allowShapelessUncrafting;
 			public ForgeConfigSpec.BooleanValue disableUncrafting;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
 			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
