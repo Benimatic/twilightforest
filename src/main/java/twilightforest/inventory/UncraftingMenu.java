@@ -396,15 +396,12 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	}
 
 	/**
-	 * Calculate the cost of uncrafting, if any.  Return 0 if uncrafting is not available at this time
+	 * Calculate the cost of uncrafting, if any. Return 0 if uncrafting is not available at this time
 	 */
 	private int calculateUncraftingCost() {
-		//disable the uncrafting cost if the config option says to
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingXpCost.get()) return 0;
-
 		// we don't want to display anything if there is anything in the assembly grid
 		if (this.assemblyMatrix.isEmpty()) {
-			return this.customCost >= 0 ? this.customCost : countDamageableParts(this.uncraftingMatrix);
+			return this.customCost >= 0 ? this.customCost : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get());
 		} else return 0;
 	}
 
@@ -412,9 +409,6 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Return the cost of recrafting, if any.  Return 0 if recrafting is not available at this time
 	 */
 	private int calculateRecraftingCost() {
-
-		//disable the recrafting/repairing cost if the config option says to
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableRepairingXpCost.get()) return 0;
 
 		ItemStack input = this.tinkerInput.getItem(0);
 		ItemStack output = this.tinkerResult.getItem(0);
@@ -444,7 +438,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		// minimum cost of 1 if we're even calling this part
 		cost = Math.max(1, cost);
 
-		return cost;
+		return (int) Math.round(cost * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get());
 	}
 
 	private static int countTotalEnchantmentCost(ItemStack stack) {

@@ -88,21 +88,21 @@ public class TFConfig {
 					comment("Settings for all things related to the uncrafting table.").
 					push("Uncrafting Table");
 			{
-				UNCRAFTING_STUFFS.disableUncraftingXpCost = builder.
+				UNCRAFTING_STUFFS.uncraftingXpCostMultiplier = builder.
 						worldRestart().
 						translation(config + "uncrafting_xp_cost").
 						comment("""
-								Setting this to true will make it so you dont have to pay XP to uncraft stuff. This will only affect uncrafting.
-								If you want to disable the xp cost for repairing and recrafting, see the below option.""").
-						define("disableUncraftingXpCost", false);
-				UNCRAFTING_STUFFS.disableRepairingXpCost = builder.
+								Multiplies the total XP cost of uncrafting an item and rounds up.
+								Higher values means the recipe will cost more to uncraft, lower means less. Set to 0 to disable the cost altogether.
+								Note that this only affects reversed crafting recipes, uncrafting recipes will still use the same cost as they normally would.""").
+						defineInRange("uncraftingXpCostMultiplier", 1.0D, 0.0D, Double.MAX_VALUE);
+				UNCRAFTING_STUFFS.repairingXpCostMultiplier = builder.
 						worldRestart().
 						translation(config + "repairing_xp_cost").
 						comment("""
-								Setting this to true will make it so you dont have to pay XP to repair and recraft stuff in the uncrafting table. This wont affect uncrafting cost.
-								If you're confused about what repairing and recrafting are, you can read about them here: http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table
-								If you want to disable the xp cost for uncrafting, see the above option.""").
-						define("disableRepairingXpCost", false);
+								Multiplies the total XP cost of repairing an item and rounds up.
+								Higher values means the recipe will cost more to repair, lower means less. Set to 0 to disable the cost altogether.""").
+						defineInRange("repairingXpCostMultiplier", 1.0D, 0.0D, Double.MAX_VALUE);
 				UNCRAFTING_STUFFS.disableUncraftingRecipes = builder.
 						worldRestart().
 						translation(config + "uncrafting_recipes").
@@ -246,8 +246,8 @@ public class TFConfig {
 		public UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 
 		public static class UncraftingStuff {
-			public ForgeConfigSpec.BooleanValue disableUncraftingXpCost;
-			public ForgeConfigSpec.BooleanValue disableRepairingXpCost;
+			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
+			public ForgeConfigSpec.DoubleValue repairingXpCostMultiplier;
 			public ForgeConfigSpec.BooleanValue disableUncrafting;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
 			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
