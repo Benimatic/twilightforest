@@ -298,6 +298,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		if (!inputStack.isEmpty()) {
 			for (Recipe<?> recipe : world.getRecipeManager().getRecipes()) {
 				if (recipe instanceof CraftingRecipe rec &&
+						!recipe.isIncomplete() &&
 						recipe.canCraftInDimensions(3, 3) &&
 						!recipe.getIngredients().isEmpty() &&
 						matches(inputStack, recipe.getResultItem()) &&
