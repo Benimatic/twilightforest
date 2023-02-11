@@ -199,7 +199,7 @@ public class TFClientSetup {
 		private static final Map<ResourceLocation, LazyLoadedValue<EntityRenderer<?>>> renderers = new HashMap<>();
 
 		public static void bakeMultiPartRenderers(EntityRendererProvider.Context context) {
-			boolean legacy = Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_legacy_resources");
+			boolean legacy = Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_classic_resources");
 			renderers.put(TFPart.RENDERER, new LazyLoadedValue<>(() -> new NoopRenderer<>(context)));
 			renderers.put(HydraHead.RENDERER, new LazyLoadedValue<>(() -> legacy ? new LegacyHydraHeadRenderer(context) : new HydraHeadRenderer(context)));
 			renderers.put(HydraNeck.RENDERER, new LazyLoadedValue<>(() -> legacy ? new LegacyHydraNeckRenderer(context) : new HydraNeckRenderer(context)));
