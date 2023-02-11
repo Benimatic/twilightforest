@@ -1,6 +1,7 @@
 package twilightforest;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -344,7 +345,8 @@ public class TFConfig {
 	@SubscribeEvent
 	public static void onConfigReload(final ModConfigEvent.Reloading event) {
 		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
-		if (ServerLifecycleHooks.getCurrentServer() != null) {
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		if (server != null && server.isDedicatedServer()) {
 			TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncUncraftingTableConfigPacket(
 					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
@@ -365,7 +367,8 @@ public class TFConfig {
 		//sends uncrafting settings to a player on a server when they log in. This prevents desyncs when the configs dont match up between the player and the server.
 		@SubscribeEvent
 		public static void syncConfigOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
-			if (ServerLifecycleHooks.getCurrentServer() != null && event.getEntity() instanceof ServerPlayer player) {
+			MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+			if (server != null && server.isDedicatedServer() && event.getEntity() instanceof ServerPlayer player) {
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SyncUncraftingTableConfigPacket(
 						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
