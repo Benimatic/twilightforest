@@ -8,7 +8,6 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.conditions.IsMinion;
 import twilightforest.loot.conditions.ModExists;
-import twilightforest.loot.functions.Enchant;
 import twilightforest.loot.functions.ModItemSwap;
 
 public class TFLoot {
@@ -16,7 +15,6 @@ public class TFLoot {
 	public static final DeferredRegister<LootItemConditionType> CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, TwilightForestMod.ID);
 	public static final DeferredRegister<LootItemFunctionType> FUNCTIONS = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, TwilightForestMod.ID);
 
-	public static final RegistryObject<LootItemFunctionType> ENCHANT = FUNCTIONS.register("enchant", () -> new LootItemFunctionType(new Enchant.Serializer()));
 	public static final RegistryObject<LootItemFunctionType> ITEM_OR_DEFAULT = FUNCTIONS.register("item_or_default", () -> new LootItemFunctionType(new ModItemSwap.Serializer()));
 
 	public static final RegistryObject<LootItemConditionType> IS_MINION = CONDITIONS.register("is_minion", () -> new LootItemConditionType(new IsMinion.ConditionSerializer()));
