@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -45,16 +44,15 @@ import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFMobEffects;
 import twilightforest.init.TFStats;
 import twilightforest.item.FieryArmorItem;
-import twilightforest.item.MazebreakerPickItem;
 import twilightforest.item.YetiArmorItem;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -122,6 +120,22 @@ public class EntityEvents {
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingHurtEvent(LivingHurtEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living != null) {
+			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
+				if (event.getSource() == DamageSource.FREEZE) {
+					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
+				} else if (event.getSource().isFire()) {
+					living.removeEffect(TFMobEffects.FROSTY.get());
+					mobEffectInstance.amplifier -= 1;
+					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
+				}
+			});
 		}
 	}
 
