@@ -44,16 +44,13 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
-		RandomSource random = user.getRandom();
-		if (attacker != null && shouldHit(level, random)) {
-			if (attacker instanceof LivingEntity entity) {
-				if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-						!entity.getItemBySlot(EquipmentSlot.CHEST).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-						!entity.getItemBySlot(EquipmentSlot.LEGS).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-						!entity.getItemBySlot(EquipmentSlot.FEET).is(ItemTags.FREEZE_IMMUNE_WEARABLES)) {
-					if (entity instanceof Player player && !player.isCreative()) {
-						entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 200, level - 1));
-					}
+		if (attacker instanceof LivingEntity entity && shouldHit(level, user.getRandom())) {
+			if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
+					!entity.getItemBySlot(EquipmentSlot.CHEST).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
+					!entity.getItemBySlot(EquipmentSlot.LEGS).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
+					!entity.getItemBySlot(EquipmentSlot.FEET).is(ItemTags.FREEZE_IMMUNE_WEARABLES)) {
+				if (entity instanceof Player player && !player.isCreative()) {
+					entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 200, level - 1));
 				}
 			}
 		}
