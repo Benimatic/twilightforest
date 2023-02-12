@@ -48,7 +48,7 @@ public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
 			stack.mulPose(Axis.ZP.rotationDegrees(this.random.nextFloat() * 360F));
 			stack.translate(-0.5F, -0.5F, -0.5F);
 
-			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(Blocks.ICE.defaultBlockState(), stack, buffer, light, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, RenderType.translucent());
+			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(Blocks.ICE.defaultBlockState(), stack, buffer, light, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, RenderType.translucentMovingBlock());
 			stack.popPose();
 		}
 	}
