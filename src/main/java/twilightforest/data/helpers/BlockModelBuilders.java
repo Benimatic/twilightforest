@@ -1,7 +1,6 @@
 package twilightforest.data.helpers;
 
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -256,6 +255,18 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 				.shade(false)
 				.face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em, layer2em).end()
 				.face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em, layer2em).end().end();
+	}
+
+	protected BlockModelBuilder buildFallenLeaves(int index) {
+		return models().getBuilder("fallen_leaves" + index).renderType(CUTOUT).texture("particle", "#all").texture("all", "minecraft:block/oak_leaves")
+				.element().from(0, 0, 0).to(16, index == 1 ? 0.2F : 2.0F * (index - 1), 16)
+				.face(Direction.UP).uvs(0, 0, 16, 16).tintindex(0).texture("#all").end()
+				.face(Direction.DOWN).uvs(0, 0, 16, 16).tintindex(0).texture("#all").end()
+				.face(Direction.NORTH).uvs(0, 0, 16, index == 1 ? 0.2F : 2.0F * (index - 1)).tintindex(0).texture("#all").end()
+				.face(Direction.SOUTH).uvs(0, 0, 16, index == 1 ? 0.2F : 2.0F * (index - 1)).tintindex(0).texture("#all").end()
+				.face(Direction.EAST).uvs(0, 0, 16, index == 1 ? 0.2F : 2.0F * (index - 1)).tintindex(0).texture("#all").end()
+				.face(Direction.WEST).uvs(0, 0, 16, index == 1 ? 0.2F : 2.0F * (index - 1)).tintindex(0).texture("#all").end()
+				.end();
 	}
 
 	protected ModelFile buildCandelabra(final int leftHeight, final int centerHeight, final int rightHeight) {

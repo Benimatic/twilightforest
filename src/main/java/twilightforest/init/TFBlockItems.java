@@ -1,10 +1,18 @@
 package twilightforest.init;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
@@ -212,7 +220,7 @@ public class TFBlockItems {
 			register(event, blockItem(TFBlocks.MUSHGLOOM));
 			register(event, blockItem(TFBlocks.TORCHBERRY_PLANT));
 			register(event, blockItem(TFBlocks.ROOT_STRAND));
-			register(event, placeOnWaterBlockItem(TFBlocks.FALLEN_LEAVES));
+			register(event, placeOnWaterBlockItemReplaceable(TFBlocks.FALLEN_LEAVES));
 			register(event, wearableBlock(TFBlocks.FIREFLY, TFBlockEntities.FIREFLY));
 			register(event, wearableBlock(TFBlocks.CICADA, TFBlockEntities.CICADA));
 			register(event, wearableBlock(TFBlocks.MOONWORM, TFBlockEntities.MOONWORM));
@@ -421,6 +429,22 @@ public class TFBlockItems {
 
 	private static <B extends Block> BlockItem placeOnWaterBlockItem(RegistryObject<B> block) {
 		return new PlaceOnWaterBlockItem(block.get(), new Item.Properties());
+	}
+
+	private static <B extends Block> BlockItem placeOnWaterBlockItemReplaceable(RegistryObject<B> block) {
+		return new BlockItem(block.get(), new Item.Properties()) {
+			@Override
+			public InteractionResult useOn(UseOnContext context) {
+				return context.getLevel().getBlockState(context.getClickedPos()).is(block.get()) ? super.useOn(context) : InteractionResult.PASS;
+			}
+			@Override
+			public InteractionResultHolder<ItemStack> use(Level p_220231_, Player p_220232_, InteractionHand p_220233_) {
+				BlockHitResult blockhitresult = getPlayerPOVHitResult(p_220231_, p_220232_, ClipContext.Fluid.SOURCE_ONLY);
+				BlockHitResult blockhitresult1 = blockhitresult.withPosition(blockhitresult.getBlockPos().above());
+				InteractionResult interactionresult = super.useOn(new UseOnContext(p_220232_, p_220233_, blockhitresult1));
+				return new InteractionResultHolder<>(interactionresult, p_220232_.getItemInHand(p_220233_));
+			}
+		};
 	}
 
 	private static <B extends Block> BlockItem fireImmuneBlock(RegistryObject<B> block) {
