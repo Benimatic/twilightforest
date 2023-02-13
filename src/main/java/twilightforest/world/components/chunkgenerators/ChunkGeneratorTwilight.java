@@ -40,7 +40,7 @@ import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
-import twilightforest.world.components.structures.start.LegacyLandmark;
+import twilightforest.world.components.structures.type.LegacyStructure;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -833,7 +833,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	@Nullable
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
 		for (Structure structure : structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE)) {
-			if (structure instanceof LegacyLandmark landmark) {
+			if (structure instanceof LegacyStructure landmark) {
 				StructureStart start = structureManager.getStructureAt(pos, landmark);
 				if (!start.isValid())
 					continue;

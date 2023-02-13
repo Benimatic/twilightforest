@@ -5,8 +5,6 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
@@ -37,11 +35,17 @@ public interface StructureHints {
     }
 
     default void addBookInformation(ItemStack book, ListTag bookPages) {
-        addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.unknown", 2);
+        addBookInformationStatic(book, bookPages, "unknown", 2);
+    }
+
+    static void addBookInformationStatic(ItemStack book, ListTag bookPages, @Nullable String name, int pageCount) {
+        String key = name == null ? "unknown" : name;
+
+        addTranslatedPages(bookPages, TwilightForestMod.ID + ".book." + key, pageCount);
 
         book.addTagElement("pages", bookPages);
         book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-        book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.unknown"));
+        book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book." + key));
     }
 
     static void addTranslatedPages(ListTag bookPages, String translationKey, int pageCount) {

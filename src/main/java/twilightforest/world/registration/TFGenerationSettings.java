@@ -33,7 +33,7 @@ import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.components.structures.start.LegacyLandmark;
+import twilightforest.world.components.structures.type.LegacyStructure;
 import twilightforest.world.components.structures.start.TFStructureStart;
 
 import java.util.HashMap;
@@ -208,7 +208,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
 		for (Structure structureFeature : world.registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {
-			if (!(structureFeature instanceof LegacyLandmark legacyData))
+			if (!(structureFeature instanceof LegacyStructure legacyData))
 				continue;
 			TFLandmark feature = legacyData.feature;
 			if (feature != featureCheck)
