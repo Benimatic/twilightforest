@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-10T20:16:36.8678941	Loot Tables
+// 1.19.3	2023-02-12T21:17:35.5830792	Loot Tables
 9992978a24c986ab8bbacfd4cb5c88b4b3d653a2 data/twilightforest/loot_tables/blocks/acacia_banister.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -92,12 +92,12 @@ da172a122ca3abf1bf69d927277e2a284c051809 data/twilightforest/loot_tables/blocks/
 94d2c3da93271287f34d5d559f1beb2c2f905745 data/twilightforest/loot_tables/blocks/encased_towerwood.json
 966f19ded94655ec0afd94aa50f674a1ad20d285 data/twilightforest/loot_tables/blocks/etched_nagastone.json
 1d4929d7d6176f60e5ea991a577527ed251ef375 data/twilightforest/loot_tables/blocks/experiment_115.json
-208bb971511be5f5e6d0fb18173de4f3e232eec0 data/twilightforest/loot_tables/blocks/fallen_leaves.json
+b615f21a630da313514bad5cd9077eec00b9f5f6 data/twilightforest/loot_tables/blocks/fallen_leaves.json
 200e4cc0a3b76d4aaab0ee778de41beeff9d0eae data/twilightforest/loot_tables/blocks/fiddlehead.json
 4bdcc6ef1adcefaa36ef7fae2ec53b9be727a83d data/twilightforest/loot_tables/blocks/fiery_block.json
 ce4b321a99fce99210c49a680ed8e88c7d59c931 data/twilightforest/loot_tables/blocks/firefly.json
 ae0614f83670e5cc73a2a7743d2e7c144a33b9b7 data/twilightforest/loot_tables/blocks/firefly_jar.json
-8147735f148a68e0393cf0fd7ca0835bfc467bc8 data/twilightforest/loot_tables/blocks/firefly_particle_spawner.json
+523c3c79fdd841dc531911588d613577524e6c1b data/twilightforest/loot_tables/blocks/firefly_particle_spawner.json
 b4a54c9142a5f334ce7463fc69e5723703be3559 data/twilightforest/loot_tables/blocks/firefly_squish.json
 613b3b3da28744de05570c6cc117aaf554c5e1ab data/twilightforest/loot_tables/blocks/fire_jet.json
 9e0dac0b5403f61263242b032ec65bb33bc9abbe data/twilightforest/loot_tables/blocks/fluffy_cloud.json
