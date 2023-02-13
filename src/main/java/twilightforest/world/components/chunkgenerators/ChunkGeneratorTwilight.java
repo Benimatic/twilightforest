@@ -842,6 +842,18 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					return landmark.getSpawnableList(classification);
 				if ((start instanceof TFStructureStart s && s.isConquered()))
 					return null;
+
+				if (landmark.feature == TFLandmark.SMALL_HILL || landmark.feature == TFLandmark.MEDIUM_HILL || landmark.feature == TFLandmark.LARGE_HILL) {
+					var box = start.getBoundingBox();
+
+					float hX = Mth.inverseLerp(pos.getX(), box.minX(), box.maxX()) * 2 - 1;
+					float hY = Mth.inverseLerp(pos.getY(), box.minY(), box.maxY());
+					float hZ = Mth.inverseLerp(pos.getZ(), box.minZ(), box.maxZ()) * 2 - 1;
+
+					boolean isInside = Mth.length(hX, hY, hZ) < 0.975f;
+					if (!isInside) return null;
+				}
+
 				final int index = getSpawnListIndexAt(start, pos);
 				if (index < 0)
 					return null;
