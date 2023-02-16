@@ -5,12 +5,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
-import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.Entity;
@@ -32,6 +30,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DataPackRegistryEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,15 +46,16 @@ import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
 import twilightforest.init.custom.DwarfRabbitVariant;
+import twilightforest.init.custom.WoodPalettes;
 import twilightforest.init.custom.TinyBirdVariant;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -64,6 +64,7 @@ import java.util.Objects;
 public class TwilightForestMod {
 
 	public static final String ID = "twilightforest";
+	public static final String REGISTRY_NAMESPACE = "twilight";
 
 	private static final String MODEL_DIR = "textures/model/";
 	private static final String GUI_DIR = "textures/gui/";
@@ -126,6 +127,7 @@ public class TwilightForestMod {
 
 		DwarfRabbitVariant.DWARF_RABBITS.register(modbus);
 		TinyBirdVariant.TINY_BIRDS.register(modbus);
+		WoodPalettes.WOOD_PALETTES.register(modbus);
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
@@ -135,6 +137,11 @@ public class TwilightForestMod {
 		}
 
 		BiomeGrassColors.init();
+	}
+
+	@SubscribeEvent
+	public static void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
+		event.dataPackRegistry(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC);
 	}
 
 	@SubscribeEvent
@@ -220,6 +227,10 @@ public class TwilightForestMod {
 
 	public static ResourceLocation prefix(String name) {
 		return new ResourceLocation(ID, name.toLowerCase(Locale.ROOT));
+	}
+
+	public static ResourceLocation namedRegistry(String name) {
+		return new ResourceLocation(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
 	}
 
 	public static ResourceLocation getModelTexture(String name) {
