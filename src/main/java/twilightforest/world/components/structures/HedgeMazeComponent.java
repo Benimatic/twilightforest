@@ -66,10 +66,10 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 			}
 		}
 
-		BlockState northJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.NORTH);
-		BlockState southJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.SOUTH);
-		BlockState westJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.WEST);
-		BlockState eastJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.EAST);
+		BlockState northJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.SOUTH);
+		BlockState southJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.NORTH);
+		BlockState westJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.EAST);
+		BlockState eastJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.WEST);
 
 		// plunk down some jack-o-lanterns outside for decoration
 		placeBlock(world, westJacko, 0, FLOOR_LEVEL, 24, sbb);
