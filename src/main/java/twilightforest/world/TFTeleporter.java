@@ -100,11 +100,7 @@ public class TFTeleporter implements ITeleporter {
 
 		// Scale the coords based on the dimension type coordinate_scale
 		double scale = dest.dimensionType().coordinateScale();
-		BlockPos destPos = new BlockPos(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
-		// If we're out of bounds, do 1:1 instead
-		if (!dest.getWorldBorder().isWithinBounds(destPos)) {
-			destPos = entity.blockPosition();
-		}
+		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
 		if ((pos = placeInExistingPortal(dest, entity, destPos)) == null) {
 			pos = moveToSafeCoords(dest, entity, destPos);
