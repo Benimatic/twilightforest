@@ -7,9 +7,10 @@ pool:
   vmImage: 'Ubuntu-latest'
 
 variables:
-  revision: $[counter('release-number', 0)]
   artifactName: 'Release'
   GRADLE_USER_HOME: $(Pipeline.Workspace)/.gradle
+  ${{ if not(contains(variables['Build.SourceBranchName'], 'no-build/')) }}:
+    revision: $[counter('release-number', 0)]
 
 steps:
 - task: Cache@2
@@ -18,6 +19,7 @@ steps:
     restoreKeys: gradle
     path: $(GRADLE_USER_HOME)
   displayName: Gradle build cache
+  condition: not(contains(variables['Build.SourceBranchName'], 'no-build/'))
 
 - powershell: |
     (Get-Content ./gradle.properties).Split([Environment]::NewLine) | % {
