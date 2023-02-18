@@ -12,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.util.LandmarkStructure;
@@ -28,7 +27,7 @@ public class NagaCourtyardStructure extends LandmarkStructure {
 
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new CourtyardMain(TFLandmark.NAGA_COURTYARD, random, 0, x + 1, context.chunkGenerator().getSeaLevel() + 5, z + 1, context.structureTemplateManager());
+        return new CourtyardMain(random, 0, x + 1, context.chunkGenerator().getSeaLevel() + 5, z + 1, context.structureTemplateManager());
     }
 
     @Override

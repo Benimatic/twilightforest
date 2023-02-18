@@ -21,6 +21,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.*;
@@ -57,7 +58,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 3, y - 2, z - 3);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 3, y - 2, z - 3);
 		}
 	};
 	public static final TFLandmark MEDIUM_HILL = new TFLandmark( 2, "medium_hollow_hill", true ) {
@@ -79,7 +80,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 7, y - 5, z - 7);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 7, y - 5, z - 7);
 		}
 	};
 	public static final TFLandmark LARGE_HILL = new TFLandmark( 3, "large_hollow_hill", true ) {
@@ -102,7 +103,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 11, y - 5, z - 11);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 11, y - 5, z - 11);
 		}
 	};
 	public static final TFLandmark HEDGE_MAZE = new TFLandmark( 2, "hedge_maze") {
@@ -113,7 +114,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HedgeMazeComponent(this, 0, x + 1, chunkGenerator.getSeaLevel() + 8, z + 1);
+			return new HedgeMazeComponent(0, x + 1, chunkGenerator.getSeaLevel() + 8, z + 1);
 		}
 	};
 	public static final TFLandmark QUEST_GROVE = new TFLandmark( 1, "quest_grove") {
@@ -137,7 +138,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new CourtyardMain(this, rand, 0, x + 1, chunkGenerator.getSeaLevel() + 5, z + 1, structureManager);
+			return new CourtyardMain(rand, 0, x + 1, chunkGenerator.getSeaLevel() + 5, z + 1, structureManager);
 		}
 	};
 	public static final TFLandmark LICH_TOWER = new TFLandmark( 1, "lich_tower", TwilightForestMod.prefix("progress_naga") ) {
@@ -159,7 +160,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new TowerMainComponent(this, rand, 0, x, y, z);
+			return new TowerMainComponent(rand, 0, x, y, z);
 		}
 	};
 	public static final TFLandmark HYDRA_LAIR = new TFLandmark( 2, "hydra_lair"    , true, TwilightForestMod.prefix("progress_labyrinth") ) {
@@ -175,7 +176,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HydraLairComponent(this, 0, x - 7, y, z - 7);
+			return new HydraLairComponent(0, x - 7, y, z - 7);
 		}
 	};
 	public static final TFLandmark LABYRINTH = new TFLandmark( 3, "labyrinth", TwilightForestMod.prefix("progress_lich") ) {
@@ -200,7 +201,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new MazeRuinsComponent(this, 0, x, y, z);
+			return new MazeRuinsComponent(0, x, y, z);
 		}
 
 	};
@@ -229,7 +230,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new DarkTowerMainComponent(this, rand, 0, x, y, z);
+			return new DarkTowerMainComponent(rand, 0, x, y, z);
 		}
 	};
 	public static final TFLandmark KNIGHT_STRONGHOLD = new TFLandmark( 3, "knight_stronghold", TwilightForestMod.prefix("progress_trophy_pedestal") ) {
@@ -254,7 +255,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new StrongholdEntranceComponent(this, 0, x, y + 5, z);
+			return new StrongholdEntranceComponent(0, x, y + 5, z);
 		}
 
 	};
@@ -273,7 +274,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new YetiCaveComponent(this, 0, x, y, z);
+			return new YetiCaveComponent(0, x, y, z);
 		}
 	};
 	public static final TFLandmark ICE_TOWER = new TFLandmark( 2, "ice_tower", TwilightForestMod.prefix("progress_yeti") ) {
@@ -290,7 +291,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new IceTowerMainComponent(this, rand, 0, x, y, z);
+			return new IceTowerMainComponent(rand, 0, x, y, z);
 		}
 	};
 	// TODO split cloud giants from this
@@ -314,7 +315,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), this, 0, x, y, z);
+			return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), 0, x, y, z);
 		}
 	};
 	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle", TwilightForestMod.prefix("progress_troll") ) {
@@ -337,7 +338,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new FinalCastleMainComponent(this, 0, x, y, z);
+			return new FinalCastleMainComponent(0, x, y, z);
 		}
 	};
 	public static final TFLandmark MUSHROOM_TOWER = new TFLandmark( 2, "mushroom_tower") {
@@ -350,7 +351,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new MushroomTowerMainComponent(this, rand, 0, x, y, z);
+			return new MushroomTowerMainComponent(rand, 0, x, y, z);
 		}
 	};
 	public static final TFLandmark QUEST_ISLAND = new TFLandmark( 1, "quest_island") { { this.disableStructure(); } };
@@ -555,7 +556,14 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		return null;
 	}
 
-	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir) {
+	@Deprecated
+	public final BoundingBox getComponentToAddBoundingBoxDELETE(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir) {
+		return getComponentToAddBoundingBox(x, y, z, minX, minY, minZ, spanX, spanY, spanZ, dir, this.centerBounds);
+	}
+
+	@NotNull
+	public static BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir, boolean centerBounds) {
+		// CenterBounds is true for ONLY Hollow Hills, Hydra Lair, & Yeti Caves
 		if(centerBounds) {
 			x += (spanX + minX) / 4;
 			y += (spanY + minY) / 4;

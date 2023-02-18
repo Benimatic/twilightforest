@@ -12,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.HedgeMazeComponent;
 import twilightforest.world.components.structures.util.DecorationClearance;
@@ -29,7 +28,7 @@ public class HedgeMazeStructure extends LandmarkStructure {
 
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new HedgeMazeComponent(TFLandmark.HEDGE_MAZE, 0, x + 1, context.chunkGenerator().getSeaLevel() + 8, z + 1);
+        return new HedgeMazeComponent(0, x + 1, context.chunkGenerator().getSeaLevel() + 8, z + 1);
     }
 
     @Override

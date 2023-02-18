@@ -35,13 +35,13 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		this.boundingBox = BoundingBoxUtils.NBTToBoundingBox(nbt);
 	}
 
-	public HedgeMazeComponent(TFLandmark feature, int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFHedge.get(), feature, i, x, y, z);
+	public HedgeMazeComponent(int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFHedge.get(), i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 
 		// the maze is 50 x 50 for now
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH, false);
 	}
 
 	@Override

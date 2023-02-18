@@ -28,9 +28,11 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.world.components.structures.LegacyLandmarkGetter;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.components.structures.util.*;
+import twilightforest.world.components.structures.util.ConfigurableSpawns;
+import twilightforest.world.components.structures.util.CustomStructureData;
+import twilightforest.world.components.structures.util.ProgressionStructure;
+import twilightforest.world.components.structures.util.StructureHints;
 
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @Deprecated
-public class LegacyStructure extends ProgressionStructure implements LegacyLandmarkGetter, CustomStructureData, ConfigurableSpawns {
+public class LegacyStructure extends ProgressionStructure implements CustomStructureData, ConfigurableSpawns {
     public final TFLandmark feature;
     private final ControlledSpawningConfig controlledSpawningConfig;
 
@@ -94,7 +96,6 @@ public class LegacyStructure extends ProgressionStructure implements LegacyLandm
         return TFStructureTypes.LEGACY_LANDMARK.get();
     }
 
-    @Override
     public TFLandmark getFeatureType() {
         return this.feature;
     }

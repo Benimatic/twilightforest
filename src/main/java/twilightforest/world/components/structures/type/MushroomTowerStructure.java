@@ -12,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerMainComponent;
 import twilightforest.world.components.structures.util.LandmarkStructure;
@@ -28,7 +27,7 @@ public class MushroomTowerStructure extends LandmarkStructure {
 
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new MushroomTowerMainComponent(TFLandmark.MUSHROOM_TOWER, random, 0, x, y, z);
+        return new MushroomTowerMainComponent(random, 0, x, y, z);
     }
 
     @Override
