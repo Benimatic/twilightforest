@@ -5,9 +5,13 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -15,11 +19,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.TwilightForestMod;
-import twilightforest.init.TFEntities;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
+
+import java.util.Optional;
 
 public interface StructureHints {
     String BOOK_AUTHOR = TwilightForestMod.ID + ".book.author";
@@ -65,6 +70,15 @@ public interface StructureHints {
      */
     void trySpawnHintMonster(Level world, Player player, BlockPos pos);
 
+    static void tryHintForStructure(Player player, ServerLevel level, ResourceKey<Structure> forStructure) {
+        Optional<Registry<Structure>> optStructureReg = level.registryAccess().registry(Registries.STRUCTURE);
+
+        if (optStructureReg.isEmpty() || !(optStructureReg.get().get(forStructure) instanceof StructureHints structureHints))
+            return;
+
+        structureHints.trySpawnHintMonster(level, player);
+    }
+
     /**
      * Try once to spawn a hint monster near the player.  Return true if we did.
      * <p>
@@ -98,9 +112,7 @@ public interface StructureHints {
     }
 
     @Nullable
-    default Mob createHintMonster(Level world) {
-        return TFEntities.KOBOLD.get().create(world);
-    }
+    Mob createHintMonster(Level world);
 
     record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
         public static MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
