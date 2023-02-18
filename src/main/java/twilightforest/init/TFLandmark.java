@@ -9,23 +9,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.*;
@@ -45,7 +40,6 @@ import twilightforest.world.components.structures.util.StructureHints;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class TFLandmark implements StructureHints, AdvancementLockedStructure, DecorationClearance, ControlledSpawns {
 	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature") { { this.enableDecorations().disableStructure(); } };
@@ -555,35 +549,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 	}
 
+	@Deprecated // TODO Deleting this method will break maps - best to wait until new MC version before committing to it.
 	@Nullable
 	public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 		return null;
-	}
-
-	public Optional<Structure.GenerationStub> generateStub(Structure.GenerationContext context, DecorationClearance decorationClearance) {
-		ChunkPos chunkPos = context.chunkPos();
-
-		boolean dontCenter = this == TFLandmark.LICH_TOWER || this == TFLandmark.TROLL_CAVE || this == TFLandmark.YETI_CAVE;
-		int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
-		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
-		int y = decorationClearance.shouldAdjustToTerrain()
-				? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7)
-				: context.chunkGenerator().getSeaLevel();
-
-		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z)).map(piece -> this.getStructurePieceGenerationStubFunction(piece, context, x, y, z));
-	}
-
-	@NotNull
-	private Structure.GenerationStub getStructurePieceGenerationStubFunction(StructurePiece startingPiece, Structure.GenerationContext context, int x, int y, int z) {
-		return new Structure.GenerationStub(new BlockPos(x, y, z), structurePiecesBuilder -> {
-			structurePiecesBuilder.addPiece(startingPiece);
-			startingPiece.addChildren(startingPiece, structurePiecesBuilder, context.random());
-
-			structurePiecesBuilder.pieces.stream()
-					.filter(TFStructureComponentTemplate.class::isInstance)
-					.map(TFStructureComponentTemplate.class::cast)
-					.forEach(t -> t.LAZY_TEMPLATE_LOADER.run());
-		});
 	}
 
 	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir) {

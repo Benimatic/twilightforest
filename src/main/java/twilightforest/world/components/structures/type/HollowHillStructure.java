@@ -6,25 +6,25 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.*;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.world.components.structures.HollowHillComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns {
     public static final Codec<HollowHillStructure> CODEC = RecordCodecBuilder.create(instance -> instance
             .group(
-                    // TODO Fix findGenerationPoint() first before thinking about increasing upper limit
+                    // TODO Clean up findGenerationPoint() first before even thinking about increasing upper limit
                     Codec.intRange(1, 3).fieldOf("hill_size").forGetter(s -> s.size),
                     ControlledSpawningConfig.FLAT_CODEC.forGetter(s -> s.controlledSpawningConfig)
             )
@@ -51,13 +51,11 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
     }
 
     @Override
-    protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        // FIXME return an instance of HollowHillComponent directly
-        //  Would be nice to pass more config data than just size, like a table for stalactites
-        return switch (size) {
-            case 1 -> TFLandmark.SMALL_HILL.generateStub(context, this);
-            case 2 -> TFLandmark.MEDIUM_HILL.generateStub(context, this);
-            default -> TFLandmark.LARGE_HILL.generateStub(context, this);
+    protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
+        return switch (this.size) { // TODO Clean up once TFLandmark params are no longer necessary
+            case 1 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), TFLandmark.SMALL_HILL, 0, this.size, x - 3, y - 2, z - 3);
+            case 2 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), TFLandmark.MEDIUM_HILL, 0, this.size, x - 7, y - 5, z - 7);
+            default -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), TFLandmark.LARGE_HILL, 0, this.size, x - 11, y - 5, z - 11);
         };
     }
 
