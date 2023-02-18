@@ -35,9 +35,9 @@ public class TFStructures {
 		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
 		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));
 		context.register(MUSHROOM_TOWER, MushroomTowerStructure.buildStructureConfig(context));
-		context.register(HOLLOW_HILL_SMALL, LegacyStructure.buildSmallHillConfig(context));
-		context.register(HOLLOW_HILL_MEDIUM, LegacyStructure.buildMediumHillConfig(context));
-		context.register(HOLLOW_HILL_LARGE, LegacyStructure.buildLargeHillConfig(context));
+		context.register(HOLLOW_HILL_SMALL, HollowHillStructure.buildSmallHillConfig(context));
+		context.register(HOLLOW_HILL_MEDIUM, HollowHillStructure.buildMediumHillConfig(context));
+		context.register(HOLLOW_HILL_LARGE, HollowHillStructure.buildLargeHillConfig(context));
 		context.register(NAGA_COURTYARD, NagaCourtyardStructure.buildStructureConfig(context));
 		context.register(LICH_TOWER, LegacyStructure.buildLichTowerConfig(context));
 		context.register(LABYRINTH, LegacyStructure.buildLabyrinthConfig(context));

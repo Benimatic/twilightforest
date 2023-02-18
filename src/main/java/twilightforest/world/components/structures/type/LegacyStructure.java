@@ -40,7 +40,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @Deprecated
-public class LegacyStructure extends ProgressionStructure implements LegacyLandmarkGetter, CustomStructureData, ControlledSpawns {
+public class LegacyStructure extends ProgressionStructure implements LegacyLandmarkGetter, CustomStructureData, ConfigurableSpawns {
     public final TFLandmark feature;
     private final ControlledSpawningConfig controlledSpawningConfig;
 
@@ -96,79 +96,8 @@ public class LegacyStructure extends ProgressionStructure implements LegacyLandm
     }
 
     @Override
-    public List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList() {
-        return this.controlledSpawningConfig.combinedMonsterSpawnableCache();
-    }
-
-    @Override
-    public List<MobSpawnSettings.SpawnerData> getCombinedCreatureSpawnableList() {
-        return this.controlledSpawningConfig.combinedCreatureSpawnableCache();
-    }
-
-    @Override
-    public List<MobSpawnSettings.SpawnerData> getSpawnableList(MobCategory creatureType) {
-        return switch (creatureType) {
-            case MONSTER -> this.getSpawnableMonsterList(0);
-            case AMBIENT -> this.controlledSpawningConfig.ambientCreatureList();
-            case WATER_CREATURE -> this.controlledSpawningConfig.waterCreatureList();
-            default -> List.of();
-        };
-    }
-
-    @Override
-    public List<MobSpawnSettings.SpawnerData> getSpawnableMonsterList(int index) {
-        return this.controlledSpawningConfig.getForLabel("" + index);
-    }
-
-    @Deprecated
-    public static LegacyStructure buildSmallHillConfig(BootstapContext<Structure> context) {
-        return new LegacyStructure(
-                TFLandmark.SMALL_HILL,
-                ControlledSpawningConfig.create(TFLandmark.SMALL_HILL.getSpawnableMonsterLists(), List.of(), List.of()),
-                new AdvancementLockConfig(List.of()),
-                new HintConfig(defaultBook(), TFEntities.KOBOLD.get()),
-                new DecorationConfig(true, false, false),
-                new StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
-                        Map.of(), // Landmarks have Controlled Mob spawning
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.NONE
-                )
-        );
-    }
-
-    @Deprecated
-    public static LegacyStructure buildMediumHillConfig(BootstapContext<Structure> context) {
-        return new LegacyStructure(
-                TFLandmark.MEDIUM_HILL,
-                ControlledSpawningConfig.create(TFLandmark.MEDIUM_HILL.getSpawnableMonsterLists(), List.of(), List.of()),
-                new AdvancementLockConfig(List.of()),
-                new HintConfig(defaultBook(), TFEntities.KOBOLD.get()),
-                new DecorationConfig(true, false, false),
-                new StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
-                        Map.of(), // Landmarks have Controlled Mob spawning
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.NONE
-                )
-        );
-    }
-
-    @Deprecated
-    public static LegacyStructure buildLargeHillConfig(BootstapContext<Structure> context) {
-        return new LegacyStructure(
-                TFLandmark.LARGE_HILL,
-                ControlledSpawningConfig.create(TFLandmark.LARGE_HILL.getSpawnableMonsterLists(), List.of(), List.of()),
-                new AdvancementLockConfig(List.of()),
-                new HintConfig(defaultBook(), TFEntities.KOBOLD.get()),
-                new DecorationConfig(true, false, false),
-                new StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
-                        Map.of(), // Landmarks have Controlled Mob spawning
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.NONE
-                )
-        );
+    public ControlledSpawningConfig getConfig() {
+        return this.controlledSpawningConfig;
     }
 
     @Deprecated
