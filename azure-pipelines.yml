@@ -9,7 +9,8 @@ pool:
 variables:
   artifactName: 'Release'
   GRADLE_USER_HOME: $(Pipeline.Workspace)/.gradle
-  ${{ if not(contains(variables['Build.SourceBranchName'], 'no-build/')) }}:
+  SKIP_BUILD: $[contains(variables['Build.SourceBranch'], 'refs/heads/no-build/')]
+  ${{ if not(variables.SKIP_BUILD) }}:
     revision: $[counter('release-number', 0)]
 
 steps:
@@ -19,7 +20,7 @@ steps:
     restoreKeys: gradle
     path: $(GRADLE_USER_HOME)
   displayName: Gradle build cache
-  condition: not(contains(variables['Build.SourceBranchName'], 'no-build/'))
+  condition: eq(variables.SKIP_BUILD, 'false')
 
 - powershell: |
     (Get-Content ./gradle.properties).Split([Environment]::NewLine) | % {
@@ -31,6 +32,7 @@ steps:
         }
     }
   displayName: Create Azure DevOps variables from gradle properties file
+  condition: eq(variables.SKIP_BUILD, 'false')
 
 - task: Gradle@2
   displayName: Create Release Build
@@ -45,6 +47,7 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
+  condition: eq(variables.SKIP_BUILD, 'false')
 
 - task: CopyFiles@2
   displayName: Copy Release build to artifact staging
@@ -52,11 +55,11 @@ steps:
     sourceFolder: './build/libs/'
     contents: 'twilightforest-*-universal.jar'
     targetFolder: $(build.artifactStagingDirectory)
-  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+  condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Artifacts'
-  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+  condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
     artifact: '$(artifactName)'
@@ -109,10 +112,10 @@ steps:
     }
     Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
   displayName: Format discord message
-  condition: always()
+  condition: eq(variables.SKIP_BUILD, 'false')
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-    
+
 - task: ado-discord-webhook@1
   displayName: Announce Build to discord
   inputs:
@@ -121,7 +124,7 @@ steps:
     messageType: 'embeds'
     embeds: |
       [$(DiscordMessage)]
-  condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
+  condition: and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True'))
 
 - task: Gradle@2
   displayName: Publish to Maven
@@ -136,7 +139,7 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'publish'
-  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+  condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
   env:
     ARTIFACTORY_USER: $(Artifactory.User)
     ARTIFACTORY_PASS: $(Artifactory.Password)
@@ -145,3 +148,4 @@ steps:
     # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
     ./gradlew --stop
   displayName: Kill Daemon
+  condition: eq(variables.SKIP_BUILD, 'false')
