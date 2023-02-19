@@ -25,61 +25,38 @@ import twilightforest.world.components.structures.stronghold.StrongholdEntranceC
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
 
 public class TFLandmark {
-	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature") { { this.disableStructure(); } };
-	public static final TFLandmark SMALL_HILL = new TFLandmark( 1, "small_hollow_hill") {
-		{
-			this.enableTerrainAlterations();
-		}
-
+	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature", false, false);
+	public static final TFLandmark SMALL_HILL = new TFLandmark( 1, "small_hollow_hill", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 3, y - 2, z - 3);
 		}
 	};
-	public static final TFLandmark MEDIUM_HILL = new TFLandmark( 2, "medium_hollow_hill") {
-		{
-			this.enableTerrainAlterations();
-		}
-
+	public static final TFLandmark MEDIUM_HILL = new TFLandmark( 2, "medium_hollow_hill", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 7, y - 5, z - 7);
 		}
 	};
-	public static final TFLandmark LARGE_HILL = new TFLandmark( 3, "large_hollow_hill") {
-		{
-			this.enableTerrainAlterations();
-		}
-
+	public static final TFLandmark LARGE_HILL = new TFLandmark( 3, "large_hollow_hill", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 11, y - 5, z - 11);
 		}
 	};
-	public static final TFLandmark HEDGE_MAZE = new TFLandmark( 2, "hedge_maze") {
-		{
-			this.enableTerrainAlterations();
-		}
+	public static final TFLandmark HEDGE_MAZE = new TFLandmark( 2, "hedge_maze", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HedgeMazeComponent(0, x + 1, chunkGenerator.getSeaLevel() + 8, z + 1);
 		}
 	};
-	public static final TFLandmark QUEST_GROVE = new TFLandmark( 1, "quest_grove") {
-		{
-			this.enableTerrainAlterations();
-		}
-
+	public static final TFLandmark QUEST_GROVE = new TFLandmark( 1, "quest_grove", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new QuestGrove(structureManager, new BlockPos(x - 12, chunkGenerator.getSeaLevel() + 5, z - 12));
 		}
 	};
-	public static final TFLandmark NAGA_COURTYARD = new TFLandmark( 3, "naga_courtyard") {
-		{
-			this.enableTerrainAlterations();
-		}
-
+	public static final TFLandmark NAGA_COURTYARD = new TFLandmark( 3, "naga_courtyard", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new CourtyardMain(rand, 0, x + 1, chunkGenerator.getSeaLevel() + 5, z + 1, structureManager);
@@ -91,11 +68,7 @@ public class TFLandmark {
 			return new TowerMainComponent(rand, 0, x, y, z);
 		}
 	};
-	public static final TFLandmark HYDRA_LAIR = new TFLandmark( 2, "hydra_lair" ) {
-		{
-			this.enableTerrainAlterations();
-		}
-
+	public static final TFLandmark HYDRA_LAIR = new TFLandmark( 2, "hydra_lair", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new HydraLairComponent(0, x - 7, y, z - 7);
@@ -121,11 +94,7 @@ public class TFLandmark {
 		}
 
 	};
-	public static final TFLandmark YETI_CAVE = new TFLandmark( 2, "yeti_lairs" ) {
-		{
-			this.enableTerrainAlterations();
-		}
-
+	public static final TFLandmark YETI_CAVE = new TFLandmark( 2, "yeti_lairs", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new YetiCaveComponent(0, x, y, z);
@@ -138,49 +107,47 @@ public class TFLandmark {
 		}
 	};
 	// TODO split cloud giants from this
-	public static final TFLandmark TROLL_CAVE = new TFLandmark( 4, "troll_lairs" ) {
-		{
-			this.enableTerrainAlterations();
-		}
-
+	public static final TFLandmark TROLL_CAVE = new TFLandmark( 4, "troll_lairs", true, true) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), 0, x, y, z);
 		}
 	};
-	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle" ) {
+	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle") {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new FinalCastleMainComponent(0, x, y, z);
 		}
 	};
-	public static final TFLandmark MUSHROOM_TOWER = new TFLandmark( 2, "mushroom_tower") {
-		{
-			// FIXME Incomplete
-			this.disableStructure();
-
-		}
-
+	public static final TFLandmark MUSHROOM_TOWER = new TFLandmark( 2, "mushroom_tower", false, false) {
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 			return new MushroomTowerMainComponent(rand, 0, x, y, z);
 		}
 	};
-	public static final TFLandmark QUEST_ISLAND = new TFLandmark( 1, "quest_island") { { this.disableStructure(); } };
-	//public static final TFFeature DRUID_GROVE    = new TFFeature( 1, "druid_grove"   , false ) { { this.disableStructure(); } };
-	//public static final TFFeature FLOATING_RUINS = new TFFeature( 3, "floating_ruins", false ) { { this.disableStructure(); } };
-	//public static final TFFeature WORLD_TREE = new TFFeature( 3, "world_tree", false ) { { this.disableStructure(); } };
+	public static final TFLandmark QUEST_ISLAND = new TFLandmark( 1, "quest_island", false, false);
+	//public static final TFLandmark DRUID_GROVE    = new TFLandmark( 1, "druid_grove"   , false, false);
+	//public static final TFLandmark FLOATING_RUINS = new TFLandmark( 3, "floating_ruins", false, false);
+	//public static final TFLandmark WORLD_TREE = new TFLandmark( 3, "world_tree", false, false);
 
 	public final int size;
 	public final String name;
-	public boolean isStructureEnabled = true;
-	public boolean requiresTerraforming = false; // TODO Terraforming Type? Envelopment vs Flattening maybe?
+	// Tells the chunkgenerator if there's an associated structure.
+	public final boolean isStructureEnabled;
+	// Tells the chunkgenerator the terrain changes around the structure.
+	public final boolean requiresTerraforming;
 
 	private static int maxPossibleSize;
 
 	private TFLandmark(int size, String name) {
+		this(size, name, true, false);
+	}
+
+	private TFLandmark(int size, String name, boolean isStructureEnabled, boolean requiresTerraforming) {
 		this.size = size;
 		this.name = name;
+		this.isStructureEnabled = isStructureEnabled;
+		this.requiresTerraforming = requiresTerraforming;
 
 		maxPossibleSize = Math.max(this.size, maxPossibleSize);
 	}
@@ -188,22 +155,6 @@ public class TFLandmark {
 	@Deprecated // Not good practice - TODO The root need for this method can be fixed
 	public static int getMaxSearchSize() {
 		return maxPossibleSize;
-	}
-
-	/**
-	 * Tell the chunkgenerator that we don't have an associated structure.
-	 */
-	public TFLandmark disableStructure() {
-		this.isStructureEnabled = false;
-		return this;
-	}
-
-	/**
-	 * Tell the chunkgenerator that we want the terrain changed nearby.
-	 */
-	public TFLandmark enableTerrainAlterations() {
-		this.requiresTerraforming = true;
-		return this;
 	}
 
 	@Deprecated // TODO Deleting this method will break maps - best to wait until new MC version before committing to it.
