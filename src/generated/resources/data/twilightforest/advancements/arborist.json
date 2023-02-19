@@ -493,48 +493,48 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_canopy_log_horizontal": {
+    "hollow_canopy_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_canopy_log_vertical"
+              "twilightforest:hollow_canopy_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_dark_log_horizontal": {
+    "hollow_dark_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_dark_log_vertical"
+              "twilightforest:hollow_dark_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_mangrove_log_horizontal": {
+    "hollow_mangrove_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_mangrove_log_vertical"
+              "twilightforest:hollow_mangrove_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_mining_log_horizontal": {
+    "hollow_mining_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_mining_log_vertical"
+              "twilightforest:hollow_mining_log"
             ]
           }
         ]
@@ -553,48 +553,48 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_sorting_log_horizontal": {
+    "hollow_sorting_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_sorting_log_vertical"
+              "twilightforest:hollow_sorting_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_time_log_horizontal": {
+    "hollow_time_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_time_log_vertical"
+              "twilightforest:hollow_time_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_transformation_log_horizontal": {
+    "hollow_transformation_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_transformation_log_vertical"
+              "twilightforest:hollow_transformation_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_twilight_oak_log_horizontal": {
+    "hollow_twilight_oak_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_twilight_oak_log_vertical"
+              "twilightforest:hollow_twilight_oak_log"
             ]
           }
         ]
@@ -2119,7 +2119,7 @@
       "stripped_twilight_oak_wood"
     ],
     [
-      "hollow_twilight_oak_log_horizontal"
+      "hollow_twilight_oak_log"
     ],
     [
       "twilight_oak_leaves"
@@ -2176,7 +2176,7 @@
       "stripped_canopy_wood"
     ],
     [
-      "hollow_canopy_log_horizontal"
+      "hollow_canopy_log"
     ],
     [
       "canopy_leaves"
@@ -2239,7 +2239,7 @@
       "stripped_mangrove_wood"
     ],
     [
-      "hollow_mangrove_log_horizontal"
+      "hollow_mangrove_log"
     ],
     [
       "mangrove_leaves"
@@ -2296,7 +2296,7 @@
       "stripped_dark_wood"
     ],
     [
-      "hollow_dark_log_horizontal"
+      "hollow_dark_log"
     ],
     [
       "dark_leaves"
@@ -2353,7 +2353,7 @@
       "stripped_time_wood"
     ],
     [
-      "hollow_time_log_horizontal"
+      "hollow_time_log"
     ],
     [
       "time_leaves"
@@ -2410,7 +2410,7 @@
       "stripped_transformation_wood"
     ],
     [
-      "hollow_transformation_log_horizontal"
+      "hollow_transformation_log"
     ],
     [
       "transformation_leaves"
@@ -2467,7 +2467,7 @@
       "stripped_mining_wood"
     ],
     [
-      "hollow_mining_log_horizontal"
+      "hollow_mining_log"
     ],
     [
       "mining_leaves"
@@ -2524,7 +2524,7 @@
       "stripped_sorting_wood"
     ],
     [
-      "hollow_sorting_log_horizontal"
+      "hollow_sorting_log"
     ],
     [
       "sorting_leaves"
