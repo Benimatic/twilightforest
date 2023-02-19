@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.event.TickEvent;
@@ -18,20 +19,18 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.init.TFBlocks;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
 import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.util.BoundingBoxUtils;
-import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.util.PlayerHelper;
-import twilightforest.util.WorldUtil;
+import twilightforest.util.*;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.init.TFLandmark;
+import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
@@ -68,12 +67,12 @@ public class TFTickHandler {
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && TFGenerationSettings.isProgressionEnforced(world) && TFGenerationSettings.usesTwilightChunkGenerator(world) && !player.isCreative() && !player.isSpectator()) {
+		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && TFGenerationSettings.usesTwilightChunkGenerator(world) && !player.isCreative() && !player.isSpectator()) {
 			TFGenerationSettings.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
+		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
@@ -98,19 +97,18 @@ public class TFTickHandler {
 
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(Player player, Level world) {
-
 		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(world);
 		if (chunkGenerator == null)
 			return false;
 
-
-		return TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, player.blockPosition(), 100).map(structure -> {
-			BoundingBox fullSBB = structure.getBoundingBox();
+		ChunkPos chunkPlayer = player.chunkPosition();
+		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
+			BoundingBox fullSBB = structureStart.getBoundingBox();
 			Vec3i center = BoundingBoxUtils.getCenter(fullSBB);
 
 			TFLandmark nearFeature = LegacyLandmarkPlacements.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerLevel) world);
 
-			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
+			if (!nearFeature.hasProtectionAura || (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player))) {
 				sendAllClearPacket(world, player);
 				return false;
 			} else {

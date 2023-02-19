@@ -47,7 +47,7 @@ import twilightforest.entity.ai.goal.PhantomUpdateFormationAndMoveGoal;
 import twilightforest.entity.ai.goal.PhantomWatchAndAttackGoal;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.util.LandmarkUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -234,7 +234,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 				}
 
 				// mark the stronghold as defeated
-				TFGenerationSettings.markStructureConquered(this.getLevel(), treasurePos, TFLandmark.KNIGHT_STRONGHOLD);
+				LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.KNIGHT_STRONGHOLD, true);
 
 				for (ServerPlayer player : this.hurtBy) {
 					TFAdvancements.HURT_BOSS.trigger(player, this);

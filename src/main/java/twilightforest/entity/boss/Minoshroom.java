@@ -36,11 +36,11 @@ import twilightforest.entity.ai.goal.GroundAttackGoal;
 import twilightforest.entity.monster.Minotaur;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.util.LandmarkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,7 +205,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), new BlockPos(this.blockPosition()), TFLandmark.LABYRINTH);
+			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.LABYRINTH, true);
 			for(ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
