@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -30,7 +31,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
@@ -46,6 +49,7 @@ import net.minecraftforge.network.PacketDistributor;
 import org.joml.Matrix4f;
 import twilightforest.client.TFClientSetup;
 import twilightforest.events.ToolEvents;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimensionSettings;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
@@ -287,6 +291,23 @@ public class ASMHooks {
 		float f7 = f2 * f4;
 		Vec3 vec31 = vec3.add((double) f6 * reach, (double) f5 * reach, (double) f7 * reach);
 		return level.clip(new ClipContext(vec3, vec31, ClipContext.Block.OUTLINE, fluidClip, player));
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.block.MushroomBlock#canSurvive(BlockState, LevelReader, BlockPos)}  }<br>
+	 * [AFTER INVOKEINTERFACE {@link LevelReader#getRawBrightness(BlockPos, int)}]
+	 */
+	public static int shroom(int o, LevelReader level, BlockPos pos) {
+		for (int x = -1; x <= 1; x++) {
+			for (int z = -1; z <= 1; z++) {
+				if (x == 0 && z == 0)
+					continue;
+				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL.get()))
+					return 0;
+			}
+		}
+		return o;
 	}
 
 }
