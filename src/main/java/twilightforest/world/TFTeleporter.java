@@ -96,7 +96,9 @@ public class TFTeleporter implements ITeleporter {
 		PortalInfo pos;
 
 		// Scale the coords based on the dimension type coordinate_scale
-		double scale = dest.dimensionType().coordinateScale();
+		ServerLevel tfDim = dest.getServer().getLevel(TFGenerationSettings.DIMENSION_KEY);
+		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
+		scale = dest.dimension().equals(TFGenerationSettings.DIMENSION_KEY) ? 1F / scale : scale;
 		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
 		if ((pos = placeInExistingPortal(dest, entity, destPos)) == null) {
