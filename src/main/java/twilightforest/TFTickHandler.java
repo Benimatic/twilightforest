@@ -2,7 +2,6 @@ package twilightforest;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,13 +21,14 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.util.*;
+import twilightforest.util.LandmarkUtil;
+import twilightforest.util.PlayerHelper;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -103,18 +103,13 @@ public class TFTickHandler {
 
 		ChunkPos chunkPlayer = player.chunkPosition();
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
-			BoundingBox fullSBB = structureStart.getBoundingBox();
-			Vec3i center = BoundingBoxUtils.getCenter(fullSBB);
-
-			TFLandmark nearFeature = LegacyLandmarkPlacements.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerLevel) world);
-
-			if (!nearFeature.hasProtectionAura || (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player))) {
-				sendAllClearPacket(world, player);
-				return false;
-			} else {
-				sendStructureProtectionPacket(world, player, fullSBB);
+			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
+				sendStructureProtectionPacket(world, player, structureStart.getBoundingBox());
 				return true;
 			}
+
+			sendAllClearPacket(world, player);
+			return false;
 		}).orElse(false);
 	}
 

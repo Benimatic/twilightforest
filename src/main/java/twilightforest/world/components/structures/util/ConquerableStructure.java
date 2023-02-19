@@ -1,4 +1,4 @@
-package twilightforest.world.components.structures.type;
+package twilightforest.world.components.structures.util;
 
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -15,9 +15,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.components.structures.util.ConfigurableSpawns;
-import twilightforest.world.components.structures.util.CustomStructureData;
-import twilightforest.world.components.structures.util.ProgressionStructure;
 
 import java.util.Optional;
 import java.util.function.Predicate;
