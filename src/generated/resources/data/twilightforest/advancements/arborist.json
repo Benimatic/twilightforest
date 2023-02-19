@@ -25,6 +25,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "canopy_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "canopy_bookshelf": {
       "conditions": {
         "items": [
@@ -55,6 +67,18 @@
           {
             "items": [
               "twilightforest:canopy_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_chest_boat"
             ]
           }
         ]
@@ -385,12 +409,36 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "darkwood_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:darkwood_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "darkwood_chest": {
       "conditions": {
         "items": [
           {
             "items": [
               "twilightforest:darkwood_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "darkwood_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:darkwood_chest_boat"
             ]
           }
         ]
@@ -649,6 +697,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mangrove_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mangrove_button": {
       "conditions": {
         "items": [
@@ -667,6 +727,18 @@
           {
             "items": [
               "twilightforest:mangrove_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_chest_boat"
             ]
           }
         ]
@@ -853,6 +925,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mining_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mining_button": {
       "conditions": {
         "items": [
@@ -871,6 +955,18 @@
           {
             "items": [
               "twilightforest:mining_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_chest_boat"
             ]
           }
         ]
@@ -1105,6 +1201,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "sorting_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "sorting_button": {
       "conditions": {
         "items": [
@@ -1123,6 +1231,18 @@
           {
             "items": [
               "twilightforest:sorting_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_chest_boat"
             ]
           }
         ]
@@ -1513,6 +1633,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "time_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "time_button": {
       "conditions": {
         "items": [
@@ -1531,6 +1663,18 @@
           {
             "items": [
               "twilightforest:time_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_chest_boat"
             ]
           }
         ]
@@ -1717,6 +1861,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "transformation_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:transformation_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "transformation_button": {
       "conditions": {
         "items": [
@@ -1735,6 +1891,18 @@
           {
             "items": [
               "twilightforest:transformation_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:transformation_chest_boat"
             ]
           }
         ]
@@ -1909,6 +2077,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "twilight_oak_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_oak_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "twilight_oak_button": {
       "conditions": {
         "items": [
@@ -1927,6 +2107,18 @@
           {
             "items": [
               "twilightforest:twilight_oak_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_oak_chest_boat"
             ]
           }
         ]
@@ -2164,6 +2356,12 @@
       "twilight_oak_banister"
     ],
     [
+      "twilight_oak_boat"
+    ],
+    [
+      "twilight_oak_chest_boat"
+    ],
+    [
       "canopy_log"
     ],
     [
@@ -2227,6 +2425,12 @@
       "empty_canopy_bookshelf"
     ],
     [
+      "canopy_boat"
+    ],
+    [
+      "canopy_chest_boat"
+    ],
+    [
       "mangrove_log"
     ],
     [
@@ -2282,6 +2486,12 @@
     ],
     [
       "mangrove_banister"
+    ],
+    [
+      "mangrove_boat"
+    ],
+    [
+      "mangrove_chest_boat"
     ],
     [
       "dark_log"
@@ -2341,6 +2551,12 @@
       "darkwood_banister"
     ],
     [
+      "darkwood_boat"
+    ],
+    [
+      "darkwood_chest_boat"
+    ],
+    [
       "time_log"
     ],
     [
@@ -2396,6 +2612,12 @@
     ],
     [
       "time_banister"
+    ],
+    [
+      "time_boat"
+    ],
+    [
+      "time_chest_boat"
     ],
     [
       "transformation_log"
@@ -2455,6 +2677,12 @@
       "transformation_banister"
     ],
     [
+      "transformation_boat"
+    ],
+    [
+      "transformation_chest_boat"
+    ],
+    [
       "mining_log"
     ],
     [
@@ -2510,6 +2738,12 @@
     ],
     [
       "mining_banister"
+    ],
+    [
+      "mining_boat"
+    ],
+    [
+      "mining_chest_boat"
     ],
     [
       "sorting_log"
@@ -2569,6 +2803,12 @@
       "sorting_banister"
     ],
     [
+      "sorting_boat"
+    ],
+    [
+      "sorting_chest_boat"
+    ],
+    [
       "towerwood"
     ],
     [
@@ -2588,6 +2828,9 @@
     ],
     [
       "liveroot_block"
+    ],
+    [
+      "liveroot"
     ],
     [
       "hollow_oak_sapling"
@@ -2624,9 +2867,6 @@
     ],
     [
       "mangrove_root"
-    ],
-    [
-      "liveroot"
     ]
   ],
   "rewards": {
