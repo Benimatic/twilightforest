@@ -112,6 +112,7 @@ public class TwilightForestMod {
 		TFLootModifiers.LOOT_MODIFIERS.register(modbus);
 		TFMobEffects.MOB_EFFECTS.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
+		TFPOITypes.POIS.register(modbus);
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(modbus);
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFRecipes.RECIPE_TYPES.register(modbus);
