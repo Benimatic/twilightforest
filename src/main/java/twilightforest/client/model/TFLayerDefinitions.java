@@ -17,7 +17,6 @@ import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.client.renderer.entity.TwilightBoatRenderer;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
-import twilightforest.compat.curios.model.CharmOfKeepingModel;
 import twilightforest.compat.curios.model.CharmOfLife1NecklaceModel;
 import twilightforest.compat.curios.model.CharmOfLife2NecklaceModel;
 import twilightforest.entity.TwilightBoat;
@@ -171,7 +170,6 @@ public class TFLayerDefinitions {
 		if (ModList.get().isLoaded("curios")) {
 			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
 			event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
-			event.registerLayerDefinition(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);
 		}
 	}
 }
