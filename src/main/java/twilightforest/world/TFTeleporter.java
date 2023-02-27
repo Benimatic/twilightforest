@@ -26,6 +26,7 @@ import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -122,7 +123,8 @@ public class TFTeleporter implements ITeleporter {
 			portalPosition.lastUpdateTime = destDim.getGameTime();
 			flag = false;
 			// Validate that the Portal still exists
-			if (getPortalPosition(destDim, blockpos) == null) {
+			TwilightForestMod.LOGGER.debug("Using cache, validating. {}", blockpos);
+			if (!destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.get())) {
 				// Portal was broken, we need to recreate it.
 				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating.");
 				blockpos = null;
@@ -137,8 +139,18 @@ public class TFTeleporter implements ITeleporter {
 			return null;
 		} else {
 			if (flag) {
+				TwilightForestMod.LOGGER.debug("Caching Src Portal Blocks to {}", blockpos);
 				destinationCoordinateCache.putIfAbsent(destDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
-				destinationCoordinateCache.get(destDim.dimension().location()).put(columnPos, new PortalPosition(blockpos, destDim.getGameTime()));
+				Map<BlockPos, Boolean> portalBlocks = new HashMap<>();
+				portalBlocks.put(entity.blockPosition(), true);
+				TFPortalBlock.recursivelyValidatePortal(entity.getLevel(), entity.blockPosition(), portalBlocks, new MutableInt(0), entity.getLevel().getBlockState(entity.blockPosition()));
+				BlockPos finalBlockpos = blockpos;
+				portalBlocks.forEach((blockPos, b) -> {
+					if (b) {
+						TwilightForestMod.LOGGER.debug("Caching {}", blockPos);
+						destinationCoordinateCache.get(destDim.dimension().location()).put(new ColumnPos(blockPos.getX(), blockPos.getZ()), new PortalPosition(finalBlockpos, destDim.getGameTime()));
+					}
+				});
 				// the last param is just an object for tracking, don't worry about it using columnPos instead of blockpos
 				destDim.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x(), blockpos.getY(), columnPos.z()));
 			}
@@ -466,6 +478,7 @@ public class TFTeleporter implements ITeleporter {
 		BlockPos exitPos = getPortalPosition(srcDim, srcPos);
 		if (exitPos == null)
 			return;
+		TwilightForestMod.LOGGER.debug("Caching Dest Portal Blocks to {}", exitPos);
 		destinationCoordinateCache.putIfAbsent(srcDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
 		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.getX(), pos.getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
 		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.south().getX(), pos.south().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
