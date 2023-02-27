@@ -24,6 +24,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -128,6 +129,12 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
 			} else if (result.getEntity() instanceof PartEntity<?> part && part.getParent() instanceof LivingEntity living) {
 				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
+			}
+
+			//properly disable shields
+			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+				player.getUseItem().hurtAndBreak(5, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
+				player.disableShield(true);
 			}
 
 			if (damage > 0.0F) {
