@@ -121,15 +121,22 @@ public class TFTeleporter implements ITeleporter {
 			blockpos = portalPosition.pos;
 			portalPosition.lastUpdateTime = destDim.getGameTime();
 			flag = false;
+			// Validate that the Portal still exists
+			if (getPortalPosition(destDim, blockpos) == null) {
+				// Portal was broken, we need to recreate it.
+				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating.");
+				blockpos = null;
+				destinationCoordinateCache.get(destDim.dimension().location()).remove(columnPos);
+			}
 		} else {
 			//BlockPos blockpos3 = new BlockPos(entity);
 			blockpos = getPortalPosition(destDim, pos);
 		}
 
-		if (blockpos.equals(BlockPos.ZERO)) {
+		if (blockpos == null) {
 			return null;
 		} else {
-			if (flag && !blockpos.equals(BlockPos.ZERO)) {
+			if (flag) {
 				destinationCoordinateCache.putIfAbsent(destDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
 				destinationCoordinateCache.get(destDim.dimension().location()).put(columnPos, new PortalPosition(blockpos, destDim.getGameTime()));
 				// the last param is just an object for tracking, don't worry about it using columnPos instead of blockpos
@@ -148,10 +155,11 @@ public class TFTeleporter implements ITeleporter {
 		}
 	}
 
+	@Nullable
 	private static BlockPos getPortalPosition(ServerLevel destDim, BlockPos pos) {
 		int i = 200; // scan radius up to 200, and also un-inline this variable back into below
 		double d0 = Double.MAX_VALUE;
-		BlockPos result = BlockPos.ZERO;
+		BlockPos result = null;
 
 		for (int i1 = -i; i1 <= i; ++i1) {
 			BlockPos blockpos2;
@@ -314,7 +322,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean isSafe(Level world, BlockPos pos, Entity entity, boolean checkProgression) {
-		return checkPos(world, pos) && (!checkProgression || checkBiome(world, pos, entity)) && checkStructure(world, pos);
+		return !world.dimension().equals(TFGenerationSettings.DIMENSION_KEY) || (checkPos(world, pos) && (!checkProgression || checkBiome(world, pos, entity)) && checkStructure(world, pos));
 	}
 
 	private static boolean checkPos(Level world, BlockPos pos) {
@@ -456,6 +464,8 @@ public class TFTeleporter implements ITeleporter {
 		if (srcDim == null)
 			return;
 		BlockPos exitPos = getPortalPosition(srcDim, srcPos);
+		if (exitPos == null)
+			return;
 		destinationCoordinateCache.putIfAbsent(srcDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
 		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.getX(), pos.getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
 		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.south().getX(), pos.south().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
