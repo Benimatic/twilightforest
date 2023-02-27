@@ -124,9 +124,9 @@ public class TFTeleporter implements ITeleporter {
 			flag = false;
 			// Validate that the Portal still exists
 			TwilightForestMod.LOGGER.debug("Using cache, validating. {}", blockpos);
-			if (!destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.get())) {
+			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.get())) {
 				// Portal was broken, we need to recreate it.
-				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating.");
+				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating. Old Pos: {}", blockpos);
 				blockpos = null;
 				destinationCoordinateCache.get(destDim.dimension().location()).remove(columnPos);
 			}
