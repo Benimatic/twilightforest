@@ -103,6 +103,7 @@ public class TFTeleporter implements ITeleporter {
 		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
 		if ((pos = placeInExistingPortal(dest, entity, destPos)) == null) {
+			TwilightForestMod.LOGGER.debug("Did not find existing portal, making a new one.");
 			pos = moveToSafeCoords(dest, entity, destPos);
 			makePortal(entity, dest, pos.pos);
 			pos = placeInExistingPortal(dest, entity, new BlockPos(pos.pos));
@@ -126,7 +127,7 @@ public class TFTeleporter implements ITeleporter {
 			TwilightForestMod.LOGGER.debug("Using cache, validating. {}", blockpos);
 			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.get())) {
 				// Portal was broken, we need to recreate it.
-				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating. Old Pos: {}", blockpos);
+				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating.");
 				blockpos = null;
 				destinationCoordinateCache.get(destDim.dimension().location()).remove(columnPos);
 			}
