@@ -74,7 +74,7 @@ public class EntityUtil {
 	}
 
 	public static SoundEvent getDeathSound(LivingEntity living) {
-		SoundEvent sound = SoundEvents.GENERIC_DEATH;
+		SoundEvent sound = null;
 		if (handle_LivingEntity_getDeathSound != null) {
 			try {
 				sound = (SoundEvent) handle_LivingEntity_getDeathSound.invokeExact(living);
@@ -82,6 +82,6 @@ public class EntityUtil {
 				// FAIL SILENTLY
 			}
 		}
-		return sound;
+		return sound == null ? SoundEvents.GENERIC_DEATH : sound;
 	}
 }
