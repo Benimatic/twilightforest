@@ -2,7 +2,6 @@ package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -73,6 +72,7 @@ public class EntityUtil {
 		handle_LivingEntity_getDeathSound = tmp_handle_LivingEntity_getDeathSound;
 	}
 
+	@Nullable
 	public static SoundEvent getDeathSound(LivingEntity living) {
 		SoundEvent sound = null;
 		if (handle_LivingEntity_getDeathSound != null) {
@@ -82,6 +82,6 @@ public class EntityUtil {
 				// FAIL SILENTLY
 			}
 		}
-		return sound == null ? SoundEvents.GENERIC_DEATH : sound;
+		return sound;
 	}
 }
