@@ -54,7 +54,7 @@ import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.registration.TFStructureProcessors;
+import twilightforest.init.TFStructureProcessors;
 
 import java.util.Locale;
 import java.util.Objects;
