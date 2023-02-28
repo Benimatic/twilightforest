@@ -42,6 +42,11 @@ public class YetiCaveStructure extends ConquerableStructure {
         return TFStructureTypes.YETI_CAVE.get();
     }
 
+    @Override
+    protected boolean dontCenter() {
+        return true;
+    }
+
     public static YetiCaveStructure buildYetiCaveConfig(BootstapContext<Structure> context) {
         return new YetiCaveStructure(
                 ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 2)),

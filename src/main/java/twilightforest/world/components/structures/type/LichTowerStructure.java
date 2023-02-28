@@ -44,6 +44,11 @@ public class LichTowerStructure extends ConquerableStructure {
         return TFStructureTypes.LICH_TOWER.get();
     }
 
+    @Override
+    protected boolean dontCenter() {
+        return true;
+    }
+
     public static LichTowerStructure buildLichTowerConfig(BootstapContext<Structure> context) {
         return new LichTowerStructure(
                 ControlledSpawningConfig.firstIndexMonsters(

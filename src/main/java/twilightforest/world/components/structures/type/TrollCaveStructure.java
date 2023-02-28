@@ -55,6 +55,11 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
         return this.controlledSpawningConfig;
     }
 
+    @Override
+    protected boolean dontCenter() {
+        return true;
+    }
+
     public static TrollCaveStructure buildTrollCaveConfig(BootstapContext<Structure> context) {
         return new TrollCaveStructure(
                 ControlledSpawningConfig.create(List.of(List.of(
