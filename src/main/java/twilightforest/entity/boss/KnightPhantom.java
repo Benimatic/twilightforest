@@ -47,6 +47,7 @@ import twilightforest.entity.ai.goal.PhantomUpdateFormationAndMoveGoal;
 import twilightforest.entity.ai.goal.PhantomWatchAndAttackGoal;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
 import java.util.ArrayList;
@@ -257,6 +258,17 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
+	}
+
+	@Override
+	public void lavaHurt() {
+		if (!this.fireImmune()) {
+			this.setSecondsOnFire(15);
+			if (this.hurt(DamageSource.LAVA, 0.5F)) {
+				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
+				EntityUtil.killLavaAround(this);
+			}
+		}
 	}
 
 	// [VanillaCopy] Exact copy of Mob.doHurtTarget, but change the damage source

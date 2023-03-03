@@ -327,6 +327,17 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	}
 
 	@Override
+	public void lavaHurt() {
+		if (!this.fireImmune()) {
+			this.setSecondsOnFire(15);
+			if (this.hurt(DamageSource.LAVA, 0.5F)) {
+				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
+				EntityUtil.killLavaAround(this);
+			}
+		}
+	}
+
+	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the tower as defeated

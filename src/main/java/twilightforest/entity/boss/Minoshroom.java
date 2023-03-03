@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
@@ -199,6 +200,17 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
+	}
+
+	@Override
+	public void lavaHurt() {
+		if (!this.fireImmune()) {
+			this.setSecondsOnFire(15);
+			if (this.hurt(DamageSource.LAVA, 0.5F)) {
+				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
+				EntityUtil.killLavaAround(this);
+			}
+		}
 	}
 
 	@Override

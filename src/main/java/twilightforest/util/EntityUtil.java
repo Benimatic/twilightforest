@@ -8,7 +8,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
@@ -83,5 +86,20 @@ public class EntityUtil {
 			}
 		}
 		return sound;
+	}
+
+	public static void killLavaAround(Entity entity) {
+		AABB bounds = entity.getBoundingBox().inflate(9D);
+		for (double x = bounds.minX; x < bounds.maxX; x++) {
+			for (double z = bounds.minZ; z < bounds.maxZ; z++) {
+				for (double y = bounds.minY; y < bounds.maxY; y++) {
+					BlockPos pos = new BlockPos(x, y, z);
+					BlockState state = entity.getLevel().getBlockState(pos);
+					if (state.is(Blocks.LAVA)) {
+						entity.getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+					}
+				}
+			}
+		}
 	}
 }
