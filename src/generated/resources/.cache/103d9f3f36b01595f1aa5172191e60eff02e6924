@@ -1,4 +1,4 @@
-// 1.19.3	2023-02-28T04:29:48.70379	Registries
+// 1.19.3	2023-03-05T21:35:23.02390192	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -8,7 +8,7 @@ b02ef5ca34cf18dab1ae63fe8266b87e4d612478 data/minecraft/twilight/wood_palettes/j
 1e09df5942a0273885092f722ac2cab788a42949 data/minecraft/twilight/wood_palettes/oak.json
 96ce0ebb03bf3906a0b6f8a19d5f658ecab260cd data/minecraft/twilight/wood_palettes/spruce.json
 5fbf8048f4f024ba7ebf85efbf3a169a2faa1139 data/minecraft/twilight/wood_palettes/warped.json
-b54b040862e55af05ed893ee4ef3cee7ed83584a data/twilightforest/dimension/twilight_forest.json
+33acf42cec02d4bb6e62bd196cf3b27fc6f71751 data/twilightforest/dimension/twilight_forest.json
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
 2aa6f23871be95f6a25e9b6215dff1ad5294aeb6 data/twilightforest/twilight/wood_palettes/canopy.json
 99745b1107ece6924307d51a2ed5d545b9d1e927 data/twilightforest/twilight/wood_palettes/darkwood.json
