@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -32,17 +33,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
-import org.jetbrains.annotations.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
@@ -1831,7 +1832,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
 		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
 
-		for (PaintingVariant art : ForgeRegistries.PAINTING_VARIANTS) {
+		for (PaintingVariant art : ForgeRegistries.PAINTING_VARIANTS.tags().getTag(PaintingVariantTags.PLACEABLE)) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
 				valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(ForgeRegistries.PAINTING_VARIANTS.getKey(art))));
 			}
