@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
@@ -60,6 +59,7 @@ import twilightforest.world.components.structures.util.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
@@ -72,16 +72,6 @@ public class ASMHooks {
 	 */
 	public static long seed(long seed) {
 		TFDimensionSettings.seed = seed;
-		return seed;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.storage.LevelStorageSource#readWorldGenSettings(Dynamic, DataFixer, int)}<br>
-	 * [BEFORE FIRST ASTORE]
-	 */
-	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
-		TFDimensionSettings.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 
