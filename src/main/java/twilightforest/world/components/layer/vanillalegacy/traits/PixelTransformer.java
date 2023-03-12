@@ -1,5 +1,8 @@
 package twilightforest.world.components.layer.vanillalegacy.traits;
 
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+
 public interface PixelTransformer {
-	int apply(int p_77076_, int p_77077_);
+	ResourceKey<Biome> apply(int x, int z);
 }

@@ -18,7 +18,6 @@ import twilightforest.world.components.layer.vanillalegacy.Layer;
 import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
 import twilightforest.world.components.layer.vanillalegacy.ZoomLayer;
 import twilightforest.world.components.layer.vanillalegacy.area.Area;
-import twilightforest.world.components.layer.vanillalegacy.area.AreaFactory;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
@@ -29,6 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.LongFunction;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -71,10 +71,10 @@ public class TFBiomeProvider extends BiomeSource {
 		return ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BIOME).getId(registry.get(biome).get().get());
 	}
 
-	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, HolderGetter<Biome> registry, long rawSeed) {
- 		AreaFactory<T> biomes = GenLayerTFBiomes.INSTANCE.setup(registry).run(seed.apply(1L));
-		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(registry, rawSeed).run(seed.apply(1000L), biomes);
-		biomes = GenLayerTFCompanionBiomes.INSTANCE.setup(registry).run(seed.apply(1000L), biomes);
+	private static <T extends Area, C extends BigContext<T>> Supplier<T> makeLayers(LongFunction<C> seed, HolderGetter<Biome> registry, long rawSeed) {
+ 		Supplier<T> biomes = GenLayerTFBiomes.INSTANCE.run(seed.apply(1L));
+		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(rawSeed).run(seed.apply(1000L), biomes);
+		biomes = GenLayerTFCompanionBiomes.INSTANCE.run(seed.apply(1000L), biomes);
 
 		biomes = ZoomLayer.NORMAL.run(seed.apply(1000L), biomes);
 		biomes = ZoomLayer.NORMAL.run(seed.apply(1001L), biomes);
@@ -88,15 +88,15 @@ public class TFBiomeProvider extends BiomeSource {
 		biomes = ZoomLayer.NORMAL.run(seed.apply(1004), biomes);
 		biomes = ZoomLayer.NORMAL.run(seed.apply(1005), biomes);
 
-		AreaFactory<T> riverLayer = GenLayerTFStream.INSTANCE.setup(registry).run(seed.apply(1L), biomes);
+		Supplier<T> riverLayer = GenLayerTFStream.INSTANCE.run(seed.apply(1L), biomes);
 		riverLayer = SmoothLayer.INSTANCE.run(seed.apply(7000L), riverLayer);
-		biomes = GenLayerTFRiverMix.INSTANCE.setup(registry).run(seed.apply(100L), biomes, riverLayer);
+		biomes = GenLayerTFRiverMix.INSTANCE.setup().run(seed.apply(100L), biomes, riverLayer);
 
 		return biomes;
 	}
 	
 	public static Layer makeLayers(long seed, HolderGetter<Biome> registry) {
-		AreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
+		Supplier<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
 		// Debug code to render an image of the biome layout within the ide
 		/*final java.util.Map<Integer, Integer> remapColors = new java.util.HashMap<>();
 		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.LAKE, registry), 0x0000FF);
@@ -145,8 +145,8 @@ public class TFBiomeProvider extends BiomeSource {
  		System.out.println("breakpoint");*/
 		return new Layer(areaFactory) {
 			@Override
-			public Holder<Biome> get(HolderGetter<Biome> registry, int p_242936_2_, int p_242936_3_) {
-				int i = this.area.get(p_242936_2_, p_242936_3_);
+			public Holder<Biome> get(HolderGetter<Biome> registry, int x, int z) {
+				ResourceKey<Biome> i = this.area.get(x, z);
 				Optional<Holder.Reference<Biome>> biome = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BIOME).getHolder(i);
 				if (biome.isEmpty())
 					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
@@ -198,7 +198,9 @@ public class TFBiomeProvider extends BiomeSource {
 		// FIXME Hacky double-dipping of biomes
 		lazyLoadGenBiomes();
 		Holder<Biome> columnBiome = this.genBiomes.get(this.registry, x, z);
-		return this.biomeList.get(columnBiome.unwrapKey().get()).getBiome(y, columnBiome);
+		TerrainColumn terrainColumn = this.biomeList.get(columnBiome.unwrapKey().get());
+
+		return terrainColumn == null ? columnBiome : terrainColumn.getBiome(y, columnBiome);
 	}
 
 	private void lazyLoadGenBiomes() {

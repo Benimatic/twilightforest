@@ -1,35 +1,24 @@
 package twilightforest.world.components.layer;
 
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
-import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
 
 public enum GenLayerTFCompanionBiomes implements CastleTransformer {
 	INSTANCE;
 
-	GenLayerTFCompanionBiomes() { }
-
-	private HolderGetter<Biome> registry;
-
-	public GenLayerTFCompanionBiomes setup(HolderGetter<Biome> registry) {
-		this.registry = registry;
-		return this;
-	}
-
 	@Override
-	public int apply(Context noise, int up, int left, int down, int right, int center) {
-		int fireSwamp        = TFBiomeProvider.getBiomeId(TFBiomes.FIRE_SWAMP, registry);
-		int swamp            = TFBiomeProvider.getBiomeId(TFBiomes.SWAMP, registry);
-		int glacier          = TFBiomeProvider.getBiomeId(TFBiomes.GLACIER, registry);
-		int snowyForest      = TFBiomeProvider.getBiomeId(TFBiomes.SNOWY_FOREST, registry);
-		int darkForestCenter = TFBiomeProvider.getBiomeId(TFBiomes.DARK_FOREST_CENTER, registry);
-		int darkForest       = TFBiomeProvider.getBiomeId(TFBiomes.DARK_FOREST, registry);
-		int highlandsCenter  = TFBiomeProvider.getBiomeId(TFBiomes.FINAL_PLATEAU, registry);
-		int highlands        = TFBiomeProvider.getBiomeId(TFBiomes.HIGHLANDS, registry);
+	public ResourceKey<Biome> apply(Context noise, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> center) {
+		ResourceKey<Biome> fireSwamp        = TFBiomes.FIRE_SWAMP;
+		ResourceKey<Biome> swamp            = TFBiomes.SWAMP;
+		ResourceKey<Biome> glacier          = TFBiomes.GLACIER;
+		ResourceKey<Biome> snowyForest      = TFBiomes.SNOWY_FOREST;
+		ResourceKey<Biome> darkForestCenter = TFBiomes.DARK_FOREST_CENTER;
+		ResourceKey<Biome> darkForest       = TFBiomes.DARK_FOREST;
+		ResourceKey<Biome> highlandsCenter  = TFBiomes.FINAL_PLATEAU;
+		ResourceKey<Biome> highlands        = TFBiomes.HIGHLANDS;
 
 		if (isKey(fireSwamp, center, right, left, up, down)) {
 			return swamp;
@@ -47,7 +36,7 @@ public enum GenLayerTFCompanionBiomes implements CastleTransformer {
 	/**
 	 * Returns true if any of the surrounding biomes is the specified biome
 	 */
-	boolean isKey(int biome, int center, int right, int left, int up, int down) {
+	boolean isKey(ResourceKey<Biome> biome, ResourceKey<Biome> center, ResourceKey<Biome> right, ResourceKey<Biome> left, ResourceKey<Biome> up, ResourceKey<Biome> down) {
 		return center != biome && (right == biome || left == biome || up == biome || down == biome);
 	}
 }

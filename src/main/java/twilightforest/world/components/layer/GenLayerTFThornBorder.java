@@ -1,10 +1,9 @@
 package twilightforest.world.components.layer;
 
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
-import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 
 public enum GenLayerTFThornBorder implements IThornsTransformer {
@@ -20,9 +19,9 @@ public enum GenLayerTFThornBorder implements IThornsTransformer {
 	}
 
 	@Override
-	public int apply(Context noise, int up, int left, int down, int right, int center, int nw, int sw, int se, int ne) {
-		int highlandsCenter = TFBiomeProvider.getBiomeId(TFBiomes.FINAL_PLATEAU, registry);
-		int thornlands      = TFBiomeProvider.getBiomeId(TFBiomes.THORNLANDS, registry);
+	public ResourceKey<Biome> apply(Context noise, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> center, ResourceKey<Biome> nw, ResourceKey<Biome> sw, ResourceKey<Biome> se, ResourceKey<Biome> ne) {
+		ResourceKey<Biome> highlandsCenter = TFBiomes.FINAL_PLATEAU;
+		ResourceKey<Biome> thornlands      = TFBiomes.THORNLANDS;
 
 		if (onBorder(highlandsCenter, center, right, left, up, down)) {
 			return thornlands;
@@ -36,7 +35,7 @@ public enum GenLayerTFThornBorder implements IThornsTransformer {
 	/**
 	 * Returns true if the center biome is not the specified biome and any of the surrounding biomes are the specified biomes
 	 */
-	private boolean onBorder(int biomeID, int center, int right, int left, int up, int down) {
+	private boolean onBorder(ResourceKey<Biome> biomeID, ResourceKey<Biome> center, ResourceKey<Biome> right, ResourceKey<Biome> left, ResourceKey<Biome> up, ResourceKey<Biome> down) {
 		if (center == biomeID) {
 			return false;
 		} else if (right == biomeID) {

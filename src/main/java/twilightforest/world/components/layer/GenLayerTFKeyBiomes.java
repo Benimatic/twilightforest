@@ -1,10 +1,8 @@
 package twilightforest.world.components.layer;
 
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
-import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.area.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
@@ -19,14 +17,12 @@ import java.util.Random;
 public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	INSTANCE;
 
-	private HolderGetter<Biome> registry;
 	private long seed;
 	private static final Random RANDOM = new Random();
 
 	GenLayerTFKeyBiomes() { }
 
-	public GenLayerTFKeyBiomes setup(HolderGetter<Biome> registry, long seed) {
-		this.registry = registry;
+	public GenLayerTFKeyBiomes setup(long seed) {
 		this.seed = seed;
 		return this;
 	}
@@ -42,7 +38,7 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	}
 
 	@Override
-	public int applyPixel(BigContext<?> random, Area iArea, int x, int z) {
+	public ResourceKey<Biome> applyPixel(BigContext<?> random, Area iArea, int x, int z) {
 		RANDOM.setSeed(seed + (x & -4) * 25117L + (z & -4) * 151121L);
 		int ox = RANDOM.nextInt(2) + 1;
 		int oz = RANDOM.nextInt(2) + 1;
@@ -72,14 +68,14 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	/**
 	 * Determine which map "region" the specified points are in.  Assign the 0-3 of the index to the key biomes based on that region.
 	 */
-	private int getKeyBiomeFor(int index) {
+	private ResourceKey<Biome> getKeyBiomeFor(int index) {
 		// do we need to shuffle this better?
 		// the current version just "rotates" the 4 key biomes
-		return switch ((index) & 0b11) {
-			case 1 -> TFBiomeProvider.getBiomeId(TFBiomes.FIRE_SWAMP, registry);
-			case 2 -> TFBiomeProvider.getBiomeId(TFBiomes.DARK_FOREST_CENTER, registry);
-			case 3 -> TFBiomeProvider.getBiomeId(TFBiomes.FINAL_PLATEAU, registry);
-			default -> TFBiomeProvider.getBiomeId(TFBiomes.GLACIER, registry);
+		return switch (index & 0b11) {
+			case 1 -> TFBiomes.FIRE_SWAMP;
+			case 2 -> TFBiomes.DARK_FOREST_CENTER;
+			case 3 -> TFBiomes.FINAL_PLATEAU;
+			default -> TFBiomes.GLACIER;
 		};
 	}
 }

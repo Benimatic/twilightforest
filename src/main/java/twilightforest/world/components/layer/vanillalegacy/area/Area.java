@@ -1,5 +1,8 @@
 package twilightforest.world.components.layer.vanillalegacy.area;
 
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+
 public interface Area {
-	int get(int p_76486_, int p_76487_);
+	ResourceKey<Biome> get(int x, int z);
 }

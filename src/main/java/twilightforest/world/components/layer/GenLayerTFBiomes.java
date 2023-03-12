@@ -1,11 +1,9 @@
 package twilightforest.world.components.layer;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
-import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer0;
 
@@ -35,19 +33,8 @@ public enum GenLayerTFBiomes implements AreaTransformer0 {
 			TFBiomes.SPOOKY_FOREST
 	);
 
-	private HolderGetter<Biome> registry;
-
-	public GenLayerTFBiomes setup(HolderGetter<Biome> registry) {
-		this.registry = registry;
-		return this;
-	}
-
-	GenLayerTFBiomes() {
-
-	}
-
 	@Override
-	public int applyPixel(Context iNoiseRandom, int x, int y) {
+	public ResourceKey<Biome> applyPixel(Context iNoiseRandom, int x, int z) {
 		//return 0; //getRandomBiome(iNoiseRandom, commonBiomes));
 
 		if (iNoiseRandom.nextRandom(RARE_BIOME_CHANCE) == 0) {
@@ -59,7 +46,7 @@ public enum GenLayerTFBiomes implements AreaTransformer0 {
 		}
 	}
 
-	private int getRandomBiome(Context random, List<ResourceKey<Biome>> biomes) {
-		return TFBiomeProvider.getBiomeId(biomes.get(random.nextRandom(biomes.size())), registry);
+	private ResourceKey<Biome> getRandomBiome(Context random, List<ResourceKey<Biome>> biomes) {
+		return biomes.get(random.nextRandom(biomes.size()));
 	}
 }

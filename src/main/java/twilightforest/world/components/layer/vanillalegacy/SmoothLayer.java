@@ -1,12 +1,15 @@
 package twilightforest.world.components.layer.vanillalegacy;
 
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
 
 public enum SmoothLayer implements CastleTransformer {
 	INSTANCE;
 
-	public int apply(Context p_76938_, int p_76939_, int p_76940_, int p_76941_, int p_76942_, int p_76943_) {
+	@Override
+	public ResourceKey<Biome> apply(Context p_76938_, ResourceKey<Biome> p_76939_, ResourceKey<Biome> p_76940_, ResourceKey<Biome> p_76941_, ResourceKey<Biome> p_76942_, ResourceKey<Biome> p_76943_) {
 		boolean flag = p_76940_ == p_76942_;
 		boolean flag1 = p_76939_ == p_76941_;
 		if (flag == flag1) {

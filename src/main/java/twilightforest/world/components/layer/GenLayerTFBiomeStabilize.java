@@ -1,5 +1,7 @@
 package twilightforest.world.components.layer;
 
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.layer.vanillalegacy.area.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
@@ -65,7 +67,7 @@ public enum GenLayerTFBiomeStabilize implements AreaTransformer1 {
 //	}
 
 	@Override
-	public int applyPixel(BigContext<?> iExtendedNoiseRandom, Area iArea, int x, int z) {
+	public ResourceKey<Biome> applyPixel(BigContext<?> iExtendedNoiseRandom, Area iArea, int x, int z) {
 		int offX = getParentX(x << 4);
 		int offZ = getParentY(z << 4);
 		int centerX = ((x + offX + 1) & -4) - offX;
