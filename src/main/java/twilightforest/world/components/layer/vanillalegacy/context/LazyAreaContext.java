@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.traits.PixelTransformer;
 
@@ -14,11 +15,11 @@ public class LazyAreaContext implements BigContext<LazyArea> {
 	private final long seed;
 	private long rval;
 
-	public LazyAreaContext(int p_76523_, long p_76524_, long p_76525_) {
-		this.seed = mixSeed(p_76524_, p_76525_);
+	public LazyAreaContext(int maxCache, long salt) {
+		this.seed = mixSeed(TFDimensionSettings.seed, salt);
 		this.cache = new Long2ObjectLinkedOpenHashMap<>(16, 0.25F);
 		this.cache.defaultReturnValue(Biomes.THE_VOID);
-		this.maxCache = p_76523_;
+		this.maxCache = maxCache;
 	}
 
 	public LazyArea createResult(PixelTransformer p_76552_) {
@@ -48,11 +49,11 @@ public class LazyAreaContext implements BigContext<LazyArea> {
 		return i;
 	}
 
-	private static long mixSeed(long p_76549_, long p_76550_) {
-		long i = LinearCongruentialGenerator.next(p_76550_, p_76550_);
-		i = LinearCongruentialGenerator.next(i, p_76550_);
-		i = LinearCongruentialGenerator.next(i, p_76550_);
-		long j = LinearCongruentialGenerator.next(p_76549_, i);
+	private static long mixSeed(long seed, long salt) {
+		long i = LinearCongruentialGenerator.next(salt, salt);
+		i = LinearCongruentialGenerator.next(i, salt);
+		i = LinearCongruentialGenerator.next(i, salt);
+		long j = LinearCongruentialGenerator.next(seed, i);
 		j = LinearCongruentialGenerator.next(j, i);
 		return LinearCongruentialGenerator.next(j, i);
 	}

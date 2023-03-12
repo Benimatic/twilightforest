@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
-import twilightforest.init.TFDimensionSettings;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.Layer;
 
@@ -95,10 +94,6 @@ public class TFBiomeProvider extends BiomeSource {
 
 	@Override
 	public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
-		// TODO Further positional-smoothing, see TFTerrainWarp.fillNoiseColumn's use of TFTerrainWarp.BIOME_WEIGHTS
-		//  That method already calls this method, resulting in search-space duplication
-
-		// FIXME Hacky double-dipping of biomes
 		lazyLoadGenBiomes();
 
 		return this.biomeList.get(this.genBiomes.get(x, z)).getBiome(y);
@@ -106,6 +101,6 @@ public class TFBiomeProvider extends BiomeSource {
 
 	private void lazyLoadGenBiomes() {
 		if (genBiomes == null)
-			this.genBiomes = Layer.makeLayers(TFDimensionSettings.seed, registry);
+			this.genBiomes = Layer.makeLayers(registry);
 	}
 }

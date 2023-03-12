@@ -3,6 +3,7 @@ package twilightforest.world.components.layer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.world.components.layer.vanillalegacy.area.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
@@ -17,15 +18,7 @@ import java.util.Random;
 public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	INSTANCE;
 
-	private long seed;
 	private static final Random RANDOM = new Random();
-
-	GenLayerTFKeyBiomes() { }
-
-	public GenLayerTFKeyBiomes setup(long seed) {
-		this.seed = seed;
-		return this;
-	}
 
 	@Override
 	public int getParentX(int x) {
@@ -39,10 +32,10 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 
 	@Override
 	public ResourceKey<Biome> applyPixel(BigContext<?> random, Area iArea, int x, int z) {
-		RANDOM.setSeed(seed + (x & -4) * 25117L + (z & -4) * 151121L);
+		RANDOM.setSeed(TFDimensionSettings.seed + (x & -4) * 25117L + (z & -4) * 151121L);
 		int ox = RANDOM.nextInt(2) + 1;
 		int oz = RANDOM.nextInt(2) + 1;
-		RANDOM.setSeed(seed + (x / 8) * 25117L + (z / 8) * 151121L);
+		RANDOM.setSeed(TFDimensionSettings.seed + (x / 8) * 25117L + (z / 8) * 151121L);
 		int offset = RANDOM.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4

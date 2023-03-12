@@ -23,7 +23,7 @@ import java.util.OptionalLong;
 
 public class TFDimensionSettings {
 
-	public static long seed; //used for seed ASM
+	public static long seed; //Minecraft Overworld seed - used for seed ASM
 
 	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
 	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));

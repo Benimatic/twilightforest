@@ -15,13 +15,13 @@ import java.util.function.Supplier;
 public class Layer {
 	public final LazyArea area;
 
-	public Layer(Supplier<LazyArea> p_76714_) {
-		this.area = p_76714_.get();
+	public Layer(Supplier<LazyArea> areaFactory) {
+		this.area = areaFactory.get();
 	}
 
-	private static <T extends Area, C extends BigContext<T>> Supplier<T> makeLayers(LongFunction<C> seed, HolderGetter<Biome> registry, long rawSeed) {
+	private static <T extends Area, C extends BigContext<T>> Supplier<T> makeLayers(LongFunction<C> seed, HolderGetter<Biome> registry) {
  		Supplier<T> biomes = GenLayerTFBiomes.INSTANCE.run(seed.apply(1L));
-		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(rawSeed).run(seed.apply(1000L), biomes);
+		biomes = GenLayerTFKeyBiomes.INSTANCE.run(seed.apply(1000L), biomes);
 		biomes = GenLayerTFCompanionBiomes.INSTANCE.run(seed.apply(1000L), biomes);
 
 		biomes = ZoomLayer.NORMAL.run(seed.apply(1000L), biomes);
@@ -43,12 +43,8 @@ public class Layer {
 		return biomes;
 	}
 
-	public static Layer makeLayers(long seed, HolderGetter<Biome> registry) {
-		Supplier<LazyArea> areaFactory = makeLayers((context) -> {
-			LazyAreaContext lazyAreaContext = new LazyAreaContext(25, seed, context);
-			return lazyAreaContext;
-		}, registry, seed);
-		return new Layer(areaFactory);
+	public static Layer makeLayers(HolderGetter<Biome> registry) {
+		return new Layer(makeLayers((salt) -> new LazyAreaContext(25, salt), registry));
 	}
 
 	public ResourceKey<Biome> get(int x, int z) {
