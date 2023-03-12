@@ -10,26 +10,17 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import twilightforest.init.TFDimensionSettings;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
-import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.Layer;
-import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
-import twilightforest.world.components.layer.vanillalegacy.ZoomLayer;
-import twilightforest.world.components.layer.vanillalegacy.area.Area;
-import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
-import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.LongFunction;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.Stream;
 
 @Deprecated
@@ -67,94 +58,6 @@ public class TFBiomeProvider extends BiomeSource {
 		return this.biomeList.values().stream().flatMap(TerrainColumn::getBiomes);
 	}
 
-	public static int getBiomeId(ResourceKey<Biome> biome, HolderGetter<Biome> registry) {
-		return ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BIOME).getId(registry.get(biome).get().get());
-	}
-
-	private static <T extends Area, C extends BigContext<T>> Supplier<T> makeLayers(LongFunction<C> seed, HolderGetter<Biome> registry, long rawSeed) {
- 		Supplier<T> biomes = GenLayerTFBiomes.INSTANCE.run(seed.apply(1L));
-		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(rawSeed).run(seed.apply(1000L), biomes);
-		biomes = GenLayerTFCompanionBiomes.INSTANCE.run(seed.apply(1000L), biomes);
-
-		biomes = ZoomLayer.NORMAL.run(seed.apply(1000L), biomes);
-		biomes = ZoomLayer.NORMAL.run(seed.apply(1001L), biomes);
-
-		biomes = GenLayerTFBiomeStabilize.INSTANCE.run(seed.apply(700L), biomes);
-
-		biomes = GenLayerTFThornBorder.INSTANCE.setup(registry).run(seed.apply(500L), biomes);
-
-		biomes = ZoomLayer.NORMAL.run(seed.apply(1002), biomes);
-		biomes = ZoomLayer.NORMAL.run(seed.apply(1003), biomes);
-		biomes = ZoomLayer.NORMAL.run(seed.apply(1004), biomes);
-		biomes = ZoomLayer.NORMAL.run(seed.apply(1005), biomes);
-
-		Supplier<T> riverLayer = GenLayerTFStream.INSTANCE.run(seed.apply(1L), biomes);
-		riverLayer = SmoothLayer.INSTANCE.run(seed.apply(7000L), riverLayer);
-		biomes = GenLayerTFRiverMix.INSTANCE.setup().run(seed.apply(100L), biomes, riverLayer);
-
-		return biomes;
-	}
-	
-	public static Layer makeLayers(long seed, HolderGetter<Biome> registry) {
-		Supplier<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaContext(25, seed, context), registry, seed);
-		// Debug code to render an image of the biome layout within the ide
-		/*final java.util.Map<Integer, Integer> remapColors = new java.util.HashMap<>();
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.LAKE, registry), 0x0000FF);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.FOREST, registry), 0x00FF00);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.DENSE_FOREST, registry), 0x00AA00);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.HIGHLANDS, registry), 0xCC6900);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.MUSHROOM_FOREST, registry), 0xcc008b);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.SWAMP, registry), 0x00ccbb);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.STREAM, registry), 0x0000FF);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.SNOWY_FOREST, registry), 0xFFFFFF);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.GLACIER, registry), 0x82bff5);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.CLEARING, registry), 0x84f582);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.OAK_SAVANNAH, registry), 0xeff582);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.FIREFLY_FOREST, registry), 0x58fc66);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.DENSE_MUSHROOM_FOREST, registry), 0xb830b8);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.DARK_FOREST, registry), 0x193d0d);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.ENCHANTED_FOREST, registry), 0x00FFFF);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.FIRE_SWAMP, registry), 0xFF0000);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.DARK_FOREST_CENTER, registry), 0xFFFF00);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.FINAL_PLATEAU, registry), 0x000000);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.THORNLANDS, registry), 0x3d250d);
-		remapColors.put(getBiomeId(twilightforest.world.registration.biomes.TFBiomes.SPOOKY_FOREST, registry), 0x7700FF);
-		final int size = 2048;
-		final int rad = size / 2;
-		final int ox = 0;
-		final int oz = 0;
-		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(size, size, java.awt.image.BufferedImage.TYPE_INT_RGB);
-		java.awt.Graphics2D display = image.createGraphics();
-		LazyArea area = areaFactory.make();
-		java.util.function.BiPredicate<Integer, Integer> line = (i, mod) -> {
-			for (int j = -5; j < 5; j++) {
-				if ((i + j) % mod == 0)
-					return true;
-			}
-			return false;
-		};
-		for (int x = -rad; x < rad - 1; x++) {
-			for (int z = -rad; z < rad - 1; z++) {
-				int xx = x + (ox * 64);
-				int zz = z + (oz * 64);
-				int c = area.get(x, z);
-				display.setColor(line.test(xx, 512) || line.test(zz, 512) ? new java.awt.Color(0xFF0000) : new java.awt.Color(remapColors.getOrDefault(c, c)));
-				display.drawRect(x + rad, z + rad, 1, 1);
-			}
-		}
- 		System.out.println("breakpoint");*/
-		return new Layer(areaFactory) {
-			@Override
-			public Holder<Biome> get(HolderGetter<Biome> registry, int x, int z) {
-				ResourceKey<Biome> i = this.area.get(x, z);
-				Optional<Holder.Reference<Biome>> biome = ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BIOME).getHolder(i);
-				if (biome.isEmpty())
-					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
-				return biome.get();
-			}
-		};
-	}
-
 	@Override
 	protected Codec<? extends BiomeSource> codec() {
 		return TF_CODEC;
@@ -170,23 +73,23 @@ public class TFBiomeProvider extends BiomeSource {
 
 	public float getBiomeDepth(int x, int z) {
 		lazyLoadGenBiomes();
-		return this.getBiomeDepth(this.genBiomes.get(this.registry, x, z));
+		return this.getBiomeDepth(this.genBiomes.get(x, z));
 	}
 
-	public float getBiomeDepth(Holder<Biome> biome) {
+	public float getBiomeDepth(ResourceKey<Biome> biome) {
 		return this.getBiomeValue(biome, TerrainColumn::depth, 0f);
 	}
 
 	public Optional<TerrainColumn> getTerrainColumn(int x, int z) {
 		lazyLoadGenBiomes();
-		return this.getTerrainColumn(this.genBiomes.get(this.registry, x, z));
+		return this.getTerrainColumn(this.genBiomes.get(x, z));
 	}
 
-	public Optional<TerrainColumn> getTerrainColumn(Holder<Biome> biome) {
+	public Optional<TerrainColumn> getTerrainColumn(ResourceKey<Biome> biome) {
 		return this.biomeList.values().stream().filter(p -> p.is(biome)).findFirst();
 	}
 
-	public <T> T getBiomeValue(Holder<Biome> biome, Function<TerrainColumn, T> function, T other) {
+	public <T> T getBiomeValue(ResourceKey<Biome> biome, Function<TerrainColumn, T> function, T other) {
 		return this.getTerrainColumn(biome).map(function).orElse(other);
 	}
 
@@ -197,14 +100,12 @@ public class TFBiomeProvider extends BiomeSource {
 
 		// FIXME Hacky double-dipping of biomes
 		lazyLoadGenBiomes();
-		Holder<Biome> columnBiome = this.genBiomes.get(this.registry, x, z);
-		TerrainColumn terrainColumn = this.biomeList.get(columnBiome.unwrapKey().get());
 
-		return terrainColumn == null ? columnBiome : terrainColumn.getBiome(y, columnBiome);
+		return this.biomeList.get(this.genBiomes.get(x, z)).getBiome(y);
 	}
 
 	private void lazyLoadGenBiomes() {
 		if (genBiomes == null)
-			this.genBiomes = makeLayers(TFDimensionSettings.seed, registry);
+			this.genBiomes = Layer.makeLayers(TFDimensionSettings.seed, registry);
 	}
 }

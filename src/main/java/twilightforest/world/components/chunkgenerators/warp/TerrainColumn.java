@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
@@ -14,7 +13,6 @@ import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.util.Codecs;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
@@ -56,13 +54,13 @@ public final class TerrainColumn implements Comparable<TerrainColumn> {
         return this.keyBiome.is(biome);
     }
 
-    public Holder<Biome> getBiome(int biomeElevation, Holder<Biome> other) {
+    public Holder<Biome> getBiome(int biomeElevation) {
         return this.reduce((a, b) -> {
             float aDelta = a.getFloatKey() - biomeElevation;
             float bDelta = b.getFloatKey() - biomeElevation;
 
             return Math.abs(aDelta) <= Math.abs(bDelta) ? a : b;
-        }, other);
+        }, this.keyBiome);
     }
 
     private Holder<Biome> reduce(BinaryOperator<Float2ObjectMap.Entry<Holder<Biome>>> reducer, Holder<Biome> other) {
