@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDimensionSettings;
-import twilightforest.world.components.layer.vanillalegacy.area.Area;
+import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
 
@@ -54,7 +54,7 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 			}
 
 		} else {
-			return iArea.get(x, z);
+			return iArea.getBiome(x, z);
 		}
 	}
 

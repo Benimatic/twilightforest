@@ -3,7 +3,7 @@ package twilightforest.world.components.layer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
-import twilightforest.world.components.layer.vanillalegacy.area.Area;
+import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer2;
 import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffset0Transformer;
@@ -55,8 +55,8 @@ public enum GenLayerTFRiverMix implements AreaTransformer2, DimensionOffset0Tran
 
 	@Override
 	public ResourceKey<Biome> applyPixel(Context iNoiseRandom, Area area1, Area area2, int x, int z) {
-		ResourceKey<Biome> biomeInputs = area1.get(this.getParentX(x), this.getParentY(z));
-		ResourceKey<Biome> riverInputs = area2.get(this.getParentX(x), this.getParentY(z));
+		ResourceKey<Biome> biomeInputs = area1.getBiome(this.getParentX(x), this.getParentY(z));
+		ResourceKey<Biome> riverInputs = area2.getBiome(this.getParentX(x), this.getParentY(z));
 
 		ResourceKey<Biome> stream = TFBiomes.STREAM;
 

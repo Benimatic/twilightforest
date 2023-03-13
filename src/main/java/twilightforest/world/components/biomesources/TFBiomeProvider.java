@@ -3,9 +3,6 @@ package twilightforest.world.components.biomesources;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -25,30 +22,29 @@ import java.util.stream.Stream;
 @Deprecated
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-			RegistryOps.retrieveGetter(Registries.BIOME),
 			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> m.values().stream().sorted(Comparator.comparing(TerrainColumn::getResourceKey)).toList()).forGetter(o -> o.biomeList),
 			Codec.FLOAT.fieldOf("base_offset").forGetter(o -> o.baseOffset),
 			Codec.FLOAT.fieldOf("base_factor").forGetter(o -> o.baseFactor)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
-	private final HolderGetter<Biome> registry;
 	private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
 	private final float baseOffset;
 	private final float baseFactor;
 
 	private Layer genBiomes;
 
-	public TFBiomeProvider(HolderGetter<Biome> registry, List<TerrainColumn> list, float offset, float factor) {
-		this(registry, list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
+	public TFBiomeProvider(List<TerrainColumn> list, float offset, float factor) {
+		this(list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
 	}
 
 	public TFBiomeProvider(HolderGetter<Biome> registryIn, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
 		super();
 
+		this.genBiomes = new Layer();
+
 		this.baseOffset = offset;
 		this.baseFactor = factor;
 
-		this.registry = registryIn;
 		this.biomeList = list;
 	}
 
@@ -72,7 +68,7 @@ public class TFBiomeProvider extends BiomeSource {
 
 	public float getBiomeDepth(int x, int z) {
 		lazyLoadGenBiomes();
-		return this.getBiomeDepth(this.genBiomes.get(x, z));
+		return this.getBiomeDepth(this.genBiomes.getBiome(x, z));
 	}
 
 	public float getBiomeDepth(ResourceKey<Biome> biome) {
@@ -81,7 +77,7 @@ public class TFBiomeProvider extends BiomeSource {
 
 	public Optional<TerrainColumn> getTerrainColumn(int x, int z) {
 		lazyLoadGenBiomes();
-		return this.getTerrainColumn(this.genBiomes.get(x, z));
+		return this.getTerrainColumn(this.genBiomes.getBiome(x, z));
 	}
 
 	public Optional<TerrainColumn> getTerrainColumn(ResourceKey<Biome> biome) {
@@ -96,7 +92,7 @@ public class TFBiomeProvider extends BiomeSource {
 	public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
 		lazyLoadGenBiomes();
 
-		return this.biomeList.get(this.genBiomes.get(x, z)).getBiome(y);
+		return this.biomeList.get(this.genBiomes.getBiome(x, z)).getBiome(y);
 	}
 
 	private void lazyLoadGenBiomes() {

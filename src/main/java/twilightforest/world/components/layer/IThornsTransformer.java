@@ -2,7 +2,7 @@ package twilightforest.world.components.layer;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.world.components.layer.vanillalegacy.area.Area;
+import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
@@ -18,15 +18,15 @@ public interface IThornsTransformer extends AreaTransformer1, DimensionOffset1Tr
 	@Override
 	default ResourceKey<Biome> applyPixel(BigContext<?> noise, Area area, int x, int z) {
 		return this.apply(noise,
-				area.get(this.getParentX(x + 1), this.getParentY(z)),
-				area.get(this.getParentX(x + 2), this.getParentY(z + 1)),
-				area.get(this.getParentX(x + 1), this.getParentY(z + 2)),
-				area.get(this.getParentX(x), this.getParentY(z + 1)),
-				area.get(this.getParentX(x + 1), this.getParentY(z + 1)),
-				area.get(this.getParentX(x + 2), this.getParentY(z)),
-				area.get(this.getParentX(x + 2), this.getParentY(z + 2)),
-				area.get(this.getParentX(x), this.getParentY(z + 2)),
-				area.get(this.getParentX(x), this.getParentY(z))
+				area.getBiome(this.getParentX(x + 1), this.getParentY(z)),
+				area.getBiome(this.getParentX(x + 2), this.getParentY(z + 1)),
+				area.getBiome(this.getParentX(x + 1), this.getParentY(z + 2)),
+				area.getBiome(this.getParentX(x), this.getParentY(z + 1)),
+				area.getBiome(this.getParentX(x + 1), this.getParentY(z + 1)),
+				area.getBiome(this.getParentX(x + 2), this.getParentY(z)),
+				area.getBiome(this.getParentX(x + 2), this.getParentY(z + 2)),
+				area.getBiome(this.getParentX(x), this.getParentY(z + 2)),
+				area.getBiome(this.getParentX(x), this.getParentY(z))
 		);
 	}
 }

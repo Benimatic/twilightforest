@@ -1,6 +1,5 @@
 package twilightforest.world.components.layer;
 
-import net.minecraft.core.HolderGetter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
@@ -8,15 +7,6 @@ import twilightforest.world.components.layer.vanillalegacy.context.Context;
 
 public enum GenLayerTFThornBorder implements IThornsTransformer {
 	INSTANCE;
-
-	private HolderGetter<Biome> registry;
-
-	GenLayerTFThornBorder() { }
-
-	public GenLayerTFThornBorder setup(HolderGetter<Biome> registry) {
-		this.registry = registry;
-		return this;
-	}
 
 	@Override
 	public ResourceKey<Biome> apply(Context noise, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> center, ResourceKey<Biome> nw, ResourceKey<Biome> sw, ResourceKey<Biome> se, ResourceKey<Biome> ne) {

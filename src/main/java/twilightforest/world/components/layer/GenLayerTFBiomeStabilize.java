@@ -2,20 +2,12 @@ package twilightforest.world.components.layer;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.world.components.layer.vanillalegacy.area.Area;
+import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
 
 public enum GenLayerTFBiomeStabilize implements AreaTransformer1 {
-
 	INSTANCE;
-
-//	public GenLayerTFBiomeStabilize(long l, GenLayer genlayer) {
-//		super(l);
-//		parent = genlayer;
-//	}
-
-	GenLayerTFBiomeStabilize() { }
 
 	@Override
 	public int getParentX(int x) {
@@ -80,11 +72,11 @@ public enum GenLayerTFBiomeStabilize implements AreaTransformer1 {
 //            	}
 //            	else
 		if (x <= centerX + 1 && x >= centerX - 1 && z <= centerZ + 1 && z >= centerZ - 1) {
-			return iArea.get(centerX, centerZ);
+			return iArea.getBiome(centerX, centerZ);
 //            		output[dx + dz * width] = Biome.desert.biomeID;
 //            		output[dx + dz * width] = input[dx + 1 + (dz + 1) * nwidth];
 		} else {
-			return iArea.get(x, z);
+			return iArea.getBiome(x, z);
 		}
 	}
 }
