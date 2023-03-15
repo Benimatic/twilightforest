@@ -16,7 +16,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.CritterBlock;
-import twilightforest.compat.curios.CuriosCompat;
 
 public class WearableItem extends BlockItem {
 	public WearableItem(Block block, Properties props) {
@@ -55,7 +54,7 @@ public class WearableItem extends BlockItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
 		if (ModList.get().isLoaded("curios") && this.getBlock() instanceof CritterBlock) {
-			return CuriosCompat.setupCuriosCapability(stack);
+			//return CuriosCompat.setupCuriosCapability(stack);
 		}
 		return super.initCapabilities(stack, tag);
 	}

@@ -2,9 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,8 +17,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.network.NetworkHooks;
-import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 
 public class HydraMortarHead extends ThrowableProjectile {
@@ -128,7 +124,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
 		boolean flag = ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this);
 		this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
-
+		//FIXME make a custom damage source for this
 		DamageSource src = new IndirectEntityDamageSource("onFire", this, getOwner()).setProjectile();
 
 		for (Entity nearby : this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {

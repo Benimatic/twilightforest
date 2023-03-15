@@ -1,6 +1,7 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -68,7 +69,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 		super.hurt(source, amount);
 
 		if (source.getDirectEntity() != null) {
-			if (!source.isExplosion())
+			if (!source.is(DamageTypeTags.IS_EXPLOSION))
 				this.explode();
 			return true;
 		} else {

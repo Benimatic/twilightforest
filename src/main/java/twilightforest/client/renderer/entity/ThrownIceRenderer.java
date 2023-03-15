@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +35,7 @@ public class ThrownIceRenderer extends EntityRenderer<IceBomb> {
 			Level world = entity.getCommandSenderWorld();
 			if (blockstate != world.getBlockState(entity.blockPosition()) && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
 				ms.pushPose();
-				BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
+				BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
 				ms.translate(-0.5D, 0.0D, -0.5D);
 				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(blockstate);
@@ -48,6 +49,6 @@ public class ThrownIceRenderer extends EntityRenderer<IceBomb> {
 
 	@Override
 	public ResourceLocation getTextureLocation(IceBomb entity) {
-		return TextureAtlas.LOCATION_BLOCKS;
+		return InventoryMenu.BLOCK_ATLAS;
 	}
 }

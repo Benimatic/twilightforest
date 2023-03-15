@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.LongFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Deprecated
 public class TFBiomeProvider extends BiomeSource {
@@ -52,13 +53,18 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	public TFBiomeProvider(HolderGetter<Biome> registryIn, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
-		super(list.values().stream().flatMap(TerrainColumn::getBiomes));
+		super();
 
 		this.baseOffset = offset;
 		this.baseFactor = factor;
 
 		this.registry = registryIn;
 		this.biomeList = list;
+	}
+
+	@Override
+	protected Stream<Holder<Biome>> collectPossibleBiomes() {
+		return this.biomeList.values().stream().flatMap(TerrainColumn::getBiomes);
 	}
 
 	public static int getBiomeId(ResourceKey<Biome> biome, HolderGetter<Biome> registry) {

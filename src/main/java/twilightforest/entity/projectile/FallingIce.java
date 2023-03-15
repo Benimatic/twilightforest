@@ -199,7 +199,8 @@ public class FallingIce extends Entity {
 			float dmg = (float) Math.min(Mth.floor((float) realDist * this.damagePerDifficulty[this.getLevel().getDifficulty().getId()]), this.fallDamageMax);
 			this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0F, 0.0F, 1.0F), EntitySelector.NO_SPECTATORS).forEach((entity) -> {
 				if (!(entity instanceof AlphaYeti)) {
-					entity.hurt(DamageSource.fallingBlock(this).bypassEnchantments(), dmg);
+					//TODO custom damage source here
+					entity.hurt(this.damageSources().fallingBlock(this).bypassEnchantments(), dmg);
 				}
 			});
 		}

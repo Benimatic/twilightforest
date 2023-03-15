@@ -40,8 +40,6 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.compat.top.TopCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
@@ -134,7 +132,7 @@ public class TwilightForestMod {
 		modbus.addListener(CapabilityList::registerCapabilities);
 
 		if (ModList.get().isLoaded("curios")) {
-			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+			//Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 
 		BiomeGrassColors.init();
@@ -167,10 +165,10 @@ public class TwilightForestMod {
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		if (ModList.get().isLoaded("curios")) {
-			CuriosCompat.handleCuriosIMCs();
+			//CuriosCompat.handleCuriosIMCs();
 		}
 		if (ModList.get().isLoaded("theoneprobe")) {
-			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 
@@ -186,15 +184,6 @@ public class TwilightForestMod {
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
 			TFStats.init();
-
-			WoodType.register(TFBlocks.TWILIGHT_OAK);
-			WoodType.register(TFBlocks.CANOPY);
-			WoodType.register(TFBlocks.MANGROVE);
-			WoodType.register(TFBlocks.DARKWOOD);
-			WoodType.register(TFBlocks.TIMEWOOD);
-			WoodType.register(TFBlocks.TRANSFORMATION);
-			WoodType.register(TFBlocks.MINING);
-			WoodType.register(TFBlocks.SORTING);
 
 			CauldronInteraction.WATER.put(TFItems.ARCTIC_HELMET.get(), CauldronInteraction.DYED_ITEM);
 			CauldronInteraction.WATER.put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteraction.DYED_ITEM);

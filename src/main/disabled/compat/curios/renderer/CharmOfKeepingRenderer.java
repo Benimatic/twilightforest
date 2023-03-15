@@ -25,7 +25,7 @@ public class CharmOfKeepingRenderer implements ICurioRenderer {
 			ms.mulPose(Axis.YP.rotationDegrees(0.0F));
 			ms.scale(0.3F, -0.3F, -0.3F);
 			ItemInHandRenderer renderer = new ItemInHandRenderer(Minecraft.getInstance(), Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getItemRenderer());
-			renderer.renderItem(slotContext.entity(), stack, ItemTransforms.TransformType.FIXED, false, ms, buffer, light);
+			renderer.renderItem(slotContext.entity(), stack, ItemDisplayContext.FIXED, false, ms, buffer, light);
 			ms.popPose();
 		}
 	}

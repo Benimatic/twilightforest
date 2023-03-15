@@ -343,7 +343,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	public void lavaHurt() {
 		if (!this.fireImmune()) {
 			this.setSecondsOnFire(5);
-			if (this.hurt(DamageSource.LAVA, 4F)) {
+			if (this.hurt(this.damageSources().lava(), 4F)) {
 				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
 				EntityUtil.killLavaAround(this);
 			}

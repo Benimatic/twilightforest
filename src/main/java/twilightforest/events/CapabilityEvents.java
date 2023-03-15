@@ -2,6 +2,7 @@ package twilightforest.events;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +38,7 @@ public class CapabilityEvents {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntity();
 		// shields
-		if (!living.getLevel().isClientSide() && !event.getSource().isBypassArmor()) {
+		if (!living.getLevel().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
 			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {
 					cap.breakShield();

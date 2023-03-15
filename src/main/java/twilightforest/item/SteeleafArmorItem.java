@@ -12,8 +12,8 @@ import twilightforest.TwilightForestMod;
 
 public class SteeleafArmorItem extends ArmorItem {
 
-	public SteeleafArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
-		super(material, slot, properties);
+	public SteeleafArmorItem(ArmorMaterial material, Type type, Properties properties) {
+		super(material, type, properties);
 	}
 
 	@Override
@@ -24,19 +24,4 @@ public class SteeleafArmorItem extends ArmorItem {
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
 		}
 	}
-
-//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-//		if (this.allowedIn(tab)) {
-//			ItemStack stack = new ItemStack(this);
-//			switch (this.getSlot()) {
-//				case HEAD -> stack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);
-//				case CHEST -> stack.enchant(Enchantments.BLAST_PROTECTION, 2);
-//				case LEGS -> stack.enchant(Enchantments.FIRE_PROTECTION, 2);
-//				case FEET -> stack.enchant(Enchantments.FALL_PROTECTION, 2);
-//				default -> {
-//				}
-//			}
-//			items.add(stack);
-//		}
-//	}
 }

@@ -106,7 +106,7 @@ public class EntityUtil {
 		for (double x = bounds.minX; x < bounds.maxX; x++) {
 			for (double z = bounds.minZ; z < bounds.maxZ; z++) {
 				for (double y = bounds.minY; y < bounds.maxY; y++) {
-					BlockPos pos = new BlockPos(x, y, z);
+					BlockPos pos = BlockPos.containing(x, y, z);
 					BlockState state = entity.getLevel().getBlockState(pos);
 					if (state.is(Blocks.LAVA)) {
 						entity.getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

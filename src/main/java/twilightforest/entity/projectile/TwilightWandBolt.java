@@ -73,7 +73,8 @@ public class TwilightWandBolt extends TFThrowable {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (!this.getLevel().isClientSide()) {
-			result.getEntity().hurt(DamageSource.indirectMagic(this, this.getOwner()).setProjectile(), 6);
+			//TODO custom source
+			result.getEntity().hurt(this.damageSources().indirectMagic(this, this.getOwner()).setProjectile(), 6);
 
 			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();

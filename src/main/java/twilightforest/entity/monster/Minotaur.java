@@ -150,7 +150,7 @@ public class Minotaur extends Monster implements ITFCharger {
 		super.aiStep();
 
 		if (this.isCharging()) {
-			this.animationSpeed += 0.6;
+			this.walkAnimation.setSpeed(this.walkAnimation.speed() + 0.6F);
 		}
 	}
 

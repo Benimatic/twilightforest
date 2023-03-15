@@ -77,6 +77,6 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 	}
 
 	private static DataResult<AvoidLandmarkModifier> validate(AvoidLandmarkModifier config) {
-		return config.occupiesSurface || config.occupiesUnderground ? DataResult.success(config) : DataResult.error("Feature Decorator cannot occupy neither surface nor underground");
+		return config.occupiesSurface || config.occupiesUnderground ? DataResult.success(config) : DataResult.error(() -> "Feature Decorator cannot occupy neither surface nor underground");
 	}
 }

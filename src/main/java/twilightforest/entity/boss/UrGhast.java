@@ -11,9 +11,11 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -176,7 +178,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
-		return src == DamageSource.IN_WALL || src == DamageSource.IN_FIRE || src == DamageSource.ON_FIRE || super.isInvulnerableTo(src);
+		return src.is(DamageTypes.IN_WALL) || src.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -196,7 +198,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 		if ("fireball".equals(source.getMsgId()) && source.getEntity() instanceof Player) {
 			// 'hide' fireball attacks so that we don't take 1000 damage.
-			attackSuccessful = super.hurt(DamageSource.thrown(source.getEntity(), source.getDirectEntity()), damage);
+			attackSuccessful = super.hurt(this.damageSources().thrown(source.getEntity(), source.getDirectEntity()), damage);
 		} else {
 			attackSuccessful = super.hurt(source, damage);
 		}
@@ -239,7 +241,7 @@ public class UrGhast extends CarminiteGhastguard {
 		if (this.level instanceof ServerLevel serverLevel) {
 			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
 			if (lightningbolt != null) {
-				BlockPos blockpos = serverLevel.findLightningTargetAround(new BlockPos(this.position().add(new Vec3(18, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))))));
+				BlockPos blockpos = serverLevel.findLightningTargetAround(BlockPos.containing(this.position().add(new Vec3(18, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))))));
 				lightningbolt.moveTo(Vec3.atBottomCenterOf(blockpos));
 				lightningbolt.setVisualOnly(true);
 				serverLevel.addFreshEntity(lightningbolt);
@@ -337,7 +339,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playHurtSound(DamageSource.GENERIC);
+				this.playHurtSound(this.damageSources().generic());
 				this.nextTantrumCry = 20 + this.getRandom().nextInt(30);
 			}
 

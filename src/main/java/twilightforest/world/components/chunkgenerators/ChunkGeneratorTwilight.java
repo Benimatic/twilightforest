@@ -138,8 +138,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 			int minY = Math.max(settings.minY(), level.getMinBuildHeight());
 			int maxY = Math.min(settings.minY() + settings.height(), level.getMaxBuildHeight());
-			int minCell = Mth.intFloorDiv(minY, settings.getCellHeight());
-			int maxCell = Mth.intFloorDiv(maxY - minY, settings.getCellHeight());
+			int minCell = Math.floorDiv(minY, settings.getCellHeight());
+			int maxCell = Math.floorDiv(maxY - minY, settings.getCellHeight());
 			return maxCell <= 0 ? level.getMinBuildHeight() : this.iterateNoiseColumn(random, x, z, null, heightMap.isOpaque(), minCell, maxCell).orElse(level.getMinBuildHeight());
 		}
 	}
@@ -152,8 +152,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 			int minY = Math.max(settings.minY(), level.getMinBuildHeight());
 			int maxY = Math.min(settings.minY() + settings.height(), level.getMaxBuildHeight());
-			int minCell = Mth.intFloorDiv(minY, settings.getCellHeight());
-			int maxCell = Mth.intFloorDiv(maxY - minY, settings.getCellHeight());
+			int minCell = Math.floorDiv(minY, settings.getCellHeight());
+			int maxCell = Math.floorDiv(maxY - minY, settings.getCellHeight());
 			if (maxCell <= 0) {
 				return new NoiseColumn(minY, EMPTY_COLUMN);
 			} else {
@@ -231,8 +231,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			int cellHeight = settings.getCellHeight();
 			int minY = Math.max(settings.minY(), chunkAccess.getMinBuildHeight());
 			int maxY = Math.min(settings.minY() + settings.height(), chunkAccess.getMaxBuildHeight());
-			int mincell = Mth.intFloorDiv(minY, cellHeight);
-			int maxcell = Mth.intFloorDiv(maxY - minY, cellHeight);
+			int mincell = Math.floorDiv(minY, cellHeight);
+			int maxcell = Math.floorDiv(maxY - minY, cellHeight);
 
 			if (maxcell <= 0) {
 				return CompletableFuture.completedFuture(chunkAccess);

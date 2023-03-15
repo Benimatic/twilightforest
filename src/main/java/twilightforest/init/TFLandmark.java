@@ -204,7 +204,7 @@ public class TFLandmark {
 			.build());
 
 	public static final Codec<TFLandmark> CODEC = Codec.STRING.comapFlatMap(
-			name -> TFLandmark.NAME_2_TYPE.containsKey(name) ? DataResult.success(TFLandmark.NAME_2_TYPE.get(name)) : DataResult.error("Landmark " + name + " not recognized!"),
+			name -> TFLandmark.NAME_2_TYPE.containsKey(name) ? DataResult.success(TFLandmark.NAME_2_TYPE.get(name)) : DataResult.error(() -> "Landmark " + name + " not recognized!"),
 			tfFeature -> tfFeature.name
 	);
 }

@@ -1,6 +1,7 @@
 package twilightforest.item.recipe;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -26,7 +27,7 @@ public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockSt
 	}
 
 	@Override
-	public ItemStack assemble(Container container) {
+	public ItemStack assemble(Container container, RegistryAccess access) {
 		return ItemStack.EMPTY;
 	}
 
@@ -36,7 +37,7 @@ public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockSt
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		return ItemStack.EMPTY;
 	}
 

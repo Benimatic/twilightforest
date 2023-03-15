@@ -3,8 +3,6 @@ package twilightforest.init;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 
 import org.jetbrains.annotations.Nullable;
 import twilightforest.util.EntityExcludedDamageSource;

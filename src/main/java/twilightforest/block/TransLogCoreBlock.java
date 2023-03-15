@@ -22,6 +22,8 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 import twilightforest.init.TFBiomes;
 
+import java.util.List;
+
 public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 	public TransLogCoreBlock(Properties props) {
@@ -68,7 +70,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 			if (level instanceof ServerLevel server) {
 				if (!chunkAt.isUnsaved()) chunkAt.setUnsaved(true);
-				server.getChunkSource().chunkMap.resendChunk(chunkAt);
+				server.getChunkSource().chunkMap.resendBiomesForChunks(List.of(chunkAt));
 			}
 			break;
 		}

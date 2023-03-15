@@ -125,7 +125,7 @@ public class TFTickHandler {
 			for (ItemEntity entityItem : itemList) {
 				if (entityItem.getItem().is(ItemTagGenerator.PORTAL_ACTIVATOR) &&
 						TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(world.getBlockState(entityItem.blockPosition())) &&
-						Objects.equals(entityItem.getThrower(), player.getUUID())) {
+						Objects.equals(entityItem.getOwner(), player)) {
 
 					qualified = entityItem;
 					break;

@@ -65,7 +65,7 @@ public class LoyalZombie extends TamableAnimal {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		boolean success = entity.hurt(DamageSource.mobAttack(this), 7.0F);
+		boolean success = entity.hurt(this.damageSources().mobAttack(this), 7.0F);
 
 		if (success) {
 			entity.push(0.0D, 0.2D, 0.0D);
@@ -80,6 +80,7 @@ public class LoyalZombie extends TamableAnimal {
 		// the effect here is that we die shortly after our 60 second lifespan
 		if (!this.getLevel().isClientSide() && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
 			if (this.tickCount % 20 == 0) {
+				//TODO damage source
 				this.hurt(new DamageSource(TFDamageSources.tfSource("expired")).bypassArmor().bypassMagic().bypassInvul().setMagic(), 2);
 			}
 		}

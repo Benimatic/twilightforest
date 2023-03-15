@@ -106,7 +106,7 @@ public class TFTeleporter implements ITeleporter {
 			TwilightForestMod.LOGGER.debug("Did not find existing portal, making a new one.");
 			pos = moveToSafeCoords(dest, entity, destPos);
 			makePortal(entity, dest, pos.pos);
-			pos = placeInExistingPortal(dest, entity, new BlockPos(pos.pos));
+			pos = placeInExistingPortal(dest, entity, BlockPos.containing(pos.pos));
 		}
 
 		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
@@ -316,7 +316,7 @@ public class TFTeleporter implements ITeleporter {
 		float vz = centerPos.z() - pos.getZ();
 		float nx = pos.getX() + vx * lerp;
 		float nz = pos.getZ() + vz * lerp;
-		return new BlockPos(nx, pos.getY(), nz);
+		return BlockPos.containing(nx, pos.getY(), nz);
 	}
 
 	public static boolean isSafeAround(Level world, BlockPos pos, Entity entity, boolean checkProgression) {
@@ -407,7 +407,7 @@ public class TFTeleporter implements ITeleporter {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
-		cacheNewPortalCoords(src, makePortalAt(world, new BlockPos(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
+		cacheNewPortalCoords(src, makePortalAt(world, BlockPos.containing(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
 	}
 
 	private static void loadSurroundingArea(ServerLevel world, Vec3 pos) {

@@ -30,8 +30,8 @@ import java.util.function.Consumer;
 public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties properties) {
-		super(armorMaterial, armorType, properties);
+	public ArcticArmorItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
+		super(armorMaterial, type, properties);
 	}
 
 	@Override

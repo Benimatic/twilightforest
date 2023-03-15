@@ -17,7 +17,7 @@ public record MissingAdvancementToast(Component title, ItemStack icon) implement
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         component.blit(stack, 0, 0, 0, 0, this.width(), this.height());
-        component.getMinecraft().getItemRenderer().renderGuiItem(this.icon(), 6, 8);
+        component.getMinecraft().getItemRenderer().renderGuiItem(stack, this.icon(), 6, 8);
         component.getMinecraft().font.draw(stack, UPPER_TEXT, 25.0F, 7.0F, 0xffffffff);
         component.getMinecraft().font.draw(stack, this.title(), 25.0F, 18.0F, 0xffffff);
 

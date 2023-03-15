@@ -135,7 +135,7 @@ public class IceBomb extends TFThrowable {
 			if (entity != this.getOwner()) {
 				if (entity instanceof Yeti) {
 					// TODO: make "frozen yeti" entity?
-					BlockPos pos = new BlockPos(entity.xOld, entity.yOld, entity.zOld);
+					BlockPos pos = BlockPos.containing(entity.xOld, entity.yOld, entity.zOld);
 					this.getLevel().setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
 					this.getLevel().setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 

@@ -35,7 +35,7 @@ public class DataGenerators {
 		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
 		generator.addProvider(event.includeServer(), blocktags);
 		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, provider, helper));
-		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags, helper));
+		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags.contentsGetter(), helper));
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new LootGenerator(output));

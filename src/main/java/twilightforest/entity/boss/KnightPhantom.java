@@ -22,6 +22,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -154,7 +155,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
-		return src == DamageSource.IN_WALL || super.isInvulnerableTo(src);
+		return src.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -221,7 +222,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 			List<KnightPhantom> knights = getNearbyKnights();
 			if (!knights.isEmpty()) {
 				knights.forEach(KnightPhantom::updateMyNumber);
-			} else if (cause != DamageSource.OUT_OF_WORLD) {
+			} else if (!cause.is(DamageTypes.OUT_OF_WORLD)) {
 
 				BlockPos treasurePos = this.hasHome() ? this.getRestrictCenter().below() : this.blockPosition();
 
@@ -264,7 +265,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public void lavaHurt() {
 		if (!this.fireImmune()) {
 			this.setSecondsOnFire(5);
-			if (this.hurt(DamageSource.LAVA, 4F)) {
+			if (this.hurt(this.damageSources().lava(), 4F)) {
 				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
 				EntityUtil.killLavaAround(this);
 			}

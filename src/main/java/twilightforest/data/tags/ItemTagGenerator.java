@@ -70,7 +70,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	private static final TagKey<Item> CHARM = ItemTags.create(new ResourceLocation("curios", "charm"));
 	private static final TagKey<Item> HEAD = ItemTags.create(new ResourceLocation("curios", "head"));
 
-	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, TagsProvider<Block> provider, ExistingFileHelper helper) {
+	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
 		super(output, future, provider, TwilightForestMod.ID, helper);
 	}
 

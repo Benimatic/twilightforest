@@ -32,7 +32,6 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraNeck;
@@ -42,6 +41,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMenuTypes;
+import twilightforest.util.TFWoodTypes;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -87,17 +87,17 @@ public class TFClientSetup {
         TFMenuTypes.renderScreens();
 
         evt.enqueueWork(() -> {
-            Sheets.addWoodType(TFBlocks.TWILIGHT_OAK);
-            Sheets.addWoodType(TFBlocks.CANOPY);
-            Sheets.addWoodType(TFBlocks.MANGROVE);
-            Sheets.addWoodType(TFBlocks.DARKWOOD);
-            Sheets.addWoodType(TFBlocks.TIMEWOOD);
-            Sheets.addWoodType(TFBlocks.TRANSFORMATION);
-            Sheets.addWoodType(TFBlocks.MINING);
-            Sheets.addWoodType(TFBlocks.SORTING);
+            Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
+            Sheets.addWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
+            Sheets.addWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
+            Sheets.addWoodType(TFWoodTypes.DARKWOOD_WOOD_TYPE);
+            Sheets.addWoodType(TFWoodTypes.TIMEWOOD_WOOD_TYPE);
+            Sheets.addWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
+            Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
+            Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
 
 			if (ModList.get().isLoaded("curios")) {
-				CuriosCompat.registerCurioRenderers();
+				//CuriosCompat.registerCurioRenderers();
 			}
         });
        
