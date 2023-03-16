@@ -369,11 +369,6 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 		return 0.1F;
 	}
 
-	@Override
-	public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource cause) {
-		return false;
-	}
-
 	public void destroyBlocksInAABB(AABB box) {
 		if (ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {

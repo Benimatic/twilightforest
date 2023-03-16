@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-15T19:43:56.8731293	Twilight Forest Block Tags
+// 1.19.4	2023-03-15T22:15:36.3640333	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -18,6 +18,7 @@ f285ead821ac84499caf16d88d7a2b79c397953b data/minecraft/tags/blocks/features_can
 211134157771c86a72a0c5a1985c2b05da55729b data/minecraft/tags/blocks/fence_gates.json
 e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/blocks/flower_pots.json
 89b1de786c6a6e577b7de5733e462baa124cd138 data/minecraft/tags/blocks/frog_prefer_jump_to.json
+65049c26c09e844c582a701fe66bd426a58aec5d data/minecraft/tags/blocks/invalid_spawn_inside.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/blocks/leaves.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/blocks/logs.json
 0af80d33dcbb7226a5afcb9d8a4c1a73a2c38c9d data/minecraft/tags/blocks/logs_that_burn.json

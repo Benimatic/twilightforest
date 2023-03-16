@@ -1,6 +1,7 @@
-// 1.19.4	2023-03-15T19:43:56.9151977	Twilight Forest Entity Tags
+// 1.19.4	2023-03-15T22:15:36.3700208	Twilight Forest Entity Tags
 0865b5410d11831c91b4a4164d890df4852489ff data/forge/tags/entity_types/bosses.json
 96a1f9f2c5c062278d532397563660cb0c4982a7 data/minecraft/tags/entity_types/arrows.json
+e5bff3b10b54d6af46050743b454bd8cce4993e0 data/minecraft/tags/entity_types/fall_damage_immune.json
 9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/minecraft/tags/entity_types/freeze_hurts_extra_types.json
 f0201eef926830e5f1c0aaaf18c674c503d22c0b data/minecraft/tags/entity_types/freeze_immune_entity_types.json
 4cc81785a3c2c7f11c11bac6cf2ad3c0d89c9ad5 data/minecraft/tags/entity_types/frog_food.json

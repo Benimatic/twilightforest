@@ -91,17 +91,6 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
-		return false;
-	}
-
-	@Override
-	protected void checkFallDamage(double dist, boolean damage, BlockState state, BlockPos pos) {
-		this.fallDistance = 0.0F;
-		super.checkFallDamage(dist, damage, state, pos);
-	}
-
-	@Override
 	public boolean hurt(DamageSource src, float damage) {
 		if (src.is(DamageTypeTags.IS_FIRE)) {
 			damage *= 2;

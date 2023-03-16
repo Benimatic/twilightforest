@@ -49,13 +49,4 @@ public abstract class BaseIceMob extends Monster {
 	protected boolean canRide(Entity entity) {
 		return false;
 	}
-
-	@Override
-	public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
-		return false;
-	}
-
-	@Override
-	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
-	}
 }

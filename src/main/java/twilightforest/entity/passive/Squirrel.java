@@ -55,11 +55,6 @@ public class Squirrel extends Animal {
 	}
 
 	@Override
-	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
-		return false;
-	}
-
-	@Override
 	public float getEyeHeight(Pose pose) {
 		return this.getBbHeight() * 0.7F;
 	}

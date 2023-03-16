@@ -677,6 +677,8 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.LIVEROOT_BLOCK.get(),
 				TFBlocks.TROLLSTEINN.get()
 		);
+
+		tag(BlockTags.INVALID_SPAWN_INSIDE).add(TFBlocks.TWILIGHT_PORTAL.get());
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {

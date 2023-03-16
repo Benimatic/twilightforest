@@ -69,7 +69,7 @@ public class TFDamageTypes {
         context.register(GHAST_TEAR, new DamageType("twilightforest.ghastTear", 0.0F));
         context.register(HYDRA_BITE, new DamageType("twilightforest.hydraBite", 0.0F));
         context.register(HYDRA_FIRE, new DamageType("twilightforest.hydraFire", 0.0F));
-        context.register(HYDRA_MORTAR, new DamageType("onFire", 0.0F));
+        context.register(HYDRA_MORTAR, new DamageType("onFire", 0.0F, DamageEffects.BURNING));
         context.register(LICH_BOLT, new DamageType("twilightforest.lichBolt", 0.0F));
         context.register(LICH_BOMB, new DamageType("twilightforest.lichBomb", 0.0F));
         context.register(CHILLING_BREATH, new DamageType("twilightforest.chillingBreath", 0.0F, DamageEffects.FREEZING));
@@ -89,13 +89,13 @@ public class TFDamageTypes {
         context.register(ANT, new DamageType("twilightforest.ant", 0.1F));
         context.register(HAUNT, new DamageType("twilightforest.haunt", 0.1F));
         context.register(CLAMPED, new DamageType("twilightforest.clamped", 0.1F));
-        context.register(SCORCHED, new DamageType("twilightforest.scorched", 0.1F));
-        context.register(FROZEN, new DamageType("twilightforest.frozen", 0.1F));
+        context.register(SCORCHED, new DamageType("twilightforest.scorched", 0.1F, DamageEffects.BURNING));
+        context.register(FROZEN, new DamageType("twilightforest.frozen", 0.1F, DamageEffects.FREEZING));
         context.register(SPIKED, new DamageType("twilightforest.spiked", 0.1F));
         context.register(LEAF_BRAIN, new DamageType("twilightforest.leafBrain", 0.1F));
         context.register(LOST_WORDS, new DamageType("twilightforest.lostWords", 0.1F));
         context.register(SCHOOLED, new DamageType("twilightforest.schooled", 0.1F));
-        context.register(SNOWBALL_FIGHT, new DamageType("twilightforest.snowballFight", 0.1F));
+        context.register(SNOWBALL_FIGHT, new DamageType("twilightforest.snowballFight", 0.1F, DamageEffects.FREEZING));
         context.register(TWILIGHT_SCEPTER, new DamageType("indirectMagic", 0.0F));
         context.register(LIFEDRAIN, new DamageType("twilightforest.lifedrain", 0.0F));
         context.register(EXPIRED, new DamageType("twilightforest.expired", 0.0F));
