@@ -26,7 +26,7 @@ public class DataGenerators {
 		CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
 		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		generator.addProvider(event.includeServer(), new AdvancementProvider(output, provider, helper));
+		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, provider, helper));
 		generator.addProvider(event.includeClient(), new BlockstateGenerator(output, helper));
 		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, helper));
 		generator.addProvider(event.includeClient(), new AtlasGenerator(output, helper));

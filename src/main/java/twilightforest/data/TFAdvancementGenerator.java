@@ -272,7 +272,7 @@ public class TFAdvancementGenerator implements ForgeAdvancementProvider.Advancem
 								Component.translatable(TFEntities.QUEST_RAM.get().getDescriptionId())),
 						null, FrameType.GOAL, true, true, false)
 				.addCriterion("quest_ram_complete", QuestRamCompletionTrigger.Instance.completeRam())
-				.rewards(AdvancementRewards.Builder.function(TwilightForestMod.prefix("give_3_shields")).addExperience(100))
+				.rewards(AdvancementRewards.Builder.experience(100))
 				.save(consumer, "twilightforest:quest_ram");
 
 		Advancement.Builder.advancement().parent(root).display(

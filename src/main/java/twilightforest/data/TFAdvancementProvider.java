@@ -8,9 +8,9 @@ import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class AdvancementProvider extends ForgeAdvancementProvider {
+public class TFAdvancementProvider extends ForgeAdvancementProvider {
 
-	public AdvancementProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
+	public TFAdvancementProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
 		super(output, registries, existingFileHelper, List.of(new TFAdvancementGenerator()));
 	}
 }
