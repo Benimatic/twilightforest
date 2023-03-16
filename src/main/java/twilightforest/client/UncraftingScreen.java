@@ -186,8 +186,8 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 
 	private void drawSlotAsBackground(PoseStack ms, Slot backgroundSlot, Slot appearSlot) {
 
-		int screenX = appearSlot.x + leftPos;
-		int screenY = appearSlot.y + topPos;
+		int screenX = appearSlot.x;
+		int screenY = appearSlot.y;
 		ItemStack itemStackToRender = backgroundSlot.getItem();
 
         itemRenderer.renderGuiItem(ms, itemStackToRender, screenX, screenY);
