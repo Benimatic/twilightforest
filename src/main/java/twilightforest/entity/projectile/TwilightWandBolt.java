@@ -14,6 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
 public class TwilightWandBolt extends TFThrowable {
@@ -73,8 +74,7 @@ public class TwilightWandBolt extends TFThrowable {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (!this.getLevel().isClientSide()) {
-			//TODO custom source
-			result.getEntity().hurt(this.damageSources().indirectMagic(this, this.getOwner()).setProjectile(), 6);
+			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.TWILIGHT_SCEPTER, this.getOwner(), this), 6);
 
 			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();

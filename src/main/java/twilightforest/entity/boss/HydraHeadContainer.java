@@ -18,7 +18,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.network.PacketDistributor;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -701,7 +701,7 @@ public class HydraHeadContainer {
 					}
 
 					// bite it!
-					nearby.hurt(TFDamageSources.HYDRA_BITE, BITE_DAMAGE);
+					nearby.hurt(TFDamageTypes.getDamageSource(living.getLevel(), TFDamageTypes.HYDRA_BITE, TFEntities.HYDRA.get()), BITE_DAMAGE);
 
 					//knockback!
 					if (living instanceof Player player) {
@@ -717,7 +717,7 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
-				if (!target.fireImmune() && target.hurt(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
+				if (!target.fireImmune() && target.hurt(TFDamageTypes.getDamageSource(target.getLevel(), TFDamageTypes.HYDRA_FIRE, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.setSecondsOnFire(FLAME_BURN_FACTOR);
 				}
 			}

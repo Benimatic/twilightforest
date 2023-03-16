@@ -137,7 +137,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		RenderSystem._setShaderTexture(0, textureLoc);
 		int frameX = (this.width - this.imageWidth) / 2;
 		int frameY = (this.height - this.imageHeight) / 2;
-		this.blit(ms, frameX, frameY, 0, 0, this.imageWidth, this.imageHeight);
+		blit(ms, frameX, frameY, 0, 0, this.imageWidth, this.imageHeight);
 
 		UncraftingMenu tfContainer = this.menu;
 

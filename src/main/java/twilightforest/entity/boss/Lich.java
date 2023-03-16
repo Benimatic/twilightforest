@@ -43,10 +43,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
+import twilightforest.data.tags.DamageTypeTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
@@ -295,8 +297,7 @@ public class Lich extends Monster implements EnforcedHomePoint {
 
 		// if our shield is up, ignore any damage that can be blocked.
 		if (!src.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && this.getShieldStrength() > 0) {
-			//TODO probably want to turn this into a custom tag, we dont have a way to check if a damage source is magic anymore. This is the closest we can get
-			if (src.is(DamageTypeTags.WITCH_RESISTANT_TO) && damage > 2) {
+			if (src.is(DamageTypeTagGenerator.BREAKS_LICH_SHIELDS) && damage > 2) {
 				// reduce shield for magic damage greater than 1 heart
 				if (this.getShieldStrength() > 0) {
 					this.setShieldStrength(this.getShieldStrength() - 1);
@@ -693,7 +694,7 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	}
 
 	@Override
-	public boolean isPushedByFluid() {
+	public boolean isPushedByFluid(FluidType type) {
 		return false;
 	}
 

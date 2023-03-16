@@ -38,6 +38,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
@@ -288,7 +289,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 			entity.setSecondsOnFire(i * 4);
 		}
 
-		boolean flag = entity.hurt(TFDamageSources.haunt(this), f);
+		boolean flag = entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.HAUNT, this), f);
 		if (flag) {
 			if (f1 > 0.0F && entity instanceof LivingEntity living) {
 				living.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));
@@ -525,7 +526,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	}
 
 	@Override
-	public boolean isPushedByFluid() {
+	public boolean isPushedByFluid(FluidType type) {
 		return false;
 	}
 

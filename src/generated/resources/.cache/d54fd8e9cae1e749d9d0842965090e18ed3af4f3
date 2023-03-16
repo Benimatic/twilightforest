@@ -1,0 +1,9 @@
+// 1.19.4	2023-03-15T19:43:56.8962479	Tags for minecraft:damage_type mod id twilightforest
+4ab0a038b74c9a0de0c5f73f23c69d420b5d1334 data/minecraft/tags/damage_type/bypasses_armor.json
+e871224cfaf3f71ec4cef5455688114b0d13ee16 data/minecraft/tags/damage_type/bypasses_invulnerability.json
+370292a3495d06a886b1248faac983a2151db90d data/minecraft/tags/damage_type/damages_helmet.json
+f953fcb77923694dc4d54294fa83a1bc6249f0fb data/minecraft/tags/damage_type/is_fall.json
+0e66deefa87f2ded7e7322b983560595b71f0729 data/minecraft/tags/damage_type/is_fire.json
+ff72fbe0de04463d707c15d9387381e1df485f00 data/minecraft/tags/damage_type/is_projectile.json
+b9cd88787282e94bc2a87ca2afa5d5936306d057 data/minecraft/tags/damage_type/witch_resistant_to.json
+1192ee522e63fecdb26847475f2e74d45285a403 data/twilightforest/tags/damage_type/breaks_lich_shields.json

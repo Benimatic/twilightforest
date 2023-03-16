@@ -373,7 +373,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 		for (Player player : this.getLevel().getEntitiesOfClass(Player.class, below)) {
 			if (this.getLevel().canSeeSkyFromBelowWater(player.blockPosition())) {
-				player.hurt(TFDamageSources.GHAST_TEAR, 3);
+				player.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.GHAST_TEAR, TFEntities.UR_GHAST.get()), 3);
 			}
 		}
 

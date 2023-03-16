@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fml.ModList;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 
 public class FieryBlock extends Block {
 	public FieryBlock(Properties properties) {
@@ -43,7 +43,7 @@ public class FieryBlock extends Block {
 				&& entity instanceof LivingEntity living
 				&& (!EnchantmentHelper.hasFrostWalker(living))
 				&& !living.getItemBySlot(EquipmentSlot.FEET).is(TFItems.FIERY_BOOTS.get())) {
-			entity.hurt(TFDamageSources.FIERY, 1.0F);
+			entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.FIERY), 1.0F);
 		}
 
 		super.stepOn(level, pos, state, entity);

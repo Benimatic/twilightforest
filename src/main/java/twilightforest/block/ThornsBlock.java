@@ -19,15 +19,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -86,7 +84,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	@SuppressWarnings("deprecation")
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		entity.hurt(TFDamageSources.THORNS, THORN_DAMAGE);
+		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.THORNS), THORN_DAMAGE);
 	}
 
 	@Override

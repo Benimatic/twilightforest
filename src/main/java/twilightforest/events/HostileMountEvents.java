@@ -15,7 +15,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.thrown.YetiThrowCapability;
 import twilightforest.entity.IHostileMount;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class HostileMountEvents {
@@ -31,10 +31,10 @@ public class HostileMountEvents {
 			event.setCanceled(true);
 		}
 
-		if (damageSource.is(DamageTypeTags.IS_FALL) && living.getCapability(CapabilityList.YETI_THROWN).map(YetiThrowCapability::getThrown).orElse(false)) {
+		if (damageSource.is(DamageTypes.FALL) && living.getCapability(CapabilityList.YETI_THROWN).map(YetiThrowCapability::getThrown).orElse(false)) {
 			float amount = event.getAmount();
 			event.setCanceled(true);
-			living.hurt(TFDamageSources.yeeted(living.getCapability(CapabilityList.YETI_THROWN).resolve().get().getThrower()), amount);
+			living.hurt(TFDamageTypes.getEntityDamageSource(living.getLevel(), TFDamageTypes.YEETED, living.getCapability(CapabilityList.YETI_THROWN).resolve().get().getThrower()), amount);
 		}
 	}
 

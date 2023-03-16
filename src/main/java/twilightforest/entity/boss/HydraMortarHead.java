@@ -18,6 +18,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFEntities;
 
 public class HydraMortarHead extends ThrowableProjectile {
 
@@ -125,10 +127,9 @@ public class HydraMortarHead extends ThrowableProjectile {
 		boolean flag = ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this);
 		this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 		//FIXME make a custom damage source for this
-		DamageSource src = new IndirectEntityDamageSource("onFire", this, getOwner()).setProjectile();
 
 		for (Entity nearby : this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(src, DIRECT_DAMAGE)) {
+			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.HYDRA_MORTAR, TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
 				nearby.setSecondsOnFire(BURN_FACTOR);
 			}
 		}

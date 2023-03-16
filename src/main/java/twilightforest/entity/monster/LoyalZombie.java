@@ -28,7 +28,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 public class LoyalZombie extends TamableAnimal {
@@ -80,8 +80,7 @@ public class LoyalZombie extends TamableAnimal {
 		// the effect here is that we die shortly after our 60 second lifespan
 		if (!this.getLevel().isClientSide() && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
 			if (this.tickCount % 20 == 0) {
-				//TODO damage source
-				this.hurt(new DamageSource(TFDamageSources.tfSource("expired")).bypassArmor().bypassMagic().bypassInvul().setMagic(), 2);
+				this.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.EXPIRED), 2);
 			}
 		}
 

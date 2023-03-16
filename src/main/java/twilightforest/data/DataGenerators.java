@@ -34,6 +34,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
 		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
 		generator.addProvider(event.includeServer(), blocktags);
+		//generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags.contentsGetter(), helper));
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
@@ -41,7 +42,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new LootGenerator(output));
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
-		WorldGenerator.addProviders(event.includeServer(), generator, output, provider, helper);
+		RegistryDataGenerator.addProviders(event.includeServer(), generator, output, provider, helper);
 		generator.addProvider(event.includeServer(), new StructureTagGenerator(output, provider, helper));
 
 		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));

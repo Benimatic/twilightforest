@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -29,9 +28,8 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.network.NetworkHooks;
 import twilightforest.entity.monster.BlockChainGoblin;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
@@ -138,7 +136,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 			}
 
 			if (damage > 0.0F) {
-				if (result.getEntity().hurt(TFDamageSources.spiked(this, this.getOwner()), damage)) {
+				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SPIKED, this.getOwner(), this), damage)) {
 					this.playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;

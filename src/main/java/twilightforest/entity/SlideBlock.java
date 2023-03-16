@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,8 +22,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
@@ -164,7 +162,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 	private void damageKnockbackEntities(List<Entity> entities) {
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity living) {
-				living.hurt(TFDamageSources.SLIDER, 5.0F);
+				living.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.SLIDER), 5.0F);
 
 				double kx = (this.getX() - entity.getX()) * 2.0D;
 				double kz = (this.getZ() - entity.getZ()) * 2.0D;

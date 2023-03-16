@@ -303,7 +303,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (this.getCurrentPhase() == Phase.DROP) {
-			return entity.hurt(TFDamageSources.SQUISH, (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+			return entity.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.SQUISH, TFEntities.SNOW_QUEEN.get()), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		}
 		return super.doHurtTarget(entity);
 	}
@@ -466,7 +466,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		target.hurt(TFDamageSources.CHILLING_BREATH, BREATH_DAMAGE);
+		target.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.CHILLING_BREATH, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 

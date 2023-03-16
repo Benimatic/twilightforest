@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
@@ -88,7 +88,7 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	@Deprecated
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		entity.hurt(TFDamageSources.KNIGHTMETAL, BLOCK_DAMAGE);
+		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.KNIGHTMETAL), BLOCK_DAMAGE);
 	}
 
 	@Override

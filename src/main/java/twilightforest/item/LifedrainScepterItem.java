@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 import twilightforest.util.EntityUtil;
 
@@ -146,7 +146,7 @@ public class LifedrainScepterItem extends Item {
 					this.makeRedMagicTrail(level, living, target.getEyePosition());
 				}
 
-				if (target.hurt(TFDamageSources.lifedrain(living, living), 1)) {
+				if (target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), 1)) {
 					// make it explode
 					if (!level.isClientSide()) {
 						if (target.getHealth() <= 1) {
@@ -164,9 +164,9 @@ public class LifedrainScepterItem extends Item {
 							}
 							if (!target.isDeadOrDying()) {
 								if (target instanceof Player) {
-									target.hurt(TFDamageSources.lifedrain(living, living), Float.MAX_VALUE);
+									target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), Float.MAX_VALUE);
 								} else {
-									target.die(TFDamageSources.lifedrain(living, living));
+									target.die(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living));
 									target.discard();
 								}
 							}
