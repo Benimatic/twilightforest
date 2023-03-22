@@ -18,10 +18,9 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,6 +33,7 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -98,12 +98,6 @@ public class Naga extends Monster implements EnforcedHomePoint {
 		}
 
 		this.goNormal();
-		if (this.getLevel().getDifficulty() != Difficulty.NORMAL && this.getAttribute(Attributes.MAX_HEALTH) != null) {
-			boolean hard = this.level.getDifficulty() == Difficulty.HARD;
-			Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("Difficulty Health Boost", hard ? 130 : 80, AttributeModifier.Operation.ADDITION));
-			this.setHealth(this.getMaxHealth());
-		}
-		//run the segment health after we adjust the difficulty health
 		this.healthPerSegment = this.getMaxHealth() / 10;
 	}
 
@@ -229,6 +223,20 @@ public class Naga extends Monster implements EnforcedHomePoint {
 				newSpeed = 0;
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(newSpeed);
 		}
+	}
+
+	@Nullable
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		if (this.getLevel().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
+			boolean hard = this.level.getDifficulty() == Difficulty.HARD;
+			AttributeModifier modifier = new AttributeModifier("Difficulty Health Boost", hard ? 130 : 80, AttributeModifier.Operation.ADDITION);
+			if (!Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).hasModifier(modifier)) {
+				Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(modifier);
+				this.setHealth(this.getMaxHealth());
+			}
+		}
+		return data;
 	}
 
 	@Override
