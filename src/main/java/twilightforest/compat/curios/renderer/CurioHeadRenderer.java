@@ -2,6 +2,7 @@ package twilightforest.compat.curios.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
