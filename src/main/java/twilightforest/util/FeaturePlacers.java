@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.init.TFBlocks;
 
 import java.util.function.BiConsumer;
@@ -35,7 +36,7 @@ public final class FeaturePlacers {
 
         mob.setPersistenceRequired();
         mob.moveTo(pos, 0.0F, 0.0F);
-        mob.finalizeSpawn(levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null ,null);
+        ForgeEventFactory.onFinalizeSpawn(mob, levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null ,null);
         levelAccessor.addFreshEntityWithPassengers(mob);
         levelAccessor.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
     }

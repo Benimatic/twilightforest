@@ -45,7 +45,7 @@ public class CrumbleHornItem extends Item {
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
+	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
 		if (count > 10 && count % 5 == 0 && !living.getLevel().isClientSide()) {
 			int crumbled = doCrumble(living.getLevel(), living);
 

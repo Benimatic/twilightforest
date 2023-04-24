@@ -158,12 +158,12 @@ public class ToolEvents {
 			ItemStack heldStack = player.getItemInHand(hand);
 			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 				UUID uuidForOppositeHand = GiantItem.GIANT_RANGE_MODIFIER;
-				AttributeInstance attackRange = player.getAttribute(ForgeMod.ATTACK_RANGE.get());
+				AttributeInstance attackRange = player.getAttribute(ForgeMod.ENTITY_REACH.get());
 				if (attackRange != null) {
 					AttributeModifier giantModifier = attackRange.getModifier(uuidForOppositeHand);
 					if (giantModifier != null) {
 						attackRange.removeModifier(giantModifier);
-						double range = player.getAttributeValue(ForgeMod.ATTACK_RANGE.get());
+						double range = player.getAttributeValue(ForgeMod.ENTITY_REACH.get());
 						double trueReach = range == 0 ? 0 : range + (player.isCreative() ? 3 : 0); // Copied from IForgePlayer#getAttackRange().
 						boolean tooFar = !player.isCloseEnough(target, trueReach);
 						attackRange.addTransientModifier(giantModifier);
@@ -179,12 +179,12 @@ public class ToolEvents {
 			ItemStack heldStack = player.getItemInHand(hand);
 			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 				UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-				AttributeInstance reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
+				AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
 				if (reachDistance != null) {
 					AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
 					if (giantModifier != null) {
 						reachDistance.removeModifier(giantModifier);
-						double reach = player.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
+						double reach = player.getAttributeValue(ForgeMod.BLOCK_REACH.get());
 						double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
 						boolean tooFar = player.pick(trueReach, 0.0F, false).getType() != HitResult.Type.BLOCK;
 						reachDistance.addTransientModifier(giantModifier);

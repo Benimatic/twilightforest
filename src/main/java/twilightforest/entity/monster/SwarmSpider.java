@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
@@ -188,7 +189,7 @@ public class SwarmSpider extends Spider {
 			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.getLevel());
 			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 			druid.setBaby(true);
-			druid.finalizeSpawn(accessor, difficulty, MobSpawnType.JOCKEY, null, null);
+			ForgeEventFactory.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null, null);
 
 			if (this.hasPassenger(e -> true)) {
 				this.ejectPassengers();

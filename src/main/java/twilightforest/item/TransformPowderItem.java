@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
@@ -49,7 +50,7 @@ public class TransformPowderItem extends Item {
 
 				newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 				if (newEntity instanceof Mob mob && target.getLevel() instanceof ServerLevelAccessor world) {
-					mob.finalizeSpawn(world, target.getLevel().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
+					ForgeEventFactory.onFinalizeSpawn(mob, world, target.getLevel().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
 				}
 
 				try { // try copying what can be copied

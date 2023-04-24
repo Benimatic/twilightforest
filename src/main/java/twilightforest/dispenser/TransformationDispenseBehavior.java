@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
@@ -35,7 +36,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 						if (newEntity != null) {
 							newEntity.moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity.getYRot(), livingentity.getXRot());
 							if (newEntity instanceof Mob mob && livingentity.getLevel() instanceof ServerLevelAccessor accessor) {
-								mob.finalizeSpawn(accessor, livingentity.getLevel().getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
+								ForgeEventFactory.onFinalizeSpawn(mob, accessor, livingentity.getLevel().getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
 							}
 
 							try {

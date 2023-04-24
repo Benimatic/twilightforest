@@ -1,8 +1,13 @@
 package twilightforest.data;
 
+import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.metadata.PackMetadataGenerator;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,7 +19,10 @@ import twilightforest.data.custom.UncraftingRecipeGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
@@ -34,7 +42,6 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
 		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
 		generator.addProvider(event.includeServer(), blocktags);
-		//generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags.contentsGetter(), helper));
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
@@ -49,5 +56,9 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new UncraftingRecipeGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
+		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
+						Component.literal("Resources for Twilight Forest"),
+						DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
+						Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
 	}
 }

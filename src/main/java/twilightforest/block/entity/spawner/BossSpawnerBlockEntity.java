@@ -12,6 +12,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity {
 
@@ -54,7 +55,7 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 		T myCreature = makeMyCreature();
 
 		myCreature.moveTo(this.getBlockPos().below(), accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-		myCreature.finalizeSpawn(accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
+		ForgeEventFactory.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
 
 		// set creature's home to this
 		initializeCreature(myCreature);
