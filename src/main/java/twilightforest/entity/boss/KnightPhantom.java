@@ -313,6 +313,11 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	}
 
 	@Override
+	public MobType getMobType() {
+		return MobType.UNDEAD;
+	}
+
+	@Override
 	public void knockback(double damage, double xRatio, double zRatio) {
 		this.hasImpulse = true;
 		float f = Mth.sqrt((float) (xRatio * xRatio + zRatio * zRatio));
