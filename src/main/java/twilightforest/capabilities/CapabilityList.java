@@ -4,6 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.LazyOptional;
@@ -91,29 +92,31 @@ public class CapabilityList {
 				}
 			});
 
-			e.addCapability(FeatherFanFallCapability.ID, new ICapabilitySerializable<CompoundTag>() {
+			if (e.getObject() instanceof Player player) {
+				e.addCapability(FeatherFanFallCapability.ID, new ICapabilitySerializable<CompoundTag>() {
 
-				private final LazyOptional<FeatherFanFallCapability> inst = LazyOptional.of(() -> {
-					FeatherFanCapabilityHandler cap = new FeatherFanCapabilityHandler();
-					cap.setEntity(living);
-					return cap;
+					private final LazyOptional<FeatherFanFallCapability> inst = LazyOptional.of(() -> {
+						FeatherFanCapabilityHandler cap = new FeatherFanCapabilityHandler();
+						cap.setEntity(player);
+						return cap;
+					});
+
+					@Override
+					public CompoundTag serializeNBT() {
+						return inst.orElseThrow(NullPointerException::new).serializeNBT();
+					}
+
+					@Override
+					public void deserializeNBT(CompoundTag nbt) {
+						inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
+					}
+
+					@Override
+					public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+						return FEATHER_FAN_FALLING.orEmpty(cap, inst.cast());
+					}
 				});
-
-				@Override
-				public CompoundTag serializeNBT() {
-					return inst.orElseThrow(NullPointerException::new).serializeNBT();
-				}
-
-				@Override
-				public void deserializeNBT(CompoundTag nbt) {
-					inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
-				}
-
-				@Override
-				public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-					return FEATHER_FAN_FALLING.orEmpty(cap, inst.cast());
-				}
-			});
+			}
 
 			e.addCapability(YetiThrowCapability.ID, new ICapabilitySerializable<CompoundTag>() {
 

@@ -24,8 +24,8 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 
 	@Override
 	public void update() {
-		if (this.getThrown()) {
-			if (this.host.isOnGround() || this.host.isSwimming()) {
+		if (this.host instanceof Player player && this.getThrown()) {
+			if (player.isOnGround() || player.isSwimming() || player.isInWater()) {
 				this.setThrown(false, null);
 			}
 		} else {

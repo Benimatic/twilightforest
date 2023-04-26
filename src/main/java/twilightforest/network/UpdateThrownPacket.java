@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.thrown.YetiThrowCapability;
@@ -52,7 +53,8 @@ public class UpdateThrownPacket {
 				if (entity instanceof LivingEntity) {
 					entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
 						LivingEntity thrower = message.thrower != 0 ? (LivingEntity) Minecraft.getInstance().level.getEntity(message.thrower) : null;
-						cap.setThrown(message.thrown, thrower);
+						if (entity instanceof Player)
+							cap.setThrown(message.thrown, thrower);
 						cap.setThrowCooldown(message.throwCooldown);
 					});
 				}
