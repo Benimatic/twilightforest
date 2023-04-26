@@ -661,7 +661,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 						setBlockStateRotated(world, deco.fenceState, x, y + py, z, rotation, sbb);
 					}
 
-					if (x != size / 2 && x != size - 2 && z != size - 2) {
+					if (x != (size / 2) + 2 && x != size - 1 && z != size - 1) {
 						int ay = decoRNG.nextInt(4) + 1;
 						setBlockStateRotated(world, AIR, x, y + ay, z, rotation, sbb);
 
