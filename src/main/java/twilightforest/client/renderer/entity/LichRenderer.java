@@ -1,5 +1,8 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +20,32 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Lich entity) {
+	public void render(Lich lich, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+		if (lich.deathTime > 0) {
+			stack.pushPose();
+			if (lich.deathTime > 50) {
+				stack.translate(0.0D, -1.8D * Math.pow(Math.min(((float) (lich.deathTime - 50) + partialTicks) * 0.05D, 1.0D), 3.0D), 0.0D);
+			} else {
+				float time = (float)lich.deathTime + partialTicks;
+				stack.translate(Math.sin(time * time) * 0.01D, 0.0D, Math.cos(time * time) * 0.01D);
+			}
+		}
+		super.render(lich, entityYaw, partialTicks, stack, buffer, packedLight);
+		if (lich.deathTime > 0) stack.popPose();
+	}
+
+	@Override
+	protected void setupRotations(Lich lich, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+		if (lich.deathTime > 0) {//Prevent the body from keeling over
+			stack.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
+			return;
+		}
+
+		super.setupRotations(lich, stack, ageInTicks, rotationYaw, partialTicks);
+	}
+
+	@Override
+	public ResourceLocation getTextureLocation(Lich lich) {
 		return LICH_TEXTURE;
 	}
 }
