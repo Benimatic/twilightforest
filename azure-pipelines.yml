@@ -107,7 +107,7 @@ steps:
     if ($jobResult -eq "Succeeded") {
         $json["fields"] += [Ordered]@{
             name = "Download"
-            value = "[Download]($downloadUrl)"
+            value = "[$($downloadUrl.Split("subPath=%2F")[1])]($downloadUrl)"
         }
     }
     Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
