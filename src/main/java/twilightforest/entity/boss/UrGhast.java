@@ -516,9 +516,9 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 						d, d1, d2
 				);
 			}
-		} else if (this.level instanceof ServerLevel serverLevel) {
+		} else if (this.level instanceof ServerLevel) {
 			if (this.deathTime >= maxDeath && !this.isRemoved()) {
-				this.level.broadcastEntityEvent(this, (byte)60);
+				this.level.broadcastEntityEvent(this, (byte) 60);
 				this.remove(Entity.RemovalReason.KILLED);
 				return;
 			}
@@ -527,29 +527,25 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 			Vec3 diff = end.subtract(start);
 
 			int deathTime2 = this.deathTime - (maxDeath / 2);
-			double factor = (double)deathTime2 / (double) (maxDeath / 2);
-			Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(deathTime2 * Math.PI * 0.1D) + 1.0D, Math.sin(deathTime2 * Math.PI * 0.05D), Math.cos(deathTime2* Math.PI * 0.1125D) - 1.0D);//Some sine waves to make it pretty
+			double factor = (double) deathTime2 / (double) (maxDeath / 2);
+			Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(deathTime2 * Math.PI * 0.1D) + 1.0D, Math.sin(deathTime2 * Math.PI * 0.05D), Math.cos(deathTime2 * Math.PI * 0.1125D) - 1.0D);//Some sine waves to make it pretty
 
-			for (ServerPlayer serverplayer : serverLevel.players()) {//This is just particle math, we send a particle packet to every player in range
-				if (serverplayer.distanceToSqr(end) < 4096.0D) {
-					ParticlePacket particlePacket = new ParticlePacket();
-					if (factor * 1.2F >= 1.0F) {
-						for (int i = 0; i < maxDeath / 2; i++) {
-							double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-							double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-							double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-							particlePacket.queueParticle(ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
-						}
-					}
-					for (int i = 0; i < maxDeath / 2; i++) {
-						double x = (this.random.nextDouble() - 0.5D) * 0.05D * i;
-						double y = (this.random.nextDouble() - 0.5D) * 0.05D * i;
-						double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
-						particlePacket.queueParticle(DustParticleOptions.REDSTONE, false, particlePos.add(x, y, z), Vec3.ZERO);
-					}
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+			ParticlePacket particlePacket = new ParticlePacket();
+			if (factor * 1.2F >= 1.0F) {
+				for (int i = 0; i < maxDeath / 2; i++) {
+					double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+					double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+					double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+					particlePacket.queueParticle(ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
 				}
 			}
+			for (int i = 0; i < maxDeath / 2; i++) {
+				double x = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+				double y = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+				particlePacket.queueParticle(DustParticleOptions.REDSTONE, false, particlePos.add(x, y, z), Vec3.ZERO);
+			}
+			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
 		}
 	}
 
