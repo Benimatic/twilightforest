@@ -32,6 +32,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraNeck;
@@ -97,7 +98,7 @@ public class TFClientSetup {
             Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
 
 			if (ModList.get().isLoaded("curios")) {
-				//CuriosCompat.registerCurioRenderers();
+				CuriosCompat.registerCurioRenderers();
 			}
         });
        

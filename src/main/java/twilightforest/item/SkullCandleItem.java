@@ -24,6 +24,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
@@ -119,7 +120,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
 		if (ModList.get().isLoaded("curios")) {
-			//return CuriosCompat.setupCuriosCapability(stack);
+			return CuriosCompat.setupCuriosCapability(stack);
 		}
 		return super.initCapabilities(stack, tag);
 	}

@@ -40,6 +40,8 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.compat.top.TopCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
@@ -132,7 +134,7 @@ public class TwilightForestMod {
 		modbus.addListener(CapabilityList::registerCapabilities);
 
 		if (ModList.get().isLoaded("curios")) {
-			//Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 
 		BiomeGrassColors.init();
@@ -165,10 +167,10 @@ public class TwilightForestMod {
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		if (ModList.get().isLoaded("curios")) {
-			//CuriosCompat.handleCuriosIMCs();
+			CuriosCompat.handleCuriosIMCs();
 		}
 		if (ModList.get().isLoaded("theoneprobe")) {
-			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 

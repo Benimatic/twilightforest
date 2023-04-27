@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
 import twilightforest.entity.passive.Squirrel;
@@ -58,9 +59,9 @@ public class MiscEvents {
 
 		//if we have a cicada in our curios slot, dont try to run this
 		if (ModList.get().isLoaded("curios")) {
-//			if (CuriosCompat.isCicadaEquipped(event.getEntity())) {
-//				return;
-//			}
+			if (CuriosCompat.isCicadaEquipped(event.getEntity())) {
+				return;
+			}
 		}
 
 		if (event.getEntity() != null && !living.level.isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
