@@ -45,7 +45,7 @@
             "salt": 700
           },
           "bordering_biome": "twilightforest:thornlands",
-          "layer_type": "twilightforest:thorn_border",
+          "layer_type": "twilightforest:border",
           "salt": 500,
           "target_biome": "twilightforest:highlands"
         },
