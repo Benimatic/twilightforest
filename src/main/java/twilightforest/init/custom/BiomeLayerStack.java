@@ -8,6 +8,7 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFBiomes;
 import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
@@ -50,6 +51,6 @@ public class BiomeLayerStack {
         BiomeLayerFactory riverLayer = new GenLayerTFStream.Factory(1L, randomBiomes);
         riverLayer = new SmoothLayer.Factory(7000L, Holder.direct(riverLayer));
 
-        context.register(BIOMES_ALONG_STREAMS, new GenLayerTFRiverMix.Factory(100L, randomBiomes, Holder.direct(riverLayer)));
+        context.register(BIOMES_ALONG_STREAMS, new FilteredBiomeLayer.Factory(100L, TFBiomes.STREAM, Holder.direct(riverLayer), randomBiomes));
     }
 }

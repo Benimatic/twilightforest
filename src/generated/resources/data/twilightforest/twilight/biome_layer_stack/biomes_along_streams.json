@@ -1,7 +1,6 @@
 {
-  "layer_type": "twilightforest:river_mix",
-  "parent_biomes": "twilightforest:random_forest_biomes",
-  "parent_river": {
+  "fallback_layer": "twilightforest:random_forest_biomes",
+  "filtered_layer": {
     "parent": {
       "parent": "twilightforest:random_forest_biomes",
       "layer_type": "twilightforest:stream",
@@ -10,5 +9,7 @@
     "layer_type": "twilightforest:smooth",
     "salt": 7000
   },
+  "keep_biome": "twilightforest:stream",
+  "layer_type": "twilightforest:filtered",
   "salt": 100
 }
