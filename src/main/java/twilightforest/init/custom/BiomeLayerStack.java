@@ -53,7 +53,7 @@ public class BiomeLayerStack {
 
         biomes = new GenLayerTFBiomeStabilize.Factory(700L, Holder.direct(biomes));
 
-        biomes = new GenLayerTFThornBorder.Factory(500L, Holder.direct(biomes));
+        biomes = new BorderLayer.Factory(500L, TFBiomes.HIGHLANDS, TFBiomes.THORNLANDS, Holder.direct(biomes));
 
         biomes = new ZoomLayer.Factory(1002L, false, Holder.direct(biomes));
         biomes = new ZoomLayer.Factory(1003L, false, Holder.direct(biomes));
