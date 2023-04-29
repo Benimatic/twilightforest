@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.Stream;
 
 @Deprecated
 public class TFBiomeProvider extends BiomeSource {
@@ -37,7 +36,7 @@ public class TFBiomeProvider extends BiomeSource {
 		this(list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
 	}
 
-	public TFBiomeProvider(HolderGetter<Biome> registryIn, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
+	public TFBiomeProvider(Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
 		super();
 
 		this.genBiomes = new Layer();
@@ -67,7 +66,6 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	public float getBiomeDepth(int x, int z) {
-		lazyLoadGenBiomes();
 		return this.getBiomeDepth(this.genBiomes.getBiome(x, z));
 	}
 
@@ -76,7 +74,6 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	public Optional<TerrainColumn> getTerrainColumn(int x, int z) {
-		lazyLoadGenBiomes();
 		return this.getTerrainColumn(this.genBiomes.getBiome(x, z));
 	}
 
@@ -90,13 +87,6 @@ public class TFBiomeProvider extends BiomeSource {
 
 	@Override
 	public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
-		lazyLoadGenBiomes();
-
 		return this.biomeList.get(this.genBiomes.getBiome(x, z)).getBiome(y);
-	}
-
-	private void lazyLoadGenBiomes() {
-		if (genBiomes == null)
-			this.genBiomes = Layer.makeLayers(registry);
 	}
 }
