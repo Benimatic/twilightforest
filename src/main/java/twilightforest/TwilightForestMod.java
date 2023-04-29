@@ -16,7 +16,6 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -45,9 +44,7 @@ import twilightforest.compat.top.TopCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
-import twilightforest.init.custom.DwarfRabbitVariant;
-import twilightforest.init.custom.WoodPalettes;
-import twilightforest.init.custom.TinyBirdVariant;
+import twilightforest.init.custom.*;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
@@ -105,6 +102,8 @@ public class TwilightForestMod {
 		TFMenuTypes.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
+		BiomeLayerTypes.BIOME_LAYER_TYPES.register(modbus);
+		BiomeLayerStack.BIOME_LAYER_STACKS.register(modbus);
 		TFFeatures.FEATURES.register(modbus);
 		TFFeatureModifiers.FOLIAGE_PLACERS.register(modbus);
 		TFLoot.FUNCTIONS.register(modbus);
@@ -143,6 +142,7 @@ public class TwilightForestMod {
 	@SubscribeEvent
 	public static void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
 		event.dataPackRegistry(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC);
+		event.dataPackRegistry(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack.DISPATCH_CODEC);
 	}
 
 	@SubscribeEvent

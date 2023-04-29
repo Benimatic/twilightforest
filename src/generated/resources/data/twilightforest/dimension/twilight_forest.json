@@ -219,7 +219,10 @@
             "key_biome": "twilightforest:thornlands",
             "scale": 0.1
           }
-        ]
+        ],
+        "biome_layer_config": {
+          "layer_type": "twilightforest:legacy"
+        }
       },
       "settings": "twilightforest:twilight_noise_gen"
     }
