@@ -31,6 +31,7 @@ public class BiomeLayerTypes {
     public static final RegistryObject<BiomeLayerType> STREAM = registerType("stream", () -> () -> GenLayerTFStream.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> SMOOTH = registerType("smooth", () -> () -> SmoothLayer.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> FILTERED = registerType("filtered", () -> () -> FilteredBiomeLayer.Factory.CODEC);
+    public static final RegistryObject<BiomeLayerType> MEDIAN = registerType("median", () -> () -> GenLayerTFMedian.Factory.CODEC);
 
     private static RegistryObject<BiomeLayerType> registerType(String name, Supplier<BiomeLayerType> factory) {
         return BIOME_LAYER_TYPES.register(name, factory);
