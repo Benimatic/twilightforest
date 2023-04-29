@@ -27,7 +27,7 @@ public class BiomeLayerTypes {
     public static final RegistryObject<BiomeLayerType> COMPANION_BIOMES = registerType("companion_biomes", () -> () -> GenLayerTFCompanionBiomes.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> ZOOM = registerType("zoom", () -> () -> ZoomLayer.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> STABILIZE = registerType("stabilize", () -> () -> GenLayerTFBiomeStabilize.Factory.CODEC);
-    public static final RegistryObject<BiomeLayerType> THORN_BORDER = registerType("thorn_border", () -> () -> BorderLayer.Factory.CODEC);
+    public static final RegistryObject<BiomeLayerType> BORDER = registerType("border", () -> () -> BorderLayer.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> STREAM = registerType("stream", () -> () -> GenLayerTFStream.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> SMOOTH = registerType("smooth", () -> () -> SmoothLayer.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> FILTERED = registerType("filtered", () -> () -> FilteredBiomeLayer.Factory.CODEC);
