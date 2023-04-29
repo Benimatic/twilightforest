@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -16,6 +17,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -32,6 +34,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,7 +57,6 @@ import twilightforest.entity.ai.goal.NagaSmashGoal;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
-import twilightforest.loot.TFLootTables;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
 import twilightforest.util.EntityUtil;
@@ -64,7 +66,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Naga extends Monster implements EnforcedHomePoint {
+public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer {
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -79,6 +81,7 @@ public class Naga extends Monster implements EnforcedHomePoint {
 	private NagaMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
+	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.NOTCHED_10);
 
@@ -252,15 +255,20 @@ public class Naga extends Monster implements EnforcedHomePoint {
 	@Override
 	public void tick() {
 		if (this.deathTime > 0) {
-			for (int k = 0; k < 5; k++) {
-				double d = this.getRandom().nextGaussian() * 0.02D;
-				double d1 = this.getRandom().nextGaussian() * 0.02D;
-				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle((this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
-						(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-						this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
-						(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-						d, d1, d2);
+			Level level = this.getLevel();
+			RandomSource random = this.getRandom();
+			float width = this.getBbWidth();
+			float height = this.getBbHeight();
+			for (int k = 0; k < 1; k++) {
+				double x = random.nextGaussian() * 0.02D;
+				double y = random.nextGaussian() * 0.02D;
+				double z = random.nextGaussian() * 0.02D;
+
+				level.addParticle((random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
+						(this.getX() + random.nextFloat() * width * 2.0F) - width,
+						this.getY() + random.nextFloat() * height,
+						(this.getZ() + random.nextFloat() * width * 2.0F) - width,
+						x, y, z);
 			}
 		}
 
@@ -434,6 +442,9 @@ public class Naga extends Monster implements EnforcedHomePoint {
 
 	@Override
 	public void remove(RemovalReason reason) {
+		if (reason.equals(RemovalReason.KILLED) && this.level instanceof ServerLevel serverLevel) {
+			IBossLootBuffer.depositDropsIntoChest(this, this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+		}
 		super.remove(reason);
 		if (this.getLevel() instanceof ServerLevel) {
 			for (NagaSegment seg : this.bodySegments) {
@@ -534,12 +545,14 @@ public class Naga extends Monster implements EnforcedHomePoint {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		this.saveHomePointToNbt(compound);
+		this.addDeathItemsSaveData(compound);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
+		this.readDeathItemsSaveData(compound);
 		this.loadHomePointFromNbt(compound, 20);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
@@ -550,13 +563,22 @@ public class Naga extends Monster implements EnforcedHomePoint {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the courtyard as defeated
-		if (!this.getLevel().isClientSide()) {
+		if (this.getLevel() instanceof ServerLevel serverLevel) {
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.NAGA_COURTYARD, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), this.getRandom().nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			IBossLootBuffer.saveDropsIntoBoss(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), serverLevel);
+		}
+	}
+
+	@Override
+	protected void tickDeath() {
+		++this.deathTime;
+		if (this.deathTime >= 10 && !this.level.isClientSide() && !this.isRemoved()) {
+			this.level.broadcastEntityEvent(this, (byte)60);
+			this.remove(Entity.RemovalReason.KILLED);
 		}
 	}
 
@@ -639,5 +661,10 @@ public class Naga extends Monster implements EnforcedHomePoint {
 	@Override
 	public void setRestriction(BlockPos pos, int dist) {
 		this.restrictTo(pos, dist);
+	}
+
+	@Override
+	public NonNullList<ItemStack> getItemStacks() {
+		return this.dyingInventory;
 	}
 }
