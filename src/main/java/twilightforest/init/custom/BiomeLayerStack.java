@@ -1,5 +1,6 @@
 package twilightforest.init.custom;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -30,7 +31,20 @@ public class BiomeLayerStack {
     }
 
     public static void bootstrap(BootstapContext<BiomeLayerFactory> context) {
-        BiomeLayerFactory biomes = new GenLayerTFBiomes.Factory(1L);
+        BiomeLayerFactory biomes = new RandomBiomeLayer.Factory(1L, 15, ImmutableList.of(
+                TFBiomes.FOREST,
+                TFBiomes.DENSE_FOREST,
+                TFBiomes.MUSHROOM_FOREST,
+                TFBiomes.OAK_SAVANNAH,
+                TFBiomes.FIREFLY_FOREST
+        ), ImmutableList.of(
+                TFBiomes.LAKE,
+                TFBiomes.DENSE_MUSHROOM_FOREST,
+                TFBiomes.ENCHANTED_FOREST,
+                TFBiomes.CLEARING,
+                TFBiomes.SPOOKY_FOREST
+        ));
+
         biomes = new GenLayerTFKeyBiomes.Factory(1000L, Holder.direct(biomes));
         biomes = new GenLayerTFCompanionBiomes.Factory(1000L, Holder.direct(biomes));
 

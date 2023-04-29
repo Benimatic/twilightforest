@@ -22,7 +22,7 @@ public class BiomeLayerTypes {
     public static final Supplier<IForgeRegistry<BiomeLayerType>> REGISTRY = BIOME_LAYER_TYPES.makeRegistry(() -> new RegistryBuilder<BiomeLayerType>().allowModification().disableSync());
     public static final Codec<BiomeLayerType> CODEC = ExtraCodecs.lazyInitializedCodec(() -> REGISTRY.get().getCodec());
 
-    public static final RegistryObject<BiomeLayerType> RANDOM_TWILIGHT_BIOMES = registerType("random_twilight_biomes", () -> () -> GenLayerTFBiomes.Factory.CODEC);
+    public static final RegistryObject<BiomeLayerType> RANDOM_BIOMES = registerType("random_biomes", () -> () -> RandomBiomeLayer.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> KEY_BIOMES = registerType("key_biomes", () -> () -> GenLayerTFKeyBiomes.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> COMPANION_BIOMES = registerType("companion_biomes", () -> () -> GenLayerTFCompanionBiomes.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> ZOOM = registerType("zoom", () -> () -> ZoomLayer.Factory.CODEC);
