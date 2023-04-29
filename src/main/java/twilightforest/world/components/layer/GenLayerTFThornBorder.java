@@ -1,9 +1,20 @@
 package twilightforest.world.components.layer;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.init.custom.BiomeLayerTypes;
+import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
+import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
+import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
+import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+
+import java.util.function.LongFunction;
 
 public enum GenLayerTFThornBorder implements IThornsTransformer {
 	INSTANCE;
@@ -35,5 +46,23 @@ public enum GenLayerTFThornBorder implements IThornsTransformer {
 		} else if (up == biomeID) {
 			return true;
 		} else return down == biomeID;
+	}
+
+	public record Factory(long salt, Holder<BiomeLayerFactory> parent) implements BiomeLayerFactory {
+		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		).apply(inst, Factory::new));
+
+		// TODO Parameterize these biomes
+		@Override
+		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
+			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+		}
+
+		@Override
+		public BiomeLayerType getType() {
+			return BiomeLayerTypes.THORN_BORDER.get();
+		}
 	}
 }

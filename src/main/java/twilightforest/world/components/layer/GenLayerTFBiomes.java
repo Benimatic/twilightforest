@@ -59,10 +59,10 @@ public enum GenLayerTFBiomes implements AreaTransformer0 {
 		}
 	}
 
-	public record Layer(int salt) implements BiomeLayerFactory {
-		public static final Codec<Layer> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.INT.fieldOf("salt").forGetter(Layer::salt)
-		).apply(inst, Layer::new));
+	public record Factory(long salt) implements BiomeLayerFactory {
+		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+				Codec.LONG.fieldOf("salt").forGetter(Factory::salt)
+		).apply(inst, Factory::new));
 
 		// TODO Surely these biomes can become parameterized
 		@Override
@@ -72,7 +72,7 @@ public enum GenLayerTFBiomes implements AreaTransformer0 {
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.RANDOM_TWILIGHT_BIOME.get();
+			return BiomeLayerTypes.RANDOM_TWILIGHT_BIOMES.get();
 		}
 	}
 }

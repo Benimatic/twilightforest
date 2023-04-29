@@ -1,9 +1,18 @@
 package twilightforest.world.components.layer.vanillalegacy;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.init.custom.BiomeLayerTypes;
+import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
+import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
+
+import java.util.function.LongFunction;
 
 public enum ZoomLayer implements AreaTransformer1 {
 	NORMAL,
@@ -74,6 +83,31 @@ public enum ZoomLayer implements AreaTransformer1 {
 			return p_76962_;
 		} else {
 			return p_76963_ == p_76964_ && p_76961_ != p_76962_ ? p_76963_ : p_76960_.random(p_76961_, p_76962_, p_76963_, p_76964_);
+		}
+	}
+
+	public record Factory(long salt, boolean fuzzy, Holder<BiomeLayerFactory> parent) implements BiomeLayerFactory {
+		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+				Codec.BOOL.fieldOf("fuzzy").forGetter(Factory::fuzzy),
+				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		).apply(inst, Factory::new));
+
+		// TODO Parameterize bit-shifting quantities
+		@Override
+		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
+			LazyAreaContext seededContext = contextFactory.apply(this.salt);
+			LazyArea parentLayer = this.parent.get().build(contextFactory);
+
+			if (this.fuzzy)
+				return FUZZY.run(seededContext, parentLayer);
+			else
+				return NORMAL.run(seededContext, parentLayer);
+		}
+
+		@Override
+		public BiomeLayerType getType() {
+			return BiomeLayerTypes.ZOOM.get();
 		}
 	}
 }

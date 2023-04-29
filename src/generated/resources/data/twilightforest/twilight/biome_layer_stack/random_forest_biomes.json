@@ -1,0 +1,50 @@
+{
+  "parent": {
+    "parent": {
+      "parent": {
+        "parent": {
+          "parent": {
+            "parent": {
+              "parent": {
+                "parent": {
+                  "parent": {
+                    "parent": {
+                      "layer_type": "twilightforest:random_twilight_biomes",
+                      "salt": 1
+                    },
+                    "layer_type": "twilightforest:key_biomes",
+                    "salt": 1000
+                  },
+                  "layer_type": "twilightforest:companion_biomes",
+                  "salt": 1000
+                },
+                "fuzzy": false,
+                "layer_type": "twilightforest:zoom",
+                "salt": 1000
+              },
+              "fuzzy": false,
+              "layer_type": "twilightforest:zoom",
+              "salt": 1001
+            },
+            "layer_type": "twilightforest:stabilize",
+            "salt": 700
+          },
+          "layer_type": "twilightforest:thorn_border",
+          "salt": 500
+        },
+        "fuzzy": false,
+        "layer_type": "twilightforest:zoom",
+        "salt": 1002
+      },
+      "fuzzy": false,
+      "layer_type": "twilightforest:zoom",
+      "salt": 1003
+    },
+    "fuzzy": false,
+    "layer_type": "twilightforest:zoom",
+    "salt": 1004
+  },
+  "fuzzy": false,
+  "layer_type": "twilightforest:zoom",
+  "salt": 1005
+}

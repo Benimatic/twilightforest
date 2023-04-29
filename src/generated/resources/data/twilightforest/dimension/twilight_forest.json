@@ -220,9 +220,7 @@
             "scale": 0.1
           }
         ],
-        "biome_layer_config": {
-          "layer_type": "twilightforest:legacy"
-        }
+        "biome_layer_config": "twilightforest:biomes_along_streams"
       },
       "settings": "twilightforest:twilight_noise_gen"
     }

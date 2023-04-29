@@ -14,6 +14,7 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.data.tags.DamageTypeTagGenerator;
 import twilightforest.init.*;
+import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.WoodPalettes;
 
 import java.util.Set;
@@ -28,6 +29,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 			.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
 			.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
 			.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
+			.add(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack::bootstrap)
 			.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType)
 			.add(Registries.LEVEL_STEM, TFDimensionSettings::bootstrapStem)
 			.add(Registries.BIOME, TFBiomes::bootstrap)
