@@ -37,25 +37,25 @@ public enum ZoomLayer implements AreaTransformer1 {
 	}
 
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area area, int x, int z) {
-		ResourceKey<Biome> i = area.getBiome(this.getParentX(x), this.getParentY(z));
+	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
+		ResourceKey<Biome> i = layer.getBiome(this.getParentX(x), this.getParentY(z));
 		context.initRandom(x >> 1 << 1, z >> 1 << 1);
 		int j = x & 1;
 		int k = z & 1;
 		if (j == 0 && k == 0) {
 			return i;
 		} else {
-			ResourceKey<Biome> l = area.getBiome(this.getParentX(x), this.getParentY(z + 1));
+			ResourceKey<Biome> l = layer.getBiome(this.getParentX(x), this.getParentY(z + 1));
 			ResourceKey<Biome> i1 = context.random(i, l);
 			if (j == 0 && k == 1) {
 				return i1;
 			} else {
-				ResourceKey<Biome> j1 = area.getBiome(this.getParentX(x + 1), this.getParentY(z));
+				ResourceKey<Biome> j1 = layer.getBiome(this.getParentX(x + 1), this.getParentY(z));
 				ResourceKey<Biome> k1 = context.random(i, j1);
 				if (j == 1 && k == 0) {
 					return k1;
 				} else {
-					ResourceKey<Biome> l1 = area.getBiome(this.getParentX(x + 1), this.getParentY(z + 1));
+					ResourceKey<Biome> l1 = layer.getBiome(this.getParentX(x + 1), this.getParentY(z + 1));
 					return this.modeOrRandom(context, i, j1, l, l1);
 				}
 			}

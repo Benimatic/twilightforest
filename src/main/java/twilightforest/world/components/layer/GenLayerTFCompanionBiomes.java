@@ -30,14 +30,14 @@ public enum GenLayerTFCompanionBiomes implements CastleTransformer {
 	private final ResourceKey<Biome> highlands = TFBiomes.HIGHLANDS;
 
 	@Override
-	public ResourceKey<Biome> apply(Context noise, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> center) {
-		if (isKey(this.fireSwamp, center, right, left, up, down)) {
+	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> right, ResourceKey<Biome> down, ResourceKey<Biome> left, ResourceKey<Biome> center) {
+		if (isKey(this.fireSwamp, center, left, right, up, down)) {
 			return this.swamp;
-		} else if (isKey(this.glacier, center, right, left, up, down)) {
+		} else if (isKey(this.glacier, center, left, right, up, down)) {
 			return this.snowyForest;
-		} else if (isKey(this.darkForestCenter, center, right, left, up, down)) {
+		} else if (isKey(this.darkForestCenter, center, left, right, up, down)) {
 			return this.darkForest;
-		} else if (isKey(this.finalPlateau, center, right, left, up, down)) {
+		} else if (isKey(this.finalPlateau, center, left, right, up, down)) {
 			return this.highlands;
 		} else {
 			return center;

@@ -12,10 +12,10 @@ public class LazyArea implements Area {
 	private final Long2ObjectLinkedOpenHashMap<ResourceKey<Biome>> cachedSamples;
 	private final int maxCache;
 
-	public LazyArea(Long2ObjectLinkedOpenHashMap<ResourceKey<Biome>> p_76493_, int p_76494_, Area p_76495_) {
-		this.cachedSamples = p_76493_;
-		this.maxCache = p_76494_;
-		this.transformer = p_76495_;
+	public LazyArea(Long2ObjectLinkedOpenHashMap<ResourceKey<Biome>> cache, int maxCache, Area transformer) {
+		this.cachedSamples = cache;
+		this.maxCache = maxCache;
+		this.transformer = transformer;
 	}
 
 	@Override

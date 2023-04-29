@@ -23,18 +23,18 @@ public class LazyAreaContext implements BigContext<LazyArea> {
 	}
 
 	@Override
-	public LazyArea createResult(Area p_76552_) {
-		return new LazyArea(this.cache, this.maxCache, p_76552_);
+	public LazyArea createResult(Area transformer) {
+		return new LazyArea(this.cache, this.maxCache, transformer);
 	}
 
 	@Override
-	public LazyArea createResult(Area p_76541_, LazyArea p_76542_) {
-		return new LazyArea(this.cache, Math.min(1024, p_76542_.getMaxCache() * 4), p_76541_);
+	public LazyArea createResult(Area transformer, LazyArea layer) {
+		return new LazyArea(this.cache, Math.min(1024, layer.getMaxCache() * 4), transformer);
 	}
 
 	@Override
-	public LazyArea createResult(Area p_76544_, LazyArea p_76545_, LazyArea p_76546_) {
-		return new LazyArea(this.cache, Math.min(1024, Math.max(p_76545_.getMaxCache(), p_76546_.getMaxCache()) * 4), p_76544_);
+	public LazyArea createResult(Area transformer, LazyArea layer1, LazyArea layer2) {
+		return new LazyArea(this.cache, Math.min(1024, Math.max(layer1.getMaxCache(), layer2.getMaxCache()) * 4), transformer);
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class LazyAreaContext implements BigContext<LazyArea> {
 	}
 
 	@Override
-	public int nextRandom(int p_76527_) {
-		int i = Math.floorMod(this.rval >> 24, p_76527_);
+	public int nextRandom(int limit) {
+		int i = Math.floorMod(this.rval >> 24, limit);
 		this.rval = LinearCongruentialGenerator.next(this.rval, this.seed);
 		return i;
 	}

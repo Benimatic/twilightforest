@@ -13,11 +13,11 @@ public enum GenLayerTFMedian implements AreaTransformer1 {
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> iExtendedNoiseRandom, Area iArea, int x, int z) {
+	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
 		ResourceKey[] biomes = new ResourceKey[9];
 
 		for (int pos = 0; pos < 9; pos++) {
-			biomes[pos] = iArea.getBiome(x + (pos % 3), z + (pos / 3));
+			biomes[pos] = layer.getBiome(x + (pos % 3), z + (pos / 3));
 		}
 
 		int biomeRecordIndex = 0;
@@ -38,7 +38,7 @@ public enum GenLayerTFMedian implements AreaTransformer1 {
 			}
 
 			// If there are two biomes with same dominating quantity, then randomly pick unless it is the central biome.
-			if (biomeRecordCount == iterationQuantity && (index == 5 || (biomeRecordIndex != 5 && iExtendedNoiseRandom.nextRandom(2) == 0))) {
+			if (biomeRecordCount == iterationQuantity && (index == 5 || (biomeRecordIndex != 5 && context.nextRandom(2) == 0))) {
 				biomeRecordIndex = index;
 			}
 

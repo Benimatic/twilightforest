@@ -18,17 +18,17 @@ public enum SmoothLayer implements CastleTransformer {
 	INSTANCE;
 
 	@Override
-	public ResourceKey<Biome> apply(Context p_76938_, ResourceKey<Biome> p_76939_, ResourceKey<Biome> p_76940_, ResourceKey<Biome> p_76941_, ResourceKey<Biome> p_76942_, ResourceKey<Biome> p_76943_) {
-		boolean flag = p_76940_ == p_76942_;
-		boolean flag1 = p_76939_ == p_76941_;
-		if (flag == flag1) {
-			if (flag) {
-				return p_76938_.nextRandom(2) == 0 ? p_76942_ : p_76939_;
+	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> right, ResourceKey<Biome> down, ResourceKey<Biome> left, ResourceKey<Biome> center) {
+		boolean xMatch = right == left;
+		boolean zMatch = up == down;
+		if (xMatch == zMatch) {
+			if (xMatch) {
+				return context.nextRandom(2) == 0 ? left : up;
 			} else {
-				return p_76943_;
+				return center;
 			}
 		} else {
-			return flag ? p_76942_ : p_76939_;
+			return xMatch ? left : up;
 		}
 	}
 

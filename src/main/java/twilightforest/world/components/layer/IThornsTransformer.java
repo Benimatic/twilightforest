@@ -16,17 +16,17 @@ public interface IThornsTransformer extends AreaTransformer1, DimensionOffset1Tr
 	ResourceKey<Biome> apply(Context noise, ResourceKey<Biome> north, ResourceKey<Biome> west, ResourceKey<Biome> south, ResourceKey<Biome> east, ResourceKey<Biome> middle, ResourceKey<Biome> nw, ResourceKey<Biome> sw, ResourceKey<Biome> se, ResourceKey<Biome> ne);
 
 	@Override
-	default ResourceKey<Biome> applyPixel(BigContext<?> noise, Area area, int x, int z) {
-		return this.apply(noise,
-				area.getBiome(this.getParentX(x + 1), this.getParentY(z)),
-				area.getBiome(this.getParentX(x + 2), this.getParentY(z + 1)),
-				area.getBiome(this.getParentX(x + 1), this.getParentY(z + 2)),
-				area.getBiome(this.getParentX(x), this.getParentY(z + 1)),
-				area.getBiome(this.getParentX(x + 1), this.getParentY(z + 1)),
-				area.getBiome(this.getParentX(x + 2), this.getParentY(z)),
-				area.getBiome(this.getParentX(x + 2), this.getParentY(z + 2)),
-				area.getBiome(this.getParentX(x), this.getParentY(z + 2)),
-				area.getBiome(this.getParentX(x), this.getParentY(z))
+	default ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
+		return this.apply(context,
+				layer.getBiome(this.getParentX(x + 1), this.getParentY(z)),
+				layer.getBiome(this.getParentX(x + 2), this.getParentY(z + 1)),
+				layer.getBiome(this.getParentX(x + 1), this.getParentY(z + 2)),
+				layer.getBiome(this.getParentX(x), this.getParentY(z + 1)),
+				layer.getBiome(this.getParentX(x + 1), this.getParentY(z + 1)),
+				layer.getBiome(this.getParentX(x + 2), this.getParentY(z)),
+				layer.getBiome(this.getParentX(x + 2), this.getParentY(z + 2)),
+				layer.getBiome(this.getParentX(x), this.getParentY(z + 2)),
+				layer.getBiome(this.getParentX(x), this.getParentY(z))
 		);
 	}
 }

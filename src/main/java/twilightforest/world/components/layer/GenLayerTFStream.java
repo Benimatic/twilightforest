@@ -22,7 +22,7 @@ public enum GenLayerTFStream implements CastleTransformer {
 	INSTANCE;
 	
 	@Override
-	public ResourceKey<Biome> apply(Context iNoiseRandom, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> mid) {
+	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> mid) {
 		if (shouldStream(mid, left) || shouldStream(mid, right) || shouldStream(mid, down) || shouldStream(mid, up)) {
 			return TFBiomes.STREAM;
 		} else {

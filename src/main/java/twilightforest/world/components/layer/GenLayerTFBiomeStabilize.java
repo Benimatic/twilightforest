@@ -70,7 +70,7 @@ public enum GenLayerTFBiomeStabilize implements AreaTransformer1 {
 //	}
 
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> iExtendedNoiseRandom, Area iArea, int x, int z) {
+	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
 		int offX = getParentX(x << 4);
 		int offZ = getParentY(z << 4);
 		int centerX = ((x + offX + 1) & -4) - offX;
@@ -83,11 +83,11 @@ public enum GenLayerTFBiomeStabilize implements AreaTransformer1 {
 //            	}
 //            	else
 		if (x <= centerX + 1 && x >= centerX - 1 && z <= centerZ + 1 && z >= centerZ - 1) {
-			return iArea.getBiome(centerX, centerZ);
+			return layer.getBiome(centerX, centerZ);
 //            		output[dx + dz * width] = Biome.desert.biomeID;
 //            		output[dx + dz * width] = input[dx + 1 + (dz + 1) * nwidth];
 		} else {
-			return iArea.getBiome(x, z);
+			return layer.getBiome(x, z);
 		}
 	}
 

@@ -13,5 +13,5 @@ public interface AreaTransformer1 extends DimensionTransformer {
 		}, area);
 	}
 
-	ResourceKey<Biome> applyPixel(BigContext<?> p_76998_, Area p_76999_, int x, int z);
+	ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z);
 }

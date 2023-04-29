@@ -14,5 +14,5 @@ public interface AreaTransformer0 {
 		});
 	}
 
-	ResourceKey<Biome> applyPixel(Context p_76990_, int x, int z);
+	ResourceKey<Biome> applyPixel(Context context, int x, int z);
 }

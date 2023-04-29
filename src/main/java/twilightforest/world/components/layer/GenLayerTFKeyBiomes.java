@@ -41,7 +41,7 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	}
 
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> random, Area iArea, int x, int z) {
+	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
 		RANDOM.setSeed(TFDimensionSettings.seed + (x & -4) * 25117L + (z & -4) * 151121L);
 		int ox = RANDOM.nextInt(2) + 1;
 		int oz = RANDOM.nextInt(2) + 1;
@@ -64,7 +64,7 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 			}
 
 		} else {
-			return iArea.getBiome(x, z);
+			return layer.getBiome(x, z);
 		}
 	}
 
