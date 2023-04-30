@@ -1,6 +1,7 @@
 package twilightforest.init.custom;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -48,7 +49,12 @@ public class BiomeLayerStack {
         ));
 
         biomes = new KeyBiomes.Factory(1000L, List.of(TFBiomes.GLACIER, TFBiomes.FIRE_SWAMP, TFBiomes.DARK_FOREST_CENTER, TFBiomes.FINAL_PLATEAU), Holder.direct(biomes));
-        biomes = new GenLayerTFCompanionBiomes.Factory(1000L, Holder.direct(biomes));
+        biomes = new CompanionBiomes.Factory(1000L, List.of(
+                Pair.of(TFBiomes.FIRE_SWAMP, TFBiomes.SWAMP),
+                Pair.of(TFBiomes.GLACIER, TFBiomes.SNOWY_FOREST),
+                Pair.of(TFBiomes.DARK_FOREST_CENTER, TFBiomes.DARK_FOREST),
+                Pair.of(TFBiomes.FINAL_PLATEAU, TFBiomes.HIGHLANDS)
+        ), Holder.direct(biomes));
 
         biomes = new ZoomLayer.Factory(1000L, false, Holder.direct(biomes));
         biomes = new ZoomLayer.Factory(1001L, false, Holder.direct(biomes));
