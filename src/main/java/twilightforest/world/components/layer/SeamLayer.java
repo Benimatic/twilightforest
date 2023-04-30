@@ -20,7 +20,7 @@ import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransfor
 import java.util.List;
 import java.util.function.LongFunction;
 
-public record PartitioningBiomeLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<Biome>> excludedBiomeNeighbors, List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> excludedBiomeIntersections) implements CastleTransformer {
+public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<Biome>> excludedBiomeNeighbors, List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> excludedBiomeIntersections) implements CastleTransformer {
 	@Override
 	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> mid) {
 		if (this.shouldPartition(mid, left) || this.shouldPartition(mid, right) || this.shouldPartition(mid, down) || this.shouldPartition(mid, up)) {
@@ -56,7 +56,7 @@ public record PartitioningBiomeLayer(ResourceKey<Biome> partitioningBiome, List<
 	public static final class Factory implements BiomeLayerFactory {
 		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
 				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				ResourceKey.codec(Registries.BIOME).fieldOf("partitioning_biome").forGetter(Factory::partitioningBiome),
+				ResourceKey.codec(Registries.BIOME).fieldOf("dividing_biome").forGetter(Factory::partitioningBiome),
 				ResourceKey.codec(Registries.BIOME).listOf().fieldOf("excluded_neighbor_biomes").forGetter(Factory::excludedBiomeNeighbors),
 				ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(Codecs::arrayToPair, p -> List.of(p.getFirst(), p.getSecond())).listOf().fieldOf("excluded_biome_intersections").forGetter(Factory::excludedBiomeIntersections),
 				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
@@ -67,7 +67,7 @@ public record PartitioningBiomeLayer(ResourceKey<Biome> partitioningBiome, List<
 		private final List<ResourceKey<Biome>> excludedBiomeNeighbors;
 		private final List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> excludedBiomeIntersections;
 		private final Holder<BiomeLayerFactory> parent;
-		private final PartitioningBiomeLayer instance;
+		private final SeamLayer instance;
 
 		public Factory(long salt, ResourceKey<Biome> partitioningBiome, List<ResourceKey<Biome>> excludedBiomeNeighbors, List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> excludedBiomeIntersections, Holder<BiomeLayerFactory> parent) {
 			this.salt = salt;
@@ -76,7 +76,7 @@ public record PartitioningBiomeLayer(ResourceKey<Biome> partitioningBiome, List<
 			this.excludedBiomeIntersections = excludedBiomeIntersections;
 			this.parent = parent;
 
-			this.instance = new PartitioningBiomeLayer(partitioningBiome, excludedBiomeNeighbors, excludedBiomeIntersections);
+			this.instance = new SeamLayer(partitioningBiome, excludedBiomeNeighbors, excludedBiomeIntersections);
 		}
 
 		@Override
@@ -86,7 +86,7 @@ public record PartitioningBiomeLayer(ResourceKey<Biome> partitioningBiome, List<
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.STREAM.get();
+			return BiomeLayerTypes.SEAM.get();
 		}
 
 		public long salt() {

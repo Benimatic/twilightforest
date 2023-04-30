@@ -28,7 +28,7 @@ import java.util.function.LongFunction;
  *
  * @author Ben
  */
-public record KeyBiomes(List<ResourceKey<Biome>> keyBiomes) implements AreaTransformer1 {
+public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements AreaTransformer1 {
 	private static final Random RANDOM = new Random();
 
 	@Override
@@ -88,14 +88,14 @@ public record KeyBiomes(List<ResourceKey<Biome>> keyBiomes) implements AreaTrans
 		private final List<ResourceKey<Biome>> keyBiomes;
 		private final Holder<BiomeLayerFactory> parent;
 
-		private final KeyBiomes instance;
+		private final KeyBiomesLayer instance;
 
 		public Factory(long salt, List<ResourceKey<Biome>> keyBiomes, Holder<BiomeLayerFactory> parent) {
 			this.salt = salt;
 			this.keyBiomes = keyBiomes;
 			this.parent = parent;
 
-			this.instance = new KeyBiomes(keyBiomes);
+			this.instance = new KeyBiomesLayer(keyBiomes);
 		}
 
 		@Override

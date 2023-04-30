@@ -17,7 +17,7 @@ import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransforme
 
 import java.util.function.LongFunction;
 
-public enum GenLayerTFBiomeStabilize implements AreaTransformer1 {
+public enum StabilizeLayer implements AreaTransformer1 {
 	INSTANCE;
 
 	@Override
@@ -97,7 +97,6 @@ public enum GenLayerTFBiomeStabilize implements AreaTransformer1 {
 				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 
-		// TODO Parameterize bit-shifting quantities
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
 			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));

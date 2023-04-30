@@ -17,10 +17,8 @@ import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransforme
 
 import java.util.function.LongFunction;
 
-public enum GenLayerTFMedian implements AreaTransformer1 {
+public enum MedianLayer implements AreaTransformer1 {
 	INSTANCE;
-
-	GenLayerTFMedian() {}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override

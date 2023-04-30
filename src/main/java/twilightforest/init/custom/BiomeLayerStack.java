@@ -48,8 +48,8 @@ public class BiomeLayerStack {
                 TFBiomes.SPOOKY_FOREST
         ));
 
-        biomes = new KeyBiomes.Factory(1000L, List.of(TFBiomes.GLACIER, TFBiomes.FIRE_SWAMP, TFBiomes.DARK_FOREST_CENTER, TFBiomes.FINAL_PLATEAU), Holder.direct(biomes));
-        biomes = new CompanionBiomes.Factory(1000L, List.of(
+        biomes = new KeyBiomesLayer.Factory(1000L, List.of(TFBiomes.GLACIER, TFBiomes.FIRE_SWAMP, TFBiomes.DARK_FOREST_CENTER, TFBiomes.FINAL_PLATEAU), Holder.direct(biomes));
+        biomes = new CompanionBiomesLayer.Factory(1000L, List.of(
                 Pair.of(TFBiomes.FIRE_SWAMP, TFBiomes.SWAMP),
                 Pair.of(TFBiomes.GLACIER, TFBiomes.SNOWY_FOREST),
                 Pair.of(TFBiomes.DARK_FOREST_CENTER, TFBiomes.DARK_FOREST),
@@ -59,7 +59,7 @@ public class BiomeLayerStack {
         biomes = new ZoomLayer.Factory(1000L, false, Holder.direct(biomes));
         biomes = new ZoomLayer.Factory(1001L, false, Holder.direct(biomes));
 
-        biomes = new GenLayerTFBiomeStabilize.Factory(700L, Holder.direct(biomes));
+        biomes = new StabilizeLayer.Factory(700L, Holder.direct(biomes));
 
         biomes = new BorderLayer.Factory(500L, TFBiomes.FINAL_PLATEAU, TFBiomes.THORNLANDS, Holder.direct(biomes));
 
@@ -70,7 +70,7 @@ public class BiomeLayerStack {
 
         Holder.Reference<BiomeLayerFactory> randomBiomes = context.register(RANDOM_FOREST_BIOMES, biomes);
 
-        BiomeLayerFactory riverLayer = new PartitioningBiomeLayer.Factory(1L, TFBiomes.STREAM, List.of(TFBiomes.LAKE, TFBiomes.THORNLANDS, TFBiomes.CLEARING, TFBiomes.OAK_SAVANNAH), List.of(
+        BiomeLayerFactory riverLayer = new SeamLayer.Factory(1L, TFBiomes.STREAM, List.of(TFBiomes.LAKE, TFBiomes.THORNLANDS, TFBiomes.CLEARING, TFBiomes.OAK_SAVANNAH), List.of(
                 Pair.of(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER),
                 Pair.of(TFBiomes.MUSHROOM_FOREST, TFBiomes.DENSE_MUSHROOM_FOREST),
                 Pair.of(TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP),

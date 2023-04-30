@@ -3,6 +3,7 @@
   "filtered_layer": {
     "parent": {
       "parent": "twilightforest:random_forest_biomes",
+      "dividing_biome": "twilightforest:stream",
       "excluded_biome_intersections": [
         [
           "twilightforest:snowy_forest",
@@ -31,8 +32,7 @@
         "twilightforest:clearing",
         "twilightforest:oak_savannah"
       ],
-      "layer_type": "twilightforest:partitioning",
-      "partitioning_biome": "twilightforest:stream",
+      "layer_type": "twilightforest:seam",
       "salt": 1
     },
     "layer_type": "twilightforest:smooth",
