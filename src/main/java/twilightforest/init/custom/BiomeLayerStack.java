@@ -16,6 +16,8 @@ import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
 import twilightforest.world.components.layer.vanillalegacy.ZoomLayer;
 
+import java.util.List;
+
 
 public class BiomeLayerStack {
     public static final ResourceKey<Registry<BiomeLayerFactory>> BIOME_STACK_KEY = ResourceKey.createRegistryKey(TwilightForestMod.namedRegistry("biome_layer_stack"));
@@ -45,7 +47,7 @@ public class BiomeLayerStack {
                 TFBiomes.SPOOKY_FOREST
         ));
 
-        biomes = new GenLayerTFKeyBiomes.Factory(1000L, Holder.direct(biomes));
+        biomes = new KeyBiomes.Factory(1000L, List.of(TFBiomes.GLACIER, TFBiomes.FIRE_SWAMP, TFBiomes.DARK_FOREST_CENTER, TFBiomes.FINAL_PLATEAU), Holder.direct(biomes));
         biomes = new GenLayerTFCompanionBiomes.Factory(1000L, Holder.direct(biomes));
 
         biomes = new ZoomLayer.Factory(1000L, false, Holder.direct(biomes));

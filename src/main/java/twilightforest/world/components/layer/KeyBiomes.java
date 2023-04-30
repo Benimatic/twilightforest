@@ -2,10 +2,11 @@ package twilightforest.world.components.layer;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.Util;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
@@ -17,7 +18,9 @@ import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
 
+import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.function.LongFunction;
 
 /**
@@ -25,9 +28,7 @@ import java.util.function.LongFunction;
  *
  * @author Ben
  */
-public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
-	INSTANCE;
-
+public record KeyBiomes(List<ResourceKey<Biome>> keyBiomes) implements AreaTransformer1 {
 	private static final Random RANDOM = new Random();
 
 	@Override
@@ -74,29 +75,49 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	private ResourceKey<Biome> getKeyBiomeFor(int index) {
 		// do we need to shuffle this better?
 		// the current version just "rotates" the 4 key biomes
-		return switch (index & 0b11) {
-			case 1 -> TFBiomes.FIRE_SWAMP;
-			case 2 -> TFBiomes.DARK_FOREST_CENTER;
-			case 3 -> TFBiomes.FINAL_PLATEAU;
-			default -> TFBiomes.GLACIER;
-		};
+		return this.keyBiomes.get(index & 0b11);
 	}
 
-	public record Factory(long salt, Holder<BiomeLayerFactory> parent) implements BiomeLayerFactory {
+	public static final class Factory implements BiomeLayerFactory {
 		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
 				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+				ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(list -> Util.fixedSize(list, 4), Function.identity()).fieldOf("key_biomes").forGetter(Factory::keyBiomes),
 				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
+		private final long salt;
+		private final List<ResourceKey<Biome>> keyBiomes;
+		private final Holder<BiomeLayerFactory> parent;
 
-		// TODO Parameterize these key biomes
+		private final KeyBiomes instance;
+
+		public Factory(long salt, List<ResourceKey<Biome>> keyBiomes, Holder<BiomeLayerFactory> parent) {
+			this.salt = salt;
+			this.keyBiomes = keyBiomes;
+			this.parent = parent;
+
+			this.instance = new KeyBiomes(keyBiomes);
+		}
+
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
 		}
 
 		@Override
 		public BiomeLayerType getType() {
 			return BiomeLayerTypes.KEY_BIOMES.get();
+		}
+
+		public long salt() {
+			return this.salt;
+		}
+
+		public List<ResourceKey<Biome>> keyBiomes() {
+			return this.keyBiomes;
+		}
+
+		public Holder<BiomeLayerFactory> parent() {
+			return this.parent;
 		}
 	}
 }

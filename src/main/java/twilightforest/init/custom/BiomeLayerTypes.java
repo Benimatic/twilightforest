@@ -23,7 +23,7 @@ public class BiomeLayerTypes {
     public static final Codec<BiomeLayerType> CODEC = ExtraCodecs.lazyInitializedCodec(() -> REGISTRY.get().getCodec());
 
     public static final RegistryObject<BiomeLayerType> RANDOM_BIOMES = registerType("random_biomes", () -> () -> RandomBiomeLayer.Factory.CODEC);
-    public static final RegistryObject<BiomeLayerType> KEY_BIOMES = registerType("key_biomes", () -> () -> GenLayerTFKeyBiomes.Factory.CODEC);
+    public static final RegistryObject<BiomeLayerType> KEY_BIOMES = registerType("key_biomes", () -> () -> KeyBiomes.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> COMPANION_BIOMES = registerType("companion_biomes", () -> () -> GenLayerTFCompanionBiomes.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> ZOOM = registerType("zoom", () -> () -> ZoomLayer.Factory.CODEC);
     public static final RegistryObject<BiomeLayerType> STABILIZE = registerType("stabilize", () -> () -> GenLayerTFBiomeStabilize.Factory.CODEC);
