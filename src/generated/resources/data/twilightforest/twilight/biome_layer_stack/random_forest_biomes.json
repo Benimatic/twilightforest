@@ -36,6 +36,24 @@
                     "layer_type": "twilightforest:key_biomes",
                     "salt": 1000
                   },
+                  "keys_to_companions": [
+                    {
+                      "companion": "twilightforest:swamp",
+                      "key": "twilightforest:fire_swamp"
+                    },
+                    {
+                      "companion": "twilightforest:snowy_forest",
+                      "key": "twilightforest:glacier"
+                    },
+                    {
+                      "companion": "twilightforest:dark_forest",
+                      "key": "twilightforest:dark_forest_center"
+                    },
+                    {
+                      "companion": "twilightforest:highlands",
+                      "key": "twilightforest:final_plateau"
+                    }
+                  ],
                   "layer_type": "twilightforest:companion_biomes",
                   "salt": 1000
                 },
