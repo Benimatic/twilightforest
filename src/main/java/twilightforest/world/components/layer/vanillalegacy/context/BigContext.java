@@ -9,13 +9,9 @@ public interface BigContext <R extends Area> extends Context {
 
 	R createResult(Area transformer);
 
-	default R createResult(Area transformer, R layer) {
-		return this.createResult(transformer);
-	}
+	R createResult(Area transformer, R layer);
 
-	default R createResult(Area transformer, R layer1, R layer2) {
-		return this.createResult(transformer);
-	}
+	R createResult(Area transformer, R layer1, R layer2);
 
 	default ResourceKey<Biome> random(ResourceKey<Biome> biome1, ResourceKey<Biome> biome2) {
 		return this.nextRandom(2) == 0 ? biome1 : biome2;
