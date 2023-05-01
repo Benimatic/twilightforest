@@ -526,20 +526,20 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 			Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
 			Vec3 diff = end.subtract(start);
 
-			int deathTime2 = this.deathTime - (maxDeath / 2);
+			int deathTime2 = this.deathTime - (maxDeath / 2) + 1;
 			double factor = (double) deathTime2 / (double) (maxDeath / 2);
-			Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(deathTime2 * Math.PI * 0.1D) + 1.0D, Math.sin(deathTime2 * Math.PI * 0.05D), Math.cos(deathTime2 * Math.PI * 0.1125D) - 1.0D);//Some sine waves to make it pretty
+			Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(deathTime2 * Math.PI * 0.1D), Math.sin(deathTime2 * Math.PI * 0.05D), Math.cos(deathTime2 * Math.PI * 0.1125D));//Some sine waves to make it pretty
 
 			ParticlePacket particlePacket = new ParticlePacket();
-			if (factor * 1.2F >= 1.0F) {
-				for (int i = 0; i < maxDeath / 2; i++) {
+			if (this.deathTime >= maxDeath - 2) {
+				for (int i = 0; i < 40; i++) {
 					double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
 					double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
 					double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
 					particlePacket.queueParticle(ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
 				}
 			}
-			for (int i = 0; i < maxDeath / 2; i++) {
+			for (int i = 0; i < 40; i++) {
 				double x = (this.random.nextDouble() - 0.5D) * 0.05D * i;
 				double y = (this.random.nextDouble() - 0.5D) * 0.05D * i;
 				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
