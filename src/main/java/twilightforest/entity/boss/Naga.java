@@ -17,7 +17,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -35,12 +34,14 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -57,6 +58,7 @@ import twilightforest.entity.ai.goal.NagaSmashGoal;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
+import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
 import twilightforest.util.EntityUtil;
@@ -214,7 +216,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		this.currentSegmentCount = newSegments;
 		if (newSegments < oldSegments) {
 			for (int i = newSegments; i < oldSegments; i++) {
-				this.bodySegments[i].selfDestruct();
+				this.bodySegments[i].selfDestruct((oldSegments - i) * 12);
 			}
 		} else if (newSegments > oldSegments) {
 			this.activateBodySegments();
@@ -254,25 +256,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public void tick() {
-		if (this.deathTime > 0) {
-			Level level = this.getLevel();
-			RandomSource random = this.getRandom();
-			float width = this.getBbWidth();
-			float height = this.getBbHeight();
-			for (int k = 0; k < 1; k++) {
-				double x = random.nextGaussian() * 0.02D;
-				double y = random.nextGaussian() * 0.02D;
-				double z = random.nextGaussian() * 0.02D;
-
-				level.addParticle((random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
-						(this.getX() + random.nextFloat() * width * 2.0F) - width,
-						this.getY() + random.nextFloat() * height,
-						(this.getZ() + random.nextFloat() * width * 2.0F) - width,
-						x, y, z);
-			}
-		}
-
-		if (this.isDazed()) {
+		if (this.isDazed() && this.deathTime < 10) {
 			for (int i = 0; i < 5; i++) {
 				Vec3 pos = new Vec3(this.getX(), this.getY() + 2.15D, this.getZ()).add(new Vec3(1.5D, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))));
 				this.getLevel().addParticle(ParticleTypes.CRIT, pos.x(), pos.y(), pos.z(), 0, 0, 0);
@@ -327,6 +311,11 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.NAGA_HURT.get();
+	}
+
+	@Override
+	public void playHurtSound(DamageSource pSource) {//Just made public
+		super.playHurtSound(pSource);
 	}
 
 	@Override
@@ -510,6 +499,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 
 			double straightenForce = 0.05D + (1.0D / (i + 1)) * 0.5D;
+			if (this.isDeadOrDying()) straightenForce = 0.0D; //Dead snakes don't move
 
 			double idealX = -Mth.sin(angle) * straightenForce;
 			double idealZ = Mth.cos(angle) * straightenForce;
@@ -576,10 +566,76 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	protected void tickDeath() {
 		++this.deathTime;
-		if (this.deathTime >= 10 && !this.level.isClientSide() && !this.isRemoved()) {
-			this.level.broadcastEntityEvent(this, (byte)60);
-			this.remove(Entity.RemovalReason.KILLED);
+		if (!this.level.isClientSide && !this.isRemoved()) {
+			int renderEnd = 24;
+			int maxDeath = renderEnd + 120;
+			if (this.deathTime >= renderEnd) {
+				if (this.deathTime == renderEnd) {
+					SoundEvent soundevent = this.getDeathSound();
+					if (soundevent != null) {
+						this.playSound(soundevent, this.getSoundVolume() * 1.2F, this.getVoicePitch() * 0.75F);
+					}
+					this.level.broadcastEntityEvent(this, (byte) 60);
+				} else if (this.deathTime >= maxDeath) {
+					this.remove(Entity.RemovalReason.KILLED);
+				} else {
+					Vec3 start = this.position().add(0.0D, this.getBbHeight() * 0.5D, 0.0D);
+					Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
+					Vec3 diff = end.subtract(start);
+
+					ParticlePacket particlePacket = new ParticlePacket();
+					if (this.deathTime >= maxDeath - 3) {
+						for (int i = 0; i < 40; i++) {
+							double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+							double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+							double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+							particlePacket.queueParticle(ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
+						}
+					}
+
+					double angle = Math.atan2(end.z - start.z, end.x - start.x) * Mth.RAD_TO_DEG + 180D;
+
+					double xMul = angle % 180.0D;
+					xMul = Math.min(xMul, 180.0D - xMul);
+					xMul = Math.pow((xMul / 90.0D), 1.5D) * 2.0D;
+
+					double zMul = (angle + 90.0D) % 180.0D;
+					zMul = Math.min(zMul, 180.0D - zMul);
+					zMul = Math.pow((zMul / 90.0D), 1.5D) * 2.0D;
+
+					for (int p = 0; p < 4; p++) {
+						int trailTime = (this.deathTime - renderEnd) - p + 1;//Plus one cuz the math makes it reach the correct spot at 120 ticks, but the method ends at 119
+						if (trailTime < 0) continue;
+						for (double d = 0.0D; d < 1.0D; d += 0.25D) {
+							double preciseTime = trailTime - d;
+							if (preciseTime < 0.0D) continue;
+							double factor = preciseTime / (double) (maxDeath - renderEnd);
+							Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);//Some sine waves to make it slither-y;
+							BlockHitResult blockhitresult = this.level.clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, null));
+							particlePacket.queueParticle(ParticleTypes.COMPOSTER, false, blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D), Vec3.ZERO);
+						}
+					}
+					TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+				}
+			}
 		}
+	}
+
+	@Override
+	public void handleEntityEvent(byte id) {
+		if (id == 60) {
+			Vec3 pos = this.position();
+			float width = this.getBbWidth();
+			float height = this.getBbHeight();
+			for (int k = 0; k < 20; k++) {
+				this.getLevel().addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
+						(pos.x + this.random.nextFloat() * width * 2.0F) - width,
+						pos.y + this.random.nextFloat() * height,
+						(pos.z + this.random.nextFloat() * width * 2.0F) - width,
+						this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
+			}
+		}
+		super.handleEntityEvent(id);
 	}
 
 	@Override

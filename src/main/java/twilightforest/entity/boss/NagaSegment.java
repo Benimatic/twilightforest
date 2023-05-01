@@ -2,7 +2,6 @@ package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -11,6 +10,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
@@ -34,6 +34,7 @@ public class NagaSegment extends TFPart<Naga> {
 		this.deactivate();
 	}
 
+	@Override
 	@OnlyIn(Dist.CLIENT)
 	public ResourceLocation renderer() {
 		return RENDERER;
@@ -71,20 +72,20 @@ public class NagaSegment extends TFPart<Naga> {
 		if (this.deathCounter > 0) {
 			this.deathCounter--;
 			if (this.deathCounter <= 0) {
+				Vec3 pos = this.position();
+				float width = this.getBbWidth();
+				float height = this.getBbHeight();
 				for (int k = 0; k < 20; k++) {
-					double d = this.random.nextGaussian() * 0.02D;
-					double d1 = this.random.nextGaussian() * 0.02D;
-					double d2 = this.random.nextGaussian() * 0.02D;
-					SimpleParticleType explosionType = random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF;
-
-					this.getLevel().addParticle(explosionType,
-							(this.getX() + this.random.nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-							this.getY() + this.random.nextFloat() * this.getBbHeight(),
-							(this.getZ() + this.random.nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-							d, d1, d2);
+					this.getLevel().addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
+							(pos.x + this.random.nextFloat() * width * 2.0F) - width,
+							pos.y + this.random.nextFloat() * height,
+							(pos.z + this.random.nextFloat() * width * 2.0F) - width,
+							this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
 				}
 
-				deactivate();
+				this.getParent().playHurtSound(this.damageSources().generic());
+				this.getParent().deathTime = 0;
+				this.deactivate();
 			}
 		}
 	}
@@ -135,8 +136,8 @@ public class NagaSegment extends TFPart<Naga> {
 	protected void playStepSound(BlockPos pos, BlockState block) {
 	}
 
-	public void selfDestruct() {
-		this.deathCounter = 10;
+	public void selfDestruct(int counter) {
+		this.deathCounter = counter;
 	}
 
 	@Override

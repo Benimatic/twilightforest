@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -21,20 +20,21 @@ public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M
 	}
 
 	@Override
-	protected void setupRotations(Naga lich, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		if (lich.deathTime > 0) {//Prevent the body from keeling over
-			stack.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
-			return;
-		}
+	public boolean shouldRender(Naga pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+		if (pLivingEntity.deathTime > 32) return false;
+		return super.shouldRender(pLivingEntity, pCamera, pCamX, pCamY, pCamZ);
+	}
 
-		super.setupRotations(lich, stack, ageInTicks, rotationYaw, partialTicks);
+	@Override
+	protected float getFlipDegrees(Naga naga) { //Prevent the body from keeling over
+		return naga.isDeadOrDying() ? 0.0F : super.getFlipDegrees(naga);
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(Naga entity) {
 		if (entity.isDazed()) {
 			return textureLocDazed;
-		} else if (entity.isCharging()) {
+		} else if (entity.isCharging() || entity.isDeadOrDying()) {
 			return textureLocCharging;
 		} else {
 			return textureLoc;
