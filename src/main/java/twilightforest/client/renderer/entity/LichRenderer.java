@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -35,13 +34,8 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
 	}
 
 	@Override
-	protected void setupRotations(Lich lich, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		if (lich.deathTime > 0) {//Prevent the body from keeling over
-			stack.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
-			return;
-		}
-
-		super.setupRotations(lich, stack, ageInTicks, rotationYaw, partialTicks);
+	protected float getFlipDegrees(Lich lich) { //Prevent the body from keeling over
+		return lich.isDeadOrDying() ? 0.0F : super.getFlipDegrees(lich);
 	}
 
 	@Override
