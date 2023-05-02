@@ -23,6 +23,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.util.EntityUtil;
@@ -103,7 +104,7 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 	}
 
 	private boolean canReplaceBlock(Level level, BlockPos pos) {
-		return !level.getBlockState(pos).hasBlockEntity() && EntityUtil.canDestroyBlock(level, pos, this);
+		return !level.getBlockState(pos).hasBlockEntity() && level.getBlockState(pos).isSolidRender(level, pos) && level.getBlockState(pos).is(BlockTagGenerator.DRUID_PROJECTILE_REPLACEABLE) && EntityUtil.canDestroyBlock(level, pos, this);
 	}
 
 	@Override
