@@ -41,6 +41,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
 		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
 		generator.addProvider(event.includeServer(), blocktags);
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.BlockEntityTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags.contentsGetter(), helper));
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));

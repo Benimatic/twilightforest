@@ -85,6 +85,9 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("penguins_spawnable_on"));
 	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("giants_spawnable_on"));
 
+	public static final TagKey<Block> RELOCATION_NOT_SUPPORTED =  BlockTags.create(new ResourceLocation("forge", "relocation_not_supported"));
+	public static final TagKey<Block> IMMOVABLE =  BlockTags.create(new ResourceLocation("forge", "immovable"));
+
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
 		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key(), TwilightForestMod.ID, helper);
 	}
@@ -679,6 +682,44 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		);
 
 		tag(BlockTags.INVALID_SPAWN_INSIDE).add(TFBlocks.TWILIGHT_PORTAL.get());
+
+		tag(RELOCATION_NOT_SUPPORTED).add(TFBlocks.TWILIGHT_PORTAL.get(),
+				TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(),
+				TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get(),
+				TFBlocks.ANTIBUILDER.get(), TFBlocks.BUILT_BLOCK.get(),
+				TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get(),
+				TFBlocks.REACTOR_DEBRIS.get(), TFBlocks.LOCKED_VANISHING_BLOCK.get(),
+				TFBlocks.VANISHING_BLOCK.get(), TFBlocks.REAPPEARING_BLOCK.get(),
+				TFBlocks.BEANSTALK_GROWER.get(), TFBlocks.GIANT_COBBLESTONE.get(),
+				TFBlocks.GIANT_LOG.get(), TFBlocks.GIANT_LEAVES.get(),
+				TFBlocks.GIANT_OBSIDIAN.get(), TFBlocks.BROWN_THORNS.get(),
+				TFBlocks.GREEN_THORNS.get(), TFBlocks.BURNT_THORNS.get(),
+				TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(),
+				TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(),
+				TFBlocks.VIOLET_FORCE_FIELD.get(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(),
+				TFBlocks.NAGA_BOSS_SPAWNER.get(), TFBlocks.LICH_BOSS_SPAWNER.get(),
+				TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), TFBlocks.HYDRA_BOSS_SPAWNER.get(),
+				TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get(),
+				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
+
+		tag(IMMOVABLE).add(TFBlocks.TWILIGHT_PORTAL.get(),
+				TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(),
+				TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get(),
+				TFBlocks.ANTIBUILDER.get(), TFBlocks.BUILT_BLOCK.get(),
+				TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get(),
+				TFBlocks.REACTOR_DEBRIS.get(), TFBlocks.LOCKED_VANISHING_BLOCK.get(),
+				TFBlocks.VANISHING_BLOCK.get(), TFBlocks.REAPPEARING_BLOCK.get(),
+				TFBlocks.BEANSTALK_GROWER.get(), TFBlocks.GIANT_COBBLESTONE.get(),
+				TFBlocks.GIANT_LOG.get(), TFBlocks.GIANT_LEAVES.get(),
+				TFBlocks.GIANT_OBSIDIAN.get(), TFBlocks.BROWN_THORNS.get(),
+				TFBlocks.GREEN_THORNS.get(), TFBlocks.BURNT_THORNS.get(),
+				TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(),
+				TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(),
+				TFBlocks.VIOLET_FORCE_FIELD.get(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(),
+				TFBlocks.NAGA_BOSS_SPAWNER.get(), TFBlocks.LICH_BOSS_SPAWNER.get(),
+				TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), TFBlocks.HYDRA_BOSS_SPAWNER.get(),
+				TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get(),
+				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
