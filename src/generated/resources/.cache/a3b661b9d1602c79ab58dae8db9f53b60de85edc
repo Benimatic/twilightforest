@@ -1,4 +1,6 @@
-// 1.19.4	2023-04-23T21:47:52.2665652	Twilight Forest Item Tags
+// 1.19.4	2023-05-03T19:44:48.9793687	Twilight Forest Item Tags
+4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/items/plants.json
+932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/items/plant_foods.json
 3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/items/charm.json
 28506418ae14efe13cfbe34765fa39ba5d6e03e7 data/curios/tags/items/head.json
 017a0eae9dcb1c009506ab7fb1bf5ed2867507aa data/forge/tags/items/armors/boots.json
@@ -19,10 +21,10 @@ c4ca6360cc73d65fd4a4a4c6cf7de2143124ccbf data/forge/tags/items/ingots/fiery.json
 bed43612fb08f85dd3dc7dbc5a4a871f7440b9d7 data/forge/tags/items/ingots/ironwood.json
 980eaf5c00d22d6f49e221d0c1effd89470aaee8 data/forge/tags/items/ingots/knightmetal.json
 69966a0aa274f8bcccc17ecf8d9a4e446e7897eb data/forge/tags/items/ingots/steeleaf.json
-90ce1fbd4c69fcd346520792bb621390c8a27331 data/forge/tags/items/ores.json
-2973f905270dbbc53a2d666941d72485a9e85946 data/forge/tags/items/ores/ironwood.json
-4148b1147e82840f7df067661493919bf23a189c data/forge/tags/items/ores/knightmetal.json
 886e5e1db1abef8583882d996f8600275f839c37 data/forge/tags/items/paper.json
+d0a907bc0d88a34d6265d4b4f8a2848cf585b6bf data/forge/tags/items/raw_materials.json
+2973f905270dbbc53a2d666941d72485a9e85946 data/forge/tags/items/raw_materials/ironwood.json
+4148b1147e82840f7df067661493919bf23a189c data/forge/tags/items/raw_materials/knightmetal.json
 865a3c15802955f17d8824a2936544182ef437e0 data/forge/tags/items/storage_blocks.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/forge/tags/items/storage_blocks/arctic_fur.json
 bb31db15f2b155aafc5bc956c01454bb27f14f72 data/forge/tags/items/storage_blocks/carminite.json

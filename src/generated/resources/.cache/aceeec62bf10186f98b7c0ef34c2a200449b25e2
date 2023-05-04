@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-01T20:28:09.6182263	Twilight Forest Block Tags
+// 1.19.4	2023-05-03T19:44:48.973386	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -6,7 +6,6 @@ ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.js
 211134157771c86a72a0c5a1985c2b05da55729b data/forge/tags/blocks/fence_gates/wooden.json
 99afcf6876f61d56bc7a2f1c84d83d99d4b245e9 data/forge/tags/blocks/immovable.json
 9f7a15a8b7d1cd07e3898e7065ca511dafefba46 data/forge/tags/blocks/needs_wood_tool.json
-69df1d33ccbb5ab10af053af0b3f28694eab1bc2 data/forge/tags/blocks/ores.json
 078ffd510c10188061614a42c5165e8a6b146fd7 data/forge/tags/blocks/ores_in_ground/root.json
 092125a387f652f754cbd3e2eef2d3fe0a67bd55 data/forge/tags/blocks/ore_bearing_ground/root.json
 99afcf6876f61d56bc7a2f1c84d83d99d4b245e9 data/forge/tags/blocks/relocation_not_supported.json
@@ -76,8 +75,6 @@ c8fafdcc498cb38e705f74c899c6adee8c1c137e data/twilightforest/tags/blocks/ice_bom
 dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/blocks/mazebreaker_accelerated_mining.json
 6983cf03e3e0ed197a353c175ee65000bac02492 data/twilightforest/tags/blocks/mazestone.json
 9a0837862b33f048722739e6314f5c471d56b2d6 data/twilightforest/tags/blocks/mining_logs.json
-35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/blocks/ores/ironwood.json
-35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/blocks/ores/knightmetal.json
 2e3669ba44aac2e69249800a996f0e1b27c08e54 data/twilightforest/tags/blocks/ore_magnet/ignored_ores.json
 d82abba18e7ff90d2c891453ddff813ffdb8e55d data/twilightforest/tags/blocks/ore_magnet/ore_safe_replace_block.json
 52413a870520da3227b0d97b44e5455211b16e49 data/twilightforest/tags/blocks/penguins_spawnable_on.json

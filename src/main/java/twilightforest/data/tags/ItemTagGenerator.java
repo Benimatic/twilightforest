@@ -3,7 +3,6 @@ package twilightforest.data.tags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -51,8 +50,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	public static final TagKey<Item> STORAGE_BLOCKS_KNIGHTMETAL = ItemTags.create(new ResourceLocation("forge", "storage_blocks/knightmetal"));
 	public static final TagKey<Item> STORAGE_BLOCKS_STEELEAF = ItemTags.create(new ResourceLocation("forge", "storage_blocks/steeleaf"));
 
-	public static final TagKey<Item> ORES_IRONWOOD = ItemTags.create(new ResourceLocation("forge", "ores/ironwood"));
-	public static final TagKey<Item> ORES_KNIGHTMETAL = ItemTags.create(new ResourceLocation("forge", "ores/knightmetal"));
+	public static final TagKey<Item> RAW_MATERIALS_IRONWOOD = ItemTags.create(new ResourceLocation("forge", "raw_materials/ironwood"));
+	public static final TagKey<Item> RAW_MATERIALS_KNIGHTMETAL = ItemTags.create(new ResourceLocation("forge", "raw_materials/knightmetal"));
 
 	public static final TagKey<Item> PORTAL_ACTIVATOR = ItemTags.create(TwilightForestMod.prefix("portal/activator"));
 
@@ -69,6 +68,10 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	private static final TagKey<Item> CHARM = ItemTags.create(new ResourceLocation("curios", "charm"));
 	private static final TagKey<Item> HEAD = ItemTags.create(new ResourceLocation("curios", "head"));
+
+	public static final TagKey<Item> CA_PLANTS = ItemTags.create(new ResourceLocation("createaddition", "plants"));
+	public static final TagKey<Item> CA_PLANT_FOODS = ItemTags.create(new ResourceLocation("createaddition", "plant_foods"));
+
 
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
 		super(output, future, provider, TwilightForestMod.ID, helper);
@@ -131,11 +134,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				.addTag(STORAGE_BLOCKS_CARMINITE).addTag(STORAGE_BLOCKS_IRONWOOD)
 				.addTag(STORAGE_BLOCKS_KNIGHTMETAL).addTag(STORAGE_BLOCKS_STEELEAF);
 
-		this.copy(BlockTagGenerator.ORES_IRONWOOD, ORES_IRONWOOD);
-		this.copy(BlockTagGenerator.ORES_KNIGHTMETAL, ORES_KNIGHTMETAL);
-
-		tag(Tags.Items.ORES).addTag(ORES_IRONWOOD).addTag(ORES_KNIGHTMETAL);
-
 		this.copy(BlockTagGenerator.TOWERWOOD, TOWERWOOD);
 
 		tag(PAPER).add(Items.PAPER);
@@ -156,8 +154,9 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				.addTag(IRONWOOD_INGOTS).addTag(FIERY_INGOTS)
 				.addTag(KNIGHTMETAL_INGOTS).addTag(STEELEAF_INGOTS);
 
-		tag(ORES_IRONWOOD).add(TFItems.RAW_IRONWOOD.get());
-		tag(ORES_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER.get());
+		tag(RAW_MATERIALS_IRONWOOD).add(TFItems.RAW_IRONWOOD.get());
+		tag(RAW_MATERIALS_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER.get());
+		tag(Tags.Items.RAW_MATERIALS).addTag(RAW_MATERIALS_IRONWOOD).addTag(RAW_MATERIALS_KNIGHTMETAL);
 
 		tag(PORTAL_ACTIVATOR).addTag(Tags.Items.GEMS_DIAMOND);
 		
@@ -331,6 +330,18 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(Tags.Items.TOOLS_BOWS).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
 
 		tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.get().asItem());
+
+		tag(CA_PLANT_FOODS).add(TFItems.TORCHBERRIES.get());
+
+		tag(CA_PLANTS).add(TFItems.LIVEROOT.get(), TFItems.MAGIC_BEANS.get(),
+				TFBlocks.HUGE_WATER_LILY.get().asItem(), TFBlocks.HUGE_LILY_PAD.get().asItem(),
+				TFBlocks.TROLLVIDR.get().asItem(), TFBlocks.UNRIPE_TROLLBER.get().asItem(),
+				TFBlocks.TROLLBER.get().asItem(), TFBlocks.HUGE_STALK.get().asItem(),
+				TFBlocks.THORN_ROSE.get().asItem(), TFBlocks.MAYAPPLE.get().asItem(),
+				TFBlocks.CLOVER_PATCH.get().asItem(), TFBlocks.FIDDLEHEAD.get().asItem(),
+				TFBlocks.MUSHGLOOM.get().asItem(), TFBlocks.TORCHBERRY_PLANT.get().asItem(),
+				TFBlocks.ROOT_STRAND.get().asItem(), TFBlocks.FALLEN_LEAVES.get().asItem(),
+				TFBlocks.HEDGE.get().asItem(), TFBlocks.ROOT_BLOCK.get().asItem(), TFBlocks.LIVEROOT_BLOCK.get().asItem());
 
 		//saved for 1.20
 //		tag(ItemTags.TRIMMABLE_ARMOR)
