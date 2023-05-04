@@ -21,7 +21,7 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
-public class HydraMortarHead extends ThrowableProjectile {
+public class HydraMortar extends ThrowableProjectile {
 
 	private static final int BURN_FACTOR = 5;
 	private static final int DIRECT_DAMAGE = 18;
@@ -29,11 +29,11 @@ public class HydraMortarHead extends ThrowableProjectile {
 	public int fuse = 80;
 	private boolean megaBlast = false;
 
-	public HydraMortarHead(EntityType<? extends HydraMortarHead> type, Level world) {
+	public HydraMortar(EntityType<? extends HydraMortar> type, Level world) {
 		super(type, world);
 	}
 
-	public HydraMortarHead(EntityType<? extends HydraMortarHead> type, Level world, HydraHead head) {
+	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
 		super(type, head.getParent(), world);
 
 		Vec3 vector = head.getLookAngle();
@@ -101,7 +101,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 	protected void onHitEntity(EntityHitResult result) {
 		Entity entity = result.getEntity();
 		if (!this.getLevel().isClientSide() && this.getOwner() != null) {
-			if ((!(entity instanceof HydraMortarHead mortar) || mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
+			if ((!(entity instanceof HydraMortar mortar) || mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
 				this.detonate();
 			}
 		}
@@ -126,7 +126,6 @@ public class HydraMortarHead extends ThrowableProjectile {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
 		boolean flag = ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this);
 		this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
-		//FIXME make a custom damage source for this
 
 		for (Entity nearby : this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
 			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.HYDRA_MORTAR, TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {

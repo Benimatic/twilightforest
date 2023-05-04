@@ -273,38 +273,9 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		}
 	}
 
-	// [VanillaCopy] Exact copy of Mob.doHurtTarget, but change the damage source
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-
-		if (entity instanceof LivingEntity living) {
-			f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), living.getMobType());
-			f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
-		}
-
-		int i = EnchantmentHelper.getFireAspect(this);
-		if (i > 0) {
-			entity.setSecondsOnFire(i * 4);
-		}
-
-		boolean flag = entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.HAUNT, this), f);
-		if (flag) {
-			if (f1 > 0.0F && entity instanceof LivingEntity living) {
-				living.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));
-				this.setDeltaMovement(this.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
-			}
-
-			if (entity instanceof Player player) {
-				this.maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
-			}
-
-			this.doEnchantDamageEffects(this, entity);
-			this.setLastHurtMob(entity);
-		}
-
-		return flag;
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.HAUNT, this));
 	}
 
 	@Override

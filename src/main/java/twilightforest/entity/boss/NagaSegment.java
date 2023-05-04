@@ -104,7 +104,7 @@ public class NagaSegment extends TFPart<Naga> {
 		entity.push(this);
 
 		// attack anything that's not us
-		if (entity instanceof LivingEntity && !(entity instanceof Naga)) {
+		if (entity instanceof LivingEntity && !(entity instanceof Naga) && !this.getParent().isDazed()) {
 			int attackStrength = 2;
 
 			// get rid of nearby deer & look impressive

@@ -159,7 +159,6 @@ public class Troll extends Monster implements RangedAttackMob {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		swing(InteractionHand.MAIN_HAND);
 		return super.doHurtTarget(entity);
 	}
 

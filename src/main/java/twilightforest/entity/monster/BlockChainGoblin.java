@@ -30,6 +30,7 @@ import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.ThrowSpikeBlockGoal;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
+import twilightforest.util.EntityUtil;
 
 import java.util.List;
 
@@ -151,9 +152,7 @@ public class BlockChainGoblin extends Monster {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		this.swing(InteractionHand.MAIN_HAND);
-		entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SPIKED, this, this.block), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return false;
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SPIKED, this, this.block));
 	}
 
 	@Override

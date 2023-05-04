@@ -149,7 +149,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (this.isBreathing()) {
-			entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE);
+			return entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE);
 		}
 		return super.doHurtTarget(entity);
 	}

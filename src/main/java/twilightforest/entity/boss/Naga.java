@@ -52,9 +52,9 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
-import twilightforest.entity.ai.goal.NagaAttackGoal;
 import twilightforest.entity.ai.goal.NagaMovementPattern;
 import twilightforest.entity.ai.goal.NagaSmashGoal;
+import twilightforest.entity.ai.goal.SimplifiedAttackGoal;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
@@ -136,7 +136,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(2, new NagaAttackGoal(this));
+		this.goalSelector.addGoal(2, new SimplifiedAttackGoal(this));
 		this.goalSelector.addGoal(3, new NagaSmashGoal(this));
 		this.goalSelector.addGoal(4, this.movementAI = new NagaMovementPattern(this));
 		this.goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0D) {
@@ -358,17 +358,12 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public boolean isInvulnerableTo(DamageSource src) {
 		return src.getEntity() != null && !this.isEntityWithinHomeArea(src.getEntity()) // reject damage from outside of our home radius
 				|| src.getDirectEntity() != null && !this.isEntityWithinHomeArea(src.getDirectEntity())
-				|| src.is(DamageTypeTags.IS_FIRE) || src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(src);
-	}
-
-	@Override
-	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
-		return false;
+				|| src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(src);
 	}
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if (!source.is(DamageTypeTags.IS_FALL) && super.hurt(source, amount)) {
+		if (super.hurt(source, amount)) {
 			this.ticksSinceDamaged = 0;
 			if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 				this.hurtBy.add(player);

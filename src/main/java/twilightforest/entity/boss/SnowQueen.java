@@ -302,10 +302,8 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		if (this.getCurrentPhase() == Phase.DROP) {
-			return entity.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.SQUISH, TFEntities.SNOW_QUEEN.get()), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		}
-		return super.doHurtTarget(entity);
+		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.SQUISH, TFEntities.SNOW_QUEEN.get()) : this.getLevel().damageSources().mobAttack(this);
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, source);
 	}
 
 	@Override

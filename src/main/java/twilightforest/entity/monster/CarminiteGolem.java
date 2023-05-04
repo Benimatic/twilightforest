@@ -57,11 +57,11 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		this.attackTimer = 10;
-		this.getLevel().broadcastEntityEvent(this, (byte) 4);
 		boolean attackSuccess = super.doHurtTarget(entity);
 
 		if (attackSuccess) {
+			this.attackTimer = 10;
+			this.getLevel().broadcastEntityEvent(this, (byte) 4);
 			entity.push(0.0D, 0.4D, 0.0D);
 		}
 

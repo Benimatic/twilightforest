@@ -30,6 +30,7 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
@@ -597,7 +598,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		double range = calculateRange(source);
 
 		// Give some leeway for reflected mortars
-		if (range > 400 + (source.getDirectEntity() instanceof HydraMortarHead ? 200 : 0)) {
+		if (range > 400 + (source.getDirectEntity() instanceof HydraMortar ? 200 : 0)) {
 			return false;
 		}
 
@@ -636,6 +637,11 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 			this.hurtBy.add(player);
 		}
 		return src.is(DamageTypes.OUT_OF_WORLD) && super.hurt(src, damage);
+	}
+
+	@Override
+	public boolean isInvulnerableTo(DamageSource source) {
+		return !source.is(TFDamageTypes.HYDRA_MORTAR) && super.isInvulnerableTo(source);
 	}
 
 	@Override

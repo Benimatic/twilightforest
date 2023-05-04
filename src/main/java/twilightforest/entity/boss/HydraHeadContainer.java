@@ -671,7 +671,7 @@ public class HydraHeadContainer {
 
 	private void executeAttacks() {
 		if (this.currentState == State.MORTAR_SHOOTING && this.ticksProgress % 10 == 0) {
-			HydraMortarHead mortar = new HydraMortarHead(TFEntities.HYDRA_MORTAR.get(), this.headEntity.getLevel(), this.headEntity);
+			HydraMortar mortar = new HydraMortar(TFEntities.HYDRA_MORTAR.get(), this.headEntity.getLevel(), this.headEntity);
 
 			// launch blasting mortars if the player is hiding
 			if (this.targetEntity != null && !this.headEntity.canEntityBeSeen(this.targetEntity)) {
