@@ -79,7 +79,20 @@
     ]
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
+  "spawn_costs": {
+    "minecraft:skeleton": {
+      "charge": 0.85,
+      "energy_budget": 0.25
+    },
+    "minecraft:spider": {
+      "charge": 0.75,
+      "energy_budget": 0.25
+    },
+    "twilightforest:skeleton_druid": {
+      "charge": 0.95,
+      "energy_budget": 0.25
+    }
+  },
   "spawners": {
     "ambient": [
       {

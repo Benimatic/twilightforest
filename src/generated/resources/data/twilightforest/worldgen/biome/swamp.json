@@ -85,7 +85,16 @@
     ]
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
+  "spawn_costs": {
+    "minecraft:zombie": {
+      "charge": 0.75,
+      "energy_budget": 0.2
+    },
+    "twilightforest:mosquito_swarm": {
+      "charge": 0.75,
+      "energy_budget": 0.2
+    }
+  },
   "spawners": {
     "ambient": [],
     "axolotls": [],

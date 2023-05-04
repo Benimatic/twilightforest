@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-30T16:06:19.0104858	Registries
+// 1.19.4	2023-05-03T19:03:26.8880307	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -56,7 +56,7 @@ b6d4a8629c11a3cac9b91801973bb0fa7ff9bcea data/twilightforest/twilight/wood_palet
 465031afbf54df48a316262698e547fc7ebd29f0 data/twilightforest/twilight/wood_palettes/transwood.json
 c5e1e96fa69452349f77ba366f9b2d54315d6726 data/twilightforest/twilight/wood_palettes/twilight_oak.json
 bbeb336cac17eb581c220b9c80e5ef5aeb438611 data/twilightforest/worldgen/biome/clearing.json
-bde1e8f879e2fe6f65d1e364ca5f195579d60ecc data/twilightforest/worldgen/biome/dark_forest.json
+3aa95f76fbc48d910f61e1b458599af035aa44d1 data/twilightforest/worldgen/biome/dark_forest.json
 4758b8082e2dcf1bf6f4db580bfbad15a4b1a915 data/twilightforest/worldgen/biome/dark_forest_center.json
 df5809275c3dfa2842b98a647723f0bd80d2384d data/twilightforest/worldgen/biome/dense_forest.json
 64ee4877c3401145947fdcfea824202e162a1012 data/twilightforest/worldgen/biome/dense_mushroom_forest.json
@@ -70,12 +70,12 @@ c1e19af8b6054b03b5e9fa70aadf03a7fe24d009 data/twilightforest/worldgen/biome/glac
 5470fa09d8cad0260633b2d251dabf88f3e9bf85 data/twilightforest/worldgen/biome/lake.json
 6c32c2a92ab6f614d6315de1a17abf9491971379 data/twilightforest/worldgen/biome/mushroom_forest.json
 ca9823116ce833ec36631cb510bfe84d1c95a0a8 data/twilightforest/worldgen/biome/oak_savannah.json
-2f21f0a5a44764fd0b3cf33b31535aaa8d08cb27 data/twilightforest/worldgen/biome/snowy_forest.json
-3cbd87ae5a4000cf0b6e8dfffa8fd707a945ed6d data/twilightforest/worldgen/biome/spooky_forest.json
+7b1754d4a3a56af95d8e718fd3940b1c825c4b87 data/twilightforest/worldgen/biome/snowy_forest.json
+32b917d3717a64fbef9cb1f4f897f4dfba411988 data/twilightforest/worldgen/biome/spooky_forest.json
 6b48da781fae02a9315f7247c7ce66259db37ecb data/twilightforest/worldgen/biome/stream.json
-939ac1a574a14a0491b92e3aa50905006632ddc8 data/twilightforest/worldgen/biome/swamp.json
+01dd4ec5aeb0acd66fb9cabf1d4c1a925e053476 data/twilightforest/worldgen/biome/swamp.json
 310a730cabddc2345d79f77134f85fd5499a9a65 data/twilightforest/worldgen/biome/thornlands.json
-96f2629a3cd4eda084d98705d4614e7ef05fae4a data/twilightforest/worldgen/biome/underground.json
+102786d73df8892fb8d5deb8e5d770639eb2d2ab data/twilightforest/worldgen/biome/underground.json
 5f90dbc8c186bbd0ccfbf20eb0829b50650dd78c data/twilightforest/worldgen/configured_carver/highland_caves.json
 a4a4f203951a7e61b1654e7e272426a4196d58e9 data/twilightforest/worldgen/configured_carver/tf_caves.json
 aaabd69f1e630172252fd3e6bd0e5845ef2f8cd0 data/twilightforest/worldgen/configured_feature/birch_fallen_log.json
