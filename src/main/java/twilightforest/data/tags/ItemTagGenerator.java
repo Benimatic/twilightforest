@@ -320,6 +320,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFItems.IRONWOOD_PICKAXE.get(),
 				TFItems.STEELEAF_PICKAXE.get(),
 				TFItems.KNIGHTMETAL_PICKAXE.get(),
+				TFItems.MAZEBREAKER_PICKAXE.get(),
 				TFItems.FIERY_PICKAXE.get(),
 				TFItems.GIANT_PICKAXE.get());
 
@@ -328,6 +329,14 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.HOES).add(TFItems.IRONWOOD_HOE.get(), TFItems.STEELEAF_HOE.get());
 		tag(Tags.Items.TOOLS_SHIELDS).add(TFItems.KNIGHTMETAL_SHIELD.get());
 		tag(Tags.Items.TOOLS_BOWS).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
+
+		tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(
+				TFItems.IRONWOOD_PICKAXE.get(),
+				TFItems.STEELEAF_PICKAXE.get(),
+				TFItems.KNIGHTMETAL_PICKAXE.get(),
+				TFItems.MAZEBREAKER_PICKAXE.get(),
+				TFItems.FIERY_PICKAXE.get(),
+				TFItems.GIANT_PICKAXE.get());
 
 		tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.get().asItem());
 

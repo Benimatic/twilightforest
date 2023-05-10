@@ -133,6 +133,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.PLAYER_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 
+		getVariantBuilder(TFBlocks.SPIRAL_BRICKS.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(models().getExistingFile(TwilightForestMod.prefix("block/spiral_bricks/" + state.getValue(SpiralBrickBlock.AXIS_FACING).getName() + "_spiral_" + state.getValue(SpiralBrickBlock.DIAGONAL).getSerializedName()))).build());
+
 		ModelFile shieldModel = models().cubeTop(TFBlocks.STRONGHOLD_SHIELD.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
 		getVariantBuilder(TFBlocks.STRONGHOLD_SHIELD.get())
 				.forAllStates(state -> {

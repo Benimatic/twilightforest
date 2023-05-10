@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-15T19:43:56.8992406	TwilightForest blockstates and block models
+// 1.19.4	2023-05-10T17:42:41.4485468	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -315,6 +315,7 @@ a0151a24fe925a82e3b1432ec80c1d4b8964545f assets/twilightforest/blockstates/sorti
 8286641a1751f8228fda584792e524bb5869f212 assets/twilightforest/blockstates/sorting_trapdoor.json
 22fa5306b2e240784c5b45cb770ce4a47863c435 assets/twilightforest/blockstates/sorting_wall_sign.json
 f332a94d3840a225642a563a905c3a5bb658cdef assets/twilightforest/blockstates/sorting_wood.json
+fa4ca921290966afd22d3eb726b45812ae950b4d assets/twilightforest/blockstates/spiral_bricks.json
 35f3d316140f064c2f86363faa512fdffbe223d0 assets/twilightforest/blockstates/spruce_banister.json
 965f91e9eec96ba89942250457456f10a994040c assets/twilightforest/blockstates/steeleaf_block.json
 b2e74bad436c08b77027498c4722448d678ae13f assets/twilightforest/blockstates/stripped_canopy_log.json
