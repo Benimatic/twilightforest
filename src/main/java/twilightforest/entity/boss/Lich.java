@@ -793,6 +793,11 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		return false;
 	}
 
+	@Override
+	public boolean displayFireAnimation() {
+		return this.deathTime <= 0 && super.displayFireAnimation();
+	}
+
 	//as funny as left handed liches are, it would be better if it always holds its scepter/sword in the correct hand
 	@Override
 	public boolean isLeftHanded() {
