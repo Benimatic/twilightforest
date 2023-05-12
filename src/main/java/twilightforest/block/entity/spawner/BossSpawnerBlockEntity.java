@@ -67,7 +67,7 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 	public abstract ParticleOptions getSpawnerParticle();
 
 	protected void initializeCreature(T myCreature) {
-		myCreature.restrictTo(this.getBlockPos(), 46);
+		myCreature.restrictTo(this.getBlockPos(), 40);
 	}
 
 	protected int getRange() {
