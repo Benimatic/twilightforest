@@ -138,7 +138,7 @@ public class MinoshroomModel extends HumanoidModel<Minoshroom> {
 		}
 
 		this.setupAttackAnimation(entity, ageInTicks);
-		AnimationUtils.bobArms(this.leftArm, this.rightArm, ageInTicks);
+		AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
 
         // copied from QuadrepedModel
         this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
