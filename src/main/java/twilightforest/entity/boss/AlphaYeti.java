@@ -382,6 +382,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		super.die(cause);
 		// mark the lair as defeated
 		if (!this.getLevel().isClientSide()) {
+			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.YETI_CAVE, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);

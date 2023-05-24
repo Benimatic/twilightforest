@@ -481,6 +481,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		super.die(cause);
 		// mark the tower as defeated
 		if (this.getLevel() instanceof ServerLevel serverLevel) {
+			this.bossInfo.setProgress(0.0F);
 			IBossLootBuffer.saveDropsIntoBoss(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), serverLevel);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.DARK_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {

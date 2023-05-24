@@ -32,7 +32,6 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -224,6 +223,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 			if (!knights.isEmpty()) {
 				knights.forEach(KnightPhantom::updateMyNumber);
 			} else if (!cause.is(DamageTypes.OUT_OF_WORLD)) {
+				this.bossInfo.setProgress(0.0F);
 
 				BlockPos treasurePos = this.hasHome() ? this.getRestrictCenter().below() : this.blockPosition();
 
