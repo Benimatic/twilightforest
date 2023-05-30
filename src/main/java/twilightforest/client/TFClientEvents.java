@@ -180,9 +180,7 @@ public class TFClientEvents {
 		Minecraft mc = Minecraft.getInstance();
 		float partial = mc.getFrameTime();
 
-		if (!mc.isPaused() ||
-				(mc.screen != null &&
-						mc.screen.getClass().equals(AdvancementsScreen.class))) {
+		if (!mc.isPaused()) {
 			time++;
 
 			rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
