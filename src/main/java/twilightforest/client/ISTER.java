@@ -60,7 +60,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
 		makeInstance(map, TFBlocks.MANGROVE_CHEST);
-		makeInstance(map, TFBlocks.DARKWOOD_CHEST);
+		makeInstance(map, TFBlocks.DARK_CHEST);
 		makeInstance(map, TFBlocks.TIME_CHEST);
 		makeInstance(map, TFBlocks.TRANSFORMATION_CHEST);
 		makeInstance(map, TFBlocks.MINING_CHEST);

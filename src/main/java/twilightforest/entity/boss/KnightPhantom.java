@@ -369,17 +369,17 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.PHANTOM_AMBIENT.get();
+		return TFSounds.KNIGHT_PHANTOM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.PHANTOM_HURT.get();
+		return TFSounds.KNIGHT_PHANTOM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.PHANTOM_DEATH.get();
+		return TFSounds.KNIGHT_PHANTOM_DEATH.get();
 	}
 
 	private void switchToFormationByNumber(int formationNumber) {

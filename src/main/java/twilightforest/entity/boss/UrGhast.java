@@ -124,27 +124,27 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.URGHAST_AMBIENT.get();
+		return TFSounds.UR_GHAST_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.URGHAST_HURT.get();
+		return TFSounds.UR_GHAST_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.URGHAST_DEATH.get();
+		return TFSounds.UR_GHAST_DEATH.get();
 	}
 
 	@Override
 	public SoundEvent getFireSound() {
-		return TFSounds.URGHAST_SHOOT.get();
+		return TFSounds.UR_GHAST_SHOOT.get();
 	}
 
 	@Override
 	public SoundEvent getWarnSound() {
-		return TFSounds.URGHAST_WARN.get();
+		return TFSounds.UR_GHAST_WARN.get();
 	}
 
 	@Override
@@ -328,7 +328,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playHurtSound(this.damageSources().generic());
+				this.playSound(TFSounds.UR_GHAST_TANTRUM.get());
 				this.nextTantrumCry = 20 + this.getRandom().nextInt(30);
 			}
 
@@ -558,7 +558,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	@Override
 	public void remove(RemovalReason removalReason) {
 		if (removalReason.equals(RemovalReason.KILLED) && this.level instanceof ServerLevel serverLevel) {
-			IBossLootBuffer.depositDropsIntoChest(this, TFBlocks.DARKWOOD_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+			IBossLootBuffer.depositDropsIntoChest(this, TFBlocks.DARK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 		super.remove(removalReason);
 	}
