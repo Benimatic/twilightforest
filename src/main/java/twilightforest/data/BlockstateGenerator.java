@@ -273,11 +273,13 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.weight(10).modelFile(models().cubeAll(TFBlocks.HEDGE.getId().getPath(), blockTexture(TFBlocks.HEDGE.get()))).nextModel()
 				.weight(1).modelFile(models().cubeAll(TFBlocks.HEDGE.getId().getPath() + "_rose", prefix("block/" + TFBlocks.HEDGE.getId().getPath() + "_rose"))).build());
 
-		ModelFile bigSpawner = models().withExistingParent("boss_spawner", "block/block").renderType(CUTOUT).texture("particle", "#all").texture("all", TwilightForestMod.prefix("block/boss_spawner")).element()
+		/*ModelFile bigSpawner = models().withExistingParent("boss_spawner", "block/block").renderType(CUTOUT).texture("particle", "#all").texture("all", TwilightForestMod.prefix("block/boss_spawner")).element()
 				.from(-4, -4, -4)
 				.to(20, 20, 20)
-				.allFaces((dir, builder) -> builder/*.cullface(dir)*/.uvs(2, 2, 14, 14).texture("#all"))
-				.end();
+				.allFaces((dir, builder) -> builder*//*.cullface(dir)*//*.uvs(2, 2, 14, 14).texture("#all"))
+				.end();*/
+
+		ModelFile bigSpawner = models().cubeAll("boss_spawner", TwilightForestMod.prefix("block/boss_spawner")).renderType(CUTOUT);
 
 		simpleBlock(TFBlocks.NAGA_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.LICH_BOSS_SPAWNER.get(), bigSpawner);
