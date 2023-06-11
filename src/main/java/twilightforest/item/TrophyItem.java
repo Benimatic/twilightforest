@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
@@ -13,10 +14,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.client.ISTER;
+
+import java.util.function.Consumer;
 
 public class TrophyItem extends StandingAndWallBlockItem {
 
@@ -56,8 +60,18 @@ public class TrophyItem extends StandingAndWallBlockItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
 		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.setupCuriosCapability(stack);
+			//return CuriosCompat.setupCuriosCapability(stack);
 		}
 		return super.initCapabilities(stack, tag);
+	}
+
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return new ISTER();
+			}
+		});
 	}
 }

@@ -2,14 +2,11 @@ package twilightforest.client.renderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Player;
@@ -34,21 +31,18 @@ public class TFOverlays {
 
 	@SubscribeEvent
 	public static void registerOverlays(RegisterGuiOverlaysEvent event) {
-		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "quest_ram_indicator", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "quest_ram_indicator", (gui, graphics, partialTick, screenWidth, screenHeight) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			if (player != null && !minecraft.options.hideGui && TFConfig.CLIENT_CONFIG.showQuestRamCrosshairIndicator.get()) {
-				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				RenderSystem.setShader(GameRenderer::getPositionTexShader);
-				RenderSystem.setShaderTexture(0, TF_ICONS_SHEET);
 				RenderSystem.enableBlend();
-				renderIndicator(minecraft, poseStack, gui, player, screenWidth, screenHeight);
+				renderIndicator(minecraft, graphics, gui, player, screenWidth, screenHeight);
 				RenderSystem.disableBlend();
 			}
 		});
 	}
 
-	public static void renderIndicator(Minecraft minecraft, PoseStack poseStack, Gui gui, Player player, int screenWidth, int screenHeight) {
+	public static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
 		Options options = minecraft.options;
 		if (options.getCameraType().isFirstPerson()) {
 			if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) {
@@ -59,9 +53,9 @@ public class TFOverlays {
 					ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
 					if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
 						if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
-							GuiComponent.blit(poseStack, k, j, 0, 0, 7, 7);
+							graphics.blit(TF_ICONS_SHEET, k, j, 0, 0, 7, 7);
 						} else {
-							GuiComponent.blit(poseStack, k, j, 7, 0, 7, 7);
+							graphics.blit(TF_ICONS_SHEET, k, j, 7, 0, 7, 7);
 						}
 					}
 				}

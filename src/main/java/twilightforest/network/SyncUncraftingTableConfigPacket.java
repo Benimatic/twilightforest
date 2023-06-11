@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import twilightforest.TFConfig;

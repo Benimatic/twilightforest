@@ -91,7 +91,7 @@ public class GiantMiner extends Monster {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.ANT, this));
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this));
 	}
 
 	@Override

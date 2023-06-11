@@ -1,6 +1,5 @@
 package twilightforest.client.model.block.patch;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
@@ -9,9 +8,6 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
 import java.util.function.Function;
 
 public record UnbakedPatchModel(Material material, boolean shaggify) implements IUnbakedGeometry<UnbakedPatchModel> {

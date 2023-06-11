@@ -7,6 +7,7 @@ import com.mojang.math.Axis;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
@@ -45,7 +46,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 	}
 
 	@Override
-	public void render(PoseStack stack, @Nullable EntityType type) {
+	public void render(GuiGraphics graphics, @Nullable EntityType type) {
 		if (type != null) {
 			Level level = Minecraft.getInstance().level;
 			if (level != null && !IGNORED_ENTITIES.contains(type)) {
@@ -71,7 +72,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 					try {
 						PoseStack modelView = RenderSystem.getModelViewStack();
 						modelView.pushPose();
-						modelView.mulPoseMatrix(stack.last().pose());
+						modelView.mulPoseMatrix(graphics.pose().last().pose());
 						this.renderTheEntity(this.size / 2, this.size - 2, scale, livingEntity);
 						modelView.popPose();
 						RenderSystem.applyModelViewMatrix();

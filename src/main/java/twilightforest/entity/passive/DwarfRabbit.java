@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -121,18 +122,15 @@ public class DwarfRabbit extends Animal {
 	@Override
 	public float getWalkTargetValue(BlockPos pos) {
 		// avoid leaves & wood
-		Material underMaterial = this.getLevel().getBlockState(pos.below()).getMaterial();
-		if (underMaterial == Material.LEAVES) {
+		BlockState underMaterial = this.level().getBlockState(pos.below());
+		if (underMaterial.is(BlockTags.LEAVES) || underMaterial.is(BlockTags.LOGS)) {
 			return -1.0F;
 		}
-		if (underMaterial == Material.WOOD) {
-			return -1.0F;
-		}
-		if (underMaterial == Material.GRASS) {
+		if (underMaterial.is(BlockTags.DIRT)) {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.getLevel().getMaxLocalRawBrightness(pos) - 0.5F;
+		return this.level().getMaxLocalRawBrightness(pos) - 0.5F;
 	}
 
 	private static boolean isTemptingItem(ItemStack stack) {

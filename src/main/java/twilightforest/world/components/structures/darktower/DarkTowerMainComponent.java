@@ -441,7 +441,6 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	/**
 	 * Make a single three quarter floor
 	 *
-	 * @param isTowerTopFloor
 	 */
 	protected void makeThreeQuarterFloor(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTowerTopFloor) {
 		int half = size / 2;
@@ -1139,7 +1138,6 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	/**
 	 * Make a lattice of log blocks
 	 *
-	 * @param top
 	 */
 	protected void makeTimberBeams(WorldGenLevel world, RandomSource rand, BoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop, int top) {
 		BlockState beamID = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState();

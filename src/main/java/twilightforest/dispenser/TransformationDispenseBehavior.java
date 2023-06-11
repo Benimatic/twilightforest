@@ -35,8 +35,8 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 						Entity newEntity = type.create(level);
 						if (newEntity != null) {
 							newEntity.moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity.getYRot(), livingentity.getXRot());
-							if (newEntity instanceof Mob mob && livingentity.getLevel() instanceof ServerLevelAccessor accessor) {
-								ForgeEventFactory.onFinalizeSpawn(mob, accessor, livingentity.getLevel().getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
+							if (newEntity instanceof Mob mob && livingentity.level() instanceof ServerLevelAccessor accessor) {
+								ForgeEventFactory.onFinalizeSpawn(mob, accessor, livingentity.level().getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
 							}
 
 							try {
@@ -47,10 +47,10 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 								TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
 							}
 
-							livingentity.getLevel().addFreshEntity(newEntity);
+							livingentity.level().addFreshEntity(newEntity);
 							livingentity.discard();
 
-							if (livingentity instanceof Mob && livingentity.getLevel().isClientSide()) {
+							if (livingentity instanceof Mob && livingentity.level().isClientSide()) {
 								((Mob) livingentity).spawnAnim();
 								((Mob) livingentity).spawnAnim();
 							}

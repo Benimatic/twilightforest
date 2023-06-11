@@ -44,7 +44,7 @@ public class PeacockFanItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		boolean flag = !player.isOnGround() && !player.isSwimming() && !player.getCapability(CapabilityList.FEATHER_FAN_FALLING).map(FeatherFanFallCapability::getFalling).orElse(true);
+		boolean flag = !player.onGround() && !player.isSwimming() && !player.getCapability(CapabilityList.FEATHER_FAN_FALLING).map(FeatherFanFallCapability::getFalling).orElse(true);
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);

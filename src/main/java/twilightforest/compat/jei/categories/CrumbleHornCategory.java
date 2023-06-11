@@ -1,6 +1,5 @@
 package twilightforest.compat.jei.categories;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -10,6 +9,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -61,8 +61,8 @@ public class CrumbleHornCategory implements IRecipeCategory<CrumbleRecipe> {
 	}
 
 	@Override
-	public void draw(CrumbleRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-		if (!recipe.result().isAir()) this.crumbleSlot.draw(stack, 76, 14);
+	public void draw(CrumbleRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+		if (!recipe.result().isAir()) this.crumbleSlot.draw(graphics, 76, 14);
 	}
 
 	@Override

@@ -76,7 +76,7 @@ public class NagaSegment extends TFPart<Naga> {
 				float width = this.getBbWidth();
 				float height = this.getBbHeight();
 				for (int k = 0; k < 20; k++) {
-					this.getLevel().addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
+					this.level().addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
 							(pos.x + this.random.nextFloat() * width * 2.0F) - width,
 							pos.y + this.random.nextFloat() * height,
 							(pos.z + this.random.nextFloat() * width * 2.0F) - width,
@@ -91,7 +91,7 @@ public class NagaSegment extends TFPart<Naga> {
 	}
 
 	private void collideWithOthers() {
-		List<Entity> list = this.getLevel().getEntities(this, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
+		List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
 
 		for (Entity entity : list) {
 			if (entity.isPushable()) {
@@ -112,7 +112,7 @@ public class NagaSegment extends TFPart<Naga> {
 				attackStrength *= 3;
 			}
 
-			entity.hurt(entity.getLevel().damageSources().mobAttack(this.getParent()), attackStrength);
+			entity.hurt(entity.level().damageSources().mobAttack(this.getParent()), attackStrength);
 		}
 	}
 

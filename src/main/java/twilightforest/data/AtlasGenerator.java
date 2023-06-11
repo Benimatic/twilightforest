@@ -11,6 +11,7 @@ import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import java.util.Optional;
 
 public class AtlasGenerator extends SpriteSourceProvider {
+
 	public AtlasGenerator(PackOutput output, ExistingFileHelper helper) {
 		super(output, helper, TwilightForestMod.ID);
 	}

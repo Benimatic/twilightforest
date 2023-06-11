@@ -26,7 +26,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!ForgeEventFactory.getMobGriefingEvent(this.redcap.getLevel(), this.redcap)) {
+		if (!ForgeEventFactory.getMobGriefingEvent(this.redcap.level(), this.redcap)) {
 			return false;
 		}
 
@@ -46,7 +46,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canContinueToUse() {
-		return this.redcap.getLevel().getBlockState(this.tntPos).is(Blocks.TNT);
+		return this.redcap.level().getBlockState(this.tntPos).is(Blocks.TNT);
 	}
 
 	@Override
@@ -69,9 +69,9 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 		if (this.redcap.distanceToSqr(Vec3.atLowerCornerOf(this.tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
-			Blocks.TNT.onCaughtFire(Blocks.TNT.defaultBlockState(), this.redcap.getLevel(), this.tntPos, Direction.UP, this.redcap);
+			Blocks.TNT.onCaughtFire(Blocks.TNT.defaultBlockState(), this.redcap.level(), this.tntPos, Direction.UP, this.redcap);
 			this.redcap.swing(InteractionHand.MAIN_HAND);
-			this.redcap.getLevel().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
+			this.redcap.level().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
 			this.redcap.gameEvent(GameEvent.PRIME_FUSE);
 			this.redcap.getNavigation().stop();
 		} else {

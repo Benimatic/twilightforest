@@ -1,8 +1,6 @@
 package twilightforest.init;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import net.minecraftforge.registries.DeferredRegister;

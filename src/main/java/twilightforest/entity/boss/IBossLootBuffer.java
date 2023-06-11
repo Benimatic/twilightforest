@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
@@ -43,10 +43,10 @@ public interface IBossLootBuffer {
         ContainerHelper.loadAllItems(tag, this.getItemStacks());
     }
 
-    static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootContext lootContext, ServerLevel serverLevel) {
-        LootTable table = serverLevel.getServer().getLootTables().get(boss.getLootTable());
-        ObjectArrayList<ItemStack> stacks = table.getRandomItems(lootContext);
-        boss.fill(lootContext, table);
+    static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootParams params, ServerLevel serverLevel) {
+        LootTable table = serverLevel.getServer().getLootData().getLootTable(boss.getLootTable());
+        ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
+        boss.fill(boss, params, table);
 
         //If our loot stack size is bigger than the inventory, drop everything else outside it. Don't want to lose any loot now do we?
         if (stacks.size() > CONTAINER_SIZE) {
@@ -70,9 +70,9 @@ public interface IBossLootBuffer {
         }
     }
 
-    default void fill(LootContext context, LootTable table) {
+    default <T extends LivingEntity & IBossLootBuffer> void fill(T boss, LootParams context, LootTable table) {
         ObjectArrayList<ItemStack> items = table.getRandomItems(context);
-        RandomSource randomsource = context.getRandom();
+        RandomSource randomsource = boss.getRandom();
         List<Integer> list = this.getAvailableSlots(randomsource);
         table.shuffleAndSplitItems(items, list.size(), randomsource);
 

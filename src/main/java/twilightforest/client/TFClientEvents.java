@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
@@ -49,7 +48,6 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
@@ -79,7 +77,7 @@ public class TFClientEvents {
 			TFItems.addItemModelProperties();
 
 			List<Map.Entry<ResourceLocation, BakedModel>> models =  event.getModels().entrySet().stream()
-					.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).collect(Collectors.toList());
+					.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).toList();
 
 			models.forEach(entry -> event.getModels().put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 		}
@@ -210,7 +208,7 @@ public class TFClientEvents {
 					if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
 						List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
 								.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
-								.collect(Collectors.toList());
+								.toList();
 						if (!beanstalksInChunk.isEmpty()) {
 							BlockEntity beanstalk = beanstalksInChunk.get(0);
 							Player player = mc.player;
@@ -288,7 +286,7 @@ public class TFClientEvents {
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
 		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
+			//return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
 		}
 		return false;
 	}

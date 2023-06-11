@@ -10,8 +10,6 @@ import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.*;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
-import twilightforest.world.components.feature.trees.SnowTreeFeature;
-import twilightforest.world.components.feature.trees.SnowUnderTreeFeature;
 
 public class TFFeatures {
 

@@ -1,6 +1,5 @@
 package twilightforest.init;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.registries.DeferredRegister;

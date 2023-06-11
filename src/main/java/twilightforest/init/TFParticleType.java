@@ -1,9 +1,7 @@
 package twilightforest.init;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.FlameParticle;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;

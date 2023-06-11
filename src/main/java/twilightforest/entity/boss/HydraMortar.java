@@ -60,10 +60,10 @@ public class HydraMortar extends ThrowableProjectile {
 	public void tick() {
 		super.tick();
 
-		if (this.isOnGround()) {
+		if (this.onGround()) {
 			this.getDeltaMovement().multiply(0.9D, 0.9D, 0.9D);
 
-			if (!this.getLevel().isClientSide() && this.fuse-- <= 0) {
+			if (!this.level().isClientSide() && this.fuse-- <= 0) {
 				this.detonate();
 			}
 		}
@@ -81,7 +81,7 @@ public class HydraMortar extends ThrowableProjectile {
 			if (result.getDirection() != Direction.UP) this.detonate();
 			// we hit the ground
 			this.setDeltaMovement(this.getDeltaMovement().x(), 0.0D, this.getDeltaMovement().z());
-			this.onGround = true;
+			this.setOnGround(true);
 		} else {
 			this.detonate();
 		}
@@ -100,7 +100,7 @@ public class HydraMortar extends ThrowableProjectile {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		Entity entity = result.getEntity();
-		if (!this.getLevel().isClientSide() && this.getOwner() != null) {
+		if (!this.level().isClientSide() && this.getOwner() != null) {
 			if ((!(entity instanceof HydraMortar mortar) || mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
 				this.detonate();
 			}
@@ -124,11 +124,11 @@ public class HydraMortar extends ThrowableProjectile {
 
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-		boolean flag = ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this);
-		this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
+		boolean flag = ForgeEventFactory.getMobGriefingEvent(this.level(), this);
+		this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 
-		for (Entity nearby : this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.HYDRA_MORTAR, TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
+		for (Entity nearby : this.level().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
+			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
 				nearby.setSecondsOnFire(BURN_FACTOR);
 			}
 		}
@@ -140,12 +140,12 @@ public class HydraMortar extends ThrowableProjectile {
 	public boolean hurt(DamageSource source, float amount) {
 		super.hurt(source, amount);
 
-		if (source.getEntity() != null && !this.getLevel().isClientSide()) {
+		if (source.getEntity() != null && !this.level().isClientSide()) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			if (vec3d != null) {
 				// reflect faster and more accurately
 				this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);  // reflect faster and more accurately
-				this.onGround = false;
+				this.setOnGround(false);
 				this.fuse += 20;
 			}
 

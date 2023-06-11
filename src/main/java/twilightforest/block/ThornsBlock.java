@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -108,12 +107,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		} else {
 			return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 		}
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	/**

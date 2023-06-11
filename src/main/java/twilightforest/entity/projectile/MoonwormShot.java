@@ -61,7 +61,7 @@ public class MoonwormShot extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true, this.getX(), this.getY() + 0.1D, this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true, this.getX(), this.getY() + 0.1D, this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -72,14 +72,14 @@ public class MoonwormShot extends TFThrowable {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		BlockPos pos = result.getBlockPos().relative(result.getDirection());
-		BlockState currentState = this.getLevel().getBlockState(pos);
+		BlockState currentState = this.level().getBlockState(pos);
 
-		if (currentState.getMaterial().isReplaceable() && !currentState.is(BlockTags.FIRE) && !currentState.is(Blocks.LAVA)) {
-			this.getLevel().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState().setValue(DirectionalBlock.FACING, result.getDirection()));
+		if (currentState.canBeReplaced() && !currentState.is(BlockTags.FIRE) && !currentState.is(Blocks.LAVA)) {
+			this.level().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState().setValue(DirectionalBlock.FACING, result.getDirection()));
 			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
-			this.getLevel().playSound(null, result.getBlockPos(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			this.level().playSound(null, result.getBlockPos(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		} else {
-			ItemEntity squish = new ItemEntity(this.getLevel(), pos.getX(), pos.getY(), pos.getZ(), Items.LIME_DYE.getDefaultInstance());
+			ItemEntity squish = new ItemEntity(this.level(), pos.getX(), pos.getY(), pos.getZ(), Items.LIME_DYE.getDefaultInstance());
 			squish.spawnAtLocation(squish.getItem());
 			this.gameEvent(GameEvent.ENTITY_DIE);
 		}
@@ -99,8 +99,8 @@ public class MoonwormShot extends TFThrowable {
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (!this.getLevel().isClientSide()) {
-			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+		if (!this.level().isClientSide()) {
+			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}

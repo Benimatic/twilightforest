@@ -31,8 +31,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class TomeSpawnerBlock extends BaseEntityBlock {
 
-	public static IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
-	public static BooleanProperty SPAWNER = BooleanProperty.create("spawner");
+	public static final IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
+	public static final BooleanProperty SPAWNER = BooleanProperty.create("spawner");
 
 	public TomeSpawnerBlock(Properties properties) {
 		super(properties);

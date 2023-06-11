@@ -3,7 +3,6 @@ package twilightforest.entity;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
@@ -88,10 +86,10 @@ public class CharmEffect extends Entity implements ItemSupplier {
 			double dy = getY() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 			double dz = getZ() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 
-			this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
+			this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
 		}
 
-		if (!this.getLevel().isClientSide() && (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
+		if (!this.level().isClientSide() && (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
 			this.discard();
 		}
 	}
@@ -118,7 +116,7 @@ public class CharmEffect extends Entity implements ItemSupplier {
 
 	@Nullable
 	public LivingEntity getOwner() {
-		Entity e = this.getLevel().getEntity(this.entityData.get(DATA_OWNER));
+		Entity e = this.level().getEntity(this.entityData.get(DATA_OWNER));
 		if (e instanceof LivingEntity living)
 			return living;
 		else return null;

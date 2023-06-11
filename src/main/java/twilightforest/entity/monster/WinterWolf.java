@@ -71,7 +71,7 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 		super.aiStep();
 
 		if (this.isBreathing()) {
-			if (this.getLevel().isClientSide()) {
+			if (this.level().isClientSide()) {
 				this.spawnBreathParticles();
 			}
 			this.playBreathSound();
@@ -103,7 +103,7 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 			dy *= velocity;
 			dz *= velocity;
 
-			this.getLevel().addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
+			this.level().addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
 		}
 	}
 

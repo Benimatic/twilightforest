@@ -68,7 +68,7 @@ public class MoonwormQueenItem extends Item {
 		}
 	}
 
-	//	[VanillaCopy] ItemBlock.onItemUse, harcoding the block
+	//	[VanillaCopy] ItemBlock.onItemUse, hardcoding the block
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Level level = context.getLevel();
@@ -77,7 +77,7 @@ public class MoonwormQueenItem extends Item {
 		Player player = context.getPlayer();
 		BlockPlaceContext blockItemUseContext = new BlockPlaceContext(context);
 
-		if (!state.getMaterial().isReplaceable()) {
+		if (!state.canBeReplaced()) {
 			pos = pos.relative(context.getClickedFace());
 		}
 

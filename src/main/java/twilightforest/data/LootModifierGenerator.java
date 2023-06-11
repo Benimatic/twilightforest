@@ -1,14 +1,12 @@
 package twilightforest.data;
 
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFLootModifiers;
 import twilightforest.loot.modifiers.FieryToolSmeltingModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 

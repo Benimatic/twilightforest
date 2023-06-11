@@ -1,6 +1,5 @@
 package twilightforest.compat.jei.categories;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -10,6 +9,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -61,11 +61,11 @@ public class TransformationPowderCategory implements IRecipeCategory<TransformPo
 	}
 
 	@Override
-	public void draw(TransformPowderRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+	public void draw(TransformPowderRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
 		if (recipe.isReversible()) {
-			this.doubleArrow.draw(stack, 46, 19);
+			this.doubleArrow.draw(graphics, 46, 19);
 		} else {
-			this.arrow.draw(stack, 46, 19);
+			this.arrow.draw(graphics, 46, 19);
 		}
 	}
 

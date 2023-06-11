@@ -7,8 +7,8 @@ import com.mojang.math.Axis;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
@@ -52,13 +52,13 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 	}
 
 	@Override
-	public void render(PoseStack stack, @Nullable FakeItemEntity item) {
+	public void render(GuiGraphics graphics, @Nullable FakeItemEntity item) {
 		Level level = Minecraft.getInstance().level;
 		if (item != null && level != null) {
 			try {
 				PoseStack modelView = RenderSystem.getModelViewStack();
 				modelView.pushPose();
-				modelView.mulPoseMatrix(stack.last().pose());
+				modelView.mulPoseMatrix(graphics.pose().last().pose());
 				this.renderItemEntity(item.stack(), level);
 				modelView.popPose();
 				RenderSystem.applyModelViewMatrix();
@@ -110,7 +110,7 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 	public void render(ItemEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
 		ItemStack itemstack = entity.getItem();
-		BakedModel bakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entity.getLevel(), null, entity.getId());
+		BakedModel bakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entity.level(), null, entity.getId());
 		float f1 = Mth.sin((Objects.requireNonNull(Minecraft.getInstance().level).getGameTime() + partialTicks) / 10.0F + this.bobOffs) * 0.1F + 0.1F;
 		float f2 = bakedmodel.getTransforms().getTransform(ItemDisplayContext.GROUND).scale.y();
 		stack.translate(0.0D, f1 + 0.25F * f2, 0.0D);

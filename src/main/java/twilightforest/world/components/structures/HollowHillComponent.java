@@ -184,8 +184,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	/**
-	 * @param cx
-	 * @param cz
 	 * @return true if the coordinates would be inside the hill on the "floor" of the hill
 	 */
 	boolean isInHill(int cx, int cz) {
@@ -244,8 +242,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * Gets the id of a mob appropriate to the specified hill size.
 	 *
-	 * @param level
-	 * @return
 	 */
 	protected EntityType<?> getMobID(RandomSource rand, int level) {
 		if (level == 1) {

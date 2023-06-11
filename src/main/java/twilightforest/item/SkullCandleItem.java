@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import org.apache.commons.lang3.StringUtils;
@@ -24,10 +26,11 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.client.ISTER;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SkullCandleItem extends StandingAndWallBlockItem {
 
@@ -120,8 +123,18 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
 		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.setupCuriosCapability(stack);
+			//return CuriosCompat.setupCuriosCapability(stack);
 		}
 		return super.initCapabilities(stack, tag);
+	}
+
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return new ISTER();
+			}
+		});
 	}
 }

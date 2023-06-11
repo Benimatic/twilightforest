@@ -1,6 +1,5 @@
 package twilightforest.client.model.block.doors;
 
-import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import net.minecraftforge.client.model.ForgeFaceData;
 import org.joml.Vector3f;

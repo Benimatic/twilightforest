@@ -1,8 +1,6 @@
 package twilightforest.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -18,7 +16,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.network.NetworkHooks;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
@@ -62,7 +59,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
-		if (!this.level.isEmptyBlock(result.getBlockPos())) {
+		if (!this.level().isEmptyBlock(result.getBlockPos())) {
 			this.affectBlocksInAABB(this.getBoundingBox().inflate(0.2F, 0.2F, 0.2F));
 		}
 	}
@@ -90,14 +87,14 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 
 	private void affectBlocksInAABB(AABB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			BlockState state = this.getLevel().getBlockState(pos);
+			BlockState state = this.level().getBlockState(pos);
 			if (!state.isAir()) {
 				if (this.getOwner() instanceof Player player) {
-					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.getLevel(), pos, state, player))) {
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player))) {
 						if (this.canAnnihilate(pos, state)) {
-							this.getLevel().removeBlock(pos, false);
+							this.level().removeBlock(pos, false);
 							this.playSound(TFSounds.BLOCK_ANNIHILATED.get(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
-							this.annihilateParticles(this.getLevel(), pos);
+							this.annihilateParticles(this.level(), pos);
 							this.gameEvent(GameEvent.BLOCK_DESTROY);
 						} else {
 							this.hasHitObstacle = true;
@@ -113,7 +110,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.getLevel(), pos) >= 0;
+		return state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0;
 	}
 
 	private void annihilateParticles(Level level, BlockPos pos) {
@@ -140,7 +137,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	public void tick() {
 		super.tick();
 
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			if (this.getOwner() == null) {
 				this.remove(RemovalReason.KILLED);
 				return;

@@ -1,14 +1,13 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.*;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 
 public class OptifineWarningScreen extends Screen {
 
@@ -41,14 +40,14 @@ public class OptifineWarningScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(matrixStack);
-		drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 30, 16777215);
-		this.message.renderCentered(matrixStack, this.width / 2, 70);
-		this.suggestions.renderCentered(matrixStack, this.width / 2, 160);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(graphics);
+		graphics.drawCenteredString(this.font, this.title, this.width / 2, 30, 16777215);
+		this.message.renderCentered(graphics, this.width / 2, 70);
+		this.suggestions.renderCentered(graphics, this.width / 2, 160);
+		super.render(graphics, mouseX, mouseY, partialTicks);
 
-		this.exitButton.render(matrixStack, mouseX, mouseY, partialTicks);
+		this.exitButton.render(graphics, mouseX, mouseY, partialTicks);
 	}
 
 	@Override

@@ -62,7 +62,7 @@ public class YetiArmorItem extends ArmorItem {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
-		if (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.CHEST) {
+		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png";
@@ -92,7 +92,7 @@ public class YetiArmorItem extends ArmorItem {
 		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
 			ModelPart root = models.bakeLayer(slot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
-			return new YetiArmorModel(slot, root);
+			return new YetiArmorModel(root);
 		}
 	}
 }

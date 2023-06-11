@@ -28,7 +28,6 @@ public class TFPacketHandler {
 				AreaProtectionPacket.Handler.onMessage(message, ctx);
 			}
 		});
-		CHANNEL.registerMessage(id++, ChangeBiomePacket.class, ChangeBiomePacket::encode, ChangeBiomePacket::new, ChangeBiomePacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, CreateMovingCicadaSoundPacket.class, CreateMovingCicadaSoundPacket::encode, CreateMovingCicadaSoundPacket::new, CreateMovingCicadaSoundPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, EnforceProgressionStatusPacket.class, EnforceProgressionStatusPacket::encode, EnforceProgressionStatusPacket::new, EnforceProgressionStatusPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, MagicMapPacket.class, MagicMapPacket::encode, MagicMapPacket::new, MagicMapPacket.Handler::onMessage);

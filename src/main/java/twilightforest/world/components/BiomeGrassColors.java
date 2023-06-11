@@ -6,8 +6,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
 import twilightforest.TwilightForestMod;
 
-import java.util.Random;
-
 public class BiomeGrassColors {
 
 	public static void init() {}

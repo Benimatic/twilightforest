@@ -25,10 +25,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
@@ -41,7 +38,6 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CharmEvents {
@@ -58,12 +54,12 @@ public class CharmEvents {
 		LivingEntity living = event.getEntity();
 
 		//ensure our player is real and in survival before attempting anything
-		if (living.getLevel().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
+		if (living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
 				player.isCreative() || player.isSpectator()) return;
 
 		if (charmOfLife(player)) {
 			event.setCanceled(true); // Executes if the player had charms
-		} else if (!living.getLevel().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+		} else if (!living.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
 			// Did the player recover? No? Let's give them their stuff based on the keeping charms
 			charmOfKeeping(player);
 
@@ -103,14 +99,14 @@ public class CharmEvents {
 			}
 
 			// spawn effect thingers
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
-			player.getLevel().addFreshEntity(effect);
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
+			player.level().addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get());
 			effect2.offset = (float) Math.PI;
-			player.getLevel().addFreshEntity(effect2);
+			player.level().addFreshEntity(effect2);
 
-			player.getLevel().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE.get(), player.getSoundSource(), 1, 1);
+			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_LIFE.get(), player.getSoundSource(), 1, 1);
 
 			if (player instanceof ServerPlayer) player.awardStat(TFStats.LIFE_CHARMS_ACTIVATED.get());
 
@@ -211,7 +207,7 @@ public class CharmEvents {
 
 			do {
 				pos.move(0, 1, 0);
-			} while (!level.getBlockState(pos).getMaterial().isReplaceable());
+			} while (!level.getBlockState(pos).canBeReplaced());
 
 			BlockPos immutablePos = pos.immutable();
 			FluidState fluidState = level.getFluidState(immutablePos);
@@ -278,7 +274,7 @@ public class CharmEvents {
 
 		//check if our tag is in the persistent player data. If so, copy that inventory over to our own. Cloud storage at its finest!
 		CompoundTag playerData = getPlayerData(player);
-		if (!player.getLevel().isClientSide() && playerData.contains(CHARM_INV_TAG)) {
+		if (!player.level().isClientSide() && playerData.contains(CHARM_INV_TAG)) {
 			ListTag tagList = playerData.getList(CHARM_INV_TAG, 10);
 			TFItemStackUtils.loadNoClear(tagList, player.getInventory());
 			getPlayerData(player).getList(CHARM_INV_TAG, 10).clear();
@@ -287,14 +283,14 @@ public class CharmEvents {
 
 		// spawn effect thingers
 		if (charmUsed != null) {
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charmUsed.getItem());
-			player.getLevel().addFreshEntity(effect);
+			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charmUsed.getItem());
+			player.level().addFreshEntity(effect);
 
-			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.getLevel(), player, charmUsed.getItem());
+			CharmEffect effect2 = new CharmEffect(TFEntities.CHARM_EFFECT.get(), player.level(), player, charmUsed.getItem());
 			effect2.offset = (float) Math.PI;
-			player.getLevel().addFreshEntity(effect2);
+			player.level().addFreshEntity(effect2);
 
-			player.getLevel().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP.get(), player.getSoundSource(), 1.5F, 1.0F);
+			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.CHARM_KEEP.get(), player.getSoundSource(), 1.5F, 1.0F);
 			if (player instanceof ServerPlayer) player.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.get());
 			charmUsed = null;
 		}
@@ -316,14 +312,14 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if (ModList.get().isLoaded("curios")) {
-			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
-
-			if (slot.isPresent()) {
-				slot.get().stack().shrink(1);
-				return true;
-			}
-		}
+//		if (ModList.get().isLoaded("curios")) {
+//			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
+//
+//			if (slot.isPresent()) {
+//				slot.get().stack().shrink(1);
+//				return true;
+//			}
+//		}
 
 		return false;
 	}

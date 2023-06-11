@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -12,11 +13,14 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.CritterBlock;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.client.ISTER;
+
+import java.util.function.Consumer;
 
 public class WearableItem extends BlockItem {
 	public WearableItem(Block block, Properties props) {
@@ -55,8 +59,18 @@ public class WearableItem extends BlockItem {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
 		if (ModList.get().isLoaded("curios") && this.getBlock() instanceof CritterBlock) {
-			return CuriosCompat.setupCuriosCapability(stack);
+			//return CuriosCompat.setupCuriosCapability(stack);
 		}
 		return super.initCapabilities(stack, tag);
+	}
+
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return new ISTER();
+			}
+		});
 	}
 }

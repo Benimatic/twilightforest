@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.api.distmarker.Dist;
@@ -68,7 +67,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 		};
 
 		for (Direction e : toCheck) {
-			if (this.getLevel().isEmptyBlock(pos.relative(e)) && !this.getLevel().isEmptyBlock(pos.relative(e.getOpposite()))) {
+			if (this.level().isEmptyBlock(pos.relative(e)) && !this.level().isEmptyBlock(pos.relative(e.getOpposite()))) {
 				this.entityData.set(MOVE_DIRECTION, e);
 				return;
 			}
@@ -76,7 +75,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 		// if no wall, travel towards open air
 		for (Direction e : toCheck) {
-			if (this.getLevel().isEmptyBlock(pos.relative(e))) {
+			if (this.level().isEmptyBlock(pos.relative(e))) {
 				this.entityData.set(MOVE_DIRECTION, e);
 				return;
 			}
@@ -100,7 +99,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 	@Override
 	public void tick() {
-		if (this.myState == null || this.myState.getMaterial() == Material.AIR) {
+		if (this.myState == null || this.myState.isAir()) {
 			this.discard();
 		} else {
 			this.xo = this.getX();
@@ -116,7 +115,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 			}
 			this.getDeltaMovement().multiply(0.98, 0.98, 0.98);
 
-			if (!this.getLevel().isClientSide()) {
+			if (!this.level().isClientSide()) {
 				if (this.slideTime % 5 == 0) {
 					this.playSound(TFSounds.SLIDER.get(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
@@ -124,12 +123,12 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 				BlockPos pos = new BlockPos(this.blockPosition());
 
 				if (this.slideTime == 1) {
-					if (this.getLevel().getBlockState(pos) != this.myState) {
+					if (this.level().getBlockState(pos) != this.myState) {
 						this.discard();
 						return;
 					}
 
-					this.getLevel().removeBlock(pos, false);
+					this.level().removeBlock(pos, false);
 				}
 
 				if (this.slideTime == WARMUP_TIME + 40) {
@@ -143,18 +142,18 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 					this.discard();
 
-					if (this.getLevel().isUnobstructed(this.myState, pos, CollisionContext.empty())) {
-						this.getLevel().setBlockAndUpdate(pos, this.myState);
+					if (this.level().isUnobstructed(this.myState, pos, CollisionContext.empty())) {
+						this.level().setBlockAndUpdate(pos, this.myState);
 					} else {
 						this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
 					}
-				} else if (this.slideTime > 100 && (pos.getY() < this.getLevel().getMinBuildHeight() + 1 || pos.getY() > this.getLevel().getMaxBuildHeight()) || this.slideTime > 600) {
+				} else if (this.slideTime > 100 && (pos.getY() < this.level().getMinBuildHeight() + 1 || pos.getY() > this.level().getMaxBuildHeight()) || this.slideTime > 600) {
 					this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
 					this.discard();
 				}
 
 				// push things out and damage them
-				this.damageKnockbackEntities(this.getLevel().getEntities(this, this.getBoundingBox()));
+				this.damageKnockbackEntities(this.level().getEntities(this, this.getBoundingBox()));
 			}
 		}
 	}
@@ -162,7 +161,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 	private void damageKnockbackEntities(List<Entity> entities) {
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity living) {
-				living.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.SLIDER), 5.0F);
+				living.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.SLIDER), 5.0F);
 
 				double kx = (this.getX() - entity.getX()) * 2.0D;
 				double kz = (this.getZ() - entity.getZ()) * 2.0D;

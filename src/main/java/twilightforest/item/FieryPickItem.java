@@ -26,10 +26,10 @@ public class FieryPickItem extends PickaxeItem {
 		boolean result = super.hurtEnemy(stack, target, attacker);
 
 		if (result && !target.fireImmune()) {
-			if (!target.getLevel().isClientSide()) {
+			if (!target.level().isClientSide()) {
 				target.setSecondsOnFire(15);
 			} else {
-				target.getLevel().addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
+				target.level().addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
 			}
 		}
 

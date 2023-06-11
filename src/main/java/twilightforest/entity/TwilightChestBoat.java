@@ -69,13 +69,13 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 	@Override
 	public void destroy(DamageSource damageSource) {
 		super.destroy(damageSource);
-		this.chestVehicleDestroyed(damageSource, this.getLevel(), this);
+		this.chestVehicleDestroyed(damageSource, this.level(), this);
 	}
 
 	@Override
 	public void remove(Entity.RemovalReason reason) {
-		if (!this.getLevel().isClientSide() && reason.shouldDestroy()) {
-			Containers.dropContents(this.getLevel(), this, this);
+		if (!this.level().isClientSide() && reason.shouldDestroy()) {
+			Containers.dropContents(this.level(), this, this);
 		}
 
 		super.remove(reason);
@@ -99,7 +99,7 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 	@Override
 	public void openCustomInventoryScreen(Player player) {
 		player.openMenu(this);
-		if (!player.getLevel().isClientSide()) {
+		if (!player.level().isClientSide()) {
 			this.gameEvent(GameEvent.CONTAINER_OPEN, player);
 			PiglinAi.angerNearbyPiglins(player, true);
 		}

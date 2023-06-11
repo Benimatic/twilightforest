@@ -58,6 +58,7 @@ import twilightforest.entity.ai.goal.SimplifiedAttackGoal;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
@@ -174,7 +175,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 		super.aiStep();
 
-		if (this.getLevel().isClientSide() || !ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) return;
+		if (this.level().isClientSide() || !ForgeEventFactory.getMobGriefingEvent(this.level(), this)) return;
 
 		AABB bb = this.getBoundingBox();
 
@@ -188,11 +189,11 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		BlockPos min = new BlockPos(minx, miny, minz);
 		BlockPos max = new BlockPos(maxx, maxy, maxz);
 
-		if (this.getLevel().hasChunksAt(min, max)) {
+		if (this.level().hasChunksAt(min, max)) {
 			for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-				BlockState state = this.getLevel().getBlockState(pos);
-				if (state.is(BlockTags.LEAVES) || (this.shouldDestroyAllBlocks() && EntityUtil.canDestroyBlock(this.getLevel(), pos, this))) {
-					this.getLevel().destroyBlock(pos, !state.is(BlockTags.LEAVES));
+				BlockState state = this.level().getBlockState(pos);
+				if (state.is(BlockTags.LEAVES) || (this.shouldDestroyAllBlocks() && EntityUtil.canDestroyBlock(this.level(), pos, this))) {
+					this.level().destroyBlock(pos, !state.is(BlockTags.LEAVES));
 				}
 			}
 		}
@@ -226,7 +227,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.activateBodySegments();
 		}
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			double newSpeed = DEFAULT_SPEED - newSegments * (-0.2F / 12F);
 			if (newSpeed < 0)
 				newSpeed = 0;
@@ -237,8 +238,8 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Nullable
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		if (this.getLevel().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
-			boolean hard = this.level.getDifficulty() == Difficulty.HARD;
+		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
+			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
 			AttributeModifier modifier = new AttributeModifier("Difficulty Health Boost", hard ? 130 : 80, AttributeModifier.Operation.ADDITION);
 			if (!Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).hasModifier(modifier)) {
 				Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(modifier);
@@ -263,14 +264,14 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		if (this.isDazed() && this.deathTime < 10) {
 			for (int i = 0; i < 5; i++) {
 				Vec3 pos = new Vec3(this.getX(), this.getY() + 2.15D, this.getZ()).add(new Vec3(1.5D, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))));
-				this.getLevel().addParticle(ParticleTypes.CRIT, pos.x(), pos.y(), pos.z(), 0, 0, 0);
+				this.level().addParticle(ParticleTypes.CRIT, pos.x(), pos.y(), pos.z(), 0, 0, 0);
 			}
 		}
 
 		// update health
 		this.ticksSinceDamaged++;
 
-		if (!this.getLevel().isClientSide() && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0) {
+		if (!this.level().isClientSide() && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0) {
 			this.heal(1);
 		}
 
@@ -389,7 +390,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ThrowPlayerPacket(motion.x() * 3.0D,  motion.y() + 0.75D, motion.z() * 3.0D));
 			}
 			this.hurt(this.damageSources().generic(), 4.0F);
-			this.getLevel().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);
+			this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 			this.movementAI.doDaze();
 			return false;
 		}
@@ -418,9 +419,9 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public void checkDespawn() {
-		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
+		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
 			if (this.getRestrictCenter() != BlockPos.ZERO) {
-				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState());
+				this.level().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -430,11 +431,11 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (reason.equals(RemovalReason.KILLED) && this.level instanceof ServerLevel serverLevel) {
+		if (reason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
 			IBossLootBuffer.depositDropsIntoChest(this, this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 		super.remove(reason);
-		if (this.getLevel() instanceof ServerLevel) {
+		if (this.level() instanceof ServerLevel) {
 			for (NagaSegment seg : this.bodySegments) {
 				// must use this instead of setDead
 				// since multiparts are not added to the world tick list which is what checks isDead
@@ -473,7 +474,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 				double d0 = this.getRandom().nextGaussian() * 0.02D;
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle(ParticleTypes.EXPLOSION,
+				this.level().addParticle(ParticleTypes.EXPLOSION,
 						segment.getX() + this.getRandom().nextFloat() * segment.getBbWidth() * 2.0F - segment.getBbWidth() - d0 * 10.0D,
 						segment.getY() + this.getRandom().nextFloat() * segment.getBbHeight() - d1 * 10.0D,
 						segment.getZ() + this.getRandom().nextFloat() * segment.getBbWidth() * 2.0F - segment.getBbWidth() - d2 * 10.0D,
@@ -552,21 +553,21 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the courtyard as defeated
-		if (this.getLevel() instanceof ServerLevel serverLevel) {
+		if (this.level() instanceof ServerLevel serverLevel) {
 			this.bossInfo.setProgress(0.0F);
-			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.NAGA_COURTYARD, true);
+			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.NAGA_COURTYARD, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			IBossLootBuffer.saveDropsIntoBoss(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), serverLevel);
+			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
 		}
 	}
 
 	@Override
 	protected void tickDeath() {
 		++this.deathTime;
-		if (!this.level.isClientSide && !this.isRemoved()) {
+		if (!this.level().isClientSide && !this.isRemoved()) {
 			int renderEnd = 24;
 			int maxDeath = renderEnd + 120;
 			if (this.deathTime >= renderEnd) {
@@ -575,7 +576,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 					if (soundevent != null) {
 						this.playSound(soundevent, this.getSoundVolume() * 1.2F, this.getVoicePitch() * 0.75F);
 					}
-					this.level.broadcastEntityEvent(this, (byte) 60);
+					this.level().broadcastEntityEvent(this, (byte) 60);
 				} else if (this.deathTime >= maxDeath) {
 					this.remove(Entity.RemovalReason.KILLED);
 				} else {
@@ -611,7 +612,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 							if (preciseTime < 0.0D) continue;
 							double factor = preciseTime / (double) (maxDeath - renderEnd);
 							Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);//Some sine waves to make it slither-y;
-							BlockHitResult blockhitresult = this.level.clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, null));
+							BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, null));
 							particlePacket.queueParticle(ParticleTypes.COMPOSTER, false, blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D), Vec3.ZERO);
 						}
 					}
@@ -628,7 +629,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			float width = this.getBbWidth();
 			float height = this.getBbHeight();
 			for (int k = 0; k < 20; k++) {
-				this.getLevel().addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
+				this.level().addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
 						(pos.x + this.random.nextFloat() * width * 2.0F) - width,
 						pos.y + this.random.nextFloat() * height,
 						(pos.z + this.random.nextFloat() * width * 2.0F) - width,

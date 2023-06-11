@@ -1,4 +1,4 @@
-// 1.19.4	2023-06-04T23:10:12.8555879	Twilight Forest Item Tags
+// 1.20	2023-06-10T18:09:27.3848512	Twilight Forest Item Tags
 4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/items/plants.json
 932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/items/plant_foods.json
 3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/items/charm.json
@@ -39,6 +39,7 @@ bbc3c7d372a10410465d7fb27cb47b47e553f7c1 data/minecraft/tags/items/axes.json
 dc2f26c3fd06fccd7385a8d16527701a68efb05a data/minecraft/tags/items/chest_boats.json
 387c3d6fc3d958d7d90aea6c542e7a1a46ed16d9 data/minecraft/tags/items/cluster_max_harvestables.json
 e66649b3248e051912913e282cb83d3b5006cde0 data/minecraft/tags/items/freeze_immune_wearables.json
+6fe1e441c4085be357b16f3ef9158eda9139f939 data/minecraft/tags/items/hanging_signs.json
 b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/minecraft/tags/items/hoes.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/items/leaves.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/items/logs.json
@@ -54,6 +55,8 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/items/slabs.json
 4304b5a72638ce0626ae45be178a5669cea32d38 data/minecraft/tags/items/small_flowers.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/items/stairs.json
 931bc115353e6c267d36d480a5891285fde13487 data/minecraft/tags/items/swords.json
+1f4a2407e3166f6efe05c01d87493229a9d99b46 data/minecraft/tags/items/trimmable_armor.json
+33e52f2e89c4cebba996ae0eae4b4974291b9d81 data/minecraft/tags/items/trim_materials.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/items/wooden_buttons.json
 3ff910b3376b5166da794689b1bf7569ad0b2e87 data/minecraft/tags/items/wooden_doors.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/minecraft/tags/items/wooden_fences.json

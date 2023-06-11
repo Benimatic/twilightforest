@@ -121,7 +121,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		// only hit living things
-		if (!this.getLevel().isClientSide() && result.getEntity() != this.getOwner()) {
+		if (!this.level().isClientSide() && result.getEntity() != this.getOwner()) {
 			float damage = 0.0F;
 			if (result.getEntity() instanceof LivingEntity living) {
 				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
@@ -136,7 +136,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 			}
 
 			if (damage > 0.0F) {
-				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SPIKED, this.getOwner(), this), damage)) {
+				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this.getOwner(), this), damage)) {
 					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
@@ -153,8 +153,8 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!this.getLevel().isClientSide() && !this.getLevel().isEmptyBlock(result.getBlockPos())) {
-			if (!this.stack.isCorrectToolForDrops(this.getLevel().getBlockState(result.getBlockPos()))) {
+		if (!this.level().isClientSide() && !this.level().isEmptyBlock(result.getBlockPos())) {
+			if (!this.stack.isCorrectToolForDrops(this.level().getBlockState(result.getBlockPos()))) {
 				if (!this.isReturning && !this.hitEntity) {
 					this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
 					this.gameEvent(GameEvent.HIT_GROUND);
@@ -226,14 +226,14 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 			boolean creative = player.getAbilities().instabuild;
 
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				BlockState state = this.getLevel().getBlockState(pos);
+				BlockState state = this.level().getBlockState(pos);
 				Block block = state.getBlock();
 
-				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
-					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.getLevel(), pos, state, player))) {
+				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.level(), pos, this)) {
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player))) {
 						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
-							this.getLevel().destroyBlock(pos, false);
-							if (!creative) block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
+							this.level().destroyBlock(pos, false);
+							if (!creative) block.playerDestroy(this.level(), player, pos, state, this.level().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 							this.blocksSmashed++;
 							if (this.blocksSmashed > MAX_SMASH) {
 								break;
@@ -249,7 +249,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	public void tick() {
 		super.tick();
 
-		if (this.getLevel().isClientSide()) {
+		if (this.level().isClientSide()) {
 			this.chain1.tick();
 			this.chain2.tick();
 			this.chain3.tick();
@@ -333,7 +333,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 	@Override
 	public void readSpawnData(FriendlyByteBuf buf) {
-		Entity e = this.getLevel().getEntity(buf.readInt());
+		Entity e = this.level().getEntity(buf.readInt());
 		if (e instanceof LivingEntity) {
 			this.setOwner(e);
 		}

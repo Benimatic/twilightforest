@@ -5,7 +5,7 @@
     "#minecraft:planks",
     "#minecraft:overworld_carver_replaceables",
     "#minecraft:nether_carver_replaceables",
-    "#minecraft:replaceable_plants",
+    "#minecraft:replaceable_by_trees",
     "#minecraft:lush_ground_replaceable",
     "#minecraft:sculk_replaceable",
     "#forge:ores"

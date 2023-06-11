@@ -1,7 +1,6 @@
 package twilightforest.data;
 
 import net.minecraft.data.PackOutput;
-import twilightforest.TFConfig;
 import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.init.*;
 
@@ -353,6 +352,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CRIMSON_BANISTER, "Crimson Banister");
 		this.addBlock(TFBlocks.WARPED_BANISTER, "Warped Banister");
 		this.addBlock(TFBlocks.VANGROVE_BANISTER, "Mangrove Banister");
+		this.addBlock(TFBlocks.BAMBOO_BANISTER, "Bamboo Banister");
+		this.addBlock(TFBlocks.CHERRY_BANISTER, "Cherry Banister");
 
 		this.createHollowLogs("oak", "Oak", false);
 		this.createHollowLogs("spruce", "Spruce", false);
@@ -363,6 +364,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createHollowLogs("crimson", "Crimson", true);
 		this.createHollowLogs("warped", "Warped", true);
 		this.createHollowLogs("vangrove", "Mangrove", false);
+		this.createHollowLogs("cherry", "Cherry", false);
 		this.add("block.twilightforest.banister.cycle", "Right click with an axe to cycle");
 
 		this.addBlock(TFBlocks.MOSS_PATCH, "Moss Patch");
@@ -1087,8 +1089,18 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("optifine.message", "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.");
 		this.addScreenMessage("optifine.suggestions", "Here's a selection of mods that we recommend using instead.");
 
+		this.addScreenMessage("progression_end.message", "This is the end of progression for now. The Final Castle that awaits on the plateau is still unfinished and a work in progress. If you would like to keep up with the mod's development you can join our %s.");
+		this.addScreenMessage("progression_end.discord", "Discord Server");
+
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
 		this.addScreenMessage("uncrafting_jei", "Uncrafting");
+
+		this.addTrim("carminite", "Carminite");
+		this.addTrim("fiery", "Fiery");
+		this.addTrim("ironwood", "Ironwood");
+		this.addTrim("knightmetal", "Knightmetal");
+		this.addTrim("naga_scale", "Naga Scale");
+		this.addTrim("steeleaf", "Steeleaf");
 	}
 }

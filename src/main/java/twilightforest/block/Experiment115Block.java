@@ -20,13 +20,11 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -46,8 +44,8 @@ public class Experiment115Block extends Block {
 	private static final VoxelShape THREE_QUARTER_SHAPE = Shapes.join(HALF_SHAPE, box(8, 0, 8, 15, 8, 15), BooleanOp.OR);
 	private static final VoxelShape FULL_SHAPE = box(1, 0, 1, 15, 8, 15);
 
-	public Experiment115Block() {
-		super(Properties.of(Material.CAKE, MaterialColor.METAL).strength(0.5F).sound(SoundType.WOOL).randomTicks());
+	public Experiment115Block(BlockBehaviour.Properties properties) {
+		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(BITES_TAKEN, 7).setValue(REGENERATE, false));
 	}
 
@@ -131,7 +129,7 @@ public class Experiment115Block extends Block {
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
-		return reader.getBlockState(pos.below()).getMaterial().isSolid();
+		return reader.getBlockState(pos.below()).isSolid();
 	}
 
 	@Override

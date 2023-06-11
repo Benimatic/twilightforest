@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -126,8 +126,8 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	public void checkDespawn() {
-		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
-			this.getLevel().setBlockAndUpdate(this.blockPosition().offset(0, 2, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
+			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 2, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
 			this.discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -189,7 +189,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 		this.ticksSinceDamaged++;
 
-		if (!this.getLevel().isClientSide() && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0) {
+		if (!this.level().isClientSide() && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0) {
 			this.heal(1);
 		}
 
@@ -216,12 +216,12 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		this.tail.setPos(dx, dy, dz);
 
 		if (hurtTime == 0) {
-			this.collideWithEntities(this.getLevel().getEntities(this, this.body.getBoundingBox()), this.body);
-			this.collideWithEntities(this.getLevel().getEntities(this, this.tail.getBoundingBox()), this.tail);
+			this.collideWithEntities(this.level().getEntities(this, this.body.getBoundingBox()), this.body);
+			this.collideWithEntities(this.level().getEntities(this, this.tail.getBoundingBox()), this.tail);
 		}
 
 		// destroy blocks
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.destroyBlocksInAABB(this.body.getBoundingBox());
 			this.destroyBlocksInAABB(this.tail.getBoundingBox());
 
@@ -285,7 +285,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		}
 
 		if (this.getRandom().nextFloat() < 0.7F) {
-			Player entityplayer1 = this.getLevel().getNearestPlayer(this, f);
+			Player entityplayer1 = this.level().getNearestPlayer(this, f);
 
 			if (entityplayer1 != null && !entityplayer1.isCreative()) {
 				setTarget(entityplayer1);
@@ -340,7 +340,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	}
 
 	private void setDifficultyVariables() {
-		if (this.getLevel().getDifficulty() != Difficulty.HARD) {
+		if (this.level().getDifficulty() != Difficulty.HARD) {
 			Hydra.HEADS_ACTIVITY_FACTOR = 0.3F;
 		} else {
 			Hydra.HEADS_ACTIVITY_FACTOR = 0.5F;  // higher is harder
@@ -498,7 +498,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Nullable
 	private LivingEntity findSecondaryTarget(double range) {
-		return this.getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
+		return this.level().getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof Hydra))
 				.filter(e -> e != getTarget() && !isAnyHeadTargeting(e) && getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
@@ -549,7 +549,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		for (int dx = minX; dx <= maxX; ++dx) {
 			for (int dz = minZ; dz <= maxZ; ++dz) {
 				total++;
-				if (this.getLevel().getBlockState(new BlockPos(dx, dy, dz)).getMaterial().isSolid()) {
+				if (this.level().getBlockState(new BlockPos(dx, dy, dz)).isSolid()) {
 					solid++;
 				}
 			}
@@ -559,10 +559,10 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
+		if (this.deathTime <= 0 && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				if (EntityUtil.canDestroyBlock(this.getLevel(), pos, this)) {
-					this.getLevel().destroyBlock(pos, false);
+				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
+					this.level().destroyBlock(pos, false);
 				}
 			}
 		}
@@ -575,7 +575,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	public boolean attackEntityFromPart(HydraPart part, DamageSource source, float damage) {
 		// if we're in a wall, kill that wall
-		if (!this.getLevel().isClientSide() && source.is(DamageTypes.IN_WALL)) {
+		if (!this.level().isClientSide() && source.is(DamageTypes.IN_WALL)) {
 			this.destroyBlocksInAABB(part.getBoundingBox());
 		}
 
@@ -636,7 +636,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		if (src.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 			this.hurtBy.add(player);
 		}
-		return src.is(DamageTypes.OUT_OF_WORLD) && super.hurt(src, damage);
+		return src.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && super.hurt(src, damage);
 	}
 
 	@Override
@@ -712,14 +712,14 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the lair as defeated
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.bossInfo.setProgress(0.0F);
-			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.HYDRA_LAIR, true);
+			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.HYDRA_LAIR, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
@@ -766,13 +766,13 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		}
 
 		if (this.deathTime == 200) {
-			if (!this.getLevel().isClientSide() && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.getLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
+			if (!this.level().isClientSide() && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
 				int i = this.getExperienceReward();
 				i = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i);
 				while (i > 0) {
 					int j = ExperienceOrb.getExperienceValue(i);
 					i -= j;
-					this.getLevel().addFreshEntity(new ExperienceOrb(this.getLevel(), this.getX(), this.getY(), this.getZ(), j));
+					this.level().addFreshEntity(new ExperienceOrb(this.level(), this.getX(), this.getY(), this.getZ(), j));
 				}
 			}
 
@@ -783,7 +783,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 			double vx = this.getRandom().nextGaussian() * 0.02D;
 			double vy = this.getRandom().nextGaussian() * 0.02D;
 			double vz = this.getRandom().nextGaussian() * 0.02D;
-			this.getLevel().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
+			this.level().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
 					this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
 					this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
 					this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),

@@ -112,7 +112,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
 				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
-					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level);
+					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level());
 					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
@@ -254,7 +254,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
-		if (!entity.isAlive() || entity.getLevel().isClientSide()) {
+		if (!entity.isAlive() || entity.level().isClientSide()) {
 			return;
 		}
 

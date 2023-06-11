@@ -56,12 +56,7 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 
 	@Override
 	public void clearColor(ItemStack stack) {
-		this.removeColor(stack, 1);
-	}
-
-	@Override
-	public void setColor(ItemStack stack, int color) {
-		this.setColor(stack, color, 1);
+		this.removeColor(stack);
 	}
 
 	public int getColor(ItemStack stack, int type) {
@@ -83,7 +78,7 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		return color;
 	}
 
-	public void removeColor(ItemStack stack, int type) {
+	public void removeColor(ItemStack stack) {
 		String string = "";
 		CompoundTag stackTagCompound = stack.getTag();
 
@@ -98,7 +93,8 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		}
 	}
 
-	public void setColor(ItemStack stack, int color, int type) {
+	@Override
+	public void setColor(ItemStack stack, int color) {
 		String string = "";
 		CompoundTag stackTagCompound = stack.getTag();
 

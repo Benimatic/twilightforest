@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-28T08:45:10.009318	Registries
+// 1.20	2023-06-10T18:09:27.3560646	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -45,6 +45,12 @@ e0bcaf826b9a325b3f9a246f9ed4bf223ac73028 data/twilightforest/damage_type/thrown_
 c4304ad6f22195ea9ddeff9a926a0bea41dd5b0d data/twilightforest/damage_type/yeeted.json
 bed3a29af5dd60bbfc482861e3858bfd77cfeb16 data/twilightforest/dimension/twilight_forest.json
 71f153910dd7b4b3b77718b9b07c84042ab39f7d data/twilightforest/dimension_type/twilight_forest_type.json
+472a3244322eed24d16afed7dc082a665350bc7c data/twilightforest/trim_material/carminite.json
+b7e49fe11d5d1d3062c413e11b27ff1d9c819d57 data/twilightforest/trim_material/fiery.json
+62b79e4b2422686cfa49f061ee511f7b6e69fb97 data/twilightforest/trim_material/ironwood.json
+6780c98a3f03a50e5f426773d76593a62c44ea40 data/twilightforest/trim_material/knightmetal.json
+478058a258f9bdf36f094719554c8ec36eb216c5 data/twilightforest/trim_material/naga_scale.json
+de49903e456db111c78f2f0934ac3369f94953f3 data/twilightforest/trim_material/steeleaf.json
 c01efe2b06b832718931f88ed9645b44b58409dd data/twilightforest/twilight/biome_layer_stack/biomes_along_streams.json
 87d0487a38fb84d85efb0cb0044f50fe8053d60e data/twilightforest/twilight/biome_layer_stack/random_forest_biomes.json
 2aa6f23871be95f6a25e9b6215dff1ad5294aeb6 data/twilightforest/twilight/wood_palettes/canopy.json

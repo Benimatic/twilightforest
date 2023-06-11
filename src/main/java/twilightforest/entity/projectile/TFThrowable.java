@@ -1,14 +1,10 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 
 public abstract class TFThrowable extends ThrowableProjectile implements ITFProjectile {
 
@@ -38,7 +34,7 @@ public abstract class TFThrowable extends ThrowableProjectile implements ITFProj
 			double dx = this.getX() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
 			double dy = this.getY() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
 			double dz = this.getZ() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
-			this.getLevel().addParticle(particle, dx, dy, dz, r, g, b);
+			this.level().addParticle(particle, dx, dy, dz, r, g, b);
 		}
 	}
 }

@@ -59,7 +59,8 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("block.twilightforest." + woodPrefix + "_chest", woodName + " Chest");
 		this.add("item.twilightforest." + woodPrefix + "_boat", woodName + " Boat");
 		this.add("item.twilightforest." + woodPrefix + "_chest_boat", woodName + " Chest Boat");
-		//this.add("block.twilightforest." + woodPrefix + "_hanging_sign", woodName + " Hanging Sign");
+		this.add("block.twilightforest." + woodPrefix + "_hanging_sign", woodName + " Hanging Sign");
+		this.add("block.twilightforest." + woodPrefix + "_wall_hanging_sign", woodName + " Wall Hanging Sign");
 	}
 
 	public void addBannerPattern(String patternPrefix, String patternName) {
@@ -134,6 +135,10 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addCommand(String key, String name) {
 		this.add("commands.tffeature." + key, name);
+	}
+
+	public void addTrim(String key, String name) {
+		this.add("trim_material.twilightforest." + key, name + " Material");
 	}
 
 	public void addBookAndContents(String bookKey, String bookTitle, String... pages) {

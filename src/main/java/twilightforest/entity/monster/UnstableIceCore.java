@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
@@ -13,12 +14,10 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -74,9 +73,9 @@ public class UnstableIceCore extends BaseIceMob {
 		++this.deathTime;
 
 		if (this.deathTime == 60) { // delay until 3 seconds
-			if (!this.getLevel().isClientSide()) {
-				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this);
-				this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
+			if (!this.level().isClientSide()) {
+				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(this.level(), this);
+				this.level().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
 
 				if (mobGriefing) {
 					this.transformBlocks();
@@ -110,32 +109,32 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	private void transformBlock(BlockPos pos) {
-		BlockState state = this.getLevel().getBlockState(pos);
+		BlockState state = this.level().getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block.getExplosionResistance() < 8F && state.getDestroySpeed(this.getLevel(), pos) >= 0) {
+		if (block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0) {
 			// todo improve for blocks where state is known? or perhaps if a propertycolor is present
-			int blockColor = state.getMapColor(this.getLevel(), pos).col;
+			int blockColor = state.getMapColor(this.level(), pos).col;
 
 			// do appropriate transformation
 			if (this.shouldTransformGlass(state, pos)) {
-				this.getLevel().setBlockAndUpdate(pos, ColorUtil.STAINED_GLASS.getColor(getClosestDyeColor(blockColor)));
+				this.level().setBlockAndUpdate(pos, ColorUtil.STAINED_GLASS.getColor(getClosestDyeColor(blockColor)));
 			} else if (this.shouldTransformClay(state, pos)) {
-				this.getLevel().setBlockAndUpdate(pos, ColorUtil.TERRACOTTA.getColor(getClosestDyeColor(blockColor)));
+				this.level().setBlockAndUpdate(pos, ColorUtil.TERRACOTTA.getColor(getClosestDyeColor(blockColor)));
 			}
 		}
 	}
 
 	private boolean shouldTransformClay(BlockState state, BlockPos pos) {
-		return state.isRedstoneConductor(this.getLevel(), pos);
+		return state.isRedstoneConductor(this.level(), pos);
 	}
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
-		return state.getBlock() != Blocks.AIR && isBlockNormalBounds(state, pos) && (!state.getMaterial().isSolidBlocking() || state.getMaterial() == Material.LEAVES || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.get()));
+		return state.getBlock() != Blocks.AIR && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.get()));
 	}
 
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {
-		return Block.isShapeFullBlock(state.getShape(this.getLevel(), pos));
+		return Block.isShapeFullBlock(state.getShape(this.level(), pos));
 	}
 
 	private static DyeColor getClosestDyeColor(int blockColor) {

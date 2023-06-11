@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -180,7 +179,7 @@ public class OreMagnetItem extends Item {
 				BlockPos replacePos = coord.offset(offX, offY, offZ);
 				BlockState replaceState = level.getBlockState(replacePos);
 
-				if (isReplaceable(replaceState) || replaceState.getMaterial().isReplaceable() || replaceState.isAir()) {
+				if (isReplaceable(replaceState) || replaceState.canBeReplaced() || replaceState.isAir()) {
 					level.setBlock(coord, replacementBlock, 2);
 
 					// set close to ore material
@@ -254,7 +253,7 @@ public class OreMagnetItem extends Item {
 		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
 
 		//collect all tags
-		for (TagKey<Block> tag : Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTagNames().filter(location -> location.location().getNamespace().equals("forge")).collect(Collectors.toList())) {
+		for (TagKey<Block> tag : Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTagNames().filter(location -> location.location().getNamespace().equals("forge")).toList()) {
 			//check if the tag is a valid ore tag
 			if (tag.location().getPath().contains("ores_in_ground/")) {
 				//grab the part after the slash for use later

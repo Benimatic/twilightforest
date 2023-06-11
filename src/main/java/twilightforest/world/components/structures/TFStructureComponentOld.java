@@ -145,7 +145,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
-	 * @param treasureType
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, BoundingBox sbb) {
 		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
@@ -154,7 +153,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
-	 * @param treasureType
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
 		int dx = getWorldX(x, z);
@@ -169,7 +167,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
-	 * @param treasureType
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, BoundingBox sbb) {
 		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
@@ -178,7 +175,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
-	 * @param treasureType
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
 		if(facing == null) {
@@ -227,7 +223,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	/**
 	 * Places a tripwire.
-	 *
+	 * <p>
 	 * Tries to delay notifying tripwire blocks of placement so they won't
 	 * scan unloaded chunks looking for connections.
 	 *
@@ -259,8 +255,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 			SignBlockEntity teSign = (SignBlockEntity) world.getBlockEntity(pos);
 			if (teSign != null) {
-				teSign.setMessage(1, Component.literal(string0));
-				teSign.setMessage(2, Component.literal(string1));
+				teSign.getFrontText().setMessage(1, Component.literal(string0));
+				teSign.getFrontText().setMessage(2, Component.literal(string1));
 			}
 		}
 	}

@@ -230,7 +230,7 @@ public class TFConfig {
 			builder.pop();
 		}
 
-		public Dimension DIMENSION = new Dimension();
+		public final Dimension DIMENSION = new Dimension();
 
 		public static class Dimension {
 
@@ -239,20 +239,20 @@ public class TFConfig {
 
 		}
 
-		public ForgeConfigSpec.ConfigValue<String> originDimension;
-		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
-		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
-		public ForgeConfigSpec.BooleanValue disablePortalCreation;
-		public ForgeConfigSpec.BooleanValue checkPortalDestination;
-		public ForgeConfigSpec.BooleanValue portalLightning;
-		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
-		public ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
-		public ForgeConfigSpec.IntValue maxPortalSize;
-		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
-		public ForgeConfigSpec.BooleanValue disableSkullCandles;
-		public ForgeConfigSpec.BooleanValue defaultItemEnchants;
+		public final ForgeConfigSpec.ConfigValue<String> originDimension;
+		public final ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
+		public final ForgeConfigSpec.BooleanValue adminOnlyPortals;
+		public final ForgeConfigSpec.BooleanValue disablePortalCreation;
+		public final ForgeConfigSpec.BooleanValue checkPortalDestination;
+		public final ForgeConfigSpec.BooleanValue portalLightning;
+		public final ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
+		public final ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
+		public final ForgeConfigSpec.IntValue maxPortalSize;
+		public final ForgeConfigSpec.BooleanValue casketUUIDLocking;
+		public final ForgeConfigSpec.BooleanValue disableSkullCandles;
+		public final ForgeConfigSpec.BooleanValue defaultItemEnchants;
 
-		public MagicTrees MAGIC_TREES = new MagicTrees();
+		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
 		public static class MagicTrees {
 			public ForgeConfigSpec.BooleanValue disableTime;
@@ -265,7 +265,7 @@ public class TFConfig {
 			public ForgeConfigSpec.IntValue sortingRange;
 		}
 
-		public UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
+		public final UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 
 		public static class UncraftingStuff {
 			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
@@ -278,7 +278,7 @@ public class TFConfig {
 			public ForgeConfigSpec.BooleanValue flipUncraftingModIdList;
 		}
 
-		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
+		public final ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 		@Nullable
 		public ResourceLocation portalLockingAdvancement;
 
@@ -322,13 +322,13 @@ public class TFConfig {
 					define("questRamWoolIndicator", true);
 		}
 
-		public ForgeConfigSpec.BooleanValue silentCicadas;
-		public ForgeConfigSpec.BooleanValue silentCicadasOnHead;
-		public ForgeConfigSpec.BooleanValue firstPersonEffects;
-		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
-		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
-		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
-		public ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+		public final ForgeConfigSpec.BooleanValue silentCicadas;
+		public final ForgeConfigSpec.BooleanValue silentCicadasOnHead;
+		public final ForgeConfigSpec.BooleanValue firstPersonEffects;
+		public final ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
+		public final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
+		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
+		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 	}
 
 	private static final String config =  "config." + TwilightForestMod.ID;

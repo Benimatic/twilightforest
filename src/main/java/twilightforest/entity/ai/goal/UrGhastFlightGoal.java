@@ -3,7 +3,6 @@ package twilightforest.entity.ai.goal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.UrGhast;
 
 import java.util.ArrayList;

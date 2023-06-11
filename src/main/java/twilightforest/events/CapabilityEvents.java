@@ -38,7 +38,7 @@ public class CapabilityEvents {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntity();
 		// shields
-		if (!living.getLevel().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
+		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
 			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {
 					cap.breakShield();
@@ -69,7 +69,7 @@ public class CapabilityEvents {
 	 */
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer) {
+		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer) {
 			updateCapabilities((ServerPlayer) event.getEntity(), event.getEntity());
 			banishNewbieToTwilightZone(event.getEntity());
 		}
@@ -77,7 +77,7 @@ public class CapabilityEvents {
 
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
+		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
 			updateCapabilities(player, event.getEntity());
 		}
 	}

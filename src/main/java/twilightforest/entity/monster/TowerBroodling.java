@@ -57,17 +57,17 @@ public class TowerBroodling extends SwarmSpider {
 
 	@Override
 	protected boolean spawnAnother() {
-		SwarmSpider another = new TowerBroodling(TFEntities.CARMINITE_BROODLING.get(), this.getLevel(), false);
+		SwarmSpider another = new TowerBroodling(TFEntities.CARMINITE_BROODLING.get(), this.level(), false);
 
 		double sx = getX() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
 		double sy = getY();
 		double sz = getZ() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
 		another.moveTo(sx, sy, sz, this.getRandom().nextFloat() * 360.0F, 0.0F);
-		if (!another.checkSpawnRules(this.getLevel(), MobSpawnType.MOB_SUMMONED)) {
+		if (!another.checkSpawnRules(this.level(), MobSpawnType.MOB_SUMMONED)) {
 			another.discard();
 			return false;
 		}
-		this.getLevel().addFreshEntity(another);
+		this.level().addFreshEntity(another);
 		another.spawnAnim();
 
 		return true;

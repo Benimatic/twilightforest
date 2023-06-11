@@ -117,7 +117,7 @@ public interface StructureHints {
     Mob createHintMonster(Level world);
 
     record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
-        public static MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        public static final MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
                 ForgeRegistries.ENTITY_TYPES.getCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
         ).apply(instance, HintConfig::new));

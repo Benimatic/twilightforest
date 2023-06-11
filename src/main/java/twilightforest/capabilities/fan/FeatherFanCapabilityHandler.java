@@ -1,7 +1,6 @@
 package twilightforest.capabilities.fan;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
@@ -20,11 +19,11 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	@Override
 	public void update() {
 		if (this.getFalling()) {
-			if (!this.host.isOnGround()) {
+			if (!this.host.onGround()) {
 				this.host.resetFallDistance();
 			}
 
-			if (this.host.isOnGround() || this.host.isSwimming()) {
+			if (this.host.onGround() || this.host.isSwimming()) {
 				this.setFalling(false);
 			}
 		}
@@ -33,7 +32,7 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	@Override
 	public void setFalling(boolean falling) {
 		this.falling = falling;
-		if (!this.host.getLevel().isClientSide()) {
+		if (!this.host.level().isClientSide()) {
 			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new UpdateFeatherFanFallPacket(this.host.getId(), this));
 		}
 	}

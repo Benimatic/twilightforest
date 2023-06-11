@@ -1,6 +1,7 @@
 package twilightforest.init;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -78,6 +79,17 @@ public class TFBlockEntities {
 					TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(),
 					TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get()).build(null));
 
+	public static final RegistryObject<BlockEntityType<TFSignBlockEntity>> TF_HANGING_SIGN = BLOCK_ENTITIES.register("tf_hanging_sign", () ->
+			BlockEntityType.Builder.of(TFSignBlockEntity::new,
+					TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(),
+					TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(),
+					TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(),
+					TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(),
+					TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_WALL_HANGING_SIGN.get(),
+					TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(),
+					TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(),
+					TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get()).build(null));
+
 	public static final RegistryObject<BlockEntityType<TwilightChestEntity>> TF_CHEST = BLOCK_ENTITIES.register("tf_chest", () ->
 			BlockEntityType.Builder.of(TwilightChestEntity::new,
 					TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(),
@@ -109,6 +121,7 @@ public class TFBlockEntities {
 		BlockEntityRenderers.register(MOONWORM.get(), MoonwormTileEntityRenderer::new);
 		BlockEntityRenderers.register(TROPHY.get(), TrophyTileEntityRenderer::new);
 		BlockEntityRenderers.register(TF_SIGN.get(), SignRenderer::new);
+		BlockEntityRenderers.register(TF_HANGING_SIGN.get(), HangingSignRenderer::new);
 		BlockEntityRenderers.register(TF_CHEST.get(), TwilightChestRenderer::new);
 		BlockEntityRenderers.register(KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
 		BlockEntityRenderers.register(SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);

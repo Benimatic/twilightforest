@@ -103,7 +103,7 @@ public class TFSkyRenderer {
 			starBuffer.close();
 		}
 
-		starBuffer = new VertexBuffer();
+		starBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
 		BufferBuilder.RenderedBuffer renderedBuffer = this.drawStars(bufferbuilder);
 		starBuffer.bind();
 		starBuffer.upload(renderedBuffer);

@@ -406,6 +406,23 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		builtinEntity(TFBlocks.SORTING_SIGN.get(), "twilightforest:block/wood/planks_sort_0");
 		builtinEntity(TFBlocks.SORTING_WALL_SIGN.get(), "twilightforest:block/wood/planks_sort_0");
 
+		builtinEntity(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), "twilightforest:block/stripped_twilight_oak_log");
+		builtinEntity(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_twilight_oak_log");
+		builtinEntity(TFBlocks.CANOPY_HANGING_SIGN.get(), "twilightforest:block/stripped_canopy_log");
+		builtinEntity(TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_canopy_log");
+		builtinEntity(TFBlocks.MANGROVE_HANGING_SIGN.get(), "twilightforest:block/stripped_mangrove_log");
+		builtinEntity(TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_mangrove_log");
+		builtinEntity(TFBlocks.DARK_HANGING_SIGN.get(), "twilightforest:block/stripped_dark_log");
+		builtinEntity(TFBlocks.DARK_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_dark_log");
+		builtinEntity(TFBlocks.TIME_HANGING_SIGN.get(), "twilightforest:block/stripped_time_log");
+		builtinEntity(TFBlocks.TIME_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_time_log");
+		builtinEntity(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), "twilightforest:block/stripped_transformation_log");
+		builtinEntity(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_transformation_log");
+		builtinEntity(TFBlocks.MINING_HANGING_SIGN.get(), "twilightforest:block/stripped_mining_log");
+		builtinEntity(TFBlocks.MINING_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_mining_log");
+		builtinEntity(TFBlocks.SORTING_HANGING_SIGN.get(), "twilightforest:block/stripped_sorting_log");
+		builtinEntity(TFBlocks.SORTING_WALL_HANGING_SIGN.get(), "twilightforest:block/stripped_sorting_log");
+		
 		builtinEntity(TFBlocks.TWILIGHT_OAK_CHEST.get(), "twilightforest:block/wood/planks_twilight_oak_0");
 		builtinEntity(TFBlocks.CANOPY_CHEST.get(), "twilightforest:block/wood/planks_canopy_0");
 		builtinEntity(TFBlocks.MANGROVE_CHEST.get(), "twilightforest:block/wood/planks_mangrove_0");
@@ -1129,6 +1146,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		banisterVanilla(TFBlocks.CRIMSON_BANISTER.get(), "crimson_planks", "crimson");
 		banisterVanilla(TFBlocks.WARPED_BANISTER.get(), "warped_planks", "warped");
 		banisterVanilla(TFBlocks.VANGROVE_BANISTER.get(), "mangrove_planks", "vanilla_mangrove");
+		banisterVanilla(TFBlocks.BAMBOO_BANISTER.get(), "bamboo_planks", "bamboo");
+		banisterVanilla(TFBlocks.CHERRY_BANISTER.get(), "cherry_planks", "cherry");
 
 		final ResourceLocation MOSS = TwilightForestMod.prefix("block/mosspatch");
 		final ResourceLocation MOSS_OVERHANG = TwilightForestMod.prefix("block/moss_overhang");
@@ -1154,6 +1173,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		hollowLogs(Blocks.CRIMSON_STEM, Blocks.STRIPPED_CRIMSON_STEM, TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL, TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL, TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 		hollowLogs(Blocks.WARPED_STEM, Blocks.STRIPPED_WARPED_STEM, TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL, TFBlocks.HOLLOW_WARPED_STEM_VERTICAL, TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 		hollowLogs(Blocks.MANGROVE_LOG, Blocks.STRIPPED_MANGROVE_LOG, TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL, TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
+		hollowLogs(Blocks.CHERRY_LOG, Blocks.STRIPPED_CHERRY_LOG, TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL, TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 
 		hollowLogs(TFBlocks.TWILIGHT_OAK_LOG, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);
 		hollowLogs(TFBlocks.CANOPY_LOG, TFBlocks.STRIPPED_CANOPY_LOG, TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, EMPTY_LOG, MOSS_LOG, MOSS_LOG_GRASS, SNOW_LOG, HOLLOW_LOG, VINE_LOG, LADDER_LOG);

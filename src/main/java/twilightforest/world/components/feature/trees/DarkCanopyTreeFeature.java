@@ -12,7 +12,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -23,10 +22,8 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
-import twilightforest.init.TFBlocks;
 
 import java.util.List;
 import java.util.OptionalInt;
@@ -55,16 +52,14 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
 		BlockPos validPos = BlockPos.ZERO;
-		Material materialUnder;
 		for (int dy = pos.getY(); dy >= reader.getMinBuildHeight(); dy--) {
-			materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
-			if (materialUnder == Material.GRASS || materialUnder == Material.DIRT) {
+			BlockState state = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ()));
+			if (state.is(BlockTags.DIRT) && reader.getBlockState(pos).canBeReplaced()) {
 				// yes!
 				foundDirt = true;
 				pos = new BlockPos(pos.getX(), dy, pos.getZ());
-				validPos = pos;
 				break;
-			} else if (materialUnder == Material.STONE || materialUnder == Material.SAND) {
+			} else if (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SAND)) {
 				// nope
 				break;
 			}
@@ -82,7 +77,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 
 		// do not grow next to another tree
 		for (Direction e : Direction.Plane.HORIZONTAL) {
-			if (reader.getBlockState(pos.relative(e)).getMaterial() == Material.WOOD)
+			if (reader.getBlockState(pos.relative(e)).is(BlockTags.LOGS))
 				return false;
 		}
 
@@ -148,7 +143,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		if (i1 >= level.getMinBuildHeight() + 1 && j1 <= level.getMaxBuildHeight()) {
 			OptionalInt optionalint = config.minimumSize.minClippedHeight();
 			int k1 = this.getMaxFreeTreeHeight(level, i, blockpos, config);
-			if (k1 >= i || !optionalint.isEmpty() && k1 >= optionalint.getAsInt()) {
+			if (k1 >= i || optionalint.isPresent() && k1 >= optionalint.getAsInt()) {
 				if (config.rootPlacer.isPresent() && !config.rootPlacer.get().placeRoots(level, consumer, random, pos, blockpos, config)) {
 					return false;
 				} else {
@@ -176,7 +171,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			for(int k = -j; k <= j; ++k) {
 				for(int l = -j; l <= j; ++l) {
 					mutable.setWithOffset(pos, k, i, l);
-					if (!isFree(level, mutable) || !config.ignoreVines) {
+					if (!validTreePos(level, mutable) || !config.ignoreVines) {
 						return i - 2;
 					}
 				}
@@ -264,26 +259,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		return discretevoxelshape;
 	}
 
-	public static boolean isFree(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return validTreePos(pLevel, pPos) || pLevel.isStateAtPosition(pPos, (p_67281_) -> p_67281_.is(BlockTags.LOGS));
-	}
-
-	private static boolean isBlockWater(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return pLevel.isStateAtPosition(pPos, (p_67271_) -> p_67271_.is(Blocks.WATER));
-	}
-
-	public static boolean isAirOrLeaves(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return pLevel.isStateAtPosition(pPos, (p_67266_) -> p_67266_.isAir() || p_67266_.is(BlockTags.LEAVES) || p_67266_.is(TFBlocks.HARDENED_DARK_LEAVES.get()));
-	}
-
-	private static boolean isReplaceablePlant(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return pLevel.isStateAtPosition(pPos, (p_160551_) -> {
-			Material material = p_160551_.getMaterial();
-			return material == Material.REPLACEABLE_PLANT;
-		});
-	}
-
-	public static boolean validTreePos(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return isAirOrLeaves(pLevel, pPos) || isReplaceablePlant(pLevel, pPos) || isBlockWater(pLevel, pPos);
+	public static boolean validTreePos(LevelSimulatedReader reader, BlockPos pos) {
+		return reader.isStateAtPosition(pos, (state) -> state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES));
 	}
 }

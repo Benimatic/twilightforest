@@ -7,7 +7,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFSounds;
 import twilightforest.util.EntityUtil;
@@ -166,7 +165,7 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!ForgeEventFactory.getMobGriefingEvent(this.naga.getLevel(), this.naga) || naga.getTarget() == null) return;
+		if (!ForgeEventFactory.getMobGriefingEvent(this.naga.level(), this.naga) || naga.getTarget() == null) return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;
@@ -182,8 +181,8 @@ public class NagaMovementPattern extends Goal {
 
 			BlockPos pos = new BlockPos(dx, dy, dz);
 
-			if (EntityUtil.canDestroyBlock(this.naga.getLevel(), pos, this.naga)) {
-				this.naga.getLevel().destroyBlock(pos, true);
+			if (EntityUtil.canDestroyBlock(this.naga.level(), pos, this.naga)) {
+				this.naga.level().destroyBlock(pos, true);
 
 				// sparkle!!
 				for (int k = 0; k < 20; k++) {
@@ -191,7 +190,7 @@ public class NagaMovementPattern extends Goal {
 					double d1 = this.naga.getRandom().nextGaussian() * 0.02D;
 					double d2 = this.naga.getRandom().nextGaussian() * 0.02D;
 
-					this.naga.getLevel().addParticle(ParticleTypes.CRIT,
+					this.naga.level().addParticle(ParticleTypes.CRIT,
 							(this.naga.getX() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
 							this.naga.getY() + this.naga.getRandom().nextFloat() * this.naga.getBbHeight(),
 							(this.naga.getZ() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),

@@ -61,7 +61,7 @@ public class ThrownWep extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.getLevel().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -75,16 +75,16 @@ public class ThrownWep extends TFThrowable {
 			return;
 		}
 
-		if (!this.getLevel().isClientSide()) {
-			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.getLevel(), this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
+		if (!this.level().isClientSide()) {
+			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.level(), this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
 		}
 	}
 
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (!this.getLevel().isClientSide()) {
-			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+		if (!this.level().isClientSide()) {
+			this.level().broadcastEntityEvent(this, (byte) 3);
 			discard();
 		}
 	}

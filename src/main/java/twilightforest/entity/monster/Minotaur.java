@@ -118,7 +118,7 @@ public class Minotaur extends Monster implements ITFCharger {
 		}
 
 		//TF: change damage source to minotaur one
-		boolean flag = entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.AXING, this), f);
+		boolean flag = entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), f);
 		if (flag) {
 			if (f1 > 0.0F && entity instanceof LivingEntity living) {
 				living.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(this.getYRot() * Mth.DEG_TO_RAD));

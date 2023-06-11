@@ -41,14 +41,14 @@ public class FierySwordItem extends SwordItem {
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hurtEnemy(stack, target, attacker);
 
-		if (result && !target.getLevel().isClientSide() && !target.fireImmune()) {
+		if (result && !target.level().isClientSide() && !target.fireImmune()) {
 			target.setSecondsOnFire(15);
 		} else {
 			for (int var1 = 0; var1 < 20; ++var1) {
-				double px = target.getX() + target.getLevel().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				double py = target.getY() + target.getLevel().getRandom().nextFloat() * target.getBbHeight();
-				double pz = target.getZ() + target.getLevel().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				target.getLevel().addParticle(ParticleTypes.FLAME, px, py, pz, 0.02, 0.02, 0.02);
+				double px = target.getX() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+				double py = target.getY() + target.level().getRandom().nextFloat() * target.getBbHeight();
+				double pz = target.getZ() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+				target.level().addParticle(ParticleTypes.FLAME, px, py, pz, 0.02, 0.02, 0.02);
 			}
 		}
 

@@ -46,7 +46,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	public boolean canEntityBeSeen(Entity entity) {
 		Vec3 vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 		Vec3 vector3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
-		return this.getLevel().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+		return this.level().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
 	}
 
 	public HydraPart(Hydra parent, float width, float height) {

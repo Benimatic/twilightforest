@@ -59,7 +59,7 @@ public class FogHandler {
 
 	@SubscribeEvent
 	public static void renderFog(ViewportEvent.RenderFog event) {
-		if (event.getType().equals(FogType.NONE) && Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo) {
+		if (event.getType().equals(FogType.NONE) && Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level() instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo) {
 			if (event.getMode().equals(FogRenderer.FogMode.FOG_SKY)) {
 				if (SKY_CHUNK_LOADED) {
 					event.setCanceled(true);

@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -121,7 +121,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		List<ItemStack> drops = super.getDrops(state, builder);
 		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(Tags.Items.HEADS) && !item.is(this.asItem())).findFirst();
 		if (skullStack.isPresent()) {

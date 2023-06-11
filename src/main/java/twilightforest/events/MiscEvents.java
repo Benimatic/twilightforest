@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
 import twilightforest.entity.passive.Squirrel;
@@ -50,22 +49,19 @@ public class MiscEvents {
 	@SubscribeEvent
 	public static void armorChanged(LivingEquipmentChangeEvent event) {
 		LivingEntity living = event.getEntity();
-		if (living instanceof ServerPlayer serverPlayer && !serverPlayer.level.isClientSide()) {
-			TFAdvancements.ARMOR_CHANGED.trigger(serverPlayer, event.getFrom(), event.getTo());
-		}
 
 		// from what I can see, vanilla doesnt have a hook for this in the item class. So this will have to do.
 		// we only have to check equipping, when its unequipped the sound instance handles the rest
 
 		//if we have a cicada in our curios slot, dont try to run this
 		if (ModList.get().isLoaded("curios")) {
-			if (CuriosCompat.isCicadaEquipped(event.getEntity())) {
-				return;
-			}
+//			if (CuriosCompat.isCicadaEquipped(living)) {
+//				return;
+//			}
 		}
 
-		if (event.getEntity() != null && !living.level.isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(event::getEntity), new CreateMovingCicadaSoundPacket(event.getEntity().getId()));
+		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> living), new CreateMovingCicadaSoundPacket(living.getId()));
 		}
 	}
 }

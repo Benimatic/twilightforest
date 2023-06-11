@@ -3,35 +3,34 @@ package twilightforest.client.renderer.tileentity;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.block.TrophyBlock;
 import twilightforest.block.TrophyWallBlock;
-import twilightforest.init.TFBlocks;
+import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.tileentity.*;
-import twilightforest.client.model.tileentity.legacy.*;
+import twilightforest.client.model.tileentity.legacy.HydraTrophyLegacyModel;
+import twilightforest.client.model.tileentity.legacy.MinoshroomTrophyLegacyModel;
+import twilightforest.client.model.tileentity.legacy.QuestRamTrophyLegacyModel;
+import twilightforest.client.model.tileentity.legacy.SnowQueenTrophyLegacyModel;
 import twilightforest.enums.BossVariant;
-import twilightforest.block.entity.TrophyBlockEntity;
+import twilightforest.init.TFBlocks;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Map;
-import java.util.function.BooleanSupplier;
 
-//Legacy lines are commented out and labeled
 public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 
 	private final Map<BossVariant, GenericTrophyModel> trophies;
@@ -53,21 +52,21 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static Map<BossVariant, GenericTrophyModel> createTrophyRenderers(EntityModelSet set) {
-		BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_classic_resources");
+		boolean legacy = !TwilightForestMod.isJappaPackLoaded();
 		ImmutableMap.Builder<BossVariant, GenericTrophyModel> trophyList = ImmutableMap.builder();
 		trophyList.put(BossVariant.NAGA, new NagaTrophyModel(set.bakeLayer(TFModelLayers.NAGA_TROPHY)));
 		trophyList.put(BossVariant.LICH, new LichTrophyModel(set.bakeLayer(TFModelLayers.LICH_TROPHY)));
-		trophyList.put(BossVariant.MINOSHROOM, legacy.getAsBoolean() ? new MinoshroomTrophyLegacyModel(set.bakeLayer(TFModelLayers.LEGACY_MINOSHROOM_TROPHY)) : new MinoshroomTrophyModel(set.bakeLayer(TFModelLayers.MINOSHROOM_TROPHY)));
-		trophyList.put(BossVariant.HYDRA, legacy.getAsBoolean() ? new HydraTrophyLegacyModel(set.bakeLayer(TFModelLayers.LEGACY_HYDRA_TROPHY)) : new HydraTrophyModel(set.bakeLayer(TFModelLayers.HYDRA_TROPHY)));
+		trophyList.put(BossVariant.MINOSHROOM, legacy ? new MinoshroomTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_MINOSHROOM_TROPHY)) : new MinoshroomTrophyModel(set.bakeLayer(TFModelLayers.MINOSHROOM_TROPHY)));
+		trophyList.put(BossVariant.HYDRA, legacy ? new HydraTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_HYDRA_TROPHY)) : new HydraTrophyModel(set.bakeLayer(TFModelLayers.HYDRA_TROPHY)));
 		trophyList.put(BossVariant.KNIGHT_PHANTOM, new KnightPhantomTrophyModel(set.bakeLayer(TFModelLayers.KNIGHT_PHANTOM_TROPHY)));
 		trophyList.put(BossVariant.UR_GHAST, new UrGhastTrophyModel(set.bakeLayer(TFModelLayers.UR_GHAST_TROPHY)));
 		trophyList.put(BossVariant.ALPHA_YETI, new AlphaYetiTrophyModel(set.bakeLayer(TFModelLayers.ALPHA_YETI_TROPHY)));
-		trophyList.put(BossVariant.SNOW_QUEEN, legacy.getAsBoolean() ? new SnowQueenTrophyLegacyModel(set.bakeLayer(TFModelLayers.LEGACY_SNOW_QUEEN_TROPHY)) : new SnowQueenTrophyModel(set.bakeLayer(TFModelLayers.SNOW_QUEEN_TROPHY)));
-		trophyList.put(BossVariant.QUEST_RAM, legacy.getAsBoolean() ? new QuestRamTrophyLegacyModel(set.bakeLayer(TFModelLayers.LEGACY_QUEST_RAM_TROPHY)) : new QuestRamTrophyModel(set.bakeLayer(TFModelLayers.QUEST_RAM_TROPHY)));
+		trophyList.put(BossVariant.SNOW_QUEEN, legacy ? new SnowQueenTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_SNOW_QUEEN_TROPHY)) : new SnowQueenTrophyModel(set.bakeLayer(TFModelLayers.SNOW_QUEEN_TROPHY)));
+		trophyList.put(BossVariant.QUEST_RAM, legacy ? new QuestRamTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_QUEST_RAM_TROPHY)) : new QuestRamTrophyModel(set.bakeLayer(TFModelLayers.QUEST_RAM_TROPHY)));
 		return trophyList.build();
 	}
 
-	public static ItemStack stack = new ItemStack(TFBlocks.NAGA_TROPHY.get());
+	public static final ItemStack stack = new ItemStack(TFBlocks.NAGA_TROPHY.get());
 	@Override
 	public void render(TrophyBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		float f = tileEntityIn.getAnimationProgress(partialTicks);
@@ -89,7 +88,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static void render(@Nullable Direction directionIn, float y, GenericTrophyModel trophy, BossVariant variant, float animationProgress, PoseStack matrixStackIn, MultiBufferSource buffer, int combinedLight, ItemDisplayContext camera) {
-		BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_classic_resources");
+		boolean legacy = !TwilightForestMod.isJappaPackLoaded();
 		matrixStackIn.pushPose();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
 			matrixStackIn.translate(0.5D, 0.01D, 0.5D);
@@ -104,7 +103,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 					trophy.openMouthForTrophy(0.35F);
 				}
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
-				matrixStackIn.translate(legacy.getAsBoolean() ? 1.0F : 0.0F, legacy.getAsBoolean() ? -1.15F : -1.0F, 0.0F);
+				matrixStackIn.translate(legacy ? 1.0F : 0.0F, legacy ? -1.15F : -1.0F, 0.0F);
 				VertexConsumer hydraVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocHydra));
 				trophy.renderToBuffer(matrixStackIn, hydraVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
@@ -129,13 +128,13 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 			}
 			case SNOW_QUEEN -> {
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
-				matrixStackIn.translate(0.0F, legacy.getAsBoolean() ? 0.25F : 0.0F, 0.0F);
+				matrixStackIn.translate(0.0F, legacy ? 0.25F : 0.0F, 0.0F);
 				VertexConsumer waifuVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocSnowQueen));
 				trophy.renderToBuffer(matrixStackIn, waifuVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
 			case MINOSHROOM -> {
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
-				matrixStackIn.translate(0.0F, legacy.getAsBoolean() ? 0.12F : 0.065F,  legacy.getAsBoolean() ? 0.56F : 0.0F);
+				matrixStackIn.translate(0.0F, legacy ? 0.12F : 0.065F,  legacy ? 0.56F : 0.0F);
 				VertexConsumer minoVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocMinoshroom));
 				trophy.renderToBuffer(matrixStackIn, minoVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}

@@ -3,7 +3,6 @@ package twilightforest.events;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,12 +11,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -62,7 +57,7 @@ public class ToolEvents {
 				player.setYRot(living.getYRot());
 				player.teleportTo(living.getX(), living.getY(), living.getZ());
 				player.invulnerableTime = 40;
-				player.getLevel().broadcastEntityEvent(player, (byte) 46);
+				player.level().broadcastEntityEvent(player, (byte) 46);
 				if (living.isPassenger() && living.getVehicle() != null) {
 					player.startRiding(living.getVehicle(), true);
 					living.stopRiding();
@@ -72,7 +67,7 @@ public class ToolEvents {
 				living.setYRot(sourceYaw);
 				living.setXRot(sourcePitch);
 				living.teleportTo(sourceX, sourceY, sourceZ);
-				living.getLevel().broadcastEntityEvent(player, (byte) 46);
+				living.level().broadcastEntityEvent(player, (byte) 46);
 				if (playerVehicle != null) {
 					living.startRiding(playerVehicle, true);
 					player.stopRiding();
@@ -93,7 +88,7 @@ public class ToolEvents {
 	public static void onKnightmetalToolDamage(LivingHurtEvent event) {
 		LivingEntity target = event.getEntity();
 
-		if (!target.getLevel().isClientSide() && event.getSource().getDirectEntity() instanceof LivingEntity living) {
+		if (!target.level().isClientSide() && event.getSource().getDirectEntity() instanceof LivingEntity living) {
 			ItemStack weapon = living.getMainHandItem();
 
 			if (!weapon.isEmpty()) {
@@ -105,11 +100,11 @@ public class ToolEvents {
 						event.setAmount(event.getAmount() + KNIGHTMETAL_BONUS_DAMAGE);
 					}
 					// enchantment attack sparkles
-					((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 				} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
 					event.setAmount(event.getAmount() + KNIGHTMETAL_BONUS_DAMAGE);
 					// enchantment attack sparkles
-					((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 				}
 			}
 		}
@@ -119,12 +114,12 @@ public class ToolEvents {
 	public static void onMinotaurAxeCharge(LivingHurtEvent event) {
 		LivingEntity target = event.getEntity();
 		Entity source = event.getSource().getDirectEntity();
-		if (!target.getLevel().isClientSide() && source instanceof LivingEntity living && source.isSprinting() && (event.getSource().getMsgId().equals("player") || event.getSource().getMsgId().equals("mob"))) {
+		if (!target.level().isClientSide() && source instanceof LivingEntity living && source.isSprinting() && (event.getSource().getMsgId().equals("player") || event.getSource().getMsgId().equals("mob"))) {
 			ItemStack weapon = living.getMainHandItem();
 			if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
 				event.setAmount(event.getAmount() + MINOTAUR_AXE_BONUS_DAMAGE);
 				// enchantment attack sparkles
-				((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+				((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 			}
 		}
 	}

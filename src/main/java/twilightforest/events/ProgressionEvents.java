@@ -66,7 +66,7 @@ public class ProgressionEvents {
 	public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
 
 		Player player = event.getEntity();
-		Level level = player.getLevel();
+		Level level = player.level();
 
 		if (!level.isClientSide() && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(level, player, event.getPos())) {
 			event.setUseBlock(Event.Result.DENY);
@@ -136,8 +136,8 @@ public class ProgressionEvents {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntity();
 		// cancel attacks in protected areas
-		if (!living.getLevel().isClientSide() && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
-				&& isAreaProtected(living.getLevel(), (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
+		if (!living.level().isClientSide() && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
+				&& isAreaProtected(living.level(), (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);
 		}
@@ -145,17 +145,17 @@ public class ProgressionEvents {
 
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			if (TFGenerationSettings.usesTwilightChunkGenerator(player.getLevel())) {
-				sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.getLevel()));
+		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
+			if (TFGenerationSettings.usesTwilightChunkGenerator((ServerLevel) player.level())) {
+				sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.level()));
 			}
 		}
 	}
 
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(event.getEntity().getLevel()));
+		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
+			sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(event.getEntity().level()));
 		}
 	}
 

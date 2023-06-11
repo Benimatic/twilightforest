@@ -139,10 +139,7 @@ public class TFWeatherRenderer {
 							k2 = i2;
 						}
 
-						int l2 = i2;
-						if (i2 < j) {
-							l2 = j;
-						}
+						int l2 = Math.max(i2, j);
 
 						if (j2 != k2) {
 							Random random = new Random((long) k1 * k1 * 3121 + k1 * 45238971L ^ (long) j1 * j1 * 418711 + j1 * 13761L);
@@ -172,7 +169,7 @@ public class TFWeatherRenderer {
 								bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)j2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F, (float)k2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
 							} else {
 								if (i1 != 1) {
-									if (i1 >= 0) {
+									if (i1 == 0) {
 										tesselator.end();
 									}
 
@@ -468,7 +465,7 @@ public class TFWeatherRenderer {
 				}
 			}
 
-			if (j1 >= 0) {
+			if (j1 == 0) {
 				tessellator.end();
 			}
 

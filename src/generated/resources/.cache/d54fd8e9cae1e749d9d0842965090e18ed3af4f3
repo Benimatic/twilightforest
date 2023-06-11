@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-25T17:58:33.901161	Tags for minecraft:damage_type mod id twilightforest
+// 1.20	2023-06-10T18:09:27.3598825	Tags for minecraft:damage_type mod id twilightforest
 e871224cfaf3f71ec4cef5455688114b0d13ee16 data/minecraft/tags/damage_type/always_most_significant_fall.json
 4ab0a038b74c9a0de0c5f73f23c69d420b5d1334 data/minecraft/tags/damage_type/bypasses_armor.json
 a6ba639a122a7a458de0be23570a49780563792d data/minecraft/tags/damage_type/bypasses_enchantments.json

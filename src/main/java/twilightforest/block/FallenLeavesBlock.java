@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -14,15 +15,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -77,7 +76,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 
 	@Override
 	protected boolean mayPlaceOn(BlockState state, BlockGetter getter, BlockPos pos) {
-		return super.mayPlaceOn(state, getter, pos) || ((getter.getFluidState(pos).getType() == Fluids.WATER || state.getMaterial() == Material.ICE) && getter.getFluidState(pos.above()).getType() == Fluids.EMPTY);
+		return super.mayPlaceOn(state, getter, pos) || ((getter.getFluidState(pos).getType() == Fluids.WATER || state.getBlock() instanceof IceBlock) && getter.getFluidState(pos.above()).getType() == Fluids.EMPTY);
 	}
 
 	@Override
@@ -118,7 +117,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 			float dist = 10F;
 			if (!level.canSeeSkyFromBelowWater(pos)) {
 				for (int y = 0; y <= dist; y++)
-					if (level.getBlockState(pos.above(y)).getMaterial() == Material.LEAVES) {
+					if (level.getBlockState(pos.above(y)).is(BlockTags.LEAVES)) {
 						dist = y;
 						break;
 					}

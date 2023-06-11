@@ -2,7 +2,6 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -103,7 +102,7 @@ public class SwarmSpider extends Spider {
 
 	@Override
 	public void tick() {
-		if (!this.getLevel().isClientSide() && shouldSpawnMore()) {
+		if (!this.level().isClientSide() && shouldSpawnMore()) {
 			int more = 1 + this.getRandom().nextInt(2);
 			for (int i = 0; i < more; i++) {
 				// try twice to spawn
@@ -123,17 +122,17 @@ public class SwarmSpider extends Spider {
 	}
 
 	protected boolean spawnAnother() {
-		SwarmSpider another = new SwarmSpider(TFEntities.SWARM_SPIDER.get(), this.getLevel(), false);
+		SwarmSpider another = new SwarmSpider(TFEntities.SWARM_SPIDER.get(), this.level(), false);
 
 		double sx = this.getX() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
 		double sy = this.getY();
 		double sz = this.getZ() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
 		another.moveTo(sx, sy, sz, this.getRandom().nextFloat() * 360.0F, 0.0F);
-		if (!another.checkSpawnRules(this.getLevel(), MobSpawnType.MOB_SUMMONED)) {
+		if (!another.checkSpawnRules(this.level(), MobSpawnType.MOB_SUMMONED)) {
 			another.discard();
 			return false;
 		}
-		this.getLevel().addFreshEntity(another);
+		this.level().addFreshEntity(another);
 		another.spawnAnim();
 
 		return true;
@@ -186,7 +185,7 @@ public class SwarmSpider extends Spider {
 		livingData = super.finalizeSpawn(accessor, difficulty, reason, livingData, dataTag);
 
 		if (this.getFirstPassenger() != null || accessor.getRandom().nextInt(20) <= difficulty.getDifficulty().getId()) {
-			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.getLevel());
+			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
 			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 			druid.setBaby(true);
 			ForgeEventFactory.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null, null);

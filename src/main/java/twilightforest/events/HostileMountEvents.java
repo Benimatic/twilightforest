@@ -1,6 +1,5 @@
 package twilightforest.events;
 
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,7 +33,7 @@ public class HostileMountEvents {
 		if (damageSource.is(DamageTypes.FALL) && living.getCapability(CapabilityList.YETI_THROWN).map(YetiThrowCapability::getThrown).orElse(false)) {
 			float amount = event.getAmount();
 			event.setCanceled(true);
-			living.hurt(TFDamageTypes.getEntityDamageSource(living.getLevel(), TFDamageTypes.YEETED, living.getCapability(CapabilityList.YETI_THROWN).resolve().get().getThrower()), amount);
+			living.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.YEETED, living.getCapability(CapabilityList.YETI_THROWN).resolve().get().getThrower()), amount);
 		}
 	}
 
@@ -48,7 +47,7 @@ public class HostileMountEvents {
 
 	@SubscribeEvent
 	public static void preventMountDismount(EntityMountEvent event) {
-		if (!event.getEntityBeingMounted().getLevel().isClientSide() &&
+		if (!event.getEntityBeingMounted().level().isClientSide() &&
 				!event.isMounting() && event.getEntityBeingMounted().isAlive() &&
 				event.getEntityMounting() instanceof Player player && player.isAlive() &&
 				isRidingUnfriendly(player) && !allowDismount && !player.getAbilities().invulnerable)

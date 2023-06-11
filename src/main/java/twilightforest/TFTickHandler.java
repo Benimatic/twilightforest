@@ -45,7 +45,7 @@ public class TFTickHandler {
 		Player eventPlayer = event.player;
 
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
-		if (!(player.level instanceof ServerLevel world)) return;
+		if (!(player.level() instanceof ServerLevel world)) return;
 
 		// check for portal creation, at least if it's not disabled
 		if (!TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {

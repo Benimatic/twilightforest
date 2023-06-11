@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -12,10 +11,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Triple;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +47,7 @@ public abstract class TransformationPowderProvider implements DataProvider {
 					.filter(s -> ForgeRegistries.ENTITY_TYPES.containsValue(transform.getMiddle()))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
-					.collect(Collectors.toList());
+					.toList();
 
 			if (!list.isEmpty()) {
 				throw new IllegalArgumentException(String.format("Duplicate Transformation Powder Transformations: %s", list.stream().map(Objects::toString).collect(Collectors.joining(", "))));

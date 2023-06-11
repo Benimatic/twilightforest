@@ -34,7 +34,8 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 			.add(Registries.LEVEL_STEM, TFDimensionSettings::bootstrapStem)
 			.add(Registries.BIOME, TFBiomes::bootstrap)
 			.add(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalettes::bootstrap)
-			.add(Registries.DAMAGE_TYPE, TFDamageTypes::bootstrap);
+			.add(Registries.DAMAGE_TYPE, TFDamageTypes::bootstrap)
+			.add(Registries.TRIM_MATERIAL, TFTrimMaterials::bootstrap);
 
 	// Use addProviders() instead
 	private RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {

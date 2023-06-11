@@ -8,7 +8,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -83,7 +82,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.HAUNT, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entity);
 	}
 
@@ -254,7 +253,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 				BlockPos pos = this.mob.getRestrictCenter()
 						.relative(Direction.getRandom(this.mob.getRandom()))
 						.offset(this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5));
-				if (pos == null || !this.mob.getLevel().isLoaded(pos)) {
+				if (pos == null || !this.mob.level().isLoaded(pos)) {
 					return false;
 				} else {
 					this.wantedX = pos.getX();

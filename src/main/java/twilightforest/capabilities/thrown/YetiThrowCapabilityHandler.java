@@ -1,7 +1,6 @@
 package twilightforest.capabilities.thrown;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
@@ -25,7 +24,7 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 	@Override
 	public void update() {
 		if (this.host instanceof Player player && this.getThrown()) {
-			if (player.isOnGround() || player.isSwimming() || player.isInWater()) {
+			if (player.onGround() || player.isSwimming() || player.isInWater()) {
 				this.setThrown(false, null);
 			}
 		} else {
@@ -64,7 +63,7 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 	}
 
 	private void sendUpdatePacket() {
-		if (!this.host.getLevel().isClientSide()) {
+		if (!this.host.level().isClientSide()) {
 			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new UpdateThrownPacket(this.host, this));
 		}
 	}

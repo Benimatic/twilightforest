@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nonnull;

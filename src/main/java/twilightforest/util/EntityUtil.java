@@ -10,7 +10,6 @@ import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -73,7 +72,7 @@ public class EntityUtil {
 		Vec3 position = entity.getEyePosition(1.0F);
 		Vec3 look = entity.getViewVector(1.0F);
 		Vec3 dest = position.add(look.x * range, look.y * range, look.z * range);
-		return entity.level.clip(new ClipContext(position, dest, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
+		return entity.level().clip(new ClipContext(position, dest, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
 	}
 
 	public static BlockHitResult rayTrace(Player player) {
@@ -124,9 +123,9 @@ public class EntityUtil {
 			for (double z = bounds.minZ; z < bounds.maxZ; z++) {
 				for (double y = bounds.minY; y < bounds.maxY; y++) {
 					BlockPos pos = BlockPos.containing(x, y, z);
-					BlockState state = entity.getLevel().getBlockState(pos);
+					BlockState state = entity.level().getBlockState(pos);
 					if (state.is(Blocks.LAVA)) {
-						entity.getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+						entity.level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					}
 				}
 			}
