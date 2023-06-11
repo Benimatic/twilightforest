@@ -43,7 +43,7 @@ public class TwilightBoat extends Boat {
 			case TWILIGHT_OAK -> TFItems.TWILIGHT_OAK_BOAT.get();
 			case CANOPY -> TFItems.CANOPY_BOAT.get();
 			case MANGROVE -> TFItems.MANGROVE_BOAT.get();
-			case DARKWOOD -> TFItems.DARKWOOD_BOAT.get();
+			case DARKWOOD -> TFItems.DARK_BOAT.get();
 			case TIME -> TFItems.TIME_BOAT.get();
 			case TRANSFORMATION -> TFItems.TRANSFORMATION_BOAT.get();
 			case MINING -> TFItems.MINING_BOAT.get();

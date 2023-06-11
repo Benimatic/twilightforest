@@ -268,7 +268,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locWood(name + "_stripped_wood"));
 	}
 
-	protected final void signBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+	protected final void signBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Block> material) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.get(), 3)
 				.pattern("###")
 				.pattern("###")
@@ -276,7 +276,18 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.define('#', material.get())
 				.define('-', Tags.Items.RODS_WOODEN)
 				.unlockedBy("has_item", has(material.get()))
-				.save(consumer, locWood(name + "_wood"));
+				.save(consumer, locWood(name + "_sign"));
+	}
+
+	protected final void hangingSignBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.get(), 3)
+				.pattern("| |")
+				.pattern("###")
+				.pattern("###")
+				.define('#', material.get())
+				.define('|', Items.CHAIN)
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_hanging_sign"));
 	}
 
 	protected final void banisterBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {

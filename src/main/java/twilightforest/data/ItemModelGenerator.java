@@ -615,7 +615,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.TWILIGHT_OAK_BOAT);
 		singleTex(TFItems.CANOPY_BOAT);
 		singleTex(TFItems.MANGROVE_BOAT);
-		singleTex(TFItems.DARKWOOD_BOAT);
+		singleTex(TFItems.DARK_BOAT);
 		singleTex(TFItems.TIME_BOAT);
 		singleTex(TFItems.TRANSFORMATION_BOAT);
 		singleTex(TFItems.MINING_BOAT);
@@ -624,7 +624,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.TWILIGHT_OAK_CHEST_BOAT);
 		singleTex(TFItems.CANOPY_CHEST_BOAT);
 		singleTex(TFItems.MANGROVE_CHEST_BOAT);
-		singleTex(TFItems.DARKWOOD_CHEST_BOAT);
+		singleTex(TFItems.DARK_CHEST_BOAT);
 		singleTex(TFItems.TIME_CHEST_BOAT);
 		singleTex(TFItems.TRANSFORMATION_CHEST_BOAT);
 		singleTex(TFItems.MINING_CHEST_BOAT);

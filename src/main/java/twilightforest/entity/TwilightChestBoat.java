@@ -112,7 +112,7 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 			case TWILIGHT_OAK -> TFItems.TWILIGHT_OAK_CHEST_BOAT.get();
 			case CANOPY -> TFItems.CANOPY_CHEST_BOAT.get();
 			case MANGROVE -> TFItems.MANGROVE_CHEST_BOAT.get();
-			case DARKWOOD -> TFItems.DARKWOOD_CHEST_BOAT.get();
+			case DARKWOOD -> TFItems.DARK_CHEST_BOAT.get();
 			case TIME -> TFItems.TIME_CHEST_BOAT.get();
 			case TRANSFORMATION -> TFItems.TRANSFORMATION_CHEST_BOAT.get();
 			case MINING -> TFItems.MINING_CHEST_BOAT.get();

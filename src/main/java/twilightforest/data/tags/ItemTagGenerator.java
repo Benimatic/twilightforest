@@ -162,14 +162,14 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		
 		tag(ItemTags.BOATS).add(
 				TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.CANOPY_BOAT.get(), 
-				TFItems.MANGROVE_BOAT.get(), TFItems.DARKWOOD_BOAT.get(), 
+				TFItems.MANGROVE_BOAT.get(), TFItems.DARK_BOAT.get(),
 				TFItems.TIME_BOAT.get(), TFItems.TRANSFORMATION_BOAT.get(), 
 				TFItems.MINING_BOAT.get(), TFItems.SORTING_BOAT.get()
 		);
 
 		tag(ItemTags.CHEST_BOATS).add(
 				TFItems.TWILIGHT_OAK_CHEST_BOAT.get(), TFItems.CANOPY_CHEST_BOAT.get(),
-				TFItems.MANGROVE_CHEST_BOAT.get(), TFItems.DARKWOOD_CHEST_BOAT.get(),
+				TFItems.MANGROVE_CHEST_BOAT.get(), TFItems.DARK_CHEST_BOAT.get(),
 				TFItems.TIME_CHEST_BOAT.get(), TFItems.TRANSFORMATION_CHEST_BOAT.get(),
 				TFItems.MINING_CHEST_BOAT.get(), TFItems.SORTING_CHEST_BOAT.get()
 		);
