@@ -199,9 +199,9 @@ public class TFMagicMapData extends MapItemSavedData {
 				RenderContext.stack.scale(4.0F, 4.0F, 3.0F);
 				RenderContext.stack.translate(-0.125D, 0.125D, 0.0D);
 				float f1 = featureId % 8.0F / 8.0F;
-				float f2 = featureId / 8.0F / 8.0F;
+				float f2 = featureId / 8 / 8.0F;
 				float f3 = (featureId % 8 + 1) / 8.0F;
-				float f4 = (featureId / 8.0F + 1) / 8.0F;
+				float f4 = (featureId / 8 + 1) / 8.0F;
 				Matrix4f matrix4f1 = RenderContext.stack.last().pose();
 				VertexConsumer ivertexbuilder1 = RenderContext.buffer.getBuffer(RenderContext.MAP_ICONS);
 				ivertexbuilder1.vertex(matrix4f1, -1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f2).uv2(RenderContext.light).endVertex();
