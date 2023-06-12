@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package twilightforest.compat.jei.jade;
+package twilightforest.compat.jade;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

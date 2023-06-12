@@ -1,4 +1,4 @@
-package twilightforest.compat.jei.jade;
+package twilightforest.compat.jade;
 
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
