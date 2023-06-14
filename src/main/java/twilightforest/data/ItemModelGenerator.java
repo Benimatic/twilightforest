@@ -371,20 +371,21 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.SORTING_DOOR.getId().getPath(), prefix("item/" + TFBlocks.SORTING_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.SORTING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
 
-		withExistingParent(TFBlocks.NAGA_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.LICH_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.MINOSHROOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.HYDRA_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.KNIGHT_PHANTOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.NAGA_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.LICH_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.MINOSHROOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.HYDRA_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.KNIGHT_PHANTOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
 		//ur-ghast and alpha yeti need special transforms
-		withExistingParent(TFBlocks.SNOW_QUEEN_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.QUEST_RAM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.SNOW_QUEEN_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), prefix("item/template_trophy"));
 
-		withExistingParent(TFBlocks.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFBlocks.PLAYER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFBlocks.SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFBlocks.WITHER_SKELE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFBlocks.ZOMBIE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.PIGLIN_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.PLAYER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.WITHER_SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.ZOMBIE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
 
 		hollowLog(TFItems.HOLLOW_OAK_LOG);
 		hollowLog(TFItems.HOLLOW_SPRUCE_LOG);

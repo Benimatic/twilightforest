@@ -246,30 +246,40 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		);
 
 		tag(HEAD).add(
-				TFBlocks.NAGA_TROPHY.get().asItem(),
-				TFBlocks.LICH_TROPHY.get().asItem(),
-				TFBlocks.MINOSHROOM_TROPHY.get().asItem(),
-				TFBlocks.HYDRA_TROPHY.get().asItem(),
-				TFBlocks.KNIGHT_PHANTOM_TROPHY.get().asItem(),
-				TFBlocks.UR_GHAST_TROPHY.get().asItem(),
-				TFBlocks.ALPHA_YETI_TROPHY.get().asItem(),
-				TFBlocks.SNOW_QUEEN_TROPHY.get().asItem(),
-				TFBlocks.QUEST_RAM_TROPHY.get().asItem(),
-				TFBlocks.CICADA.get().asItem(),
-				TFBlocks.FIREFLY.get().asItem(),
-				TFBlocks.MOONWORM.get().asItem(),
-				TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(),
-				TFBlocks.PLAYER_SKULL_CANDLE.get().asItem(),
-				TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(),
-				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
-				TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem());
+				TFItems.NAGA_TROPHY.get(),
+				TFItems.LICH_TROPHY.get(),
+				TFItems.MINOSHROOM_TROPHY.get(),
+				TFItems.HYDRA_TROPHY.get(),
+				TFItems.KNIGHT_PHANTOM_TROPHY.get(),
+				TFItems.UR_GHAST_TROPHY.get(),
+				TFItems.ALPHA_YETI_TROPHY.get(),
+				TFItems.SNOW_QUEEN_TROPHY.get(),
+				TFItems.QUEST_RAM_TROPHY.get(),
+				TFItems.CICADA.get(),
+				TFItems.FIREFLY.get(),
+				TFItems.MOONWORM.get(),
+				TFItems.CREEPER_SKULL_CANDLE.get(),
+				TFItems.PIGLIN_SKULL_CANDLE.get(),
+				TFItems.PLAYER_SKULL_CANDLE.get(),
+				TFItems.SKELETON_SKULL_CANDLE.get(),
+				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
+				TFItems.ZOMBIE_SKULL_CANDLE.get());
 
 		tag(Tags.Items.HEADS).add(
-				TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem(),
-				TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(),
-				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
-				TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(),
-				TFBlocks.PLAYER_SKULL_CANDLE.get().asItem());
+				TFItems.ZOMBIE_SKULL_CANDLE.get(),
+				TFItems.SKELETON_SKULL_CANDLE.get(),
+				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
+				TFItems.CREEPER_SKULL_CANDLE.get(),
+				TFItems.PLAYER_SKULL_CANDLE.get(),
+				TFItems.PIGLIN_SKULL_CANDLE.get());
+
+		tag(ItemTags.NOTE_BLOCK_TOP_INSTRUMENTS).add(
+				TFItems.ZOMBIE_SKULL_CANDLE.get(),
+				TFItems.SKELETON_SKULL_CANDLE.get(),
+				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
+				TFItems.CREEPER_SKULL_CANDLE.get(),
+				TFItems.PLAYER_SKULL_CANDLE.get(),
+				TFItems.PIGLIN_SKULL_CANDLE.get());
 
 		tag(Tags.Items.ARMORS_HELMETS).add(
 				TFItems.IRONWOOD_HELMET.get(),

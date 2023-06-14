@@ -428,6 +428,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.PLAYER_SKULL_CANDLE, "Player Skull Candle");
 		this.add("block.twilightforest.player_skull_candle.named", "%s's Head with Candles");
 		this.addBlock(TFBlocks.PLAYER_WALL_SKULL_CANDLE, "Player Wall Skull Candle");
+		this.addBlock(TFBlocks.PIGLIN_SKULL_CANDLE, "Piglin Skull Candle");
+		this.addBlock(TFBlocks.PIGLIN_WALL_SKULL_CANDLE, "Piglin Wall Skull Candle");
 
 		this.addBlock(TFBlocks.UNCRAFTING_TABLE, "Uncrafting Table");
 		this.add("container.twilightforest.uncrafting_table", "Uncrafting Table");

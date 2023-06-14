@@ -298,6 +298,7 @@ public class TFCreativeTabs {
 				makeSkullCandle(output, TFItems.WITHER_SKELETON_SKULL_CANDLE.get());
 				makeSkullCandle(output, TFItems.CREEPER_SKULL_CANDLE.get());
 				makeSkullCandle(output, TFItems.PLAYER_SKULL_CANDLE.get());
+				makeSkullCandle(output, TFItems.PIGLIN_SKULL_CANDLE.get());
 				output.accept(TFBlocks.DEATH_TOME_SPAWNER.get());
 				output.accept(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
 				output.accept(TFBlocks.KEEPSAKE_CASKET.get());

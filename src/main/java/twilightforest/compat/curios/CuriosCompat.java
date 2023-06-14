@@ -108,6 +108,7 @@ public class CuriosCompat {
 			CuriosRendererRegistry.register(TFItems.MOONWORM.get(), CurioHeadRenderer::new);
 
 			CuriosRendererRegistry.register(TFItems.CREEPER_SKULL_CANDLE.get(), CurioHeadRenderer::new);
+			CuriosRendererRegistry.register(TFItems.PIGLIN_SKULL_CANDLE.get(), CurioHeadRenderer::new);
 			CuriosRendererRegistry.register(TFItems.PLAYER_SKULL_CANDLE.get(), CurioHeadRenderer::new);
 			CuriosRendererRegistry.register(TFItems.SKELETON_SKULL_CANDLE.get(), CurioHeadRenderer::new);
 			CuriosRendererRegistry.register(TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), CurioHeadRenderer::new);

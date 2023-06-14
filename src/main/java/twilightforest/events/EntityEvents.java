@@ -216,6 +216,10 @@ public class EntityEvents {
 							if (wall) makeWallSkull(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
 							else makeFloorSkull(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
 						}
+						case PIGLIN -> {
+							if (wall) makeWallSkull(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.PIGLIN_SKULL_CANDLE.get());
+						}
 						default -> {
 							return;
 						}
