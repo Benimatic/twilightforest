@@ -22,7 +22,7 @@ import twilightforest.client.ISTER;
 
 import java.util.function.Consumer;
 
-public class TrophyItem extends StandingAndWallBlockItem {
+public class TrophyItem extends StandingAndWallBlockItem implements CurioItem {
 
 	public TrophyItem(Block floorBlock, Block wallBlock, Properties properties) {
 		super(floorBlock, wallBlock, properties, Direction.DOWN);
@@ -58,11 +58,8 @@ public class TrophyItem extends StandingAndWallBlockItem {
 
 	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
-		if (ModList.get().isLoaded("curios")) {
-			//return CuriosCompat.setupCuriosCapability(stack);
-		}
-		return super.initCapabilities(stack, tag);
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+		return this.setupCurio(stack, super.initCapabilities(stack, nbt));
 	}
 
 	@Override

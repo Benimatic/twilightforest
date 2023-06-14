@@ -164,10 +164,5 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.RED_THREAD, RedThreadModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
-
-		if (ModList.get().isLoaded("curios")) {
-			//event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
-			//event.registerLayerDefinition(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
-		}
 	}
 }

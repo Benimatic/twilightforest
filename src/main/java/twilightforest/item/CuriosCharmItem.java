@@ -7,7 +7,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.Nullable;
 
-public class CuriosCharmItem extends Item {
+public class CuriosCharmItem extends Item implements CurioItem {
 
 	public CuriosCharmItem(Properties props) {
 		super(props);
@@ -16,9 +16,6 @@ public class CuriosCharmItem extends Item {
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-		if (ModList.get().isLoaded("curios")) {
-			//return CuriosCompat.setupCuriosCapability(stack);
-		}
-		return super.initCapabilities(stack, nbt);
+		return this.setupCurio(stack, super.initCapabilities(stack, nbt));
 	}
 }

@@ -23,6 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.Bindings;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -40,6 +41,7 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
@@ -132,7 +134,9 @@ public class TwilightForestMod {
 		modbus.addListener(CapabilityList::registerCapabilities);
 
 		if (ModList.get().isLoaded("curios")) {
-			//Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+			modbus.addListener(CuriosCompat::registerCurioRenderers);
+			modbus.addListener(CuriosCompat::registerCurioLayers);
 		}
 
 		BiomeGrassColors.init();
@@ -164,9 +168,6 @@ public class TwilightForestMod {
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
-		if (ModList.get().isLoaded("curios")) {
-			//CuriosCompat.handleCuriosIMCs();
-		}
 		if (ModList.get().isLoaded("theoneprobe")) {
 			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}

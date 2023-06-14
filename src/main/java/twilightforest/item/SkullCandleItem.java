@@ -32,7 +32,7 @@ import twilightforest.init.TFBlocks;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SkullCandleItem extends StandingAndWallBlockItem {
+public class SkullCandleItem extends StandingAndWallBlockItem implements CurioItem {
 
 	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, Properties properties) {
 		super(floor, wall, properties, Direction.DOWN);
@@ -121,11 +121,8 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
-		if (ModList.get().isLoaded("curios")) {
-			//return CuriosCompat.setupCuriosCapability(stack);
-		}
-		return super.initCapabilities(stack, tag);
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+		return this.setupCurio(stack, super.initCapabilities(stack, nbt));
 	}
 
 	@Override

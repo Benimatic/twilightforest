@@ -22,7 +22,7 @@ import twilightforest.client.ISTER;
 
 import java.util.function.Consumer;
 
-public class WearableItem extends BlockItem {
+public class WearableItem extends BlockItem implements CurioItem {
 	public WearableItem(Block block, Properties props) {
 		super(block, props);
 	}
@@ -57,11 +57,8 @@ public class WearableItem extends BlockItem {
 
 	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
-		if (ModList.get().isLoaded("curios") && this.getBlock() instanceof CritterBlock) {
-			//return CuriosCompat.setupCuriosCapability(stack);
-		}
-		return super.initCapabilities(stack, tag);
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+		return this.setupCurio(stack, super.initCapabilities(stack, nbt));
 	}
 
 	@Override

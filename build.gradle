@@ -143,13 +143,13 @@ repositories {
 
 dependencies {
     // jared
-    implementation fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
 
     // theillusivec4
-    //implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.minecraft_sub_version}-${curios_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}+${project.minecraft_sub_version}")
 
     //curse maven
     implementation fg.deobf("curse.maven:jade-324717:4573193")

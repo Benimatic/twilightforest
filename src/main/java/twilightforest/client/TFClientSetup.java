@@ -108,10 +108,6 @@ public class TFClientSetup {
             Sheets.addWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
             Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
             Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
-
-			if (ModList.get().isLoaded("curios")) {
-				//CuriosCompat.registerCurioRenderers();
-			}
         });
        
     }
