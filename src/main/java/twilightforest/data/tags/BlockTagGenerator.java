@@ -278,6 +278,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		tag(BlockTags.PORTALS).add(TFBlocks.TWILIGHT_PORTAL.get());
 		tag(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(TFBlocks.CANOPY_BOOKSHELF.get());
 		tag(BlockTags.REPLACEABLE_BY_TREES).add(
+				TFBlocks.HARDENED_DARK_LEAVES.get(),
 				TFBlocks.MAYAPPLE.get(),
 				TFBlocks.FIDDLEHEAD.get(),
 				TFBlocks.MOSS_PATCH.get(),

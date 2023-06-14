@@ -51,10 +51,9 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
-		BlockPos validPos = BlockPos.ZERO;
 		for (int dy = pos.getY(); dy >= reader.getMinBuildHeight(); dy--) {
 			BlockState state = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ()));
-			if (state.is(BlockTags.DIRT) && reader.getBlockState(pos).canBeReplaced()) {
+			if (state.is(BlockTags.DIRT)) {
 				// yes!
 				foundDirt = true;
 				pos = new BlockPos(pos.getX(), dy, pos.getZ());
@@ -109,7 +108,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			set3.add(p_225290_.immutable());
 			reader.setBlock(p_225290_, p_225291_, 19);
 		};
-		boolean flag = this.doPlace(reader, rand, pos, validPos, biconsumer, biconsumer1, setter, treeconfiguration);
+		boolean flag = this.doPlace(reader, rand, pos, biconsumer, biconsumer1, setter, treeconfiguration);
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
 			if (!treeconfiguration.decorators.isEmpty()) {
 				TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(reader, biconsumer3, rand, set1, set2, set);
@@ -129,15 +128,12 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 	}
 
 	//Mostly [VanillaCopy] of TreeFeature.doPlace, edits noted
-	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BlockPos validPos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, FoliagePlacer.FoliageSetter foliageSetter, TreeConfiguration config) {
-		//set our blockpos to the valid dirt pos, not highest ground
-		pos = new BlockPos(pos.getX(), validPos.getY(), pos.getZ());
+	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, FoliagePlacer.FoliageSetter foliageSetter, TreeConfiguration config) {
 		int i = config.trunkPlacer.getTreeHeight(random);
 		int j = config.foliagePlacer.foliageHeight(random, i, config);
 		int k = i - j;
 		int l = config.foliagePlacer.foliageRadius(random, k);
-		BlockPos finalPos = pos;
-		BlockPos blockpos = config.rootPlacer.map((placer) -> placer.getTrunkOrigin(finalPos, random)).orElse(pos);
+		BlockPos blockpos = config.rootPlacer.map((placer) -> placer.getTrunkOrigin(pos, random)).orElse(pos);
 		int i1 = Math.min(pos.getY(), blockpos.getY());
 		int j1 = Math.max(pos.getY(), blockpos.getY()) + i + 1;
 		if (i1 >= level.getMinBuildHeight() + 1 && j1 <= level.getMaxBuildHeight()) {
