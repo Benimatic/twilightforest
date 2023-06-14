@@ -26,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,6 +41,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.model.block.doors.CastleDoorModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
@@ -305,6 +307,14 @@ public class TFClientEvents {
 					}
 				}
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void unrenderMiniStructureHitbox(RenderHighlightEvent.Block event) {
+		BlockState state = event.getCamera().getEntity().level().getBlockState(event.getTarget().getBlockPos());
+		if (state.getBlock() instanceof MiniatureStructureBlock) {
+			event.setCanceled(true);
 		}
 	}
 }

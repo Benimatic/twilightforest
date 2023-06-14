@@ -45,14 +45,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 	@Override
 	protected void generate() {
-		registerEmpty(TFBlocks.EXPERIMENT_115.get());
-		registerEmpty(TFBlocks.SLIDER.get());
-		registerEmpty(TFBlocks.INFESTED_TOWERWOOD.get());
 		dropSelf(TFBlocks.TOWERWOOD.get());
 		dropSelf(TFBlocks.ENCASED_TOWERWOOD.get());
 		dropSelf(TFBlocks.CRACKED_TOWERWOOD.get());
 		dropSelf(TFBlocks.MOSSY_TOWERWOOD.get());
-		registerEmpty(TFBlocks.ANTIBUILDER.get());
 		dropSelf(TFBlocks.CARMINITE_BUILDER.get());
 		dropSelf(TFBlocks.GHAST_TRAP.get());
 		dropSelf(TFBlocks.CARMINITE_REACTOR.get());
@@ -209,9 +205,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWISTED_STONE.get());
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR.get());
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.get());
-		registerEmpty(TFBlocks.DEATH_TOME_SPAWNER.get());
 		dropWhenSilkTouch(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
-		//registerDropSelfLootTable(TFBlocks.LAPIS_BLOCK.get());
 		add(TFBlocks.KEEPSAKE_CASKET.get(), casketInfo(TFBlocks.KEEPSAKE_CASKET.get()));
 		dropSelf(TFBlocks.CANDELABRA.get());
 		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());
@@ -601,10 +595,6 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 	protected static LootTable.Builder createShearsOnlyDrop(ItemLike p_124287_) {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).when(HAS_SHEARS).add(LootItem.lootTableItem(p_124287_)));
-	}
-
-	private void registerEmpty(Block b) {
-		add(b, LootTable.lootTable());
 	}
 
 	@Override
