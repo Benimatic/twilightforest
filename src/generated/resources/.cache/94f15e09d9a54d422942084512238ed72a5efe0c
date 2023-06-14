@@ -1,4 +1,4 @@
-// 1.20	2023-06-10T18:09:27.3490804	TwilightForest Item and BlockItem models
+// 1.20.1	2023-06-14T11:23:56.6009055	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -395,6 +395,7 @@ c825e1c3550c80ba6c507e2c09827c83201c8508 assets/twilightforest/models/item/oak_b
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/penguin_spawn_egg.json
 205ad65aa0e9e1d6006f3016e6d6c2cd9c66a186 assets/twilightforest/models/item/phantom_chestplate.json
 70a88a074822326142e4e0faeaa8a06f6e127278 assets/twilightforest/models/item/phantom_helmet.json
+bf81b7da7483a7cb79e848de49ff41d1c6c832f9 assets/twilightforest/models/item/piglin_skull_candle.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/pinch_beetle_spawn_egg.json
 9de285e500a8850308690ee3d059c70163298ac4 assets/twilightforest/models/item/pink_castle_door.json
 b27493eda49748814ba36a9543ccdcd33d7b44e2 assets/twilightforest/models/item/pink_castle_rune_brick.json

@@ -202,6 +202,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.MOSSY_TOWERWOOD, "Mossy Towerwood Planks");
 		this.addBlock(TFBlocks.INFESTED_TOWERWOOD, "Infested Towerwood Planks");
 		this.addBlock(TFBlocks.ENCASED_TOWERWOOD, "Encased Towerwood Planks");
+		this.addBlock(TFBlocks.UNBREAKABLE_VANISHING_BLOCK, "Vanishing Block");
 		this.addBlock(TFBlocks.VANISHING_BLOCK, "Vanishing Block");
 		this.addBlock(TFBlocks.REAPPEARING_BLOCK, "Reappearing Block");
 		this.addBlock(TFBlocks.LOCKED_VANISHING_BLOCK, "Locked Vanishing Block");

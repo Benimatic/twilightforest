@@ -1310,18 +1310,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			return ConfiguredModel.builder().modelFile(model).build();
 		});
 
-		ModelFile vanish = this.make3LayerCubeAllSidesSame(TFBlocks.VANISHING_BLOCK.getId().getPath(), CUTOUT, 0, 15, 10)
+		ModelFile vanish = this.make3LayerCubeAllSidesSame("vanishing_block", CUTOUT, 0, 15, 10)
 				.texture("all", prefix("block/towerdev_vanish_off"))
 				.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_off_1"))
 				.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_off_2"));
-		ModelFile vanishActive = this.make3LayerCubeAllSidesSame(TFBlocks.VANISHING_BLOCK.getId().getPath() + "_active", CUTOUT, 0, 15, 10)
+		ModelFile vanishActive = this.make3LayerCubeAllSidesSame("vanishing_block_active", CUTOUT, 0, 15, 10)
 				.texture("all", prefix("block/towerdev_vanish_on"))
 				.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_on_1"))
 				.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_on_2"));
-		getVariantBuilder(TFBlocks.VANISHING_BLOCK.get()).partialState()
-				.with(VanishingBlock.ACTIVE, false).setModels(new ConfiguredModel(vanish));
-		getVariantBuilder(TFBlocks.VANISHING_BLOCK.get()).partialState()
-				.with(VanishingBlock.ACTIVE, true).setModels(new ConfiguredModel(vanishActive));
+		getVariantBuilder(TFBlocks.UNBREAKABLE_VANISHING_BLOCK.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(VanishingBlock.ACTIVE) ? vanishActive : vanish).build());
+		getVariantBuilder(TFBlocks.VANISHING_BLOCK.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(VanishingBlock.ACTIVE) ? vanishActive : vanish).build());
 
 		ModelFile vanishLocked = this.make3LayerCubeAllSidesSame(TFBlocks.LOCKED_VANISHING_BLOCK.getId().getPath(), CUTOUT, 0, 15, 10)
 				.texture("all", prefix("block/towerdev_lock_on"))
