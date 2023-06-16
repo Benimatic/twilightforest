@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_log"
-            ]
+            "tag": "twilightforest:darkwood_logs"
           }
         ]
       },

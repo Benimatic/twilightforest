@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "twilightforest:dark_log"
+      "tag": "twilightforest:darkwood_logs"
     }
   ],
   "result": {

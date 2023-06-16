@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_log"
-            ]
+            "tag": "twilightforest:mangrove_logs"
           }
         ]
       },

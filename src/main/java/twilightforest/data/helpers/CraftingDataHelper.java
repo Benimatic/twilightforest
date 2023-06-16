@@ -210,10 +210,10 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locWood(name + "_gate"));
 	}
 
-	protected final void planksBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+	protected final void planksBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, TagKey<Item> material) {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result.get(), 4)
-				.requires(material.get())
-				.unlockedBy("has_item", has(material.get()))
+				.requires(material)
+				.unlockedBy("has_item", has(material))
 				.save(consumer, locWood(name + "_planks"));
 	}
 

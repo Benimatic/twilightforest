@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_log"
-            ]
+            "tag": "twilightforest:timewood_logs"
           }
         ]
       },

@@ -13,6 +13,7 @@ import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.helpers.CraftingDataHelper;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -484,41 +485,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 		gateBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_GATE, TFBlocks.TRANSFORMATION_PLANKS);
 		gateBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_GATE, TFBlocks.TWILIGHT_OAK_PLANKS);
 
-		planksBlock(consumer, "canopy", TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_LOG);
-		planksBlock(consumer, "dark", TFBlocks.DARK_PLANKS, TFBlocks.DARK_LOG);
-		planksBlock(consumer, "mangrove", TFBlocks.MANGROVE_PLANKS, TFBlocks.MANGROVE_LOG);
-		planksBlock(consumer, "mining", TFBlocks.MINING_PLANKS, TFBlocks.MINING_LOG);
-		planksBlock(consumer, "sorting", TFBlocks.SORTING_PLANKS, TFBlocks.SORTING_LOG);
-		planksBlock(consumer, "time", TFBlocks.TIME_PLANKS, TFBlocks.TIME_LOG);
-		planksBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.TRANSFORMATION_LOG);
-		planksBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_LOG);
-
-		planksBlock(consumer, "stripped_log_to_canopy", TFBlocks.CANOPY_PLANKS, TFBlocks.STRIPPED_CANOPY_LOG);
-		planksBlock(consumer, "stripped_log_to_dark", TFBlocks.DARK_PLANKS, TFBlocks.STRIPPED_DARK_LOG);
-		planksBlock(consumer, "stripped_log_to_mangrove", TFBlocks.MANGROVE_PLANKS, TFBlocks.STRIPPED_MANGROVE_LOG);
-		planksBlock(consumer, "stripped_log_to_mining", TFBlocks.MINING_PLANKS, TFBlocks.STRIPPED_MINING_LOG);
-		planksBlock(consumer, "stripped_log_to_sorting", TFBlocks.SORTING_PLANKS, TFBlocks.STRIPPED_SORTING_LOG);
-		planksBlock(consumer, "stripped_log_to_time", TFBlocks.TIME_PLANKS, TFBlocks.STRIPPED_TIME_LOG);
-		planksBlock(consumer, "stripped_log_to_transformation", TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.STRIPPED_TRANSFORMATION_LOG);
-		planksBlock(consumer, "stripped_log_to_twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG);
-
-		planksBlock(consumer, "wood_to_canopy", TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_WOOD);
-		planksBlock(consumer, "wood_to_dark", TFBlocks.DARK_PLANKS, TFBlocks.DARK_WOOD);
-		planksBlock(consumer, "wood_to_mangrove", TFBlocks.MANGROVE_PLANKS, TFBlocks.MANGROVE_WOOD);
-		planksBlock(consumer, "wood_to_mining", TFBlocks.MINING_PLANKS, TFBlocks.MINING_WOOD);
-		planksBlock(consumer, "wood_to_sorting", TFBlocks.SORTING_PLANKS, TFBlocks.SORTING_WOOD);
-		planksBlock(consumer, "wood_to_time", TFBlocks.TIME_PLANKS, TFBlocks.TIME_WOOD);
-		planksBlock(consumer, "wood_to_transformation", TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.TRANSFORMATION_WOOD);
-		planksBlock(consumer, "wood_to_twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_WOOD);
-
-		planksBlock(consumer, "stripped_wood_to_canopy", TFBlocks.CANOPY_PLANKS, TFBlocks.STRIPPED_CANOPY_WOOD);
-		planksBlock(consumer, "stripped_wood_to_dark", TFBlocks.DARK_PLANKS, TFBlocks.STRIPPED_DARK_WOOD);
-		planksBlock(consumer, "stripped_wood_to_mangrove", TFBlocks.MANGROVE_PLANKS, TFBlocks.STRIPPED_MANGROVE_WOOD);
-		planksBlock(consumer, "stripped_wood_to_mining", TFBlocks.MINING_PLANKS, TFBlocks.STRIPPED_MINING_WOOD);
-		planksBlock(consumer, "stripped_wood_to_sorting", TFBlocks.SORTING_PLANKS, TFBlocks.STRIPPED_SORTING_WOOD);
-		planksBlock(consumer, "stripped_wood_to_time", TFBlocks.TIME_PLANKS, TFBlocks.STRIPPED_TIME_WOOD);
-		planksBlock(consumer, "stripped_wood_to_transformation", TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.STRIPPED_TRANSFORMATION_WOOD);
-		planksBlock(consumer, "stripped_wood_to_twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD);
+		planksBlock(consumer, "canopy", TFBlocks.CANOPY_PLANKS, ItemTagGenerator.CANOPY_LOGS);
+		planksBlock(consumer, "dark", TFBlocks.DARK_PLANKS, ItemTagGenerator.DARKWOOD_LOGS);
+		planksBlock(consumer, "mangrove", TFBlocks.MANGROVE_PLANKS, ItemTagGenerator.MANGROVE_LOGS);
+		planksBlock(consumer, "mining", TFBlocks.MINING_PLANKS, ItemTagGenerator.MINING_LOGS);
+		planksBlock(consumer, "sorting", TFBlocks.SORTING_PLANKS, ItemTagGenerator.SORTING_LOGS);
+		planksBlock(consumer, "time", TFBlocks.TIME_PLANKS, ItemTagGenerator.TIME_LOGS);
+		planksBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_PLANKS, ItemTagGenerator.TRANSFORMATION_LOGS);
+		planksBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS, ItemTagGenerator.TWILIGHT_OAK_LOGS);
 
 		woodBlock(consumer, "canopy", TFBlocks.CANOPY_WOOD, TFBlocks.CANOPY_LOG);
 		woodBlock(consumer, "dark", TFBlocks.DARK_WOOD, TFBlocks.DARK_LOG);
