@@ -100,7 +100,7 @@ steps:
             },
             [Ordered]@{
                 name = "Commit"
-                value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 6))]($($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION))"
+                value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 7))]($($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION))"
             }
         )
     }
