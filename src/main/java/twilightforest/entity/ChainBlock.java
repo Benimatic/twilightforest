@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -323,6 +324,20 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		if (thrower != null && thrower.getUseItem().is(TFItems.BLOCK_AND_CHAIN.get())) {
 			thrower.stopUsingItem();
 		}
+	}
+
+	@Override
+	protected void readAdditionalSaveData(CompoundTag pCompound) {
+		super.readAdditionalSaveData(pCompound);
+		if (pCompound.contains("BlockAndChainStack", 10)) {
+			this.stack = ItemStack.of(pCompound.getCompound("BlockAndChainStack"));
+		}
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag pCompound) {
+		super.addAdditionalSaveData(pCompound);
+		pCompound.put("BlockAndChainStack", this.stack.save(new CompoundTag()));
 	}
 
 	@Override
