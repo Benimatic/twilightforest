@@ -8,6 +8,7 @@ import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -51,8 +52,14 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new LootGenerator(output));
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
-		RegistryDataGenerator.addProviders(event.includeServer(), generator, output, provider, helper);
-		generator.addProvider(event.includeServer(), new StructureTagGenerator(output, provider, helper));
+
+		DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(output, provider);
+		CompletableFuture<HolderLookup.Provider> lookupProvider = datapackProvider.getRegistryProvider();
+		generator.addProvider(event.includeServer(), datapackProvider);
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.WoodPaletteTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new BiomeTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new StructureTagGenerator(output, lookupProvider, helper));
 
 		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
