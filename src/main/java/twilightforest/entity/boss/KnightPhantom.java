@@ -70,6 +70,8 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	private Formation currentFormation;
 	private BlockPos chargePos = BlockPos.ZERO;
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
+	private final EntityDimensions invisibleSize = EntityDimensions.fixed(1.25F, 2.5F);
+	private final EntityDimensions visibleSize = EntityDimensions.fixed(1.75F, 4.0F);
 
 	public KnightPhantom(EntityType<? extends KnightPhantom> type, Level world) {
 		super(type, world);
@@ -118,7 +120,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(FLAG_CHARGING, false);
+		this.getEntityData().define(FLAG_CHARGING, false);
 	}
 
 	@Override
@@ -317,10 +319,10 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 				continue;
 			nums.add(knight.getNumber());
 			if (knight.getNumber() == 0)
-				restrictTo(knight.getRestrictCenter(), 20);
+				this.restrictTo(knight.getRestrictCenter(), 20);
 		}
 		if (nums.isEmpty()) {
-			setNumber(0);
+			this.setNumber(0);
 			return;
 		}
 		int[] n = Ints.toArray(nums);
@@ -338,19 +340,18 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 				}
 			}
 		}
-		if (totalKnownKnights < largest)
-			totalKnownKnights = largest;
+		if (this.totalKnownKnights < largest)
+			this.totalKnownKnights = largest;
 		if (this.number > smallestUnused || nums.contains(this.number))
-			setNumber(smallestUnused);
+			this.setNumber(smallestUnused);
 	}
 
 	public boolean isChargingAtPlayer() {
-		return this.entityData.get(FLAG_CHARGING);
+		return this.getEntityData().get(FLAG_CHARGING);
 	}
 
 	private void setChargingAtPlayer(boolean flag) {
-		this.entityData.set(FLAG_CHARGING, flag);
-		this.gameEvent(GameEvent.ENTITY_INTERACT);
+		this.getEntityData().set(FLAG_CHARGING, flag);
 		if (!this.level().isClientSide()) {
 			if (flag) {
 				if (!this.getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
@@ -366,6 +367,19 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+		if (FLAG_CHARGING.equals(accessor)) {
+			this.refreshDimensions();
+		}
+		super.onSyncedDataUpdated(accessor);
+	}
+
+	@Override
+	public EntityDimensions getDimensions(Pose pose) {
+		return this.isChargingAtPlayer() ? this.visibleSize : this.invisibleSize;
 	}
 
 	@Override
@@ -431,7 +445,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public void setNumber(int number) {
 		this.number = number;
 		if (number == 0)
-			level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(64D)).forEach(this::startSeenByPlayer);
+			this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(64D)).forEach(this::startSeenByPlayer);
 
 		// set weapon per number
 		switch (number % 3) {
