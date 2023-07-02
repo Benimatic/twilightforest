@@ -280,7 +280,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void hangingSignBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.get(), 3)
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.get(), 6)
 				.pattern("| |")
 				.pattern("###")
 				.pattern("###")
