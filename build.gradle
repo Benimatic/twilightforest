@@ -143,7 +143,7 @@ repositories {
 
 dependencies {
     // jared
-    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${project.jei_version}")
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
@@ -153,12 +153,12 @@ dependencies {
 
     //curse maven
     implementation fg.deobf("curse.maven:jade-324717:4573193")
-    //runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3944903")
+    runtimeOnly fg.deobf("curse.maven:jeed-532286:4599236")
 
-    //compileOnly fg.deobf("curse.maven:the-one-probe-245211:4442439")
+    compileOnly fg.deobf("curse.maven:the-one-probe-245211:4613250")
 
     //mods we dont have compat with but are nice to have
-    //runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_sub_version}-1.0")
+    runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_version}-1.0")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
 }

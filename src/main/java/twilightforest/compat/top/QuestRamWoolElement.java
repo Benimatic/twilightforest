@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mcjty.theoneprobe.api.IElement;
 import mcjty.theoneprobe.api.IElementFactory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -35,10 +36,10 @@ public class QuestRamWoolElement implements IElement {
     }
 
     @Override
-    public void render(PoseStack poseStack, int x, int y) {
-        poseStack.pushPose();
+    public void render(GuiGraphics graphics, int x, int y) {
+        PoseStack stack = graphics.pose();
+        stack.pushPose();
         RenderSystem.enableDepthTest();
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         PoseStack modelStack = RenderSystem.getModelViewStack();
         modelStack.translate(3, 10, 0);
         modelStack.scale(0.6f, 0.6f, 0.6f);
@@ -56,13 +57,13 @@ public class QuestRamWoolElement implements IElement {
                     colum++;
                 }
 
-                itemRenderer.renderGuiItem(poseStack, new ItemStack(entry.getValue()), x + (colum * 15), y + (row * 15));
+                graphics.renderItem(new ItemStack(entry.getValue()), x + (colum * 15), y + (row * 15));
 
                 getRenderedWools++;
             }
         }
         RenderSystem.disableDepthTest();
-        poseStack.popPose();
+        stack.popPose();
     }
 
     @Override
