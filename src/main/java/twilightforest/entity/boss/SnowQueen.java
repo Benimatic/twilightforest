@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -54,12 +55,15 @@ import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomePoint {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Byte> PHASE_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
@@ -122,6 +126,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 		super.defineSynchedData();
 		this.getEntityData().define(BEAM_FLAG, false);
 		this.getEntityData().define(PHASE_FLAG, (byte) 0);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -246,8 +251,8 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.getRestrictCenter() != BlockPos.ZERO) {
-				this.level().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get().defaultBlockState());
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -381,20 +386,20 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public boolean isBreathing() {
-		return this.entityData.get(BEAM_FLAG);
+		return this.getEntityData().get(BEAM_FLAG);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-		this.entityData.set(BEAM_FLAG, flag);
+		this.getEntityData().set(BEAM_FLAG, flag);
 	}
 
 	public Phase getCurrentPhase() {
-		return Phase.values()[this.entityData.get(PHASE_FLAG)];
+		return Phase.values()[this.getEntityData().get(PHASE_FLAG)];
 	}
 
 	public void setCurrentPhase(Phase currentPhase) {
-		this.entityData.set(PHASE_FLAG, (byte) currentPhase.ordinal());
+		this.getEntityData().set(PHASE_FLAG, (byte) currentPhase.ordinal());
 
 		// set variables for current phase
 		if (currentPhase == Phase.SUMMON) {
@@ -427,8 +432,8 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 			double attemptX;
 			double attemptY;
 			double attemptZ;
-			if (getRestrictCenter() != BlockPos.ZERO) {
-				BlockPos home = getRestrictCenter();
+			if (this.isRestrictionPointValid(this.level().dimension())) {
+				BlockPos home = this.getRestrictionPoint().pos();
 				attemptX = home.getX() + this.getRandom().nextGaussian() * 3.0D;
 				attemptY = home.getY() + this.getRandom().nextGaussian() * 2.0D;
 				attemptZ = home.getZ() + this.getRandom().nextGaussian() * 3.0D;
@@ -490,7 +495,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound, 20);
+		this.loadHomePointFromNbt(compound);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -537,12 +542,17 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 }

@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -65,6 +66,7 @@ import twilightforest.util.WorldUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer {
 
@@ -72,6 +74,8 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	private static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> MINIONS_LEFT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
 	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
 	public static final int MAX_SHADOW_CLONES = 2;
@@ -114,10 +118,11 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(IS_CLONE, false);
-		this.entityData.define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
-		this.entityData.define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
-		this.entityData.define(ATTACK_TYPE, 0);
+		this.getEntityData().define(IS_CLONE, false);
+		this.getEntityData().define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
+		this.getEntityData().define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
+		this.getEntityData().define(ATTACK_TYPE, 0);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -167,7 +172,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.readDeathItemsSaveData(compound);
-		this.loadHomePointFromNbt(compound, 20);
+		this.loadHomePointFromNbt(compound);
 		this.setShadowClone(compound.getBoolean("ShadowClone"));
 		this.setShieldStrength(compound.getInt("ShieldStrength"));
 		this.setMinionsToSummon(compound.getInt("MinionsToSummon"));
@@ -476,8 +481,8 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL && !this.isShadowClone()) {
-			if (this.hasRestriction()) {
-				this.level().setBlockAndUpdate(getRestrictCenter(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -727,36 +732,36 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	public boolean isShadowClone() {
-		return this.entityData.get(IS_CLONE);
+		return this.getEntityData().get(IS_CLONE);
 	}
 
 	public void setShadowClone(boolean shadowClone) {
 		this.bossInfo.setVisible(!shadowClone);
-		this.entityData.set(IS_CLONE, shadowClone);
+		this.getEntityData().set(IS_CLONE, shadowClone);
 	}
 
 	public int getShieldStrength() {
-		return this.entityData.get(SHIELD_STRENGTH);
+		return this.getEntityData().get(SHIELD_STRENGTH);
 	}
 
 	public void setShieldStrength(int shieldStrength) {
-		this.entityData.set(SHIELD_STRENGTH, shieldStrength);
+		this.getEntityData().set(SHIELD_STRENGTH, shieldStrength);
 	}
 
 	public int getMinionsToSummon() {
-		return this.entityData.get(MINIONS_LEFT);
+		return this.getEntityData().get(MINIONS_LEFT);
 	}
 
 	public void setMinionsToSummon(int minionsToSummon) {
-		this.entityData.set(MINIONS_LEFT, minionsToSummon);
+		this.getEntityData().set(MINIONS_LEFT, minionsToSummon);
 	}
 
 	public int getNextAttackType() {
-		return this.entityData.get(ATTACK_TYPE);
+		return this.getEntityData().get(ATTACK_TYPE);
 	}
 
 	public void setNextAttackType(int attackType) {
-		this.entityData.set(ATTACK_TYPE, attackType);
+		this.getEntityData().set(ATTACK_TYPE, attackType);
 	}
 
 
@@ -832,17 +837,22 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
-	}
-
-	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
-	}
-
-	@Override
 	public NonNullList<ItemStack> getItemStacks() {
 		return this.dyingInventory;
+	}
+
+	@Override
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
+	}
+
+	@Override
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 }

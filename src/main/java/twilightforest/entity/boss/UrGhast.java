@@ -91,7 +91,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_TANTRUM, false);
+		this.getEntityData().define(DATA_TANTRUM, false);
 	}
 
 	public List<BlockPos> getTrapLocations() {
@@ -114,8 +114,8 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.getRestrictCenter() != BlockPos.ZERO) {
-				this.level().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -341,7 +341,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 	//If we have a home position, use that for scanning, otherwise use our current position
 	public BlockPos getLogicalScanPoint() {
-		return this.getRestrictionCenter() == BlockPos.ZERO ? this.blockPosition() : this.getRestrictionCenter();
+		return !this.isRestrictionPointValid(this.level().dimension()) ? this.blockPosition() : this.getRestrictionPoint().pos();
 	}
 
 	private List<BlockPos> scanForTraps(ServerLevel level) {
@@ -349,7 +349,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		Stream<PoiRecord> stream = poimanager.getInRange(type ->
 				type.is(TFPOITypes.GHAST_TRAP.getKey()),
 				this.getLogicalScanPoint(),
-				(int)(this.getRestrictRadius() == -1 ? 32 : this.getRestrictRadius()),
+				this.getHomeRadius(),
 				PoiManager.Occupancy.ANY);
 		return stream.map(PoiRecord::getPos)
 				.filter(trapPos -> level.canSeeSky(trapPos.above()))
@@ -442,11 +442,11 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	}
 
 	public boolean isInTantrum() {
-		return this.entityData.get(DATA_TANTRUM);
+		return this.getEntityData().get(DATA_TANTRUM);
 	}
 
 	public void setInTantrum(boolean inTantrum) {
-		this.entityData.set(DATA_TANTRUM, inTantrum);
+		this.getEntityData().set(DATA_TANTRUM, inTantrum);
 		this.resetDamageUntilNextPhase();
 	}
 

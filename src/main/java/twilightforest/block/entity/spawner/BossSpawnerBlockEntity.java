@@ -1,6 +1,7 @@
 package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
@@ -13,8 +14,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.entity.EnforcedHomePoint;
 
-public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity {
+import java.util.Objects;
+
+public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> extends BlockEntity {
 
 	protected static final int SHORT_RANGE = 9, LONG_RANGE = 50;
 
@@ -27,7 +31,7 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 	}
 
 	public boolean anyPlayerInRange() {
-		return this.getLevel().hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange());
+		return Objects.requireNonNull(this.getLevel()).hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange());
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, BossSpawnerBlockEntity<?> te) {
@@ -52,13 +56,14 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 
 	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
 		// create creature
-		T myCreature = makeMyCreature();
+		T myCreature = this.makeMyCreature();
 
-		myCreature.moveTo(this.getBlockPos().below(), accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-		ForgeEventFactory.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
+		BlockPos spawnPos = accessor.getBlockState(this.getBlockPos().below()).getCollisionShape(accessor, this.getBlockPos().below()).isEmpty() ? this.getBlockPos().below() : this.getBlockPos();
+		myCreature.moveTo(spawnPos, accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
+		ForgeEventFactory.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null, null);
 
 		// set creature's home to this
-		initializeCreature(myCreature);
+		this.initializeCreature(myCreature);
 
 		// spawn it
 		return accessor.addFreshEntity(myCreature);
@@ -67,7 +72,7 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 	public abstract ParticleOptions getSpawnerParticle();
 
 	protected void initializeCreature(T myCreature) {
-		myCreature.restrictTo(this.getBlockPos(), 40);
+		myCreature.setRestrictionPoint(GlobalPos.of(myCreature.level().dimension(), this.getBlockPos()));
 	}
 
 	protected int getRange() {
@@ -75,6 +80,6 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 	}
 
 	protected T makeMyCreature() {
-		return entityType.create(this.getLevel());
+		return Objects.requireNonNull(this.entityType.create(Objects.requireNonNull(this.getLevel())));
 	}
 }

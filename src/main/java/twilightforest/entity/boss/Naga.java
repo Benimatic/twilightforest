@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -52,6 +53,7 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
+import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
 import twilightforest.entity.ai.goal.NagaMovementPattern;
 import twilightforest.entity.ai.goal.NagaSmashGoal;
 import twilightforest.entity.ai.goal.SimplifiedAttackGoal;
@@ -68,14 +70,14 @@ import twilightforest.util.LandmarkUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer {
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
-	private static final int LEASH_X = 46;
-	private static final int LEASH_Y = 7;
-	private static final int LEASH_Z = 46;
+	private static final int XZ_HOME_BOUNDS = 46;
+	private static final int Y_HOME_BOUNDS = 7;
 	private static final double DEFAULT_SPEED = 0.3;
 
 	private int currentSegmentCount = 0; // not including head
@@ -93,6 +95,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	private static final EntityDataAccessor<Boolean> DATA_DAZE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> DATA_CHARGE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	public Naga(EntityType<? extends Naga> type, Level level) {
 		super(type, level);
@@ -110,24 +113,25 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_DAZE, false);
-		this.entityData.define(DATA_CHARGE, false);
+		this.getEntityData().define(DATA_DAZE, false);
+		this.getEntityData().define(DATA_CHARGE, false);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	public boolean isDazed() {
-		return this.entityData.get(DATA_DAZE);
+		return this.getEntityData().get(DATA_DAZE);
 	}
 
 	public void setDazed(boolean daze) {
-		this.entityData.set(DATA_DAZE, daze);
+		this.getEntityData().set(DATA_DAZE, daze);
 	}
 
 	public boolean isCharging() {
-		return this.entityData.get(DATA_CHARGE);
+		return this.getEntityData().get(DATA_CHARGE);
 	}
 
 	public void setCharging(boolean charge) {
-		this.entityData.set(DATA_CHARGE, charge);
+		this.getEntityData().set(DATA_CHARGE, charge);
 	}
 
 	public NagaMovementPattern getMovementAI() {
@@ -140,7 +144,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		this.goalSelector.addGoal(2, new SimplifiedAttackGoal(this));
 		this.goalSelector.addGoal(3, new NagaSmashGoal(this));
 		this.goalSelector.addGoal(4, this.movementAI = new NagaMovementPattern(this));
-		this.goalSelector.addGoal(5, new MoveTowardsRestrictionGoal(this, 1.0D) {
+		this.goalSelector.addGoal(5, new AttemptToGoHomeGoal<>(this, 1.0D) {
 			@Override
 			public void start() {
 				Naga.this.setTarget(null);
@@ -148,6 +152,12 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			}
 		});
 		this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1, 1) {
+
+			@Override
+			public boolean canUse() {
+				return Naga.this.isMobWithinHomeArea(Naga.this) && Naga.this.getTarget() == null && super.canUse();
+			}
+
 			@Override
 			public void start() {
 				Naga.this.goNormal();
@@ -163,7 +173,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false) {
 			@Override
 			public boolean canUse() {
-				return Naga.this.isWithinRestriction(Naga.this.blockPosition()) && super.canUse();
+				return super.canUse() && Naga.this.areSelfAndTargetInHome(Naga.this.getTarget());
 			}
 		});
 
@@ -197,10 +207,19 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 				}
 			}
 		}
+
+		//if we get stuck in a cave get us out
+		if (this.tickCount % 20 == 0 && this.getRestrictionPoint() != null && this.getY() < this.getRestrictionPoint().pos().getY() - 5) {
+			BlockPos pos = BlockPos.containing(this.getX(), this.getRestrictionPoint().pos().getY(), this.getZ());
+			if (!this.level().getBlockState(pos.below()).getCollisionShape(this.level(), pos.below(2)).isEmpty() || this.isMobWithinHomeArea(this)) {
+				this.teleportTo(this.getX(), this.getRestrictionPoint().pos().getY(), this.getZ());
+				this.getNavigation().stop();
+			}
+		}
 	}
 
 	public boolean shouldDestroyAllBlocks() {
-		return this.isCharging() || !this.isWithinRestriction();
+		return this.isCharging() || !this.isMobWithinHomeArea(this);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -286,7 +305,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	protected void customServerAiStep() {
 		super.customServerAiStep();
 
-		if (this.getTarget() != null && (this.distanceToSqr(getTarget()) > 80 * 80 || !this.areSelfAndTargetInHome(this.getTarget()))) {
+		if (this.getTarget() != null && (this.distanceToSqr(this.getTarget()) > 80 * 80 || !this.areSelfAndTargetInHome(this.getTarget()))) {
 			this.setTarget(null);
 		}
 
@@ -361,8 +380,8 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
-		return src.getEntity() != null && !this.isEntityWithinHomeArea(src.getEntity()) // reject damage from outside of our home radius
-				|| src.getDirectEntity() != null && !this.isEntityWithinHomeArea(src.getDirectEntity())
+		return src.getEntity() != null && !this.isOtherEntityWithinHomeArea(src.getEntity()) // reject damage from outside of our home radius
+				|| src.getDirectEntity() != null && !this.isOtherEntityWithinHomeArea(src.getDirectEntity())
 				|| src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(src);
 	}
 
@@ -410,7 +429,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public float getWalkTargetValue(BlockPos pos) {
-		if (!this.isWithinRestriction(pos)) {
+		if (!this.isMobWithinHomeArea(this)) {
 			return Float.MIN_VALUE;
 		} else {
 			return 0.0F;
@@ -420,8 +439,8 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.getRestrictCenter() != BlockPos.ZERO) {
-				this.level().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState());
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -445,24 +464,24 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	@Override
-	public boolean isWithinRestriction(BlockPos pos) {
-		if (this.getRestrictRadius() == -1) {
+	public boolean isMobWithinHomeArea(Entity entity) {
+		if (!this.isRestrictionPointValid(this.level().dimension())) {
 			return true;
 		} else {
-			int distX = Math.abs(this.getRestrictCenter().getX() - pos.getX());
-			int distY = Math.abs(this.getRestrictCenter().getY() - pos.getY());
-			int distZ = Math.abs(this.getRestrictCenter().getZ() - pos.getZ());
+			double distX = Math.abs(this.getRestrictionPoint().pos().getX() - entity.blockPosition().getX());
+			double distY = Math.abs(this.getRestrictionPoint().pos().getY() - entity.blockPosition().getY());
+			double distZ = Math.abs(this.getRestrictionPoint().pos().getZ() - entity.blockPosition().getZ());
 
-			return distX <= LEASH_X && distY <= LEASH_Y && distZ <= LEASH_Z;
+			return distX <= XZ_HOME_BOUNDS && distY <= Y_HOME_BOUNDS && distZ <= XZ_HOME_BOUNDS;
 		}
 	}
 
-	public boolean isEntityWithinHomeArea(Entity entity) {
-		return this.isWithinRestriction(entity.blockPosition());
+	public boolean isOtherEntityWithinHomeArea(Entity entity) {
+		return this.isMobWithinHomeArea(entity);
 	}
 
-	public boolean areSelfAndTargetInHome(Entity entity) {
-		return this.isWithinRestriction(this.blockPosition()) && this.isEntityWithinHomeArea(entity);
+	public boolean areSelfAndTargetInHome(@Nullable Entity entity) {
+		return this.isMobWithinHomeArea(this) && (entity == null || this.isOtherEntityWithinHomeArea(entity));
 	}
 
 	private void activateBodySegments() {
@@ -543,7 +562,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.readDeathItemsSaveData(compound);
-		this.loadHomePointFromNbt(compound, 20);
+		this.loadHomePointFromNbt(compound);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -711,17 +730,22 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
-	}
-
-	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
-	}
-
-	@Override
 	public NonNullList<ItemStack> getItemStacks() {
 		return this.dyingInventory;
+	}
+
+	@Override
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
+	}
+
+	@Override
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 40;
 	}
 }

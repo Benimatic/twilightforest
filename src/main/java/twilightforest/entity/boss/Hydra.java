@@ -1,10 +1,14 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -38,10 +42,7 @@ import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.WorldUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
@@ -54,6 +55,8 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	private static final int SECONDARY_FLAME_CHANCE = 10;
 	private static final int SECONDARY_MORTAR_CHANCE = 16;
+
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Hydra.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	private final HydraPart[] partArray;
 
@@ -101,6 +104,12 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.getEntityData().define(HOME_POINT, Optional.empty());
+	}
+
+	@Override
 	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
@@ -127,7 +136,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 2, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
+			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 1, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
 			this.discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -253,7 +262,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound, 20);
+		this.loadHomePointFromNbt(compound);
 		this.activateNumberOfHeads(compound.getByte("NumHeads"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
@@ -813,12 +822,17 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 }

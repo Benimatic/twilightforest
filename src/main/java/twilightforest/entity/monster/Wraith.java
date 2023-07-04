@@ -2,7 +2,11 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -28,8 +32,11 @@ import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
+import java.util.Optional;
 
 public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
+
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Wraith.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	public Wraith(EntityType<? extends Wraith> type, Level level) {
 		super(type, level);
@@ -52,6 +59,12 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 				.add(Attributes.MAX_HEALTH, 20.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.5D)
 				.add(Attributes.ATTACK_DAMAGE, 5.0D);
+	}
+
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -125,17 +138,22 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.loadHomePointFromNbt(tag, 20);
+		this.loadHomePointFromNbt(tag);
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 
 	static class FlyTowardsTargetGoal extends Goal {
@@ -175,7 +193,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 		@Override
 		public boolean canUse() {
-			if (this.wraith.getTarget() != null || !this.wraith.isWithinRestriction())
+			if (this.wraith.getTarget() != null || !this.wraith.isMobWithinHomeArea(this.wraith))
 				return false;
 			MoveControl control = this.wraith.getMoveControl();
 			double d0 = control.getWantedX() - this.wraith.getX();
@@ -234,26 +252,26 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	//modified version of MoveTowardsRestrictionGoal. We're limited with what we can use since Wraiths arent PathfinderMobs
 	public static class MoveTowardsHomeGoal extends Goal {
-		private final FlyingMob mob;
+		private final Wraith mob;
 		private double wantedX;
 		private double wantedY;
 		private double wantedZ;
 		private final double speedModifier;
 
-		public MoveTowardsHomeGoal(FlyingMob mob, double speedModifier) {
+		public MoveTowardsHomeGoal(Wraith mob, double speedModifier) {
 			this.mob = mob;
 			this.speedModifier = speedModifier;
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 		}
 
 		public boolean canUse() {
-			if (this.mob.isWithinRestriction() || this.mob.getTarget() != null) {
+			if (this.mob.isMobWithinHomeArea(this.mob) || this.mob.getTarget() != null) {
 				return false;
 			} else {
-				BlockPos pos = this.mob.getRestrictCenter()
+				BlockPos pos = this.mob.getRestrictionPoint().pos()
 						.relative(Direction.getRandom(this.mob.getRandom()))
 						.offset(this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5));
-				if (pos == null || !this.mob.level().isLoaded(pos)) {
+				if (!this.mob.level().isLoaded(pos)) {
 					return false;
 				} else {
 					this.wantedX = pos.getX();

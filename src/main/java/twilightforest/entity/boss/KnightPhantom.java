@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +36,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
@@ -55,9 +55,11 @@ import twilightforest.util.LandmarkUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint {
 
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 	private static final EntityDataAccessor<Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADDITION);
 	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier("Inactive Armor boost", 4.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -121,6 +123,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.getEntityData().define(FLAG_CHARGING, false);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -164,8 +167,8 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.hasHome() && this.getNumber() == 0) {
-				this.level().setBlockAndUpdate(getRestrictCenter(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().defaultBlockState());
+			if (this.getRestrictionPoint() != null && this.getNumber() == 0) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -177,18 +180,18 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public void aiStep() {
 		super.aiStep();
 
-		if (!this.level().isClientSide() && getNumber() == 0) {
+		if (!this.level().isClientSide() && this.getNumber() == 0) {
 			float health = 0F;
 			float maxHealth = 0F;
 			int amount = 0;
-			for (KnightPhantom nearbyKnight : getNearbyKnights()) {
+			for (KnightPhantom nearbyKnight : this.getNearbyKnights()) {
 				health += nearbyKnight.getHealth();
 				maxHealth += nearbyKnight.getMaxHealth();
 				amount++;
 			}
 			int remaining = totalKnownKnights - amount;
 			if (remaining > 0) {
-				maxHealth += (getMaxHealth() * (float) remaining);
+				maxHealth += (this.getMaxHealth() * (float) remaining);
 			}
 			this.bossInfo.setProgress(health / maxHealth);
 		}
@@ -198,8 +201,8 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 			for (int i = 0; i < 4; ++i) {
 				Item particleID = this.getRandom().nextBoolean() ? TFItems.PHANTOM_HELMET.get() : TFItems.KNIGHTMETAL_SWORD.get();
 
-				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(particleID)), getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, -0.1, 0);
-				this.level().addParticle(ParticleTypes.SMOKE, getX() + (this.getRandom().nextFloat() - 0.5D) * getBbWidth(), getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, 0.1, 0);
+				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(particleID)), this.getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, -0.1, 0);
+				this.level().addParticle(ParticleTypes.SMOKE, this.getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, 0.1, 0);
 			}
 		}
 	}
@@ -212,7 +215,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 			double d0 = this.getRandom().nextGaussian() * 0.02D;
 			double d1 = this.getRandom().nextGaussian() * 0.02D;
 			double d2 = this.getRandom().nextGaussian() * 0.02D;
-			this.level().addParticle(ParticleTypes.EXPLOSION, getX() + this.getRandom().nextFloat() * getBbWidth() * 2.0F - getBbWidth(), getY() + this.getRandom().nextFloat() * getBbHeight(), getZ() + this.getRandom().nextFloat() * getBbWidth() * 2.0F - getBbWidth(), d0, d1, d2);
+			this.level().addParticle(ParticleTypes.EXPLOSION, this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * this.getBbHeight(), this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), d0, d1, d2);
 		}
 	}
 
@@ -222,13 +225,13 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		super.die(cause);
 
 		if (this.level() instanceof ServerLevel serverLevel) {
-			List<KnightPhantom> knights = getNearbyKnights();
+			List<KnightPhantom> knights = this.getNearbyKnights();
 			if (!knights.isEmpty()) {
 				knights.forEach(KnightPhantom::updateMyNumber);
 			} else if (!cause.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
 				this.bossInfo.setProgress(0.0F);
 
-				BlockPos treasurePos = this.hasHome() ? this.getRestrictCenter().below() : this.blockPosition();
+				BlockPos treasurePos = this.getRestrictionPoint() != null ? serverLevel.getBlockState(this.getRestrictionPoint().pos().below()).canBeReplaced() ? this.getRestrictionPoint().pos().below() : this.getRestrictionPoint().pos() : this.blockPosition();
 
 				// make treasure for killing the last knight
 				// This one won't receive the same loot treatment like the other bosses because this chest is supposed to reward for all of them instead of just the last one killed
@@ -246,7 +249,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 					TFAdvancements.HURT_BOSS.trigger(player, this);
 				}
 
-				for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(this.homePosition).inflate(64.0D))) {
+				for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(treasurePos).inflate(64.0D))) {
 					TFAdvancements.HURT_BOSS.trigger(player, this);
 				}
 			}
@@ -255,11 +258,11 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if(this.isDamageSourceBlocked(source)) {
+		if (this.isDamageSourceBlocked(source)) {
 			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 		}
 
-		if(source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+		if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
@@ -308,7 +311,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	}
 
 	public List<KnightPhantom> getNearbyKnights() {
-		return this.level().getEntitiesOfClass(KnightPhantom.class, getBoundingBox().inflate(64.0D), LivingEntity::isAlive);
+		return this.level().getEntitiesOfClass(KnightPhantom.class, this.getBoundingBox().inflate(64.0D), LivingEntity::isAlive);
 	}
 
 	private void updateMyNumber() {
@@ -319,7 +322,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 				continue;
 			nums.add(knight.getNumber());
 			if (knight.getNumber() == 0)
-				this.restrictTo(knight.getRestrictCenter(), 20);
+				this.setRestrictionPoint(knight.getRestrictionPoint());
 		}
 		if (nums.isEmpty()) {
 			this.setNumber(0);
@@ -445,7 +448,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public void setNumber(int number) {
 		this.number = number;
 		if (number == 0)
-			this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(64D)).forEach(this::startSeenByPlayer);
+			this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(64.0D)).forEach(this::startSeenByPlayer);
 
 		// set weapon per number
 		switch (number % 3) {
@@ -468,7 +471,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 
-		this.loadHomePointFromNbt(compound, 20);
+		this.loadHomePointFromNbt(compound);
 		this.setNumber(compound.getInt("MyNumber"));
 		this.switchToFormationByNumber(compound.getInt("Formation"));
 		this.setTicksProgress(compound.getInt("TicksProgress"));
@@ -476,6 +479,25 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
+	}
+
+	@Override
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
+	}
+
+	@Override
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+		// set the chargePos here as well, so we don't go off flying in some direction when we first spawn
+		if (pos != null) {
+			this.chargePos = pos.pos();
+		}
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 30;
 	}
 
 	public enum Formation {
@@ -530,56 +552,4 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public boolean canChangeDimensions() {
 		return false;
 	}
-
-	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
-	}
-
-	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
-	}
-
-	// [VanillaCopy] Home fields and methods from CreatureEntity, changes noted
-	private BlockPos homePosition = BlockPos.ZERO;
-	private float maximumHomeDistance = -1.0F;
-
-	@Override
-	public boolean isWithinRestriction() {
-		return this.isWithinRestriction(new BlockPos(this.blockPosition()));
-	}
-
-	@Override
-	public boolean isWithinRestriction(BlockPos pos) {
-		return this.maximumHomeDistance == -1.0F || this.homePosition.distSqr(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
-	}
-
-	@Override
-	public void restrictTo(BlockPos pos, int distance) {
-		// set the chargePos here as well so we dont go off flying in some direction when we first spawn
-		this.homePosition = this.chargePos = pos;
-		this.maximumHomeDistance = distance;
-	}
-
-	@Override
-	public BlockPos getRestrictCenter() {
-		return this.homePosition;
-	}
-
-	@Override
-	public float getRestrictRadius() {
-		return this.maximumHomeDistance;
-	}
-
-	@Override
-	public boolean hasRestriction() {
-		this.maximumHomeDistance = -1.0F;
-		return false;
-	}
-
-	public boolean hasHome() {
-		return this.maximumHomeDistance != -1.0F;
-	}
-	// End copy
 }

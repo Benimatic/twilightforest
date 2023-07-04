@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -52,9 +53,11 @@ import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount, EnforcedHomePoint {
 
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 	private static final EntityDataAccessor<Byte> RAMPAGE_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> TIRED_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BYTE);
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
@@ -104,8 +107,9 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(RAMPAGE_FLAG, (byte) 0);
-		this.entityData.define(TIRED_FLAG, (byte) 0);
+		this.getEntityData().define(RAMPAGE_FLAG, (byte) 0);
+		this.getEntityData().define(TIRED_FLAG, (byte) 0);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -327,8 +331,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.getRestrictCenter() != BlockPos.ZERO) {
-				this.level().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().defaultBlockState());
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -341,20 +345,20 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	public void setRampaging(boolean rampaging) {
-		entityData.set(RAMPAGE_FLAG, (byte) (rampaging ? 1 : 0));
+		getEntityData().set(RAMPAGE_FLAG, (byte) (rampaging ? 1 : 0));
 	}
 
 	public boolean isRampaging() {
-		return entityData.get(RAMPAGE_FLAG) == 1;
+		return getEntityData().get(RAMPAGE_FLAG) == 1;
 	}
 
 	public void setTired(boolean tired) {
-		this.entityData.set(TIRED_FLAG, (byte) (tired ? 1 : 0));
+		this.getEntityData().set(TIRED_FLAG, (byte) (tired ? 1 : 0));
 		this.canRampage = false;
 	}
 
 	public boolean isTired() {
-		return this.entityData.get(TIRED_FLAG) == 1;
+		return this.getEntityData().get(TIRED_FLAG) == 1;
 	}
 
 	@Override
@@ -424,7 +428,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound, 30);
+		this.loadHomePointFromNbt(compound);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -451,12 +455,17 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 30;
 	}
 }
