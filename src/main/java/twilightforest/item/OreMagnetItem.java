@@ -34,7 +34,6 @@ import twilightforest.util.VoxelBresenhamIterator;
 import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class OreMagnetItem extends Item {

@@ -57,7 +57,6 @@ import twilightforest.init.TFStats;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
 
-import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 

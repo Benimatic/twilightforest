@@ -42,7 +42,7 @@ public class FakeItemEntityHelper implements IIngredientHelper<FakeItemEntity> {
 	public String getErrorInfo(@Nullable FakeItemEntity ingredient) {
 		if (ingredient == null) {
 			return "null";
-		};
+		}
 		return ingredient.stack().toString();
 	}
 }

@@ -1,6 +1,5 @@
 package twilightforest.events;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
@@ -11,7 +10,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
-import twilightforest.advancements.TFAdvancements;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;

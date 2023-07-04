@@ -125,7 +125,7 @@ public class MinoshroomModel extends HumanoidModel<Minoshroom> {
 	 */
 	@Override
 	public void setupAnim(Minoshroom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		// copied from ModelBiped
+		// copied from HumanoidModel
 
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);

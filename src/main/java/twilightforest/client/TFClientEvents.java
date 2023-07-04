@@ -60,7 +60,6 @@ import twilightforest.world.registration.TFGenerationSettings;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)

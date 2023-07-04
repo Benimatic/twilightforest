@@ -15,9 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.block.CritterBlock;
 import twilightforest.client.ISTER;
 
 import java.util.function.Consumer;
