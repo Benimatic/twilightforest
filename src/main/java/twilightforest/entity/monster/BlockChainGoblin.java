@@ -88,9 +88,9 @@ public class BlockChainGoblin extends Monster {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_CHAINLENGTH, (byte) 0);
-		this.entityData.define(DATA_CHAINPOS, (byte) 0);
-		this.entityData.define(IS_THROWING, false);
+		this.getEntityData().define(DATA_CHAINLENGTH, (byte) 0);
+		this.getEntityData().define(DATA_CHAINPOS, (byte) 0);
+		this.getEntityData().define(IS_THROWING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -170,8 +170,8 @@ public class BlockChainGoblin extends Monster {
 		this.chainAngle %= 360;
 
 		if (!this.level().isClientSide()) {
-			this.entityData.set(DATA_CHAINLENGTH, (byte) Math.floor(this.getChainLength() * 127.0F));
-			this.entityData.set(DATA_CHAINPOS, (byte) Math.floor(this.getChainAngle() / 360.0F * 255.0F));
+			this.getEntityData().set(DATA_CHAINLENGTH, (byte) Math.floor(this.getChainLength() * 127.0F));
+			this.getEntityData().set(DATA_CHAINPOS, (byte) Math.floor(this.getChainAngle() / 360.0F * 255.0F));
 		} else {
 			// synch chain pos if it's wrong
 			if (Math.abs(this.chainAngle - this.getChainAngle()) > CHAIN_SPEED * 2) {
@@ -290,11 +290,11 @@ public class BlockChainGoblin extends Monster {
 	}
 
 	public boolean isThrowing() {
-		return this.entityData.get(IS_THROWING);
+		return this.getEntityData().get(IS_THROWING);
 	}
 
 	public void setThrowing(boolean isThrowing) {
-		this.entityData.set(IS_THROWING, isThrowing);
+		this.getEntityData().set(IS_THROWING, isThrowing);
 	}
 
 	/**
@@ -304,7 +304,7 @@ public class BlockChainGoblin extends Monster {
 		if (!this.level().isClientSide()) {
 			return this.chainAngle;
 		} else {
-			return (this.entityData.get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
+			return (this.getEntityData().get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
 		}
 	}
 
@@ -319,7 +319,7 @@ public class BlockChainGoblin extends Monster {
 				return 0.3F;
 			}
 		} else {
-			return (this.entityData.get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
+			return (this.getEntityData().get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
 		}
 	}
 

@@ -68,7 +68,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 		for (Direction e : toCheck) {
 			if (this.level().isEmptyBlock(pos.relative(e)) && !this.level().isEmptyBlock(pos.relative(e.getOpposite()))) {
-				this.entityData.set(MOVE_DIRECTION, e);
+				this.getEntityData().set(MOVE_DIRECTION, e);
 				return;
 			}
 		}
@@ -76,7 +76,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 		// if no wall, travel towards open air
 		for (Direction e : toCheck) {
 			if (this.level().isEmptyBlock(pos.relative(e))) {
-				this.entityData.set(MOVE_DIRECTION, e);
+				this.getEntityData().set(MOVE_DIRECTION, e);
 				return;
 			}
 		}
@@ -84,7 +84,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(MOVE_DIRECTION, Direction.DOWN);
+		this.getEntityData().define(MOVE_DIRECTION, Direction.DOWN);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
 				final double moveAcceleration = 0.04;
-				Direction moveDirection = this.entityData.get(MOVE_DIRECTION);
+				Direction moveDirection = this.getEntityData().get(MOVE_DIRECTION);
 				this.setDeltaMovement(this.getDeltaMovement().add(moveDirection.getStepX() * moveAcceleration, moveDirection.getStepY() * moveAcceleration, moveDirection.getStepZ() * moveAcceleration));
 				this.move(MoverType.SELF, new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z()));
 			}
@@ -134,7 +134,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 				if (this.slideTime == WARMUP_TIME + 40) {
 					this.setDeltaMovement(new Vec3(0, 0, 0));
 
-					this.entityData.set(MOVE_DIRECTION, entityData.get(MOVE_DIRECTION).getOpposite());
+					this.getEntityData().set(MOVE_DIRECTION, getEntityData().get(MOVE_DIRECTION).getOpposite());
 				}
 
 				if (this.verticalCollision || this.horizontalCollision) {
@@ -180,13 +180,13 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 	@Override
 	protected void readAdditionalSaveData(@Nonnull CompoundTag compound) {
 		this.slideTime = compound.getInt("Time");
-		this.entityData.set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByte("Direction")));
+		this.getEntityData().set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByte("Direction")));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(@Nonnull CompoundTag compound) {
 		compound.putInt("Time", this.slideTime);
-		compound.putByte("Direction", (byte) this.entityData.get(MOVE_DIRECTION).get3DDataValue());
+		compound.putByte("Direction", (byte) this.getEntityData().get(MOVE_DIRECTION).get3DDataValue());
 	}
 
 	@Override

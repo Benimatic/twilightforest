@@ -44,7 +44,7 @@ public class Adherent extends Monster implements RangedAttackMob, ITFCharger {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(CHARGE_FLAG, false);
+		this.getEntityData().define(CHARGE_FLAG, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -77,11 +77,11 @@ public class Adherent extends Monster implements RangedAttackMob, ITFCharger {
 
 	@Override
 	public boolean isCharging() {
-		return this.entityData.get(CHARGE_FLAG);
+		return this.getEntityData().get(CHARGE_FLAG);
 	}
 
 	@Override
 	public void setCharging(boolean flag) {
-		this.entityData.set(CHARGE_FLAG, flag);
+		this.getEntityData().set(CHARGE_FLAG, flag);
 	}
 }

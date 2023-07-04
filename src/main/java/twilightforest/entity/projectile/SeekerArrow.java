@@ -37,7 +37,7 @@ public class SeekerArrow extends TFArrow {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(TARGET, -1);
+		this.getEntityData().define(TARGET, -1);
 	}
 
 	@Override
@@ -164,11 +164,11 @@ public class SeekerArrow extends TFArrow {
 
 	@Nullable
 	private Entity getTarget() {
-		return this.level().getEntity(this.entityData.get(TARGET));
+		return this.level().getEntity(this.getEntityData().get(TARGET));
 	}
 
 	private void setTarget(@Nullable Entity e) {
-		this.entityData.set(TARGET, e == null ? -1 : e.getId());
+		this.getEntityData().set(TARGET, e == null ? -1 : e.getId());
 	}
 
 	private boolean isThisArrowFlying() {

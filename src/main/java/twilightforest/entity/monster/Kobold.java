@@ -64,7 +64,7 @@ public class Kobold extends Monster {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(PANICKED, false);
+		this.getEntityData().define(PANICKED, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -90,11 +90,11 @@ public class Kobold extends Monster {
 	}
 
 	public boolean isPanicked() {
-		return this.entityData.get(PANICKED);
+		return this.getEntityData().get(PANICKED);
 	}
 
 	public void setPanicked(boolean flag) {
-		this.entityData.set(PANICKED, flag);
+		this.getEntityData().set(PANICKED, flag);
 	}
 
 	@Override

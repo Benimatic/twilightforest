@@ -69,7 +69,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(CHARGING, false);
+		this.getEntityData().define(CHARGING, false);
 	}
 
 	@Nullable
@@ -94,12 +94,12 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	public boolean isCharging() {
-		return this.entityData.get(CHARGING);
+		return this.getEntityData().get(CHARGING);
 	}
 
 	@Override
 	public void setCharging(boolean flag) {
-		this.entityData.set(CHARGING, flag);
+		this.getEntityData().set(CHARGING, flag);
 	}
 
 	//[VanillaCopy] of Mob.doHurtTarget, edits noted

@@ -2,6 +2,7 @@ package twilightforest.entity.passive;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -43,10 +44,13 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 
+import java.util.Optional;
+
 public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Boolean> DATA_REWARDED = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	private int randomTickDivider;
 
@@ -88,8 +92,9 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_COLOR, 0);
-		this.entityData.define(DATA_REWARDED, false);
+		this.getEntityData().define(DATA_COLOR, 0);
+		this.getEntityData().define(DATA_REWARDED, false);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -183,15 +188,15 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		super.readAdditionalSaveData(compound);
 		this.setColorFlags(compound.getInt("ColorFlags"));
 		this.setRewarded(compound.getBoolean("Rewarded"));
-		this.loadHomePointFromNbt(compound, 13);
+		this.loadHomePointFromNbt(compound);
 	}
 
 	public int getColorFlags() {
-		return this.entityData.get(DATA_COLOR);
+		return this.getEntityData().get(DATA_COLOR);
 	}
 
 	private void setColorFlags(int flags) {
-		this.entityData.set(DATA_COLOR, flags);
+		this.getEntityData().set(DATA_COLOR, flags);
 	}
 
 	public boolean isColorPresent(DyeColor color) {
@@ -203,11 +208,11 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	public boolean getRewarded() {
-		return this.entityData.get(DATA_REWARDED);
+		return this.getEntityData().get(DATA_REWARDED);
 	}
 
 	public void setRewarded(boolean rewarded) {
-		this.entityData.set(DATA_REWARDED, rewarded);
+		this.getEntityData().set(DATA_REWARDED, rewarded);
 	}
 
 	private void animateAddColor(DyeColor color, int iterations) {
@@ -270,12 +275,17 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 13;
 	}
 }

@@ -86,7 +86,7 @@ public class DwarfRabbit extends Animal {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(TYPE, DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
+		this.getEntityData().define(TYPE, DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
@@ -102,11 +102,11 @@ public class DwarfRabbit extends Animal {
 	}
 
 	public DwarfRabbitVariant getBunnyType() {
-		return DwarfRabbitVariant.getVariant(this.entityData.get(TYPE)).orElse(DwarfRabbitVariant.BROWN.get());
+		return DwarfRabbitVariant.getVariant(this.getEntityData().get(TYPE)).orElse(DwarfRabbitVariant.BROWN.get());
 	}
 
 	public void setBunnyType(String type) {
-		this.entityData.set(TYPE, type);
+		this.getEntityData().set(TYPE, type);
 	}
 
 	@Override

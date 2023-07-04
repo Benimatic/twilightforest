@@ -83,19 +83,19 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		this.chain5 = new Chain(this);
 		this.partsArray = new BlockChainGoblin.MultipartGenericsAreDumb[]{this.chain1, this.chain2, this.chain3, this.chain4, this.chain5};
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
-		this.entityData.set(IS_FOIL, stack.hasFoil());
+		this.getEntityData().set(IS_FOIL, stack.hasFoil());
 	}
 
 	private void setHand(InteractionHand hand) {
-		this.entityData.set(HAND, hand == InteractionHand.MAIN_HAND);
+		this.getEntityData().set(HAND, hand == InteractionHand.MAIN_HAND);
 	}
 
 	public InteractionHand getHand() {
-		return this.entityData.get(HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+		return this.getEntityData().get(HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 	}
 
 	public boolean isFoil() {
-		return this.entityData.get(IS_FOIL);
+		return this.getEntityData().get(IS_FOIL);
 	}
 
 	@Override
@@ -313,8 +313,8 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(HAND, true);
-		this.entityData.define(IS_FOIL, false);
+		this.getEntityData().define(HAND, true);
+		this.getEntityData().define(IS_FOIL, false);
 	}
 
 	@Override

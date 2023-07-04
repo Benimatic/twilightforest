@@ -70,15 +70,15 @@ public class LowerGoblinKnight extends Monster {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(ARMOR, false);
+		this.getEntityData().define(ARMOR, false);
 	}
 
 	public boolean hasArmor() {
-		return this.entityData.get(ARMOR);
+		return this.getEntityData().get(ARMOR);
 	}
 
 	private void setHasArmor(boolean flag) {
-		this.entityData.set(ARMOR, flag);
+		this.getEntityData().set(ARMOR, flag);
 
 		if (!this.level().isClientSide()) {
 			if (flag) {

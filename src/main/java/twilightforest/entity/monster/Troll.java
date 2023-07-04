@@ -131,15 +131,15 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(ROCK_FLAG, false);
+		this.getEntityData().define(ROCK_FLAG, false);
 	}
 
 	public boolean hasRock() {
-		return this.entityData.get(ROCK_FLAG);
+		return this.getEntityData().get(ROCK_FLAG);
 	}
 
 	public void setHasRock(boolean rock) {
-		this.entityData.set(ROCK_FLAG, rock);
+		this.getEntityData().set(ROCK_FLAG, rock);
 
 		if (!this.level().isClientSide()) {
 			if (rock) {

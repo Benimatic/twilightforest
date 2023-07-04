@@ -52,7 +52,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(BREATHING, false);
+		this.getEntityData().define(BREATHING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -79,12 +79,12 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 
 	@Override
 	public boolean isBreathing() {
-		return this.entityData.get(BREATHING);
+		return this.getEntityData().get(BREATHING);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-		this.entityData.set(BREATHING, flag);
+		this.getEntityData().set(BREATHING, flag);
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(BREATH_FLAG, false);
+		this.getEntityData().define(BREATH_FLAG, false);
 	}
 
 	@Override
@@ -138,12 +138,12 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	@Override
 	public boolean isBreathing() {
-		return this.entityData.get(BREATH_FLAG);
+		return this.getEntityData().get(BREATH_FLAG);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-		this.entityData.set(BREATH_FLAG, flag);
+		this.getEntityData().set(BREATH_FLAG, flag);
 	}
 
 	@Override

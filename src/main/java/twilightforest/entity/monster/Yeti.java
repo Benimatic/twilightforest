@@ -84,7 +84,7 @@ public class Yeti extends Monster implements IHostileMount {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(ANGER_FLAG, false);
+		this.getEntityData().define(ANGER_FLAG, false);
 	}
 
 	@Override
@@ -114,11 +114,11 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	public boolean isAngry() {
-		return this.entityData.get(ANGER_FLAG);
+		return this.getEntityData().get(ANGER_FLAG);
 	}
 
 	public void setAngry(boolean anger) {
-		this.entityData.set(ANGER_FLAG, anger);
+		this.getEntityData().set(ANGER_FLAG, anger);
 
 		if (!this.level().isClientSide()) {
 			if (anger) {
