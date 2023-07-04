@@ -61,8 +61,7 @@ public class TFGenerationSettings {
 			if (!level.isClientSide() && player.tickCount % 5 == 0) {
 				player.hurt(level.damageSources().magic(), 1.5F);
 				level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-				// TODO: change this when there's a book for the castle
-				StructureHints.tryHintForStructure(player, level, TFStructures.TROLL_CAVE);
+				StructureHints.tryHintForStructure(player, level, TFStructures.FINAL_CASTLE);
 			}
 		});
 		registerBiomeProgressionEnforcement(TFBiomes.FIRE_SWAMP, (player, level) -> {
@@ -107,7 +106,7 @@ public class TFGenerationSettings {
 				level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
 				// hint monster?
-				StructureHints.tryHintForStructure(player, level, TFStructures.TROLL_CAVE);
+				StructureHints.tryHintForStructure(player, level, TFStructures.FINAL_CASTLE);
 			}
 		});
 	}

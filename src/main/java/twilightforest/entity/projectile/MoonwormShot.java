@@ -23,6 +23,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
@@ -91,8 +92,7 @@ public class MoonwormShot extends TFThrowable {
 		if (result.getEntity() instanceof Player player && !player.hasItemInSlot(EquipmentSlot.HEAD)) {
 			player.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFBlocks.MOONWORM.get()));
 		} else {
-			//FIXME custom damage source
-			//result.getEntity().hurt(new IndirectEntityDamageSource("moonworm", this, this), this.random.nextInt(3) == 0 ? 1 : 0);
+			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.MOONWORM), this.random.nextInt(3) == 0 ? 1 : 0);
 		}
 	}
 

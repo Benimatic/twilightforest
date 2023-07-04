@@ -113,7 +113,6 @@ public class UnstableIceCore extends BaseIceMob {
 		Block block = state.getBlock();
 
 		if (block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0) {
-			// todo improve for blocks where state is known? or perhaps if a propertycolor is present
 			int blockColor = state.getMapColor(this.level(), pos).col;
 
 			// do appropriate transformation
