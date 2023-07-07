@@ -37,13 +37,13 @@ public class TFParticleType {
 	public static final RegistryObject<SimpleParticleType> FIREFLY = PARTICLE_TYPES.register("firefly", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> WANDERING_FIREFLY = PARTICLE_TYPES.register("wandering_firefly", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> JAR_WANDERING_FIREFLY = PARTICLE_TYPES.register("jar_wandering_firefly", () -> new SimpleParticleType(false));
-	public static final RegistryObject<ParticleType<PinnedFireflyData>> FIREFLY_PINNED = PARTICLE_TYPES.register("firefly_pinned", () -> new ParticleType<PinnedFireflyData>(false, new PinnedFireflyData.Deserializer()) {
+	public static final RegistryObject<ParticleType<PinnedFireflyData>> FIREFLY_PINNED = PARTICLE_TYPES.register("firefly_pinned", () -> new ParticleType<>(false, new PinnedFireflyData.Deserializer()) {
 		@Override
 		public Codec<PinnedFireflyData> codec() {
 			return PinnedFireflyData.codecFirefly();
 		}
 	});
-	public static final RegistryObject<ParticleType<LeafParticleData>> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new ParticleType<LeafParticleData>(false, new LeafParticleData.Deserializer()) {
+	public static final RegistryObject<ParticleType<LeafParticleData>> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new ParticleType<>(false, new LeafParticleData.Deserializer()) {
 		@Override
 		public Codec<LeafParticleData> codec() {
 			return LeafParticleData.codecLeaf();

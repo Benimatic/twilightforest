@@ -21,11 +21,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
-import twilightforest.client.model.entity.BlockChainGoblinLegacyModel;
-import twilightforest.client.renderer.entity.BlockChainRenderer;
+import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.entity.monster.BlockChainGoblin;
 
-public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends BlockChainGoblinLegacyModel<T>> extends HumanoidMobRenderer<T, M> {
+public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends BlockChainGoblinModel<T>> extends HumanoidMobRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 

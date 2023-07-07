@@ -7,11 +7,11 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.BlockChainGoblin;
 
-public class BlockChainGoblinLegacyModel<T extends BlockChainGoblin> extends HumanoidModel<T> {
+public class BlockChainGoblinModel<T extends BlockChainGoblin> extends HumanoidModel<T> {
 
 	final ModelPart block;
 
-	public BlockChainGoblinLegacyModel(ModelPart root) {
+	public BlockChainGoblinModel(ModelPart root) {
 		super(root);
 		this.block = root.getChild("block");
 	}

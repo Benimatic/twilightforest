@@ -2,6 +2,7 @@ package twilightforest;
 
 import com.google.common.collect.Maps;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,10 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.Bindings;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -42,6 +40,7 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.compat.top.TopCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
@@ -55,6 +54,7 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -148,13 +148,13 @@ public class TwilightForestMod {
 		event.dataPackRegistry(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack.DISPATCH_CODEC);
 	}
 
-	//TODO once we get the JAPPA pack uploaded look for that instead
-	//I would like to look at migrating the models to using EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json) in the future.
-	//we can make the pack depend on it to load the new models instead of having them hardcoded here.
-	//could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
+	//TODO I would like to look at migrating the models to using EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json) in the future.
+	// we can make the pack depend on it to load the new models instead of having them hardcoded here.
+	// could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
 	@OnlyIn(Dist.CLIENT)
-	public static boolean isJappaPackLoaded() {
-		return false;
+	public static BooleanSupplier isJappaPackLoaded() {
+		return () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("file/Twilight Forest JAPPA Textures") ||
+				Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("file/Twilight Forest JAPPA Textures.zip");
 	}
 
 	@SubscribeEvent
@@ -169,7 +169,7 @@ public class TwilightForestMod {
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		if (ModList.get().isLoaded("theoneprobe")) {
-			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 

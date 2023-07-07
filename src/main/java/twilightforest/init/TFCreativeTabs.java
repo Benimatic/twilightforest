@@ -22,7 +22,6 @@ public class TFCreativeTabs {
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TwilightForestMod.ID);
 
 	public static final RegistryObject<CreativeModeTab> BLOCKS = TABS.register("blocks", () -> CreativeModeTab.builder()
-			.withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
 			.title(Component.translatable("itemGroup.twilightforest.blocks"))
 			.icon(() -> new ItemStack(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get()))
 			.displayItems((parameters, output) -> {

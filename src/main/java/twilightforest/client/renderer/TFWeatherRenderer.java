@@ -239,8 +239,7 @@ public class TFWeatherRenderer {
 
 			RenderType currentType = null;
 			float combinedTicks = rendererUpdateCount + partialTicks;
-			//bufferBuilder.setTranslation(-dx, -dy, -dz);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.setShader(GameRenderer::getParticleShader);
 			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 			for (int z = z0 - range; z <= z0 + range; ++z) {

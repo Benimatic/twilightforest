@@ -128,7 +128,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.YETI, YetiModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.NEW_BIGHORN_SHEEP, BighornModel::create);
-		event.registerLayerDefinition(TFModelLayers.NEW_BLOCKCHAIN_GOBLIN, BlockChainGoblinLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.NEW_BLOCKCHAIN_GOBLIN, BlockChainGoblinModel::create);
 		event.registerLayerDefinition(TFModelLayers.NEW_BOAR, BoarModel::create);
 		event.registerLayerDefinition(TFModelLayers.NEW_DEER, DeerModel::create);
 		event.registerLayerDefinition(TFModelLayers.NEW_FIRE_BEETLE, FireBeetleModel::create);
