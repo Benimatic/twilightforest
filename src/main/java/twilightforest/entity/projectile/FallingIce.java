@@ -53,7 +53,7 @@ public class FallingIce extends Entity {
 	private BlockState blockState = Blocks.PACKED_ICE.defaultBlockState(); //TF: change default block to packed ice
 	public int time;
 	protected final int fallDamageMax = 100; //TF: change max damage to 100 damage from 40
-	public final float[] damagePerDifficulty = { 1.0F, 1.0F, 3.0F, 6.0F }; //TF: change the damage done per block fallen based on difficulty
+	public final float[] damagePerDifficulty = { 0.0F, 0.5F, 1.0F, 2.0F }; //TF: change the damage done per block fallen based on difficulty
 	@Nullable
 	public CompoundTag blockData;
 	protected static final EntityDataAccessor<BlockPos> DATA_START_POS = SynchedEntityData.defineId(FallingIce.class, EntityDataSerializers.BLOCK_POS);
@@ -76,11 +76,11 @@ public class FallingIce extends Entity {
 	}
 
 	public void setStartPos(BlockPos pos) {
-		this.entityData.set(DATA_START_POS, pos);
+		this.getEntityData().set(DATA_START_POS, pos);
 	}
 
 	public BlockPos getStartPos() {
-		return this.entityData.get(DATA_START_POS);
+		return this.getEntityData().get(DATA_START_POS);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class FallingIce extends Entity {
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(DATA_START_POS, BlockPos.ZERO);
+		this.getEntityData().define(DATA_START_POS, BlockPos.ZERO);
 	}
 
 	@Override
@@ -174,20 +174,20 @@ public class FallingIce extends Entity {
 				}
 			} else {
 				//TF: add ice trail
-				this.makeTrail();
+				this.makeWarningTrail();
 			}
 
 			this.setDeltaMovement(this.getDeltaMovement().scale(0.98D));
 		}
 	}
 
-	private void makeTrail() {
-		for (int i = 0; i < 3; i++) {
+	private void makeWarningTrail() {
+		for (int i = 0; i < 10; i++) {
 			double dx = this.getX() + 1.5F * (this.random.nextFloat() - this.random.nextFloat());
 			double dy = this.getY() - 4.0F * (this.random.nextFloat() - this.random.nextFloat()) - 3.0F;
 			double dz = this.getZ() + 1.5F * (this.random.nextFloat() - this.random.nextFloat());
 
-			this.level().addAlwaysVisibleParticle(TFParticleType.EXTENDED_SNOW_WARNING.get(), dx, dy, dz, 0.0D, -1.0D, 0.0D);
+			this.level().addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.blockState), dx, dy, dz, 0.0D, -1.0D, 0.0D);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class FallingIce extends Entity {
 	@Override
 	public boolean causeFallDamage(float dist, float multiplier, DamageSource source) {
 
-		int realDist = Mth.ceil(dist - 1.0F);
+		int realDist = Mth.ceil(dist - 5.0F);
 		if (realDist >= 0) {
 			float dmg = (float) Math.min(Mth.floor((float) realDist * this.damagePerDifficulty[this.level().getDifficulty().getId()]), this.fallDamageMax);
 			this.level().getEntities(this, this.getBoundingBox().inflate(1.0F, 0.0F, 1.0F), EntitySelector.NO_SPECTATORS).forEach((entity) -> {
@@ -214,7 +214,7 @@ public class FallingIce extends Entity {
 			this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.blockState), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState(), this.level(), blockPosition(), null).getBreakSound(), 3.0F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.defaultBlockState().getSoundType().getBreakSound(), 3.0F, 0.5F);
 		return false;
 	}
 
