@@ -8,6 +8,7 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
@@ -153,7 +154,7 @@ public class TwilightForestMod {
 	// could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
 	@OnlyIn(Dist.CLIENT)
 	public static BooleanSupplier isJappaPackLoaded() {
-		return () -> Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.getDescription().getString().contains("Twilight Forest JAPPA-fied Textures"));
+		return () -> Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.open().getResource(PackType.CLIENT_RESOURCES, prefix("jappa_models.marker")) != null);
 	}
 
 	@SubscribeEvent
