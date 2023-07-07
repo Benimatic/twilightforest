@@ -153,8 +153,7 @@ public class TwilightForestMod {
 	// could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
 	@OnlyIn(Dist.CLIENT)
 	public static BooleanSupplier isJappaPackLoaded() {
-		return () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("file/Twilight Forest JAPPA Textures") ||
-				Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("file/Twilight Forest JAPPA Textures.zip");
+		return () -> Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.getDescription().getString().contains("Twilight Forest JAPPA-fied Textures"));
 	}
 
 	@SubscribeEvent
