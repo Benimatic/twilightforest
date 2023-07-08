@@ -18,16 +18,10 @@ public class TFPacketHandler {
 			PROTOCOL_VERSION::equals
 	);
 
-	@SuppressWarnings({"UnusedAssignment", "Convert2Lambda", "Anonymous2MethodRef"})
+	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
 		int id = 0;
-		//as ugly as this is compared to the rest of the packets do not change it, it crashes the server otherwise
-		CHANNEL.registerMessage(id++, AreaProtectionPacket.class, AreaProtectionPacket::encode, AreaProtectionPacket::new, new BiConsumer<>() {
-			@Override
-			public void accept(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-				AreaProtectionPacket.Handler.onMessage(message, ctx);
-			}
-		});
+		CHANNEL.registerMessage(id++, AreaProtectionPacket.class, AreaProtectionPacket::encode, AreaProtectionPacket::new, AreaProtectionPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, CreateMovingCicadaSoundPacket.class, CreateMovingCicadaSoundPacket::encode, CreateMovingCicadaSoundPacket::new, CreateMovingCicadaSoundPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, EnforceProgressionStatusPacket.class, EnforceProgressionStatusPacket::encode, EnforceProgressionStatusPacket::new, EnforceProgressionStatusPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, MagicMapPacket.class, MagicMapPacket::encode, MagicMapPacket::new, MagicMapPacket.Handler::onMessage);
