@@ -65,6 +65,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeInstance(map, TFBlocks.SORTING_CHEST);
 	});
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
+	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
 
 	public ISTER() {
 		super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
@@ -73,6 +74,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
 		this.shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
+		this.trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
 	}
 
 	@Override
@@ -82,7 +84,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			Block block = blockItem.getBlock();
 			if (block instanceof AbstractTrophyBlock trophyBlock) {
 				BossVariant variant = trophyBlock.getVariant();
-				GenericTrophyModel trophy = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels()).get(variant);
+				GenericTrophyModel trophy = this.trophies.get(variant);
 
 				if (camera == ItemDisplayContext.GUI) {
 					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()), "inventory");
@@ -110,10 +112,10 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
 					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !Minecraft.getInstance().isPaused() ? TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime() : 0, ms, buffers, light, camera);
 					ms.popPose();
-
 				} else {
 					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !Minecraft.getInstance().isPaused() ? TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime() : 0, ms, buffers, light, camera);
 				}
+
 			} else if (block instanceof KeepsakeCasketBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.casket, ms, buffers, light, overlay);
 			} else if (block instanceof TFChestBlock) {

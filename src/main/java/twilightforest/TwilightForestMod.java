@@ -2,13 +2,11 @@ package twilightforest;
 
 import com.google.common.collect.Maps;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
@@ -19,12 +17,10 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -55,10 +51,8 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 import java.util.Locale;
 import java.util.Objects;
-import java.util.function.BooleanSupplier;
 
 @Mod(TwilightForestMod.ID)
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TwilightForestMod {
 
 	public static final String ID = "twilightforest";
@@ -132,6 +126,9 @@ public class TwilightForestMod {
 		WoodPalettes.WOOD_PALETTES.register(modbus);
 
 		modbus.addListener(this::sendIMCs);
+		modbus.addListener(this::init);
+		modbus.addListener(this::registerExtraStuff);
+		modbus.addListener(this::setRegistriesForDatapack);
 		modbus.addListener(CapabilityList::registerCapabilities);
 
 		if (ModList.get().isLoaded("curios")) {
@@ -143,22 +140,12 @@ public class TwilightForestMod {
 		BiomeGrassColors.init();
 	}
 
-	@SubscribeEvent
-	public static void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
+	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
 		event.dataPackRegistry(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC);
 		event.dataPackRegistry(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack.DISPATCH_CODEC);
 	}
 
-	//TODO I would like to look at migrating the models to using EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json) in the future.
-	// we can make the pack depend on it to load the new models instead of having them hardcoded here.
-	// could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
-	@OnlyIn(Dist.CLIENT)
-	public static BooleanSupplier isJappaPackLoaded() {
-		return () -> Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.open().getResource(PackType.CLIENT_RESOURCES, prefix("jappa_models.marker")) != null);
-	}
-
-	@SubscribeEvent
-	public static void registerExtraStuff(RegisterEvent evt) {
+	public void registerExtraStuff(RegisterEvent evt) {
 		if (Objects.equals(evt.getRegistryKey(), Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
@@ -173,8 +160,7 @@ public class TwilightForestMod {
 		}
 	}
 
-	@SubscribeEvent
-	public static void init(FMLCommonSetupEvent evt) {
+	public void init(FMLCommonSetupEvent evt) {
 		TFPacketHandler.init();
 		TFAdvancements.init();
 

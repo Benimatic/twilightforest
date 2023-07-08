@@ -1,0 +1,12 @@
+{
+  "collection": "museumcurator.collection.twilightforest",
+  "name": "museumcurator.twilightforest.lichtower",
+  "relativeTo": "museumcurator.twilightforest.nagacourtyard",
+  "items": [
+    "twilightforest:lich_trophy",
+    "twilightforest:twilight_scepter",
+    "twilightforest:lifedrain_scepter",
+    "twilightforest:zombie_scepter",
+    "twilightforest:fortification_scepter"
+  ]
+}

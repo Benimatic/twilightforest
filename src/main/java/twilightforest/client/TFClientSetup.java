@@ -18,7 +18,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -69,7 +71,6 @@ public class TFClientSetup {
 				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
 			}
 		}
-
 	}
 
     @SubscribeEvent
@@ -94,12 +95,16 @@ public class TFClientSetup {
             Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
             Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
         });
-       
     }
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void addJappaPackListener(RegisterClientReloadListenersEvent event) {
+		event.registerReloadListener(JappaPackReloadListener.INSTANCE);
+	}
 
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		BooleanSupplier jappa = TwilightForestMod.isJappaPackLoaded();
+		BooleanSupplier jappa = JappaPackReloadListener.INSTANCE.uncachedJappaPackCheck();
 		event.registerEntityRenderer(TFEntities.BOAT.get(), m -> new TwilightBoatRenderer(m, false));
 		event.registerEntityRenderer(TFEntities.CHEST_BOAT.get(), m -> new TwilightBoatRenderer(m, true));
 		event.registerEntityRenderer(TFEntities.BOAR.get(), m -> !jappa.getAsBoolean() ? new BoarRenderer(m, new BoarModel<>(m.bakeLayer(TFModelLayers.NEW_BOAR))) : new NewBoarRenderer(m, new NewBoarModel<>(m.bakeLayer(TFModelLayers.BOAR))));
@@ -193,7 +198,7 @@ public class TFClientSetup {
 		private static final Map<ResourceLocation, LazyLoadedValue<EntityRenderer<?>>> renderers = new HashMap<>();
 
 		public static void bakeMultiPartRenderers(EntityRendererProvider.Context context) {
-			BooleanSupplier jappa = TwilightForestMod.isJappaPackLoaded();
+			BooleanSupplier jappa = JappaPackReloadListener.INSTANCE.uncachedJappaPackCheck();
 			renderers.put(TFPart.RENDERER, new LazyLoadedValue<>(() -> new NoopRenderer<>(context)));
 			renderers.put(HydraHead.RENDERER, new LazyLoadedValue<>(() -> !jappa.getAsBoolean() ? new HydraHeadRenderer(context) : new NewHydraHeadRenderer(context)));
 			renderers.put(HydraNeck.RENDERER, new LazyLoadedValue<>(() -> !jappa.getAsBoolean() ? new HydraNeckRenderer(context) : new NewHydraNeckRenderer(context)));
