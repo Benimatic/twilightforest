@@ -375,8 +375,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.FALLEN_LEAVES, "Fallen Leaves");
 		this.addBlock(TFBlocks.MAYAPPLE, "Mayapple");
 		this.addBlock(TFBlocks.POTTED_MAYAPPLE, "Potted Mayapple");
-		this.addBlock(TFBlocks.FIDDLEHEAD, "Mayapple");
-		this.addBlock(TFBlocks.POTTED_FIDDLEHEAD, "Potted Mayapple");
+		this.addBlock(TFBlocks.FIDDLEHEAD, "Fiddlehead Fern");
+		this.addBlock(TFBlocks.POTTED_FIDDLEHEAD, "Potted Fiddlehead");
 		this.addBlock(TFBlocks.MUSHGLOOM, "Mushgloom");
 		this.addBlock(TFBlocks.POTTED_MUSHGLOOM, "Potted Mushgloom");
 		this.addBlock(TFBlocks.POTTED_THORN, "Potted Thorn");
@@ -1105,5 +1105,28 @@ public class LangGenerator extends TFLangProvider {
 		this.addTrim("knightmetal", "Knightmetal");
 		this.addTrim("naga_scale", "Naga Scale");
 		this.addTrim("steeleaf", "Steeleaf");
+
+		this.add("museumcurator.animalhusbandry.twilightforest.bugs", "Bugs");
+		this.add("museumcurator.architecture.twilightforest.aurorablocks", "Aurora Blocks");
+		this.add("museumcurator.architecture.twilightforest.banisters", "Banisters");
+		this.add("museumcurator.architecture.twilightforest.castlebrick", "Castle Brick");
+		this.add("museumcurator.architecture.twilightforest.giantblocks", "Giant Blocks");
+		this.add("museumcurator.botany.twilightforest.beanstalk", "Beanstalk");
+		this.add("museumcurator.botany.twilightforest.canopytree", "Canopy Tree");
+		this.add("museumcurator.botany.twilightforest.darkwoodtree", "Darkwood Tree");
+		this.add("museumcurator.botany.twilightforest.miningtree", "Minewood Tree");
+		this.add("museumcurator.botany.twilightforest.sortingtree", "Sortingwood Tree");
+		this.add("museumcurator.botany.twilightforest.mangrovetree", "Mangrove Tree");
+		this.add("museumcurator.botany.twilightforest.timetree", "Timewood Tree");
+		this.add("museumcurator.botany.twilightforest.transformationtree", "Transwood Tree");
+		this.add("museumcurator.botany.twilightforest.twilightoaktree", "Twilight Oak Tree");
+		this.add("museumcurator.equipment.twilightforest.scepters", "Scepters of Power");
+		this.add("museumcurator.lithology.twilightforest.deadrock", "Deadrock");
+		this.add("museumcurator.lithology.twilightforest.mazestone", "Mazestone");
+		this.add("museumcurator.lithology.twilightforest.nagastone", "Nagastone");
+		this.add("museumcurator.machinery.twilightforest.carminitemachines", "Carminite Mechanisms");
+		this.add("museumcurator.metallurgy.twilightforest.fiery", "Fiery Metal");
+		this.add("museumcurator.metallurgy.twilightforest.ironwood", "Ironwood");
+		this.add("museumcurator.metallurgy.twilightforest.knightmetal", "Knightmetal");
 	}
 }

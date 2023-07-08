@@ -154,6 +154,7 @@ dependencies {
     //curse maven
     implementation fg.deobf("curse.maven:jade-324717:4573193")
     runtimeOnly fg.deobf("curse.maven:jeed-532286:4599236")
+    runtimeOnly fg.deobf("curse.maven:museum-curator-859070:4607988")
 
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:4613250")
 
