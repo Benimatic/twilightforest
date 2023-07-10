@@ -168,7 +168,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(PoseStack, float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
-	public static Iterable<Entity> renderMutiparts(Iterable<Entity> iter) {
+	public static Iterable<Entity> renderMultiparts(Iterable<Entity> iter) {
 		List<Entity> list = new ArrayList<>();
 		iter.forEach(entity -> {
 			list.add(entity);
