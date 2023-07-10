@@ -124,7 +124,7 @@ steps:
     messageType: 'embeds'
     embeds: |
       [$(DiscordMessage)]
-  condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
+  condition: and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True'))
 
 - task: Gradle@2
   displayName: Publish to Maven
