@@ -60,13 +60,13 @@ public final class LandmarkUtil {
         return Optional.empty();
     }
 
-    public static void markStructureConquered(LevelAccessor level, EnforcedHomePoint mobHome, ResourceKey<Structure> structureKey, boolean conquered) {
+    public static void markStructureConquered(Level level, EnforcedHomePoint mobHome, ResourceKey<Structure> structureKey, boolean conquered) {
         markStructureConquered(level, mobHome.getRestrictionPoint(), structureKey, conquered);
     }
 
-    public static void markStructureConquered(LevelAccessor level, @Nullable GlobalPos pos, ResourceKey<Structure> structureKey, boolean conquered) {
-        if (pos != null) {
-            Optional<StructureStart> nearStart = locateNearestLandmarkStart(level.registryAccess().registryOrThrow(Registries.DIMENSION).getOrThrow(pos.dimension()), structureKey, pos.pos());
+    public static void markStructureConquered(Level level, @Nullable GlobalPos pos, ResourceKey<Structure> structureKey, boolean conquered) {
+        if (pos != null && level.dimension() == pos.dimension()) {
+            Optional<StructureStart> nearStart = locateNearestLandmarkStart(level, structureKey, pos.pos());
             if (nearStart.isEmpty() || !(nearStart.get() instanceof TFStructureStart twilightStart)) return;
 
             twilightStart.setConquered(conquered, level);
