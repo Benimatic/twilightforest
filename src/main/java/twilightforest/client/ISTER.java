@@ -87,6 +87,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	public void onResourceManagerReload(ResourceManager manager) {
 		this.shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 		this.trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+
+		TwilightForestMod.LOGGER.debug("Reloaded ISTER!");
 	}
 
 	@Override

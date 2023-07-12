@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -62,14 +63,24 @@ public class TFClientSetup {
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
 	public static class ForgeEvents {
 
-		private static boolean optifineWarningShown = false;
+		private static boolean firstTitleScreenShown = false;
 
 		@SubscribeEvent
 		public static void showOptifineWarning(ScreenEvent.Init.Post event) {
-			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getScreen() instanceof TitleScreen) {
-				optifineWarningShown = true;
+			if (firstTitleScreenShown || !(event.getScreen() instanceof TitleScreen)) return;
+
+			// Registering this resource listener earlier than the main screen will cause a crash
+			// Yes, crashing happens if registered to RegisterClientReloadListenersEvent
+			if (Minecraft.getInstance().getResourceManager() instanceof ReloadableResourceManager resourceManager) {
+				resourceManager.registerReloadListener(ISTER.INSTANCE.get());
+				TwilightForestMod.LOGGER.debug("Registered ISTER listener");
+			}
+
+			if (optifinePresent && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get()) {
 				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
 			}
+
+			firstTitleScreenShown = true;
 		}
 	}
 
