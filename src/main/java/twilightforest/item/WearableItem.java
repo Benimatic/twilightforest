@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -61,11 +60,6 @@ public class WearableItem extends BlockItem implements CurioItem {
 
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return new ISTER();
-			}
-		});
+		consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
 	}
 }

@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
@@ -42,11 +41,6 @@ public class KnightmetalShieldItem extends ShieldItem {
 
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return new ISTER();
-			}
-		});
+		consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
 	}
 }

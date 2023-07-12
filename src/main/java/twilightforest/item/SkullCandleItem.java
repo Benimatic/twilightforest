@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -126,11 +125,6 @@ public class SkullCandleItem extends StandingAndWallBlockItem implements CurioIt
 
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return new ISTER();
-			}
-		});
+		consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
 	}
 }

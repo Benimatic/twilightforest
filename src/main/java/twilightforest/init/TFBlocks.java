@@ -1,6 +1,5 @@
 package twilightforest.init;
 
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
@@ -596,12 +595,7 @@ public class TFBlocks {
 		TFItems.ITEMS.register(name, () -> new BlockItem(ret.get(), new Item.Properties()) {
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-				consumer.accept(new IClientItemExtensions() {
-					@Override
-					public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-						return new ISTER();
-					}
-				});
+				consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
 			}
 		});
 		return (RegistryObject<T>) ret;

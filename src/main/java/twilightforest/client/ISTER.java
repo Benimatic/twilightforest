@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import com.google.common.base.Suppliers;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
@@ -51,8 +53,17 @@ import twilightforest.item.KnightmetalShieldItem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class ISTER extends BlockEntityWithoutLevelRenderer {
+	public static final Supplier<ISTER> INSTANCE = Suppliers.memoize(ISTER::new);
+	public static final IClientItemExtensions CLIENT_ITEM_EXTENSION = Util.make(() -> new IClientItemExtensions() {
+		@Override
+		public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+			return INSTANCE.get();
+		}
+	});
+
 	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
 	private final Map<Block, TwilightChestEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
@@ -67,7 +78,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
 
-	public ISTER() {
+	// Use the cached INSTANCE.get instead
+	private ISTER() {
 		super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
 	}
 

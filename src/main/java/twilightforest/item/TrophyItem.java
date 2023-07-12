@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.Stats;
@@ -63,11 +62,6 @@ public class TrophyItem extends StandingAndWallBlockItem implements CurioItem {
 
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return new ISTER();
-			}
-		});
+		consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
 	}
 }
