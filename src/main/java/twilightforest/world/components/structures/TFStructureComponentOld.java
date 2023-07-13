@@ -103,6 +103,10 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 
+		setSpawnerInWorld(world, sbb, monsterID, spawnerModifier, pos);
+	}
+
+	protected static void setSpawnerInWorld(WorldGenLevel world, BoundingBox sbb, EntityType<?> monsterID, Consumer<SpawnerBlockEntity> spawnerModifier, BlockPos pos) {
 		if (sbb.isInside(pos)) {
 			if (world.getBlockState(pos).getBlock() != Blocks.SPAWNER)
 				world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 2);
@@ -158,9 +162,12 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
 		int dz = getWorldZ(x, z);
-		BlockPos pos = new BlockPos(dx, dy, dz);
+		this.placeTreasureAtWorldPosition(world, treasureType, trapped, sbb, new BlockPos(dx, dy, dz));
+	}
+
+	protected void placeTreasureAtWorldPosition(WorldGenLevel world, TFLootTables treasureType, boolean trapped, BoundingBox sbb, BlockPos pos) {
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, getOrientation(), trapped);
+			treasureType.generateChest(world, pos, this.getOrientation(), trapped);
 		}
 	}
 
