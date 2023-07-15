@@ -31,6 +31,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
@@ -558,17 +559,16 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	}
 
 	@Override
-	public void remove(RemovalReason removalReason) {
-		if (removalReason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
+	public void remove(RemovalReason reason) {
+		if (reason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
 			IBossLootBuffer.depositDropsIntoChest(this, TFBlocks.DARK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
-		super.remove(removalReason);
+		super.remove(reason);
 	}
 
 	@Override
 	protected boolean shouldDropLoot() {
-		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
-		return false;
+		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
 	}
 
 	// Don't attack (or even think about attacking) things while we're throwing a tantrum

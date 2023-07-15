@@ -22,6 +22,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
 import java.util.Collections;
@@ -134,8 +135,9 @@ public class TFLootTables {
 		}
 	}
 
+	@Deprecated //move to using IBossLootBuffer.saveDropsIntoBoss instead
 	public static void entityDropsIntoContainer(LivingEntity entity, DamageSource source, BlockState blockContaining, BlockPos placement) {
-		if (entity.level() instanceof ServerLevel serverLevel
+		if (entity.level() instanceof ServerLevel serverLevel && TFConfig.COMMON_CONFIG.bossDropChests.get()
 				&& serverLevel.setBlock(placement, blockContaining, DEFAULT_PLACE_FLAG)
 				&& serverLevel.getBlockEntity(placement) instanceof Container container) {
 			LootTable table = serverLevel.getServer().getLootData().getLootTable(entity.getLootTable());

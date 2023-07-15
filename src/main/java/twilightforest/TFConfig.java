@@ -98,6 +98,14 @@ public class TFConfig {
 							""").
 					define("default_item_enchantments", true);
 
+			bossDropChests = builder.
+					translation(config + "boss_drop_chests").
+					comment("""
+							If true, Twilight Forest's bosses will put their drops inside of a chest where they originally spawned instead of dropping the loot directly.
+							Note that the Knight Phantoms are not affected by this as their drops work differently.
+							""").
+					define("boss_drop_chests", true);
+
 			builder.
 					comment("Settings for all things related to the uncrafting table.").
 					push("Uncrafting Table");
@@ -251,6 +259,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public final ForgeConfigSpec.BooleanValue disableSkullCandles;
 		public final ForgeConfigSpec.BooleanValue defaultItemEnchants;
+		public final ForgeConfigSpec.BooleanValue bossDropChests;
 
 		public final MagicTrees MAGIC_TREES = new MagicTrees();
 

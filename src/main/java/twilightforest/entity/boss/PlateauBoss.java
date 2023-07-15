@@ -18,10 +18,13 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
+import twilightforest.loot.TFLootTables;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
 import java.util.ArrayList;
@@ -90,6 +93,12 @@ public class PlateauBoss extends Monster implements EnforcedHomePoint {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 		}
+		TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.SORTING_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+	}
+
+	@Override
+	protected boolean shouldDropLoot() {
+		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
 	}
 
 	@Override
