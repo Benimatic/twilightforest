@@ -32,6 +32,11 @@ public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M
 	}
 
 	@Override
+	protected float getFlipDegrees(Naga naga) { //Prevent the body from keeling over
+		return naga.isDeadOrDying() ? 0.0F : super.getFlipDegrees(naga);
+	}
+
+	@Override
 	public ResourceLocation getTextureLocation(Naga entity) {
 		return textureLoc;
 	}
