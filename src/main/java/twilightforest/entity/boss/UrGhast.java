@@ -329,7 +329,8 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playSound(TFSounds.UR_GHAST_TANTRUM.get());
+				this.playSound(TFSounds.UR_GHAST_TANTRUM.get(), this.getSoundVolume(), this.getVoicePitch());
+				this.ambientSoundTime = -this.getAmbientSoundInterval();
 				this.nextTantrumCry = 20 + this.getRandom().nextInt(30);
 			}
 
