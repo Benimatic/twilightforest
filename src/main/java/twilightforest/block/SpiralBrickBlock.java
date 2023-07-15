@@ -40,7 +40,7 @@ public class SpiralBrickBlock extends Block {
 		} else {
 			//otherwise, place on the x and z with stair logic
 			return this.defaultBlockState()
-					.setValue(AXIS_FACING, context.getHorizontalDirection().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X) //this is insanely jank but for some reason it rotates the wrong way normally. Might be a model issue but im too lazy to fix it, so this works
+					.setValue(AXIS_FACING, context.getHorizontalDirection().getAxis())
 					.setValue(DIAGONAL, getHorizontalDiagonalFromPlayerPlacement(context.getPlayer(), context.getHorizontalDirection(), context.getClickLocation().y - (double) context.getClickedPos().getY() > 0.5D));
 		}
 	}
@@ -56,8 +56,8 @@ public class SpiralBrickBlock extends Block {
 
 	private static Diagonals getHorizontalDiagonalFromPlayerPlacement(LivingEntity placer, Direction facing, boolean upper) {
 		return switch (facing) {
-			case NORTH, EAST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() != facing, upper);
-			case SOUTH, WEST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() == facing, upper);
+			case NORTH, EAST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() == facing, upper);
+			case SOUTH, WEST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() != facing, upper);
 			default -> Diagonals.BOTTOM_RIGHT;
 		};
 
@@ -65,17 +65,21 @@ public class SpiralBrickBlock extends Block {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		if (rot == Rotation.NONE) return state;
-
 		Direction.Axis axis = state.getValue(AXIS_FACING);
+		if (rot == Rotation.CLOCKWISE_180 || (axis == Direction.Axis.X && rot == Rotation.CLOCKWISE_90) || (axis == Direction.Axis.Z && rot == Rotation.COUNTERCLOCKWISE_90))
+			state = state.setValue(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), Mirror.LEFT_RIGHT));
 
-		if (axis == Direction.Axis.Y) {
-			return state.setValue(DIAGONAL, Diagonals.rotate(state.getValue(DIAGONAL), rot));
-		} else {
-			if (rot == Rotation.CLOCKWISE_180 || (axis == Direction.Axis.X && rot == Rotation.COUNTERCLOCKWISE_90) || (axis == Direction.Axis.Z && rot == Rotation.CLOCKWISE_90))
-				state = state.setValue(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), Mirror.LEFT_RIGHT));
-
-			return rot.ordinal() % 2 == 0 ? state : state.setValue(AXIS_FACING, axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
+		switch (rot) {
+			case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> {
+				return switch (state.getValue(AXIS_FACING)) {
+					case X -> state.setValue(AXIS_FACING, Direction.Axis.Z);
+					case Z -> state.setValue(AXIS_FACING, Direction.Axis.X);
+					default -> state;
+				};
+			}
+			default -> {
+				return state;
+			}
 		}
 	}
 
