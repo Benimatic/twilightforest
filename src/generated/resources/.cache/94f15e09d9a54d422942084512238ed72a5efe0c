@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-14T11:23:56.6009055	TwilightForest Item and BlockItem models
+// 1.20.1	2023-07-15T18:32:37.8670829	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -452,7 +452,7 @@ ef75896042acdf73250a50f2495915f4cd663236 assets/twilightforest/models/item/sorti
 12fb9b83acfdfd15de13664997263bde064a13a5 assets/twilightforest/models/item/sorting_stairs.json
 e28d32bc2ee3cae533d79f3a46ae30e794dc1bc5 assets/twilightforest/models/item/sorting_trapdoor.json
 f1e4179eba00d06306f5c674b11d4b20b3524372 assets/twilightforest/models/item/sorting_wood.json
-eea7e6bed56b2ad2bc55425ab9ba01c359ac29dd assets/twilightforest/models/item/spiral_bricks.json
+fbdf1b275da3dd94971a38e4e48de4a3cf337fdd assets/twilightforest/models/item/spiral_bricks.json
 87e85db2a6bfd1b67e3c5f547228ac77b4fc0971 assets/twilightforest/models/item/spruce_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/squirrel_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/stable_ice_core_spawn_egg.json

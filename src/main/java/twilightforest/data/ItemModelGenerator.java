@@ -183,7 +183,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get());
 		toBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get());
 		toBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get());
-		toBlockModel(TFBlocks.SPIRAL_BRICKS.get(), prefix("block/spiral_bricks/x_spiral_bottom_right"));
+		toBlockModel(TFBlocks.SPIRAL_BRICKS.get(), prefix("block/spiral_bricks/z_spiral_bottom_right"));
 		toBlock(TFBlocks.TWISTED_STONE.get());
 		toBlockModel(TFBlocks.TWISTED_STONE_PILLAR.get(), prefix("block/pillar/pillar_inventory"));
 		toBlock(TFBlocks.BOLD_STONE_PILLAR.get());
