@@ -110,13 +110,11 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void transitionState() {
-		this.naga.setDazed(false);
-		this.naga.setCharging(false);
 		switch (this.state) {
 			case INTIMIDATE -> {
 				this.clockwise = !this.clockwise;
 
-				if (naga.getTarget() != null && this.naga.getTarget().getBoundingBox().minY > this.naga.getBoundingBox().maxY) {
+				if (this.naga.getTarget() != null && this.naga.getTarget().getBoundingBox().minY > this.naga.getBoundingBox().maxY) {
 					this.doCrumblePlayer();
 				} else {
 					this.doCharge();
@@ -137,22 +135,17 @@ public class NagaMovementPattern extends Goal {
 	public void doCircle() {
 		this.state = MovementState.CIRCLE;
 		this.stateCounter += 10 + this.naga.getRandom().nextInt(10);
-		this.naga.goNormal();
 	}
 
 	public void doCrumblePlayer() {
 		this.state = MovementState.CRUMBLE;
+		this.naga.getNavigation().stop();
 		this.stateCounter = 20 + this.naga.getRandom().nextInt(20);
-		this.naga.goSlow();
 	}
 
-	/**
-	 * Charge the player.  Although the count is 3, we actually charge only 2 times.
-	 */
 	private void doCharge() {
 		this.state = MovementState.CHARGE;
-		this.stateCounter = 3;
-		this.naga.goFast();
+		this.stateCounter = 2;
 	}
 
 	private void doIntimidate() {
@@ -161,7 +154,6 @@ public class NagaMovementPattern extends Goal {
 		this.naga.gameEvent(GameEvent.ENTITY_ROAR);
 
 		this.stateCounter += 15 + this.naga.getRandom().nextInt(10);
-		this.naga.goSlow();
 	}
 
 	private void crumbleBelowTarget(int range) {

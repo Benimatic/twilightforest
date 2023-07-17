@@ -28,7 +28,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -68,10 +67,7 @@ import twilightforest.network.ThrowPlayerPacket;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer {
 
@@ -79,7 +75,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	private static final int MAX_SEGMENTS = 12;
 	private static final int XZ_HOME_BOUNDS = 46;
 	private static final int Y_HOME_BOUNDS = 7;
-	private static final double DEFAULT_SPEED = 0.3;
+	private static final double DEFAULT_SPEED = 0.5D;
 
 	private int currentSegmentCount = 0; // not including head
 	private final float healthPerSegment;
@@ -90,10 +86,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.NOTCHED_10);
-
-	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, AttributeModifier.Operation.ADDITION);
-	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, AttributeModifier.Operation.ADDITION);
-
+	private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("1fe84ad2-3b63-4922-ade7-546aae84a9e1");
 	private static final EntityDataAccessor<Boolean> DATA_DAZE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> DATA_CHARGE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
@@ -107,7 +100,6 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.bodySegments[i] = new NagaSegment(this);
 		}
 
-		this.goNormal();
 		this.healthPerSegment = this.getMaxHealth() / 10;
 	}
 
@@ -157,12 +149,6 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			@Override
 			public boolean canUse() {
 				return Naga.this.isMobWithinHomeArea(Naga.this) && Naga.this.getTarget() == null && super.canUse();
-			}
-
-			@Override
-			public void start() {
-				Naga.this.goNormal();
-				super.start();
 			}
 
 			@Override
@@ -237,7 +223,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	 */
 	private void setSegmentsPerHealth() {
 		int oldSegments = this.currentSegmentCount;
-		int newSegments = Mth.clamp((int) ((this.getHealth() / this.healthPerSegment) + (getHealth() > 0 ? 2 : 0)), 0, MAX_SEGMENTS);
+		int newSegments = Mth.clamp((int) ((this.getHealth() / this.healthPerSegment) + (this.getHealth() > 0 ? 2 : 0)), 0, MAX_SEGMENTS);
 		this.currentSegmentCount = newSegments;
 		if (newSegments < oldSegments) {
 			for (int i = newSegments; i < oldSegments; i++) {
@@ -247,11 +233,11 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.activateBodySegments();
 		}
 
-		if (!this.level().isClientSide()) {
-			double newSpeed = DEFAULT_SPEED - newSegments * (-0.2F / 12F);
-			if (newSpeed < 0)
-				newSpeed = 0;
-			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(newSpeed);
+		if (!this.level().isClientSide() && oldSegments != newSegments) {
+			double speedMod = ((float)MAX_SEGMENTS / newSegments * 0.02F);
+			AttributeModifier modifier = new AttributeModifier(MOVEMENT_SPEED_UUID, "Segment Count Speed Boost", speedMod, AttributeModifier.Operation.ADDITION);
+			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(MOVEMENT_SPEED_UUID);
+			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(modifier);
 		}
 	}
 
@@ -296,9 +282,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		}
 
 		this.setSegmentsPerHealth();
-
 		super.tick();
-
 		this.moveSegments();
 	}
 
@@ -346,32 +330,6 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.NAGA_HURT.get();
-	}
-
-	/**
-	 * Sets the naga to move slowly, such as when he is intimidating the player
-	 */
-	public void goSlow() {
-		Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
-		Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(fastSpeed);
-		Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(slowSpeed);
-	}
-
-	/**
-	 * Normal speed, like when he is circling
-	 */
-	public void goNormal() {
-		Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(slowSpeed);
-		Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(fastSpeed);
-	}
-
-	/**
-	 * Fast, like when he is charging
-	 */
-	public void goFast() {
-		Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(slowSpeed);
-		Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(fastSpeed);
-		Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(fastSpeed);
 	}
 
 	@Override
@@ -452,7 +410,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	public void remove(RemovalReason reason) {
 		if (reason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
-			IBossLootBuffer.depositDropsIntoChest(this, this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+			IBossLootBuffer.depositDropsIntoChest(this, this.getRandom().nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 		super.remove(reason);
 		if (this.level() instanceof ServerLevel) {
@@ -587,7 +545,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	@Override
 	protected void tickDeath() {
 		++this.deathTime;
-		if (!this.level().isClientSide && !this.isRemoved()) {
+		if (!this.level().isClientSide() && !this.isRemoved()) {
 			int renderEnd = 24;
 			int maxDeath = renderEnd + 120;
 			if (this.deathTime >= renderEnd) {
@@ -607,9 +565,9 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 					ParticlePacket particlePacket = new ParticlePacket();
 					if (this.deathTime >= maxDeath - 3) {
 						for (int i = 0; i < 40; i++) {
-							double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-							double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-							double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+							double x = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
+							double y = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
+							double z = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
 							particlePacket.queueParticle(ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
 						}
 					}
@@ -649,11 +607,11 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			float width = this.getBbWidth();
 			float height = this.getBbHeight();
 			for (int k = 0; k < 20; k++) {
-				this.level().addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
-						(pos.x + this.random.nextFloat() * width * 2.0F) - width,
-						pos.y + this.random.nextFloat() * height,
-						(pos.z + this.random.nextFloat() * width * 2.0F) - width,
-						this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
+				this.level().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION_EMITTER,
+						(pos.x() + this.getRandom().nextFloat() * width * 2.0F) - width,
+						pos.y() + this.getRandom().nextFloat() * height,
+						(pos.z() + this.getRandom().nextFloat() * width * 2.0F) - width,
+						this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
 			}
 		}
 		super.handleEntityEvent(id);
