@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "twilightforest:forced_landmark",
+    "landmark_set": "hedge_maze",
+    "scan_elevation": 256
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:hedge_maze",
+      "weight": 1
+    }
+  ]
+}

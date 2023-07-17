@@ -1,348 +1,159 @@
 package twilightforest.client.renderer;
 
-import java.util.Random;
-
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.client.IRenderHandler;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Matrix4f;
 
-import org.lwjgl.opengl.GL11;
+@OnlyIn(Dist.CLIENT)
+public class TFSkyRenderer {
 
-import twilightforest.world.TFWorld;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+	private static VertexBuffer starBuffer;
 
-public class TFSkyRenderer extends IRenderHandler {
-
-    /** The star GL Call list */
-    private int starGLCallList;
-
-    /** OpenGL sky list */
-    private int glSkyList;
-
-    /** OpenGL sky list 2 */
-    private int glSkyList2;
-
-	@SideOnly(Side.CLIENT)
-    public TFSkyRenderer() 
-	{
-        this.starGLCallList = GLAllocation.generateDisplayLists(3);
-        GL11.glPushMatrix();
-        GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
-        this.renderStars();
-        GL11.glEndList();
-        GL11.glPopMatrix();
-        Tessellator var5 = Tessellator.instance;
-        this.glSkyList = this.starGLCallList + 1;
-        GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
-        byte var7 = 64;
-        int var8 = 256 / var7 + 2;
-        float var6 = 16.0F;
-        int var9;
-        int var10;
-
-        for (var9 = -var7 * var8; var9 <= var7 * var8; var9 += var7)
-        {
-            for (var10 = -var7 * var8; var10 <= var7 * var8; var10 += var7)
-            {
-                var5.startDrawingQuads();
-                var5.addVertex((double)(var9 + 0), (double)var6, (double)(var10 + 0));
-                var5.addVertex((double)(var9 + var7), (double)var6, (double)(var10 + 0));
-                var5.addVertex((double)(var9 + var7), (double)var6, (double)(var10 + var7));
-                var5.addVertex((double)(var9 + 0), (double)var6, (double)(var10 + var7));
-                var5.draw();
-            }
-        }
-
-        GL11.glEndList();
-        this.glSkyList2 = this.starGLCallList + 2;
-        GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
-        var6 = -16.0F;
-        var5.startDrawingQuads();
-
-        for (var9 = -var7 * var8; var9 <= var7 * var8; var9 += var7)
-        {
-            for (var10 = -var7 * var8; var10 <= var7 * var8; var10 += var7)
-            {
-                var5.addVertex((double)(var9 + var7), (double)var6, (double)(var10 + 0));
-                var5.addVertex((double)(var9 + 0), (double)var6, (double)(var10 + 0));
-                var5.addVertex((double)(var9 + 0), (double)var6, (double)(var10 + var7));
-                var5.addVertex((double)(var9 + var7), (double)var6, (double)(var10 + var7));
-            }
-        }
-
-        var5.draw();
-        GL11.glEndList();
-    }
-    
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void render(float partialTicks, WorldClient world, Minecraft mc) {
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        Vec3 var2 = getTwilightSkyColor(world);//Vec3 var2 = world.getSkyColor(mc.renderViewEntity, partialTicks);
-        float var3 = (float)var2.xCoord;
-        float var4 = (float)var2.yCoord;
-        float var5 = (float)var2.zCoord;
-        float var8;
-
-        if (mc.gameSettings.anaglyph)
-        {
-            float var6 = (var3 * 30.0F + var4 * 59.0F + var5 * 11.0F) / 100.0F;
-            float var7 = (var3 * 30.0F + var4 * 70.0F) / 100.0F;
-            var8 = (var3 * 30.0F + var5 * 70.0F) / 100.0F;
-            var3 = var6;
-            var4 = var7;
-            var5 = var8;
-        }
-
-        GL11.glColor3f(var3, var4, var5);
-        Tessellator var23 = Tessellator.instance;
-        GL11.glDepthMask(false);
-        GL11.glEnable(GL11.GL_FOG);
-        GL11.glColor3f(var3, var4, var5);
-        GL11.glCallList(this.glSkyList);
-        GL11.glDisable(GL11.GL_FOG);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        RenderHelper.disableStandardItemLighting();
-//        float[] var24 = world.provider.calcSunriseSunsetColors(world.getCelestialAngle(partialTicks), partialTicks);
-        float var9;
-        float var10;
-        float var11;
-        float var12;
-
-//        if (var24 != null)
-//        {
-//            GL11.glDisable(GL11.GL_TEXTURE_2D);
-//            GL11.glShadeModel(GL11.GL_SMOOTH);
-//            GL11.glPushMatrix();
-//            GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-//            GL11.glRotatef(MathHelper.sin(world.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
-//            GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
-//            var8 = var24[0];
-//            var9 = var24[1];
-//            var10 = var24[2];
-//            float var13;
-//
-//            if (mc.gameSettings.anaglyph)
-//            {
-//                var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
-//                var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
-//                var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
-//                var8 = var11;
-//                var9 = var12;
-//                var10 = var13;
-//            }
-//
-//            var23.startDrawing(6);
-//            var23.setColorRGBA_F(var8, var9, var10, var24[3]);
-//            var23.addVertex(0.0D, 100.0D, 0.0D);
-//            byte var26 = 16;
-//            var23.setColorRGBA_F(var24[0], var24[1], var24[2], 0.0F);
-//
-//            for (int var27 = 0; var27 <= var26; ++var27)
-//            {
-//                var13 = (float)var27 * (float)Math.PI * 2.0F / (float)var26;
-//                float var14 = MathHelper.sin(var13);
-//                float var15 = MathHelper.cos(var13);
-//                var23.addVertex((double)(var14 * 120.0F), (double)(var15 * 120.0F), (double)(-var15 * 40.0F * var24[3]));
-//            }
-//
-//            var23.draw();
-//            GL11.glPopMatrix();
-//            GL11.glShadeModel(GL11.GL_FLAT);
-//        }
-
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glPushMatrix();
-        var8 = 1.0F - world.getRainStrength(partialTicks);
-        var9 = 0.0F;
-        var10 = 0.0F;
-        var11 = 0.0F;
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, var8);
-        GL11.glTranslatef(var9, var10, var11);
-        GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(getRealCelestialAngle(world, partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);//GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        var12 = 30.0F;
-//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/terrain/sun.png"));
-//        var23.startDrawingQuads();
-//        var23.addVertexWithUV((double)(-var12), 100.0D, (double)(-var12), 0.0D, 0.0D);
-//        var23.addVertexWithUV((double)var12, 100.0D, (double)(-var12), 1.0D, 0.0D);
-//        var23.addVertexWithUV((double)var12, 100.0D, (double)var12, 1.0D, 1.0D);
-//        var23.addVertexWithUV((double)(-var12), 100.0D, (double)var12, 0.0D, 1.0D);
-//        var23.draw();
-//        var12 = 20.0F;
-//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/terrain/moon_phases.png"));
-//        int var28 = world.getMoonPhase(partialTicks);
-//        int var30 = var28 % 4;
-//        int var29 = var28 / 4 % 2;
-//        float var16 = (float)(var30 + 0) / 4.0F;
-//        float var17 = (float)(var29 + 0) / 2.0F;
-//        float var18 = (float)(var30 + 1) / 4.0F;
-//        float var19 = (float)(var29 + 1) / 2.0F;
-//        var23.startDrawingQuads();
-//        var23.addVertexWithUV((double)(-var12), -100.0D, (double)var12, (double)var18, (double)var19);
-//        var23.addVertexWithUV((double)var12, -100.0D, (double)var12, (double)var16, (double)var19);
-//        var23.addVertexWithUV((double)var12, -100.0D, (double)(-var12), (double)var16, (double)var17);
-//        var23.addVertexWithUV((double)(-var12), -100.0D, (double)(-var12), (double)var18, (double)var17);
-//        var23.draw();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        float var20 = 1.0f;//world.getStarBrightness(partialTicks) * var8;
-
-        if (var20 > 0.0F)
-        {
-            GL11.glColor4f(var20, var20, var20, var20);
-            GL11.glCallList(this.starGLCallList);
-        }
-
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_FOG);
-        GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor3f(0.0F, 0.0F, 0.0F);
-        double var25 = mc.thePlayer.getPosition(partialTicks).yCoord - TFWorld.SEALEVEL;
-
-        if (var25 < 0.0D)
-        {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 12.0F, 0.0F);
-            GL11.glCallList(this.glSkyList2);
-            GL11.glPopMatrix();
-            var10 = 1.0F;
-            var11 = -((float)(var25 + 65.0D));
-            var12 = -var10;
-            var23.startDrawingQuads();
-            var23.setColorRGBA_I(0, 255);
-            var23.addVertex((double)(-var10), (double)var11, (double)var10);
-            var23.addVertex((double)var10, (double)var11, (double)var10);
-            var23.addVertex((double)var10, (double)var12, (double)var10);
-            var23.addVertex((double)(-var10), (double)var12, (double)var10);
-            var23.addVertex((double)(-var10), (double)var12, (double)(-var10));
-            var23.addVertex((double)var10, (double)var12, (double)(-var10));
-            var23.addVertex((double)var10, (double)var11, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var11, (double)(-var10));
-            var23.addVertex((double)var10, (double)var12, (double)(-var10));
-            var23.addVertex((double)var10, (double)var12, (double)var10);
-            var23.addVertex((double)var10, (double)var11, (double)var10);
-            var23.addVertex((double)var10, (double)var11, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var11, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var11, (double)var10);
-            var23.addVertex((double)(-var10), (double)var12, (double)var10);
-            var23.addVertex((double)(-var10), (double)var12, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var12, (double)(-var10));
-            var23.addVertex((double)(-var10), (double)var12, (double)var10);
-            var23.addVertex((double)var10, (double)var12, (double)var10);
-            var23.addVertex((double)var10, (double)var12, (double)(-var10));
-            var23.draw();
-        }
-
-        if (world.provider.isSkyColored())
-        {
-            GL11.glColor3f(var3 * 0.2F + 0.04F, var4 * 0.2F + 0.04F, var5 * 0.6F + 0.1F);
-        }
-        else
-        {
-            GL11.glColor3f(var3, var4, var5);
-        }
-
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, -((float)(var25 - 16.0D)), 0.0F);
-        GL11.glCallList(this.glSkyList2);
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDepthMask(true);
-	}
-	
-	private float getRealCelestialAngle(World world, float partialTicks) {
-        int var4 = (int)(world.getWorldTime() % 24000L);
-        float var5 = ((float)var4 + partialTicks) / 24000.0F - 0.25F;
-
-        if (var5 < 0.0F)
-        {
-            ++var5;
-        }
-
-        if (var5 > 1.0F)
-        {
-            --var5;
-        }
-
-        float var6 = var5;
-        var5 = 1.0F - (float)((Math.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
-        var5 = var6 + (var5 - var6) / 3.0F;
-        return var5;
+	public TFSkyRenderer() {
+		this.createStars();
 	}
 
-	/**
-	 * Maybe in the future we can get the return of sky color by biome?
-	 * @return
-	 */
-	private Vec3 getTwilightSkyColor(World world) {
-		return Vec3.createVectorHelper(32 / 256.0, 34 / 256.0, 74 / 256.0);
-//		return Vec3.createVectorHelper(43 / 256.0, 46 / 256.0, 99 / 256.0);
- 	}
 
-	
-	 private void renderStars()
-	    {
-	        Random var1 = new Random(10842L);
-	        Tessellator var2 = Tessellator.instance;
-	        var2.startDrawingQuads();
+	// [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, using our own stars at full brightness, and lowering void horizon threshold height from getHorizonHeight (63) to 0
+	public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack stack, Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
+		LevelRenderer levelRenderer = Minecraft.getInstance().levelRenderer;
 
-	        for (int var3 = 0; var3 < 3000; ++var3)
-	        {
-	            double var4 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-	            double var6 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-	            double var8 = (double)(var1.nextFloat() * 2.0F - 1.0F);
-	            double size = (double)(0.10F + var1.nextFloat() * 0.25F);
-	            double var12 = var4 * var4 + var6 * var6 + var8 * var8;
+		setupFog.run();
+		Vec3 vec3 = level.getSkyColor(camera.getPosition(), partialTicks);
+		float f = (float) vec3.x();
+		float f1 = (float) vec3.y();
+		float f2 = (float) vec3.z();
+		FogRenderer.levelFogColor();
+		//BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder(); TF - Unused
+		RenderSystem.depthMask(false);
+		RenderSystem.setShaderColor(f, f1, f2, 1.0F);
+		ShaderInstance shaderinstance = RenderSystem.getShader();
+		levelRenderer.skyBuffer.bind();
+		levelRenderer.skyBuffer.drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
+		VertexBuffer.unbind();
+		RenderSystem.enableBlend();
+		/* TF - snip out sunrise/sunset since that doesn't happen here
+		 * float[] afloat = level.effects().getSunriseColor(level.getTimeOfDay(partialTicks), partialTicks);
+		 * if (afloat != null) ...
+		 */
 
-	            if (var12 < 1.0D && var12 > 0.01D)
-	            {
-	                var12 = 1.0D / Math.sqrt(var12);
-	                var4 *= var12;
-	                var6 *= var12;
-	                var8 *= var12;
-	                double var14 = var4 * 100.0D;
-	                double var16 = var6 * 100.0D;
-	                double var18 = var8 * 100.0D;
-	                double var20 = Math.atan2(var4, var8);
-	                double var22 = Math.sin(var20);
-	                double var24 = Math.cos(var20);
-	                double var26 = Math.atan2(Math.sqrt(var4 * var4 + var8 * var8), var6);
-	                double var28 = Math.sin(var26);
-	                double var30 = Math.cos(var26);
-	                double var32 = var1.nextDouble() * Math.PI * 2.0D;
-	                double var34 = Math.sin(var32);
-	                double var36 = Math.cos(var32);
+		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		stack.pushPose();
+		float f11 = 1.0F - level.getRainLevel(partialTicks);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, f11);
+		stack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+		stack.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
+		/* TF - snip out sun/moon
+		 * Matrix4f matrix4f1 = stack.last().pose();
+		 * float f12 = 30.0F;
+		 * ...
+		 * BufferUploader.drawWithShader(bufferbuilder.end());
+		 */
+		float f10 = 1.0F; // TF - stars are always bright
 
-	                for (int var38 = 0; var38 < 4; ++var38)
-	                {
-	                    double var39 = 0.0D;
-	                    double var41 = (double)((var38 & 2) - 1) * size;
-	                    double var43 = (double)((var38 + 1 & 2) - 1) * size;
-	                    double var47 = var41 * var36 - var43 * var34;
-	                    double var49 = var43 * var36 + var41 * var34;
-	                    double var53 = var47 * var28 + var39 * var30;
-	                    double var55 = var39 * var28 - var47 * var30;
-	                    double var57 = var55 * var22 - var49 * var24;
-	                    double var61 = var49 * var22 + var55 * var24;
-	                    var2.addVertex(var14 + var57, var16 + var53, var18 + var61);
-	                }
-	            }
-	        }
+		//if (f10 > 0.0F) { Always true
+		RenderSystem.setShaderColor(f10, f10, f10, f10);
+		RenderSystem.setShaderColor(f10, f10, f10, f10);
+		FogRenderer.setupNoFog();
+		starBuffer.bind();
+		starBuffer.drawWithShader(stack.last().pose(), projectionMatrix, GameRenderer.getPositionShader());
+		VertexBuffer.unbind();
+		setupFog.run();
+		//}
 
-	        var2.draw();
-	    }
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.disableBlend();
+		RenderSystem.defaultBlendFunc();
+		stack.popPose();
+		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
+		double d0 = camera.getEntity().getEyePosition(partialTicks).y(); // - level.getLevelData().getHorizonHeight(level); // TF: Lower Void Horizon Y-Threshold from 63 to 0
+		if (d0 < 0.0D) {
+			stack.pushPose();
+			stack.translate(0.0F, 12.0F, 0.0F);
+			levelRenderer.darkBuffer.bind();
+			levelRenderer.darkBuffer.drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
+			VertexBuffer.unbind();
+			stack.popPose();
+		}
 
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.depthMask(true);
+		return true;
+	}
+
+	// [VanillaCopy] LevelRenderer.createStars
+	private void createStars() {
+		Tesselator tesselator = Tesselator.getInstance();
+		BufferBuilder bufferbuilder = tesselator.getBuilder();
+		RenderSystem.setShader(GameRenderer::getPositionShader);
+		if (starBuffer != null) {
+			starBuffer.close();
+		}
+
+		starBuffer = new VertexBuffer();
+		BufferBuilder.RenderedBuffer renderedBuffer = this.drawStars(bufferbuilder);
+		starBuffer.bind();
+		starBuffer.upload(renderedBuffer);
+		VertexBuffer.unbind();
+	}
+
+	// [VanillaCopy] of LevelRenderer.drawStars but with double the number of them
+	private BufferBuilder.RenderedBuffer drawStars(BufferBuilder bufferBuilder) {
+		RandomSource random = RandomSource.create(10842L);
+		bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+
+		// TF - 1500 -> 3000
+		for (int i = 0; i < 3000; ++i) {
+			double d0 = random.nextFloat() * 2.0F - 1.0F;
+			double d1 = random.nextFloat() * 2.0F - 1.0F;
+			double d2 = random.nextFloat() * 2.0F - 1.0F;
+			double d3 = 0.15F + random.nextFloat() * 0.1F;
+			double d4 = d0 * d0 + d1 * d1 + d2 * d2;
+			if (d4 < 1.0D && d4 > 0.01D) {
+				d4 = 1.0D / Math.sqrt(d4);
+				d0 *= d4;
+				d1 *= d4;
+				d2 *= d4;
+				double d5 = d0 * 100.0D;
+				double d6 = d1 * 100.0D;
+				double d7 = d2 * 100.0D;
+				double d8 = Math.atan2(d0, d2);
+				double d9 = Math.sin(d8);
+				double d10 = Math.cos(d8);
+				double d11 = Math.atan2(Math.sqrt(d0 * d0 + d2 * d2), d1);
+				double d12 = Math.sin(d11);
+				double d13 = Math.cos(d11);
+				double d14 = random.nextDouble() * Math.PI * 2.0D;
+				double d15 = Math.sin(d14);
+				double d16 = Math.cos(d14);
+
+				for (int j = 0; j < 4; ++j) {
+					double d18 = ((j & 2) - 1) * d3;
+					double d19 = ((j + 1 & 2) - 1) * d3;
+					double d21 = d18 * d16 - d19 * d15;
+					double d22 = d19 * d16 + d18 * d15;
+					double d23 = d21 * d12 + 0.0D * d13;
+					double d24 = 0.0D * d12 - d21 * d13;
+					double d25 = d24 * d9 - d22 * d10;
+					double d26 = d22 * d9 + d24 * d10;
+					bufferBuilder.vertex(d5 + d25, d6 + d23, d7 + d26).endVertex();
+				}
+			}
+		}
+
+		return bufferBuilder.end();
+	}
 }

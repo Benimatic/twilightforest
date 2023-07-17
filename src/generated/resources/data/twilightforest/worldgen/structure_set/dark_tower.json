@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "twilightforest:forced_landmark",
+    "landmark_set": "dark_tower",
+    "scan_elevation": 256
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:dark_tower",
+      "weight": 1
+    }
+  ]
+}

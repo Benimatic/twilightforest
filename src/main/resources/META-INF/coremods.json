@@ -1,0 +1,12 @@
+{
+  "seed": "META-INF/asm/seed.js",
+  "maprendercontext": "META-INF/asm/maprendercontext.js",
+  "music": "META-INF/asm/music.js",
+  "multipart": "META-INF/asm/multipart.js",
+  "foliage": "META-INF/asm/foliage.js",
+  "mount": "META-INF/asm/mount.js",
+  "book": "META-INF/asm/book.js",
+  "conquered": "META-INF/asm/conquered.js",
+  "reach": "META-INF/asm/reach.js",
+  "shroom": "META-INF/asm/shroom.js"
+}

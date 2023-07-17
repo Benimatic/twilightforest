@@ -1,0 +1,62 @@
+{
+  "parent": "twilightforest:progress_merge",
+  "criteria": {
+    "beans": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:magic_beans"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "use_beans": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:magic_beans"
+          ]
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "twilightforest:uberous_soil"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.beanstalk.desc",
+      "with": [
+        {
+          "translate": "item.twilightforest.magic_beans"
+        }
+      ]
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:huge_stalk"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.beanstalk"
+    }
+  },
+  "requirements": [
+    [
+      "beans"
+    ],
+    [
+      "use_beans"
+    ]
+  ]
+}

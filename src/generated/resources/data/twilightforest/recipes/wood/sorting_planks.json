@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "twilightforest:sorting_log"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "twilightforest:sorting_planks"
+  }
+}

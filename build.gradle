@@ -1,65 +1,194 @@
 buildscript {
     repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
+    }
+}
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'maven-publish'
+apply plugin: 'eclipse'
+
+version = (hasProperty("CIRevision") ? CIRevision : mod_version)
+group = group_name
+archivesBaseName = "${mod_id}-${minecraft_sub_version}"
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
+
+minecraft {
+    //mappings channel: "official", version: "1.19.4"
+    // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
+    mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.19.4'
+
+    //version = minecraft_version + "-" + forge_version // grab latest forge
+    //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'fml.earlyprogresswindow', 'false'
+            property 'mixin.env.disableRefMap', 'true'
+
+            mods {
+                twilightforest {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.disableRefMap', 'true'
+
+            mods {
+                twilightforest {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        gameTestServer {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'twilightforest'
+
+            mods {
+                twilightforest {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            properties 'fml.earlyprogresswindow': 'false'
+            property 'mixin.env.disableRefMap', 'true'
+
+            mods {
+                twilightforest {
+                    source sourceSets.main
+                }
+            }
+            args '--mod', 'twilightforest', '--all',
+                    '--existing', '"' + file('src/main/resources/') + '"',
+                    '--existing', '"' + file('src/generated/resources/') + '"',
+                    '--output', '"' + file('src/generated/resources/') + '"'
+        }
     }
 }
 
-apply plugin: 'forge'
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
 
-version = "2.3.8dev"
-group= "twilightforest" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "twilightforest-1.7.10"
+compileJava {
+    options.encoding = 'UTF-8'
+}
 
-minecraft {
-    version = "1.7.10-10.13.4.1558-1.7.10"
-    runDir = "eclipse"
+jar {
+    classifier = 'universal'
+    manifest {
+        attributes(["Specification-Title"     : "Twilight Forest",
+                    "Specification-Vendor"    : "TeamTwilight",
+                    "Specification-Version"   : "${version}",
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : "${version}",
+                    "Implementation-Vendor"   : "TeamTwilight",
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+    }
+}
+
+repositories {
+    maven {
+        name 'Jared\'s Maven' // JEI
+        url 'https://maven.blamejared.com/'
+    }
+    maven {
+        name 'tterrag\'s Maven' // CTM
+        url 'https://maven.tterrag.com/'
+    }
+    maven {
+        name 'theillusivec4\'s Maven' // Curios
+        url 'https://maven.theillusivec4.top/'
+    }
+    maven {
+        name 'Tama\'s Maven' // Cross-Dim Commands
+        url "https://maven.tamaized.com/releases"
+    }
+    maven {
+        name 'Curseforge Maven' // Jade
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+    // jared
+    implementation fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${jei_version}")
 
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    
-    compile files('libs/Thaumcraft-deobf-1.7.10-4.2.3.5.jar')
-    
+    // tterrag
+    //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
+
+    // theillusivec4
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.minecraft_sub_version}-${curios_version}")
+
+    //curse maven
+    implementation fg.deobf("curse.maven:jade-324717:4439089-api-4439091")
+    //runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3944903")
+
+    compileOnly fg.deobf("curse.maven:the-one-probe-245211:4442439")
+
+    //mods we dont have compat with but are nice to have
+    //runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_sub_version}-1.0")
+
+    minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+jar.finalizedBy('reobfJar')
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            afterEvaluate {
+                artifact project.jar
+                artifact project.sourceJar
+            }
+            setGroupId 'teamtwilight'
+            setArtifactId project.mod_id
+        }
     }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    repositories {
+        maven {
+            //url "file:///${project.projectDir}/mcmodsrepo"
+            url "https://modmaven.dev:443/artifactory/local-releases"
+            credentials {
+                username System.getenv('ARTIFACTORY_USER')
+                password System.getenv('ARTIFACTORY_PASS')
+            }
+        }
     }
+}
+
+task sourceJar(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
 }

@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "twilightforest:forced_landmark",
+    "landmark_set": "large_hollow_hill",
+    "scan_elevation": 256
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:large_hollow_hill",
+      "weight": 1
+    }
+  ]
+}
