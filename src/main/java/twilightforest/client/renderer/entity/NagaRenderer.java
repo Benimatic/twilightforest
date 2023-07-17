@@ -18,17 +18,17 @@ public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");
 
-	public NagaRenderer(EntityRendererProvider.Context manager, M modelbase, float shadowSize) {
-		super(manager, modelbase, shadowSize);
+	public NagaRenderer(EntityRendererProvider.Context manager, M model, float shadowSize) {
+		super(manager, model, shadowSize);
 		this.addLayer(new NagaEyelidsLayer<>(this));
 	}
 
 	@Override
-	protected void scale(Naga entity, PoseStack stack, float p_225620_3_) {
-		super.scale(entity, stack, p_225620_3_);
+	protected void scale(Naga entity, PoseStack stack, float partialTicks) {
+		super.scale(entity, stack, partialTicks);
 		//make size adjustment
-		stack.translate(0.0F, 1.75F, 0.0F);
-		stack.scale(2.0F, 2.0F, 2.0F);
+		stack.scale(2.01F, 2.01F, 2.01F);
+		stack.translate(0.0F, entity.isDazed() ? 1.075F : 0.75F, entity.isDazed() ? 0.175F : 0.0F);
 	}
 
 	@Override
@@ -49,10 +49,10 @@ public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M
 		}
 
 		@Override
-		public void render(PoseStack stack, MultiBufferSource buffer, int i, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			if(entitylivingbaseIn.isDazed()) {
+		public void render(PoseStack stack, MultiBufferSource buffer, int light, T naga, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+			if (naga.isDazed()) {
 				VertexConsumer vertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocDazed));
-				this.getParentModel().renderToBuffer(stack, vertex, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				this.getParentModel().renderToBuffer(stack, vertex, light, OverlayTexture.pack(0.0F, naga.hurtTime > 0), 1.0F, 1.0F, 1.0F, 1.0F);
 			}
 		}
 	}

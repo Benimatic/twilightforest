@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -76,14 +77,13 @@ public class NagaSegment extends TFPart<Naga> {
 				float width = this.getBbWidth();
 				float height = this.getBbHeight();
 				for (int k = 0; k < 20; k++) {
-					this.level().addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
-							(pos.x + this.random.nextFloat() * width * 2.0F) - width,
-							pos.y + this.random.nextFloat() * height,
-							(pos.z + this.random.nextFloat() * width * 2.0F) - width,
+					this.level().addParticle(this.random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION_EMITTER,
+							(pos.x() + this.random.nextFloat() * width * 2.0F) - width,
+							pos.y() + this.random.nextFloat() * height,
+							(pos.z() + this.random.nextFloat() * width * 2.0F) - width,
 							this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
 				}
 
-				this.getParent().playHurtSound(this.damageSources().generic());
 				this.getParent().deathTime = 0;
 				this.deactivate();
 			}
@@ -91,7 +91,7 @@ public class NagaSegment extends TFPart<Naga> {
 	}
 
 	private void collideWithOthers() {
-		List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
+		List<Entity> list = this.level().getEntities(this, this.getBoundingBox());
 
 		for (Entity entity : list) {
 			if (entity.isPushable()) {
@@ -122,7 +122,7 @@ public class NagaSegment extends TFPart<Naga> {
 	}
 
 	public void activate() {
-		this.setSize(EntityDimensions.scalable(1.8F, 1.8F));
+		this.setSize(EntityDimensions.scalable(2.0F, 2.0F));
 		this.setInvisible(false);
 	}
 

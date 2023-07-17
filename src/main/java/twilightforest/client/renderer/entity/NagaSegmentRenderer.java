@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
-import twilightforest.client.renderer.entity.TFPartRenderer;
 import twilightforest.entity.boss.NagaSegment;
 
 public class NagaSegmentRenderer<T extends NagaSegment> extends TFPartRenderer<T, NagaModel<T>> {
@@ -19,27 +18,27 @@ public class NagaSegmentRenderer<T extends NagaSegment> extends TFPartRenderer<T
 	}
 
 	@Override
-	public void render(T entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-		if(!entityIn.isInvisible()) {
-			matrixStackIn.pushPose();
+	public void render(T segment, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+		if (!segment.isInvisible()) {
+			stack.pushPose();
 
-			float yawDiff = entityIn.getYRot() - entityIn.yRotO;
+			float yawDiff = segment.getYRot() - segment.yRotO;
 			if (yawDiff > 180) {
 				yawDiff -= 360;
 			} else if (yawDiff < -180) {
 				yawDiff += 360;
 			}
-			float yaw2 = entityIn.yRotO + yawDiff * partialTicks;
+			float yaw2 = segment.yRotO + yawDiff * partialTicks;
 
-			matrixStackIn.mulPose(Axis.YP.rotationDegrees(yaw2));
-			matrixStackIn.mulPose(Axis.XP.rotationDegrees(entityIn.getXRot()));
+			stack.mulPose(Axis.YP.rotationDegrees(yaw2));
+			stack.mulPose(Axis.XP.rotationDegrees(segment.getXRot()));
 
-			matrixStackIn.scale(2.0F, 2.0F, 2.0F);
-			matrixStackIn.translate(0.0D, -1.501F, 0.0D);
+			stack.scale(2.0F, 2.0F, 2.0F);
+			stack.translate(0.0D, -1.25F, 0.0D);
 
-			int light = entityRenderDispatcher.getPackedLightCoords(entityIn.getParent(), partialTicks);
-			super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, light);
-			matrixStackIn.popPose();
+			int realLight = this.entityRenderDispatcher.getPackedLightCoords(segment.getParent(), partialTicks);
+			super.render(segment, entityYaw, partialTicks, stack, buffer, realLight);
+			stack.popPose();
 		}
 	}
 

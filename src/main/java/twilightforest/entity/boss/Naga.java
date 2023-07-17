@@ -323,11 +323,6 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	}
 
 	@Override
-	public void playHurtSound(DamageSource pSource) {//Just made public
-		super.playHurtSound(pSource);
-	}
-
-	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.NAGA_HURT.get();
 	}
@@ -500,14 +495,13 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.bodySegments[i].setPos(destX, destY, destZ);
 
 			double distance = Mth.sqrt((float) (diff.x() * diff.x() + diff.z() * diff.z()));
-
-			if (i == 0) {
-				// tilt segment next to head up towards head
-				diff = diff.add(0.0D, -0.15D, 0.0D);
-			}
-
 			this.bodySegments[i].setRot((float) (Math.atan2(diff.z(), diff.x()) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.y(), distance) * 180.0D / Math.PI));
 		}
+	}
+
+	@Override
+	protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+		return dimensions.height * 0.75F;
 	}
 
 	@Override
@@ -533,6 +527,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		// mark the courtyard as defeated
 		if (this.level() instanceof ServerLevel serverLevel) {
 			this.bossInfo.setProgress(0.0F);
+			this.setDazed(false);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.NAGA_COURTYARD, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
