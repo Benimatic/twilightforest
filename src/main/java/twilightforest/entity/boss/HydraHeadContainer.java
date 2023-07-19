@@ -689,7 +689,7 @@ public class HydraHeadContainer {
 			for (Entity nearby : nearbyList) {
 				if (nearby instanceof LivingEntity living && nearby != this.hydra) {
 					//is a player holding a shield? Let's do some extra stuff!
-					if (nearby instanceof Player player && player.isUsingItem() && player.getUseItem().getItem().canPerformAction(player.getUseItem(), ToolActions.SHIELD_BLOCK)) {
+					if (nearby instanceof Player player && player.isBlocking()) {
 						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
 							//cause severe damage and play a shatter sound
 							this.headEntity.level().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
@@ -697,6 +697,7 @@ public class HydraHeadContainer {
 						}
 						//add cooldown and knockback
 						player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
+						player.stopUsingItem();
 						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ThrowPlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F));
 					}
 

@@ -82,6 +82,8 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	private final NagaSegment[] bodySegments = new NagaSegment[MAX_SEGMENTS];
 	private NagaMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
+	private int damageDuringCurrentStun = 0;
+	public float stunlessRedOverlayProgress = 0.0F;
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
@@ -89,6 +91,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("1fe84ad2-3b63-4922-ade7-546aae84a9e1");
 	private static final EntityDataAccessor<Boolean> DATA_DAZE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> DATA_CHARGE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_STUNLESS = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	public Naga(EntityType<? extends Naga> type, Level level) {
@@ -108,6 +111,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		super.defineSynchedData();
 		this.getEntityData().define(DATA_DAZE, false);
 		this.getEntityData().define(DATA_CHARGE, false);
+		this.getEntityData().define(DATA_STUNLESS, false);
 		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
@@ -125,6 +129,17 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	public void setCharging(boolean charge) {
 		this.getEntityData().set(DATA_CHARGE, charge);
+		if (!charge) {
+			this.getEntityData().set(DATA_STUNLESS, false);
+		}
+	}
+
+	public boolean isStunlessCharging() {
+		return this.getEntityData().get(DATA_STUNLESS);
+	}
+
+	public void setStunlessCharging(boolean charge) {
+		this.getEntityData().set(DATA_STUNLESS, charge);
 	}
 
 	public NagaMovementPattern getMovementAI() {
@@ -165,48 +180,6 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		});
 
 		this.moveControl = new NagaMoveControl(this);
-	}
-
-	@Override
-	public void aiStep() {
-
-		super.aiStep();
-
-		if (this.level().isClientSide() || !ForgeEventFactory.getMobGriefingEvent(this.level(), this)) return;
-
-		AABB bb = this.getBoundingBox();
-
-		int minx = Mth.floor(bb.minX - 0.75D);
-		int miny = Mth.floor(bb.minY + (this.shouldDestroyAllBlocks() ? 1.01F : 0.5F));
-		int minz = Mth.floor(bb.minZ - 0.75D);
-		int maxx = Mth.floor(bb.maxX + 0.75D);
-		int maxy = Mth.floor(bb.maxY + 1.0D);
-		int maxz = Mth.floor(bb.maxZ + 0.75D);
-
-		BlockPos min = new BlockPos(minx, miny, minz);
-		BlockPos max = new BlockPos(maxx, maxy, maxz);
-
-		if (this.level().hasChunksAt(min, max)) {
-			for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-				BlockState state = this.level().getBlockState(pos);
-				if (state.is(BlockTags.LEAVES) || (this.shouldDestroyAllBlocks() && EntityUtil.canDestroyBlock(this.level(), pos, this))) {
-					this.level().destroyBlock(pos, !state.is(BlockTags.LEAVES));
-				}
-			}
-		}
-
-		//if we get stuck in a cave get us out
-		if (this.tickCount % 20 == 0 && this.getRestrictionPoint() != null && this.getY() < this.getRestrictionPoint().pos().getY() - 5) {
-			BlockPos pos = BlockPos.containing(this.getX(), this.getRestrictionPoint().pos().getY(), this.getZ());
-			if (!this.level().getBlockState(pos.below()).getCollisionShape(this.level(), pos.below(2)).isEmpty() || this.isMobWithinHomeArea(this)) {
-				this.teleportTo(this.getX(), this.getRestrictionPoint().pos().getY(), this.getZ());
-				this.getNavigation().stop();
-			}
-		}
-	}
-
-	public boolean shouldDestroyAllBlocks() {
-		return this.isCharging() || !this.isMobWithinHomeArea(this);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -267,18 +240,23 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public void tick() {
-		if (this.isDazed() && this.deathTime < 10) {
-			for (int i = 0; i < 5; i++) {
-				Vec3 pos = new Vec3(this.getX(), this.getY() + 2.15D, this.getZ()).add(new Vec3(1.5D, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))));
-				this.level().addParticle(ParticleTypes.CRIT, pos.x(), pos.y(), pos.z(), 0, 0, 0);
+		if (this.level().isClientSide()) {
+			if (this.isDazed() && this.deathTime < 10) {
+				for (int i = 0; i < 5; i++) {
+					Vec3 pos = new Vec3(this.getX(), this.getY() + 2.15D, this.getZ()).add(new Vec3(1.5D, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))));
+					this.level().addParticle(ParticleTypes.CRIT, pos.x(), pos.y(), pos.z(), 0, 0, 0);
+				}
 			}
-		}
 
-		// update health
-		this.ticksSinceDamaged++;
+			if (this.isStunlessCharging() && this.deathTime <= 0) {
+				this.level().addParticle(ParticleTypes.ANGRY_VILLAGER, this.getRandomX(0.85F), this.blockPosition().getY() + 2.25F, this.getRandomZ(0.85F), 0, 0, 0);
+			}
 
-		if (!this.level().isClientSide() && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0) {
-			this.heal(1);
+			if (this.isStunlessCharging()) {
+				this.stunlessRedOverlayProgress = Math.min(0.65F, this.stunlessRedOverlayProgress + 0.01F);
+			} else {
+				this.stunlessRedOverlayProgress = Math.max(0.0F, this.stunlessRedOverlayProgress - 0.1F);
+			}
 		}
 
 		this.setSegmentsPerHealth();
@@ -292,6 +270,35 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 		if (this.getTarget() != null && (this.distanceToSqr(this.getTarget()) > 80 * 80 || !this.areSelfAndTargetInHome(this.getTarget()))) {
 			this.setTarget(null);
+		}
+
+		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+			AABB bb = this.getBoundingBox();
+
+			int minx = Mth.floor(bb.minX - 0.75D);
+			int miny = Mth.floor(bb.minY + (this.shouldDestroyAllBlocks() ? 1.01F : 0.5F));
+			int minz = Mth.floor(bb.minZ - 0.75D);
+			int maxx = Mth.floor(bb.maxX + 0.75D);
+			int maxy = Mth.floor(bb.maxY + 1.0D);
+			int maxz = Mth.floor(bb.maxZ + 0.75D);
+
+			BlockPos min = new BlockPos(minx, miny, minz);
+			BlockPos max = new BlockPos(maxx, maxy, maxz);
+
+			if (this.level().hasChunksAt(min, max)) {
+				for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+					BlockState state = this.level().getBlockState(pos);
+					if (state.is(BlockTags.LEAVES) || (this.shouldDestroyAllBlocks() && EntityUtil.canDestroyBlock(this.level(), pos, this))) {
+						this.level().destroyBlock(pos, !state.is(BlockTags.LEAVES));
+					}
+				}
+			}
+		}
+
+		//if we get stuck in a hole/cave send us home, dont even deal with trying to get out
+		if (this.tickCount % 20 == 0 && this.isRestrictionPointValid(this.level().dimension()) && this.getY() < this.getRestrictionPoint().pos().getY() - 5) {
+			this.teleportTo(this.getRestrictionPoint().pos().getX(), this.getRestrictionPoint().pos().getY(), this.getRestrictionPoint().pos().getZ());
+			this.getNavigation().stop();
 		}
 
 		// if we are very close to the path point, go to the next point, unless the path is finished
@@ -308,8 +315,24 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			}
 		}
 
+		// update health
+		this.ticksSinceDamaged++;
+
+		if (this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0) {
+			this.heal(1);
+		}
+
+		if (this.damageDuringCurrentStun > 15) {
+			this.getMovementAI().forceCircle();
+			this.damageDuringCurrentStun = 0;
+		}
+
 		// BOSS BAR!
 		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
+	}
+
+	public boolean shouldDestroyAllBlocks() {
+		return this.isCharging() || !this.isMobWithinHomeArea(this);
 	}
 
 	@Override
@@ -343,6 +366,9 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	public boolean hurt(DamageSource source, float amount) {
 		if (super.hurt(source, amount)) {
 			this.ticksSinceDamaged = 0;
+			if (this.isDazed()) {
+				this.damageDuringCurrentStun += amount;
+			}
 			if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 				this.hurtBy.add(player);
 			}
@@ -354,20 +380,32 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 
 	@Override
 	public boolean doHurtTarget(Entity toAttack) {
-		if (this.movementAI.getState() == NagaMovementPattern.MovementState.CHARGE && toAttack instanceof LivingEntity living && living.isBlocking()) {
-			Vec3 motion = this.getDeltaMovement();
-			toAttack.push(motion.x() * 1.5D, 0.5D, motion.z() * 1.5D);
-			this.push(motion.x() * -1.25D, 0.5D, motion.z() * -1.25D);
-			if (toAttack instanceof ServerPlayer player) {
-				player.getUseItem().hurtAndBreak(5, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ThrowPlayerPacket(motion.x() * 3.0D,  motion.y() + 0.75D, motion.z() * 3.0D));
+		if (toAttack instanceof LivingEntity living && living.isBlocking()) {
+			if (this.getMovementAI().getState() == NagaMovementPattern.MovementState.CHARGE) {
+				Vec3 motion = this.getDeltaMovement();
+				toAttack.push(motion.x() * 1.5D, 0.5D, motion.z() * 1.5D);
+				this.push(motion.x() * -1.25D, 0.5D, motion.z() * -1.25D);
+				if (toAttack instanceof ServerPlayer player) {
+					player.getUseItem().hurtAndBreak(5, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
+					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ThrowPlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
+				}
+				this.hurt(this.damageSources().generic(), 2.0F);
+				this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
+				this.getMovementAI().doDaze();
+				return false;
+			} else if (this.getMovementAI().getState() == NagaMovementPattern.MovementState.STUNLESS_CHARGE) {
+				if (toAttack instanceof ServerPlayer player) {
+					player.getUseItem().hurtAndBreak(10, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
+					player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
+					player.stopUsingItem();
+					this.level().broadcastEntityEvent(player, (byte)30);
+				}
+				living.hurt(this.damageSources().mobAttack(this), 4.0F);
+				this.playSound(SoundEvents.FOX_BITE, 2.0F, 0.5F);
+				this.getMovementAI().doCircle();
+				return false;
 			}
-			this.hurt(this.damageSources().generic(), 4.0F);
-			this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
-			this.movementAI.doDaze();
-			return false;
 		}
-
 		if (!this.isDazed()) {
 			boolean result = super.doHurtTarget(toAttack);
 

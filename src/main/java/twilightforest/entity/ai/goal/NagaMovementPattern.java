@@ -19,6 +19,7 @@ public class NagaMovementPattern extends Goal {
 	private MovementState state;
 	private int stateCounter;
 	private boolean clockwise;
+	private boolean stunCalculated;
 
 	public NagaMovementPattern(Naga naga) {
 		this.naga = naga;
@@ -54,58 +55,68 @@ public class NagaMovementPattern extends Goal {
 
 			return;
 		}
-
-		switch (this.state) {
-			case INTIMIDATE -> {
-				this.naga.getNavigation().stop();
-				if (naga.getTarget() != null) {
-					this.naga.getLookControl().setLookAt(this.naga.getTarget(), 30.0F, 30.0F);
-					this.naga.lookAt(this.naga.getTarget(), 30.0F, 30.0F);
-				}
-				this.naga.zza = 0.1f;
-			}
-			case CRUMBLE -> {
-				this.naga.getNavigation().stop();
-				this.crumbleBelowTarget(2);
-				this.crumbleBelowTarget(3);
-			}
-			case CHARGE -> {
-				if (naga.getTarget() != null) {
-					BlockPos tpoint = this.findCirclePoint(clockwise, 14, Math.PI);
-					this.naga.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1.0D);
-				}
-				this.naga.setCharging(true);
-			}
-			case CIRCLE -> {
-				// normal radius is 13
-				double radius = this.stateCounter % 2 == 0 ? 12.0D : 14.0D;
-				double rotation = 1; // in radians
-
-				// hook out slightly before circling
-				if (this.stateCounter == 2) {
-					radius = 16;
-				}
-
-				// head almost straight at the player at the end
-				if (this.stateCounter == 1) {
-					rotation = 0.1D;
-				}
-
-				if (naga.getTarget() != null) {
-					BlockPos tpoint = this.findCirclePoint(this.clockwise, radius, rotation);
-					this.naga.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1.0D);
-				}
-			}
-			case DAZE -> {
-				this.naga.getNavigation().stop();
-				this.naga.setDazed(true);
-				this.naga.setCharging(false);
-			}
-		}
-
-		this.stateCounter--;
-		if (this.stateCounter <= 0) {
+		if (this.stateCounter-- <= 0) {
 			this.transitionState();
+		} else {
+			switch (this.state) {
+				case INTIMIDATE -> {
+					this.naga.getNavigation().stop();
+					if (naga.getTarget() != null) {
+						this.naga.getLookControl().setLookAt(this.naga.getTarget(), 30.0F, 30.0F);
+						this.naga.lookAt(this.naga.getTarget(), 30.0F, 30.0F);
+					}
+					this.naga.zza = 0.1f;
+					if (!this.stunCalculated) {
+						//the stunless charge has a higher chance to happen the lower the naga's health gets
+						//difficulty is also factored in. The higher the difficulty the greater the chance
+						float healthRatio = 1.0F - (this.naga.getHealth() / (this.naga.getMaxHealth())) - 0.25F;
+						float chance = Mth.clamp(healthRatio + (this.naga.level().getCurrentDifficultyAt(this.naga.blockPosition()).getDifficulty().getId() * 0.05F), 0.0F, 0.5F);
+						float randChance = this.naga.getRandom().nextFloat() * 0.75F;
+						boolean stunless = randChance < chance;
+						this.naga.setStunlessCharging(stunless);
+						this.stunCalculated = true;
+					}
+				}
+				case CRUMBLE -> {
+					this.naga.getNavigation().stop();
+					this.crumbleBelowTarget(2);
+					this.crumbleBelowTarget(3);
+				}
+				case CHARGE, STUNLESS_CHARGE -> {
+					if (this.naga.getTarget() != null) {
+						BlockPos tpoint = this.findCirclePoint(this.clockwise, 5, Math.PI);
+						this.naga.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1.5D);
+					}
+					this.naga.setCharging(true);
+				}
+				case CIRCLE -> {
+					this.naga.setCharging(false);
+					this.naga.setDazed(false);
+					// normal radius is 13
+					double radius = this.stateCounter % 2 == 0 ? 12.0D : 14.0D;
+					double rotation = 1.0D; // in radians
+
+					// hook out slightly before circling
+					if (this.stateCounter == 2) {
+						radius = 16;
+					}
+
+					// head almost straight at the player at the end
+					if (this.stateCounter == 1) {
+						rotation = 0.1D;
+					}
+
+					if (this.naga.getTarget() != null) {
+						BlockPos tpoint = this.findCirclePoint(this.clockwise, radius, rotation);
+						this.naga.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1.0D);
+					}
+				}
+				case DAZE -> {
+					this.naga.getNavigation().stop();
+					this.naga.setDazed(true);
+					this.naga.setCharging(false);
+				}
+			}
 		}
 	}
 
@@ -117,11 +128,11 @@ public class NagaMovementPattern extends Goal {
 				if (this.naga.getTarget() != null && this.naga.getTarget().getBoundingBox().minY > this.naga.getBoundingBox().maxY) {
 					this.doCrumblePlayer();
 				} else {
-					this.doCharge();
+					this.doCharge(this.naga.isStunlessCharging());
 				}
 			}
-			case CRUMBLE -> this.doCharge();
-			case CHARGE, DAZE -> this.doCircle();
+			case CRUMBLE -> this.doCharge(this.naga.isStunlessCharging());
+			case CHARGE, STUNLESS_CHARGE, DAZE -> this.doCircle();
 			case CIRCLE -> this.doIntimidate();
 		}
 	}
@@ -135,6 +146,13 @@ public class NagaMovementPattern extends Goal {
 	public void doCircle() {
 		this.state = MovementState.CIRCLE;
 		this.stateCounter += 10 + this.naga.getRandom().nextInt(10);
+		this.stunCalculated = false;
+	}
+
+	public void forceCircle() {
+		this.state = MovementState.CIRCLE;
+		this.stateCounter = 10 + this.naga.getRandom().nextInt(10);
+		this.stunCalculated = false;
 	}
 
 	public void doCrumblePlayer() {
@@ -143,8 +161,8 @@ public class NagaMovementPattern extends Goal {
 		this.stateCounter = 20 + this.naga.getRandom().nextInt(20);
 	}
 
-	private void doCharge() {
-		this.state = MovementState.CHARGE;
+	private void doCharge(boolean stunless) {
+		this.state = stunless ? MovementState.STUNLESS_CHARGE : MovementState.CHARGE;
 		this.stateCounter = 2;
 	}
 
@@ -224,6 +242,7 @@ public class NagaMovementPattern extends Goal {
 		INTIMIDATE,
 		CRUMBLE,
 		CHARGE,
+		STUNLESS_CHARGE,
 		CIRCLE,
 		DAZE
 	}
