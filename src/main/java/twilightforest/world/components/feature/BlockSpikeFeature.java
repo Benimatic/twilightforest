@@ -79,9 +79,9 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
 		//only place spikes on solid ground, not on the tops of trees
 		if (!hang) {
-			BlockPos below = startPos.below();
+			BlockPos below = startPos.below().below();
 			BlockState belowState = level.getBlockState(below);
-			if (!FeatureLogic.worldGenReplaceable(belowState) || (!belowState.isAir() && !belowState.isFaceSturdy(level, below, Direction.UP))) return false;
+			if (!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP)) return false;
 		}
 
 		int highestWeight = 0;
