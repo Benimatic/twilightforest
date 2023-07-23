@@ -125,7 +125,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.restrictTo(this.blockPosition(), 20);
+		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.setRestrictionPoint(GlobalPos.of(accessor.getLevel().dimension(), this.blockPosition()));
 		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
 	}
 

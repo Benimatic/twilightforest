@@ -117,12 +117,6 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		super.customServerAiStep();
 	}
 
-	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		if (type == MobSpawnType.STRUCTURE) this.restrictTo(this.blockPosition(), 13);
-		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
-	}
-
 	private void rewardQuest() {
 		// todo flesh the context out more
 		LootParams ctx = new LootParams.Builder((ServerLevel) this.level()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
