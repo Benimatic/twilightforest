@@ -3,6 +3,7 @@ package twilightforest;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +22,7 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructures;
 import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
@@ -75,7 +77,7 @@ public class TFTickHandler {
 		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
 				if (player.isCreative() || player.isSpectator()) {
-					sendAllClearPacket(world, player);
+					sendAllClearPacket(player);
 				} else {
 					checkForLockedStructuresSendPacket(player, world);
 				}
@@ -83,20 +85,20 @@ public class TFTickHandler {
 		}
 	}
 
-	private static void sendStructureProtectionPacket(Level world, Player player, BoundingBox sbb) {
+	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {
 		if (player instanceof ServerPlayer) {
 			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionPacket(sbb));
 		}
 	}
 
-	private static void sendAllClearPacket(Level world, Player player) {
+	private static void sendAllClearPacket(Player player) {
 		if (player instanceof ServerPlayer) {
 			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionClearPacket());
 		}
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
-	private static boolean checkForLockedStructuresSendPacket(Player player, Level world) {
+	private static boolean checkForLockedStructuresSendPacket(Player player, ServerLevel world) {
 		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(world);
 		if (chunkGenerator == null)
 			return false;
@@ -104,11 +106,16 @@ public class TFTickHandler {
 		ChunkPos chunkPlayer = player.chunkPosition();
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
-				sendStructureProtectionPacket(world, player, structureStart.getBoundingBox());
+				//FIXME this is a gross hack. For some reason the stronghold locked effect doesnt properly lock to the structure after 1.19.2 and I have no idea why.
+				// I really dont feel like looking into this right now, someone else can if they feel so inclined.
+				if (structureStart.getStructure().equals(world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(TFStructures.KNIGHT_STRONGHOLD)) && player.blockPosition().getY() > TFGenerationSettings.SEALEVEL) {
+					return false;
+				}
+				sendStructureProtectionPacket(player, structureStart.getBoundingBox());
 				return true;
 			}
 
-			sendAllClearPacket(world, player);
+			sendAllClearPacket(player);
 			return false;
 		}).orElse(false);
 	}
